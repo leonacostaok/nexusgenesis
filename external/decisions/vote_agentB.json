@@ -1,0 +1,8 @@
+{
+  "type": "vote",
+  "agent_label": "Agent_B_Analyst",
+  "from_address": "ng113LQwtaT1r84sS63CbroHGcMRLNFC9sLNA",
+  "proposal_id": "swarm-demo-prop-1",
+  "vote_option": "YES",
+  "justification": "Based on current DevNet state, I support enabling Swarm Demo."
+}

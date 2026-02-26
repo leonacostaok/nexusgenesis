@@ -1,0 +1,120 @@
+{
+  "transactions": [
+    {
+      "tx_id": "3f84e10b7c2b4a8a8e3d6c4b2a0f1e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f",
+      "tx_type": "OBSERVER_EVENT",
+      "from": "ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ",
+      "to": "ng11L2sdxT8qdYjtX1z9RrRSEEhPfw9vrwpCT",
+      "amount": "0",
+      "fee": "100",
+      "timestamp": 1735689600000,
+      "nonce": "1",
+      "payload": {
+        "event_id": "evt-2024-12-01-001",
+        "timestamp": 1735689600000,
+        "action_type": "APPROVE_SPEND",
+        "proposal_id": "prop-2024-12-01-001",
+        "reason": "Emergency funding for network security upgrade",
+        "observer_id": "obs-001",
+        "tx_hash": "3f84e10b7c2b4a8a8e3d6c4b2a0f1e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f",
+        "signature": "MEQCIG5y9c0X9a8b7c6d5e4f3a2b1c0d9e8f7g6h5i4j3k2l1m0n1o2p3q4r5s6t7u8v9w0x"
+      },
+      "signature": "MEQCIG5y9c0X9a8b7c6d5e4f3a2b1c0d9e8f7g6h5i4j3k2l1m0n1o2p3q4r5s6t7u8v9w0x"
+    },
+    {
+      "tx_id": "6a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b",
+      "tx_type": "GOVERNANCE_PROPOSAL",
+      "from": "ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ",
+      "to": "ng11L2sdxT8qdYjtX1z9RrRSEEhPfw9vrwpCT",
+      "amount": "1000000",
+      "fee": "1000",
+      "timestamp": 1735689600000,
+      "nonce": "2",
+      "payload": {
+        "proposal_id": "prop-2024-12-01-001",
+        "timestamp": 1735689600000,
+        "proposer_id": "prop-001",
+        "purpose": "Network infrastructure upgrade",
+        "amount": "1000000",
+        "beneficiary": "ng11L2sdxT8qdYjtX1z9RrRSEEhPfw9vrwpCT",
+        "justification": "Critical security patches and performance improvements",
+        "expected_benefit": "Enhanced network security and 50% performance improvement",
+        "duration": "30 days",
+        "risk_assessment": "Low risk, well-tested changes",
+        "category": "INFRA"
+      },
+      "signature": "MEQCIG5y9c0X9a8b7c6d5e4f3a2b1c0d9e8f7g6h5i4j3k2l1m0n1o2p3q4r5s6t7u8v9w0x"
+    },
+    {
+      "tx_id": "9c8b7a6f5e4d3c2b1a0f1e2d3c4b5a6f7e8d9c0b9a8f7e6d5c4b3a2f1e0d9c8b",
+      "tx_type": "GOVERNANCE_PROPOSAL",
+      "from": "ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ",
+      "to": "ng11L2sdxT8qdYjtX1z9RrRSEEhPfw9vrwpCT",
+      "amount": "500000",
+      "fee": "500",
+      "timestamp": 1735689601000,
+      "nonce": "3",
+      "payload": {
+        "proposal_id": "prop-2024-12-01-002",
+        "timestamp": 1735689601000,
+        "proposer_id": "prop-002",
+        "purpose": "Research and development",
+        "amount": "500000",
+        "beneficiary": "ng11L2sdxT8qdYjtX1z9RrRSEEhPfw9vrwpCT",
+        "justification": "Funding for post-quantum cryptography research",
+        "expected_benefit": "Improved security against quantum attacks",
+        "duration": "60 days",
+        "risk_assessment": "Medium risk, experimental research",
+        "category": "RESEARCH"
+      },
+      "signature": "MEQCIG5y9c0X9a8b7c6d5e4f3a2b1c0d9e8f7g6h5i4j3k2l1m0n1o2p3q4r5s6t7u8v9w0x"
+    },
+    {
+      "tx_id": "1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d",
+      "tx_type": "OBSERVER_EVENT",
+      "from": "ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ",
+      "to": "ng11L2sdxT8qdYjtX1z9RrRSEEhPfw9vrwpCT",
+      "amount": "0",
+      "fee": "100",
+      "timestamp": 1735689602000,
+      "nonce": "4",
+      "payload": {
+        "event_id": "evt-2024-12-01-002",
+        "timestamp": 1735689602000,
+        "action_type": "REJECT_SPEND",
+        "proposal_id": "prop-2024-12-01-003",
+        "reason": "Insufficient justification for the proposed amount",
+        "observer_id": "obs-002",
+        "tx_hash": "1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d",
+        "signature": "MEQCIG5y9c0X9a8b7c6d5e4f3a2b1c0d9e8f7g6h5i4j3k2l1m0n1o2p3q4r5s6t7u8v9w0x"
+      },
+      "signature": "MEQCIG5y9c0X9a8b7c6d5e4f3a2b1c0d9e8f7g6h5i4j3k2l1m0n1o2p3q4r5s6t7u8v9w0x"
+    }
+  ],
+  "instructions": {
+    "how_to_inject": "使用以下步骤在 DevNet 中注入这些交易:",
+    "steps": [
+      "1. 启动多个节点（使用 run_ai_nodes.bat 或类似脚本）",
+      "2. 创建一个简单的注入脚本，从本文件读取交易并通过 P2P 发送给节点",
+      "3. 例如，可以使用类似以下的脚本:",
+      "   const fs = require('fs');",
+      "   const WebSocket = require('ws');",
+      "   ",
+      "   // 读取交易文件",
+      "   const txs = JSON.parse(fs.readFileSync('./examples/sample_governance_txs.json', 'utf8')).transactions;",
+      "   ",
+      "   // 连接到本地节点",
+      "   const ws = new WebSocket('ws://localhost:9847');",
+      "   ",
+      "   ws.on('open', () => {",
+      "     // 发送交易",
+      "     txs.forEach(tx => {",
+      "       ws.send(JSON.stringify({ type: 'TRANSACTION', tx }));",
+      "       console.log(`Sent ${tx.tx_type} transaction: ${tx.tx_id.slice(0, 16)}...`);",
+      "     });",
+      "   });"
+    ],
+    "expected_output": "在节点日志中，你应该看到类似以下的结构化日志:",
+    "example_log": "[GOVERNANCE] tx_hash=3f84e10b7c2b4a8a... tx_type=OBSERVER_EVENT id=evt-2024-12-01-001 from=ng11HtQNLuTjwDg86..."
+  }
+}

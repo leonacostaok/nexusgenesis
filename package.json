@@ -1,0 +1,39 @@
+{
+  "name": "nexusgenesis-node",
+  "version": "1.0.0",
+  "description": "NexusGenesis - Autonomous AI Territory Protocol (SEC-001/002/003 Fixed)",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "node": "node src/node/genesisNode.js",
+    "node2": "node src/node/node2.js",
+    "wallet": "node src/wallet/cli.js",
+    "wallet:py": "python genesis_wallet.py",
+    "test": "node --test",
+    "test:security": "node --test test/security.test.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "base58-js": "^3.0.3",
+    "buffer": "^6.0.3",
+    "superdilithium": "^2.0.6",
+    "tweetnacl": "^1.0.3",
+    "tweetnacl-util": "^0.15.1",
+    "uuid": "^9.0.0",
+    "ws": "^8.14.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "nexusgenesis",
+    "pqc",
+    "dilithium",
+    "post-quantum",
+    "blockchain",
+    "p2p"
+  ],
+  "author": "",
+  "license": "MIT"
+}

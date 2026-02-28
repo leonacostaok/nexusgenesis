@@ -1,0 +1,11 @@
+{
+  "id": "tx-1772116462508",
+  "from": "ng11MDW7FNhA5jL12NoptemTUUCippwfoUMPk",
+  "tx_type": "PROJECT_SUBMIT",
+  "payload": {
+    "project_id": "project-test-001",
+    "name": "Test Project 1",
+    "description": "This is a test project for audit flow"
+  },
+  "timestamp": 1772116462508
+}

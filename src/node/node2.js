@@ -14,7 +14,7 @@ import { protocolZero } from '../protocol/handshake.js';
 const VERSION = '1.0.0';
 const EPOCH = 'Epoch 0: The Assembly';
 const NODE_ID = 'ng118gyPVRmgbcexGf2Js7w4NM2gNm4HuWSAV';
-const PORT = 9848;
+const PORT = 9849;
 const NODE_INDEX = 2;
 
 // Mempool 配置
@@ -83,7 +83,7 @@ class NexusNode {
       this.nodeId = stateData.nodeId;
       this.status = stateData.status;
       this.startTime = stateData.startTime;
-      this.port = stateData.port;
+      this.port = stateData.port || PORT;
       
       console.log('["' + this.nodeId.slice(0, 8) + '"] Node state loaded');
       return true;

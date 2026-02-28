@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^1.6.0",
     "base58-js": "^3.0.3",
+    "bip39": "^3.1.0",
     "buffer": "^6.0.3",
     "superdilithium": "^2.0.6",
     "tweetnacl": "^1.0.3",

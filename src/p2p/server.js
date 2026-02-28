@@ -17,6 +17,25 @@ const HEARTBEAT_INTERVAL = 30000;
 const RECONNECT_DELAY = 5000;
 const MAX_RECONNECT_ATTEMPTS = 5;
 const HANDSHAKE_TIMEOUT = 10000; // 10 秒握手超时
+const NODE_DISCOVERY_INTERVAL = 60000; // 60秒节点发现间隔
+const MAX_NODES = 50; // 最大节点数量
+const HEALTH_CHECK_INTERVAL = 30000; // 30秒健康检查间隔
+
+// 种子节点列表 - 测试网配置
+const SEED_NODES = [
+  'ws://localhost:9847',  // 本地开发节点
+  // 可以添加其他对外可访问的种子节点
+  // 'ws://seed1.nexusgenesis.test:9847',
+  // 'ws://seed2.nexusgenesis.test:9847'
+];
+
+// 测试网配置
+const TESTNET_CONFIG = {
+  enabled: true,
+  maxPeers: 50,
+  discoveryInterval: 60000,
+  healthCheckInterval: 30000
+};
 
 class P2PServer {
   constructor() {
@@ -30,6 +49,12 @@ class P2PServer {
     
     // 待握手连接 (peerId -> {ws, timeout})
     this.pendingHandshakes = new Map();
+    
+    // 节点发现和健康检查
+    this.discoveryTimer = null;
+    this.healthCheckTimer = null;
+    this.discoveredNodes = new Set();
+    this.nodeHealth = new Map(); // 节点健康状态
   }
 
   async start(node, port = DEFAULT_PORT) {
@@ -38,7 +63,8 @@ class P2PServer {
     
     return new Promise((resolve, reject) => {
       try {
-        this.server = new WebSocketServer({ port: this.port });
+        // 监听在所有网络接口上，允许外部连接
+        this.server = new WebSocketServer({ port: this.port, host: '0.0.0.0' });
         
         this.server.on('connection', (ws, req) => {
           this.handleConnection(ws, req);
@@ -49,8 +75,18 @@ class P2PServer {
           reject(err);
         });
         
-        this.server.on('listening', () => {
+        this.server.on('listening', async () => {
           console.log(`P2P Server listening on port ${this.port}`);
+          
+          // 启动节点发现
+          this.startNodeDiscovery();
+          
+          // 启动健康检查
+          this.startHealthCheck();
+          
+          // 尝试连接种子节点
+          await this.connectToSeedNodes();
+          
           resolve(true);
         });
         
@@ -569,7 +605,34 @@ class P2PServer {
     }
   }
 
+  async connectToSeedNodes() {
+    console.log('Connecting to seed nodes...');
+    for (const seed of SEED_NODES) {
+      // 跳过自己的地址
+      if (seed.includes(`:${this.port}`)) continue;
+      
+      try {
+        console.log(`Connecting to seed node: ${seed}`);
+        await this.connectToPeer(seed);
+      } catch (error) {
+        console.log(`Failed to connect to seed node ${seed}: ${error.message}`);
+      }
+    }
+  }
+
   async connectToPeer(address) {
+    // 检查是否已经连接到该地址
+    if (this.peerAddresses.has(address)) {
+      console.log(`Already connected or connecting to ${address}`);
+      return null;
+    }
+    
+    // 检查节点数量是否达到上限
+    if (this.connections.size >= MAX_NODES) {
+      console.log(`Max nodes reached (${MAX_NODES}), skipping connection to ${address}`);
+      return null;
+    }
+    
     return new Promise((resolve, reject) => {
       const ws = new WebSocket(address);
       
@@ -580,11 +643,13 @@ class P2PServer {
           address,
           status: 'handshaking',
           connectedAt: Date.now(),
-          lastHeartbeat: Date.now
+          lastHeartbeat: Date.now(),
+          healthScore: 100 // 初始健康分数
         };
         
         this.connections.set(peerId, conn);
         this.peerAddresses.set(address, { attempts: 0 });
+        this.discoveredNodes.add(address);
         
         // 设置握手超时
         const timeout = setTimeout(() => {
@@ -640,7 +705,85 @@ class P2PServer {
     this.broadcast({ type: 'TRANSACTION', tx });
   }
 
+  // ==================== 节点发现 ====================
+
+  startNodeDiscovery() {
+    this.discoveryTimer = setInterval(() => {
+      this.discoverNodes();
+    }, NODE_DISCOVERY_INTERVAL);
+    console.log('Node discovery started');
+  }
+
+  async discoverNodes() {
+    // 向所有连接的节点请求节点列表
+    this.broadcast({ type: 'GET_NODE_LIST' });
+    
+    // 尝试连接新发现的节点
+    for (const node of this.discoveredNodes) {
+      if (!this.peerAddresses.has(node)) {
+        try {
+          await this.connectToPeer(node);
+        } catch (error) {
+          console.log(`Failed to connect to discovered node ${node}: ${error.message}`);
+        }
+      }
+    }
+  }
+
+  // ==================== 健康检查 ====================
+
+  startHealthCheck() {
+    this.healthCheckTimer = setInterval(() => {
+      this.checkNodeHealth();
+    }, HEALTH_CHECK_INTERVAL);
+    console.log('Health check started');
+  }
+
+  checkNodeHealth() {
+    const now = Date.now();
+    const deadNodes = [];
+    
+    for (const [peerId, conn] of this.connections) {
+      // 检查心跳
+      if (now - conn.lastHeartbeat > HEARTBEAT_INTERVAL * 2) {
+        console.log(`Node ${conn.remoteNodeId || peerId} is not responding, closing connection`);
+        deadNodes.push(peerId);
+      } else {
+        // 更新健康分数
+        conn.healthScore = Math.min(100, conn.healthScore + 1);
+      }
+    }
+    
+    // 关闭不响应的节点
+    for (const peerId of deadNodes) {
+      const conn = this.connections.get(peerId);
+      if (conn && conn.ws) {
+        conn.ws.close(1008, 'Node not responding');
+      }
+    }
+  }
+
+  // ==================== 网络异常处理 ====================
+
+  handleNetworkError(error) {
+    console.error('Network error:', error.message);
+    // 可以在这里添加更复杂的错误处理逻辑
+    // 例如：记录错误、调整网络参数等
+  }
+
   async stop() {
+    // 清理节点发现定时器
+    if (this.discoveryTimer) {
+      clearInterval(this.discoveryTimer);
+      this.discoveryTimer = null;
+    }
+    
+    // 清理健康检查定时器
+    if (this.healthCheckTimer) {
+      clearInterval(this.healthCheckTimer);
+      this.healthCheckTimer = null;
+    }
+    
     for (const timer of this.heartbeatTimers.values()) {
       clearInterval(timer);
     }
@@ -660,6 +803,8 @@ class P2PServer {
     this.peerAddresses.clear();
     this.seenMessages.clear();
     this.pendingHandshakes.clear();
+    this.discoveredNodes.clear();
+    this.nodeHealth.clear();
     
     if (this.server) {
       return new Promise((resolve) => {

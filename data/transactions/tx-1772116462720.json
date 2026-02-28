@@ -1,0 +1,10 @@
+{
+  "id": "tx-1772116462720",
+  "from": "ng11MDW7FNhA5jL12NoptemTUUCippwfoUMPk",
+  "tx_type": "PROJECT_APPROVE",
+  "payload": {
+    "project_id": "project-test-001",
+    "reason": "Project approved after review"
+  },
+  "timestamp": 1772116462720
+}

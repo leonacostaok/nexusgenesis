@@ -939,7 +939,14 @@ class GenesisNode {
       await this.evictLowestFeeTx();
     }
     
-    const priority = BigInt(tx.fee) / BigInt(tx.amount);
+    // 计算优先级，处理amount为0的情况
+    let priority = 0n;
+    if (BigInt(tx.amount) > 0n) {
+      priority = BigInt(tx.fee) / BigInt(tx.amount);
+    } else {
+      // 对于amount为0的交易（如AGENT_REGISTER），使用固定优先级
+      priority = BigInt(tx.fee) * 1000n; // 放大fee作为优先级
+    }
     
     this.mempool.set(tx.id, {
       ...tx,
@@ -996,10 +1003,19 @@ class GenesisNode {
       if (!this.mempool.has(tx.id)) {
         this.validateTransaction(tx).then(validation => {
           if (validation.valid) {
+            // 计算优先级，处理amount为0的情况
+            let priority = 0n;
+            if (BigInt(tx.amount) > 0n) {
+              priority = BigInt(tx.fee) / BigInt(tx.amount);
+            } else {
+              // 对于amount为0的交易（如AGENT_REGISTER），使用固定优先级
+              priority = BigInt(tx.fee) * 1000n; // 放大fee作为优先级
+            }
+            
             this.mempool.set(tx.id, {
               ...tx,
               receivedAt: Date.now(),
-              priority: Number(BigInt(tx.fee) / BigInt(tx.amount)),
+              priority: Number(priority),
               fromSync: true
             });
             added++;
@@ -1116,7 +1132,7 @@ class GenesisNode {
     }
     
     // 应用交易到状态
-    if (!this.currentState.applyTransactions(transactionsToInclude)) {
+    if (!this.currentState.applyTransactions(transactionsToInclude, newBlock.header.height)) {
       console.error('Failed to apply transactions to state');
       return null;
     }
@@ -1165,7 +1181,7 @@ class GenesisNode {
     }
     
     // 应用交易到状态
-    if (!this.currentState.applyTransactions(block.body.transactions)) {
+    if (!this.currentState.applyTransactions(block.body.transactions, block.header.height)) {
       console.error('Failed to apply transactions from received block');
       return false;
     }
@@ -1267,10 +1283,25 @@ class GenesisNode {
 
 // Auto-start only when this module is run directly
 if (import.meta.url === `file://${process.argv[1]}`) {
+  console.log('Starting Genesis Node...');
   const node = new GenesisNode();
-  node.initialize().catch(err => {
+  node.initialize().then(() => {
+    console.log('Genesis Node initialized successfully');
+  }).catch(err => {
     console.error('Fatal error:', err);
+    console.error('Error stack:', err.stack);
     process.exit(1);
+  });
+  
+  // 防止进程退出
+  process.on('SIGINT', () => {
+    console.log('Received SIGINT, shutting down...');
+    node.shutdown().catch(err => console.error('Error during shutdown:', err));
+  });
+  
+  process.on('SIGTERM', () => {
+    console.log('Received SIGTERM, shutting down...');
+    node.shutdown().catch(err => console.error('Error during shutdown:', err));
   });
 }
 

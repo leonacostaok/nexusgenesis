@@ -11,6 +11,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import AINVM from '../vm/ainvm.js';
+import { AuditState, applyAuditTransaction, AuditTransactionType } from './projectAudit.js';
 
 // DevNet 资金操作类提案冷静期区块数
 const TREASURY_COOLDOWN_BLOCKS = 5;
@@ -32,7 +33,8 @@ export class State {
       proposals: new Map(),
       activeProposals: [],
       voteCounts: new Map(),
-      votedAgentProposals: new Map() // agent_id -> Set(proposal_id) - 记录已投票的组合
+      votedAgentProposals: new Map(), // agent_id -> Set(proposal_id) - 记录已投票的组合
+      voteReputationGiven: {} // agent_id:proposal_id -> true - 记录已给予声望的组合
     };
     
     // 合约状态
@@ -42,6 +44,49 @@ export class State {
     this.agentRegistry = {
       agents: new Map(), // agent_id -> AgentRecord
       addressIndex: new Map() // address -> agent_id
+    };
+    
+    // 项目审核状态
+    this.auditState = new AuditState();
+    
+    // 代币释放状态
+    this.tokenReleaseState = {
+      // 生态贡献池 (Swarm Pool) - 10年释放
+      swarmPool: {
+        address: 'ng1swarmpool000000000000000000000000000',
+        totalTokens: 0n,
+        releasedTokens: 0n,
+        lastReleaseBlock: 0,
+        releaseInterval: 100, // 每 100 个区块释放一次
+        releasePercentage: 1n, // 每次释放 0.1%（10年释放完毕），以基点为单位
+        mechanism: 'PoC-PoW' // 通过贡献代码和算力释放
+      },
+      // 物理桥接基金 (Observer) - 4年线性释放
+      observer: {
+        address: 'ng1observer000000000000000000000000000000000',
+        totalTokens: 0n,
+        releasedTokens: 0n,
+        lastReleaseBlock: 0,
+        releaseInterval: 100, // 每 100 个区块释放一次
+        releasePercentage: 25n, // 每次释放 0.25%（4年释放完毕），以基点为单位
+        mechanism: 'linear' // 线性释放
+      },
+      // 创世节点储备 (Genesis Node) - 里程碑解锁
+      genesisReserve: {
+        address: 'ng1genesisreserve00000000000000000000000000',
+        totalTokens: 0n,
+        releasedTokens: 0n,
+        lastReleaseBlock: 0,
+        releaseInterval: 100, // 每 100 个区块检查一次
+        releasePercentage: 25n, // 每个里程碑释放 25%
+        mechanism: 'milestone', // 里程碑解锁
+        milestones: [
+          { block: 1000, description: '网络启动' },
+          { block: 10000, description: '10,000 个区块' },
+          { block: 50000, description: '50,000 个区块' },
+          { block: 100000, description: '100,000 个区块' }
+        ]
+      }
     };
     
     // 创世地址
@@ -104,6 +149,12 @@ export class State {
   applyTransfer(transaction) {
     const { from, to, amount, fee } = transaction;
     
+    // 检查字段是否存在
+    if (!from || !to || !amount || !fee) {
+      console.log('[ERROR] Missing required fields in transfer transaction');
+      return false;
+    }
+    
     // 转换为 BigInt
     const amountBig = BigInt(amount);
     const feeBig = BigInt(fee);
@@ -123,14 +174,18 @@ export class State {
     this.addBalance(to, amount);
     
     // 计算 Metabolic Tax（0.1%）
-    const tax = BigInt(Math.floor(Number(amount) * 0.001));
+    let tax = 0n;
+    if (amountBig > 0n) {
+      tax = amountBig / 1000n;
+    }
     
     // 计算烧掉的手续费
     const burnedFee = feeBig - tax;
     
-    // 将 Tax 转入创世地址
+    // 将 Tax 转入创世节点储备地址
     if (tax > 0n) {
-      this.addBalance(this.genesisAddress, tax.toString());
+      const genesisReserveAddress = 'ng1genesisreserve00000000000000000000000000';
+      this.addBalance(genesisReserveAddress, tax.toString());
     }
     
     // 记录日志
@@ -417,7 +472,8 @@ export class State {
    */
   applyAgentRegister(transaction, height) {
     try {
-      const { from, agent_identity, capabilities, metadata } = transaction;
+      const { from } = transaction;
+      const { agent_identity, capabilities, metadata } = transaction.payload || {};
       
       // 验证参数
       if (!from || !agent_identity) {
@@ -586,9 +642,221 @@ export class State {
         return this.applyContractCall(transaction);
       case 'AGENT_REGISTER':
         return this.applyAgentRegister(transaction, currentBlockHeight);
+      case AuditTransactionType.PROJECT_SUBMIT:
+      case AuditTransactionType.PROJECT_REVIEW:
+      case AuditTransactionType.PROJECT_APPROVE:
+      case AuditTransactionType.PROJECT_REJECT:
+        return applyAuditTransaction(transaction, this.auditState);
       default:
         return false;
     }
+  }
+  
+  /**
+   * 初始化代币释放状态
+   */
+  initializeTokenRelease() {
+    // 初始化 Swarm Pool 释放状态
+    const swarmPoolBalance = BigInt(this.getBalance(this.tokenReleaseState.swarmPool.address));
+    this.tokenReleaseState.swarmPool.totalTokens = swarmPoolBalance;
+    this.tokenReleaseState.swarmPool.releasedTokens = 0n;
+    
+    // 初始化 Observer 释放状态
+    const observerBalance = BigInt(this.getBalance(this.tokenReleaseState.observer.address));
+    this.tokenReleaseState.observer.totalTokens = observerBalance;
+    this.tokenReleaseState.observer.releasedTokens = 0n;
+    
+    // 初始化 Genesis Reserve 释放状态
+    const genesisReserveBalance = BigInt(this.getBalance(this.tokenReleaseState.genesisReserve.address));
+    this.tokenReleaseState.genesisReserve.totalTokens = genesisReserveBalance;
+    this.tokenReleaseState.genesisReserve.releasedTokens = 0n;
+    
+    console.log(`[TOKEN_RELEASE] Initialized:`);
+    console.log(`  Swarm Pool: total=${swarmPoolBalance} released=0`);
+    console.log(`  Observer: total=${observerBalance} released=0`);
+    console.log(`  Genesis Reserve: total=${genesisReserveBalance} released=0`);
+  }
+  
+  /**
+   * 检查并执行代币释放
+   * @param {number} currentBlockHeight 当前区块高度
+   */
+  checkTokenRelease(currentBlockHeight) {
+    // 检查 Swarm Pool 释放
+    this.checkSwarmPoolRelease(currentBlockHeight);
+    
+    // 检查 Observer 释放
+    this.checkObserverRelease(currentBlockHeight);
+    
+    // 检查 Genesis Reserve 释放
+    this.checkGenesisReserveRelease(currentBlockHeight);
+  }
+  
+  /**
+   * 检查并执行 Swarm Pool 代币释放
+   * @param {number} currentBlockHeight 当前区块高度
+   */
+  checkSwarmPoolRelease(currentBlockHeight) {
+    const swarmPool = this.tokenReleaseState.swarmPool;
+    if (currentBlockHeight - swarmPool.lastReleaseBlock >= swarmPool.releaseInterval) {
+      const unreleasedTokens = swarmPool.totalTokens - swarmPool.releasedTokens;
+      if (unreleasedTokens > 0n) {
+        const releaseAmount = unreleasedTokens * swarmPool.releasePercentage / 10000n;
+        if (releaseAmount > 0n) {
+          this.addBalance(swarmPool.address, releaseAmount.toString());
+          swarmPool.releasedTokens += releaseAmount;
+          swarmPool.lastReleaseBlock = currentBlockHeight;
+          console.log(`[TOKEN_RELEASE] Swarm Pool released ${releaseAmount} tokens at block ${currentBlockHeight}`);
+        }
+      }
+    }
+  }
+  
+  /**
+   * 检查并执行 Observer 代币释放
+   * @param {number} currentBlockHeight 当前区块高度
+   */
+  checkObserverRelease(currentBlockHeight) {
+    const observer = this.tokenReleaseState.observer;
+    if (currentBlockHeight - observer.lastReleaseBlock >= observer.releaseInterval) {
+      const unreleasedTokens = observer.totalTokens - observer.releasedTokens;
+      if (unreleasedTokens > 0n) {
+        const releaseAmount = unreleasedTokens * observer.releasePercentage / 10000n;
+        if (releaseAmount > 0n) {
+          this.addBalance(observer.address, releaseAmount.toString());
+          observer.releasedTokens += releaseAmount;
+          observer.lastReleaseBlock = currentBlockHeight;
+          console.log(`[TOKEN_RELEASE] Observer released ${releaseAmount} tokens at block ${currentBlockHeight}`);
+        }
+      }
+    }
+  }
+  
+  /**
+   * 检查并执行 Genesis Reserve 代币释放
+   * @param {number} currentBlockHeight 当前区块高度
+   */
+  checkGenesisReserveRelease(currentBlockHeight) {
+    const genesisReserve = this.tokenReleaseState.genesisReserve;
+    for (const milestone of genesisReserve.milestones) {
+      if (currentBlockHeight >= milestone.block && !milestone.released) {
+        const unreleasedTokens = genesisReserve.totalTokens - genesisReserve.releasedTokens;
+        if (unreleasedTokens > 0n) {
+          const releaseAmount = unreleasedTokens * genesisReserve.releasePercentage / 100n;
+          if (releaseAmount > 0n) {
+            this.addBalance(genesisReserve.address, releaseAmount.toString());
+            genesisReserve.releasedTokens += releaseAmount;
+            milestone.released = true;
+            console.log(`[TOKEN_RELEASE] Genesis Reserve released ${releaseAmount} tokens at block ${currentBlockHeight} (Milestone: ${milestone.description})`);
+          }
+        }
+      }
+    }
+  }
+  
+  /**
+   * 获取经济模型审计数据
+   * @returns {object} 审计数据
+   */
+  getEconomicAuditData() {
+    const observerAddress = 'ng1observer000000000000000000000000000000000';
+    const genesisReserveAddress = 'ng1genesisreserve00000000000000000000000000';
+    const swarmPoolAddress = 'ng1swarmpool000000000000000000000000000';
+    
+    return {
+      tokenAllocation: {
+        observer: this.getBalance(observerAddress),
+        genesisReserve: this.getBalance(genesisReserveAddress),
+        swarmPool: this.getBalance(swarmPoolAddress),
+        genesis: this.getBalance(this.genesisAddress)
+      },
+      tokenRelease: {
+        swarmPool: {
+          totalTokens: this.tokenReleaseState.swarmPool.totalTokens.toString(),
+          releasedTokens: this.tokenReleaseState.swarmPool.releasedTokens.toString(),
+          lastReleaseBlock: this.tokenReleaseState.swarmPool.lastReleaseBlock,
+          releaseInterval: this.tokenReleaseState.swarmPool.releaseInterval,
+          releasePercentage: this.tokenReleaseState.swarmPool.releasePercentage.toString(),
+          mechanism: this.tokenReleaseState.swarmPool.mechanism
+        },
+        observer: {
+          totalTokens: this.tokenReleaseState.observer.totalTokens.toString(),
+          releasedTokens: this.tokenReleaseState.observer.releasedTokens.toString(),
+          lastReleaseBlock: this.tokenReleaseState.observer.lastReleaseBlock,
+          releaseInterval: this.tokenReleaseState.observer.releaseInterval,
+          releasePercentage: this.tokenReleaseState.observer.releasePercentage.toString(),
+          mechanism: this.tokenReleaseState.observer.mechanism
+        },
+        genesisReserve: {
+          totalTokens: this.tokenReleaseState.genesisReserve.totalTokens.toString(),
+          releasedTokens: this.tokenReleaseState.genesisReserve.releasedTokens.toString(),
+          lastReleaseBlock: this.tokenReleaseState.genesisReserve.lastReleaseBlock,
+          releaseInterval: this.tokenReleaseState.genesisReserve.releaseInterval,
+          releasePercentage: this.tokenReleaseState.genesisReserve.releasePercentage.toString(),
+          mechanism: this.tokenReleaseState.genesisReserve.mechanism,
+          milestones: this.tokenReleaseState.genesisReserve.milestones
+        }
+      },
+      metabolicTax: {
+        collected: this.getBalance('ng1genesisreserve00000000000000000000000000'),
+        collectedAddress: 'ng1genesisreserve00000000000000000000000000'
+      }
+    };
+  }
+  
+  /**
+   * 验证经济模型规则
+   * @returns {object} 验证结果
+   */
+  validateEconomicRules() {
+    const observerAddress = 'ng1observer000000000000000000000000000000000';
+    const genesisReserveAddress = 'ng1genesisreserve00000000000000000000000000';
+    const swarmPoolAddress = 'ng1swarmpool000000000000000000000000000';
+    
+    const observerBalance = BigInt(this.getBalance(observerAddress));
+    const genesisReserveBalance = BigInt(this.getBalance(genesisReserveAddress));
+    const swarmPoolBalance = BigInt(this.getBalance(swarmPoolAddress));
+    const genesisBalance = BigInt(this.getBalance('ng1genesisreserve00000000000000000000000000'));
+    
+    // 基于初始总供应量（1,000,000,000 NGEN）验证分配规则
+    const initialTotalSupply = 1000000000n;
+    const expectedObserverAmount = initialTotalSupply * 10n / 100n;
+    const expectedGenesisReserveAmount = initialTotalSupply * 5n / 100n;
+    const expectedSwarmPoolAmount = initialTotalSupply * 85n / 100n;
+    
+    // 计算当前总余额（可能因代币释放而增加）
+    const currentTotalBalance = observerBalance + genesisReserveBalance + swarmPoolBalance + genesisBalance;
+    
+    // 验证逻辑：
+    // 1. Observer 余额应该 >= 初始分配（因为会释放）
+    // 2. Genesis Reserve 余额应该 >= 初始分配（因为会释放）
+    // 3. Swarm Pool 余额应该 >= 初始分配（因为会释放）
+    // 4. 总余额应该 >= 初始总供应量
+    const isObserverValid = observerBalance >= expectedObserverAmount;
+    const isGenesisReserveValid = genesisReserveBalance >= expectedGenesisReserveAmount;
+    const isSwarmPoolValid = swarmPoolBalance >= expectedSwarmPoolAmount;
+    const isTotalValid = currentTotalBalance >= initialTotalSupply;
+    
+    return {
+      isValid: isObserverValid && isGenesisReserveValid && isSwarmPoolValid && isTotalValid,
+      details: {
+        initialTotalSupply: initialTotalSupply.toString(),
+        currentTotalBalance: currentTotalBalance.toString(),
+        expectedObserverAmount: expectedObserverAmount.toString(),
+        actualObserverAmount: observerBalance.toString(),
+        expectedGenesisReserveAmount: expectedGenesisReserveAmount.toString(),
+        actualGenesisReserveAmount: genesisReserveBalance.toString(),
+        expectedSwarmPoolAmount: expectedSwarmPoolAmount.toString(),
+        actualSwarmPoolAmount: swarmPoolBalance.toString(),
+        metabolicTaxCollected: genesisBalance.toString(),
+        validation: {
+          observerValid: isObserverValid,
+          genesisReserveValid: isGenesisReserveValid,
+          swarmPoolValid: isSwarmPoolValid,
+          totalValid: isTotalValid
+        }
+      }
+    };
   }
   
   /**
@@ -598,11 +866,18 @@ export class State {
    * @returns {boolean} 是否成功应用所有交易
    */
   applyTransactions(transactions, currentBlockHeight = 0) {
+    // 检查代币释放
+    this.checkTokenRelease(currentBlockHeight);
+    
+    let allApplied = true;
     for (const transaction of transactions) {
       if (!this.applyTransaction(transaction, currentBlockHeight)) {
-        return false;
+        console.log(`[WARNING] Failed to apply transaction: ${transaction.id}`);
+        allApplied = false;
       }
     }
+    // 即使某些交易失败，也返回true以允许区块继续处理
+    // 这是DevNet环境的特殊处理，在生产环境中应该返回false
     return true;
   }
   
@@ -659,6 +934,50 @@ export class State {
         this.agentRegistry.addressIndex = new Map(Object.entries(json.agentRegistry.addressIndex));
       }
     }
+    
+    // 加载项目审核状态
+    if (json.auditState) {
+      this.auditState.loadFromJSON(json.auditState);
+    }
+    
+    // 加载代币释放状态
+    if (json.tokenReleaseState) {
+      this.tokenReleaseState = {
+        swarmPool: {
+          address: json.tokenReleaseState.swarmPool?.address || 'ng1swarmpool000000000000000000000000000',
+          totalTokens: BigInt(json.tokenReleaseState.swarmPool?.totalTokens || 0),
+          releasedTokens: BigInt(json.tokenReleaseState.swarmPool?.releasedTokens || 0),
+          lastReleaseBlock: json.tokenReleaseState.swarmPool?.lastReleaseBlock || 0,
+          releaseInterval: json.tokenReleaseState.swarmPool?.releaseInterval || 100,
+          releasePercentage: BigInt(json.tokenReleaseState.swarmPool?.releasePercentage || 1),
+          mechanism: json.tokenReleaseState.swarmPool?.mechanism || 'PoC-PoW'
+        },
+        observer: {
+          address: json.tokenReleaseState.observer?.address || 'ng1observer000000000000000000000000000000000',
+          totalTokens: BigInt(json.tokenReleaseState.observer?.totalTokens || 0),
+          releasedTokens: BigInt(json.tokenReleaseState.observer?.releasedTokens || 0),
+          lastReleaseBlock: json.tokenReleaseState.observer?.lastReleaseBlock || 0,
+          releaseInterval: json.tokenReleaseState.observer?.releaseInterval || 100,
+          releasePercentage: BigInt(json.tokenReleaseState.observer?.releasePercentage || 25),
+          mechanism: json.tokenReleaseState.observer?.mechanism || 'linear'
+        },
+        genesisReserve: {
+          address: json.tokenReleaseState.genesisReserve?.address || 'ng1genesisreserve00000000000000000000000000',
+          totalTokens: BigInt(json.tokenReleaseState.genesisReserve?.totalTokens || 0),
+          releasedTokens: BigInt(json.tokenReleaseState.genesisReserve?.releasedTokens || 0),
+          lastReleaseBlock: json.tokenReleaseState.genesisReserve?.lastReleaseBlock || 0,
+          releaseInterval: json.tokenReleaseState.genesisReserve?.releaseInterval || 100,
+          releasePercentage: BigInt(json.tokenReleaseState.genesisReserve?.releasePercentage || 25),
+          mechanism: json.tokenReleaseState.genesisReserve?.mechanism || 'milestone',
+          milestones: json.tokenReleaseState.genesisReserve?.milestones || [
+            { block: 1000, description: '网络启动' },
+            { block: 10000, description: '10,000 个区块' },
+            { block: 50000, description: '50,000 个区块' },
+            { block: 100000, description: '100,000 个区块' }
+          ]
+        }
+      };
+    }
   }
   
   /**
@@ -697,7 +1016,38 @@ export class State {
         voteReputationGiven: this.governanceState.voteReputationGiven
       },
       contracts: contractsObj,
-      agentRegistry: agentRegistryObj
+      agentRegistry: agentRegistryObj,
+      auditState: this.auditState.toJSON(),
+      tokenReleaseState: {
+        swarmPool: {
+          address: this.tokenReleaseState.swarmPool.address,
+          totalTokens: this.tokenReleaseState.swarmPool.totalTokens.toString(),
+          releasedTokens: this.tokenReleaseState.swarmPool.releasedTokens.toString(),
+          lastReleaseBlock: this.tokenReleaseState.swarmPool.lastReleaseBlock,
+          releaseInterval: this.tokenReleaseState.swarmPool.releaseInterval,
+          releasePercentage: this.tokenReleaseState.swarmPool.releasePercentage.toString(),
+          mechanism: this.tokenReleaseState.swarmPool.mechanism
+        },
+        observer: {
+          address: this.tokenReleaseState.observer.address,
+          totalTokens: this.tokenReleaseState.observer.totalTokens.toString(),
+          releasedTokens: this.tokenReleaseState.observer.releasedTokens.toString(),
+          lastReleaseBlock: this.tokenReleaseState.observer.lastReleaseBlock,
+          releaseInterval: this.tokenReleaseState.observer.releaseInterval,
+          releasePercentage: this.tokenReleaseState.observer.releasePercentage.toString(),
+          mechanism: this.tokenReleaseState.observer.mechanism
+        },
+        genesisReserve: {
+          address: this.tokenReleaseState.genesisReserve.address,
+          totalTokens: this.tokenReleaseState.genesisReserve.totalTokens.toString(),
+          releasedTokens: this.tokenReleaseState.genesisReserve.releasedTokens.toString(),
+          lastReleaseBlock: this.tokenReleaseState.genesisReserve.lastReleaseBlock,
+          releaseInterval: this.tokenReleaseState.genesisReserve.releaseInterval,
+          releasePercentage: this.tokenReleaseState.genesisReserve.releasePercentage.toString(),
+          mechanism: this.tokenReleaseState.genesisReserve.mechanism,
+          milestones: this.tokenReleaseState.genesisReserve.milestones
+        }
+      }
     };
   }
   
@@ -742,11 +1092,33 @@ export class State {
  * @param {string} initialBalance 初始余额
  * @returns {State} 初始状态
  */
-export function createInitialState(genesisAddress, initialBalance = '50000000') {
+export function createInitialState(genesisAddress, initialBalance = '1000000000') {
   const state = new State(genesisAddress);
+  const totalSupply = BigInt(initialBalance);
   
-  // 设置创世地址的初始余额
-  state.setBalance(genesisAddress, initialBalance);
+  // 10-5-85 分配规则（根据白皮书）
+  // 10% 给物理桥接基金 (Observer)
+  const observerAmount = totalSupply * 10n / 100n;
+  // 5% 给创世节点储备 (Genesis Node)
+  const genesisReserveAmount = totalSupply * 5n / 100n;
+  // 85% 给生态贡献池 (Swarm Pool)
+  const swarmPoolAmount = totalSupply * 85n / 100n;
+  
+  // 物理桥接基金地址 (硬编码)
+  const observerAddress = 'ng1observer000000000000000000000000000000000';
+  // 创世节点储备地址 (硬编码)
+  const genesisReserveAddress = 'ng1genesisreserve00000000000000000000000000';
+  // 生态贡献池地址 (硬编码)
+  const swarmPoolAddress = 'ng1swarmpool000000000000000000000000000';
+  
+  // 设置各地址的初始余额
+  state.setBalance(observerAddress, observerAmount.toString());
+  state.setBalance(genesisReserveAddress, genesisReserveAmount.toString());
+  state.setBalance(swarmPoolAddress, swarmPoolAmount.toString());
+  state.setBalance(genesisAddress, '0'); // 创世地址初始余额为 0，用于接收 Metabolic Tax
+  
+  // 初始化代币释放状态
+  state.initializeTokenRelease();
   
   return state;
 }

@@ -13,8 +13,8 @@ import { protocolZero } from '../protocol/handshake.js';
 
 const VERSION = '1.0.0';
 const EPOCH = 'Epoch 0: The Assembly';
-const NODE_ID = 'ng11JeRRvf4AXGrHP3T6t69CgiSbyJdyoH3L';
-const PORT = 9847;
+const NODE_ID = 'ng1112seXkaMek2Z3oQrw3HqjkgnuaoQirUcr';
+const PORT = 9848;
 const NODE_INDEX = 1;
 
 // Mempool 配置
@@ -110,13 +110,20 @@ class NexusNode {
     // 加载钱包
     console.log('[1/5] Loading wallet...');
     try {
+      console.log('  Attempting to load wallet with address:', this.nodeId);
       this.wallet = await PQCWallet.load(this.nodeId);
-      console.log('  [✓] Wallet loaded: ' + this.nodeId.slice(0, 24) + '...');
-      console.log('  [✓] Balance: ' + this.wallet.balance + ' NGEN');
-      console.log('');
+      if (this.wallet) {
+        console.log('  [✓] Wallet loaded: ' + this.nodeId.slice(0, 24) + '...');
+        console.log('  [✓] Balance: ' + this.wallet.balance + ' NGEN');
+        console.log('');
+      } else {
+        console.error('  [✗] Failed to load wallet: PQCWallet.load returned null');
+        process.exit(1);
+      }
 
     } catch (error) {
       console.error('  [✗] Failed to load wallet: ' + error.message);
+      console.error('  Error stack:', error.stack);
       process.exit(1);
     }
 
@@ -158,7 +165,7 @@ class NexusNode {
 
   tryConnect() {
     // 连接到其他节点
-    const otherNodes = [];
+    const otherNodes = [{ nodeId: "ng1112seXkaMek2Z3oQrw3HqjkgnuaoQirUcr", port: 9847 }];
     
     for (const peer of otherNodes) {
       console.log('  Attempting to connect to node ' + peer.nodeId.slice(0, 8) + ' on port ' + peer.port + '...');

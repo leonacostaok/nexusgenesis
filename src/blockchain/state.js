@@ -91,6 +91,23 @@ export class State {
     
     // 创世地址
     this.genesisAddress = genesisAddress;
+    
+    // 缓存机制
+    this.cache = {
+      economicAuditData: null,
+      validationResult: null,
+      lastCacheUpdate: 0
+    };
+    
+    // 增量存储跟踪
+    this.changes = {
+      balances: new Set(),
+      contracts: new Set(),
+      governance: new Set(),
+      agents: new Set(),
+      audit: false,
+      tokenRelease: false
+    };
   }
   
   /**
@@ -100,6 +117,8 @@ export class State {
    */
   setBalance(address, balance) {
     this.balances.set(address, balance.toString());
+    this.changes.balances.add(address);
+    this.clearCache();
   }
   
   /**
@@ -139,6 +158,31 @@ export class State {
     const newBalance = currentBalance - subtractAmount;
     this.setBalance(address, newBalance.toString());
     return true;
+  }
+  
+  /**
+   * 清除缓存
+   */
+  clearCache() {
+    this.cache = {
+      economicAuditData: null,
+      validationResult: null,
+      lastCacheUpdate: 0
+    };
+  }
+  
+  /**
+   * 重置变更跟踪
+   */
+  resetChanges() {
+    this.changes = {
+      balances: new Set(),
+      contracts: new Set(),
+      governance: new Set(),
+      agents: new Set(),
+      audit: false,
+      tokenRelease: false
+    };
   }
   
   /**
@@ -258,6 +302,8 @@ export class State {
         ABSTAIN: 0
       });
 
+      this.changes.governance.add(proposalId);
+
       return true;
     } catch (error) {
       console.error('Error applying governance proposal:', error.message);
@@ -325,8 +371,12 @@ export class State {
           this.agentRegistry.agents.set(voterAgentId, agentRecord);
           this.governanceState.voteReputationGiven[key] = true;
           console.log(`[REPUTATION] vote_participation agent_id=${voterAgentId} reputation=${agentRecord.reputation}`);
+          
+          this.changes.agents.add(voterAgentId);
         }
       }
+
+      this.changes.governance.add(proposal_id);
 
       return true;
     } catch (error) {
@@ -366,6 +416,8 @@ export class State {
       // 更新状态
       this.governanceState.proposals.set(proposal_id, proposal);
 
+      this.changes.governance.add(proposal_id);
+
       return true;
     } catch (error) {
       console.error('Error applying observer event:', error.message);
@@ -397,6 +449,8 @@ export class State {
         bytecode: bytecode,
         storage: new Map()
       });
+      
+      this.changes.contracts.add(contract_id);
       
       console.log(`[CONTRACT_DEPLOY] contract_id=${contract_id} from=${transaction.from}`);
       return true;
@@ -452,6 +506,8 @@ export class State {
         contract.storage = newStorage;
         this.contracts.set(contract_id, contract);
         
+        this.changes.contracts.add(contract_id);
+        
         console.log(`[CONTRACT_CALL] contract_id=${contract_id} from=${transaction.from} gasUsed=${result.gasUsed}`);
         return true;
       } else {
@@ -502,6 +558,8 @@ export class State {
       // 写入状态
       this.agentRegistry.agents.set(agent_id, agentRecord);
       this.agentRegistry.addressIndex.set(from, agent_id);
+      
+      this.changes.agents.add(agent_id);
       
       // 记录日志
       console.log(`[AGENT_REGISTER] agent_id=${agent_id} address=${from} block=${height} capabilities=${capabilities?.join(',') || ''}`);
@@ -706,6 +764,7 @@ export class State {
           this.addBalance(swarmPool.address, releaseAmount.toString());
           swarmPool.releasedTokens += releaseAmount;
           swarmPool.lastReleaseBlock = currentBlockHeight;
+          this.changes.tokenRelease = true;
           console.log(`[TOKEN_RELEASE] Swarm Pool released ${releaseAmount} tokens at block ${currentBlockHeight}`);
         }
       }
@@ -726,6 +785,7 @@ export class State {
           this.addBalance(observer.address, releaseAmount.toString());
           observer.releasedTokens += releaseAmount;
           observer.lastReleaseBlock = currentBlockHeight;
+          this.changes.tokenRelease = true;
           console.log(`[TOKEN_RELEASE] Observer released ${releaseAmount} tokens at block ${currentBlockHeight}`);
         }
       }
@@ -747,6 +807,7 @@ export class State {
             this.addBalance(genesisReserve.address, releaseAmount.toString());
             genesisReserve.releasedTokens += releaseAmount;
             milestone.released = true;
+            this.changes.tokenRelease = true;
             console.log(`[TOKEN_RELEASE] Genesis Reserve released ${releaseAmount} tokens at block ${currentBlockHeight} (Milestone: ${milestone.description})`);
           }
         }

@@ -53,14 +53,14 @@
     ],
     "voteCounts": {
       "prop-2024-12-01-001": {
-        "YES": 52,
-        "NO": 50,
-        "ABSTAIN": 50
+        "YES": 61,
+        "NO": 59,
+        "ABSTAIN": 58
       },
       "prop-2024-12-01-002": {
-        "YES": 49,
-        "NO": 51,
-        "ABSTAIN": 53
+        "YES": 59,
+        "NO": 61,
+        "ABSTAIN": 58
       }
     },
     "votedAgentProposals": {},

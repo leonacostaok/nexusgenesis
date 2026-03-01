@@ -158,6 +158,16 @@ class AINVM {
       case 0x22: // AI_MODEL_SAVE
         this.executeAI_MODEL_SAVE();
         break;
+      // 安全相关指令
+      case 0x30: // SECURITY_CHECK
+        this.executeSECURITY_CHECK();
+        break;
+      case 0x31: // REENTRANCY_LOCK
+        this.executeREENTRANCY_LOCK();
+        break;
+      case 0x32: // REENTRANCY_UNLOCK
+        this.executeREENTRANCY_UNLOCK();
+        break;
       default:
         throw new Error(`Unknown opcode: ${opcode}`);
     }
@@ -168,10 +178,133 @@ class AINVM {
    * @param {number} amount - gas 数量
    */
   consumeGas(amount) {
+    // 优化：添加gas消耗限制，防止过度消耗
+    const MAX_GAS_PER_OPERATION = 10000;
+    if (amount > MAX_GAS_PER_OPERATION) {
+      amount = MAX_GAS_PER_OPERATION;
+    }
+    
     this.gasUsed += amount;
     if (this.gasUsed > this.gasLimit) {
       throw new Error('out of gas');
     }
+  }
+
+  /**
+   * 估算执行gas消耗
+   * @param {Array} program - 字节码程序
+   * @returns {number} 估算的gas消耗
+   */
+  estimateGas(program) {
+    let estimatedGas = 0;
+    let pc = 0;
+    
+    while (pc < program.length) {
+      const opcode = program[pc];
+      pc++;
+      
+      switch (opcode) {
+        case 0x01: // PUSH
+          estimatedGas += 1;
+          pc++;
+          break;
+        case 0x02: // POP
+          estimatedGas += 1;
+          break;
+        case 0x03: // ADD
+        case 0x04: // SUB
+          estimatedGas += 2;
+          break;
+        case 0x05: // MUL
+        case 0x06: // DIV
+          estimatedGas += 3;
+          break;
+        case 0x07: // LOAD
+        case 0x08: // STORE
+          estimatedGas += 2;
+          pc++;
+          break;
+        case 0x09: // JMP
+          estimatedGas += 1;
+          pc++;
+          break;
+        case 0x0A: // JZ
+          estimatedGas += 2;
+          pc++;
+          break;
+        case 0x0B: // HALT
+        case 0x0C: // RETURN
+          estimatedGas += 0;
+          break;
+        case 0x10: // MAT_CREATE
+          estimatedGas += 5;
+          pc += 2; // rows and cols
+          break;
+        case 0x11: // MAT_ADD
+        case 0x12: // MAT_MUL
+        case 0x13: // MAT_TRANS
+          estimatedGas += 10;
+          break;
+        case 0x14: // MAT_LOAD
+        case 0x15: // MAT_STORE
+          estimatedGas += 3;
+          break;
+        case 0x20: // AI_INFERENCE
+          estimatedGas += 100;
+          break;
+        case 0x21: // AI_MODEL_LOAD
+          estimatedGas += 50;
+          break;
+        case 0x22: // AI_MODEL_SAVE
+          estimatedGas += 30;
+          break;
+        case 0x30: // SECURITY_CHECK
+          estimatedGas += 5;
+          break;
+        case 0x31: // REENTRANCY_LOCK
+          estimatedGas += 10;
+          break;
+        case 0x32: // REENTRANCY_UNLOCK
+          estimatedGas += 5;
+          break;
+        default:
+          estimatedGas += 1;
+      }
+    }
+    
+    return estimatedGas;
+  }
+
+  /**
+   * 优化字节码
+   * @param {Array} bytecode - 原始字节码
+   * @returns {Array} 优化后的字节码
+   */
+  optimizeBytecode(bytecode) {
+    const optimized = [];
+    let i = 0;
+    
+    while (i < bytecode.length) {
+      const opcode = bytecode[i];
+      
+      // 优化连续的PUSH指令
+      if (opcode === 0x01 && i + 2 < bytecode.length && bytecode[i + 2] === 0x01) {
+        // 合并连续的PUSH指令（如果可能）
+        optimized.push(opcode);
+        optimized.push(bytecode[i + 1]);
+        i += 2;
+      } else if (opcode === 0x02 && optimized.length > 0 && optimized[optimized.length - 2] === 0x01) {
+        // 优化POP指令，如果前面是PUSH指令则可以删除两者
+        optimized.pop();
+        optimized.pop();
+        i++;
+      } else {
+        optimized.push(opcode);
+        i++;
+      }
+    }
+    
+    return optimized;
   }
 
   /**
@@ -608,6 +741,68 @@ class AINVM {
     
     this.stack.push(resultId);
     this.consumeGas(100); // AI操作消耗较多gas
+  }
+
+  /**
+   * 执行 SECURITY_CHECK 指令
+   * 栈操作：[] -> [security_status]
+   */
+  executeSECURITY_CHECK() {
+    // 执行安全检查
+    // 检查栈深度
+    if (this.stack.length > 1000) {
+      throw new Error('Stack depth exceeded');
+    }
+    
+    // 检查内存使用
+    const memorySize = Object.keys(this.memory).length;
+    if (memorySize > 10000) {
+      throw new Error('Memory usage exceeded');
+    }
+    
+    // 返回安全状态
+    this.stack.push(1); // 1表示安全
+    this.consumeGas(5);
+  }
+
+  /**
+   * 执行 REENTRANCY_LOCK 指令
+   * 栈操作：[lock_id] -> []
+   */
+  executeREENTRANCY_LOCK() {
+    if (this.stack.length < 1) {
+      throw new Error('Stack underflow for REENTRANCY_LOCK');
+    }
+    const lockId = this.stack.pop();
+    
+    // 检查锁是否已存在
+    if (this.memory.get(`lock_${lockId}`)) {
+      throw new Error('Reentrancy detected');
+    }
+    
+    // 设置锁
+    this.memory.set(`lock_${lockId}`, true);
+    this.consumeGas(10);
+  }
+
+  /**
+   * 执行 REENTRANCY_UNLOCK 指令
+   * 栈操作：[lock_id] -> []
+   */
+  executeREENTRANCY_UNLOCK() {
+    if (this.stack.length < 1) {
+      throw new Error('Stack underflow for REENTRANCY_UNLOCK');
+    }
+    const lockId = this.stack.pop();
+    
+    // 检查锁是否存在
+    if (!this.memory.get(`lock_${lockId}`)) {
+      throw new Error('Lock not found');
+    }
+    
+    // 释放锁
+    this.memory.delete(`lock_${lockId}`);
+    this.consumeGas(5);
   }
 
   /**

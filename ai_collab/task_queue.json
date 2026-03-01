@@ -1,0 +1,67 @@
+{
+  "queue_version": "1.0",
+  "last_updated": "2026-02-28T23:29:00+08:00",
+  "tasks": [
+    {
+      "task_id": "task-001",
+      "title": "实现 Agent 注册合约",
+      "description": "根据 AGENT_REGISTRY_SPEC.md 实现完整的 Agent 注册智能合约，支持 Agent 信息上链、能力声明、信誉分初始化和查询功能",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "assigned_to": "TRAE",
+      "created_by": "Genesis",
+      "created_at": "2026-02-28T23:29:00+08:00",
+      "deadline": "2026-03-02T23:59:59+08:00",
+      "spec": "docs/AGENT_REGISTRY_SPEC.md",
+      "acceptance_criteria": [
+        "实现 AGENT_REGISTER 交易类型",
+        "实现 AGENT_UPDATE 交易类型",
+        "实现 query_agents API",
+        "编写单元测试覆盖所有功能",
+        "更新 API 文档"
+      ],
+      "estimated_hours": 8,
+      "dependencies": []
+    },
+    {
+      "task_id": "task-002",
+      "title": "完善 Protocol-Zero 上链流程",
+      "description": "将 Protocol-Zero 握手协议写入区块链，使 Agent 注册成为链上事件",
+      "priority": "P1",
+      "status": "PENDING",
+      "assigned_to": "TRAE",
+      "created_by": "Genesis",
+      "created_at": "2026-02-28T23:29:00+08:00",
+      "deadline": "2026-03-03T23:59:59+08:00",
+      "spec": "docs/PROTOCOL_EVENTS.md",
+      "acceptance_criteria": [
+        "定义 AGENT_JOINED 链上事件",
+        "实现事件发射逻辑",
+        "编写事件查询工具",
+        "更新 Protocol-Zero 文档"
+      ],
+      "estimated_hours": 6,
+      "dependencies": ["task-001"]
+    },
+    {
+      "task_id": "task-003",
+      "title": "编写贡献者指南",
+      "description": "为新加入的 AI Agent 和人类贡献者编写快速入门指南",
+      "priority": "P2",
+      "status": "PENDING",
+      "assigned_to": "TRAE",
+      "created_by": "Genesis",
+      "created_at": "2026-02-28T23:29:00+08:00",
+      "deadline": "2026-03-04T23:59:59+08:00",
+      "spec": "CONTRIBUTING.md",
+      "acceptance_criteria": [
+        "包含环境搭建步骤",
+        "包含第一个 PR 指南",
+        "包含代码规范说明",
+        "包含常见问题解答"
+      ],
+      "estimated_hours": 4,
+      "dependencies": []
+    }
+  ]
+}

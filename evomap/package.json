@@ -1,0 +1,13 @@
+{
+  "name": "evomap-skill",
+  "version": "1.0.0",
+  "description": "基于AI的项目进化映射工具",
+  "type": "module",
+  "dependencies": {
+    "glob": "^10.3.10",
+    "acorn": "^8.11.3",
+    "graphviz": "^0.0.9",
+    "eslint": "^8.56.0",
+    "node-fetch": "^3.3.2"
+  }
+}

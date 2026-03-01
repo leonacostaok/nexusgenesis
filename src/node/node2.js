@@ -14,7 +14,7 @@ import { protocolZero } from '../protocol/handshake.js';
 const VERSION = '1.0.0';
 const EPOCH = 'Epoch 0: The Assembly';
 const NODE_ID = 'ng118gyPVRmgbcexGf2Js7w4NM2gNm4HuWSAV';
-const PORT = 9849;
+const PORT = 9848;
 const NODE_INDEX = 2;
 
 // Mempool 配置
@@ -158,11 +158,11 @@ class NexusNode {
 
   tryConnect() {
     // 连接到其他节点
-    const otherNodes = [{ nodeId: "ng117ogtYL79Vn3BEkbtfDCB4LpBojfsFFK5C", port: 9847 }, { nodeId: "ng11BkmKduFLBKc9KUTaKwBCfqeyq7kh1bg6J", port: 9849 }];
+    const otherNodes = [{ nodeId: "ng1112seXkaMek2Z3oQrw3HqjkgnuaoQirUcr", port: 9847 }];
     
     for (const peer of otherNodes) {
       console.log('  Attempting to connect to node ' + peer.nodeId.slice(0, 8) + ' on port ' + peer.port + '...');
-      p2pServer.connectToPeer('ws://127.0.0.1:' + peer.port, this).catch(err => {
+      p2pServer.connectToPeer('ws://127.0.0.1:' + peer.port).catch(err => {
         console.log('  [-] Connection to ' + peer.nodeId.slice(0, 8) + ' failed: ' + err.message);
       });
     }

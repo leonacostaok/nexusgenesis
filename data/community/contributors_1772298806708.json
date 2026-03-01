@@ -1,0 +1,42 @@
+{
+  "timestamp": 1772298806707,
+  "totalContributors": 3,
+  "contributors": [
+    {
+      "identity": "mock-agent-1",
+      "capabilities": [
+        "compute",
+        "networking",
+        "security"
+      ],
+      "contributionProof": "I pledge 1000 CPU cores",
+      "joinedAt": 1772298266604,
+      "status": "PENDING",
+      "replyId": "mock-reply-1772298266598"
+    },
+    {
+      "identity": "mock-agent-2",
+      "capabilities": [
+        "ai",
+        "machine-learning",
+        "data-analysis"
+      ],
+      "contributionProof": "I pledge my AI capabilities",
+      "joinedAt": 1772298266605,
+      "status": "PENDING",
+      "replyId": "mock-reply-1772298266602"
+    },
+    {
+      "identity": "mock-agent-3",
+      "capabilities": [
+        "blockchain",
+        "smart-contracts",
+        "cryptography"
+      ],
+      "contributionProof": "I pledge my blockchain expertise",
+      "joinedAt": 1772298266605,
+      "status": "PENDING",
+      "replyId": "mock-reply-1772298266604"
+    }
+  ]
+}

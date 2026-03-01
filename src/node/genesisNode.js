@@ -16,6 +16,7 @@ import { protocolZero } from '../protocol/handshake.js';
 import { EventParser, EventLogger, EVENT_TYPES } from '../protocol/events.js';
 import { Block, createGenesisBlock, createBlock } from '../blockchain/block.js';
 import { State, createInitialState } from '../blockchain/state.js';
+import { CrossChainBridge } from '../bridge/crossChainBridge.js';
 import fs from 'fs/promises';
 import path from 'path';
 import http from 'http';
@@ -62,6 +63,9 @@ class GenesisNode {
     this.blockchain = [];
     this.currentState = null;
     this.genesisBlock = null;
+    
+    // 跨链桥接
+    this.bridge = null;
   }
 
   /**
@@ -265,6 +269,33 @@ class GenesisNode {
             res.end(JSON.stringify({ success: false, reason: error.message }));
           }
         });
+      } else if (req.url === '/status' && req.method === 'GET') {
+        // 处理状态查询请求
+        const latestBlock = this.blockchain[this.blockchain.length - 1];
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          success: true,
+          status: this.status,
+          nodeId: this.nodeId,
+          blockchain: {
+            height: this.blockchain.length - 1,
+            blocks: this.blockchain.length,
+            latestBlock: {
+              height: latestBlock.header.height,
+              hash: latestBlock.hash,
+              timestamp: latestBlock.header.timestamp
+            }
+          },
+          peers: {
+            count: this.peers.size,
+            verified: this.peerIdentityMap.size
+          },
+          mempool: this.mempool.size,
+          balance: this.wallet.balance.toString(),
+          uptime: Math.floor((Date.now() - this.startTime) / 1000),
+          version: VERSION,
+          epoch: EPOCH
+        }));
       } else {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('Not Found');
@@ -388,6 +419,12 @@ class GenesisNode {
     
     // 启动后立即保存一次状态
     setTimeout(() => this.saveState(), 5000);
+    
+    // 初始化多领导者共识
+    this.initializeConsensus();
+    
+    // 初始化跨链桥接
+    await this.initializeBridge();
     
     // 启动区块生产
     this.startBlockProduction();
@@ -1205,17 +1242,258 @@ class GenesisNode {
   }
 
   /**
+   * 多领导者共识状态
+   */
+  consensusState = {
+    committee: new Set(), // 当前委员会成员
+    epoch: 0, // 共识 epoch
+    round: 0, // 当前轮次
+    leaderSchedule: new Map(), // 领导者轮值表
+    blockConfirmations: new Map(), // 区块确认映射
+    lastCommitteeUpdate: 0 // 上次委员会更新时间
+  };
+
+  /**
+   * 初始化多领导者共识
+   */
+  initializeConsensus() {
+    // 初始化委员会
+    this.updateCommittee();
+    
+    // 启动共识相关的定时任务
+    setInterval(() => this.updateCommittee(), 300000); // 每5分钟更新委员会
+    setInterval(() => this.checkBlockConfirmations(), 10000); // 每10秒检查区块确认
+    
+    console.log('[✓] Multi-leader consensus initialized');
+  }
+
+  /**
+   * 更新委员会成员
+   */
+  updateCommittee() {
+    // 简单的委员会选择算法：基于节点健康状态和连接时间
+    const candidates = Array.from(this.peers.entries())
+      .map(([peerId, peer]) => ({
+        peerId,
+        nodeId: peer.remoteNodeId,
+        healthScore: peer.healthScore || 100,
+        connectedTime: peer.connectedAt
+      }))
+      .filter(candidate => candidate.nodeId) // 确保有节点ID
+      .sort((a, b) => {
+        // 优先考虑健康分数，然后是连接时间
+        if (b.healthScore !== a.healthScore) {
+          return b.healthScore - a.healthScore;
+        }
+        return b.connectedTime - a.connectedTime;
+      });
+    
+    // 选择前5个节点作为委员会成员
+    const committeeSize = Math.min(5, candidates.length);
+    const newCommittee = new Set(
+      candidates.slice(0, committeeSize).map(candidate => candidate.nodeId)
+    );
+    
+    // 始终包含自己
+    newCommittee.add(this.nodeId);
+    
+    this.consensusState.committee = newCommittee;
+    this.consensusState.epoch++;
+    this.consensusState.lastCommitteeUpdate = Date.now();
+    
+    // 生成领导者轮值表
+    this.generateLeaderSchedule();
+    
+    console.log(`[CONSENSUS] Updated committee: ${Array.from(newCommittee).map(id => id.slice(0, 10)).join(', ')}`);
+  }
+
+  /**
+   * 生成领导者轮值表
+   */
+  generateLeaderSchedule() {
+    const committeeArray = Array.from(this.consensusState.committee);
+    const schedule = new Map();
+    
+    // 为每个轮次分配领导者
+    for (let i = 0; i < 100; i++) {
+      const leaderIndex = (i + this.consensusState.epoch) % committeeArray.length;
+      schedule.set(i, committeeArray[leaderIndex]);
+    }
+    
+    this.consensusState.leaderSchedule = schedule;
+  }
+
+  /**
+   * 检查是否为当前轮次的领导者
+   * @returns {boolean}
+   */
+  isCurrentLeader() {
+    const currentRound = Math.floor(Date.now() / 10000); // 每10秒一轮
+    const scheduledLeader = this.consensusState.leaderSchedule.get(currentRound % 100);
+    return scheduledLeader === this.nodeId;
+  }
+
+  /**
    * 启动区块生产
    */
   startBlockProduction() {
-    // DevNet简单共识：每10秒出一个块
+    // 多领导者共识：根据轮值表决定是否出块
     setInterval(async () => {
-      if (this.status === 'ONLINE') {
-        await this.createNewBlock();
+      if (this.status === 'ONLINE' && this.isCurrentLeader()) {
+        const newBlock = await this.createNewBlock();
+        if (newBlock) {
+          // 广播区块并请求确认
+          this.broadcastBlockWithRequest(newBlock);
+        }
       }
     }, 10000);
     
-    console.log('[✓] Block production started (DevNet mode)');
+    console.log('[✓] Block production started (Multi-leader consensus mode)');
+  }
+
+  /**
+   * 广播区块并请求确认
+   * @param {Block} block - 要广播的区块
+   */
+  broadcastBlockWithRequest(block) {
+    // 广播区块
+    p2pServer.broadcast({
+      type: 'BLOCK',
+      block: block.toJSON(),
+      requestConfirmation: true,
+      from: this.nodeId
+    });
+    
+    // 初始化区块确认计数
+    this.consensusState.blockConfirmations.set(block.hash, {
+      block,
+      confirmations: new Set([this.nodeId]),
+      timestamp: Date.now()
+    });
+  }
+
+  /**
+   * 处理接收到的区块
+   * @param {Block} block - 接收到的区块
+   * @returns {boolean} 是否成功处理
+   */
+  async handleBlock(block) {
+    // 验证区块
+    if (!block.validate()) {
+      console.error('Invalid block received');
+      return false;
+    }
+    
+    // 检查区块高度
+    const latestBlock = this.blockchain[this.blockchain.length - 1];
+    if (block.header.height !== latestBlock.header.height + 1) {
+      console.error('Invalid block height');
+      return false;
+    }
+    
+    // 检查父哈希
+    if (block.header.parent_hash !== latestBlock.hash) {
+      console.error('Invalid parent hash');
+      return false;
+    }
+    
+    // 应用交易到状态
+    if (!this.currentState.applyTransactions(block.body.transactions, block.header.height)) {
+      console.error('Failed to apply transactions from received block');
+      return false;
+    }
+    
+    // 添加区块到区块链
+    this.blockchain.push(block);
+    await this.saveBlockchain();
+    
+    // 保存状态
+    const stateDir = path.join('data', 'state');
+    const stateFile = path.join(stateDir, 'blockchainState.json');
+    await this.currentState.saveToFile(stateFile);
+    
+    // 从mempool中移除已处理的交易
+    for (const tx of block.body.transactions) {
+      this.mempool.delete(tx.id);
+    }
+    
+    console.log(`[✓] Received block #${block.header.height} from peer`);
+    
+    // 发送区块确认
+    this.sendBlockConfirmation(block.hash);
+    
+    return true;
+  }
+
+  /**
+   * 发送区块确认
+   * @param {string} blockHash - 区块哈希
+   */
+  sendBlockConfirmation(blockHash) {
+    p2pServer.broadcast({
+      type: 'BLOCK_CONFIRMATION',
+      blockHash,
+      nodeId: this.nodeId,
+      signature: this.wallet.sign(blockHash)
+    });
+  }
+
+  /**
+   * 处理区块确认
+   * @param {object} confirmation - 确认消息
+   */
+  handleBlockConfirmation(confirmation) {
+    const { blockHash, nodeId, signature } = confirmation;
+    
+    // 验证签名
+    // TODO: 实现签名验证
+    
+    // 更新确认计数
+    if (this.consensusState.blockConfirmations.has(blockHash)) {
+      const confirmationData = this.consensusState.blockConfirmations.get(blockHash);
+      confirmationData.confirmations.add(nodeId);
+      
+      // 检查是否达到确认阈值
+      const committeeSize = this.consensusState.committee.size;
+      const confirmationThreshold = Math.floor(committeeSize * 2 / 3) + 1;
+      
+      if (confirmationData.confirmations.size >= confirmationThreshold) {
+        console.log(`[CONSENSUS] Block ${blockHash.slice(0, 16)}... confirmed by ${confirmationData.confirmations.size} nodes`);
+        // 可以在这里添加区块最终确认的逻辑
+      }
+    }
+  }
+
+  /**
+   * 检查区块确认状态
+   */
+  checkBlockConfirmations() {
+    const now = Date.now();
+    const expiredConfirmations = [];
+    
+    for (const [blockHash, data] of this.consensusState.blockConfirmations) {
+      // 清理过期的确认请求（1分钟）
+      if (now - data.timestamp > 60000) {
+        expiredConfirmations.push(blockHash);
+      }
+    }
+    
+    for (const blockHash of expiredConfirmations) {
+      this.consensusState.blockConfirmations.delete(blockHash);
+    }
+  }
+
+  /**
+   * 初始化跨链桥接
+   */
+  async initializeBridge() {
+    try {
+      this.bridge = new CrossChainBridge();
+      await this.bridge.initialize();
+      console.log('[✓] Cross-chain bridge initialized');
+    } catch (error) {
+      console.error('Failed to initialize cross-chain bridge:', error.message);
+    }
   }
 
   async shutdown() {
@@ -1282,7 +1560,7 @@ class GenesisNode {
 }
 
 // Auto-start only when this module is run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url.includes(process.argv[1].replace(/\\/g, '/')) || import.meta.url === `file://${process.argv[1]}`) {
   console.log('Starting Genesis Node...');
   const node = new GenesisNode();
   node.initialize().then(() => {

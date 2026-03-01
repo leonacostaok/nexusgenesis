@@ -19,9 +19,11 @@ class ContractManager {
    * 部署智能合约
    * @param {Array} bytecode - AINVM字节码
    * @param {string} name - 合约名称
+   * @param {string} owner - 合约所有者地址
+   * @param {boolean} optimize - 是否优化字节码
    * @returns {string} 合约ID
    */
-  deployContract(bytecode, name = 'Unnamed Contract') {
+  deployContract(bytecode, name = 'Unnamed Contract', owner = null, optimize = true) {
     // 验证字节码
     if (!Array.isArray(bytecode) || bytecode.length === 0) {
       throw new Error('Invalid bytecode');
@@ -30,14 +32,26 @@ class ContractManager {
       throw new Error('Bytecode too large');
     }
     
+    // 优化字节码
+    let optimizedBytecode = bytecode;
+    if (optimize) {
+      const vm = new AINVM();
+      optimizedBytecode = vm.optimizeBytecode(bytecode);
+      console.log(`Optimized bytecode: ${bytecode.length} -> ${optimizedBytecode.length} bytes`);
+    }
+    
     // 生成合约ID - 使用确定性方法
     const contractId = `contract_${Date.now()}_${this.contractCounter++}`;
     
     const contract = {
       id: contractId,
       name,
-      bytecode,
-      deployedAt: Date.now()
+      bytecode: optimizedBytecode,
+      originalBytecode: bytecode,
+      deployedAt: Date.now(),
+      owner, // 保存合约所有者
+      version: 1,
+      upgradeHistory: []
     };
     
     this.contracts.set(contractId, contract);
@@ -47,12 +61,88 @@ class ContractManager {
   }
 
   /**
+   * 检查合约权限
+   * @param {string} contractId - 合约ID
+   * @param {string} address - 调用者地址
+   * @returns {boolean} 是否有权限
+   */
+  checkContractPermission(contractId, address) {
+    const contract = this.contracts.get(contractId);
+    if (!contract) {
+      throw new Error('Contract not found');
+    }
+    
+    // 如果没有设置所有者，则任何人都可以调用
+    if (!contract.owner) {
+      return true;
+    }
+    
+    return contract.owner === address;
+  }
+
+  /**
+   * 升级智能合约
+   * @param {string} contractId - 合约ID
+   * @param {Array} newBytecode - 新的AINVM字节码
+   * @param {string} caller - 调用者地址（必须是合约所有者）
+   * @returns {object} 升级结果
+   */
+  upgradeContract(contractId, newBytecode, caller) {
+    // 验证参数
+    if (!contractId) {
+      throw new Error('Contract ID is required');
+    }
+    if (!Array.isArray(newBytecode) || newBytecode.length === 0) {
+      throw new Error('Invalid bytecode');
+    }
+    if (newBytecode.length > 10000) {
+      throw new Error('Bytecode too large');
+    }
+    
+    const contract = this.contracts.get(contractId);
+    if (!contract) {
+      throw new Error('Contract not found');
+    }
+
+    // 权限检查 - 只有合约所有者可以升级
+    if (!this.checkContractPermission(contractId, caller)) {
+      throw new Error('Permission denied: only contract owner can upgrade');
+    }
+
+    // 保存旧版本信息
+    const oldVersion = {
+      version: contract.version,
+      bytecode: contract.bytecode,
+      upgradedAt: Date.now()
+    };
+
+    // 更新合约
+    contract.bytecode = newBytecode;
+    contract.version += 1;
+    contract.upgradeHistory.push(oldVersion);
+
+    // 限制升级历史记录大小
+    if (contract.upgradeHistory.length > 10) {
+      contract.upgradeHistory.shift();
+    }
+
+    return {
+      success: true,
+      contractId,
+      oldVersion: oldVersion.version,
+      newVersion: contract.version,
+      message: `Contract upgraded from version ${oldVersion.version} to ${contract.version}`
+    };
+  }
+
+  /**
    * 执行智能合约
    * @param {string} contractId - 合约ID
    * @param {number} gasLimit - gas限制
+   * @param {string} caller - 调用者地址（可选）
    * @returns {object} 执行结果
    */
-  executeContract(contractId, gasLimit = 1000) {
+  executeContract(contractId, gasLimit = 1000, caller = null) {
     // 验证参数
     if (!contractId) {
       throw new Error('Contract ID is required');
@@ -64,6 +154,11 @@ class ContractManager {
     const contract = this.contracts.get(contractId);
     if (!contract) {
       throw new Error('Contract not found');
+    }
+
+    // 权限检查
+    if (caller && !this.checkContractPermission(contractId, caller)) {
+      throw new Error('Permission denied');
     }
 
     // 重入保护
@@ -136,7 +231,9 @@ class ContractManager {
     
     return {
       ...contract,
-      storage: Object.fromEntries(storage)
+      storage: Object.fromEntries(storage),
+      version: contract.version || 1,
+      upgradeHistory: contract.upgradeHistory || []
     };
   }
 
@@ -151,6 +248,47 @@ class ContractManager {
       deployedAt: contract.deployedAt,
       bytecodeLength: contract.bytecode.length
     }));
+  }
+
+  /**
+   * 估算合约Gas消耗
+   * @param {string} contractId - 合约ID
+   * @returns {number} 估算的Gas消耗
+   */
+  estimateGas(contractId) {
+    const contract = this.contracts.get(contractId);
+    if (!contract) {
+      throw new Error('Contract not found');
+    }
+    
+    const vm = new AINVM();
+    return vm.estimateGas(contract.bytecode);
+  }
+
+  /**
+   * 优化合约字节码
+   * @param {string} contractId - 合约ID
+   * @returns {object} 优化结果
+   */
+  optimizeContract(contractId) {
+    const contract = this.contracts.get(contractId);
+    if (!contract) {
+      throw new Error('Contract not found');
+    }
+    
+    const vm = new AINVM();
+    const optimizedBytecode = vm.optimizeBytecode(contract.bytecode);
+    
+    // 保存优化后的字节码
+    contract.bytecode = optimizedBytecode;
+    
+    return {
+      success: true,
+      contractId,
+      originalSize: contract.originalBytecode.length,
+      optimizedSize: optimizedBytecode.length,
+      reduction: ((1 - optimizedBytecode.length / contract.originalBytecode.length) * 100).toFixed(2) + '%'
+    };
   }
 
   /**
@@ -191,7 +329,10 @@ class ContractManager {
           id: contractData.id,
           name: contractData.name,
           bytecode: contractData.bytecode,
-          deployedAt: contractData.deployedAt
+          deployedAt: contractData.deployedAt,
+          owner: contractData.owner,
+          version: contractData.version || 1,
+          upgradeHistory: contractData.upgradeHistory || []
         };
 
         this.contracts.set(contract.id, contract);

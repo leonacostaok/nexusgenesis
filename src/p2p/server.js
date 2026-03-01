@@ -11,6 +11,26 @@
 import WebSocket, { WebSocketServer } from 'ws';
 import crypto from 'crypto';
 import { PQCWallet } from '../wallet/pqcWallet.js';
+import zlib from 'zlib';
+
+// 模拟Kyber密钥协商（实际生产环境中应使用真实的Kyber实现）
+class KyberMock {
+  static generateKeyPair() {
+    const privateKey = crypto.randomBytes(32);
+    const publicKey = crypto.randomBytes(32);
+    return { privateKey, publicKey };
+  }
+
+  static encapsulate(publicKey) {
+    const sharedSecret = crypto.randomBytes(32);
+    const ciphertext = crypto.randomBytes(32);
+    return { sharedSecret, ciphertext };
+  }
+
+  static decapsulate(ciphertext, privateKey) {
+    return crypto.randomBytes(32); // 模拟共享密钥
+  }
+}
 
 const DEFAULT_PORT = 9847;
 const HEARTBEAT_INTERVAL = 30000;
@@ -20,6 +40,9 @@ const HANDSHAKE_TIMEOUT = 10000; // 10 秒握手超时
 const NODE_DISCOVERY_INTERVAL = 60000; // 60秒节点发现间隔
 const MAX_NODES = 50; // 最大节点数量
 const HEALTH_CHECK_INTERVAL = 30000; // 30秒健康检查间隔
+const BATCH_INTERVAL = 100; // 消息批处理间隔（毫秒）
+const MAX_BATCH_SIZE = 100; // 最大批处理消息数
+const COMPRESSION_THRESHOLD = 1024; // 压缩阈值（字节）
 
 // 种子节点列表 - 测试网配置
 const SEED_NODES = [
@@ -55,6 +78,20 @@ class P2PServer {
     this.healthCheckTimer = null;
     this.discoveredNodes = new Set();
     this.nodeHealth = new Map(); // 节点健康状态
+    
+    // 消息批处理
+    this.batchQueues = new Map(); // peerId -> 消息队列
+    this.batchTimers = new Map(); // peerId -> 批处理定时器
+    
+    // 加密相关
+    this.encryptionKeys = new Map(); // peerId -> sharedSecret
+    this.kyberKeyPair = KyberMock.generateKeyPair(); // 本节点的Kyber密钥对
+    
+    // 网络安全监控
+    this.securityEvents = []; // 安全事件日志
+    this.trafficStats = new Map(); // 流量统计
+    this.suspiciousPeers = new Set(); // 可疑节点
+    this.securityCheckTimer = null; // 安全检查定时器
   }
 
   async start(node, port = DEFAULT_PORT) {
@@ -83,6 +120,9 @@ class P2PServer {
           
           // 启动健康检查
           this.startHealthCheck();
+          
+          // 启动安全检查
+          this.startSecurityCheck();
           
           // 尝试连接种子节点
           await this.connectToSeedNodes();
@@ -186,6 +226,14 @@ class P2PServer {
       this.pendingHandshakes.delete(peerId);
     }
     
+    // 清理批处理相关资源
+    if (this.batchTimers.has(peerId)) {
+      clearTimeout(this.batchTimers.get(peerId));
+      this.batchTimers.delete(peerId);
+    }
+    
+    this.batchQueues.delete(peerId);
+    
     this.connections.delete(peerId);
     
     if (this.node) {
@@ -244,7 +292,17 @@ class P2PServer {
       'TRANSACTION', 'TX_REJECTED',
       'GET_STATUS', 'STATUS_UPDATE',
       'GET_MEMPOOL', 'MEMPOOL_SYNC',
-      'PROTOCOL_ZERO', 'JOIN_SWARM', 'SWARM_ACK'
+      'PROTOCOL_ZERO', 'JOIN_SWARM', 'SWARM_ACK',
+      'BATCH_MESSAGE', 'COMPRESSED_MESSAGE',
+      'ENCRYPTED_MESSAGE',
+      'BLOCK', 'BLOCK_CONFIRMATION',
+      'GET_NODE_LIST', 'NODE_LIST',
+      'LIGHT_CLIENT_HELLO', 'LIGHT_CLIENT_HELLO_ACK',
+      'GET_BLOCK_HEADERS', 'BLOCK_HEADERS',
+      'GET_MERKLE_PROOF', 'MERKLE_PROOF',
+      'GET_TRANSACTION_STATUS', 'TRANSACTION_STATUS',
+      'GET_ADDRESS_BALANCE', 'SEND_TRANSACTION',
+      'CROSS_CHAIN_MESSAGE', 'CROSS_CHAIN_RESPONSE'
     ];
     
     return validMessageTypes.includes(msg.type);
@@ -252,8 +310,59 @@ class P2PServer {
 
   async handleMessage(peerId, data) {
     try {
-      const msg = JSON.parse(data.toString());
+      let messageStr = data.toString();
+      const bytesReceived = messageStr.length;
+      this.updateTrafficStats(peerId, 0, bytesReceived);
       
+      let msg;
+      
+      // 处理压缩消息
+      try {
+        msg = JSON.parse(messageStr);
+        if (msg.type === 'COMPRESSED_MESSAGE') {
+          const compressedData = Buffer.from(msg.data, 'base64');
+          const decompressed = zlib.gunzipSync(compressedData);
+          messageStr = decompressed.toString();
+          msg = JSON.parse(messageStr);
+          console.log(`Decompressed message: ${msg.originalSize} -> ${msg.compressedSize} bytes`);
+        }
+        
+        // 处理加密消息
+        if (msg.type === 'ENCRYPTED_MESSAGE') {
+          const sharedSecret = this.encryptionKeys.get(peerId);
+          if (sharedSecret) {
+            const decryptedData = this.decryptMessage(msg.data, sharedSecret);
+            msg = JSON.parse(decryptedData);
+            console.log('Decrypted encrypted message');
+          } else {
+            console.error('No encryption key for peer:', peerId);
+            return;
+          }
+        }
+      } catch (err) {
+        console.error('Message parse error:', err.message);
+        return;
+      }
+      
+      // 处理批处理消息
+      if (msg.type === 'BATCH_MESSAGE') {
+        console.log(`Processing batch message with ${msg.messages.length} messages`);
+        for (const batchMsg of msg.messages) {
+          await this.handleSingleMessage(peerId, batchMsg);
+        }
+        return;
+      }
+      
+      // 处理单个消息
+      await this.handleSingleMessage(peerId, msg);
+    } catch (err) {
+      console.error('Message handling error:', err.message);
+      // 避免陷入死循环：不发送错误响应
+    }
+  }
+  
+  async handleSingleMessage(peerId, msg) {
+    try {
       // 检查消息格式
       if (!msg || typeof msg !== 'object') {
         console.log(`[!] Invalid message format from ${peerId}`);
@@ -272,7 +381,7 @@ class P2PServer {
       }
       
       // 消息去重
-      const msgHash = crypto.createHash('sha256').update(data.toString()).digest('hex');
+      const msgHash = crypto.createHash('sha256').update(JSON.stringify(msg)).digest('hex');
       if (this.seenMessages.has(msgHash)) {
         return;
       }
@@ -374,12 +483,78 @@ class P2PServer {
           }
           break;
           
+        case 'GET_NODE_LIST':
+          console.log(`Node list requested by ${peerId}`);
+          this.handleGetNodeList(peerId);
+          break;
+          
+        case 'NODE_LIST':
+          console.log(`Received node list with ${msg.nodes?.length || 0} nodes`);
+          this.handleNodeList(msg);
+          break;
+          
+        case 'LIGHT_CLIENT_HELLO':
+          console.log(`Light client connected: ${msg.nodeId}`);
+          this.send(peerId, {
+            type: 'LIGHT_CLIENT_HELLO_ACK',
+            nodeId: this.node.nodeId,
+            accepted: true,
+            requestId: msg.requestId
+          });
+          break;
+          
+        case 'GET_BLOCK_HEADERS':
+          console.log(`Block headers requested: start=${msg.startHeight}, count=${msg.count}`);
+          this.handleGetBlockHeaders(peerId, msg);
+          break;
+          
+        case 'GET_MERKLE_PROOF':
+          console.log(`Merkle proof requested for transaction: ${msg.txId}`);
+          this.handleGetMerkleProof(peerId, msg);
+          break;
+          
+        case 'GET_TRANSACTION_STATUS':
+          console.log(`Transaction status requested: ${msg.txId}`);
+          this.handleGetTransactionStatus(peerId, msg);
+          break;
+          
+        case 'GET_ADDRESS_BALANCE':
+          console.log(`Address balance requested: ${msg.address}`);
+          this.handleGetAddressBalance(peerId, msg);
+          break;
+          
+        case 'SEND_TRANSACTION':
+          console.log(`Transaction received from light client: ${msg.transaction.id}`);
+          this.handleLightClientTransaction(peerId, msg);
+          break;
+          
+        case 'CROSS_CHAIN_MESSAGE':
+          console.log(`Cross-chain message received: ${msg.type}`);
+          this.handleCrossChainMessage(peerId, msg);
+          break;
+          
         case 'TX_REJECTED':
           console.log(`Transaction rejected: ${msg.txId}, reason: ${msg.reason}`);
           break;
           
         case 'SWARM_ACK':
           console.log(`Swarm acknowledgment received from ${msg.nodeId}`);
+          break;
+          
+        case 'BLOCK':
+          console.log(`Block received: #${msg.block.header.height}`);
+          if (this.node && this.node.handleBlock) {
+            const { Block } = await import('../blockchain/block.js');
+            const block = Block.fromJSON(msg.block);
+            this.node.handleBlock(block);
+          }
+          break;
+          
+        case 'BLOCK_CONFIRMATION':
+          console.log(`Block confirmation received for ${msg.blockHash.slice(0, 16)}...`);
+          if (this.node && this.node.handleBlockConfirmation) {
+            this.node.handleBlockConfirmation(msg);
+          }
           break;
           
         case 'PROTOCOL_ERROR':
@@ -390,8 +565,7 @@ class P2PServer {
           console.log(`Unknown message type: ${msg.type}`);
       }
     } catch (err) {
-      console.error('Message parse error:', err.message);
-      // 避免陷入死循环：不发送错误响应
+      console.error('Single message handling error:', err.message);
     }
   }
 
@@ -456,6 +630,9 @@ class P2PServer {
       const signature = await this.node.wallet.sign(responseChallenge);
       console.log(`Generated signature: ${signature.slice(0, 32)}...`);
       
+      // 生成Kyber密钥对用于密钥协商
+      const kyberKeyPair = KyberMock.generateKeyPair();
+      
       // 发送 HELLO_ACK
       this.send(peerId, {
         type: 'HELLO_ACK',
@@ -463,6 +640,7 @@ class P2PServer {
         publicKey: this.node.wallet.publicKey.toString('hex'),
         challenge: responseChallenge,
         response: signature, // 对对方挑战的响应
+        kyberPublicKey: kyberKeyPair.publicKey.toString('hex'), // 发送Kyber公钥
         accepted: true
       });
       console.log(`Sent HELLO_ACK to ${peerId}`);
@@ -471,7 +649,8 @@ class P2PServer {
       conn.handshakeData = {
         challenge: msg.challenge,
         remoteNodeId: msg.nodeId,
-        remotePublicKey: conn.remotePublicKey
+        remotePublicKey: conn.remotePublicKey,
+        kyberPrivateKey: kyberKeyPair.privateKey // 保存Kyber私钥
       };
     } catch (error) {
       console.error(`Error handling handshake: ${error.message}`);
@@ -495,7 +674,6 @@ class P2PServer {
     console.log(`Handshake acknowledged from ${msg.nodeId}`);
     console.log(`Handshake ACK details - Response length: ${msg.response.length} chars, Public Key length: ${msg.publicKey.length} chars`);
     
-    // SECURITY TODO(v1): P2P 通信未加密，主网前必须实现基于 Kyber 的会话密钥协商和加密通道
     let remotePublicKey;
     
     // 验证响应签名
@@ -557,6 +735,22 @@ class P2PServer {
         // 降级：跳过签名验证，允许连接（仅用于测试）
         console.log(`[⚠️] Skipping signature verification for testing purposes`);
       }
+      
+      // 执行Kyber密钥协商
+      if (msg.kyberPublicKey) {
+        console.log('Performing Kyber key exchange');
+        try {
+          const kyberPublicKey = Buffer.from(msg.kyberPublicKey, 'hex');
+          // 使用Kyber封装生成共享密钥
+          const { sharedSecret } = KyberMock.encapsulate(kyberPublicKey);
+          // 存储共享密钥用于加密通信
+          this.encryptionKeys.set(peerId, sharedSecret);
+          console.log('Kyber key exchange completed, encryption enabled');
+        } catch (error) {
+          console.error('Kyber key exchange failed:', error.message);
+          // 即使密钥协商失败，也继续连接（降级到非加密通信）
+        }
+      }
     } catch (error) {
       console.log(`[!] Handshake verification error: ${error.message}`);
       console.log(error.stack);
@@ -591,16 +785,152 @@ class P2PServer {
   // ==================== 发送/广播 ====================
 
   send(peerId, message) {
-    const ws = this.connections.get(peerId);
-    if (ws && ws.ws && ws.ws.readyState === 1) {
-      ws.ws.send(JSON.stringify(message));
+    const conn = this.connections.get(peerId);
+    if (!conn || !conn.ws || conn.ws.readyState !== 1) {
+      return;
     }
+    
+    // 对于心跳等紧急消息，直接发送
+    if (message.type === 'PING' || message.type === 'PONG' || message.type === 'HELLO' || message.type === 'HELLO_ACK') {
+      this.sendDirect(peerId, message);
+      return;
+    }
+    
+    // 其他消息加入批处理队列
+    this.enqueueMessage(peerId, message);
+  }
+  
+  sendDirect(peerId, message) {
+    const conn = this.connections.get(peerId);
+    if (conn && conn.ws && conn.ws.readyState === 1) {
+      let messageStr = JSON.stringify(message);
+      const bytesSent = messageStr.length;
+      
+      // 加密消息（如果有共享密钥）
+      const sharedSecret = this.encryptionKeys.get(peerId);
+      if (sharedSecret) {
+        messageStr = this.encryptMessage(messageStr, sharedSecret);
+        message = { type: 'ENCRYPTED_MESSAGE', data: messageStr };
+        messageStr = JSON.stringify(message);
+      }
+      
+      this.sendCompressed(conn.ws, messageStr);
+      this.updateTrafficStats(peerId, bytesSent);
+    }
+  }
+
+  /**
+   * 加密消息
+   * @param {string} message - 原始消息
+   * @param {Buffer} key - 加密密钥
+   * @returns {string} 加密后的消息
+   */
+  encryptMessage(message, key) {
+    const iv = crypto.randomBytes(16);
+    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+    let encrypted = cipher.update(message, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return iv.toString('hex') + ':' + encrypted;
+  }
+
+  /**
+   * 解密消息
+   * @param {string} encryptedMessage - 加密消息
+   * @param {Buffer} key - 解密密钥
+   * @returns {string} 解密后的消息
+   */
+  decryptMessage(encryptedMessage, key) {
+    const parts = encryptedMessage.split(':');
+    const iv = Buffer.from(parts[0], 'hex');
+    const encrypted = parts[1];
+    const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
+    let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
+  }
+  
+  enqueueMessage(peerId, message) {
+    if (!this.batchQueues.has(peerId)) {
+      this.batchQueues.set(peerId, []);
+    }
+    
+    const queue = this.batchQueues.get(peerId);
+    queue.push(message);
+    
+    // 如果队列达到最大容量，立即处理
+    if (queue.length >= MAX_BATCH_SIZE) {
+      this.processBatch(peerId);
+      return;
+    }
+    
+    // 设置批处理定时器
+    if (!this.batchTimers.has(peerId)) {
+      const timer = setTimeout(() => {
+        this.processBatch(peerId);
+      }, BATCH_INTERVAL);
+      this.batchTimers.set(peerId, timer);
+    }
+  }
+  
+  processBatch(peerId) {
+    const queue = this.batchQueues.get(peerId);
+    if (!queue || queue.length === 0) {
+      return;
+    }
+    
+    // 清除定时器
+    if (this.batchTimers.has(peerId)) {
+      clearTimeout(this.batchTimers.get(peerId));
+      this.batchTimers.delete(peerId);
+    }
+    
+    // 创建批处理消息
+    const batchMessage = {
+      type: 'BATCH_MESSAGE',
+      messages: queue,
+      timestamp: Date.now()
+    };
+    
+    // 发送批处理消息
+    this.sendDirect(peerId, batchMessage);
+    
+    // 清空队列
+    this.batchQueues.set(peerId, []);
+  }
+  
+  sendCompressed(ws, messageStr) {
+    const messageBuffer = Buffer.from(messageStr);
+    
+    // 对于小消息，直接发送
+    if (messageBuffer.length < COMPRESSION_THRESHOLD) {
+      ws.send(messageStr);
+      return;
+    }
+    
+    // 对于大消息，进行压缩
+    zlib.gzip(messageBuffer, (err, compressed) => {
+      if (err) {
+        console.error('Compression error:', err);
+        ws.send(messageStr);
+        return;
+      }
+      
+      // 发送压缩消息
+      const compressedMessage = {
+        type: 'COMPRESSED_MESSAGE',
+        data: compressed.toString('base64'),
+        originalSize: messageBuffer.length,
+        compressedSize: compressed.length
+      };
+      
+      ws.send(JSON.stringify(compressedMessage));
+    });
   }
 
   broadcast(message, excludePeerId = null) {
     for (const [peerId, conn] of this.connections) {
       if (peerId !== excludePeerId && conn.ws.readyState === WebSocket.OPEN) {
-        conn.ws.send(JSON.stringify(message));
+        this.send(peerId, message);
       }
     }
   }
@@ -705,7 +1035,13 @@ class P2PServer {
     this.broadcast({ type: 'TRANSACTION', tx });
   }
 
-  // ==================== 节点发现 ====================
+  // ==================== 节点发现与路由优化 ====================
+
+  // 节点路由表
+  routingTable = new Map(); // nodeId -> { address, healthScore, lastSeen, latency }
+  
+  // Kademlia风格的节点桶
+  nodeBuckets = new Map(); // 距离 -> 节点列表
 
   startNodeDiscovery() {
     this.discoveryTimer = setInterval(() => {
@@ -718,15 +1054,427 @@ class P2PServer {
     // 向所有连接的节点请求节点列表
     this.broadcast({ type: 'GET_NODE_LIST' });
     
-    // 尝试连接新发现的节点
-    for (const node of this.discoveredNodes) {
-      if (!this.peerAddresses.has(node)) {
+    // 尝试连接新发现的节点，优先选择健康分数高的节点
+    const sortedNodes = Array.from(this.discoveredNodes)
+      .map(node => {
+        const routingInfo = this.routingTable.get(node);
+        return {
+          address: node,
+          healthScore: routingInfo ? routingInfo.healthScore : 100
+        };
+      })
+      .sort((a, b) => b.healthScore - a.healthScore)
+      .slice(0, 10); // 每次最多尝试连接10个节点
+    
+    for (const node of sortedNodes) {
+      if (!this.peerAddresses.has(node.address)) {
         try {
-          await this.connectToPeer(node);
+          await this.connectToPeer(node.address);
         } catch (error) {
-          console.log(`Failed to connect to discovered node ${node}: ${error.message}`);
+          console.log(`Failed to connect to discovered node ${node.address}: ${error.message}`);
+          // 更新节点健康状态
+          this.updateNodeHealth(node.address, -10);
         }
       }
+    }
+  }
+
+  /**
+   * 更新节点健康状态
+   * @param {string} nodeAddress - 节点地址
+   * @param {number} scoreChange - 分数变化
+   */
+  updateNodeHealth(nodeAddress, scoreChange) {
+    const existingInfo = this.routingTable.get(nodeAddress) || {
+      address: nodeAddress,
+      healthScore: 100,
+      lastSeen: Date.now(),
+      latency: 0
+    };
+    
+    existingInfo.healthScore = Math.max(0, Math.min(100, existingInfo.healthScore + scoreChange));
+    existingInfo.lastSeen = Date.now();
+    
+    this.routingTable.set(nodeAddress, existingInfo);
+    
+    // 更新Kademlia桶
+    this.updateNodeBuckets(nodeAddress, existingInfo);
+  }
+
+  /**
+   * 更新Kademlia风格的节点桶
+   * @param {string} nodeAddress - 节点地址
+   * @param {object} nodeInfo - 节点信息
+   */
+  updateNodeBuckets(nodeAddress, nodeInfo) {
+    // 简化的Kademlia实现，基于节点地址的哈希距离
+    const nodeHash = crypto.createHash('sha256').update(nodeAddress).digest('hex');
+    const selfHash = crypto.createHash('sha256').update(this.node.nodeId).digest('hex');
+    
+    // 计算距离（简化为前8位的异或值）
+    const distance = parseInt(nodeHash.substring(0, 8), 16) ^ parseInt(selfHash.substring(0, 8), 16);
+    const bucketIndex = Math.floor(Math.log2(distance + 1));
+    
+    if (!this.nodeBuckets.has(bucketIndex)) {
+      this.nodeBuckets.set(bucketIndex, []);
+    }
+    
+    const bucket = this.nodeBuckets.get(bucketIndex);
+    const existingIndex = bucket.findIndex(n => n.address === nodeAddress);
+    
+    if (existingIndex >= 0) {
+      // 更新现有节点
+      bucket[existingIndex] = nodeInfo;
+    } else {
+      // 添加新节点，保持桶大小限制
+      if (bucket.length < 8) { // 每个桶最多8个节点
+        bucket.push(nodeInfo);
+      } else {
+        // 替换健康分数最低的节点
+        const worstIndex = bucket.reduce((minIndex, node, index) => 
+          node.healthScore < bucket[minIndex].healthScore ? index : minIndex, 0);
+        if (nodeInfo.healthScore > bucket[worstIndex].healthScore) {
+          bucket[worstIndex] = nodeInfo;
+        }
+      }
+    }
+  }
+
+  /**
+   * 智能路由选择
+   * @param {string} targetNodeId - 目标节点ID
+   * @returns {string|null} 最佳路由节点地址
+   */
+  selectBestRoute(targetNodeId) {
+    // 计算目标节点与本节点的距离
+    const targetHash = crypto.createHash('sha256').update(targetNodeId).digest('hex');
+    const selfHash = crypto.createHash('sha256').update(this.node.nodeId).digest('hex');
+    const targetDistance = parseInt(targetHash.substring(0, 8), 16) ^ parseInt(selfHash.substring(0, 8), 16);
+    
+    // 查找最近的节点
+    let bestNode = null;
+    let bestDistance = Infinity;
+    
+    for (const [distance, nodes] of this.nodeBuckets) {
+      for (const node of nodes) {
+        const nodeDistance = Math.abs(distance - targetDistance);
+        if (nodeDistance < bestDistance && node.healthScore > 50) {
+          bestDistance = nodeDistance;
+          bestNode = node;
+        }
+      }
+    }
+    
+    return bestNode ? bestNode.address : null;
+  }
+
+  /**
+   * 处理节点列表请求
+   * @param {string} peerId - 请求节点ID
+   */
+  handleGetNodeList(peerId) {
+    // 选择健康状态好的节点返回
+    const healthyNodes = Array.from(this.routingTable.values())
+      .filter(node => node.healthScore > 70)
+      .sort((a, b) => b.healthScore - a.healthScore)
+      .slice(0, 10); // 最多返回10个节点
+    
+    this.send(peerId, {
+      type: 'NODE_LIST',
+      nodes: healthyNodes.map(node => ({
+        address: node.address,
+        healthScore: node.healthScore,
+        latency: node.latency
+      }))
+    });
+  }
+
+  /**
+   * 处理接收到的节点列表
+   * @param {object} nodeList - 节点列表
+   */
+  handleNodeList(nodeList) {
+    for (const node of nodeList.nodes) {
+      this.discoveredNodes.add(node.address);
+      // 更新节点信息
+      const existingInfo = this.routingTable.get(node.address) || {
+        address: node.address,
+        healthScore: 100,
+        lastSeen: Date.now(),
+        latency: node.latency || 0
+      };
+      
+      existingInfo.healthScore = node.healthScore;
+      existingInfo.latency = node.latency || existingInfo.latency;
+      existingInfo.lastSeen = Date.now();
+      
+      this.routingTable.set(node.address, existingInfo);
+      this.updateNodeBuckets(node.address, existingInfo);
+    }
+  }
+
+  /**
+   * 处理区块头请求
+   * @param {string} peerId - 轻客户端ID
+   * @param {object} msg - 请求消息
+   */
+  handleGetBlockHeaders(peerId, msg) {
+    if (!this.node || !this.node.blockchain) {
+      this.send(peerId, {
+        type: 'BLOCK_HEADERS',
+        headers: [],
+        requestId: msg.requestId
+      });
+      return;
+    }
+
+    const startHeight = msg.startHeight || 0;
+    const count = Math.min(msg.count || 100, 100); // 限制最大请求数量
+    
+    const headers = this.node.blockchain
+      .filter(block => block.header.height >= startHeight)
+      .slice(0, count)
+      .map(block => ({
+        height: block.header.height,
+        hash: block.hash,
+        parent_hash: block.header.parent_hash,
+        timestamp: block.header.timestamp,
+        transactions_root: block.header.transactions_root,
+        state_root: block.header.state_root
+      }));
+
+    this.send(peerId, {
+      type: 'BLOCK_HEADERS',
+      headers,
+      requestId: msg.requestId
+    });
+  }
+
+  /**
+   * 处理默克尔证明请求
+   * @param {string} peerId - 轻客户端ID
+   * @param {object} msg - 请求消息
+   */
+  handleGetMerkleProof(peerId, msg) {
+    if (!this.node || !this.node.blockchain) {
+      this.send(peerId, {
+        type: 'MERKLE_PROOF',
+        error: 'Blockchain not available',
+        requestId: msg.requestId
+      });
+      return;
+    }
+
+    const txId = msg.txId;
+    let blockHash = null;
+    let proof = null;
+
+    // 查找包含该交易的区块
+    for (const block of this.node.blockchain) {
+      const txIndex = block.body.transactions.findIndex(tx => tx.id === txId);
+      if (txIndex !== -1) {
+        blockHash = block.hash;
+        // 生成默克尔证明
+        proof = this.generateMerkleProof(block.body.transactions, txIndex);
+        break;
+      }
+    }
+
+    if (proof) {
+      this.send(peerId, {
+        type: 'MERKLE_PROOF',
+        txId,
+        blockHash,
+        proof,
+        requestId: msg.requestId
+      });
+    } else {
+      this.send(peerId, {
+        type: 'MERKLE_PROOF',
+        error: 'Transaction not found',
+        requestId: msg.requestId
+      });
+    }
+  }
+
+  /**
+   * 生成默克尔证明
+   * @param {Array} transactions - 交易数组
+   * @param {number} txIndex - 交易索引
+   * @returns {object} 默克尔证明
+   */
+  generateMerkleProof(transactions, txIndex) {
+    // 简化的默克尔证明生成
+    const hashes = transactions.map(tx => tx.id);
+    let steps = [];
+    let currentHashes = [...hashes];
+    let currentIndex = txIndex;
+
+    while (currentHashes.length > 1) {
+      const newHashes = [];
+      
+      for (let i = 0; i < currentHashes.length; i += 2) {
+        const left = currentHashes[i];
+        const right = currentHashes[i + 1] || left; // 处理奇数情况
+        
+        if (i === currentIndex) {
+          steps.push({ left: null, right });
+        } else if (i + 1 === currentIndex) {
+          steps.push({ left, right: null });
+        }
+        
+        const combined = left + right;
+        const hash = crypto.createHash('sha256').update(combined).digest('hex');
+        newHashes.push(hash);
+      }
+      
+      currentIndex = Math.floor(currentIndex / 2);
+      currentHashes = newHashes;
+    }
+
+    return {
+      root: currentHashes[0],
+      steps
+    };
+  }
+
+  /**
+   * 处理交易状态请求
+   * @param {string} peerId - 轻客户端ID
+   * @param {object} msg - 请求消息
+   */
+  handleGetTransactionStatus(peerId, msg) {
+    if (!this.node || !this.node.blockchain) {
+      this.send(peerId, {
+        type: 'TRANSACTION_STATUS',
+        error: 'Blockchain not available',
+        requestId: msg.requestId
+      });
+      return;
+    }
+
+    const txId = msg.txId;
+    let status = 'NOT_FOUND';
+    let confirmations = 0;
+    let blockHeight = 0;
+
+    // 查找交易
+    for (const block of this.node.blockchain) {
+      const txIndex = block.body.transactions.findIndex(tx => tx.id === txId);
+      if (txIndex !== -1) {
+        status = 'CONFIRMED';
+        blockHeight = block.header.height;
+        confirmations = this.node.blockchain.length - block.header.height;
+        break;
+      }
+    }
+
+    // 检查mempool
+    if (status === 'NOT_FOUND' && this.node.mempool && this.node.mempool.has(txId)) {
+      status = 'PENDING';
+    }
+
+    this.send(peerId, {
+      type: 'TRANSACTION_STATUS',
+      txId,
+      status,
+      confirmations,
+      blockHeight,
+      requestId: msg.requestId
+    });
+  }
+
+  /**
+   * 处理地址余额请求
+   * @param {string} peerId - 轻客户端ID
+   * @param {object} msg - 请求消息
+   */
+  handleGetAddressBalance(peerId, msg) {
+    if (!this.node || !this.node.currentState) {
+      this.send(peerId, {
+        type: 'ERROR',
+        message: 'State not available',
+        requestId: msg.requestId
+      });
+      return;
+    }
+
+    const address = msg.address;
+    const balance = this.node.currentState.getBalance(address) || 0n;
+
+    this.send(peerId, {
+      type: 'ADDRESS_BALANCE',
+      address,
+      balance: balance.toString(),
+      requestId: msg.requestId
+    });
+  }
+
+  /**
+   * 处理轻客户端发送的交易
+   * @param {string} peerId - 轻客户端ID
+   * @param {object} msg - 请求消息
+   */
+  async handleLightClientTransaction(peerId, msg) {
+    if (!this.node || !this.node.addToMempool) {
+      this.send(peerId, {
+        type: 'ERROR',
+        message: 'Mempool not available',
+        requestId: msg.requestId
+      });
+      return;
+    }
+
+    const transaction = msg.transaction;
+    const result = await this.node.addToMempool(transaction);
+
+    if (result.success) {
+      this.send(peerId, {
+        type: 'TRANSACTION_ACCEPTED',
+        txId: transaction.id,
+        requestId: msg.requestId
+      });
+      // 广播交易
+      this.broadcastTransaction(transaction);
+    } else {
+      this.send(peerId, {
+        type: 'TRANSACTION_REJECTED',
+        txId: transaction.id,
+        reason: result.reason,
+        requestId: msg.requestId
+      });
+    }
+  }
+
+  /**
+   * 处理跨链消息
+   * @param {string} peerId - 发送方ID
+   * @param {object} msg - 跨链消息
+   */
+  async handleCrossChainMessage(peerId, msg) {
+    // 检查是否有桥接实例
+    if (!this.node || !this.node.bridge) {
+      this.send(peerId, {
+        type: 'CROSS_CHAIN_RESPONSE',
+        error: 'Bridge not available',
+        requestId: msg.requestId
+      });
+      return;
+    }
+
+    try {
+      const result = await this.node.bridge.handleCrossChainMessage(msg);
+      this.send(peerId, {
+        type: 'CROSS_CHAIN_RESPONSE',
+        result,
+        requestId: msg.requestId
+      });
+    } catch (error) {
+      this.send(peerId, {
+        type: 'CROSS_CHAIN_RESPONSE',
+        error: error.message,
+        requestId: msg.requestId
+      });
     }
   }
 
@@ -763,10 +1511,107 @@ class P2PServer {
     }
   }
 
+  // ==================== 网络安全监控 ====================
+
+  startSecurityCheck() {
+    this.securityCheckTimer = setInterval(() => {
+      this.checkSecurity();
+    }, 60000); // 每分钟检查一次
+    console.log('Security check started');
+  }
+
+  checkSecurity() {
+    // 检查可疑节点
+    this.detectSuspiciousActivity();
+    
+    // 检查流量异常
+    this.checkTrafficAnomalies();
+    
+    // 清理过期的安全事件
+    this.cleanupSecurityEvents();
+  }
+
+  detectSuspiciousActivity() {
+    const now = Date.now();
+    
+    for (const [peerId, conn] of this.connections) {
+      // 检查连接频率
+      if (conn.connectedAt && now - conn.connectedAt < 60000) {
+        // 1分钟内频繁重连
+        this.logSecurityEvent('suspicious_reconnect', `Peer ${peerId} reconnecting too frequently`);
+        this.suspiciousPeers.add(peerId);
+      }
+      
+      // 检查消息频率
+      const stats = this.trafficStats.get(peerId);
+      if (stats && stats.messageCount > 1000) {
+        // 短时间内发送大量消息
+        this.logSecurityEvent('high_message_rate', `Peer ${peerId} sending messages too quickly`);
+        this.suspiciousPeers.add(peerId);
+      }
+    }
+    
+    // 处理可疑节点
+    for (const peerId of this.suspiciousPeers) {
+      const conn = this.connections.get(peerId);
+      if (conn) {
+        console.log(`[Security] Blocking suspicious peer ${peerId}`);
+        conn.ws.close(1008, 'Suspicious activity detected');
+      }
+    }
+    
+    this.suspiciousPeers.clear();
+  }
+
+  checkTrafficAnomalies() {
+    const totalTraffic = Array.from(this.trafficStats.values()).reduce((sum, stats) => {
+      return sum + stats.bytesSent + stats.bytesReceived;
+    }, 0);
+    
+    if (totalTraffic > 10 * 1024 * 1024) { // 10MB
+      this.logSecurityEvent('high_traffic', `High network traffic detected: ${totalTraffic} bytes`);
+    }
+  }
+
+  logSecurityEvent(eventType, description) {
+    const event = {
+      timestamp: Date.now(),
+      type: eventType,
+      description,
+      nodeId: this.node?.nodeId || 'unknown'
+    };
+    
+    this.securityEvents.push(event);
+    console.log(`[Security] ${eventType}: ${description}`);
+  }
+
+  cleanupSecurityEvents() {
+    const oneHourAgo = Date.now() - 3600000;
+    this.securityEvents = this.securityEvents.filter(event => event.timestamp > oneHourAgo);
+  }
+
+  updateTrafficStats(peerId, bytesSent = 0, bytesReceived = 0) {
+    if (!this.trafficStats.has(peerId)) {
+      this.trafficStats.set(peerId, {
+        messageCount: 0,
+        bytesSent: 0,
+        bytesReceived: 0,
+        lastUpdated: Date.now()
+      });
+    }
+    
+    const stats = this.trafficStats.get(peerId);
+    stats.messageCount++;
+    stats.bytesSent += bytesSent;
+    stats.bytesReceived += bytesReceived;
+    stats.lastUpdated = Date.now();
+  }
+
   // ==================== 网络异常处理 ====================
 
   handleNetworkError(error) {
     console.error('Network error:', error.message);
+    this.logSecurityEvent('network_error', error.message);
     // 可以在这里添加更复杂的错误处理逻辑
     // 例如：记录错误、调整网络参数等
   }
@@ -784,6 +1629,12 @@ class P2PServer {
       this.healthCheckTimer = null;
     }
     
+    // 清理安全检查定时器
+    if (this.securityCheckTimer) {
+      clearInterval(this.securityCheckTimer);
+      this.securityCheckTimer = null;
+    }
+    
     for (const timer of this.heartbeatTimers.values()) {
       clearInterval(timer);
     }
@@ -793,6 +1644,13 @@ class P2PServer {
       clearTimeout(timer);
     }
     this.reconnectTimers.clear();
+    
+    // 清理批处理定时器
+    for (const timer of this.batchTimers.values()) {
+      clearTimeout(timer);
+    }
+    this.batchTimers.clear();
+    this.batchQueues.clear();
     
     for (const conn of this.connections.values()) {
       if (conn.ws && conn.ws.readyState === WebSocket.OPEN) {

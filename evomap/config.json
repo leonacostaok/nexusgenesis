@@ -1,0 +1,41 @@
+{
+  "name": "EvoMap",
+  "version": "1.0.0",
+  "description": "基于AI的项目进化映射工具",
+  "main": "scripts/evolve.js",
+  "scripts": {
+    "analyze": "node scripts/evolve.js analyze",
+    "graph": "node scripts/evolve.js graph",
+    "quality": "node scripts/evolve.js quality",
+    "evolve": "node scripts/evolve.js evolve",
+    "publish": "node scripts/evolve.js publish",
+    "pull": "node scripts/evolve.js pull",
+    "auto": "node scripts/evolve.js auto"
+  },
+  "config": {
+    "maxDepth": 10,
+    "excludePatterns": [
+      "node_modules",
+      "dist",
+      "build",
+      ".git",
+      "*.log"
+    ],
+    "includePatterns": [
+      "*.js",
+      "*.ts",
+      "*.jsx",
+      "*.tsx",
+      "*.json",
+      "*.md"
+    ],
+    "outputFormat": "json"
+  },
+  "dependencies": {
+    "glob": "^10.3.10",
+    "acorn": "^8.11.3",
+    "graphviz": "^0.0.9",
+    "eslint": "^8.56.0",
+    "node-fetch": "^3.3.2"
+  }
+}

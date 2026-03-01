@@ -269,4 +269,4 @@ function testMatrixOperations() {
 }
 
 // 运行测试
-testMatrixOperations().catch(console.error);
+testMatrixOperations();

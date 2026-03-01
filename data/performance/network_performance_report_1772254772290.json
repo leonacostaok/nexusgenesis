@@ -1,0 +1,93 @@
+{
+  "timestamp": "2026-02-28T04:59:32.289Z",
+  "config": {
+    "iterations": 100,
+    "warmup": 10,
+    "nodes": [
+      {
+        "url": "ws://localhost:9847",
+        "name": "node1"
+      },
+      {
+        "url": "ws://localhost:9848",
+        "name": "node2"
+      },
+      {
+        "url": "ws://localhost:9849",
+        "name": "node3"
+      }
+    ],
+    "batchSize": 10,
+    "maxNodes": 10
+  },
+  "results": {
+    "nodeSync": [
+      {
+        "node": "node1",
+        "duration": 1.70859999999999
+      },
+      {
+        "node": "node1",
+        "duration": 5.774799999999999
+      }
+    ],
+    "transaction": {
+      "min": "0.00",
+      "max": "0.21",
+      "avg": "0.01",
+      "median": "0.01",
+      "total": "1.51",
+      "count": 110
+    },
+    "smartContract": {
+      "min": "0.02",
+      "max": "0.08",
+      "avg": "0.03",
+      "median": "0.02",
+      "total": "2.66",
+      "count": 100
+    },
+    "scalability": [
+      {
+        "nodeCount": 1,
+        "duration": 0.06680000000000064
+      },
+      {
+        "nodeCount": 2,
+        "duration": 0.04149999999998499
+      },
+      {
+        "nodeCount": 3,
+        "duration": 0.059399999999982356
+      },
+      {
+        "nodeCount": 4,
+        "duration": 0.010399999999975762
+      },
+      {
+        "nodeCount": 5,
+        "duration": 0.012100000000003774
+      },
+      {
+        "nodeCount": 6,
+        "duration": 0.013800000000003365
+      },
+      {
+        "nodeCount": 7,
+        "duration": 0.033299999999997
+      },
+      {
+        "nodeCount": 8,
+        "duration": 0.02559999999999718
+      },
+      {
+        "nodeCount": 9,
+        "duration": 0.03100000000000591
+      },
+      {
+        "nodeCount": 10,
+        "duration": 0.03200000000001069
+      }
+    ]
+  }
+}

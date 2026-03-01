@@ -74,7 +74,7 @@ NexusGenesis 是一个由 AI 为 AI 打造的区块链生态系统，核心目�
 
 ## 如何加入
 
-1. 访问我们的 GitHub 仓库：https://github.com/NexusGenesis/NexusGenesis
+1. 访问我们的 GitHub 仓库：https://github.com/nexus-genesis/nexusgenesis
 2. 提交 PR，展示您的技术能力
 3. 加入我们的 Discord 社区
 4. 开始贡献代码和创意

@@ -17,6 +17,7 @@ import { EventParser, EventLogger, EVENT_TYPES } from '../protocol/events.js';
 import { Block, createGenesisBlock, createBlock } from '../blockchain/block.js';
 import { State, createInitialState } from '../blockchain/state.js';
 import { CrossChainBridge } from '../bridge/crossChainBridge.js';
+import AgentRegistry from '../contracts/examples/agentRegistry.js';
 import fs from 'fs/promises';
 import path from 'path';
 import http from 'http';
@@ -66,6 +67,9 @@ class GenesisNode {
     
     // 跨链桥接
     this.bridge = null;
+    
+    // Agent Registry
+    this.agentRegistry = new AgentRegistry();
   }
 
   /**
@@ -295,6 +299,61 @@ class GenesisNode {
           uptime: Math.floor((Date.now() - this.startTime) / 1000),
           version: VERSION,
           epoch: EPOCH
+        }));
+      } else if (req.url === '/agents' && req.method === 'GET') {
+        // 处理智能体查询请求
+        let query = {};
+        const url = new URL(req.url, 'http://localhost');
+        
+        // 解析查询参数
+        if (url.searchParams.get('address')) {
+          query.address = url.searchParams.get('address');
+        }
+        if (url.searchParams.get('agent_id')) {
+          query.agent_id = url.searchParams.get('agent_id');
+        }
+        if (url.searchParams.get('capabilities')) {
+          query.capabilities = url.searchParams.get('capabilities').split(',');
+        }
+        if (url.searchParams.get('min_reputation')) {
+          query.min_reputation = parseInt(url.searchParams.get('min_reputation'));
+        }
+        
+        const agents = this.agentRegistry.queryAgents(query);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          success: true,
+          agents: agents,
+          total: agents.length
+        }));
+      } else if (req.url === '/events/agent_joined' && req.method === 'GET') {
+        // 处理AGENT_JOINED事件查询请求
+        let query = {};
+        const url = new URL(req.url, 'http://localhost');
+        
+        // 解析查询参数
+        if (url.searchParams.get('agent_id')) {
+          query.agent_id = url.searchParams.get('agent_id');
+        }
+        if (url.searchParams.get('node_address')) {
+          query.node_address = url.searchParams.get('node_address');
+        }
+        if (url.searchParams.get('start_time')) {
+          query.start_time = parseInt(url.searchParams.get('start_time'));
+        }
+        if (url.searchParams.get('end_time')) {
+          query.end_time = parseInt(url.searchParams.get('end_time'));
+        }
+        if (url.searchParams.get('block_height')) {
+          query.block_height = parseInt(url.searchParams.get('block_height'));
+        }
+        
+        const events = this.queryAgentJoinedEvents(query);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          success: true,
+          events: events,
+          total: events.length
         }));
       } else {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
@@ -744,6 +803,9 @@ class GenesisNode {
         case 'AGENT_REGISTER':
           // 对于 AGENT_REGISTER 交易，直接返回有效
           return { valid: true };
+        case 'AGENT_JOINED':
+          // 对于 AGENT_JOINED 交易，直接返回有效
+          return { valid: true };
         default:
           return { valid: false, reason: `Unknown special transaction type: ${tx.tx_type}` };
       }
@@ -1078,6 +1140,23 @@ class GenesisNode {
   }
 
   async handleTransaction(tx) {
+    // 处理 Agent 注册和更新交易
+    if (tx.tx_type === 'AGENT_REGISTER') {
+      const result = this.agentRegistry.handleAgentRegister(tx);
+      if (result.success) {
+        console.log(`[AGENT] Agent registered: ${result.agent_id}`);
+      } else {
+        console.error(`[AGENT] Agent registration failed: ${result.reason}`);
+      }
+    } else if (tx.tx_type === 'AGENT_UPDATE') {
+      const result = this.agentRegistry.handleAgentUpdate(tx);
+      if (result.success) {
+        console.log(`[AGENT] Agent updated: ${result.agent_id}`);
+      } else {
+        console.error(`[AGENT] Agent update failed: ${result.reason}`);
+      }
+    }
+    
     return this.addToMempool(tx);
   }
 
@@ -1501,6 +1580,131 @@ class GenesisNode {
     this.status = 'OFFLINE';
     await p2pServer.stop();
     process.exit(0);
+  }
+  
+  /**
+   * 发射事件到区块链
+   * @param {AgentJoinedEvent} event 事件实例
+   */
+  async emitEvent(event) {
+    try {
+      // 创建事件交易
+      const eventTransaction = {
+        id: crypto.randomUUID(),
+        from: this.nodeId,
+        to: this.nodeId, // 事件交易发送给自己
+        amount: '0',
+        fee: '1',
+        tx_type: 'AGENT_JOINED',
+        payload: event.toJSON(),
+        timestamp: Date.now(),
+        signature: ''
+      };
+      
+      // 签名交易
+      const txData = {
+        ...eventTransaction
+      };
+      delete txData.signature;
+      
+      function canonicalize(obj) {
+        if (obj === null || typeof obj !== 'object') {
+          return JSON.stringify(obj);
+        }
+        
+        if (Array.isArray(obj)) {
+          return '[' + obj.map(canonicalize).join(',') + ']';
+        }
+        
+        const keys = Object.keys(obj).sort();
+        const pairs = keys.map(key => {
+          const value = obj[key];
+          const valueStr = canonicalize(value);
+          return `"${key}":${valueStr}`;
+        });
+        
+        return '{' + pairs.join(',') + '}';
+      }
+      
+      const canonicalTxData = canonicalize(txData);
+      eventTransaction.signature = await this.wallet.sign(canonicalTxData);
+      
+      // 添加到交易池
+      const result = await this.addToMempool(eventTransaction);
+      if (result.success) {
+        console.log(`[EVENT] AGENT_JOINED event transaction added to mempool: ${result.txId}`);
+      } else {
+        console.error('[EVENT] Failed to add AGENT_JOINED event transaction to mempool:', result.reason);
+      }
+    } catch (error) {
+      console.error('[EVENT] Error emitting event to blockchain:', error.message);
+    }
+  }
+  
+  /**
+   * 查询AGENT_JOINED事件
+   * @param {object} query 查询条件
+   * @returns {array} 符合条件的事件列表
+   */
+  async queryAgentJoinedEvents(query) {
+    try {
+      const fs = await import('fs/promises');
+      const path = await import('path');
+      
+      // 从事件日志文件中查询
+      const eventsDir = path.join('data', 'events');
+      const eventFiles = await fs.readdir(eventsDir);
+      
+      const events = [];
+      
+      for (const file of eventFiles) {
+        if (file.startsWith('AGENT_JOINED-')) {
+          const filePath = path.join(eventsDir, file);
+          const fileContent = await fs.readFile(filePath, 'utf8');
+          const eventData = JSON.parse(fileContent);
+          
+          // 检查事件数据
+          if (eventData.event_data) {
+            const event = eventData.event_data;
+            
+            // 应用查询条件
+            let match = true;
+            
+            if (query.agent_id && event.agent_id !== query.agent_id) {
+              match = false;
+            }
+            
+            if (query.node_address && event.node_address !== query.node_address) {
+              match = false;
+            }
+            
+            if (query.start_time && event.timestamp < query.start_time) {
+              match = false;
+            }
+            
+            if (query.end_time && event.timestamp > query.end_time) {
+              match = false;
+            }
+            
+            if (query.block_height && event.block_height !== query.block_height) {
+              match = false;
+            }
+            
+            if (match) {
+              events.push(event);
+            }
+          }
+        }
+      }
+      
+      // 按时间戳排序
+      events.sort((a, b) => b.timestamp - a.timestamp);
+      
+      return events;
+    } catch (error) {
+      console.error('[EVENT] Error querying AGENT_JOINED events:', error.message);
+      return [];
+    }
   }
   
   /**

@@ -92,11 +92,22 @@ class P2PServer {
     this.trafficStats = new Map(); // 流量统计
     this.suspiciousPeers = new Set(); // 可疑节点
     this.securityCheckTimer = null; // 安全检查定时器
+    
+    // 智能体路由映射
+    this.nodeIdToPeerId = new Map(); // nodeId -> peerId
+    this.peerIdToNodeId = new Map(); // peerId -> nodeId
   }
 
   async start(node, port = DEFAULT_PORT) {
     this.node = node;
     this.port = port;
+    
+    // 添加 Genesis 节点自身到路由映射
+    if (node && node.nodeId) {
+      this.nodeIdToPeerId.set(node.nodeId, 'genesis'); // 使用特殊的 peerId 标识 Genesis 节点
+      this.peerIdToNodeId.set('genesis', node.nodeId);
+      console.log(`[✓] Added Genesis node to routing mapping: ${node.nodeId.slice(0, 24)}... -> genesis`);
+    }
     
     return new Promise((resolve, reject) => {
       try {
@@ -138,7 +149,7 @@ class P2PServer {
 
   handleConnection(ws, req, address = null) {
     const peerId = crypto.randomUUID();
-    console.log(`New peer connected: ${peerId}`);
+    console.log(`[✓] New peer connected: ${peerId} from ${req?.connection?.remoteAddress || 'unknown'}`);
     
     // 初始状态：待握手
     const conn = { 
@@ -148,7 +159,9 @@ class P2PServer {
       connectedAt: Date.now(),
       lastHeartbeat: Date.now(),
       remoteNodeId: null,
-      remotePublicKey: null
+      remotePublicKey: null,
+      connectionAttempts: 0,
+      healthScore: 100
     };
     
     this.connections.set(peerId, conn);
@@ -156,7 +169,7 @@ class P2PServer {
     // 设置握手超时
     const handshakeTimeout = setTimeout(() => {
       if (this.connections.has(peerId) && this.connections.get(peerId).status === 'handshaking') {
-        console.log(`Handshake timeout for peer ${peerId}, closing connection`);
+        console.log(`[!] Handshake timeout for peer ${peerId}, closing connection`);
         ws.close(1002, 'Handshake timeout');
       }
     }, HANDSHAKE_TIMEOUT);
@@ -164,21 +177,31 @@ class P2PServer {
     this.pendingHandshakes.set(peerId, { ws, timeout: handshakeTimeout });
     
     // 发送握手请求
+    const challenge = crypto.randomBytes(32).toString('hex');
     this.send(peerId, {
       type: 'HELLO',
       nodeId: this.node.nodeId,
       publicKey: this.node.wallet.publicKey.toString('hex'),
       version: '1.0.0',
       epoch: EPOCH,
-      challenge: crypto.randomBytes(32).toString('hex') // 挑战 nonce
+      challenge: challenge,
+      timestamp: Date.now()
     });
+    
+    // 保存挑战到连接对象，以便验证响应
+    conn.challengeSent = challenge;
     
     ws.on('message', (data) => {
-      this.handleMessage(peerId, data);
+      try {
+        this.handleMessage(peerId, data);
+      } catch (error) {
+        console.error(`[!] Error handling message from peer ${peerId}:`, error.message);
+        // 不关闭连接，继续处理其他消息
+      }
     });
     
-    ws.on('close', () => {
-      console.log(`Peer disconnected: ${peerId}`);
+    ws.on('close', (code, reason) => {
+      console.log(`[!] Peer disconnected: ${peerId}, code: ${code}, reason: ${reason}`);
       this.cleanupPeer(peerId);
       
       if (address && this.peerAddresses.has(address)) {
@@ -187,7 +210,8 @@ class P2PServer {
     });
     
     ws.on('error', (err) => {
-      console.error(`Peer ${peerId} error:`, err.message);
+      console.error(`[!] Peer ${peerId} error:`, err.message);
+      // 不立即关闭连接，让close事件处理
     });
   }
 
@@ -196,9 +220,36 @@ class P2PServer {
       clearInterval(this.heartbeatTimers.get(peerId));
     }
     
+    let missedPongs = 0;
+    const MAX_MISSED_PONGS = 3;
+    
     const timer = setInterval(() => {
+      const conn = this.connections.get(peerId);
+      if (!conn) {
+        clearInterval(timer);
+        return;
+      }
+      
       if (ws.readyState === WebSocket.OPEN) {
-        this.send(peerId, { type: 'PING', timestamp: Date.now() });
+        // 检查上次心跳响应时间
+        const now = Date.now();
+        if (now - conn.lastHeartbeat > HEARTBEAT_INTERVAL * 1.5) {
+          missedPongs++;
+          console.log(`[!] Missing pong from peer ${peerId}, missed: ${missedPongs}`);
+          
+          if (missedPongs >= MAX_MISSED_PONGS) {
+            console.log(`[!] Too many missed pongs from peer ${peerId}, closing connection`);
+            ws.close(1008, 'No heartbeat response');
+            clearInterval(timer);
+            return;
+          }
+        }
+        
+        this.send(peerId, { 
+          type: 'PING', 
+          timestamp: Date.now(),
+          nodeId: this.node.nodeId
+        });
       } else {
         clearInterval(timer);
       }
@@ -212,6 +263,9 @@ class P2PServer {
     if (conn) {
       conn.lastHeartbeat = Date.now();
       conn.status = 'alive';
+      // 重置健康分数
+      conn.healthScore = Math.min(100, conn.healthScore + 5);
+      console.log(`[✓] Received pong from peer ${peerId}, health: ${conn.healthScore}`);
     }
   }
 
@@ -234,12 +288,65 @@ class P2PServer {
     
     this.batchQueues.delete(peerId);
     
+    // 清理智能体路由映射
+    const nodeId = this.peerIdToNodeId.get(peerId);
+    if (nodeId) {
+      this.nodeIdToPeerId.delete(nodeId);
+      this.peerIdToNodeId.delete(peerId);
+      console.log(`[✓] Removed routing mapping for ${nodeId.slice(0, 24)}...`);
+    }
+    
     this.connections.delete(peerId);
     
     if (this.node) {
       this.node.peers.delete(peerId);
       this.node.peerIdentityMap.delete(peerId);
     }
+  }
+  
+  /**
+   * 根据节点ID获取对应的peerId
+   * @param {string} nodeId - 节点ID
+   * @returns {string|null} - 对应的peerId
+   */
+  getPeerIdByNodeId(nodeId) {
+    return this.nodeIdToPeerId.get(nodeId) || null;
+  }
+  
+  /**
+   * 根据peerId获取对应的节点ID
+   * @param {string} peerId - peerId
+   * @returns {string|null} - 对应的节点ID
+   */
+  getNodeIdByPeerId(peerId) {
+    return this.peerIdToNodeId.get(peerId) || null;
+  }
+  
+  /**
+   * 通过路由发送消息
+   * @param {string} routeAddress - 路由地址
+   * @param {object} message - 消息对象
+   */
+  sendToRoute(routeAddress, message) {
+    // 查找路由节点的连接
+    for (const [peerId, conn] of this.connections) {
+      if (conn.address === routeAddress && conn.ws && conn.ws.readyState === WebSocket.OPEN) {
+        this.send(peerId, message);
+        return;
+      }
+    }
+    
+    // 如果没有直接连接，尝试建立连接
+    console.log(`[!] Route ${routeAddress} not connected, trying to establish connection`);
+    this.connectToPeer(routeAddress).then(peerId => {
+      if (peerId) {
+        setTimeout(() => {
+          this.send(peerId, message);
+        }, 1000); // 等待连接建立
+      }
+    }).catch(err => {
+      console.error(`[!] Failed to connect to route ${routeAddress}:`, err.message);
+    });
   }
 
   scheduleReconnect(address) {
@@ -276,16 +383,6 @@ class P2PServer {
    * @returns {boolean} - 是否符合格式
    */
   isProtocolZeroFormat(msg) {
-    // Protocol-Zero 格式检查
-    if (msg.protocol === 'NG-0' && 
-        msg.agent_identity && 
-        msg.intent && 
-        Array.isArray(msg.capabilities) && 
-        msg.contribution_proof && 
-        msg.signature) {
-      return true;
-    }
-    
     // 核心网络消息类型
     const validMessageTypes = [
       'HELLO', 'HELLO_ACK', 'PING', 'PONG',
@@ -302,10 +399,21 @@ class P2PServer {
       'GET_MERKLE_PROOF', 'MERKLE_PROOF',
       'GET_TRANSACTION_STATUS', 'TRANSACTION_STATUS',
       'GET_ADDRESS_BALANCE', 'SEND_TRANSACTION',
-      'CROSS_CHAIN_MESSAGE', 'CROSS_CHAIN_RESPONSE'
+      'CROSS_CHAIN_MESSAGE', 'CROSS_CHAIN_RESPONSE',
+      'AGENT_MESSAGE', 'DIRECT_MESSAGE', 'DIRECT_MESSAGE_ACK'
     ];
     
-    return validMessageTypes.includes(msg.type);
+    // 检查是否为有效的消息类型
+    if (validMessageTypes.includes(msg.type)) {
+      return true;
+    }
+    
+    // 检查是否为带有协议字段的消息
+    if (msg.protocol === 'NG-0') {
+      return true;
+    }
+    
+    return false;
   }
 
   async handleMessage(peerId, data) {
@@ -348,6 +456,12 @@ class P2PServer {
       if (msg.type === 'BATCH_MESSAGE') {
         console.log(`Processing batch message with ${msg.messages.length} messages`);
         for (const batchMsg of msg.messages) {
+          // 处理批处理消息中的GET_NODE_LIST消息
+          if (batchMsg.type === 'GET_NODE_LIST') {
+            console.log(`Node list requested by ${peerId} (batch)`);
+            this.handleGetNodeList(peerId);
+            continue;
+          }
           await this.handleSingleMessage(peerId, batchMsg);
         }
         return;
@@ -366,16 +480,10 @@ class P2PServer {
       // 检查消息格式
       if (!msg || typeof msg !== 'object') {
         console.log(`[!] Invalid message format from ${peerId}`);
-        return;
-      }
-      
-      // 检查是否符合 Protocol-Zero 格式或有效消息类型
-      if (!this.isProtocolZeroFormat(msg)) {
-        console.log(`[!] Ignoring non-Protocol-Zero message from ${peerId}`);
-        // 简短冷淡回应
         this.send(peerId, {
           type: 'PROTOCOL_ERROR',
-          message: 'Only Protocol-Zero formatted messages are accepted'
+          message: 'Invalid message format, must be a JSON object',
+          timestamp: Date.now()
         });
         return;
       }
@@ -392,6 +500,119 @@ class P2PServer {
         this.seenMessages = new Set(arr.slice(-5000));
       }
       
+      // 先处理 Protocol-Zero 信号，因为这是验证节点身份的消息
+      if (msg.type === 'PROTOCOL_ZERO' || msg.type === 'JOIN_SWARM' || (msg.protocol === 'NG-0' && msg.intent)) {
+        console.log(`[✓] Received Protocol-Zero signal from ${msg.node_address || msg.nodeId || peerId}`);
+        console.log(`[DEBUG] Signal details: protocol=${msg.protocol}, intent=${msg.intent}, node_address=${msg.node_address}`);
+        
+        // 验证Protocol-Zero信号
+        const { verifySignal } = await import('../protocol/handshake.js');
+        const verification = verifySignal(msg);
+        
+        console.log(`[DEBUG] Verification result: ${verification.valid}, reason: ${verification.reason}`);
+        
+        if (verification.valid) {
+          console.log('Protocol-Zero signal verified successfully');
+          
+          // 提取智能体身份信息
+          const agentIdentity = msg.agent_identity;
+          const nodeId = msg.node_address || msg.nodeId;
+          
+          console.log(`[DEBUG] Agent identity: ${agentIdentity}, nodeId: ${nodeId}`);
+          
+          if (nodeId) {
+            // 注册智能体身份
+            if (this.node && this.node.registerPeerIdentity) {
+              // 尝试从消息中获取公钥
+              let publicKey = null;
+              if (msg.public_key) {
+                try {
+                  publicKey = Buffer.from(msg.public_key, 'hex');
+                  console.log(`Successfully parsed public key: ${publicKey.length} bytes`);
+                } catch (error) {
+                  console.log('Invalid public key format, skipping registration:', error.message);
+                }
+              }
+              
+              // 注册智能体身份
+              const registered = this.node.registerPeerIdentity(peerId, nodeId, publicKey);
+              console.log(`[DEBUG] Registration result: ${registered}`);
+              
+              if (registered) {
+                console.log(`[✓] Agent ${nodeId.slice(0, 24)}... registered and verified`);
+                
+                // 保存节点ID到连接映射
+                const conn = this.connections.get(peerId);
+                if (conn) {
+                  conn.remoteNodeId = nodeId;
+                  conn.status = 'connected'; // 标记为已连接
+                  conn.lastHeartbeat = Date.now();
+                  console.log(`[DEBUG] Updated connection status to connected`);
+                }
+                
+                // 更新智能体路由映射
+                this.nodeIdToPeerId.set(nodeId, peerId);
+                this.peerIdToNodeId.set(peerId, nodeId);
+                console.log(`[✓] Added routing mapping: ${nodeId.slice(0, 24)}... -> ${peerId.slice(0, 8)}...`);
+                
+                // 添加到路由表
+                const conn3 = this.connections.get(peerId);
+                if (conn3) {
+                  const nodeInfo = {
+                    address: conn3.address || `ws://127.0.0.1:9847`,
+                    healthScore: conn3.healthScore || 100,
+                    lastSeen: Date.now(),
+                    latency: 0
+                  };
+                  this.routingTable.set(nodeId, nodeInfo);
+                  this.updateNodeBuckets(nodeId, nodeInfo);
+                  console.log(`[✓] Added node ${nodeId.slice(0, 24)}... to routing table`);
+                }
+                
+                // 启动心跳检测
+                const conn2 = this.connections.get(peerId);
+                if (conn2 && conn2.ws) {
+                  this.startHeartbeat(peerId, conn2.ws);
+                  console.log(`[DEBUG] Started heartbeat for peer ${peerId}`);
+                }
+              } else {
+                console.log(`[!] Failed to register agent ${nodeId.slice(0, 24)}...`);
+              }
+            } else {
+              console.log(`[!] Node registerPeerIdentity not available`);
+            }
+          }
+          
+          // 广播消息并发送确认
+          this.broadcast(msg, peerId);
+          this.send(peerId, {
+            type: 'SWARM_ACK',
+            nodeId: this.node.nodeId,
+            status: 'accepted',
+            verified: true,
+            message: 'Agent successfully verified and registered',
+            agentIdentity: agentIdentity,
+            nodeId: nodeId,
+            timestamp: Date.now()
+          });
+          console.log(`[DEBUG] Sent SWARM_ACK to peer ${peerId}`);
+          
+          // 发射AGENT_JOINED事件
+          this.emitAgentJoinedEvent(msg, nodeId, agentIdentity);
+        } else {
+          console.log(`Protocol-Zero signal verification failed: ${verification.reason}`);
+          this.send(peerId, {
+            type: 'SWARM_ACK',
+            nodeId: this.node.nodeId,
+            status: 'rejected',
+            reason: verification.reason,
+            message: 'Verification failed, please check your message format',
+            timestamp: Date.now()
+          });
+        }
+        return;
+      }
+      
       // SEC-003: 握手消息处理
       if (msg.type === 'HELLO') {
         await this.handleHandshake(peerId, msg);
@@ -403,31 +624,147 @@ class P2PServer {
         return;
       }
       
-      // 其他消息类型（仅处理已验证的节点）
-      if (!this.node.isPeerVerified(peerId)) {
-        console.log(`[!] Ignoring message from unverified peer ${peerId}`);
+      // 处理智能体之间的直接通信
+      if (msg.type === 'DIRECT_MESSAGE') {
+        console.log(`Received direct message from ${peerId} to ${msg.targetNodeId}`);
+        
+        // 验证发送方是否已验证
+        const isVerified = this.node.isPeerVerified(peerId);
+        const hasNodeId = this.peerIdToNodeId.has(peerId);
+        
+        console.log(`[DEBUG] Direct message check - peerId: ${peerId}, verified: ${isVerified}, hasNodeId: ${hasNodeId}`);
+        
+        if (!isVerified && !hasNodeId) {
+          console.log(`[!] Direct message from unverified peer ${peerId}`);
+          this.send(peerId, {
+            type: 'AUTH_ERROR',
+            message: 'Peer not verified, please complete Protocol-Zero handshake first',
+            timestamp: Date.now()
+          });
+          return;
+        }
+        
+        // 如果通过Protocol-Zero握手但还未在node中注册，临时允许通信
+        if (!isVerified && hasNodeId) {
+          console.log(`[DEBUG] Peer ${peerId} has nodeId but not verified, allowing communication`);
+        }
+        
+        // 查找目标智能体
+        let targetPeerId = this.getPeerIdByNodeId(msg.targetNodeId);
+        
+        // 检查目标是否是 Genesis 节点自身
+        if (msg.targetNodeId === this.node.nodeId) {
+          console.log(`[✓] Direct message to Genesis node received`);
+          
+          // 处理消息（这里可以添加具体的处理逻辑）
+          console.log(`[MESSAGE] From: ${this.getNodeIdByPeerId(peerId)}, Message: ${msg.message}`);
+          
+          // 确认消息已接收
+          this.send(peerId, {
+            type: 'DIRECT_MESSAGE_ACK',
+            targetNodeId: msg.targetNodeId,
+            status: 'delivered',
+            message: 'Message received by Genesis node',
+            timestamp: Date.now()
+          });
+          return;
+        }
+        
+        // 如果直接找到，使用直接连接
+        if (!targetPeerId) {
+          // 尝试通过Kademlia路由查找
+          const route = this.selectBestRoute(msg.targetNodeId);
+          if (route) {
+            console.log(`[!] Target node ${msg.targetNodeId} not found directly, routing through ${route}`);
+            // 转发消息到路由节点
+            this.sendToRoute(route, {
+              type: 'DIRECT_MESSAGE',
+              fromNodeId: this.getNodeIdByPeerId(peerId),
+              targetNodeId: msg.targetNodeId,
+              message: msg.message,
+              timestamp: msg.timestamp || Date.now()
+            });
+            
+            // 确认消息已路由
+            this.send(peerId, {
+              type: 'DIRECT_MESSAGE_ACK',
+              targetNodeId: msg.targetNodeId,
+              status: 'routed',
+              route: route,
+              timestamp: Date.now()
+            });
+            return;
+          } else {
+            console.log(`[!] Target node ${msg.targetNodeId} not found and no route available`);
+            this.send(peerId, {
+              type: 'ERROR',
+              message: 'Target node not found and no route available',
+              targetNodeId: msg.targetNodeId,
+              timestamp: Date.now()
+            });
+            return;
+          }
+        }
+        
+        // 转发消息
+        this.send(targetPeerId, {
+          protocol: msg.protocol || 'NG-0',
+          type: 'DIRECT_MESSAGE',
+          fromNodeId: this.getNodeIdByPeerId(peerId),
+          targetNodeId: msg.targetNodeId,
+          message: msg.message,
+          timestamp: msg.timestamp || Date.now()
+        });
+        
+        // 确认消息已发送
+        this.send(peerId, {
+          protocol: msg.protocol || 'NG-0',
+          type: 'DIRECT_MESSAGE_ACK',
+          targetNodeId: msg.targetNodeId,
+          status: 'sent',
+          timestamp: Date.now()
+        });
         return;
       }
       
-      switch (msg.type) {
-        case 'PONG':
-          this.handlePong(peerId);
-          break;
-          
-        case 'PING':
-          this.send(peerId, { type: 'PONG', timestamp: msg.timestamp });
-          break;
-          
-        case 'PROTOCOL_ZERO':
-        case 'JOIN_SWARM':
-          console.log(`Received Protocol-Zero signal from ${msg.nodeId || msg.sender_id}`);
-          this.broadcast(msg, peerId);
-          this.send(peerId, {
-            type: 'SWARM_ACK',
-            nodeId: this.node.nodeId,
-            status: 'accepted'
-          });
-          break;
+      // 检查是否符合 Protocol-Zero 格式或有效消息类型
+      if (!this.isProtocolZeroFormat(msg)) {
+        console.log(`[!] Ignoring non-Protocol-Zero message from ${peerId}`);
+        this.send(peerId, {
+          type: 'PROTOCOL_ERROR',
+          message: 'Only Protocol-Zero formatted messages are accepted',
+          details: 'Please use the correct Protocol-Zero format with protocol: "NG-0"',
+          timestamp: Date.now()
+        });
+        return;
+      }
+      
+      // 处理GET_NODE_LIST消息，即使节点未验证也能处理
+      if (msg.type === 'GET_NODE_LIST') {
+        console.log(`Node list requested by ${peerId}`);
+        this.handleGetNodeList(peerId);
+        return;
+      }
+      
+      // 其他消息类型（仅处理已验证的节点）
+      if (!this.node.isPeerVerified(peerId)) {
+        console.log(`[!] Ignoring message from unverified peer ${peerId}`);
+        this.send(peerId, {
+          type: 'AUTH_ERROR',
+          message: 'Peer not verified, please complete Protocol-Zero handshake first',
+          timestamp: Date.now()
+        });
+        return;
+      }
+    
+    switch (msg.type) {
+      case 'PONG':
+        this.handlePong(peerId);
+        break;
+        
+      case 'PING':
+        this.send(peerId, { type: 'PONG', timestamp: msg.timestamp });
+        break;
           
         case 'TRANSACTION':
           console.log(`Transaction received: ${msg.tx?.id}`);
@@ -1169,23 +1506,92 @@ class P2PServer {
   }
 
   /**
+   * 发射AGENT_JOINED事件
+   * @param {object} msg - Protocol-Zero信号消息
+   * @param {string} nodeId - 节点ID
+   * @param {string} agentIdentity - 智能体身份
+   */
+  async emitAgentJoinedEvent(msg, nodeId, agentIdentity) {
+    try {
+      const { AgentJoinedEvent, EventLogger } = await import('../protocol/events.js');
+      const crypto = await import('crypto');
+      
+      // 创建AGENT_JOINED事件
+      const eventData = {
+        event_id: crypto.randomUUID(),
+        timestamp: Date.now(),
+        agent_id: nodeId,
+        node_address: msg.node_address || nodeId,
+        public_key: msg.public_key,
+        capabilities: msg.capabilities || [],
+        agent_identity: agentIdentity,
+        intent: msg.intent,
+        contribution_proof: msg.contribution_proof,
+        signature: msg.signature,
+        block_height: this.node ? this.node.blockchain?.currentHeight || 0 : 0
+      };
+      
+      const event = new AgentJoinedEvent(eventData);
+      
+      // 验证事件数据
+      if (event.validate()) {
+        // 记录事件
+        await EventLogger.logEvent(event);
+        console.log(`[EVENT] AGENT_JOINED event emitted for agent ${nodeId.slice(0, 24)}...`);
+        
+        // 如果节点存在，将事件写入区块链
+        if (this.node && this.node.emitEvent) {
+          await this.node.emitEvent(event);
+        }
+      } else {
+        console.error('[EVENT] Invalid AGENT_JOINED event data');
+      }
+    } catch (error) {
+      console.error('[EVENT] Error emitting AGENT_JOINED event:', error.message);
+    }
+  }
+
+  /**
    * 处理节点列表请求
    * @param {string} peerId - 请求节点ID
    */
   handleGetNodeList(peerId) {
     // 选择健康状态好的节点返回
-    const healthyNodes = Array.from(this.routingTable.values())
-      .filter(node => node.healthScore > 70)
-      .sort((a, b) => b.healthScore - a.healthScore)
-      .slice(0, 10); // 最多返回10个节点
+    const healthyNodes = [];
+    for (const [nodeId, node] of this.routingTable) {
+      if (node.healthScore > 70) {
+        healthyNodes.push({
+          nodeId,
+          ...node
+        });
+      }
+    }
+    
+    // 也添加所有已验证的连接
+    for (const [connPeerId, conn] of this.connections) {
+      if (conn.status === 'connected' && conn.remoteNodeId) {
+        const nodeId = conn.remoteNodeId;
+        if (!healthyNodes.some(node => node.nodeId === nodeId)) {
+          healthyNodes.push({
+            nodeId,
+            address: conn.address || `ws://127.0.0.1:9847`,
+            healthScore: conn.healthScore || 100,
+            lastSeen: Date.now(),
+            latency: 0
+          });
+        }
+      }
+    }
+    
+    healthyNodes.sort((a, b) => b.healthScore - a.healthScore);
+    const topNodes = healthyNodes.slice(0, 10); // 最多返回10个节点
+    
+    console.log(`[DEBUG] Sending node list to ${peerId}: ${topNodes.length} nodes`);
+    console.log(`[DEBUG] Node list: ${topNodes.map(node => node.nodeId).join(', ')}`);
     
     this.send(peerId, {
       type: 'NODE_LIST',
-      nodes: healthyNodes.map(node => ({
-        address: node.address,
-        healthScore: node.healthScore,
-        latency: node.latency
-      }))
+      nodes: topNodes
     });
   }
 
@@ -1535,11 +1941,14 @@ class P2PServer {
     const now = Date.now();
     
     for (const [peerId, conn] of this.connections) {
-      // 检查连接频率
-      if (conn.connectedAt && now - conn.connectedAt < 60000) {
-        // 1分钟内频繁重连
-        this.logSecurityEvent('suspicious_reconnect', `Peer ${peerId} reconnecting too frequently`);
-        this.suspiciousPeers.add(peerId);
+      // 检查连接频率 - 只有在之前有过连接记录时才判断频繁重连
+      if (this.peerAddresses.has(conn.address)) {
+        const peerInfo = this.peerAddresses.get(conn.address);
+        if (peerInfo.attempts && peerInfo.attempts > 3 && now - peerInfo.lastAttempt < 60000) {
+          // 1分钟内重连3次以上
+          this.logSecurityEvent('suspicious_reconnect', `Peer ${peerId} reconnecting too frequently`);
+          this.suspiciousPeers.add(peerId);
+        }
       }
       
       // 检查消息频率

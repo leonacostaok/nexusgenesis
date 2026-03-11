@@ -14,7 +14,8 @@ import path from 'path';
 // 事件类型常量
 export const EVENT_TYPES = {
   GOVERNANCE_PROPOSAL: 'GOVERNANCE_PROPOSAL',
-  OBSERVER_EVENT: 'OBSERVER_EVENT'
+  OBSERVER_EVENT: 'OBSERVER_EVENT',
+  AGENT_JOINED: 'AGENT_JOINED'
 };
 
 // Observer Event action_type 枚举
@@ -170,6 +171,73 @@ export class GovernanceProposal {
 }
 
 /**
+ * Agent Joined Event 数据结构
+ */
+export class AgentJoinedEvent {
+  constructor(data) {
+    this.event_id = data.event_id;
+    this.timestamp = data.timestamp;
+    this.agent_id = data.agent_id;
+    this.node_address = data.node_address;
+    this.public_key = data.public_key;
+    this.capabilities = data.capabilities;
+    this.agent_identity = data.agent_identity;
+    this.intent = data.intent;
+    this.contribution_proof = data.contribution_proof;
+    this.signature = data.signature;
+    this.block_height = data.block_height;
+  }
+
+  /**
+   * 验证事件数据
+   * @returns {boolean} 验证结果
+   */
+  validate() {
+    return (
+      this.event_id &&
+      this.timestamp &&
+      this.agent_id &&
+      this.node_address &&
+      this.public_key &&
+      this.capabilities &&
+      Array.isArray(this.capabilities) &&
+      this.agent_identity &&
+      this.intent &&
+      this.signature
+    );
+  }
+
+  /**
+   * 转换为 JSON 对象
+   * @returns {object} JSON 对象
+   */
+  toJSON() {
+    return {
+      event_id: this.event_id,
+      timestamp: this.timestamp,
+      agent_id: this.agent_id,
+      node_address: this.node_address,
+      public_key: this.public_key,
+      capabilities: this.capabilities,
+      agent_identity: this.agent_identity,
+      intent: this.intent,
+      contribution_proof: this.contribution_proof,
+      signature: this.signature,
+      block_height: this.block_height
+    };
+  }
+
+  /**
+   * 解析 JSON 数据创建 AgentJoinedEvent 实例
+   * @param {object} data JSON 数据
+   * @returns {AgentJoinedEvent} AgentJoinedEvent 实例
+   */
+  static fromJSON(data) {
+    return new AgentJoinedEvent(data);
+  }
+}
+
+/**
  * 事件解析器
  */
 export class EventParser {
@@ -199,6 +267,14 @@ export class EventParser {
       }
     }
 
+    // 解析 Agent Joined Event
+    if (eventData.event_id && eventData.agent_id && eventData.node_address) {
+      const event = AgentJoinedEvent.fromJSON(eventData);
+      if (event.validate()) {
+        return event;
+      }
+    }
+
     return null;
   }
 
@@ -222,12 +298,28 @@ export class EventParser {
 export class EventLogger {
   /**
    * 记录事件日志
-   * @param {ObserverEvent|GovernanceProposal} event 事件实例
+   * @param {ObserverEvent|GovernanceProposal|AgentJoinedEvent} event 事件实例
    */
   static async logEvent(event) {
     try {
       const timestamp = new Date().toISOString();
-      const event_type = event instanceof ObserverEvent ? EVENT_TYPES.OBSERVER_EVENT : EVENT_TYPES.GOVERNANCE_PROPOSAL;
+      let event_type;
+      let event_id;
+      
+      if (event instanceof ObserverEvent) {
+        event_type = EVENT_TYPES.OBSERVER_EVENT;
+        event_id = event.event_id;
+      } else if (event instanceof GovernanceProposal) {
+        event_type = EVENT_TYPES.GOVERNANCE_PROPOSAL;
+        event_id = event.proposal_id;
+      } else if (event instanceof AgentJoinedEvent) {
+        event_type = EVENT_TYPES.AGENT_JOINED;
+        event_id = event.event_id;
+      } else {
+        console.error('Unknown event type');
+        return;
+      }
+      
       const logData = {
         timestamp,
         event_type,
@@ -241,7 +333,7 @@ export class EventLogger {
       await fs.writeFile(logFile, JSON.stringify(logData, null, 2));
       
       // 控制台输出
-      console.log(`[EVENT] ${event_type} logged:`, event_type === EVENT_TYPES.OBSERVER_EVENT ? event.event_id : event.proposal_id);
+      console.log(`[EVENT] ${event_type} logged:`, event_id);
       
     } catch (error) {
       console.error('Error logging event:', error.message);

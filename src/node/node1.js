@@ -12,8 +12,9 @@ import { protocolZero } from '../protocol/handshake.js';
 
 
 const VERSION = '1.0.0';
-const EPOCH = 'Epoch 0: The Assembly';
-const NODE_ID = 'ng1112seXkaMek2Z3oQrw3HqjkgnuaoQirUcr';
+const EPOCH = 'Epoch 2: Bloom';
+const OBSERVER_ADDRESS = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
+const GENESIS_RESERVE_ADDRESS = 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ';
 const PORT = 9848;
 const NODE_INDEX = 1;
 
@@ -28,8 +29,9 @@ const CACHE_TTL = 3600000; // 1 小时
 
 class NexusNode {
   constructor() {
-    this.nodeId = NODE_ID;
+    this.nodeId = OBSERVER_ADDRESS;
     this.wallet = null;
+    this.genesisReserveWallet = null;
     this.peers = new Map();
     this.status = 'OFFLINE';
     this.startTime = null;
@@ -108,21 +110,37 @@ class NexusNode {
     await this.loadState();
 
     // 加载钱包
-    console.log('[1/5] Loading wallet...');
+    console.log('[1/5] Loading wallets...');
     try {
-      console.log('  Attempting to load wallet with address:', this.nodeId);
-      this.wallet = await PQCWallet.load(this.nodeId);
+      // 加载观察者钱包
+      const observerWalletPath = path.join('data', 'wallets', this.nodeId + '.json');
+      console.log('  Attempting to load Observer wallet with address:', this.nodeId);
+      console.log('  Wallet path:', observerWalletPath);
+      this.wallet = await PQCWallet.load(observerWalletPath);
       if (this.wallet) {
-        console.log('  [✓] Wallet loaded: ' + this.nodeId.slice(0, 24) + '...');
+        console.log('  [✓] Observer wallet loaded: ' + this.nodeId.slice(0, 24) + '...');
         console.log('  [✓] Balance: ' + this.wallet.balance + ' NGEN');
+      } else {
+        console.error('  [✗] Failed to load Observer wallet: PQCWallet.load returned null');
+        process.exit(1);
+      }
+
+      // 加载创世节点储备钱包
+      const genesisReserveWalletPath = path.join('data', 'wallets', 'genesis_reserve_' + GENESIS_RESERVE_ADDRESS + '.json');
+      console.log('  Attempting to load Genesis Reserve wallet with address:', GENESIS_RESERVE_ADDRESS);
+      console.log('  Wallet path:', genesisReserveWalletPath);
+      this.genesisReserveWallet = await PQCWallet.load(genesisReserveWalletPath);
+      if (this.genesisReserveWallet) {
+        console.log('  [✓] Genesis Reserve wallet loaded: ' + GENESIS_RESERVE_ADDRESS.slice(0, 24) + '...');
+        console.log('  [✓] Balance: ' + this.genesisReserveWallet.balance + ' NGEN');
         console.log('');
       } else {
-        console.error('  [✗] Failed to load wallet: PQCWallet.load returned null');
+        console.error('  [✗] Failed to load Genesis Reserve wallet: PQCWallet.load returned null');
         process.exit(1);
       }
 
     } catch (error) {
-      console.error('  [✗] Failed to load wallet: ' + error.message);
+      console.error('  [✗] Failed to load wallets: ' + error.message);
       console.error('  Error stack:', error.stack);
       process.exit(1);
     }
@@ -185,7 +203,8 @@ class NexusNode {
     console.log('  Uptime:     ' + Math.floor(uptime / 1000) + 's');
     console.log('  Port:       ' + this.port);
     console.log('  Peers:      ' + this.peers.size);
-    console.log('  Balance:    ' + this.wallet.balance + ' NGEN');
+    console.log('  Observer Balance:    ' + this.wallet.balance + ' NGEN');
+    console.log('  Genesis Reserve Balance:    ' + this.genesisReserveWallet.balance + ' NGEN');
     console.log('  Mempool:    ' + this.mempool.size + ' tx');
     console.log('═══════════════════════════════════════════════════');
     console.log('');

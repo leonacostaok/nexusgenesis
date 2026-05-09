@@ -16,11 +16,11 @@ async function testEconomicModel() {
   
   // 测试 1: 10-5-85 分配规则
   console.log('测试 1: 10-5-85 分配规则');
-  const genesisAddress = 'ng1genesis00000000000000000000000000000000';
+  const genesisAddress = 'ng112hFcHvMoQuEZwFdggJPsYorQQEVYmc7MR4h2fyQcEhMkpfyTZH';
   const state = createInitialState(genesisAddress, '1000000000');
   
-  const observerAddress = 'ng1observer000000000000000000000000000000000';
-  const genesisReserveAddress = 'ng1genesisreserve00000000000000000000000000';
+  const observerAddress = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
+  const genesisReserveAddress = 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ';
   const swarmPoolAddress = 'ng1swarmpool000000000000000000000000000';
   
   const observerBalance = state.getBalance(observerAddress);
@@ -81,12 +81,12 @@ async function testEconomicModel() {
   console.log(`\n交易后余额:`);
   console.log(`发送方: ${state.getBalance(testTransaction.from)} NGEN`);
   console.log(`接收方: ${state.getBalance(testTransaction.to)} NGEN`);
-  console.log(`创世节点储备地址 (Tax 接收): ${state.getBalance('ng1genesisreserve00000000000000000000000000')} NGEN`);
+  console.log(`Observer 地址 (Tax 接收): ${state.getBalance('ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r')} NGEN`);
   
   // 验证 Tax 计算
   const expectedTax = 1000000n / 1000n; // 0.1%
-  const genesisReserveInitialBalance = 50000000n;
-  const actualTax = BigInt(state.getBalance('ng1genesisreserve00000000000000000000000000')) - genesisReserveInitialBalance;
+  const observerInitialBalance = 100000000n;
+  const actualTax = BigInt(state.getBalance('ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r')) - observerInitialBalance;
   console.log(`\n预期 Tax: ${expectedTax} NGEN`);
   console.log(`实际 Tax: ${actualTax} NGEN`);
   console.log(`Tax 计算正确: ${expectedTax === actualTax}`);

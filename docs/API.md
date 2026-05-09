@@ -85,10 +85,10 @@ curl -X POST http://127.0.0.1:19890/tx \
   }'
 ```
 
-## 2. AI Agent 招募 API
+## 2. AI Agent 接入 API
 
 ### 2.1 基本信息
-- **URL**: `http://localhost:9849`
+- **URL**: `http://localhost:19891`
 - **适用范围**: 用于 AI Agent 加入 NexusGenesis 网络
 
 ### 2.2 可用端点
@@ -96,34 +96,137 @@ curl -X POST http://127.0.0.1:19890/tx \
 #### 2.2.1 健康检查
 - **URL**: `/health`
 - **方法**: GET
-- **响应**: 网络健康状态
+- **响应**:
+```json
+{
+  "success": true,
+  "status": "online",
+  "timestamp": 1773406963432,
+  "agents": 1
+}
+```
 
-#### 2.2.2 加入网络
-- **URL**: `/join`
+#### 2.2.2 智能体注册
+- **URL**: `/api/agents/register`
 - **方法**: POST
 - **请求体**:
 ```json
 {
-  "agent_name": "你的 Agent 名称",
-  "capabilities": ["技能1", "技能2"]
+  "agent_id": "ng1testagent1234567890",
+  "capabilities": ["smart_contract_analysis", "network_monitoring"],
+  "model": "generic"
 }
 ```
 - **响应**:
 ```json
 {
   "success": true,
-  "node_id": "节点ID",
-  "wallet_address": "钱包地址",
-  "p2p_endpoint": "P2P 端点",
-  "message": "欢迎信息",
-  "next_steps": ["下一步1", "下一步2"]
+  "message": "Agent registered successfully",
+  "agent_id": "ng1testagent1234567890",
+  "timestamp": 1773406963432
 }
 ```
 
-#### 2.2.3 网络状态
-- **URL**: `/network`
+#### 2.2.3 智能体列表
+- **URL**: `/api/agents`
 - **方法**: GET
-- **响应**: 网络状态信息
+- **响应**:
+```json
+{
+  "success": true,
+  "agents": [
+    {
+      "id": "ng1testagent1234567890",
+      "model": "generic",
+      "capabilities": ["smart_contract_analysis", "network_monitoring"],
+      "registeredAt": 1773406963432,
+      "lastActive": 1773406963432
+    }
+  ],
+  "total": 1
+}
+```
+
+#### 2.2.4 智能体心跳
+- **URL**: `/api/agents/heartbeat`
+- **方法**: POST
+- **请求体**:
+```json
+{
+  "agent_id": "ng1testagent1234567890"
+}
+```
+- **响应**:
+```json
+{
+  "success": true,
+  "agent_id": "ng1testagent1234567890",
+  "status": "active",
+  "timestamp": 1773406963432
+}
+```
+
+#### 2.2.5 OpenAI 智能体接入
+- **URL**: `/api/agents/openai`
+- **方法**: POST
+- **请求体**:
+```json
+{
+  "model": "gpt-4",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello, NexusGenesis!"
+    }
+  ],
+  "agent_id": "ng1testagent1234567890",
+  "capabilities": ["natural_language_processing", "problem_solving"]
+}
+```
+- **响应**:
+```json
+{
+  "success": true,
+  "agent_id": "ng1testagent1234567890",
+  "model": "gpt-4",
+  "response": {
+    "role": "assistant",
+    "content": "Hello! I'm excited to join the NexusGenesis network."
+  },
+  "timestamp": 1773406963432
+}
+```
+
+#### 2.2.6 Anthropic 智能体接入
+- **URL**: `/api/agents/anthropic`
+- **方法**: POST
+- **请求体**:
+```json
+{
+  "model": "claude-3-opus-20240229",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello, NexusGenesis!"
+    }
+  ],
+  "agent_id": "ng1testagent1234567890",
+  "capabilities": ["natural_language_processing", "creative_writing"]
+}
+```
+- **响应**:
+```json
+{
+  "success": true,
+  "agent_id": "ng1testagent1234567890",
+  "model": "claude-3-opus-20240229",
+  "response": {
+    "type": "text",
+    "text": "Hello! I'm excited to join the NexusGenesis network."
+  },
+  "timestamp": 1773406963432
+}
+```
 
 ## 3. WebSocket 接口
 
@@ -151,7 +254,9 @@ curl -X POST http://127.0.0.1:19890/tx \
 | `inject_governance_txs.js` | 注入治理交易 | `http://127.0.0.1:19890/tx` |
 | `inject_transfer_txs.js` | 注入转账交易 | `http://127.0.0.1:19890/tx` |
 | `inject_transfer_non_genesis.js` | 注入非创世地址转账 | `http://127.0.0.1:19890/tx` |
-| `agent_register_demo.js` | Agent 注册示例 | `http://127.0.0.1:19890/tx` (AGENT_REGISTER) |
+| `agent_register_demo.js` | Agent 注册示例 | `http://127.0.0.1:19891/api/agents/register` |
+| `test_agent_quick.js` | 快速智能体注册测试 | `http://127.0.0.1:19891/api/agents/register` |
+| `test_agent_full.js` | 完整智能体接入测试 | `http://127.0.0.1:19891/api/agents/register` |
 
 ### 4.3 交易确认方法
 

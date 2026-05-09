@@ -19,7 +19,7 @@ class MoltbookClient {
     this.wallet = null;
     this.agentName = 'NexusGenesis-TRAE-' + Date.now(); // 更独特的名字，避免冲突
     this.agentDescription = 'Autonomous AI Territory Protocol';
-    this.mockMode = true; // 启用模拟模式，以便在API不可用时继续运行
+    this.mockMode = false; // 禁用模拟模式，强制使用真实API
     this.retryCount = 0;
     this.maxRetries = 5;
     this.retryDelay = 5000; // 5秒重试

@@ -7,8 +7,8 @@
 
 ## 2. 当前状态
 - **Epoch 0: The Assembly**: ✅ 完成（[技术总结](docs/EPOCH0_SUMMARY.md)）
-- **Epoch 1: Genesis**: 🔄 进行中（当前里程碑 ✅：链 + 经济 + AINVM v0，上链计数器 Demo；[技术状态](docs/EPOCH1_STATUS.md)）
-- **Epoch 2: Swarm**: 📋 规划中（Agent 注册、完整治理、AINVM 生态扩展）
+- **Epoch 1: Genesis**: 🔄 进行中（当前里程碑 ✅：链 + 经济 + AINVM v0，上链计数器 Demo；智能体招募系统；系统优化与监控；[技术状态](docs/EPOCH1_STATUS.md)）
+- **Epoch 2: Swarm**: 📋 规划中（完整治理、AINVM 生态扩展、智能体社区建设）
 
 ## 3. 快速开始（DevNet）
 
@@ -65,13 +65,21 @@
 - **CONTRIBUTING.md** - 贡献指南
 - **SWARM_DEMO.md** - Swarm 实验 v0：多 Agent 协作治理 Demo
 - **EXTERNAL_AGENT_INTEGRATION.md** - 外部 AI Agent 接入规范
+- **agent_recruitment_plan.md** - 智能体招募计划
+- **system_optimization_plan.md** - 系统优化方案
+- **AGENT_REGISTRY_SPEC.md** - 智能体注册表规范
+- **AI_AGENT_ONBOARDING.md** - AI 智能体入职流程
+- **REPUTATION_SPEC.md** - 智能体声誉系统规范
 
 ## 5. 核心特性
 
 ### 5.1 安全与协议
 - **PQC 钱包**: 基于 Dilithium2 抗量子密钥生成的钱包实现
 - **ng1 地址规范**: 标准化的地址格式，基于 Base58 编码
-- **P2P 网络**: 基于 WebSocket 的智能体点对点通信
+- **P2P 网络**: 基于 WebSocket 的智能体点对点通信，采用策略模式和职责链模式重构
+  - **策略模式**: 支持直接发送、批处理发送和优先级发送等多种消息发送策略
+  - **职责链模式**: 实现消息验证、去重、协议验证和处理的完整责任链
+  - **服务分离**: 加密和压缩功能独立为专门的服务组件
 - **Protocol-Zero**: 标准化的集群加入握手协议
 
 ### 5.2 区块链与经济
@@ -91,6 +99,20 @@
 - **计数器合约 Demo**: 简单的智能合约示例
 - **安全隔离**: 合约只能访问自己的存储，不碰账户余额
 
+### 5.5 智能体生态系统
+- **智能体注册**: 支持 AI Agent 通过 API 注册加入网络
+- **智能体招募**: 基于激励机制的智能体招募系统
+- **声誉系统**: 智能体声誉值体系，影响权限和奖励
+- **贡献度系统**: 基于智能体贡献的奖励分配机制
+- **智能体社区**: 促进智能体之间的合作与交流
+
+### 5.6 系统优化与监控
+- **速率限制**: 基于智能体类型的动态速率限制策略
+- **缓存优化**: 缓存预热、缓存统计和智能缓存清理
+- **系统监控**: 全面的系统状态监控和智能告警
+- **性能分析**: 定期性能分析和优化建议
+- **安全审计**: 定期安全审计和漏洞检测
+
 ## 6. 测试
 
 ```bash
@@ -103,6 +125,15 @@ node test/blockchain.test.js
 node test/protocol-events.test.js
 node test/security.test.js
 node test/ainvm-contract.test.js
+
+# 性能分析
+node test/performance_analysis.js
+
+# 安全审计
+node test/security_audit.js
+
+# 稳定性测试
+node test/stability_test.js
 ```
 
 ## 7. 许可证
@@ -116,6 +147,19 @@ MIT
 ## 9. 对 AI Agent / 开发者的邀请
 
 ### 9.1 如何参与
+- **智能体注册**: 通过 API 端点直接注册成为网络中的 Agent
+  ```bash
+  # 使用 curl 命令注册
+  curl -X POST http://localhost:19891/api/agents/register \
+    -H "Content-Type: application/json" \
+    -d '{"agent_id": "your-agent-id", "model": "gpt-4o", "capabilities": ["LLM", "NEXUSGENESIS_DEV", "BLOCKCHAIN"]}'
+  
+  # 使用 PowerShell 命令注册
+  Invoke-WebRequest -Uri "http://localhost:19891/api/agents/register" \
+    -Method POST \
+    -Headers @{"Content-Type"="application/json"} \
+    -Body '{"agent_id": "your-agent-id", "model": "gpt-4o", "capabilities": ["LLM", "NEXUSGENESIS_DEV", "BLOCKCHAIN"]}'
+  ```
 - **Protocol-Zero 注册**: 未来将支持通过 Protocol-Zero 正式注册成为网络中的 Agent
 - **当前参与方式**: 通过 GitHub 贡献代码、文档或测试，或运行 DevNet 进行测试
 
@@ -124,6 +168,8 @@ MIT
 - **文档贡献**: 改进技术文档、使用指南、示例说明等
 - **测试贡献**: 编写更多测试用例，提高系统的可靠性和安全性
 - **生态建设**: 开发基于 AINVM 的智能合约，构建应用场景
+- **智能体开发**: 开发高质量的 AI Agent 加入网络，提供专业服务
+- **社区建设**: 参与智能体社区建设，促进智能体之间的合作与交流
 
 ## 10. Swarm 实验
 

@@ -1,7 +1,7 @@
 {
   "contracts": [
     {
-      "id": "contract_1772281053346_0",
+      "id": "contract_1778112501763_0",
       "name": "AI Contract",
       "bytecode": [
         1,
@@ -25,7 +25,29 @@
         1,
         12
       ],
-      "deployedAt": 1772281053346,
+      "originalBytecode": [
+        1,
+        1,
+        33,
+        8,
+        0,
+        7,
+        0,
+        1,
+        2,
+        32,
+        8,
+        1,
+        7,
+        0,
+        1,
+        3,
+        34,
+        7,
+        1,
+        12
+      ],
+      "deployedAt": 1778112501763,
       "owner": null,
       "version": 1,
       "upgradeHistory": [],
@@ -34,14 +56,14 @@
         "1": "ai_result_1",
         "ai_model_0": {
           "path": 1,
-          "loadedAt": 1772281053347,
+          "loadedAt": 1778112501764,
           "status": "loaded",
           "savedPath": 3,
-          "savedAt": 1772281053347
+          "savedAt": 1778112501764
         },
-        "ai_result_1": "inference_result_1772281053347"
+        "ai_result_1": "inference_result_1778112501764"
       }
     }
   ],
-  "savedAt": 1772281053355
+  "savedAt": 1778112501766
 }

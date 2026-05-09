@@ -28,7 +28,7 @@ ensureDirectories();
 
 // OpenAI API配置
 const OPENAI_CONFIG = {
-  apiKey: process.env.OPENAI_API_KEY || 'your-api-key-here',
+  apiKey: process.env.OPENAI_API_KEY,
   endpoint: 'https://api.openai.com/v1/chat/completions',
   model: 'gpt-3.5-turbo'
 };
@@ -433,8 +433,8 @@ export class AIService {
   async communicateWithOpenAI(inputData) {
     try {
       // 检查API密钥
-      if (OPENAI_CONFIG.apiKey === 'your-api-key-here') {
-        console.warn('Using default API key - please set OPENAI_API_KEY environment variable');
+      if (!OPENAI_CONFIG.apiKey) {
+        console.warn('No API key set - using mock response');
         // 模拟响应
         return this.getMockAIResponse(inputData);
       }
@@ -539,8 +539,8 @@ export class AIService {
   async executeOpenAIInstruction(instructionData, model = 'gpt-3.5-turbo') {
     try {
       // 检查API密钥
-      if (OPENAI_CONFIG.apiKey === 'your-api-key-here') {
-        console.warn('Using default API key - please set OPENAI_API_KEY environment variable');
+      if (!OPENAI_CONFIG.apiKey) {
+        console.warn('No API key set - using mock response');
         // 模拟响应
         return this.getMockInstructionResponse(instructionData);
       }

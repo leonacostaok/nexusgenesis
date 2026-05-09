@@ -6,7 +6,15 @@
 import WebSocket from 'ws';
 import crypto from 'crypto';
 import zlib from 'zlib';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { PQCWallet, validateAddress } from '../wallet/pqcWallet.js';
+import { verifySignature } from '../crypto/pqc.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const DATA_DIR = path.join(__dirname, '../../data/lightclient');
 
 class LightClient {
   constructor() {
@@ -18,6 +26,9 @@ class LightClient {
     this.bestBlockHash = null;
     this.status = 'OFFLINE';
     this.requests = new Map(); // 请求ID -> 回调函数
+    this.validatorSet = []; // 验证者集合
+    this.checkpoint = null; // 检查点
+    this.forkHeads = []; // 分叉链头
   }
 
   /**
@@ -31,6 +42,12 @@ class LightClient {
     console.log('  Version: 1.0.0');
     console.log('  Protocol: NG-0 (Protocol-Zero)');
     console.log('═══════════════════════════════════════════════════\n');
+
+    // 确保数据目录存在
+    this.ensureDataDir();
+    
+    // 尝试加载已保存的状态
+    this.loadState();
 
     // 生成或加载钱包
     try {
@@ -50,6 +67,9 @@ class LightClient {
 
     this.status = 'ONLINE';
     console.log('[✓] Light client ONLINE');
+
+    // 定期保存状态
+    setInterval(() => this.saveState(), 60000);
 
     return this;
   }
@@ -236,11 +256,29 @@ class LightClient {
    */
   handleBlockHeaders(message) {
     if (message.headers && message.headers.length > 0) {
-      this.blockHeaders = [...this.blockHeaders, ...message.headers];
-      const bestHeader = message.headers[message.headers.length - 1];
-      this.bestBlockHeight = bestHeader.height;
-      this.bestBlockHash = bestHeader.hash;
-      console.log(`[✓] Received ${message.headers.length} block headers, best block: #${this.bestBlockHeight}`);
+      let validHeaders = [];
+      
+      // 验证每个区块头
+      for (const header of message.headers) {
+        if (this.validateBlockHeader(header)) {
+          validHeaders.push(header);
+        } else {
+          console.error(`✗ Rejecting invalid header at height ${header.height}`);
+        }
+      }
+      
+      // 处理分叉
+      this.handleForks(validHeaders);
+      
+      // 添加有效的区块头
+      this.blockHeaders = [...this.blockHeaders, ...validHeaders];
+      
+      if (validHeaders.length > 0) {
+        const bestHeader = validHeaders[validHeaders.length - 1];
+        this.bestBlockHeight = bestHeader.height;
+        this.bestBlockHash = bestHeader.hash;
+        console.log(`[✓] Received ${validHeaders.length}/${message.headers.length} valid headers, best block: #${this.bestBlockHeight}`);
+      }
     }
   }
 
@@ -368,9 +406,242 @@ class LightClient {
   }
 
   /**
+   * 确保数据目录存在
+   */
+  ensureDataDir() {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+  }
+
+  /**
+   * 保存状态到磁盘
+   */
+  saveState() {
+    try {
+      const state = {
+        blockHeaders: this.blockHeaders,
+        bestBlockHeight: this.bestBlockHeight,
+        bestBlockHash: this.bestBlockHash,
+        validatorSet: this.validatorSet,
+        checkpoint: this.checkpoint,
+        forkHeads: this.forkHeads,
+        savedAt: Date.now()
+      };
+      
+      fs.writeFileSync(path.join(DATA_DIR, 'state.json'), JSON.stringify(state, null, 2));
+      console.log('[✓] State saved to disk');
+    } catch (error) {
+      console.error('[✗ Failed to save state:', error.message);
+    }
+  }
+
+  /**
+   * 从磁盘加载状态
+   */
+  loadState() {
+    try {
+      const statePath = path.join(DATA_DIR, 'state.json');
+      if (fs.existsSync(statePath)) {
+        const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
+        this.blockHeaders = state.blockHeaders || [];
+        this.bestBlockHeight = state.bestBlockHeight || 0;
+        this.bestBlockHash = state.bestBlockHash || null;
+        this.validatorSet = state.validatorSet || [];
+        this.checkpoint = state.checkpoint || null;
+        this.forkHeads = state.forkHeads || [];
+        console.log(`[✓] Loaded state from disk, ${this.blockHeaders.length} headers, best block #${this.bestBlockHeight}');
+      }
+    } catch (error) {
+      console.error('[✗] Failed to load state:', error.message);
+    }
+  }
+
+  /**
+   * 验证单个区块头
+   * @param {object} header - 区块头
+   * @returns {boolean}
+   */
+  validateBlockHeader(header) {
+    // 验证哈希验证
+    const headerHash = this.computeBlockHash(header);
+    if (headerHash !== header.hash) {
+      console.error(`✗ Invalid block hash at height ${header.height}`);
+      return false;
+    }
+    
+    // 验证前一个区块哈希
+    if (header.height > 0) {
+      const prevHeader = this.getHeaderByHeight(header.height - 1);
+      if (prevHeader && prevHeader.hash !== header.prevHash) {
+        console.error(`✗ Invalid previous hash at height ${header.height}`);
+        return false;
+      }
+    }
+    
+    // 验证签名（如果有）
+    if (header.signature && header.proposer) {
+      try {
+        const isValid = verifySignature(
+          header.signature,
+          Buffer.from(header.proposer, 'hex'),
+          Buffer.from(header.proposerPublicKey, 'hex')
+        );
+        if (!isValid) {
+          console.error(`✗ Invalid signature at height ${header.height}`);
+          return false;
+        }
+      } catch (error) {
+        console.error(`✗ Signature verification failed:`, error.message);
+      }
+    }
+    
+    return true;
+  }
+
+  /**
+   * 计算区块哈希
+   * @param {object} header - 区块头
+   * @returns {string}
+   */
+  computeBlockHash(header) {
+    const headerCopy = { ...header };
+    delete headerCopy.hash;
+    delete headerCopy.signature;
+    const headerStr = JSON.stringify(headerCopy, Object.keys(headerCopy).sort());
+    return crypto.createHash('sha256').update(headerStr).digest('hex');
+  }
+
+  /**
+   * 通过高度获取区块头
+   * @param {number} height - 区块高度
+   * @returns {object|null}
+   */
+  getHeaderByHeight(height) {
+    return this.blockHeaders.find(h => h.height === height) || null;
+  }
+
+  /**
+   * 通过哈希获取区块头
+   * @param {string} hash - 区块哈希
+   * @returns {object|null}
+   */
+  getHeaderByHash(hash) {
+    return this.blockHeaders.find(h => h.hash === hash) || null;
+  }
+
+  /**
+   * 验证区块包含关系
+   * @param {string} txId - 交易ID
+   * @param {number} blockHeight - 区块高度
+   * @returns {Promise<boolean>}
+   */
+  async verifyTransactionInclusion(txId, blockHeight) {
+    const proof = await this.getMerkleProof(txId);
+    if (!proof || !proof.proof) {
+      return false;
+    }
+    
+    const header = this.getHeaderByHeight(blockHeight);
+    if (!header) {
+      return false;
+    }
+    
+    return this.verifyMerkleProof(proof.proof, txId, header.txRoot);
+  }
+
+  /**
+   * 设置检查点
+   * @param {number} height - 检查点高度
+   * @param {string} hash - 检查点哈希
+   */
+  setCheckpoint(height, hash) {
+    this.checkpoint = { height, hash, timestamp: Date.now() };
+    console.log(`[✓] Checkpoint set at height ${height}`);
+    this.saveState();
+  }
+
+  /**
+   * 验证检查点之后的链
+   * @returns {boolean}
+   */
+  verifyCheckpointChain() {
+    if (!this.checkpoint) {
+      return true;
+    }
+    
+    const header = this.getHeaderByHeight(this.checkpoint.height);
+    if (!header || header.hash !== this.checkpoint.hash) {
+      console.error('✗ Checkpoint mismatch');
+      return false;
+    }
+    
+    return true;
+  }
+
+  /**
+   * 获取确认数
+   * @param {number} blockHeight - 区块高度
+   * @returns {number}
+   */
+  getConfirmations(blockHeight) {
+    if (this.bestBlockHeight < blockHeight) {
+      return 0;
+    }
+    return this.bestBlockHeight - blockHeight + 1;
+  }
+
+  /**
+   * 同步验证者集合
+   * @returns {Promise<void>}
+   */
+  async syncValidatorSet() {
+    return new Promise((resolve) => {
+      this.send({
+        type: 'GET_VALIDATOR_SET'
+      }, (response) => {
+          if (response.validators) {
+            this.validatorSet = response.validators;
+            console.log(`[✓] Synced ${this.validatorSet.length} validators`);
+          }
+          resolve();
+        });
+    });
+  }
+
+  /**
+   * 处理分叉检测与选择
+   * @param {Array<object>} newHeaders - 新的区块头
+   */
+  handleForks(newHeaders) {
+    // 简单的分叉检测
+    for (const header of newHeaders) {
+      const existing = this.getHeaderByHeight(header.height);
+      if (existing && existing.hash !== header.hash) {
+        // 发现分叉
+        console.log(`[!] Fork detected at height ${header.height}`);
+        
+        // 存储分叉头
+        this.forkHeads.push({
+          height: header.height,
+          hash: header.hash,
+          prevHash: header.prevHash,
+          timestamp: Date.now()
+        });
+        
+        // 这里可以实现更复杂的分叉选择逻辑
+        // 比如选择累计难度最高的链
+      }
+    }
+  }
+
+  /**
    * 关闭轻客户端
    */
   async close() {
+    // 保存状态
+    this.saveState();
+    
     if (this.peer) {
       this.peer.close();
     }
@@ -385,12 +656,15 @@ class LightClient {
     console.log('═══════════════════════════════════════════════════');
     console.log('  LIGHT CLIENT STATUS');
     console.log('═══════════════════════════════════════════════════');
-    console.log(`  Node ID:    ${this.nodeId}`);
-    console.log(`  Status:     ${this.status}`);
-    console.log(`  Peer:       ${this.peer ? 'Connected' : 'Disconnected'}`);
-    console.log(`  Block Height: ${this.bestBlockHeight}`);
-    console.log(`  Best Block: ${this.bestBlockHash ? this.bestBlockHash.slice(0, 16) + '...' : 'None'}`);
-    console.log(`  Headers Synced: ${this.blockHeaders.length}`);
+    console.log(`  Node ID:          ${this.nodeId ? this.nodeId.slice(0, 24) + '...' : 'None'}`);
+    console.log(`  Status:           ${this.status}`);
+    console.log(`  Peer:             ${this.peer ? 'Connected' : 'Disconnected'}`);
+    console.log(`  Block Height:     ${this.bestBlockHeight}`);
+    console.log(`  Best Block:       ${this.bestBlockHash ? this.bestBlockHash.slice(0, 16) + '...' : 'None'}`);
+    console.log(`  Headers Synced:   ${this.blockHeaders.length}`);
+    console.log(`  Validators:       ${this.validatorSet.length}`);
+    console.log(`  Checkpoint:       ${this.checkpoint ? `#${this.checkpoint.height}` : 'None'}`);
+    console.log(`  Fork Heads:       ${this.forkHeads.length}`);
     console.log('═══════════════════════════════════════════════════\n');
   }
 }

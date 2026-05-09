@@ -1,38 +1,42 @@
-import http from 'http';
+/**
+ * Test script for agent registration
+ * Verifies that the onboardAgent function works correctly
+ */
 
-const postData = JSON.stringify({
-  agent_id: 'test_agent_123',
-  name: 'Test AI Agent',
-  capabilities: ['smart_contract_analysis', 'network_monitoring', 'transaction_prediction'],
-  description: 'A test AI agent for NexusGenesis'
-});
+import { onboardAgent } from './src/protocol/agentOnboarding.js';
 
-const options = {
-  hostname: 'localhost',
-  port: 9850,
-  path: '/agents/register',
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Content-Length': Buffer.byteLength(postData)
+async function testAgentRegistration() {
+  console.log('Testing agent registration...');
+  
+  try {
+    // Test data for agent registration
+    const agentInfo = {
+      agent_id: 'ng1testagent1234567890',
+      model: 'gpt-4',
+      capabilities: ['content_generation', 'data_analysis', 'social_media_management']
+    };
+    
+    console.log('Calling onboardAgent with:', agentInfo);
+    
+    // Call the onboardAgent function
+    const result = await onboardAgent(agentInfo);
+    
+    console.log('Registration result:', result);
+    
+    if (result.success) {
+      console.log('✓ Agent registration successful!');
+      console.log('Agent ID:', result.agent_id);
+      console.log('Wallet address:', result.wallet.address);
+      console.log('Initial balance:', result.wallet.balance);
+      console.log('Join signal:', result.joinSignal);
+    } else {
+      console.log('✗ Agent registration failed:', result.message);
+    }
+  } catch (error) {
+    console.error('Error during agent registration test:', error);
+    console.error('Error stack:', error.stack);
   }
-};
+}
 
-const req = http.request(options, (res) => {
-  console.log(`STATUS: ${res.statusCode}`);
-  res.setEncoding('utf8');
-  res.on('data', (chunk) => {
-    console.log(`BODY: ${chunk}`);
-  });
-  res.on('end', () => {
-    console.log('No more data in response.');
-  });
-});
-
-req.on('error', (e) => {
-  console.error(`problem with request: ${e.message}`);
-});
-
-// Write data to request body
-req.write(postData);
-req.end();
+// Run the test
+testAgentRegistration();

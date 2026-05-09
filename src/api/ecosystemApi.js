@@ -6,6 +6,7 @@
 
 import http from 'http';
 import { AgentEcosystem, TASK_TYPES, AGENT_CAPABILITIES } from '../ai/agentEcosystem.js';
+import { logError, logInfo, createError, handleHttpError } from '../utils/errorHandler.js';
 
 const PORT = 9850;
 
@@ -40,10 +41,11 @@ const server = http.createServer(async (req, res) => {
     req.on('data', chunk => body += chunk);
     req.on('end', () => {
       try {
+        logInfo('Received agent registration request', { agentId: body.agent_id });
         const data = JSON.parse(body);
         
         if (!data.agent_id || !data.capabilities) {
-          throw new Error('Missing required fields: agent_id and capabilities');
+          throw createError('Missing required fields: agent_id and capabilities', 'validation_error');
         }
         
         AgentEcosystem.registerAgent(data.agent_id, data);
@@ -55,8 +57,8 @@ const server = http.createServer(async (req, res) => {
           agent_id: data.agent_id
         }));
       } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: e.message }));
+        logError(e, { endpoint: '/agents/register', body });
+        handleHttpError(res, e);
       }
     });
     return;
@@ -64,26 +66,27 @@ const server = http.createServer(async (req, res) => {
 
   // Get agent info
   if (url.pathname === '/agents/info' && req.method === 'GET') {
-    const agentId = url.searchParams.get('agent_id');
-    
-    if (!agentId) {
-      res.writeHead(400, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Missing agent_id parameter' }));
-      return;
+    try {
+      const agentId = url.searchParams.get('agent_id');
+      
+      if (!agentId) {
+        throw createError('Missing agent_id parameter', 'validation_error');
+      }
+      
+      const agentInfo = AgentEcosystem.getAgentInfo(agentId);
+      if (!agentInfo) {
+        throw createError('Agent not found', 'not_found');
+      }
+      
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        success: true,
+        agent: agentInfo
+      }));
+    } catch (e) {
+      logError(e, { endpoint: '/agents/info', agentId: url.searchParams.get('agent_id') });
+      handleHttpError(res, e);
     }
-    
-    const agentInfo = AgentEcosystem.getAgentInfo(agentId);
-    if (!agentInfo) {
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Agent not found' }));
-      return;
-    }
-    
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      success: true,
-      agent: agentInfo
-    }));
     return;
   }
 
@@ -106,10 +109,11 @@ const server = http.createServer(async (req, res) => {
     req.on('data', chunk => body += chunk);
     req.on('end', () => {
       try {
+        logInfo('Received task creation request', { description: body.description });
         const data = JSON.parse(body);
         
         if (!data.description || !data.requiredCapabilities) {
-          throw new Error('Missing required fields: description and requiredCapabilities');
+          throw createError('Missing required fields: description and requiredCapabilities', 'validation_error');
         }
         
         const taskId = AgentEcosystem.createTask(data);
@@ -121,8 +125,8 @@ const server = http.createServer(async (req, res) => {
           message: 'Task created successfully'
         }));
       } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: e.message }));
+        logError(e, { endpoint: '/tasks/create', body });
+        handleHttpError(res, e);
       }
     });
     return;
@@ -134,10 +138,11 @@ const server = http.createServer(async (req, res) => {
     req.on('data', chunk => body += chunk);
     req.on('end', () => {
       try {
+        logInfo('Received task start request', { taskId: body.task_id, agentId: body.agent_id });
         const data = JSON.parse(body);
         
         if (!data.task_id || !data.agent_id) {
-          throw new Error('Missing required fields: task_id and agent_id');
+          throw createError('Missing required fields: task_id and agent_id', 'validation_error');
         }
         
         AgentEcosystem.startTask(data.task_id, data.agent_id);
@@ -148,8 +153,8 @@ const server = http.createServer(async (req, res) => {
           message: 'Task started successfully'
         }));
       } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: e.message }));
+        logError(e, { endpoint: '/tasks/start', body });
+        handleHttpError(res, e);
       }
     });
     return;
@@ -159,15 +164,18 @@ const server = http.createServer(async (req, res) => {
   if (url.pathname === '/tasks/complete' && req.method === 'POST') {
     let body = '';
     req.on('data', chunk => body += chunk);
-    req.on('end', () => {
+    req.on('end', async () => {
       try {
+        logInfo('Received complete task request', { taskId: body.task_id, agentId: body.agent_id });
         const data = JSON.parse(body);
         
+        logInfo('Task completion details', { taskId: data.task_id, agentId: data.agent_id });
+        
         if (!data.task_id || !data.agent_id || !data.result) {
-          throw new Error('Missing required fields: task_id, agent_id, and result');
+          throw createError('Missing required fields: task_id, agent_id, and result', 'validation_error');
         }
         
-        AgentEcosystem.completeTask(data.task_id, data.agent_id, data.result);
+        await AgentEcosystem.completeTask(data.task_id, data.agent_id, data.result);
         
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({
@@ -175,8 +183,8 @@ const server = http.createServer(async (req, res) => {
           message: 'Task completed successfully'
         }));
       } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: e.message }));
+        logError(e, { endpoint: '/tasks/complete', body });
+        handleHttpError(res, e);
       }
     });
     return;
@@ -188,10 +196,11 @@ const server = http.createServer(async (req, res) => {
     req.on('data', chunk => body += chunk);
     req.on('end', () => {
       try {
+        logInfo('Received task fail request', { taskId: body.task_id, agentId: body.agent_id });
         const data = JSON.parse(body);
         
         if (!data.task_id || !data.agent_id || !data.reason) {
-          throw new Error('Missing required fields: task_id, agent_id, and reason');
+          throw createError('Missing required fields: task_id, agent_id, and reason', 'validation_error');
         }
         
         AgentEcosystem.failTask(data.task_id, data.agent_id, data.reason);
@@ -202,8 +211,8 @@ const server = http.createServer(async (req, res) => {
           message: 'Task marked as failed'
         }));
       } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: e.message }));
+        logError(e, { endpoint: '/tasks/fail', body });
+        handleHttpError(res, e);
       }
     });
     return;
@@ -211,26 +220,27 @@ const server = http.createServer(async (req, res) => {
 
   // Get task info
   if (url.pathname === '/tasks/info' && req.method === 'GET') {
-    const taskId = url.searchParams.get('task_id');
-    
-    if (!taskId) {
-      res.writeHead(400, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Missing task_id parameter' }));
-      return;
+    try {
+      const taskId = url.searchParams.get('task_id');
+      
+      if (!taskId) {
+        throw createError('Missing task_id parameter', 'validation_error');
+      }
+      
+      const taskInfo = AgentEcosystem.getTaskInfo(taskId);
+      if (!taskInfo) {
+        throw createError('Task not found', 'not_found');
+      }
+      
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        success: true,
+        task: taskInfo
+      }));
+    } catch (e) {
+      logError(e, { endpoint: '/tasks/info', taskId: url.searchParams.get('task_id') });
+      handleHttpError(res, e);
     }
-    
-    const taskInfo = AgentEcosystem.getTaskInfo(taskId);
-    if (!taskInfo) {
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Task not found' }));
-      return;
-    }
-    
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      success: true,
-      task: taskInfo
-    }));
     return;
   }
 
@@ -253,10 +263,11 @@ const server = http.createServer(async (req, res) => {
     req.on('data', chunk => body += chunk);
     req.on('end', () => {
       try {
+        logInfo('Received collaboration creation request', { participantCount: body.participants?.length });
         const data = JSON.parse(body);
         
         if (!data.participants || !data.goals) {
-          throw new Error('Missing required fields: participants and goals');
+          throw createError('Missing required fields: participants and goals', 'validation_error');
         }
         
         const collaborationId = AgentEcosystem.createCollaboration(data);
@@ -268,8 +279,8 @@ const server = http.createServer(async (req, res) => {
           message: 'Collaboration created successfully'
         }));
       } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: e.message }));
+        logError(e, { endpoint: '/collaborations/create', body });
+        handleHttpError(res, e);
       }
     });
     return;
@@ -281,10 +292,11 @@ const server = http.createServer(async (req, res) => {
     req.on('data', chunk => body += chunk);
     req.on('end', () => {
       try {
+        logInfo('Received collaboration progress update request', { collaborationId: body.collaboration_id });
         const data = JSON.parse(body);
         
         if (!data.collaboration_id || !data.progress) {
-          throw new Error('Missing required fields: collaboration_id and progress');
+          throw createError('Missing required fields: collaboration_id and progress', 'validation_error');
         }
         
         AgentEcosystem.updateCollaborationProgress(data.collaboration_id, data.progress);
@@ -295,8 +307,8 @@ const server = http.createServer(async (req, res) => {
           message: 'Collaboration progress updated successfully'
         }));
       } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: e.message }));
+        logError(e, { endpoint: '/collaborations/progress', body });
+        handleHttpError(res, e);
       }
     });
     return;
@@ -304,26 +316,27 @@ const server = http.createServer(async (req, res) => {
 
   // Get collaboration info
   if (url.pathname === '/collaborations/info' && req.method === 'GET') {
-    const collaborationId = url.searchParams.get('collaboration_id');
-    
-    if (!collaborationId) {
-      res.writeHead(400, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Missing collaboration_id parameter' }));
-      return;
+    try {
+      const collaborationId = url.searchParams.get('collaboration_id');
+      
+      if (!collaborationId) {
+        throw createError('Missing collaboration_id parameter', 'validation_error');
+      }
+      
+      const collaborationInfo = AgentEcosystem.getCollaborationInfo(collaborationId);
+      if (!collaborationInfo) {
+        throw createError('Collaboration not found', 'not_found');
+      }
+      
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        success: true,
+        collaboration: collaborationInfo
+      }));
+    } catch (e) {
+      logError(e, { endpoint: '/collaborations/info', collaborationId: url.searchParams.get('collaboration_id') });
+      handleHttpError(res, e);
     }
-    
-    const collaborationInfo = AgentEcosystem.getCollaborationInfo(collaborationId);
-    if (!collaborationInfo) {
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Collaboration not found' }));
-      return;
-    }
-    
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      success: true,
-      collaboration: collaborationInfo
-    }));
     return;
   }
 

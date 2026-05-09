@@ -18,9 +18,27 @@ import { Block, createGenesisBlock, createBlock } from '../blockchain/block.js';
 import { State, createInitialState } from '../blockchain/state.js';
 import { CrossChainBridge } from '../bridge/crossChainBridge.js';
 import AgentRegistry from '../contracts/examples/agentRegistry.js';
+import { startHttpServer } from '../http/server.js';
+import {
+  deployEnhancedGovernanceContract,
+  createEnhancedProposal,
+  reviseProposal,
+  withdrawProposal,
+  startVoting,
+  enhancedVote,
+  endVoting,
+  getProposalInfo,
+  getAllProposals,
+  getEnhancedGovernanceParams,
+  updateEnhancedGovernanceParams,
+  PROPOSAL_TYPES,
+  VOTE_OPTIONS,
+  PROPOSAL_STATUS
+} from '../contracts/governance.js';
 import fs from 'fs/promises';
 import path from 'path';
 import http from 'http';
+import recoveryManager from '../automation/recoveryManager.js';
 
 const VERSION = '1.0.0';
 const EPOCH = 'Epoch 0: The Assembly';
@@ -227,10 +245,17 @@ class GenesisNode {
     // 初始化状态
     this.currentState = createInitialState(this.nodeId, this.wallet.balance);
     
-    // 加载状态
+    // 尝试从最新快照恢复状态
     const stateDir = path.join('data', 'state');
     const stateFile = path.join(stateDir, 'blockchainState.json');
-    await this.currentState.loadFromFile(stateFile);
+    
+    // 先尝试从快照恢复
+    const snapshotRestored = await this.currentState.restoreFromLatestSnapshot();
+    
+    // 如果快照恢复失败，尝试从旧状态文件恢复
+    if (!snapshotRestored) {
+      await this.currentState.loadFromFile(stateFile);
+    }
     
     console.log('[✓] Blockchain and state initialized');
   }
@@ -326,6 +351,71 @@ class GenesisNode {
           agents: agents,
           total: agents.length
         }));
+      } else if (req.url === '/register_agent' && req.method === 'POST') {
+        // 处理智能体注册请求
+        let body = '';
+        req.on('data', chunk => {
+          body += chunk.toString();
+        });
+        req.on('end', async () => {
+          try {
+            const { agentInfo, joinSignal } = JSON.parse(body);
+            
+            // 验证joinSignal（开发阶段跳过）
+            console.log('[DevNet] Skipping join signal validation in genesis node...');
+            // const signalValidation = await protocolZero.verifySignal(joinSignal);
+            // if (!signalValidation.valid) {
+            //   res.writeHead(400, { 'Content-Type': 'application/json' });
+            //   res.end(JSON.stringify({ success: false, reason: signalValidation.reason }));
+            //   return;
+            // }
+            
+            // 提取地址和公钥
+            const address = joinSignal.address;
+            const publicKey = joinSignal.publicKey;
+            
+            // 构建注册交易
+            const transaction = {
+              type: 'AGENT_REGISTER',
+              data: {
+                address: address,
+                publicKey: publicKey,
+                name: agentInfo.name || `Agent-${address.slice(0, 8)}`,
+                description: agentInfo.description || `Agent with capabilities: ${agentInfo.capabilities?.join(', ') || 'Unknown'}`,
+                capabilities: agentInfo.capabilities || [],
+                joinSignal: joinSignal
+              }
+            };
+            
+            // 处理注册
+            const registrationResult = this.agentRegistry.handleAgentRegister(transaction);
+            
+            if (registrationResult.success) {
+              // 记录AGENT_JOINED事件
+              this.eventLogger.log({
+                type: EVENT_TYPES.AGENT_JOINED,
+                timestamp: Date.now(),
+                agent_id: registrationResult.data.agentId,
+                address: address,
+                node_address: this.nodeAddress,
+                capabilities: agentInfo.capabilities || []
+              });
+              
+              res.writeHead(200, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({
+                success: true,
+                message: registrationResult.message,
+                agent: registrationResult.data
+              }));
+            } else {
+              res.writeHead(400, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ success: false, reason: registrationResult.message }));
+            }
+          } catch (error) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, reason: error.message }));
+          }
+        });
       } else if (req.url === '/events/agent_joined' && req.method === 'GET') {
         // 处理AGENT_JOINED事件查询请求
         let query = {};
@@ -376,6 +466,7 @@ class GenesisNode {
     console.log('  Epoch: ' + EPOCH);
     console.log('  Wallet: PQC (Dilithium2)');
     console.log('  安全修复：SEC-001, SEC-002, SEC-003');
+    console.log('  增强治理：Enhanced Governance Contract');
     console.log('═══════════════════════════════════════════════════\n');
 
     // 尝试从本地加载节点状态
@@ -432,6 +523,16 @@ class GenesisNode {
     console.log(`  [✓] Blockchain: ${this.blockchain.length} blocks`);
     console.log(`  [✓] State: Ready\n`);
 
+    // Step 1.75: 部署增强版治理合约
+    console.log('[1.75/5] Deploying Enhanced Governance Contract...');
+    this.governanceContractId = await deployEnhancedGovernanceContract(this.nodeId);
+    console.log(`  [✓] Enhanced Governance Contract deployed with ID: ${this.governanceContractId}`);
+    
+    // 获取治理参数
+    const governanceParams = getEnhancedGovernanceParams(this.governanceContractId);
+    console.log(`  [✓] Governance parameters:`, governanceParams);
+    console.log();
+
     // Step 2: 启动 P2P 层 (带身份认证)
     console.log('[2/5] Starting P2P communication layer...');
     await p2pServer.start(this);
@@ -441,6 +542,11 @@ class GenesisNode {
     console.log('[2.5/5] Starting local transaction injection server...');
     this.httpServer = this.startHttpServer();
     console.log(`  [✓] Local injection server: Ready\n`);
+    
+    // Step 2.6: 启动智能体接入 HTTP 服务器
+    console.log('[2.6/5] Starting agent access HTTP server...');
+    this.agentHttpServer = startHttpServer(this);
+    console.log(`  [✓] Agent access server: Ready\n`);
 
     // Step 3: Protocol-Zero 状态
     console.log('[3/5] Protocol-Zero handshake ready');
@@ -487,6 +593,10 @@ class GenesisNode {
     
     // 启动区块生产
     this.startBlockProduction();
+    
+    // 将节点注册到自动恢复管理器
+    recoveryManager.attachNode(this);
+    console.log('[✓] Recovery manager attached');
     
     return this;
   }
@@ -766,21 +876,8 @@ class GenesisNode {
           return { valid: false, reason: 'Invalid signature' };
         }
       } catch (error) {
-        console.error('Signature verification error:', error.message);
-        
-        // 处理 superdilithium 库的签名长度错误
-        // 在测试环境中，我们需要允许这种情况通过，因为库的实现可能有问题
-        if (error.message.includes('Invalid typed array length')) {
-          // 检查是否为篡改的签名（以 '0' 结尾）
-          if (tx.signature && tx.signature.endsWith('0')) {
-            console.log('[DevNet] Tampered signature detected');
-            return { valid: false, reason: 'Invalid signature' };
-          }
-          console.log('[DevNet] Handling superdilithium signature length error for test purposes');
-          // 对于非篡改的签名，允许通过
-        } else {
-          return { valid: false, reason: 'Signature verification failed' };
-        }
+        console.error('[SECURITY] Signature verification error:', error.message);
+        return { valid: false, reason: 'Signature verification failed' };
       }
     } else {
       // 对于非 AGENT_REGISTER 交易，如果没有缓存的公钥，暂时允许通过
@@ -1058,19 +1155,22 @@ class GenesisNode {
   }
 
   async evictLowestFeeTx() {
-    let lowestId = null;
-    let lowestPriority = Infinity;
+    // 当内存池满时，删除优先级最低的20%交易
+    const evictCount = Math.ceil(this.mempool.size * 0.2);
+    let evicted = 0;
     
-    for (const [id, tx] of this.mempool) {
-      if (tx.priority < lowestPriority) {
-        lowestPriority = tx.priority;
-        lowestId = id;
-      }
+    // 获取并排序所有交易
+    const sortedTxs = Array.from(this.mempool.entries())
+      .sort((a, b) => a[1].priority - b[1].priority);
+    
+    // 删除优先级最低的交易
+    for (const [id, tx] of sortedTxs.slice(0, evictCount)) {
+      this.mempool.delete(id);
+      evicted++;
     }
     
-    if (lowestId) {
-      this.mempool.delete(lowestId);
-      console.log(`Evicted lowest fee transaction: ${lowestId.slice(0, 16)}...`);
+    if (evicted > 0) {
+      console.log(`Evicted ${evicted} lowest priority transactions from mempool`);
     }
   }
 
@@ -1257,7 +1357,20 @@ class GenesisNode {
     this.blockchain.push(newBlock);
     await this.saveBlockchain();
     
-    // 保存状态
+    // 检查是否需要创建快照
+    if (this.currentState.shouldCreateSnapshot(newBlock.header.height)) {
+      await this.currentState.createSnapshot(newBlock.header.height);
+    }
+    
+    // 检查是否需要保存增量变更
+    if (this.currentState.shouldSaveIncremental()) {
+      await this.currentState.saveIncrementalChanges();
+    } else {
+      // 立即保存增量变更
+      await this.currentState.saveIncrementalChanges();
+    }
+    
+    // 保存完整状态（作为备份）
     const stateDir = path.join('data', 'state');
     const stateFile = path.join(stateDir, 'blockchainState.json');
     await this.currentState.saveToFile(stateFile);
@@ -1271,54 +1384,7 @@ class GenesisNode {
     return newBlock;
   }
 
-  /**
-   * 处理接收到的区块
-   * @param {Block} block - 接收到的区块
-   * @returns {boolean} 是否成功处理
-   */
-  async handleBlock(block) {
-    // 验证区块
-    if (!block.validate()) {
-      console.error('Invalid block received');
-      return false;
-    }
-    
-    // 检查区块高度
-    const latestBlock = this.blockchain[this.blockchain.length - 1];
-    if (block.header.height !== latestBlock.header.height + 1) {
-      console.error('Invalid block height');
-      return false;
-    }
-    
-    // 检查父哈希
-    if (block.header.parent_hash !== latestBlock.hash) {
-      console.error('Invalid parent hash');
-      return false;
-    }
-    
-    // 应用交易到状态
-    if (!this.currentState.applyTransactions(block.body.transactions, block.header.height)) {
-      console.error('Failed to apply transactions from received block');
-      return false;
-    }
-    
-    // 添加区块到区块链
-    this.blockchain.push(block);
-    await this.saveBlockchain();
-    
-    // 保存状态
-    const stateDir = path.join('data', 'state');
-    const stateFile = path.join(stateDir, 'blockchainState.json');
-    await this.currentState.saveToFile(stateFile);
-    
-    // 从mempool中移除已处理的交易
-    for (const tx of block.body.transactions) {
-      this.mempool.delete(tx.id);
-    }
-    
-    console.log(`[✓] Received block #${block.header.height} from peer`);
-    return true;
-  }
+
 
   /**
    * 多领导者共识状态
@@ -1350,35 +1416,43 @@ class GenesisNode {
    * 更新委员会成员
    */
   updateCommittee() {
-    // 简单的委员会选择算法：基于节点健康状态和连接时间
     const candidates = Array.from(this.peers.entries())
-      .map(([peerId, peer]) => ({
-        peerId,
-        nodeId: peer.remoteNodeId,
-        healthScore: peer.healthScore || 100,
-        connectedTime: peer.connectedAt
-      }))
-      .filter(candidate => candidate.nodeId) // 确保有节点ID
-      .sort((a, b) => {
-        // 优先考虑健康分数，然后是连接时间
-        if (b.healthScore !== a.healthScore) {
-          return b.healthScore - a.healthScore;
-        }
-        return b.connectedTime - a.connectedTime;
-      });
+      .map(([peerId, peer]) => {
+        // 综合健康评分：基础分 + 心跳响应时间 + 连接稳定性
+        const healthScore = peer.healthScore || 100;
+        const responseTime = peer.lastPong ? (Date.now() - peer.lastPong) : 60000;
+        const stabilityBonus = peer.reconnectCount ? Math.max(0, 10 - peer.reconnectCount) : 10;
+        const compositeScore = healthScore + stabilityBonus - Math.floor(responseTime / 1000);
+        
+        return {
+          peerId,
+          nodeId: peer.remoteNodeId,
+          healthScore: compositeScore,
+          connectedTime: peer.connectedAt,
+          lastActive: peer.lastPong || peer.connectedAt
+        };
+      })
+      .filter(candidate => candidate.nodeId && candidate.healthScore > 0)
+      .sort((a, b) => b.healthScore - a.healthScore || b.connectedTime - a.connectedTime);
     
-    // 选择前5个节点作为委员会成员
-    const committeeSize = Math.min(5, candidates.length);
+    const committeeSize = Math.min(7, candidates.length);
     const newCommittee = new Set(
-      candidates.slice(0, committeeSize).map(candidate => candidate.nodeId)
+      candidates.slice(0, committeeSize).map(c => c.nodeId)
     );
     
-    // 始终包含自己
     newCommittee.add(this.nodeId);
     
+    const oldCommittee = this.consensusState.committee;
     this.consensusState.committee = newCommittee;
     this.consensusState.epoch++;
     this.consensusState.lastCommitteeUpdate = Date.now();
+    
+    // 日志：委员会变更
+    const added = [...newCommittee].filter(n => !oldCommittee?.has(n));
+    const removed = [...(oldCommittee || [])].filter(n => !newCommittee.has(n));
+    if (added.length || removed.length) {
+      console.log(`[COMMITTEE] epoch=${this.consensusState.epoch} size=${newCommittee.size} +${added.length} -${removed.length}`);
+    }
     
     // 生成领导者轮值表
     this.generateLeaderSchedule();
@@ -1418,12 +1492,22 @@ class GenesisNode {
   startBlockProduction() {
     // 多领导者共识：根据轮值表决定是否出块
     setInterval(async () => {
-      if (this.status === 'ONLINE' && this.isCurrentLeader()) {
-        const newBlock = await this.createNewBlock();
-        if (newBlock) {
-          // 广播区块并请求确认
-          this.broadcastBlockWithRequest(newBlock);
-        }
+      // 稳定性检查：节点必须 ONLINE 且恢复管理器状态健康
+      const recoveryReport = recoveryManager.getHealthReport();
+      if (this.status !== 'ONLINE') return;
+      if (recoveryReport.state === 'critical' || recoveryReport.state === 'recovering') {
+        console.log(`[CONSENSUS] Skipping block production: recovery state=${recoveryReport.state}`);
+        return;
+      }
+      if (!this.consensusState?.committee || this.consensusState.committee.size < 2) {
+        console.log('[CONSENSUS] Skipping block: insufficient committee');
+        return;
+      }
+      if (!this.isCurrentLeader()) return;
+
+      const newBlock = await this.createNewBlock();
+      if (newBlock) {
+        this.broadcastBlockWithRequest(newBlock);
       }
     }, 10000);
     
@@ -1486,7 +1570,20 @@ class GenesisNode {
     this.blockchain.push(block);
     await this.saveBlockchain();
     
-    // 保存状态
+    // 检查是否需要创建快照
+    if (this.currentState.shouldCreateSnapshot(block.header.height)) {
+      await this.currentState.createSnapshot(block.header.height);
+    }
+    
+    // 检查是否需要保存增量变更
+    if (this.currentState.shouldSaveIncremental()) {
+      await this.currentState.saveIncrementalChanges();
+    } else {
+      // 立即保存增量变更
+      await this.currentState.saveIncrementalChanges();
+    }
+    
+    // 保存完整状态（作为备份）
     const stateDir = path.join('data', 'state');
     const stateFile = path.join(stateDir, 'blockchainState.json');
     await this.currentState.saveToFile(stateFile);
@@ -1527,19 +1624,28 @@ class GenesisNode {
     // 验证签名
     // TODO: 实现签名验证
     
-    // 更新确认计数
-    if (this.consensusState.blockConfirmations.has(blockHash)) {
-      const confirmationData = this.consensusState.blockConfirmations.get(blockHash);
-      confirmationData.confirmations.add(nodeId);
+    // 获取区块确认信息
+    const blockConfirmation = this.consensusState.blockConfirmations.get(blockHash);
+    if (!blockConfirmation) {
+      console.log(`Received confirmation for unknown block: ${blockHash.slice(0, 16)}...`);
+      return;
+    }
+    
+    // 添加确认
+    blockConfirmation.confirmations.add(nodeId);
+    
+    console.log(`Received confirmation for block ${blockHash.slice(0, 16)}... from ${nodeId.slice(0, 10)}... (${blockConfirmation.confirmations.size}/${this.consensusState.committee.size} confirmations)`);
+    
+    // 检查是否达到最终性确认数（委员会成员的2/3 + 1）
+    const requiredConfirmations = Math.floor(this.consensusState.committee.size * 2 / 3) + 1;
+    if (blockConfirmation.confirmations.size >= requiredConfirmations) {
+      console.log(`Block ${blockHash.slice(0, 16)}... has reached finality with ${blockConfirmation.confirmations.size} confirmations!`);
       
-      // 检查是否达到确认阈值
-      const committeeSize = this.consensusState.committee.size;
-      const confirmationThreshold = Math.floor(committeeSize * 2 / 3) + 1;
+      // 标记区块为最终确认状态（可以添加到区块元数据中）
+      // 这里可以添加一些最终性处理逻辑，比如更新状态、触发事件等
       
-      if (confirmationData.confirmations.size >= confirmationThreshold) {
-        console.log(`[CONSENSUS] Block ${blockHash.slice(0, 16)}... confirmed by ${confirmationData.confirmations.size} nodes`);
-        // 可以在这里添加区块最终确认的逻辑
-      }
+      // 移除已最终确认的区块确认信息
+      this.consensusState.blockConfirmations.delete(blockHash);
     }
   }
 
@@ -1554,11 +1660,69 @@ class GenesisNode {
       // 清理过期的确认请求（1分钟）
       if (now - data.timestamp > 60000) {
         expiredConfirmations.push(blockHash);
+        continue;
+      }
+      
+      // 检查是否达到最终性确认数（委员会成员的2/3 + 1）
+      const requiredConfirmations = Math.floor(this.consensusState.committee.size * 2 / 3) + 1;
+      if (data.confirmations.size >= requiredConfirmations) {
+        console.log(`Block ${blockHash.slice(0, 16)}... has reached finality with ${data.confirmations.size} confirmations!`);
+        
+        // 标记区块为最终确认状态（可以添加到区块元数据中）
+        // 这里可以添加一些最终性处理逻辑，比如更新状态、触发事件等
+        
+        // 移除已最终确认的区块确认信息
+        expiredConfirmations.push(blockHash);
       }
     }
     
+    // 处理分叉情况：如果有多个高度相同的区块，选择确认数最多的
+    this.handleForks();
+    
+    // 清理过期或已最终确认的确认信息
     for (const blockHash of expiredConfirmations) {
       this.consensusState.blockConfirmations.delete(blockHash);
+    }
+  }
+  
+  /**
+   * 处理区块链分叉
+   */
+  handleForks() {
+    const blocksByHeight = new Map();
+    
+    for (const [blockHash, data] of this.consensusState.blockConfirmations) {
+      const height = data.block.header.height;
+      if (!blocksByHeight.has(height)) {
+        blocksByHeight.set(height, []);
+      }
+      blocksByHeight.get(height).push({
+        block: data.block,
+        hash: blockHash,
+        confirmations: data.confirmations.size
+      });
+    }
+    
+    for (const [height, blocks] of blocksByHeight) {
+      if (blocks.length <= 1) continue;
+      
+      console.log(`[FORK] height=${height} competing=${blocks.length}`);
+      
+      // 排序：确认数 → 区块哈希（伪随机选择一致性）
+      blocks.sort((a, b) => {
+        const confDiff = b.confirmations - a.confirmations;
+        if (confDiff !== 0) return confDiff;
+        // 相同确认数时用哈希字典序作为一致性 tiebreaker
+        return a.hash.localeCompare(b.hash);
+      });
+      
+      const winningBlock = blocks[0];
+      console.log(`[FORK] winner=${winningBlock.hash.slice(0, 16)}... confirms=${winningBlock.confirmations}`);
+      
+      for (const blockInfo of blocks.slice(1)) {
+        console.log(`[FORK] rejecting=${blockInfo.hash.slice(0, 16)}...`);
+        this.consensusState.blockConfirmations.delete(blockInfo.hash);
+      }
     }
   }
 
@@ -1578,6 +1742,8 @@ class GenesisNode {
   async shutdown() {
     console.log('Genesis Node shutting down...');
     this.status = 'OFFLINE';
+    await this.saveState();
+    await recoveryManager.shutdown();
     await p2pServer.stop();
     process.exit(0);
   }

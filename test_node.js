@@ -1,27 +1,23 @@
-#!/usr/bin/env node
+// 测试Node.js基本功能
+const fs = require('fs');
 
-import { GenesisNode } from './src/node/genesisNode.js';
+console.log('Node.js版本:', process.version);
+console.log('当前目录:', __dirname);
 
-console.log('Testing Genesis Node initialization...');
-
-// 测试模块导入
-console.log('Module imported successfully');
-
-// 测试 GenesisNode 类
-const node = new GenesisNode();
-console.log('GenesisNode instance created successfully');
-
-// 测试初始化
-node.initialize().then(() => {
-  console.log('Genesis Node initialized successfully');
-}).catch(err => {
-  console.error('Error initializing Genesis Node:', err);
-  console.error('Error stack:', err.stack);
-  process.exit(1);
-});
-
-// 防止进程退出
-process.on('SIGINT', () => {
-  console.log('Received SIGINT, shutting down...');
-  node.shutdown().catch(err => console.error('Error during shutdown:', err));
-});
+// 测试文件写入
+try {
+  fs.writeFileSync('test_output.txt', '测试文件写入成功！');
+  console.log('文件写入成功');
+  
+  // 测试文件读取
+  const content = fs.readFileSync('test_output.txt', 'utf8');
+  console.log('文件内容:', content);
+  
+  // 测试API密钥读取
+  const apiKey = fs.readFileSync('instreet_api_key.txt', 'utf8').trim();
+  console.log('API密钥读取成功:', apiKey.substring(0, 5) + '...' + apiKey.substring(apiKey.length - 5));
+  
+} catch (error) {
+  console.error('错误:', error.message);
+  console.error('错误详情:', error);
+}

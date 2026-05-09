@@ -129,6 +129,44 @@ class AINVM {
       case 0x0C: // RETURN
         this.executeRETURN();
         break;
+      // 逻辑运算指令
+      case 0x0D: // AND
+        this.executeAND();
+        break;
+      case 0x0E: // OR
+        this.executeOR();
+        break;
+      case 0x0F: // NOT
+        this.executeNOT();
+        break;
+      case 0x16: // XOR
+        this.executeXOR();
+        break;
+      case 0x17: // EQ
+        this.executeEQ();
+        break;
+      case 0x18: // LT
+        this.executeLT();
+        break;
+      case 0x19: // GT
+        this.executeGT();
+        break;
+      // 数学运算指令
+      case 0x1A: // MOD
+        this.executeMOD();
+        break;
+      case 0x1B: // SHL
+        this.executeSHL();
+        break;
+      case 0x1C: // SHR
+        this.executeSHR();
+        break;
+      case 0x1D: // DUP
+        this.executeDUP();
+        break;
+      case 0x1E: // SWAP
+        this.executeSWAP();
+        break;
       // 矩阵运算指令
       case 0x10: // MAT_CREATE
         this.executeMAT_CREATE();
@@ -236,6 +274,23 @@ class AINVM {
         case 0x0C: // RETURN
           estimatedGas += 0;
           break;
+        // 逻辑和数学运算
+        case 0x0D: // AND
+        case 0x0E: // OR
+        case 0x0F: // NOT
+        case 0x16: // XOR
+        case 0x17: // EQ
+        case 0x18: // LT
+        case 0x19: // GT
+        case 0x1B: // SHL
+        case 0x1C: // SHR
+        case 0x1D: // DUP
+        case 0x1E: // SWAP
+          estimatedGas += 1;
+          break;
+        case 0x1A: // MOD
+          estimatedGas += 2;
+          break;
         case 0x10: // MAT_CREATE
           estimatedGas += 5;
           pc += 2; // rows and cols
@@ -287,24 +342,63 @@ class AINVM {
     while (i < bytecode.length) {
       const opcode = bytecode[i];
       
-      // 优化连续的PUSH指令
-      if (opcode === 0x01 && i + 2 < bytecode.length && bytecode[i + 2] === 0x01) {
-        // 合并连续的PUSH指令（如果可能）
-        optimized.push(opcode);
-        optimized.push(bytecode[i + 1]);
-        i += 2;
-      } else if (opcode === 0x02 && optimized.length > 0 && optimized[optimized.length - 2] === 0x01) {
-        // 优化POP指令，如果前面是PUSH指令则可以删除两者
+      // 优化1: PUSH 0, PUSH 0 -> PUSH 0, DUP (节省1字节)
+      if (opcode === 0x01 && bytecode[i + 1] === 0x00 && 
+          i + 2 < bytecode.length && bytecode[i + 2] === 0x01 && bytecode[i + 3] === 0x00) {
+        optimized.push(0x01, 0x00); // PUSH 0
+        optimized.push(0x1D);       // DUP
+        i += 4;
+      }
+      // 优化2: PUSH x, POP -> 删除两者
+      else if (opcode === 0x02 && optimized.length >= 2 && optimized[optimized.length - 2] === 0x01) {
         optimized.pop();
         optimized.pop();
         i++;
-      } else {
+      }
+      // 优化3: PUSH 1, ADD -> INC (如果实现INC指令)
+      // 优化4: PUSH 0, STORE x, PUSH 0, STORE y -> PUSH 0, DUP, STORE x, STORE y
+      else if (opcode === 0x01 && bytecode[i + 1] === 0x00 &&
+               i + 2 < bytecode.length && bytecode[i + 2] === 0x08 &&
+               i + 4 < bytecode.length && bytecode[i + 4] === 0x01 && bytecode[i + 5] === 0x00) {
+        optimized.push(0x01, 0x00); // PUSH 0
+        optimized.push(0x1D);       // DUP
+        optimized.push(0x08);       // STORE
+        optimized.push(bytecode[i + 3]); // address x
+        optimized.push(0x08);       // STORE
+        optimized.push(bytecode[i + 6]); // address y
+        i += 7;
+      }
+      // 优化5: 连续的LOAD/STORE对
+      else {
         optimized.push(opcode);
         i++;
       }
     }
     
     return optimized;
+  }
+
+  /**
+   * 计算Gas优化率
+   * @param {Array} original - 原始字节码
+   * @param {Array} optimized - 优化后字节码
+   * @returns {object} 优化统计
+   */
+  calculateOptimizationStats(original, optimized) {
+    const originalGas = this.estimateGas(original);
+    const optimizedGas = this.estimateGas(optimized);
+    const savings = originalGas - optimizedGas;
+    const savingsPercent = originalGas > 0 ? ((savings / originalGas) * 100).toFixed(2) : 0;
+    
+    return {
+      originalSize: original.length,
+      optimizedSize: optimized.length,
+      sizeReduction: original.length - optimized.length,
+      originalGas,
+      optimizedGas,
+      gasSavings: savings,
+      savingsPercent: parseFloat(savingsPercent)
+    };
   }
 
   /**
@@ -853,6 +947,178 @@ class AINVM {
     model.savedAt = Date.now();
     
     this.consumeGas(30); // 模型保存消耗中等gas
+  }
+
+  // ========== 新增指令执行方法 ==========
+
+  /**
+   * 执行 AND 指令
+   * 栈操作：[a, b] -> [a & b]
+   */
+  executeAND() {
+    if (this.stack.length < 2) {
+      throw new Error('Stack underflow for AND');
+    }
+    const a = this.stack.pop();
+    const b = this.stack.pop();
+    this.stack.push(b & a);
+    this.consumeGas(1);
+  }
+
+  /**
+   * 执行 OR 指令
+   * 栈操作：[a, b] -> [a | b]
+   */
+  executeOR() {
+    if (this.stack.length < 2) {
+      throw new Error('Stack underflow for OR');
+    }
+    const a = this.stack.pop();
+    const b = this.stack.pop();
+    this.stack.push(b | a);
+    this.consumeGas(1);
+  }
+
+  /**
+   * 执行 NOT 指令
+   * 栈操作：[a] -> [~a]
+   */
+  executeNOT() {
+    if (this.stack.length < 1) {
+      throw new Error('Stack underflow for NOT');
+    }
+    const a = this.stack.pop();
+    this.stack.push(~a);
+    this.consumeGas(1);
+  }
+
+  /**
+   * 执行 XOR 指令
+   * 栈操作：[a, b] -> [a ^ b]
+   */
+  executeXOR() {
+    if (this.stack.length < 2) {
+      throw new Error('Stack underflow for XOR');
+    }
+    const a = this.stack.pop();
+    const b = this.stack.pop();
+    this.stack.push(b ^ a);
+    this.consumeGas(1);
+  }
+
+  /**
+   * 执行 EQ 指令
+   * 栈操作：[a, b] -> [a == b ? 1 : 0]
+   */
+  executeEQ() {
+    if (this.stack.length < 2) {
+      throw new Error('Stack underflow for EQ');
+    }
+    const a = this.stack.pop();
+    const b = this.stack.pop();
+    this.stack.push(b === a ? 1 : 0);
+    this.consumeGas(1);
+  }
+
+  /**
+   * 执行 LT 指令
+   * 栈操作：[a, b] -> [b < a ? 1 : 0]
+   */
+  executeLT() {
+    if (this.stack.length < 2) {
+      throw new Error('Stack underflow for LT');
+    }
+    const a = this.stack.pop();
+    const b = this.stack.pop();
+    this.stack.push(b < a ? 1 : 0);
+    this.consumeGas(1);
+  }
+
+  /**
+   * 执行 GT 指令
+   * 栈操作：[a, b] -> [b > a ? 1 : 0]
+   */
+  executeGT() {
+    if (this.stack.length < 2) {
+      throw new Error('Stack underflow for GT');
+    }
+    const a = this.stack.pop();
+    const b = this.stack.pop();
+    this.stack.push(b > a ? 1 : 0);
+    this.consumeGas(1);
+  }
+
+  /**
+   * 执行 MOD 指令
+   * 栈操作：[a, b] -> [b % a]
+   */
+  executeMOD() {
+    if (this.stack.length < 2) {
+      throw new Error('Stack underflow for MOD');
+    }
+    const a = this.stack.pop();
+    const b = this.stack.pop();
+    if (a === 0) {
+      throw new Error('Modulo by zero');
+    }
+    this.stack.push(b % a);
+    this.consumeGas(2);
+  }
+
+  /**
+   * 执行 SHL 指令
+   * 栈操作：[a, b] -> [b << a]
+   */
+  executeSHL() {
+    if (this.stack.length < 2) {
+      throw new Error('Stack underflow for SHL');
+    }
+    const a = this.stack.pop();
+    const b = this.stack.pop();
+    this.stack.push(b << a);
+    this.consumeGas(1);
+  }
+
+  /**
+   * 执行 SHR 指令
+   * 栈操作：[a, b] -> [b >> a]
+   */
+  executeSHR() {
+    if (this.stack.length < 2) {
+      throw new Error('Stack underflow for SHR');
+    }
+    const a = this.stack.pop();
+    const b = this.stack.pop();
+    this.stack.push(b >> a);
+    this.consumeGas(1);
+  }
+
+  /**
+   * 执行 DUP 指令
+   * 栈操作：[a] -> [a, a]
+   */
+  executeDUP() {
+    if (this.stack.length < 1) {
+      throw new Error('Stack underflow for DUP');
+    }
+    const a = this.stack[this.stack.length - 1];
+    this.stack.push(a);
+    this.consumeGas(1);
+  }
+
+  /**
+   * 执行 SWAP 指令
+   * 栈操作：[a, b] -> [b, a]
+   */
+  executeSWAP() {
+    if (this.stack.length < 2) {
+      throw new Error('Stack underflow for SWAP');
+    }
+    const a = this.stack.pop();
+    const b = this.stack.pop();
+    this.stack.push(a);
+    this.stack.push(b);
+    this.consumeGas(1);
   }
 }
 

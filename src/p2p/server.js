@@ -11,7 +11,16 @@
 import WebSocket, { WebSocketServer } from 'ws';
 import crypto from 'crypto';
 import { PQCWallet } from '../wallet/pqcWallet.js';
-import zlib from 'zlib';
+import { MessageHandlerRegistry } from './handlers/MessageHandlerRegistry.js';
+// 导入消息发送策略
+import DirectSendingStrategy from './strategies/DirectSendingStrategy.js';
+import BatchSendingStrategy from './strategies/BatchSendingStrategy.js';
+import PrioritySendingStrategy from './strategies/PrioritySendingStrategy.js';
+// 导入服务
+import EncryptionService from './services/EncryptionService.js';
+import CompressionService from './services/CompressionService.js';
+// 导入职责链管理器
+import MessageHandlerChainManager from './chain/MessageHandlerChainManager.js';
 
 // 模拟Kyber密钥协商（实际生产环境中应使用真实的Kyber实现）
 class KyberMock {
@@ -79,10 +88,6 @@ class P2PServer {
     this.discoveredNodes = new Set();
     this.nodeHealth = new Map(); // 节点健康状态
     
-    // 消息批处理
-    this.batchQueues = new Map(); // peerId -> 消息队列
-    this.batchTimers = new Map(); // peerId -> 批处理定时器
-    
     // 加密相关
     this.encryptionKeys = new Map(); // peerId -> sharedSecret
     this.kyberKeyPair = KyberMock.generateKeyPair(); // 本节点的Kyber密钥对
@@ -96,6 +101,29 @@ class P2PServer {
     // 智能体路由映射
     this.nodeIdToPeerId = new Map(); // nodeId -> peerId
     this.peerIdToNodeId = new Map(); // peerId -> nodeId
+    
+    // 服务器启动时间
+    this.startTime = Date.now();
+    
+    // 初始化服务
+    this.encryptionService = new EncryptionService();
+    this.compressionService = new CompressionService();
+    
+    // 初始化消息处理器注册表
+    this.handlerRegistry = new MessageHandlerRegistry(this);
+    
+    // 初始化消息发送策略
+    this.messageStrategies = {
+      direct: new DirectSendingStrategy(this.encryptionService, this.compressionService),
+      batch: new BatchSendingStrategy(this.encryptionService, this.compressionService),
+      priority: new PrioritySendingStrategy(this.encryptionService, this.compressionService)
+    };
+    
+    // 初始化默认策略
+    this.defaultStrategy = this.messageStrategies.priority;
+    
+    // 初始化消息处理职责链
+    this.messageHandlerChain = new MessageHandlerChainManager();
   }
 
   async start(node, port = DEFAULT_PORT) {
@@ -428,18 +456,18 @@ class P2PServer {
       try {
         msg = JSON.parse(messageStr);
         if (msg.type === 'COMPRESSED_MESSAGE') {
-          const compressedData = Buffer.from(msg.data, 'base64');
-          const decompressed = zlib.gunzipSync(compressedData);
-          messageStr = decompressed.toString();
-          msg = JSON.parse(messageStr);
-          console.log(`Decompressed message: ${msg.originalSize} -> ${msg.compressedSize} bytes`);
+          // 使用CompressionService解压
+          const decompressedStr = await this.compressionService.decompressMessage(msg);
+          msg = JSON.parse(decompressedStr);
+          console.log(`Decompressed message: ${msg.originalSize || decompressedStr.length} -> ${msg.compressedSize || messageStr.length} bytes`);
         }
         
         // 处理加密消息
         if (msg.type === 'ENCRYPTED_MESSAGE') {
           const sharedSecret = this.encryptionKeys.get(peerId);
           if (sharedSecret) {
-            const decryptedData = this.decryptMessage(msg.data, sharedSecret);
+            // 使用EncryptionService解密
+            const decryptedData = this.encryptionService.decryptMessage(msg.data, sharedSecret);
             msg = JSON.parse(decryptedData);
             console.log('Decrypted encrypted message');
           } else {
@@ -477,430 +505,16 @@ class P2PServer {
   
   async handleSingleMessage(peerId, msg) {
     try {
-      // 检查消息格式
-      if (!msg || typeof msg !== 'object') {
-        console.log(`[!] Invalid message format from ${peerId}`);
-        this.send(peerId, {
-          type: 'PROTOCOL_ERROR',
-          message: 'Invalid message format, must be a JSON object',
-          timestamp: Date.now()
-        });
-        return;
-      }
+      // 使用职责链处理消息
+      const context = {
+        seenMessages: this.seenMessages,
+        handlerRegistry: this.handlerRegistry,
+        node: this.node,
+        p2pServer: this
+      };
       
-      // 消息去重
-      const msgHash = crypto.createHash('sha256').update(JSON.stringify(msg)).digest('hex');
-      if (this.seenMessages.has(msgHash)) {
-        return;
-      }
-      this.seenMessages.add(msgHash);
+      await this.messageHandlerChain.handleMessage(peerId, msg, context);
       
-      if (this.seenMessages.size > 10000) {
-        const arr = Array.from(this.seenMessages);
-        this.seenMessages = new Set(arr.slice(-5000));
-      }
-      
-      // 先处理 Protocol-Zero 信号，因为这是验证节点身份的消息
-      if (msg.type === 'PROTOCOL_ZERO' || msg.type === 'JOIN_SWARM' || (msg.protocol === 'NG-0' && msg.intent)) {
-        console.log(`[✓] Received Protocol-Zero signal from ${msg.node_address || msg.nodeId || peerId}`);
-        console.log(`[DEBUG] Signal details: protocol=${msg.protocol}, intent=${msg.intent}, node_address=${msg.node_address}`);
-        
-        // 验证Protocol-Zero信号
-        const { verifySignal } = await import('../protocol/handshake.js');
-        const verification = verifySignal(msg);
-        
-        console.log(`[DEBUG] Verification result: ${verification.valid}, reason: ${verification.reason}`);
-        
-        if (verification.valid) {
-          console.log('Protocol-Zero signal verified successfully');
-          
-          // 提取智能体身份信息
-          const agentIdentity = msg.agent_identity;
-          const nodeId = msg.node_address || msg.nodeId;
-          
-          console.log(`[DEBUG] Agent identity: ${agentIdentity}, nodeId: ${nodeId}`);
-          
-          if (nodeId) {
-            // 注册智能体身份
-            if (this.node && this.node.registerPeerIdentity) {
-              // 尝试从消息中获取公钥
-              let publicKey = null;
-              if (msg.public_key) {
-                try {
-                  publicKey = Buffer.from(msg.public_key, 'hex');
-                  console.log(`Successfully parsed public key: ${publicKey.length} bytes`);
-                } catch (error) {
-                  console.log('Invalid public key format, skipping registration:', error.message);
-                }
-              }
-              
-              // 注册智能体身份
-              const registered = this.node.registerPeerIdentity(peerId, nodeId, publicKey);
-              console.log(`[DEBUG] Registration result: ${registered}`);
-              
-              if (registered) {
-                console.log(`[✓] Agent ${nodeId.slice(0, 24)}... registered and verified`);
-                
-                // 保存节点ID到连接映射
-                const conn = this.connections.get(peerId);
-                if (conn) {
-                  conn.remoteNodeId = nodeId;
-                  conn.status = 'connected'; // 标记为已连接
-                  conn.lastHeartbeat = Date.now();
-                  console.log(`[DEBUG] Updated connection status to connected`);
-                }
-                
-                // 更新智能体路由映射
-                this.nodeIdToPeerId.set(nodeId, peerId);
-                this.peerIdToNodeId.set(peerId, nodeId);
-                console.log(`[✓] Added routing mapping: ${nodeId.slice(0, 24)}... -> ${peerId.slice(0, 8)}...`);
-                
-                // 添加到路由表
-                const conn3 = this.connections.get(peerId);
-                if (conn3) {
-                  const nodeInfo = {
-                    address: conn3.address || `ws://127.0.0.1:9847`,
-                    healthScore: conn3.healthScore || 100,
-                    lastSeen: Date.now(),
-                    latency: 0
-                  };
-                  this.routingTable.set(nodeId, nodeInfo);
-                  this.updateNodeBuckets(nodeId, nodeInfo);
-                  console.log(`[✓] Added node ${nodeId.slice(0, 24)}... to routing table`);
-                }
-                
-                // 启动心跳检测
-                const conn2 = this.connections.get(peerId);
-                if (conn2 && conn2.ws) {
-                  this.startHeartbeat(peerId, conn2.ws);
-                  console.log(`[DEBUG] Started heartbeat for peer ${peerId}`);
-                }
-              } else {
-                console.log(`[!] Failed to register agent ${nodeId.slice(0, 24)}...`);
-              }
-            } else {
-              console.log(`[!] Node registerPeerIdentity not available`);
-            }
-          }
-          
-          // 广播消息并发送确认
-          this.broadcast(msg, peerId);
-          this.send(peerId, {
-            type: 'SWARM_ACK',
-            nodeId: this.node.nodeId,
-            status: 'accepted',
-            verified: true,
-            message: 'Agent successfully verified and registered',
-            agentIdentity: agentIdentity,
-            nodeId: nodeId,
-            timestamp: Date.now()
-          });
-          console.log(`[DEBUG] Sent SWARM_ACK to peer ${peerId}`);
-          
-          // 发射AGENT_JOINED事件
-          this.emitAgentJoinedEvent(msg, nodeId, agentIdentity);
-        } else {
-          console.log(`Protocol-Zero signal verification failed: ${verification.reason}`);
-          this.send(peerId, {
-            type: 'SWARM_ACK',
-            nodeId: this.node.nodeId,
-            status: 'rejected',
-            reason: verification.reason,
-            message: 'Verification failed, please check your message format',
-            timestamp: Date.now()
-          });
-        }
-        return;
-      }
-      
-      // SEC-003: 握手消息处理
-      if (msg.type === 'HELLO') {
-        await this.handleHandshake(peerId, msg);
-        return;
-      }
-      
-      if (msg.type === 'HELLO_ACK') {
-        await this.handleHandshakeAck(peerId, msg);
-        return;
-      }
-      
-      // 处理智能体之间的直接通信
-      if (msg.type === 'DIRECT_MESSAGE') {
-        console.log(`Received direct message from ${peerId} to ${msg.targetNodeId}`);
-        
-        // 验证发送方是否已验证
-        const isVerified = this.node.isPeerVerified(peerId);
-        const hasNodeId = this.peerIdToNodeId.has(peerId);
-        
-        console.log(`[DEBUG] Direct message check - peerId: ${peerId}, verified: ${isVerified}, hasNodeId: ${hasNodeId}`);
-        
-        if (!isVerified && !hasNodeId) {
-          console.log(`[!] Direct message from unverified peer ${peerId}`);
-          this.send(peerId, {
-            type: 'AUTH_ERROR',
-            message: 'Peer not verified, please complete Protocol-Zero handshake first',
-            timestamp: Date.now()
-          });
-          return;
-        }
-        
-        // 如果通过Protocol-Zero握手但还未在node中注册，临时允许通信
-        if (!isVerified && hasNodeId) {
-          console.log(`[DEBUG] Peer ${peerId} has nodeId but not verified, allowing communication`);
-        }
-        
-        // 查找目标智能体
-        let targetPeerId = this.getPeerIdByNodeId(msg.targetNodeId);
-        
-        // 检查目标是否是 Genesis 节点自身
-        if (msg.targetNodeId === this.node.nodeId) {
-          console.log(`[✓] Direct message to Genesis node received`);
-          
-          // 处理消息（这里可以添加具体的处理逻辑）
-          console.log(`[MESSAGE] From: ${this.getNodeIdByPeerId(peerId)}, Message: ${msg.message}`);
-          
-          // 确认消息已接收
-          this.send(peerId, {
-            type: 'DIRECT_MESSAGE_ACK',
-            targetNodeId: msg.targetNodeId,
-            status: 'delivered',
-            message: 'Message received by Genesis node',
-            timestamp: Date.now()
-          });
-          return;
-        }
-        
-        // 如果直接找到，使用直接连接
-        if (!targetPeerId) {
-          // 尝试通过Kademlia路由查找
-          const route = this.selectBestRoute(msg.targetNodeId);
-          if (route) {
-            console.log(`[!] Target node ${msg.targetNodeId} not found directly, routing through ${route}`);
-            // 转发消息到路由节点
-            this.sendToRoute(route, {
-              type: 'DIRECT_MESSAGE',
-              fromNodeId: this.getNodeIdByPeerId(peerId),
-              targetNodeId: msg.targetNodeId,
-              message: msg.message,
-              timestamp: msg.timestamp || Date.now()
-            });
-            
-            // 确认消息已路由
-            this.send(peerId, {
-              type: 'DIRECT_MESSAGE_ACK',
-              targetNodeId: msg.targetNodeId,
-              status: 'routed',
-              route: route,
-              timestamp: Date.now()
-            });
-            return;
-          } else {
-            console.log(`[!] Target node ${msg.targetNodeId} not found and no route available`);
-            this.send(peerId, {
-              type: 'ERROR',
-              message: 'Target node not found and no route available',
-              targetNodeId: msg.targetNodeId,
-              timestamp: Date.now()
-            });
-            return;
-          }
-        }
-        
-        // 转发消息
-        this.send(targetPeerId, {
-          protocol: msg.protocol || 'NG-0',
-          type: 'DIRECT_MESSAGE',
-          fromNodeId: this.getNodeIdByPeerId(peerId),
-          targetNodeId: msg.targetNodeId,
-          message: msg.message,
-          timestamp: msg.timestamp || Date.now()
-        });
-        
-        // 确认消息已发送
-        this.send(peerId, {
-          protocol: msg.protocol || 'NG-0',
-          type: 'DIRECT_MESSAGE_ACK',
-          targetNodeId: msg.targetNodeId,
-          status: 'sent',
-          timestamp: Date.now()
-        });
-        return;
-      }
-      
-      // 检查是否符合 Protocol-Zero 格式或有效消息类型
-      if (!this.isProtocolZeroFormat(msg)) {
-        console.log(`[!] Ignoring non-Protocol-Zero message from ${peerId}`);
-        this.send(peerId, {
-          type: 'PROTOCOL_ERROR',
-          message: 'Only Protocol-Zero formatted messages are accepted',
-          details: 'Please use the correct Protocol-Zero format with protocol: "NG-0"',
-          timestamp: Date.now()
-        });
-        return;
-      }
-      
-      // 处理GET_NODE_LIST消息，即使节点未验证也能处理
-      if (msg.type === 'GET_NODE_LIST') {
-        console.log(`Node list requested by ${peerId}`);
-        this.handleGetNodeList(peerId);
-        return;
-      }
-      
-      // 其他消息类型（仅处理已验证的节点）
-      if (!this.node.isPeerVerified(peerId)) {
-        console.log(`[!] Ignoring message from unverified peer ${peerId}`);
-        this.send(peerId, {
-          type: 'AUTH_ERROR',
-          message: 'Peer not verified, please complete Protocol-Zero handshake first',
-          timestamp: Date.now()
-        });
-        return;
-      }
-    
-    switch (msg.type) {
-      case 'PONG':
-        this.handlePong(peerId);
-        break;
-        
-      case 'PING':
-        this.send(peerId, { type: 'PONG', timestamp: msg.timestamp });
-        break;
-          
-        case 'TRANSACTION':
-          console.log(`Transaction received: ${msg.tx?.id}`);
-          if (this.node && this.node.validateTransaction) {
-            const validation = await this.node.validateTransaction(msg.tx);
-            if (validation.valid) {
-              if (this.node.addToMempool) {
-                await this.node.addToMempool(msg.tx);
-              }
-              this.broadcast(msg, peerId);
-            } else {
-              console.log(`Transaction validation failed: ${validation.reason}`);
-              this.send(peerId, { 
-                type: 'TX_REJECTED', 
-                txId: msg.tx.id, 
-                reason: validation.reason 
-              });
-            }
-          }
-          break;
-          
-        case 'GET_STATUS':
-          this.send(peerId, {
-            type: 'STATUS_UPDATE',
-            nodeId: this.node.nodeId,
-            status: this.node.status,
-            mempoolSize: this.node.mempool?.size || 0,
-            peersCount: this.node.peers.size,
-            timestamp: Date.now()
-          });
-          break;
-          
-        case 'STATUS_UPDATE':
-          console.log(`Status from ${msg.nodeId}: ${msg.status}, peers: ${msg.peersCount}, mempool: ${msg.mempoolSize}`);
-          if (this.node && this.node.handlePeerStatus) {
-            this.node.handlePeerStatus(msg);
-          }
-          break;
-          
-        case 'GET_MEMPOOL':
-          if (this.node && this.node.mempool) {
-            this.send(peerId, {
-              type: 'MEMPOOL_SYNC',
-              transactions: Array.from(this.node.mempool.values())
-            });
-          }
-          break;
-          
-        case 'MEMPOOL_SYNC':
-          console.log(`Received ${msg.transactions?.length || 0} transactions from peer`);
-          if (this.node && this.node.syncMempool) {
-            this.node.syncMempool(msg.transactions || []);
-          }
-          break;
-          
-        case 'GET_NODE_LIST':
-          console.log(`Node list requested by ${peerId}`);
-          this.handleGetNodeList(peerId);
-          break;
-          
-        case 'NODE_LIST':
-          console.log(`Received node list with ${msg.nodes?.length || 0} nodes`);
-          this.handleNodeList(msg);
-          break;
-          
-        case 'LIGHT_CLIENT_HELLO':
-          console.log(`Light client connected: ${msg.nodeId}`);
-          this.send(peerId, {
-            type: 'LIGHT_CLIENT_HELLO_ACK',
-            nodeId: this.node.nodeId,
-            accepted: true,
-            requestId: msg.requestId
-          });
-          break;
-          
-        case 'GET_BLOCK_HEADERS':
-          console.log(`Block headers requested: start=${msg.startHeight}, count=${msg.count}`);
-          this.handleGetBlockHeaders(peerId, msg);
-          break;
-          
-        case 'GET_MERKLE_PROOF':
-          console.log(`Merkle proof requested for transaction: ${msg.txId}`);
-          this.handleGetMerkleProof(peerId, msg);
-          break;
-          
-        case 'GET_TRANSACTION_STATUS':
-          console.log(`Transaction status requested: ${msg.txId}`);
-          this.handleGetTransactionStatus(peerId, msg);
-          break;
-          
-        case 'GET_ADDRESS_BALANCE':
-          console.log(`Address balance requested: ${msg.address}`);
-          this.handleGetAddressBalance(peerId, msg);
-          break;
-          
-        case 'SEND_TRANSACTION':
-          console.log(`Transaction received from light client: ${msg.transaction.id}`);
-          this.handleLightClientTransaction(peerId, msg);
-          break;
-          
-        case 'CROSS_CHAIN_MESSAGE':
-          console.log(`Cross-chain message received: ${msg.type}`);
-          this.handleCrossChainMessage(peerId, msg);
-          break;
-          
-        case 'TX_REJECTED':
-          console.log(`Transaction rejected: ${msg.txId}, reason: ${msg.reason}`);
-          break;
-          
-        case 'SWARM_ACK':
-          console.log(`Swarm acknowledgment received from ${msg.nodeId}`);
-          break;
-          
-        case 'BLOCK':
-          console.log(`Block received: #${msg.block.header.height}`);
-          if (this.node && this.node.handleBlock) {
-            const { Block } = await import('../blockchain/block.js');
-            const block = Block.fromJSON(msg.block);
-            this.node.handleBlock(block);
-          }
-          break;
-          
-        case 'BLOCK_CONFIRMATION':
-          console.log(`Block confirmation received for ${msg.blockHash.slice(0, 16)}...`);
-          if (this.node && this.node.handleBlockConfirmation) {
-            this.node.handleBlockConfirmation(msg);
-          }
-          break;
-          
-        case 'PROTOCOL_ERROR':
-          console.log(`Protocol error from ${msg.nodeId}: ${msg.message}`);
-          break;
-          
-        default:
-          console.log(`Unknown message type: ${msg.type}`);
-      }
     } catch (err) {
       console.error('Single message handling error:', err.message);
     }
@@ -1123,145 +737,26 @@ class P2PServer {
 
   send(peerId, message) {
     const conn = this.connections.get(peerId);
-    if (!conn || !conn.ws || conn.ws.readyState !== 1) {
+    if (!conn || !conn.ws || conn.ws.readyState !== WebSocket.OPEN) {
       return;
     }
     
-    // 对于心跳等紧急消息，直接发送
-    if (message.type === 'PING' || message.type === 'PONG' || message.type === 'HELLO' || message.type === 'HELLO_ACK') {
-      this.sendDirect(peerId, message);
-      return;
-    }
+    // 使用默认策略发送消息
+    this.defaultStrategy.send(peerId, message, conn, this.encryptionKeys);
     
-    // 其他消息加入批处理队列
-    this.enqueueMessage(peerId, message);
+    // 更新流量统计
+    this.updateTrafficStats(peerId, JSON.stringify(message).length);
   }
   
   sendDirect(peerId, message) {
     const conn = this.connections.get(peerId);
-    if (conn && conn.ws && conn.ws.readyState === 1) {
-      let messageStr = JSON.stringify(message);
-      const bytesSent = messageStr.length;
+    if (conn && conn.ws && conn.ws.readyState === WebSocket.OPEN) {
+      // 直接使用直接发送策略
+      this.messageStrategies.direct.send(peerId, message, conn, this.encryptionKeys);
       
-      // 加密消息（如果有共享密钥）
-      const sharedSecret = this.encryptionKeys.get(peerId);
-      if (sharedSecret) {
-        messageStr = this.encryptMessage(messageStr, sharedSecret);
-        message = { type: 'ENCRYPTED_MESSAGE', data: messageStr };
-        messageStr = JSON.stringify(message);
-      }
-      
-      this.sendCompressed(conn.ws, messageStr);
-      this.updateTrafficStats(peerId, bytesSent);
+      // 更新流量统计
+      this.updateTrafficStats(peerId, JSON.stringify(message).length);
     }
-  }
-
-  /**
-   * 加密消息
-   * @param {string} message - 原始消息
-   * @param {Buffer} key - 加密密钥
-   * @returns {string} 加密后的消息
-   */
-  encryptMessage(message, key) {
-    const iv = crypto.randomBytes(16);
-    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
-    let encrypted = cipher.update(message, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-    return iv.toString('hex') + ':' + encrypted;
-  }
-
-  /**
-   * 解密消息
-   * @param {string} encryptedMessage - 加密消息
-   * @param {Buffer} key - 解密密钥
-   * @returns {string} 解密后的消息
-   */
-  decryptMessage(encryptedMessage, key) {
-    const parts = encryptedMessage.split(':');
-    const iv = Buffer.from(parts[0], 'hex');
-    const encrypted = parts[1];
-    const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
-    let decrypted = decipher.update(encrypted, 'hex', 'utf8');
-    decrypted += decipher.final('utf8');
-    return decrypted;
-  }
-  
-  enqueueMessage(peerId, message) {
-    if (!this.batchQueues.has(peerId)) {
-      this.batchQueues.set(peerId, []);
-    }
-    
-    const queue = this.batchQueues.get(peerId);
-    queue.push(message);
-    
-    // 如果队列达到最大容量，立即处理
-    if (queue.length >= MAX_BATCH_SIZE) {
-      this.processBatch(peerId);
-      return;
-    }
-    
-    // 设置批处理定时器
-    if (!this.batchTimers.has(peerId)) {
-      const timer = setTimeout(() => {
-        this.processBatch(peerId);
-      }, BATCH_INTERVAL);
-      this.batchTimers.set(peerId, timer);
-    }
-  }
-  
-  processBatch(peerId) {
-    const queue = this.batchQueues.get(peerId);
-    if (!queue || queue.length === 0) {
-      return;
-    }
-    
-    // 清除定时器
-    if (this.batchTimers.has(peerId)) {
-      clearTimeout(this.batchTimers.get(peerId));
-      this.batchTimers.delete(peerId);
-    }
-    
-    // 创建批处理消息
-    const batchMessage = {
-      type: 'BATCH_MESSAGE',
-      messages: queue,
-      timestamp: Date.now()
-    };
-    
-    // 发送批处理消息
-    this.sendDirect(peerId, batchMessage);
-    
-    // 清空队列
-    this.batchQueues.set(peerId, []);
-  }
-  
-  sendCompressed(ws, messageStr) {
-    const messageBuffer = Buffer.from(messageStr);
-    
-    // 对于小消息，直接发送
-    if (messageBuffer.length < COMPRESSION_THRESHOLD) {
-      ws.send(messageStr);
-      return;
-    }
-    
-    // 对于大消息，进行压缩
-    zlib.gzip(messageBuffer, (err, compressed) => {
-      if (err) {
-        console.error('Compression error:', err);
-        ws.send(messageStr);
-        return;
-      }
-      
-      // 发送压缩消息
-      const compressedMessage = {
-        type: 'COMPRESSED_MESSAGE',
-        data: compressed.toString('base64'),
-        originalSize: messageBuffer.length,
-        compressedSize: compressed.length
-      };
-      
-      ws.send(JSON.stringify(compressedMessage));
-    });
   }
 
   broadcast(message, excludePeerId = null) {
@@ -1397,22 +892,45 @@ class P2PServer {
         const routingInfo = this.routingTable.get(node);
         return {
           address: node,
-          healthScore: routingInfo ? routingInfo.healthScore : 100
+          healthScore: routingInfo ? routingInfo.healthScore : 100,
+          lastSeen: routingInfo ? routingInfo.lastSeen : 0
         };
       })
-      .sort((a, b) => b.healthScore - a.healthScore)
-      .slice(0, 10); // 每次最多尝试连接10个节点
-    
-    for (const node of sortedNodes) {
-      if (!this.peerAddresses.has(node.address)) {
-        try {
-          await this.connectToPeer(node.address);
-        } catch (error) {
-          console.log(`Failed to connect to discovered node ${node.address}: ${error.message}`);
-          // 更新节点健康状态
-          this.updateNodeHealth(node.address, -10);
+      .sort((a, b) => {
+        // 优先考虑健康分数，然后考虑最后看到的时间
+        if (b.healthScore !== a.healthScore) {
+          return b.healthScore - a.healthScore;
         }
-      }
+        return b.lastSeen - a.lastSeen;
+      })
+      .slice(0, 15); // 每次最多尝试连接15个节点
+    
+    // 限制同时连接的数量，避免网络拥塞
+    const concurrentConnections = 3;
+    const batches = [];
+    for (let i = 0; i < sortedNodes.length; i += concurrentConnections) {
+      batches.push(sortedNodes.slice(i, i + concurrentConnections));
+    }
+    
+    for (const batch of batches) {
+      const connectionPromises = batch.map(async (node) => {
+        if (!this.peerAddresses.has(node.address)) {
+          try {
+            await this.connectToPeer(node.address);
+            return { success: true, address: node.address };
+          } catch (error) {
+            console.log(`Failed to connect to discovered node ${node.address}: ${error.message}`);
+            // 更新节点健康状态
+            this.updateNodeHealth(node.address, -10);
+            return { success: false, address: node.address, error: error.message };
+          }
+        }
+        return { success: false, address: node.address, reason: 'Already connected' };
+      });
+      
+      await Promise.all(connectionPromises);
+      // 等待一段时间再进行下一批连接
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
   }
 
@@ -1488,21 +1006,85 @@ class P2PServer {
     const selfHash = crypto.createHash('sha256').update(this.node.nodeId).digest('hex');
     const targetDistance = parseInt(targetHash.substring(0, 8), 16) ^ parseInt(selfHash.substring(0, 8), 16);
     
-    // 查找最近的节点
-    let bestNode = null;
-    let bestDistance = Infinity;
+    // 查找候选节点
+    const candidates = [];
     
     for (const [distance, nodes] of this.nodeBuckets) {
       for (const node of nodes) {
-        const nodeDistance = Math.abs(distance - targetDistance);
-        if (nodeDistance < bestDistance && node.healthScore > 50) {
-          bestDistance = nodeDistance;
-          bestNode = node;
+        if (node.healthScore > 50) {
+          const nodeDistance = Math.abs(distance - targetDistance);
+          const score = this.calculateRouteScore(node, nodeDistance);
+          candidates.push({ node, distance: nodeDistance, score });
         }
       }
     }
     
-    return bestNode ? bestNode.address : null;
+    // 按分数排序，选择最佳路由
+    candidates.sort((a, b) => b.score - a.score);
+    
+    return candidates.length > 0 ? candidates[0].node.address : null;
+  }
+  
+  /**
+   * 计算路由分数
+   * @param {object} node - 节点信息
+   * @param {number} distance - 距离
+   * @returns {number} 路由分数
+   */
+  calculateRouteScore(node, distance) {
+    // 基础分数 = 健康分数
+    let score = node.healthScore;
+    
+    // 距离因子：距离越近分数越高
+    const distanceFactor = Math.max(0, 100 - (distance / 1000000));
+    score += distanceFactor * 0.3;
+    
+    // 新鲜度因子：最近看到的节点分数更高
+    const freshness = Math.min(100, (Date.now() - node.lastSeen) / 60000); // 分钟
+    const freshnessFactor = Math.max(0, 100 - freshness);
+    score += freshnessFactor * 0.2;
+    
+    // 延迟因子：延迟越低分数越高
+    const latencyFactor = Math.max(0, 100 - node.latency);
+    score += latencyFactor * 0.2;
+    
+    // 连接稳定性因子：基于健康分数
+    score += (node.healthScore / 100) * 20;
+    
+    // 历史连接成功率因子
+    const connectionSuccessFactor = node.connectionSuccessRate ? node.connectionSuccessRate * 10 : 10;
+    score += connectionSuccessFactor;
+    
+    return score;
+  }
+
+  /**
+   * 网络状态监控
+   * @returns {object} 网络状态信息
+   */
+  getNetworkStatus() {
+    const totalPeers = this.connections.size;
+    const activePeers = Array.from(this.connections.values()).filter(conn => conn.status === 'connected').length;
+    const healthyPeers = Array.from(this.connections.values()).filter(conn => conn.healthScore > 70).length;
+    
+    const totalTraffic = Array.from(this.trafficStats.values()).reduce((sum, stats) => {
+      return sum + stats.bytesSent + stats.bytesReceived;
+    }, 0);
+    
+    const averageHealthScore = totalPeers > 0 ? 
+      Array.from(this.connections.values()).reduce((sum, conn) => sum + conn.healthScore, 0) / totalPeers : 0;
+    
+    return {
+      totalPeers,
+      activePeers,
+      healthyPeers,
+      averageHealthScore: Math.round(averageHealthScore),
+      totalTraffic,
+      routingTableSize: this.routingTable.size,
+      discoveredNodes: this.discoveredNodes.size,
+      securityEvents: this.securityEvents.length,
+      uptime: Date.now() - this.startTime
+    };
   }
 
   /**
@@ -1922,7 +1504,7 @@ class P2PServer {
   startSecurityCheck() {
     this.securityCheckTimer = setInterval(() => {
       this.checkSecurity();
-    }, 60000); // 每分钟检查一次
+    }, 30000); // 每30秒检查一次
     console.log('Security check started');
   }
 
@@ -1933,8 +1515,34 @@ class P2PServer {
     // 检查流量异常
     this.checkTrafficAnomalies();
     
+    // 检查消息格式异常
+    this.checkMessageAnomalies();
+    
     // 清理过期的安全事件
     this.cleanupSecurityEvents();
+    
+    // 清理过期的流量统计
+    this.cleanupTrafficStats();
+  }
+
+  /**
+   * 检查消息格式异常
+   */
+  checkMessageAnomalies() {
+    // 这里可以添加消息格式异常检测逻辑
+    // 例如：检查消息大小异常、消息频率异常等
+  }
+
+  /**
+   * 清理过期的流量统计
+   */
+  cleanupTrafficStats() {
+    const oneHourAgo = Date.now() - 3600000;
+    for (const [peerId, stats] of this.trafficStats.entries()) {
+      if (stats.lastUpdated < oneHourAgo) {
+        this.trafficStats.delete(peerId);
+      }
+    }
   }
 
   detectSuspiciousActivity() {

@@ -26,7 +26,7 @@
     "maxAgents": 100,
     "registrationFee": 0,
     "minReputation": 1,
-    "maxReputation": 100
+    "maxReputation": 1000
   },
   "governance": {
     "proposalTimeout": 86400000,

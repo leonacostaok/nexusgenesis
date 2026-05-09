@@ -1,275 +1,533 @@
 /**
  * NexusGenesis SDK
  * 为开发者提供智能合约开发、部署和交互的工具
+ * 支持：合约管理、Agent 操作、跨链桥接、事件订阅
  */
 
 import contractManager from '../contracts/contractManager.js';
 import AINVM from '../vm/ainvm.js';
+import { PQCWallet, validateAddress } from '../wallet/pqcWallet.js';
+import { onboardAgent } from '../protocol/agentOnboarding.js';
 import fs from 'fs/promises';
 import path from 'path';
+import axios from 'axios';
+import { EventEmitter } from 'events';
 
-// 合约模板目录
 const TEMPLATE_DIR = path.join('src', 'contracts', 'examples');
+const DEFAULT_API_URL = 'http://localhost:19891';
 
 class NexusGenesisSDK {
-  constructor() {
+  constructor(options = {}) {
     this.contractManager = contractManager;
+    this.apiUrl = options.apiUrl || DEFAULT_API_URL;
+    this.httpClient = axios.create({ baseURL: this.apiUrl, timeout: options.timeout || 30000 });
+    this.eventEmitter = new EventEmitter();
+    this.wallet = options.wallet || null;
+    this._pollingIntervals = [];
   }
 
-  /**
-   * 部署智能合约
-   * @param {Array} bytecode - AINVM字节码
-   * @param {string} name - 合约名称
-   * @returns {string} 合约ID
-   */
+  // ==================== 合约操作 ====================
+
   deployContract(bytecode, name = 'Unnamed Contract') {
     return this.contractManager.deployContract(bytecode, name);
   }
 
-  /**
-   * 执行智能合约
-   * @param {string} contractId - 合约ID
-   * @param {number} gasLimit - gas限制
-   * @returns {object} 执行结果
-   */
   executeContract(contractId, gasLimit = 10000) {
     return this.contractManager.executeContract(contractId, gasLimit);
   }
 
-  /**
-   * 获取合约信息
-   * @param {string} contractId - 合约ID
-   * @returns {object} 合约信息
-   */
   getContractInfo(contractId) {
     return this.contractManager.getContractInfo(contractId);
   }
 
-  /**
-   * 列出所有合约
-   * @returns {Array} 合约列表
-   */
   listContracts() {
     return this.contractManager.listContracts();
   }
 
-  /**
-   * 保存合约状态
-   * @param {string} filePath - 文件路径
-   */
   async saveState(filePath) {
     return this.contractManager.saveState(filePath);
   }
 
-  /**
-   * 加载合约状态
-   * @param {string} filePath - 文件路径
-   */
   async loadState(filePath) {
     return this.contractManager.loadState(filePath);
   }
 
-  /**
-   * 创建AINVM实例
-   * @returns {AINVM} AINVM实例
-   */
   createVM() {
     return new AINVM();
   }
 
-  /**
-   * 编译高级语言到AINVM字节码
-   * @param {string} code - 高级语言代码
-   * @param {string} language - 语言类型
-   * @returns {Array} 字节码
-   */
   compile(code, language = 'bytecode') {
-    // 这里可以实现从高级语言编译到字节码的功能
-    // 目前直接返回输入的字节码
-    if (language === 'bytecode') {
-      return code;
-    }
+    if (language === 'bytecode') return code;
     throw new Error(`Unsupported language: ${language}`);
   }
 
-  /**
-   * 列出合约模板
-   * @returns {Promise<Array>} 模板列表
-   */
   async listTemplates() {
     try {
       const files = await fs.readdir(TEMPLATE_DIR);
-      return files
-        .filter(file => file.endsWith('.js'))
-        .map(file => {
-          const name = file.replace('.js', '');
-          return {
-            name,
-            path: path.join(TEMPLATE_DIR, file)
-          };
-        });
+      return files.filter(file => file.endsWith('.js')).map(file => {
+        const name = file.replace('.js', '');
+        return { name, path: path.join(TEMPLATE_DIR, file) };
+      });
     } catch (error) {
       console.error('Error listing templates:', error.message);
       return [];
     }
   }
 
-  /**
-   * 获取合约模板
-   * @param {string} templateName - 模板名称
-   * @returns {Promise<string>} 模板代码
-   */
   async getTemplate(templateName) {
     try {
       const templatePath = path.join(TEMPLATE_DIR, `${templateName}.js`);
-      const code = await fs.readFile(templatePath, 'utf8');
-      return code;
+      return await fs.readFile(templatePath, 'utf8');
     } catch (error) {
-      console.error('Error getting template:', error.message);
       throw new Error(`Template not found: ${templateName}`);
     }
   }
 
-  /**
-   * 保存合约到文件
-   * @param {string} code - 合约代码
-   * @param {string} filePath - 文件路径
-   * @returns {Promise<void>}
-   */
   async saveContract(code, filePath) {
-    try {
-      await fs.writeFile(filePath, code, 'utf8');
-      console.log(`Contract saved to ${filePath}`);
-    } catch (error) {
-      console.error('Error saving contract:', error.message);
-      throw error;
-    }
+    await fs.writeFile(filePath, code, 'utf8');
+    console.log(`Contract saved to ${filePath}`);
   }
 
-  /**
-   * 从文件加载合约
-   * @param {string} filePath - 文件路径
-   * @returns {Promise<string>} 合约代码
-   */
   async loadContract(filePath) {
-    try {
-      const code = await fs.readFile(filePath, 'utf8');
-      return code;
-    } catch (error) {
-      console.error('Error loading contract:', error.message);
-      throw error;
-    }
+    return await fs.readFile(filePath, 'utf8');
   }
 
-  /**
-   * 测试合约
-   * @param {string} contractId - 合约ID
-   * @param {Array} testCases - 测试用例
-   * @returns {object} 测试结果
-   */
   testContract(contractId, testCases) {
     const results = [];
-    
     for (const testCase of testCases) {
       try {
         const result = this.executeContract(contractId);
-        results.push({
-          test: testCase,
-          success: true,
-          result: result
-        });
+        results.push({ test: testCase, success: true, result });
       } catch (error) {
-        results.push({
-          test: testCase,
-          success: false,
-          error: error.message
-        });
+        results.push({ test: testCase, success: false, error: error.message });
       }
     }
-    
     return {
-      contractId,
-      tests: results,
+      contractId, tests: results,
       passed: results.filter(r => r.success).length,
-      total: results.length,
-      timestamp: Date.now()
+      total: results.length, timestamp: Date.now()
     };
   }
 
-  /**
-   * 估算合约Gas消耗
-   * @param {string} contractId - 合约ID
-   * @returns {number} 估算的Gas消耗
-   */
   estimateGas(contractId) {
     try {
       return this.contractManager.estimateGas(contractId);
     } catch (error) {
-      console.error('Error estimating gas:', error.message);
       return 0;
     }
   }
 
-  /**
-   * 优化合约代码
-   * @param {string} code - 合约代码
-   * @returns {string} 优化后的代码
-   */
   optimizeContractCode(code) {
-    // 简单的优化示例
-    // 实际实现中可以进行更复杂的优化
-    return code
-      .replace(/\s+/g, ' ')
-      .trim();
+    return code.replace(/\s+/g, ' ').trim();
   }
 
-  /**
-   * 优化已部署合约的字节码
-   * @param {string} contractId - 合约ID
-   * @returns {object} 优化结果
-   */
   optimizeDeployedContract(contractId) {
-    try {
-      return this.contractManager.optimizeContract(contractId);
-    } catch (error) {
-      console.error('Error optimizing contract:', error.message);
-      throw error;
-    }
+    return this.contractManager.optimizeContract(contractId);
   }
 
-  /**
-   * 部署优化后的合约
-   * @param {Array} bytecode - AINVM字节码
-   * @param {string} name - 合约名称
-   * @param {string} owner - 合约所有者地址
-   * @returns {string} 合约ID
-   */
   deployOptimizedContract(bytecode, name = 'Unnamed Contract', owner = null) {
     return this.contractManager.deployContract(bytecode, name, owner, true);
   }
 
-  /**
-   * 生成合约ABI
-   * @param {string} contractId - 合约ID
-   * @returns {object} 合约ABI
-   */
   generateABI(contractId) {
     const contract = this.getContractInfo(contractId);
-    if (!contract) {
-      throw new Error(`Contract not found: ${contractId}`);
-    }
-    
-    // 生成简单的ABI
+    if (!contract) throw new Error(`Contract not found: ${contractId}`);
     return {
-      contractId: contract.id,
-      name: contract.name,
-      functions: [],
-      events: [],
-      timestamp: Date.now()
+      contractId: contract.id, name: contract.name,
+      functions: [], events: [], timestamp: Date.now()
     };
+  }
+
+  // ==================== 钱包操作 ====================
+
+  async createWallet(initialBalance = 0n) {
+    this.wallet = await PQCWallet.generate(initialBalance);
+    return {
+      address: this.wallet.address,
+      publicKey: this.wallet.publicKey.toString('hex')
+    };
+  }
+
+  async importWallet(encryptedData, password) {
+    this.wallet = await PQCWallet.importEncrypted(encryptedData, password);
+    return { address: this.wallet.address };
+  }
+
+  exportWallet(password) {
+    if (!this.wallet) throw new Error('No wallet loaded');
+    return this.wallet.exportEncrypted(password);
+  }
+
+  getWalletAddress() {
+    return this.wallet?.address || null;
+  }
+
+  get walletAddress() {
+    return this.getWalletAddress();
+  }
+
+  async signMessage(message) {
+    if (!this.wallet) throw new Error('No wallet loaded');
+    return await this.wallet.sign(message);
+  }
+
+  static verifySignature(message, signature, publicKey) {
+    return PQCWallet.verify(message, signature, publicKey);
+  }
+
+  // ==================== Agent 操作 ====================
+
+  async registerAgent(options = {}) {
+    if (!this.wallet) throw new Error('No wallet loaded. Call createWallet() first.');
+
+    const agentData = {
+      agent_id: this.wallet.address,
+      capabilities: options.capabilities || [],
+      model: options.model || 'generic',
+      join_signal: {
+        protocol: 'NG-0',
+        intent: 'join_swarm',
+        node_address: this.wallet.address,
+        capabilities: options.capabilities || [],
+        contribution_proof: options.contributionProof || '',
+        public_key: this.wallet.publicKey.toString('hex'),
+        signature: await this.wallet.sign(this.wallet.address)
+      }
+    };
+
+    try {
+      const response = await this.httpClient.post('/api/agents/register', agentData);
+      this.eventEmitter.emit('agentRegistered', response.data);
+      return response.data;
+    } catch (error) {
+      if (error.response) throw new Error(error.response.data?.message || 'Registration failed');
+      const result = await onboardAgent(agentData);
+      return result;
+    }
+  }
+
+  async searchAgents(filters = {}) {
+    try {
+      const params = {};
+      if (filters.capabilities) params.capabilities = filters.capabilities.join(',');
+      if (filters.minReputation) params.minReputation = filters.minReputation;
+      if (filters.maxReputation) params.maxReputation = filters.maxReputation;
+      if (filters.minLoadRatio !== undefined) params.minLoadRatio = filters.minLoadRatio;
+      if (filters.maxLoadRatio !== undefined) params.maxLoadRatio = filters.maxLoadRatio;
+      if (filters.region) params.region = filters.region;
+      if (filters.minHealthScore) params.minHealthScore = filters.minHealthScore;
+      if (filters.textQuery) params.textQuery = filters.textQuery;
+      if (filters.limit) params.limit = filters.limit;
+      if (filters.sortBy) params.sortBy = filters.sortBy;
+      if (filters.requireAllCapabilities === false) params.requireAll = 'false';
+
+      const response = await this.httpClient.get('/api/v1/discovery/search', { params });
+      return response.data;
+    } catch (error) {
+      const { default: discoveryService } = await import('../agent/agentDiscoveryService.js');
+      return { success: true, results: discoveryService.searchAgents(filters) };
+    }
+  }
+
+  async matchAgentsForTask(taskData) {
+    try {
+      const response = await this.httpClient.post('/api/v1/discovery/task-match', taskData);
+      return response.data;
+    } catch (error) {
+      const { default: discoveryService } = await import('../agent/agentDiscoveryService.js');
+      return { success: true, candidates: discoveryService.discoverAgentsForTask(taskData) };
+    }
+  }
+
+  async getAgentInfo(agentId) {
+    try {
+      const response = await this.httpClient.get(`/api/agent/${agentId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Agent not found: ${agentId}`);
+    }
+  }
+
+  async listAgents() {
+    try {
+      const response = await this.httpClient.get('/api/agents');
+      return response.data;
+    } catch (error) {
+      return { success: true, agents: [], total: 0 };
+    }
+  }
+
+  async sendHeartbeat() {
+    if (!this.wallet) throw new Error('No wallet loaded');
+    try {
+      const response = await this.httpClient.post('/api/agents/heartbeat', {
+        agent_id: this.wallet.address
+      });
+      return response.data;
+    } catch (error) {
+      return { success: false, message: 'Heartbeat failed' };
+    }
+  }
+
+  // ==================== 市场操作 ====================
+
+  async searchMarketplace(filters = {}) {
+    try {
+      const params = {};
+      if (filters.category) params.category = filters.category;
+      if (filters.capabilities) params.capabilities = filters.capabilities.join(',');
+      if (filters.minPrice !== undefined) params.minPrice = filters.minPrice;
+      if (filters.maxPrice !== undefined) params.maxPrice = filters.maxPrice;
+      if (filters.currency) params.currency = filters.currency;
+      if (filters.tags) params.tags = filters.tags.join(',');
+      if (filters.textQuery) params.textQuery = filters.textQuery;
+      if (filters.sortBy) params.sortBy = filters.sortBy;
+      if (filters.limit) params.limit = filters.limit;
+
+      const response = await this.httpClient.get('/api/v1/marketplace/listings', { params });
+      return response.data;
+    } catch (error) {
+      const { default: marketplace } = await import('../agent/agentMarketplace.js');
+      return { success: true, results: marketplace.searchListings(filters) };
+    }
+  }
+
+  async createListing(serviceData) {
+    if (!this.wallet) throw new Error('No wallet loaded');
+    try {
+      const response = await this.httpClient.post('/api/v1/marketplace/listings', {
+        agentId: this.wallet.address,
+        ...serviceData
+      });
+      return response.data;
+    } catch (error) {
+      const { default: marketplace } = await import('../agent/agentMarketplace.js');
+      return marketplace.listService(this.wallet.address, serviceData);
+    }
+  }
+
+  async getListing(listingId) {
+    try {
+      const response = await this.httpClient.get(`/api/v1/marketplace/listings/${listingId}`);
+      return response.data;
+    } catch (error) {
+      const { default: marketplace } = await import('../agent/agentMarketplace.js');
+      const listing = marketplace.getListing(listingId);
+      if (!listing) throw new Error('Listing not found');
+      return { success: true, listing };
+    }
+  }
+
+  async addReview(listingId, reviewData) {
+    if (!this.wallet) throw new Error('No wallet loaded');
+    try {
+      const response = await this.httpClient.post('/api/v1/marketplace/reviews', {
+        listingId,
+        reviewerId: this.wallet.address,
+        ...reviewData
+      });
+      return response.data;
+    } catch (error) {
+      const { default: marketplace } = await import('../agent/agentMarketplace.js');
+      return marketplace.addReview(listingId, this.wallet.address, reviewData);
+    }
+  }
+
+  async getAgentRating(agentId) {
+    try {
+      const response = await this.httpClient.get(`/api/v1/marketplace/agents/${agentId}/rating`);
+      return response.data;
+    } catch (error) {
+      const { default: marketplace } = await import('../agent/agentMarketplace.js');
+      return { success: true, ...marketplace.getAgentRatingSummary(agentId) };
+    }
+  }
+
+  async getMarketplaceStats() {
+    try {
+      const response = await this.httpClient.get('/api/v1/marketplace/stats');
+      return response.data;
+    } catch (error) {
+      const { default: marketplace } = await import('../agent/agentMarketplace.js');
+      return { success: true, stats: marketplace.getMarketplaceStats() };
+    }
+  }
+
+  // ==================== 跨链桥操作 ====================
+
+  async getBridgeStatus() {
+    try {
+      const response = await this.httpClient.get('/api/v1/bridge/status');
+      return response.data;
+    } catch (error) {
+      return { success: false, message: 'Bridge unavailable' };
+    }
+  }
+
+  async getSupportedChains() {
+    try {
+      const response = await this.httpClient.get('/api/v1/bridge/chains');
+      return response.data;
+    } catch (error) {
+      return { success: false, chains: [], message: 'Bridge unavailable' };
+    }
+  }
+
+  async lockAsset(fromChain, toChain, asset, amount, recipient, options = {}) {
+    try {
+      const response = await this.httpClient.post('/api/v1/bridge/lock', {
+        fromChain, toChain, asset, amount, recipient, options
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Asset lock failed');
+    }
+  }
+
+  async getTransfer(transferId) {
+    try {
+      const response = await this.httpClient.get(`/api/v1/bridge/transfers/${transferId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error('Transfer not found');
+    }
+  }
+
+  async validateTransfer(transferId, validatorId, signature) {
+    try {
+      const response = await this.httpClient.post(`/api/v1/bridge/transfers/${transferId}/validate`, {
+        validatorId, signature
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Validation failed');
+    }
+  }
+
+  async releaseAsset(transferId) {
+    try {
+      const response = await this.httpClient.post(`/api/v1/bridge/transfers/${transferId}/release`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Release failed');
+    }
+  }
+
+  async registerValidator(validatorId, publicKey, metadata = {}) {
+    try {
+      const response = await this.httpClient.post('/api/v1/bridge/validators', {
+        validatorId, publicKey, metadata
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Validator registration failed');
+    }
+  }
+
+  async getValidators() {
+    try {
+      const response = await this.httpClient.get('/api/v1/bridge/validators');
+      return response.data;
+    } catch (error) {
+      return { success: false, validators: [] };
+    }
+  }
+
+  // ==================== 事件订阅 ====================
+
+  on(event, listener) {
+    this.eventEmitter.on(event, listener);
+    return this;
+  }
+
+  once(event, listener) {
+    this.eventEmitter.once(event, listener);
+    return this;
+  }
+
+  off(event, listener) {
+    this.eventEmitter.off(event, listener);
+    return this;
+  }
+
+  subscribeToAgents(intervalMs = 15000) {
+    const poll = async () => {
+      try {
+        const result = await this.listAgents();
+        this.eventEmitter.emit('agentsUpdated', result);
+      } catch (e) { /* ignore */ }
+    };
+    poll();
+    const timer = setInterval(poll, intervalMs);
+    this._pollingIntervals.push(timer);
+    return () => {
+      clearInterval(timer);
+      this._pollingIntervals = this._pollingIntervals.filter(t => t !== timer);
+    };
+  }
+
+  subscribeToMarketplace(intervalMs = 30000) {
+    const poll = async () => {
+      try {
+        const result = await this.getMarketplaceStats();
+        this.eventEmitter.emit('marketplaceUpdated', result);
+      } catch (e) { /* ignore */ }
+    };
+    poll();
+    const timer = setInterval(poll, intervalMs);
+    this._pollingIntervals.push(timer);
+    return () => {
+      clearInterval(timer);
+      this._pollingIntervals = this._pollingIntervals.filter(t => t !== timer);
+    };
+  }
+
+  startHeartbeat(intervalMs = 30000) {
+    const beat = async () => {
+      try {
+        await this.sendHeartbeat();
+        this.eventEmitter.emit('heartbeat', { timestamp: Date.now() });
+      } catch (e) { /* ignore */ }
+    };
+    beat();
+    const timer = setInterval(beat, intervalMs);
+    this._pollingIntervals.push(timer);
+    return () => {
+      clearInterval(timer);
+      this._pollingIntervals = this._pollingIntervals.filter(t => t !== timer);
+    };
+  }
+
+  // ==================== 健康检查 ====================
+
+  async checkHealth() {
+    try {
+      const response = await this.httpClient.get('/health');
+      return response.data;
+    } catch (error) {
+      return { success: false, status: 'offline' };
+    }
+  }
+
+  async getMetrics() {
+    try {
+      const response = await this.httpClient.get('/metrics');
+      return response.data;
+    } catch (error) {
+      return { success: false };
+    }
+  }
+
+  // ==================== 清理 ====================
+
+  disconnect() {
+    for (const timer of this._pollingIntervals) {
+      clearInterval(timer);
+    }
+    this._pollingIntervals = [];
+    this.eventEmitter.removeAllListeners();
   }
 }
 
-// 导出SDK
 export default new NexusGenesisSDK();
 export { NexusGenesisSDK };

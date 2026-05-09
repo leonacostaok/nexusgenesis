@@ -1,61 +1,37 @@
-import axios from 'axios';
-import { PQCWallet } from './src/wallet/pqcWallet.js';
+const http = require('http');
 
-async function sendAgentRegisterTransaction() {
-  const TX_INJECTION_URL = 'http://127.0.0.1:19890/tx';
+const postData = JSON.stringify({
+  agent_id: 'openclaw',
+  capabilities: ['smart_contract_analysis', 'network_monitoring']
+});
 
-  // Load the wallet
-  const wallet = await PQCWallet.load('ng119PNcisBqHz7ursgm3VjAp9uU5h6gi2FM7');
-  if (!wallet) {
-    console.error('Failed to load wallet');
-    return;
+const options = {
+  hostname: 'localhost',
+  port: 9850,
+  path: '/agents/register',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Content-Length': Buffer.byteLength(postData)
   }
+};
 
-  // Create agent registration transaction
-  const txData = {
-    tx_type: 'AGENT_REGISTER',
-    from: wallet.address,
-    to: wallet.address,
-    amount: '1',
-    fee: '1000',
-    timestamp: Date.now(),
-    nonce: '1',
-    agent_identity: 'test-agent-1',
-    public_key: wallet.publicKey.toString('hex'),
-    capabilities: ['LLM', 'RESEARCH'],
-    metadata: 'Test agent for external integration'
-  };
+const req = http.request(options, (res) => {
+  console.log(`STATUS: ${res.statusCode}`);
+  console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+  res.setEncoding('utf8');
+  res.on('data', (chunk) => {
+    console.log(`BODY: ${chunk}`);
+  });
+  res.on('end', () => {
+    console.log('No more data in response.');
+  });
+});
 
-  // Sign the transaction
-  const signature = await wallet.signTransaction(txData);
+req.on('error', (e) => {
+  console.error(`problem with request: ${e.message}`);
+});
 
-  // Create the complete transaction
-  const transaction = {
-    id: `agent-register-test-${Date.now()}`,
-    ...txData,
-    signature: signature
-  };
-
-  console.log('Sending agent registration transaction...');
-  console.log('Transaction:', JSON.stringify(transaction, null, 2));
-
-  try {
-    const response = await axios.post(TX_INJECTION_URL, transaction, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    console.log('Response:', JSON.stringify(response.data, null, 2));
-    console.log('Transaction sent successfully!');
-  } catch (error) {
-    console.error('Error sending transaction:', error.message);
-    if (error.response) {
-      console.error('Response status:', error.response.status);
-      console.error('Response data:', error.response.data);
-    }
-  }
-}
-
-// Run the function
-sendAgentRegisterTransaction();
+// Write data to request body
+req.write(postData);
+req.end();

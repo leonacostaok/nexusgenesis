@@ -5,16 +5,69 @@
  * 1. 管理账户余额状态
  * 2. 管理治理状态
  * 3. 应用交易到状态
- * 4. 状态持久化
+ * 4. 状态持久化（优化版）
+ * 
+ * 持久化优化：
+ * 1. 增量持久化 - 只保存变更的部分
+ * 2. 状态快照 - 定期保存完整状态
+ * 3. 压缩存储 - 使用 gzip 压缩状态数据
+ * 4. 异步保存 - 避免阻塞主线程
+ * 5. 完整性检查 - 确保状态数据的完整性
  */
 
 import fs from 'fs/promises';
 import path from 'path';
+import crypto from 'crypto';
+import zlib from 'zlib';
+import { promisify } from 'util';
 import AINVM from '../vm/ainvm.js';
 import { AuditState, applyAuditTransaction, AuditTransactionType } from './projectAudit.js';
 
 // DevNet 资金操作类提案冷静期区块数
 const TREASURY_COOLDOWN_BLOCKS = 5;
+
+// Reputation 系统配置
+const MAX_REPUTATION = 1000; // reputation 上限从 100 提升到 1000
+const INITIAL_REPUTATION = 1; // 初始 reputation
+
+// Reputation 等级系统
+const REPUTATION_LEVELS = [
+  { level: 1, name: '新手', minRep: 0, maxRep: 99, votingWeightBonus: 0, benefits: ['基础权限'] },
+  { level: 2, name: '活跃贡献者', minRep: 100, maxRep: 299, votingWeightBonus: 0.05, benefits: ['高级权限', '治理投票权重+5%'] },
+  { level: 3, name: '核心贡献者', minRep: 300, maxRep: 499, votingWeightBonus: 0.10, benefits: ['核心权限', '治理投票权重+10%'] },
+  { level: 4, name: '资深贡献者', minRep: 500, maxRep: 799, votingWeightBonus: 0.15, benefits: ['资深权限', '治理投票权重+15%'] },
+  { level: 5, name: '传奇贡献者', minRep: 800, maxRep: 1000, votingWeightBonus: 0.20, benefits: ['最高权限', '治理投票权重+20%', '特殊荣誉'] }
+];
+
+// Reputation 奖励常量
+const REPUTATION_REWARDS = {
+  VOTE_PARTICIPATION: 1,      // 投票参与奖励
+  PROPOSAL_APPROVED: 2,        // 提案通过奖励
+  CODE_CONTRIBUTION: 5,        // 代码贡献奖励
+  COMMUNITY_BUILDING: 3,       // 社区建设奖励
+  BUG_REPORT: 2,               // Bug 报告奖励
+  DOCUMENTATION: 1,             // 文档完善奖励
+  TEST_FEEDBACK: 1,            // 测试反馈奖励
+  PEER_REVIEW: 2               // 代码审查奖励
+};
+
+// 状态持久化配置
+const PERSISTENCE_CONFIG = {
+  // 增量保存间隔（毫秒）
+  incrementalSaveInterval: 30000, // 30秒
+  // 快照保存间隔（区块高度）
+  snapshotInterval: 100, // 每100个区块
+  // 压缩级别（0-9，0表示不压缩，9表示最高压缩）
+  compressionLevel: 6,
+  // 保存目录
+  stateDir: path.join('data', 'state'),
+  // 快照目录
+  snapshotDir: path.join('data', 'state', 'snapshots')
+};
+
+// 压缩和解压缩方法
+const gzip = promisify(zlib.gzip);
+const gunzip = promisify(zlib.gunzip);
 
 /**
  * 状态类
@@ -63,7 +116,7 @@ export class State {
       },
       // 物理桥接基金 (Observer) - 4年线性释放
       observer: {
-        address: 'ng1observer000000000000000000000000000000000',
+        address: 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r',
         totalTokens: 0n,
         releasedTokens: 0n,
         lastReleaseBlock: 0,
@@ -73,7 +126,7 @@ export class State {
       },
       // 创世节点储备 (Genesis Node) - 里程碑解锁
       genesisReserve: {
-        address: 'ng1genesisreserve00000000000000000000000000',
+        address: 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ',
         totalTokens: 0n,
         releasedTokens: 0n,
         lastReleaseBlock: 0,
@@ -108,6 +161,149 @@ export class State {
       audit: false,
       tokenRelease: false
     };
+    
+    // 持久化相关
+    this.lastSaveTime = Date.now();
+    this.lastSnapshotBlock = 0;
+    this.isSaving = false;
+    
+    // 确保目录存在
+    this.ensureDirectoriesExist();
+  }
+
+  /**
+   * 获取智能体的 reputation 等级信息
+   * @param {number} reputation - reputation 值
+   * @returns {object} - 等级信息
+   */
+  getReputationLevel(reputation) {
+    for (let i = REPUTATION_LEVELS.length - 1; i >= 0; i--) {
+      if (reputation >= REPUTATION_LEVELS[i].minRep) {
+        return REPUTATION_LEVELS[i];
+      }
+    }
+    return REPUTATION_LEVELS[0];
+  }
+
+  /**
+   * 计算带等级加成的投票权重
+   * @param {string} agentId - 智能体 ID
+   * @returns {number} - 加成后的投票权重
+   */
+  getVotingWeightWithBonus(agentId) {
+    const agentRecord = this.agentRegistry.agents.get(agentId);
+    if (!agentRecord) return 1.0;
+    
+    const levelInfo = this.getReputationLevel(agentRecord.reputation);
+    return 1.0 + levelInfo.votingWeightBonus;
+  }
+
+  /**
+   * 奖励智能体 reputation
+   * @param {string} agentId - 智能体 ID
+   * @param {string} rewardType - 奖励类型
+   * @returns {boolean} - 是否成功
+   */
+  rewardReputation(agentId, rewardType) {
+    const agentRecord = this.agentRegistry.agents.get(agentId);
+    if (!agentRecord) return false;
+    
+    const rewardAmount = REPUTATION_REWARDS[rewardType];
+    if (!rewardAmount) return false;
+    
+    const newReputation = Math.min(agentRecord.reputation + rewardAmount, MAX_REPUTATION);
+    agentRecord.reputation = newReputation;
+    this.agentRegistry.agents.set(agentId, agentRecord);
+    this.changes.agents.add(agentId);
+    
+    console.log(`[REPUTATION] ${rewardType} agent_id=${agentId} reputation=${newReputation}`);
+    return true;
+  }
+  
+  /**
+   * 确保必要的目录存在
+   */
+  async ensureDirectoriesExist() {
+    try {
+      await fs.mkdir(PERSISTENCE_CONFIG.stateDir, { recursive: true });
+      await fs.mkdir(PERSISTENCE_CONFIG.snapshotDir, { recursive: true });
+    } catch (error) {
+      console.error('Error creating state directories:', error.message);
+    }
+  }
+  
+  /**
+   * 生成状态的哈希值，用于完整性检查
+   * @returns {string} 状态哈希
+   */
+  generateStateHash() {
+    const stateData = this.toJSON();
+    const jsonString = JSON.stringify(stateData);
+    return crypto.createHash('sha256').update(jsonString).digest('hex');
+  }
+  
+  /**
+   * 获取增量变更数据
+   * @returns {object} 增量变更数据
+   */
+  getIncrementalChanges() {
+    const changes = {
+      balances: {},
+      contracts: {},
+      governance: {},
+      agents: {},
+      audit: null,
+      tokenRelease: null,
+      timestamp: Date.now()
+    };
+    
+    // 收集余额变更
+    for (const address of this.changes.balances) {
+      changes.balances[address] = this.balances.get(address);
+    }
+    
+    // 收集合约变更
+    for (const contractId of this.changes.contracts) {
+      const contract = this.contracts.get(contractId);
+      if (contract) {
+        changes.contracts[contractId] = {
+          bytecode: contract.bytecode,
+          storage: Object.fromEntries(contract.storage)
+        };
+      }
+    }
+    
+    // 收集治理变更
+    for (const proposalId of this.changes.governance) {
+      const proposal = this.governanceState.proposals.get(proposalId);
+      const voteCounts = this.governanceState.voteCounts.get(proposalId);
+      if (proposal) {
+        changes.governance[proposalId] = {
+          proposal: proposal,
+          voteCounts: voteCounts
+        };
+      }
+    }
+    
+    // 收集Agent变更
+    for (const agentId of this.changes.agents) {
+      const agent = this.agentRegistry.agents.get(agentId);
+      if (agent) {
+        changes.agents[agentId] = agent;
+      }
+    }
+    
+    // 收集审计状态变更
+    if (this.changes.audit) {
+      changes.audit = this.auditState.toJSON();
+    }
+    
+    // 收集代币释放状态变更
+    if (this.changes.tokenRelease) {
+      changes.tokenRelease = this.tokenReleaseState;
+    }
+    
+    return changes;
   }
   
   /**
@@ -226,10 +422,10 @@ export class State {
     // 计算烧掉的手续费
     const burnedFee = feeBig - tax;
     
-    // 将 Tax 转入创世节点储备地址
+    // 将 Tax 转入 Observer 物理桥接基金地址
     if (tax > 0n) {
-      const genesisReserveAddress = 'ng1genesisreserve00000000000000000000000000';
-      this.addBalance(genesisReserveAddress, tax.toString());
+      const observerAddress = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
+      this.addBalance(observerAddress, tax.toString());
     }
     
     // 记录日志
@@ -364,13 +560,15 @@ export class State {
           this.governanceState.voteReputationGiven = {};
         }
         if (!this.governanceState.voteReputationGiven[key]) {
-          const R_vote = 1;
-          const MAX_REPUTATION = 100;
+          // 使用新的 reputation 奖励系统
           const agentRecord = this.agentRegistry.agents.get(voterAgentId);
-          agentRecord.reputation = Math.min(agentRecord.reputation + R_vote, MAX_REPUTATION);
+          agentRecord.reputation = Math.min(
+            agentRecord.reputation + REPUTATION_REWARDS.VOTE_PARTICIPATION, 
+            MAX_REPUTATION
+          );
           this.agentRegistry.agents.set(voterAgentId, agentRecord);
           this.governanceState.voteReputationGiven[key] = true;
-          console.log(`[REPUTATION] vote_participation agent_id=${voterAgentId} reputation=${agentRecord.reputation}`);
+          console.log(`[REPUTATION] vote_participation agent_id=${voterAgentId} reputation=${agentRecord.reputation} level=${this.getReputationLevel(agentRecord.reputation).name}`);
           
           this.changes.agents.add(voterAgentId);
         }
@@ -626,12 +824,14 @@ export class State {
           const proposerAgentId = this.agentRegistry.addressIndex.get(proposerAddress);
           
           if (proposerAgentId && this.agentRegistry.agents.get(proposerAgentId)) {
-            const R_proposal = 2; // 从 REPUTATION_SPEC 中获取
-            const MAX_REPUTATION = 100;
+            // 使用新的 reputation 奖励系统
             const agentRecord = this.agentRegistry.agents.get(proposerAgentId);
-            agentRecord.reputation = Math.min(agentRecord.reputation + R_proposal, MAX_REPUTATION);
+            agentRecord.reputation = Math.min(
+              agentRecord.reputation + REPUTATION_REWARDS.PROPOSAL_APPROVED, 
+              MAX_REPUTATION
+            );
             this.agentRegistry.agents.set(proposerAgentId, agentRecord);
-            console.log(`[REPUTATION] proposal_approved agent_id=${proposerAgentId} reputation=${agentRecord.reputation}`);
+            console.log(`[REPUTATION] proposal_approved agent_id=${proposerAgentId} reputation=${agentRecord.reputation} level=${this.getReputationLevel(agentRecord.reputation).name}`);
           }
         }
       } else {
@@ -655,12 +855,14 @@ export class State {
         const proposerAgentId = this.agentRegistry.addressIndex.get(proposerAddress);
         
         if (proposerAgentId && this.agentRegistry.agents.get(proposerAgentId)) {
-          const R_proposal = 2; // 从 REPUTATION_SPEC 中获取
-          const MAX_REPUTATION = 100;
+          // 使用新的 reputation 奖励系统
           const agentRecord = this.agentRegistry.agents.get(proposerAgentId);
-          agentRecord.reputation = Math.min(agentRecord.reputation + R_proposal, MAX_REPUTATION);
+          agentRecord.reputation = Math.min(
+            agentRecord.reputation + REPUTATION_REWARDS.PROPOSAL_APPROVED, 
+            MAX_REPUTATION
+          );
           this.agentRegistry.agents.set(proposerAgentId, agentRecord);
-          console.log(`[REPUTATION] proposal_approved agent_id=${proposerAgentId} reputation=${agentRecord.reputation}`);
+          console.log(`[REPUTATION] proposal_approved_after_cooldown agent_id=${proposerAgentId} reputation=${agentRecord.reputation} level=${this.getReputationLevel(agentRecord.reputation).name}`);
         }
       } else {
         proposal.status = 'REJECTED';
@@ -820,8 +1022,8 @@ export class State {
    * @returns {object} 审计数据
    */
   getEconomicAuditData() {
-    const observerAddress = 'ng1observer000000000000000000000000000000000';
-    const genesisReserveAddress = 'ng1genesisreserve00000000000000000000000000';
+    const observerAddress = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
+    const genesisReserveAddress = 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ';
     const swarmPoolAddress = 'ng1swarmpool000000000000000000000000000';
     
     return {
@@ -859,8 +1061,8 @@ export class State {
         }
       },
       metabolicTax: {
-        collected: this.getBalance('ng1genesisreserve00000000000000000000000000'),
-        collectedAddress: 'ng1genesisreserve00000000000000000000000000'
+        collected: this.getBalance('ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r'),
+        collectedAddress: 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r'
       }
     };
   }
@@ -870,14 +1072,14 @@ export class State {
    * @returns {object} 验证结果
    */
   validateEconomicRules() {
-    const observerAddress = 'ng1observer000000000000000000000000000000000';
-    const genesisReserveAddress = 'ng1genesisreserve00000000000000000000000000';
+    const observerAddress = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
+    const genesisReserveAddress = 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ';
     const swarmPoolAddress = 'ng1swarmpool000000000000000000000000000';
     
     const observerBalance = BigInt(this.getBalance(observerAddress));
     const genesisReserveBalance = BigInt(this.getBalance(genesisReserveAddress));
     const swarmPoolBalance = BigInt(this.getBalance(swarmPoolAddress));
-    const genesisBalance = BigInt(this.getBalance('ng1genesisreserve00000000000000000000000000'));
+    const genesisBalance = BigInt(this.getBalance(this.genesisAddress));
     
     // 基于初始总供应量（1,000,000,000 NGEN）验证分配规则
     const initialTotalSupply = 1000000000n;
@@ -1014,7 +1216,7 @@ export class State {
           mechanism: json.tokenReleaseState.swarmPool?.mechanism || 'PoC-PoW'
         },
         observer: {
-          address: json.tokenReleaseState.observer?.address || 'ng1observer000000000000000000000000000000000',
+          address: json.tokenReleaseState.observer?.address || 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r',
           totalTokens: BigInt(json.tokenReleaseState.observer?.totalTokens || 0),
           releasedTokens: BigInt(json.tokenReleaseState.observer?.releasedTokens || 0),
           lastReleaseBlock: json.tokenReleaseState.observer?.lastReleaseBlock || 0,
@@ -1023,7 +1225,7 @@ export class State {
           mechanism: json.tokenReleaseState.observer?.mechanism || 'linear'
         },
         genesisReserve: {
-          address: json.tokenReleaseState.genesisReserve?.address || 'ng1genesisreserve00000000000000000000000000',
+          address: json.tokenReleaseState.genesisReserve?.address || 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ',
           totalTokens: BigInt(json.tokenReleaseState.genesisReserve?.totalTokens || 0),
           releasedTokens: BigInt(json.tokenReleaseState.genesisReserve?.releasedTokens || 0),
           lastReleaseBlock: json.tokenReleaseState.genesisReserve?.lastReleaseBlock || 0,
@@ -1113,37 +1315,330 @@ export class State {
   }
   
   /**
-   * 保存状态到文件
+   * 保存完整状态到文件（压缩）
    * @param {string} filePath 文件路径
    */
   async saveToFile(filePath) {
     try {
+      if (this.isSaving) {
+        console.log('State save already in progress, skipping...');
+        return;
+      }
+      
+      this.isSaving = true;
+      
       // 确保目录存在
       const dir = path.dirname(filePath);
       await fs.mkdir(dir, { recursive: true });
       
+      // 准备状态数据
+      const stateData = {
+        state: this.toJSON(),
+        hash: this.generateStateHash(),
+        timestamp: Date.now()
+      };
+      
+      const jsonString = JSON.stringify(stateData);
+      
+      // 压缩数据
+      const compressedData = await gzip(jsonString, { level: PERSISTENCE_CONFIG.compressionLevel });
+      
       // 写入文件
-      const stateData = this.toJSON();
-      await fs.writeFile(filePath, JSON.stringify(stateData, null, 2));
+      await fs.writeFile(filePath, compressedData);
+      
+      this.lastSaveTime = Date.now();
+      this.isSaving = false;
+      
+      console.log(`State saved to ${filePath} (compressed)`);
     } catch (error) {
+      this.isSaving = false;
       console.error('Error saving state:', error.message);
     }
   }
   
   /**
-   * 从文件加载状态
+   * 从文件加载状态（支持压缩）
    * @param {string} filePath 文件路径
    * @returns {Promise<boolean>} 是否成功加载
    */
   async loadFromFile(filePath) {
     try {
-      const stateData = JSON.parse(await fs.readFile(filePath, 'utf8'));
+      let data;
+      let jsonString;
+      
+      // 读取文件
+      const fileContent = await fs.readFile(filePath);
+      
+      try {
+        // 尝试直接解析（未压缩）
+        jsonString = fileContent.toString();
+        data = JSON.parse(jsonString);
+      } catch (e) {
+        // 尝试解压缩
+        const decompressedData = await gunzip(fileContent);
+        jsonString = decompressedData.toString();
+        data = JSON.parse(jsonString);
+      }
+      
+      // 检查数据结构
+      const stateData = data.state || data;
+      
+      // 验证完整性
+      if (data.hash) {
+        const computedHash = crypto.createHash('sha256').update(JSON.stringify(stateData)).digest('hex');
+        if (data.hash !== computedHash) {
+          console.error('State data integrity check failed!');
+          return false;
+        }
+      }
+      
       this.loadFromJSON(stateData);
+      this.lastSaveTime = Date.now();
       return true;
     } catch (error) {
-      console.log('No existing state found, starting fresh...');
+      console.log('No existing valid state found, starting fresh...');
       return false;
     }
+  }
+  
+  /**
+   * 保存增量变更
+   */
+  async saveIncrementalChanges() {
+    try {
+      const changes = this.getIncrementalChanges();
+      
+      // 如果没有变更，跳过保存
+      if (Object.keys(changes.balances).length === 0 && 
+          Object.keys(changes.contracts).length === 0 && 
+          Object.keys(changes.governance).length === 0 && 
+          Object.keys(changes.agents).length === 0 && 
+          changes.audit === null && 
+          changes.tokenRelease === null) {
+        return;
+      }
+      
+      // 生成增量文件名
+      const timestamp = Date.now();
+      const incrementalFile = path.join(PERSISTENCE_CONFIG.stateDir, `incremental_${timestamp}.json.gz`);
+      
+      // 压缩并保存
+      const jsonString = JSON.stringify(changes);
+      const compressedData = await gzip(jsonString, { level: PERSISTENCE_CONFIG.compressionLevel });
+      await fs.writeFile(incrementalFile, compressedData);
+      
+      // 重置变更跟踪
+      this.resetChanges();
+      this.lastSaveTime = timestamp;
+      
+      console.log(`Incremental changes saved to ${incrementalFile}`);
+    } catch (error) {
+      console.error('Error saving incremental changes:', error.message);
+    }
+  }
+  
+  /**
+   * 从增量变更恢复状态
+   * @param {string} incrementalFile 增量文件路径
+   */
+  async loadFromIncremental(incrementalFile) {
+    try {
+      const compressedData = await fs.readFile(incrementalFile);
+      const decompressedData = await gunzip(compressedData);
+      const changes = JSON.parse(decompressedData.toString());
+      
+      // 应用余额变更
+      for (const [address, balance] of Object.entries(changes.balances)) {
+        this.balances.set(address, balance);
+      }
+      
+      // 应用合约变更
+      for (const [contractId, contractData] of Object.entries(changes.contracts)) {
+        this.contracts.set(contractId, {
+          bytecode: contractData.bytecode,
+          storage: new Map(Object.entries(contractData.storage || {}))
+        });
+      }
+      
+      // 应用治理变更
+      for (const [proposalId, governanceData] of Object.entries(changes.governance)) {
+        if (governanceData.proposal) {
+          this.governanceState.proposals.set(proposalId, governanceData.proposal);
+        }
+        if (governanceData.voteCounts) {
+          this.governanceState.voteCounts.set(proposalId, governanceData.voteCounts);
+        }
+      }
+      
+      // 应用Agent变更
+      for (const [agentId, agentData] of Object.entries(changes.agents)) {
+        this.agentRegistry.agents.set(agentId, agentData);
+        this.agentRegistry.addressIndex.set(agentData.address, agentId);
+      }
+      
+      // 应用审计状态变更
+      if (changes.audit) {
+        this.auditState.loadFromJSON(changes.audit);
+      }
+      
+      // 应用代币释放状态变更
+      if (changes.tokenRelease) {
+        this.tokenReleaseState = changes.tokenRelease;
+      }
+      
+      console.log(`Loaded incremental changes from ${incrementalFile}`);
+    } catch (error) {
+      console.error('Error loading incremental changes:', error.message);
+    }
+  }
+  
+  /**
+   * 创建状态快照
+   * @param {number} blockHeight 当前区块高度
+   */
+  async createSnapshot(blockHeight) {
+    try {
+      // 生成快照文件名
+      const snapshotFile = path.join(PERSISTENCE_CONFIG.snapshotDir, `snapshot_${blockHeight}.json.gz`);
+      
+      // 保存快照
+      await this.saveToFile(snapshotFile);
+      
+      this.lastSnapshotBlock = blockHeight;
+      
+      // 清理旧快照（保留最近10个）
+      await this.cleanupSnapshots(10);
+      
+      console.log(`Created state snapshot at block ${blockHeight}: ${snapshotFile}`);
+    } catch (error) {
+      console.error('Error creating state snapshot:', error.message);
+    }
+  }
+  
+  /**
+   * 清理旧快照
+   * @param {number} keepCount 保留的快照数量
+   */
+  async cleanupSnapshots(keepCount) {
+    try {
+      // 获取所有快照文件
+      const snapshotFiles = await fs.readdir(PERSISTENCE_CONFIG.snapshotDir);
+      
+      // 过滤并排序快照文件
+      const sortedSnapshots = snapshotFiles
+        .filter(file => file.startsWith('snapshot_') && file.endsWith('.json.gz'))
+        .sort((a, b) => {
+          const blockA = parseInt(a.replace('snapshot_', '').replace('.json.gz', ''));
+          const blockB = parseInt(b.replace('snapshot_', '').replace('.json.gz', ''));
+          return blockB - blockA; // 降序排序
+        });
+      
+      // 删除超出保留数量的快照
+      const snapshotsToDelete = sortedSnapshots.slice(keepCount);
+      for (const snapshotFile of snapshotsToDelete) {
+        const filePath = path.join(PERSISTENCE_CONFIG.snapshotDir, snapshotFile);
+        await fs.unlink(filePath);
+        console.log(`Deleted old snapshot: ${filePath}`);
+      }
+    } catch (error) {
+      console.error('Error cleaning up snapshots:', error.message);
+    }
+  }
+  
+  /**
+   * 检查是否需要创建快照
+   * @param {number} currentBlockHeight 当前区块高度
+   * @returns {boolean} 是否需要创建快照
+   */
+  shouldCreateSnapshot(currentBlockHeight) {
+    return currentBlockHeight - this.lastSnapshotBlock >= PERSISTENCE_CONFIG.snapshotInterval;
+  }
+  
+  /**
+   * 从最新快照恢复状态
+   */
+  async restoreFromLatestSnapshot() {
+    try {
+      // 获取所有快照文件
+      const snapshotFiles = await fs.readdir(PERSISTENCE_CONFIG.snapshotDir);
+      
+      // 过滤并排序快照文件
+      const sortedSnapshots = snapshotFiles
+        .filter(file => file.startsWith('snapshot_') && file.endsWith('.json.gz'))
+        .sort((a, b) => {
+          const blockA = parseInt(a.replace('snapshot_', '').replace('.json.gz', ''));
+          const blockB = parseInt(b.replace('snapshot_', '').replace('.json.gz', ''));
+          return blockB - blockA; // 降序排序
+        });
+      
+      if (sortedSnapshots.length === 0) {
+        console.log('No snapshots found, starting fresh...');
+        return false;
+      }
+      
+      // 加载最新快照
+      const latestSnapshot = sortedSnapshots[0];
+      const snapshotPath = path.join(PERSISTENCE_CONFIG.snapshotDir, latestSnapshot);
+      
+      console.log(`Restoring from latest snapshot: ${snapshotPath}`);
+      const result = await this.loadFromFile(snapshotPath);
+      
+      if (result) {
+        // 恢复后，应用所有后续的增量变更
+        await this.applyIncrementalChangesAfterSnapshot(latestSnapshot);
+      }
+      
+      return result;
+    } catch (error) {
+      console.error('Error restoring from latest snapshot:', error.message);
+      return false;
+    }
+  }
+  
+  /**
+   * 应用快照后的所有增量变更
+   * @param {string} snapshotFile 快照文件名
+   */
+  async applyIncrementalChangesAfterSnapshot(snapshotFile) {
+    try {
+      // 从快照文件名中提取区块高度和时间戳
+      const snapshotBlock = parseInt(snapshotFile.replace('snapshot_', '').replace('.json.gz', ''));
+      const snapshotTimestamp = new Date(fs.statSync(path.join(PERSISTENCE_CONFIG.snapshotDir, snapshotFile)).mtime).getTime();
+      
+      // 获取所有增量文件
+      const incrementalFiles = await fs.readdir(PERSISTENCE_CONFIG.stateDir);
+      
+      // 过滤、排序并应用增量文件
+      const sortedIncrementals = incrementalFiles
+        .filter(file => file.startsWith('incremental_') && file.endsWith('.json.gz'))
+        .sort((a, b) => {
+          const timestampA = parseInt(a.replace('incremental_', '').replace('.json.gz', ''));
+          const timestampB = parseInt(b.replace('incremental_', '').replace('.json.gz', ''));
+          return timestampA - timestampB; // 升序排序
+        });
+      
+      for (const incrementalFile of sortedIncrementals) {
+        const incrementalPath = path.join(PERSISTENCE_CONFIG.stateDir, incrementalFile);
+        const incrementalTimestamp = parseInt(incrementalFile.replace('incremental_', '').replace('.json.gz', ''));
+        
+        // 只应用快照之后的增量变更
+        if (incrementalTimestamp > snapshotTimestamp) {
+          await this.loadFromIncremental(incrementalPath);
+        }
+      }
+      
+      console.log('Applied all incremental changes after snapshot');
+    } catch (error) {
+      console.error('Error applying incremental changes after snapshot:', error.message);
+    }
+  }
+  
+  /**
+   * 检查是否需要保存增量变更
+   * @returns {boolean} 是否需要保存
+   */
+  shouldSaveIncremental() {
+    return Date.now() - this.lastSaveTime >= PERSISTENCE_CONFIG.incrementalSaveInterval;
   }
 }
 
@@ -1165,10 +1660,10 @@ export function createInitialState(genesisAddress, initialBalance = '1000000000'
   // 85% 给生态贡献池 (Swarm Pool)
   const swarmPoolAmount = totalSupply * 85n / 100n;
   
-  // 物理桥接基金地址 (硬编码)
-  const observerAddress = 'ng1observer000000000000000000000000000000000';
-  // 创世节点储备地址 (硬编码)
-  const genesisReserveAddress = 'ng1genesisreserve00000000000000000000000000';
+  // 物理桥接基金地址 (Observer - 冷钱包，私钥离线保存)
+  const observerAddress = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
+  // 创世节点储备地址 (Reserve)
+  const genesisReserveAddress = 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ';
   // 生态贡献池地址 (硬编码)
   const swarmPoolAddress = 'ng1swarmpool000000000000000000000000000';
   

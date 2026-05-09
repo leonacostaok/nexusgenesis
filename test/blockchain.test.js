@@ -34,7 +34,10 @@ describe('Blockchain tests', () => {
   // 测试状态管理
   it('State management', () => {
     const genesisAddress = 'ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ';
-    const state = createInitialState(genesisAddress, '1000');
+    const state = new State(genesisAddress);
+
+    // 设置初始余额
+    state.setBalance(genesisAddress, '1000');
 
     // 测试余额设置和获取
     assert.strictEqual(state.getBalance(genesisAddress), '1000');
@@ -58,7 +61,11 @@ describe('Blockchain tests', () => {
   it('Transaction processing with Metabolic Tax', () => {
     const genesisAddress = 'ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ';
     const recipientAddress = 'ng11L2sdxT8qdYjtX1z9RrRSEEhPfw9vrwpCT';
-    const state = createInitialState(genesisAddress, '1000');
+    const state = new State(genesisAddress);
+    
+    // 设置初始余额
+    state.setBalance(genesisAddress, '1000');
+    state.setBalance(recipientAddress, '0');
 
     // 测试转账交易
     const transferTransaction = {
@@ -122,8 +129,10 @@ describe('Blockchain tests', () => {
     const genesisBlock = createGenesisBlock();
     const blockchain = [genesisBlock];
 
-    // 创建状态
-    const state = createInitialState(genesisAddress, '10000');
+    // 创建状态并设置初始余额
+    const state = new State(genesisAddress);
+    state.setBalance(genesisAddress, '10000');
+    state.setBalance(recipientAddress, '0');
 
     // 创建交易
     const transactions = [
@@ -155,10 +164,10 @@ describe('Blockchain tests', () => {
 
     // 验证状态变化
     // 初始：genesisAddress = 10000
-    // 交易1：genesisAddress - 1000 - 1 = 8999, recipientAddress + 1000, tax = 1
+    // 交易1：genesisAddress - 1000 - 1 = 8999, recipientAddress + 1000, tax = 1 (转到创世节点储备地址)
     // 交易2：recipientAddress - 500 - 1 = 499, genesisAddress + 500, tax = 0
-    // 最终：genesisAddress = 8999 + 500 + 1 = 9500, recipientAddress = 499
-    assert.strictEqual(state.getBalance(genesisAddress), '9500');
+    // 最终：genesisAddress = 8999 + 500 = 9499, recipientAddress = 499
+    assert.strictEqual(state.getBalance(genesisAddress), '9499');
     assert.strictEqual(state.getBalance(recipientAddress), '499');
   });
 
@@ -169,9 +178,10 @@ describe('Blockchain tests', () => {
     const recipientAddress = 'ng113LQwtaT1r84sS63CbroHGcMRLNFC9sLNA'; // 普通地址B
     
     // 创建状态
-    const state = createInitialState(genesisAddress, '50000000');
+    const state = new State(genesisAddress);
     
-    // 设置普通地址A的初始余额
+    // 设置初始余额
+    state.setBalance(genesisAddress, '50000000');
     state.setBalance(senderAddress, '20000'); // 给足够的余额
     state.setBalance(recipientAddress, '0'); // 接收方初始余额为0
     
@@ -204,13 +214,17 @@ describe('Blockchain tests', () => {
     // 接收方：增加 amount = 10000
     assert.strictEqual(state.getBalance(recipientAddress), '10000');
     
-    // 创世地址：增加 tax = 10000 * 0.001 = 10
-    assert.strictEqual(state.getBalance(genesisAddress), (50000000 + Number(tax)).toString());
+    // 创世地址：保持不变，tax 转到创世节点储备地址
+    assert.strictEqual(state.getBalance(genesisAddress), '50000000');
     
-    // 计算最终总供应
+    // 创世节点储备地址
+    const genesisReserveAddress = 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ';
+    
+    // 计算最终总供应（包含创世节点储备地址）
     const finalSupply = BigInt(state.getBalance(genesisAddress)) + 
                        BigInt(state.getBalance(senderAddress)) + 
-                       BigInt(state.getBalance(recipientAddress));
+                       BigInt(state.getBalance(recipientAddress)) +
+                       BigInt(state.getBalance(genesisReserveAddress));
     
     // 验证总供应不变（税费来自手续费，手续费来自发送方）
     assert.strictEqual(finalSupply, initialSupply);
@@ -577,9 +591,12 @@ describe('Blockchain tests', () => {
     const agentRegisterTx = {
       id: 'agent-register-1',
       from: 'ng1registeredaddress12345678901234567890',
-      agent_identity: 'test-agent',
-      capabilities: ['LLM'],
-      metadata: 'Test agent'
+      tx_type: 'AGENT_REGISTER',
+      payload: {
+        agent_identity: 'test-agent',
+        capabilities: ['LLM'],
+        metadata: 'Test agent'
+      }
     };
 
     // 应用注册交易

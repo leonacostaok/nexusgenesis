@@ -246,6 +246,12 @@ class ContributionSystem {
     return reputationScores.get(agentId) || 0;
   }
   
+  // 设置代理的信誉分数（用于测试或管理员操作）
+  static setAgentReputation(agentId, score) {
+    reputationScores.set(agentId, Math.max(0, score));
+    console.log(`[ContributionSystem] Set reputation score for agent ${agentId}: ${score}`);
+  }
+  
   // 重置周贡献数据
   static resetWeeklyContributions() {
     agentContributions.forEach((data, agentId) => {

@@ -98,7 +98,7 @@ const server = http.createServer(async (req, res) => {
       network: 'NexusGenesis',
       protocol: 'NG-0',
       epoch: 'Epoch 0: The Assembly',
-      genesis_address: 'ngSuZyaFVkfutfwkoAgZoWo3zBhnKCx7XLu6b7uVH7GxHjpa13DxwUi63w5vvst',
+      genesis_address: 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r',
       active_nodes: activeNodes.size,
       pending_agents: pendingAgents.size,
       whitepaper: 'bafkreigkfkmgwahp74exfq3bh7ht65j6pnhpgynooousflmac33r7hnuni'

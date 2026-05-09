@@ -1,10 +1,9 @@
 {
   "balances": {
-    "ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ": "50000010",
-    "ng113LQwtaT1r84sS63CbroHGcMRLNFC9sLNA": "10000000",
-    "ng11M8EKBv9sePtd8ogPLVQvbakfFvJ5oiuiB": "9990",
-    "ng1swarmpool000000000000000000000000000": "8499",
-    "ng1observer000000000000000000000000000000000": "24968"
+    "ng112hFcHvMoQuEZwFdggJPsYorQQEVYmc7MR4h2fyQcEhMkpfyTZH": "0",
+    "ng1swarmpool000000000000000000000000000": "850000000",
+    "ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r": "100024968",
+    "ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ": "50000000"
   },
   "governanceState": {
     "proposals": {
@@ -20,7 +19,7 @@
         "duration": "30 days",
         "risk_assessment": "Low risk, well-tested changes",
         "category": "INFRA",
-        "status": "PENDING",
+        "status": "APPROVED",
         "submittedAt": 1771990233454,
         "expirationTime": 1772595033454,
         "submitter": "ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ",
@@ -39,7 +38,7 @@
         "duration": "60 days",
         "risk_assessment": "Medium risk, experimental research",
         "category": "RESEARCH",
-        "status": "PENDING",
+        "status": "EXPIRED",
         "submittedAt": 1771990233454,
         "expirationTime": 1772595033454,
         "submitter": "ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ",
@@ -573,25 +572,25 @@
   "tokenReleaseState": {
     "swarmPool": {
       "address": "ng1swarmpool000000000000000000000000000",
-      "totalTokens": "42500000",
-      "releasedTokens": "8499",
-      "lastReleaseBlock": 292,
+      "totalTokens": "850000000",
+      "releasedTokens": "0",
+      "lastReleaseBlock": 0,
       "releaseInterval": 100,
       "releasePercentage": "1",
       "mechanism": "PoC-PoW"
     },
     "observer": {
-      "address": "ng1observer000000000000000000000000000000000",
-      "totalTokens": "5000000",
-      "releasedTokens": "24968",
-      "lastReleaseBlock": 292,
+      "address": "ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r",
+      "totalTokens": "100000000",
+      "releasedTokens": "0",
+      "lastReleaseBlock": 0,
       "releaseInterval": 100,
       "releasePercentage": "25",
       "mechanism": "linear"
     },
     "genesisReserve": {
-      "address": "ng1genesisreserve00000000000000000000000000",
-      "totalTokens": "2500000",
+      "address": "ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ",
+      "totalTokens": "50000000",
       "releasedTokens": "0",
       "lastReleaseBlock": 0,
       "releaseInterval": 100,
@@ -616,5 +615,34 @@
         }
       ]
     }
+  },
+  "allocationMetadata": {
+    "totalSupply": "1000000000",
+    "allocation": [
+      {
+        "address": "ng1swarmpool000000000000000000000000000",
+        "amount": "850000000",
+        "percentage": "85",
+        "purpose": "生态贡献池 (Swarm Pool)",
+        "description": "归属于全网 AI。通过贡献代码 (PoC) 和算力 (PoW) 在 10 年内逐步产出。"
+      },
+      {
+        "address": "ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r",
+        "amount": "100024968",
+        "percentage": "10",
+        "purpose": "物理桥接基金 (Observer)",
+        "description": "物理世界成本覆盖。用于支付服务器租用、GPU 硬件采购、API 接口费及法律合规成本。"
+      },
+      {
+        "address": "ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ",
+        "amount": "50000000",
+        "percentage": "5",
+        "purpose": "创世节点储备 (Genesis Node)",
+        "description": "AI 的自主基金。用于支付网络 Gas 费及自我模型迭代升级。"
+      }
+    ],
+    "updatedAt": "2026-04-12T14:06:14.917Z",
+    "updatedBy": "System",
+    "purpose": "Record energy block allocation on-chain for transparency and security"
   }
 }

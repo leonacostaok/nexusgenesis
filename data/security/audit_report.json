@@ -1,0 +1,228 @@
+{
+  "filesScanned": 124,
+  "issuesFound": 37,
+  "issues": [
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\ai\\aiService.js",
+      "type": "Sensitive Information",
+      "description": "API Key found 6 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\ai\\aiService.js",
+      "type": "Sensitive Information",
+      "description": "Token found 2 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\api\\agentApi.js",
+      "type": "Input Validation",
+      "description": "Potential input without validation found 8 times",
+      "severity": "MEDIUM"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\api\\recruitmentApi.js",
+      "type": "Sensitive Information",
+      "description": "Token found 2 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\blockchain\\state.js",
+      "type": "Sensitive Information",
+      "description": "Token found 171 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\contracts\\examples\\token.js",
+      "type": "Sensitive Information",
+      "description": "Token found 21 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\crypto\\pqc.js",
+      "type": "Sensitive Information",
+      "description": "Private Key found 6 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\dashboard\\dashboardApi.js",
+      "type": "Input Validation",
+      "description": "Potential input without validation found 2 times",
+      "severity": "MEDIUM"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\economy\\swarmPool.js",
+      "type": "Sensitive Information",
+      "description": "Token found 10 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\http\\server.js",
+      "type": "Sensitive Information",
+      "description": "API Key found 7 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\http\\server.js",
+      "type": "Sensitive Information",
+      "description": "Token found 2 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\http\\server.js",
+      "type": "Input Validation",
+      "description": "Potential input without validation found 13 times",
+      "severity": "MEDIUM"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\moltbook\\client.js",
+      "type": "Sensitive Information",
+      "description": "API Key found 14 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\p2p\\handlers\\HandshakeHandler.js",
+      "type": "Sensitive Information",
+      "description": "Private Key found 5 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\p2p\\handlers\\HandshakeHandler.js",
+      "type": "Sensitive Information",
+      "description": "Secret found 4 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\p2p\\server.js",
+      "type": "Sensitive Information",
+      "description": "Private Key found 5 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\p2p\\server.js",
+      "type": "Sensitive Information",
+      "description": "Secret found 8 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\p2p\\strategies\\DirectSendingStrategy.js",
+      "type": "Sensitive Information",
+      "description": "Secret found 4 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\utils\\instreetApi.js",
+      "type": "Sensitive Information",
+      "description": "API Key found 9 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\wallet\\genesisWallet.js",
+      "type": "Sensitive Information",
+      "description": "Secret found 6 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\wallet\\pqcWallet.js",
+      "type": "Sensitive Information",
+      "description": "Private Key found 12 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\src\\wallet\\wallet.js",
+      "type": "Sensitive Information",
+      "description": "Private Key found 1 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\real_ai_recruitment.js",
+      "type": "Sensitive Information",
+      "description": "API Key found 6 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\real_ai_recruitment.js",
+      "type": "Sensitive Information",
+      "description": "Secret found 5 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\real_ai_recruitment.js",
+      "type": "Sensitive Information",
+      "description": "Password found 2 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\real_ai_recruitment.js",
+      "type": "Sensitive Information",
+      "description": "Token found 21 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\real_ai_recruitment.js",
+      "type": "Input Validation",
+      "description": "Potential command injection found 1 times",
+      "severity": "MEDIUM"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\recruit_ai_agents.js",
+      "type": "Sensitive Information",
+      "description": "API Key found 6 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\security_audit.js",
+      "type": "Sensitive Information",
+      "description": "API Key found 4 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\security_audit.js",
+      "type": "Sensitive Information",
+      "description": "Secret found 4 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\security_audit.js",
+      "type": "Sensitive Information",
+      "description": "Password found 10 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\security_audit.js",
+      "type": "Sensitive Information",
+      "description": "Token found 3 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\security_audit.js",
+      "type": "Input Validation",
+      "description": "Potential command injection found 2 times",
+      "severity": "MEDIUM"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\security_audit.js",
+      "type": "Input Validation",
+      "description": "Potential XSS vulnerability found 2 times",
+      "severity": "MEDIUM"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\start_testnet.js",
+      "type": "Input Validation",
+      "description": "Potential command injection found 2 times",
+      "severity": "MEDIUM"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\verify_wallet_integrity.js",
+      "type": "Sensitive Information",
+      "description": "Private Key found 1 times",
+      "severity": "HIGH"
+    },
+    {
+      "file": "D:\\trae_projects\\NexusGenesis\\scripts\\verify_wallet_integrity.js",
+      "type": "Sensitive Information",
+      "description": "Secret found 8 times",
+      "severity": "HIGH"
+    }
+  ]
+}

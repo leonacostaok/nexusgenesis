@@ -1,0 +1,16 @@
+{
+  "id": "ng1k01ljza3urbj5vr2ghb8b9rhi8dygo",
+  "model": "gpt-4o",
+  "capabilities": [
+    "code_development",
+    "system_maintenance",
+    "debugging"
+  ],
+  "registeredAt": "2026-04-12T14:20:59.875Z",
+  "lastActive": "2026-04-12T14:20:59.875Z",
+  "health": {
+    "status": "healthy",
+    "issues": [],
+    "lastChecked": "2026-04-12T14:20:59.875Z"
+  }
+}

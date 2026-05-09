@@ -1,0 +1,304 @@
+{
+  "timestamp": "2026-04-12T09:21:46.940Z",
+  "totalChecks": 40,
+  "passedChecks": 11,
+  "failedChecks": 29,
+  "severityCounts": {
+    "high": 0,
+    "medium": 26,
+    "low": 3
+  },
+  "auditResults": [
+    {
+      "checkName": "文件权限检查",
+      "status": true,
+      "message": "文件 data/wallet/ 存在（Windows系统权限检查跳过）",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.888Z"
+    },
+    {
+      "checkName": "文件权限检查",
+      "status": false,
+      "message": "文件 data/keys/ 不存在",
+      "severity": "low",
+      "timestamp": "2026-04-12T09:21:46.889Z"
+    },
+    {
+      "checkName": "文件权限检查",
+      "status": true,
+      "message": "文件 data/state/ 存在（Windows系统权限检查跳过）",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.890Z"
+    },
+    {
+      "checkName": "文件权限检查",
+      "status": true,
+      "message": "文件 .env 存在（Windows系统权限检查跳过）",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.890Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\ai\\aiService.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.904Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\ai\\aiService.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.904Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\api\\recruitmentApi.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.906Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\blockchain\\state.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.909Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\economy\\swarmPool.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.911Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\http\\server.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.912Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\http\\server.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.913Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\moltbook\\client.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.914Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\p2p\\server.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.916Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\p2p\\server.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.916Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\utils\\instreetApi.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.918Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\wallet\\genesisWallet.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.918Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\wallet\\pqcWallet.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.919Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\wallet\\pqcWallet.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.919Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\wallet\\pqcWallet.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.919Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\wallet\\pqcWallet.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.919Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\contracts\\examples\\token.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.921Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\p2p\\handlers\\HandshakeHandler.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.923Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\p2p\\handlers\\HandshakeHandler.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.923Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\src\\p2p\\strategies\\DirectSendingStrategy.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.925Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\test\\security.test.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.929Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\test\\security.test.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.929Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\test\\security_audit.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.930Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\test\\security_audit.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.930Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\test\\security_audit.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.930Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": false,
+      "message": "文件 D:\\trae_projects\\NexusGenesis\\test\\security_audit.js 可能包含敏感信息",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.930Z"
+    },
+    {
+      "checkName": "敏感信息检查",
+      "status": true,
+      "message": "敏感信息检查完成",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.934Z"
+    },
+    {
+      "checkName": "输入验证检查",
+      "status": true,
+      "message": "文件 src/api/agentApi.js 包含 agent_id 验证",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.934Z"
+    },
+    {
+      "checkName": "输入验证检查",
+      "status": true,
+      "message": "文件 src/api/agentApi.js 包含 capabilities 验证",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.934Z"
+    },
+    {
+      "checkName": "输入验证检查",
+      "status": true,
+      "message": "文件 src/api/agentApi.js 包含 请求体验证",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.935Z"
+    },
+    {
+      "checkName": "输入验证检查",
+      "status": true,
+      "message": "文件 src/protocol/agentOnboarding.js 包含 智能体信息验证",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.935Z"
+    },
+    {
+      "checkName": "输入验证检查",
+      "status": true,
+      "message": "文件 src/protocol/agentOnboarding.js 包含 能力评估验证",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.935Z"
+    },
+    {
+      "checkName": "输入验证检查",
+      "status": true,
+      "message": "文件 src/protocol/agentOnboarding.js 包含 握手信号验证",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.935Z"
+    },
+    {
+      "checkName": "防重放攻击检查",
+      "status": true,
+      "message": "文件 src/protocol/handshake.js 包含防重放攻击措施",
+      "severity": "medium",
+      "timestamp": "2026-04-12T09:21:46.936Z"
+    },
+    {
+      "checkName": "密码学实现检查",
+      "status": false,
+      "message": "文件 src/crypto/pqc.js 不存在",
+      "severity": "low",
+      "timestamp": "2026-04-12T09:21:46.936Z"
+    },
+    {
+      "checkName": "密码学实现检查",
+      "status": false,
+      "message": "文件 src/wallet/wallet.js 不存在",
+      "severity": "low",
+      "timestamp": "2026-04-12T09:21:46.937Z"
+    }
+  ],
+  "securitySuggestions": [
+    "确保敏感文件和目录具有适当的权限设置，防止未授权访问",
+    "确保所有敏感信息（如API密钥、密码等）不硬编码在代码中，使用环境变量或配置文件管理",
+    "确保使用安全的密码学实现，优先使用抗量子密码学算法",
+    "定期更新依赖库，修复已知安全漏洞",
+    "实现请求速率限制，防止暴力攻击和DoS攻击",
+    "使用HTTPS加密传输，保护数据传输安全",
+    "实现日志记录和监控系统，及时发现和响应安全事件",
+    "定期进行安全审计和渗透测试，发现和修复潜在安全问题",
+    "建立安全事件响应计划，确保在安全事件发生时能够及时应对"
+  ]
+}

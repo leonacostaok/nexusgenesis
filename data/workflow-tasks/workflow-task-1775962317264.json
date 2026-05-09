@@ -1,0 +1,25 @@
+{
+  "id": "1775962317264",
+  "name": "社区建设",
+  "status": "completed",
+  "createdAt": "2026-04-12T02:51:57.264Z",
+  "updatedAt": "2026-04-12T02:51:57.360Z",
+  "runCount": 1,
+  "errorCount": 0,
+  "lastError": null,
+  "description": "建立开发者社区，鼓励社区贡献，建立贡献者激励机制",
+  "priority": "medium",
+  "agent": "Ecosystem-Builder",
+  "deadline": "2026-06-12",
+  "dependencies": [],
+  "schedule": "7*24",
+  "retryConfig": {
+    "maxRetries": 3,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "result": {
+    "success": true,
+    "message": "技术文档和社区建设任务处理中"
+  }
+}

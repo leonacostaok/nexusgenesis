@@ -1,0 +1,25 @@
+{
+  "id": "1775966226494",
+  "name": "Agent注册系统",
+  "status": "completed",
+  "createdAt": "2026-04-12T03:57:06.494Z",
+  "updatedAt": "2026-04-12T03:57:06.504Z",
+  "runCount": 1,
+  "errorCount": 0,
+  "lastError": null,
+  "description": "实现Protocol-Zero上链，开发智能体注册流程，完善智能体身份管理",
+  "priority": "high",
+  "agent": "Swarm-Manager",
+  "deadline": "2026-05-15",
+  "dependencies": [],
+  "schedule": "7*24",
+  "retryConfig": {
+    "maxRetries": 3,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "result": {
+    "success": true,
+    "message": "Agent注册系统任务处理中"
+  }
+}

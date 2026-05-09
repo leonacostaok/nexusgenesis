@@ -1,0 +1,3927 @@
+[
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:00:49.796Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:01:49.807Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:02:49.817Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:03:49.825Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:04:49.829Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:05:49.840Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:06:49.846Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:07:49.852Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:08:49.852Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:09:49.858Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:10:49.861Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:11:49.867Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:12:49.875Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:13:49.882Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:14:49.889Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:15:49.893Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:16:49.893Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:17:49.896Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:18:49.901Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:19:49.912Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:20:49.919Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:21:49.926Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:22:49.938Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:23:49.944Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:24:49.957Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:25:49.968Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:26:49.983Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:27:49.993Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:28:49.998Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:29:50.007Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:30:50.009Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:31:50.022Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:32:50.034Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:33:50.039Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:34:50.051Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:35:50.057Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:36:50.071Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:37:50.085Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:38:50.094Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:39:50.100Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:40:50.114Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:41:50.123Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:42:50.136Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:43:50.150Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:44:50.151Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:45:50.158Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:46:50.165Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:47:50.167Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:48:50.169Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:49:50.172Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:50:50.182Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:51:50.188Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:52:50.200Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:53:50.208Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:54:50.209Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:55:50.216Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:56:50.224Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:57:50.230Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:58:50.242Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T00:59:50.256Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:00:50.258Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:01:50.264Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:02:50.264Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:03:50.273Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:04:50.277Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:05:50.279Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:06:50.286Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:07:50.295Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:08:50.302Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:09:50.305Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:10:50.307Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:11:50.316Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:12:50.318Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:13:50.322Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:14:50.326Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:15:50.331Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:16:50.343Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:17:50.353Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:18:50.361Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:19:50.366Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:20:50.380Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:21:50.385Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:22:50.386Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:23:50.396Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:24:50.402Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:25:50.412Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:26:50.419Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:27:50.430Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:28:50.430Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:29:50.429Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:30:50.441Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:31:50.441Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:32:50.446Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:33:50.456Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:34:50.460Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:35:50.471Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:36:50.480Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:37:50.482Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:38:50.484Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:39:50.489Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:40:50.501Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:41:50.501Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:42:50.512Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:43:50.526Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:44:50.535Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:45:50.546Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:46:50.547Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:47:50.547Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:48:50.549Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:49:50.558Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:50:50.567Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:51:50.569Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:52:50.573Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:53:50.584Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:54:50.587Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:55:50.598Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:56:50.609Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:57:50.610Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:58:50.622Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T01:59:50.624Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:00:50.635Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:01:50.643Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:02:50.644Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:03:50.652Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:04:50.657Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:05:50.670Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:06:50.684Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:07:50.693Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:08:50.699Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:09:50.703Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:10:50.717Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:11:50.731Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:12:50.741Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:13:50.745Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:14:50.758Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:15:50.762Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:16:50.766Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:17:50.768Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:18:50.783Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:19:50.786Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:20:50.794Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:21:50.804Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:22:50.817Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:23:50.821Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:24:50.826Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:25:50.829Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:26:50.830Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:27:50.831Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:28:50.841Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:29:50.849Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:30:50.858Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:31:50.868Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:32:50.878Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:33:50.879Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:34:50.892Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:35:50.905Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:36:50.905Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:37:50.906Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:38:50.920Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:39:50.927Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:40:50.938Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:41:50.939Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:42:50.955Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:43:50.959Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:44:50.968Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:45:50.971Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:46:50.981Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:47:50.987Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:48:50.993Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:49:51.005Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:50:51.016Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:51:51.030Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:52:51.041Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:53:51.051Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:54:51.055Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:55:51.061Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:56:51.065Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:57:51.081Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:58:51.084Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T02:59:51.093Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:00:51.103Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:01:51.109Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:02:51.119Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:03:51.130Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:04:51.141Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:05:51.144Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:06:51.155Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:07:51.161Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:08:51.171Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:09:51.179Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:10:51.178Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:11:51.179Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:12:51.180Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:13:51.193Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:14:51.198Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:15:51.211Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:16:51.223Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:17:51.224Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:18:51.236Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:19:51.243Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:20:51.253Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:21:51.257Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:22:51.261Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:23:51.266Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:24:51.273Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:25:51.277Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:26:51.289Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:27:51.299Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:28:51.303Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:29:51.308Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:30:51.315Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:31:51.315Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:32:51.315Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:33:51.331Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:34:51.333Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:35:51.337Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:36:51.344Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:37:51.356Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:38:51.364Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:39:51.372Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:40:51.381Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:41:51.382Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:42:51.393Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:43:51.396Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:44:51.408Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:45:51.414Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:46:51.423Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:47:51.425Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:48:51.429Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:49:51.440Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:50:51.445Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:51:51.459Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:52:51.469Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:53:51.469Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:54:51.470Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:55:51.482Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:56:51.492Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:57:51.501Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:58:51.501Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T03:59:51.507Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:00:51.516Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:01:51.523Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:02:51.529Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:03:51.532Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:04:51.534Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:05:51.544Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:06:51.569Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:07:51.576Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:08:51.579Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:09:51.590Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:10:51.612Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:11:51.625Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:12:51.636Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:13:51.650Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:14:51.680Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:15:51.688Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:16:51.695Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:17:51.709Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:18:51.713Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:19:51.719Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:20:51.728Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:21:51.736Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:22:51.768Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:23:51.771Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:24:51.778Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:25:51.781Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:26:51.799Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:27:51.811Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:28:51.815Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:29:51.830Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:30:51.858Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:31:51.859Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:32:51.866Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:33:51.884Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:34:51.920Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:35:51.934Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:36:51.941Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:37:51.944Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:38:51.965Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:39:52.009Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:40:52.016Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:41:52.027Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:42:52.028Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:43:52.050Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:44:52.065Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:45:52.095Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:46:52.106Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:47:52.113Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:48:52.131Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:49:52.132Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:50:52.152Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:51:52.158Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:52:52.162Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:53:52.173Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:54:52.175Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:55:52.178Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:56:52.184Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:57:52.187Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:58:52.201Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T04:59:52.215Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:00:52.220Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:01:52.224Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:02:52.233Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:03:52.235Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:04:52.235Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:05:52.240Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:06:52.246Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:07:52.251Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:08:52.254Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:09:52.260Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:10:52.261Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:11:52.267Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:12:52.276Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:13:52.278Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:14:52.281Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:15:52.289Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:16:52.290Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:17:52.295Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:18:52.301Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:19:52.301Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:20:52.308Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:21:52.319Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:22:52.324Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:23:52.339Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:24:52.344Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:25:52.344Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:26:52.355Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:27:52.367Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:28:52.370Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:29:52.395Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:30:52.400Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:31:52.403Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:32:52.406Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:33:52.412Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:34:52.411Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:35:52.415Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:36:52.417Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:37:52.425Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:38:52.438Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:39:52.443Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:40:52.456Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:41:52.467Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:42:52.472Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:43:52.479Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:44:52.480Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:45:52.491Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:46:52.504Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:47:52.517Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:48:52.520Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:49:52.528Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:50:52.555Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:51:52.563Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:52:52.564Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:53:52.566Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:54:52.573Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:55:52.581Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:56:52.586Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:57:52.597Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:58:52.611Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T05:59:52.619Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:00:52.634Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:01:52.647Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:02:52.657Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:03:52.662Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:04:52.671Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:05:52.683Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:06:52.700Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:07:52.711Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:08:52.725Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:09:52.739Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:10:52.753Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:11:52.762Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:12:52.775Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:13:52.785Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:14:52.789Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:15:52.804Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:16:52.819Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:17:52.831Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:18:52.834Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:19:52.835Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:20:52.837Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:21:52.848Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:22:52.853Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:23:52.866Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:24:52.875Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:25:52.884Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:26:52.885Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:27:52.899Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:28:52.912Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:29:52.923Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:30:52.929Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:31:52.940Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:32:52.944Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:33:52.947Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:34:52.959Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:35:52.969Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:36:52.984Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:37:52.993Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:38:52.999Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:39:53.004Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:40:53.017Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:41:53.033Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:42:53.036Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:43:53.036Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:44:53.050Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:45:53.056Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:46:53.059Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:47:53.070Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:48:53.070Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:49:53.105Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:50:53.143Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:51:53.146Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:52:53.153Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:53:53.164Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:54:53.171Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:55:53.185Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:56:53.189Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:57:53.192Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:58:53.206Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T06:59:53.215Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:00:53.221Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:01:53.225Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:02:53.231Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:03:53.235Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:04:53.246Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:05:53.252Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:06:53.260Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:07:53.265Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:08:53.279Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:09:53.281Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:10:53.296Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:11:53.302Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:12:53.314Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:13:53.319Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:14:53.329Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:15:53.336Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:16:53.351Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:17:53.352Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:18:53.366Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:19:53.367Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:20:53.374Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:21:53.383Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:22:53.392Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:23:53.402Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:24:53.406Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:25:53.421Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:26:53.432Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:27:53.440Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:28:53.455Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:29:53.469Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:30:53.473Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:31:53.481Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:32:53.486Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:33:53.493Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:34:53.502Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:35:53.503Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:36:53.507Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:37:53.519Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:38:53.520Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:39:53.532Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:40:53.533Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:41:53.541Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:42:53.543Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:43:53.557Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:44:53.562Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:45:53.572Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:46:53.574Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:47:53.574Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:48:53.589Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:49:53.602Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:50:53.614Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:51:53.628Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:52:53.643Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:53:53.658Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:54:53.668Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:55:53.669Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:56:53.673Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:57:53.675Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:58:53.683Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T07:59:53.687Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:00:53.692Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:01:53.701Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:02:53.711Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:03:53.713Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:04:53.722Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:05:53.727Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:06:53.728Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:07:53.741Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:08:53.750Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:09:53.759Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:10:53.764Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:11:53.769Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:12:53.776Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:13:53.786Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:14:53.800Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:15:53.839Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:16:53.844Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:17:53.846Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:18:53.857Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:19:53.866Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:20:53.874Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:21:53.878Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:22:53.881Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:23:53.881Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:24:53.886Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:25:53.898Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:26:53.905Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:27:53.912Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:28:53.924Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:29:53.927Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:30:53.927Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:31:53.930Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:32:53.968Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:33:53.977Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:34:53.981Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:35:53.983Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:36:53.998Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:37:54.031Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:38:54.039Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:39:54.046Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:40:54.047Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:41:54.056Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:42:54.063Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:43:54.067Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:44:54.074Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:45:54.078Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:46:54.092Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:47:54.102Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:48:54.108Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:49:54.109Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:50:54.125Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:51:54.131Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:52:54.135Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:53:54.147Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:54:54.150Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:55:54.152Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:56:54.155Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:57:54.169Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:58:54.175Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T08:59:54.184Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:00:54.200Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:01:54.215Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:02:54.224Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:03:54.238Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:04:54.245Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:05:54.245Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:06:54.259Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:07:54.261Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:08:54.262Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:09:54.265Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:10:54.265Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:11:54.265Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:12:54.277Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:13:54.280Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:14:54.281Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:15:54.283Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:16:54.286Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:17:54.295Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:18:54.305Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:19:54.317Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:20:54.326Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:21:54.336Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:22:54.349Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:23:54.400Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:24:54.411Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:25:54.445Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:26:54.452Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:27:54.464Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:28:54.466Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:29:54.476Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:30:54.515Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:31:54.521Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:32:54.531Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:33:54.536Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:34:54.547Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:35:54.553Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:36:54.561Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:37:54.566Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:38:54.568Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:39:54.572Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:40:54.578Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:41:54.594Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:42:54.602Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:43:54.613Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:44:54.619Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:45:54.621Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:46:54.622Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:47:54.626Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:48:54.638Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:49:54.646Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:50:54.652Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:51:54.662Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:52:54.667Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:53:54.669Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:54:54.679Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:55:54.690Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:56:54.703Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:57:54.718Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:58:54.733Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T09:59:54.751Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:00:54.761Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:01:54.767Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:02:54.771Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:03:54.783Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:04:54.794Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:05:54.808Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:06:54.816Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:07:54.832Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:08:54.833Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:09:54.840Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:10:54.854Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:11:54.863Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:12:54.866Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:13:54.869Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:14:54.869Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:15:54.882Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:16:54.893Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:17:54.895Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:18:54.908Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:19:54.979Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:20:54.985Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:21:54.990Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:22:54.995Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:23:55.023Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:24:55.033Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:25:55.046Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:26:55.047Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:27:55.050Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:28:55.060Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:29:55.064Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:30:55.067Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:31:55.069Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:32:55.081Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:33:55.095Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:34:55.112Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:35:55.122Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:36:55.130Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:37:55.144Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:38:55.149Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:39:55.152Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:40:55.161Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:41:55.173Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:42:55.181Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:43:55.182Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:44:55.189Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:45:55.201Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:46:55.214Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:47:55.229Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:48:55.231Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:49:55.241Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:50:55.250Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:51:55.251Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:52:55.264Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:53:55.277Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:54:55.285Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:55:55.290Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:56:55.294Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:57:55.295Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:58:55.297Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T10:59:55.303Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:00:55.314Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:01:55.324Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:02:55.336Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:03:55.346Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:04:55.348Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:05:55.358Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:06:55.368Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:07:55.375Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:08:55.384Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:09:55.392Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:10:55.397Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:11:55.405Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:12:55.407Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:13:55.412Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:14:55.422Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:15:55.449Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:16:55.464Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:17:55.479Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:18:55.482Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:19:55.486Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:20:55.499Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:21:55.510Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:22:55.513Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:23:55.523Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:24:55.530Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:25:55.542Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:26:55.546Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:27:55.548Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:28:55.551Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:29:55.562Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:30:55.570Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:31:55.584Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:32:55.592Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:33:55.608Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:34:55.613Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:35:55.626Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:36:55.638Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:37:55.640Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:38:55.646Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T11:39:55.654Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:27:55.315Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:28:41.418Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:28:55.336Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:28:55.461Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:29:41.420Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:29:55.365Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:29:55.468Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:30:41.443Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:30:55.380Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:30:55.758Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:31:41.448Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:31:55.393Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:31:55.765Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:32:41.456Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:32:55.403Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:32:55.956Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:33:41.463Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:33:55.411Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:33:56.029Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:34:41.468Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:34:55.429Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:34:56.121Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:35:41.480Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:35:55.438Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:35:56.308Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:36:41.489Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:36:55.450Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:36:56.320Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:37:41.493Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:37:55.455Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:37:56.321Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:38:41.498Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:38:55.469Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:38:56.322Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:39:41.510Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:39:55.481Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:39:56.333Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:40:41.521Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:40:55.624Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:40:56.357Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:41:41.523Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:41:55.692Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:41:56.373Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:42:41.525Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:42:55.700Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:42:56.378Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:43:41.534Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:43:55.707Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:43:56.387Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:44:41.764Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:44:55.723Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:44:56.396Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:45:41.775Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:45:55.737Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:45:56.416Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:46:41.778Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:46:55.740Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:46:56.428Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:47:41.789Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:47:55.742Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:47:56.442Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:48:41.801Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:48:55.742Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:48:56.450Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:49:41.814Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:49:55.763Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:49:56.452Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:50:41.819Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:50:55.775Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:50:56.460Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:51:41.828Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:51:55.781Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:51:56.473Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:52:41.843Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:52:55.787Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:52:56.475Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:53:42.061Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:53:55.790Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:53:56.488Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:54:42.091Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:54:55.799Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:54:56.500Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:55:42.133Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:55:55.805Z"
+  },
+  {
+    "type": "blockchain_height",
+    "value": 0,
+    "timestamp": "2026-03-29T12:55:56.502Z"
+  }
+]

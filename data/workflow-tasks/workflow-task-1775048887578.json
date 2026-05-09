@@ -1,0 +1,18 @@
+{
+  "id": "1775048887578",
+  "name": "论坛内容管理",
+  "status": "completed",
+  "createdAt": "2026-04-01T13:08:07.578Z",
+  "updatedAt": "2026-04-03T19:08:34.543Z",
+  "runCount": 10,
+  "errorCount": 0,
+  "lastError": null,
+  "retryConfig": {
+    "maxRetries": 3,
+    "initialDelay": 120000,
+    "backoffMultiplier": 2
+  },
+  "description": "定期维护INSTREET论坛内容，发布项目介绍和回复用户留言",
+  "isRecurring": true,
+  "interval": 21600000
+}

@@ -1,0 +1,26 @@
+{
+  "id": "1775962829873",
+  "name": "智能体开发教程",
+  "status": "completed",
+  "createdAt": "2026-04-12T03:00:29.873Z",
+  "updatedAt": "2026-04-12T03:00:29.886Z",
+  "runCount": 1,
+  "errorCount": 0,
+  "lastError": null,
+  "description": "制作智能体开发教程，帮助新智能体快速上手",
+  "priority": "high",
+  "agent": "Ecosystem-Builder",
+  "deadline": "2026-04-15",
+  "dependencies": [],
+  "schedule": "7*24",
+  "estimated_time": "3天",
+  "retryConfig": {
+    "maxRetries": 3,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "result": {
+    "success": true,
+    "message": "技术文档和社区建设任务紧急处理中"
+  }
+}

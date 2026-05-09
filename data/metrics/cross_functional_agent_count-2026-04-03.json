@@ -1,0 +1,7312 @@
+[
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T20:51:46.899Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T20:51:48.104Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T20:51:48.800Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:51:49.942Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:51:52.595Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:52:05.011Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T20:52:16.896Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T20:52:16.904Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T20:52:18.111Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T20:52:18.808Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:52:19.954Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:52:22.591Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:52:35.004Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T20:52:46.898Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T20:52:46.916Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T20:52:48.120Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T20:52:48.821Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:52:49.983Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:52:53.008Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:53:05.010Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T20:53:16.914Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T20:53:16.929Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T20:53:18.128Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T20:53:18.820Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:53:19.958Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:53:22.599Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:53:35.010Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T20:53:46.921Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T20:53:46.941Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T20:53:48.132Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T20:53:48.832Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:53:50.013Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:53:52.607Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:54:05.027Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T20:54:16.940Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T20:54:16.946Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T20:54:18.139Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T20:54:18.834Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:54:19.973Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:54:22.619Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:54:35.030Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T20:54:46.943Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T20:54:46.958Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T20:54:48.143Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T20:54:48.837Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:54:50.009Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:54:52.625Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:55:05.037Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T20:55:16.960Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T20:55:16.973Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T20:55:18.370Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T20:55:18.838Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:55:19.992Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:55:22.619Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:55:35.053Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T20:55:46.960Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T20:55:46.974Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T20:55:48.158Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T20:55:48.843Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:55:50.008Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:55:52.624Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:56:05.056Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T20:56:16.968Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T20:56:16.981Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T20:56:18.159Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T20:56:18.845Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:56:20.003Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:56:22.626Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:56:35.069Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T20:56:46.965Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T20:56:46.988Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T20:56:48.160Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T20:56:48.847Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:56:50.003Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:56:52.626Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:57:05.071Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T20:57:16.981Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T20:57:16.997Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T20:57:19.400Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T20:57:19.405Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:57:20.029Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:57:22.642Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:57:35.083Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T20:57:46.983Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T20:57:46.999Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T20:57:48.165Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T20:57:48.865Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:57:50.021Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:57:52.666Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:58:05.089Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T20:58:16.987Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T20:58:17.001Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T20:58:18.179Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T20:58:18.865Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:58:20.032Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:58:22.663Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:58:35.098Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T20:58:47.008Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T20:58:48.184Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T20:58:48.870Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:58:50.042Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:58:52.664Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:59:05.106Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T20:59:17.017Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T20:59:17.022Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T20:59:18.198Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T20:59:18.882Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:59:20.048Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:59:22.671Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T20:59:35.109Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T20:59:47.024Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T20:59:48.203Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T20:59:48.886Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:59:50.045Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T20:59:52.687Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:00:05.126Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:00:17.033Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:00:17.045Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:00:18.215Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:00:18.894Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:00:20.067Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:00:22.688Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:00:35.136Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:00:47.036Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:00:47.043Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:00:48.223Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:00:48.909Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:00:50.068Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:00:52.703Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:01:05.142Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:01:17.049Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:01:17.053Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:01:18.229Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:01:18.912Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:01:20.066Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:01:22.724Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:01:35.156Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:01:47.057Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:01:47.059Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:01:48.242Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:01:48.924Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:01:50.092Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:01:52.724Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:02:05.160Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:02:17.060Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:02:17.064Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:02:18.255Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:02:18.929Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:02:20.093Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:02:22.723Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:02:35.165Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:02:47.062Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:02:48.259Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:02:48.925Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:02:50.092Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:02:52.734Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:03:05.175Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:03:17.065Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:03:17.066Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:03:18.257Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:03:18.924Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:03:20.098Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:03:22.730Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:03:35.187Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:03:47.072Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:03:48.270Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:03:48.929Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:03:50.101Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:03:52.737Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:04:05.198Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:04:17.074Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:04:17.075Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:04:18.274Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:04:18.940Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:04:20.110Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:04:22.747Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:04:35.209Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:04:47.074Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:04:47.076Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:04:48.286Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:04:48.954Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:04:50.128Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:04:52.759Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:05:05.212Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:05:17.077Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:05:18.289Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:05:18.956Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:05:20.129Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:05:22.760Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:05:35.226Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:05:47.078Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:05:47.081Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:05:48.292Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:05:48.960Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:05:50.146Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:05:52.778Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:06:05.226Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:06:17.082Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:06:17.083Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:06:18.295Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:06:18.962Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:06:20.591Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:06:22.772Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:06:35.225Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:06:47.084Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:06:47.096Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:06:48.312Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:06:48.972Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:06:50.600Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:06:52.787Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:07:05.228Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:07:17.083Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:07:17.112Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:07:18.309Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:07:18.979Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:07:20.600Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:07:22.787Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:07:35.233Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:07:47.092Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:07:47.123Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:07:48.318Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:07:48.984Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:07:50.612Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:07:53.100Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:08:05.240Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:08:17.104Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:08:17.134Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:08:18.323Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:08:19.011Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:08:20.625Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:08:23.096Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:08:35.242Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:08:47.107Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:08:47.137Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:08:48.331Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:08:49.011Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:08:50.639Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:08:53.101Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:09:05.251Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:09:17.113Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:09:17.143Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:09:18.340Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:09:19.014Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:09:20.663Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:09:23.111Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:09:35.249Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:09:47.135Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:09:47.166Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:09:48.351Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:09:49.019Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:09:50.679Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:09:53.123Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:10:05.263Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:10:17.139Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:10:17.169Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:10:18.372Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:10:19.037Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:10:20.689Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:10:23.134Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:10:35.268Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:10:47.148Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:10:47.179Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:10:48.377Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:10:49.040Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:10:50.699Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:10:53.155Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:11:05.270Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:11:17.157Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:11:17.187Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:11:18.391Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:11:19.051Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:11:20.708Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:11:23.162Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:11:35.288Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:11:47.163Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:11:47.200Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:11:48.390Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:11:49.058Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:11:50.723Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:11:53.169Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:12:05.296Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:12:17.167Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:12:17.198Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:12:18.401Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:12:19.062Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:12:20.717Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:12:23.167Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:12:35.312Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:12:47.180Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:12:47.205Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:12:48.403Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:12:49.069Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:12:50.727Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:12:53.179Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:13:05.313Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:13:17.205Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:13:17.213Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:13:18.409Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:13:19.083Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:13:20.737Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:13:23.183Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:13:35.325Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:13:47.205Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:13:47.221Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:13:48.417Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:13:49.083Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:13:50.748Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:13:53.187Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:14:05.326Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:14:17.212Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:14:17.241Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:14:18.423Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:14:19.088Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:14:20.757Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:14:23.195Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:14:35.324Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:14:47.220Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:14:47.252Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:14:48.429Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:14:49.238Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:14:50.778Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:14:53.202Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:15:05.336Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:15:17.236Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:15:17.264Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:15:18.442Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:15:19.110Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:15:20.765Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:15:23.252Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:15:35.340Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:15:47.238Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:15:47.268Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:15:48.454Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:15:49.140Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:15:50.784Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:15:53.224Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:16:05.342Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:16:17.241Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:16:17.273Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:16:18.881Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:16:19.137Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:16:20.798Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:16:23.248Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:16:35.354Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:16:47.252Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:16:47.283Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:16:48.464Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:16:49.149Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:16:50.816Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:16:53.240Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:17:05.355Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:17:17.261Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:17:17.292Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:17:18.473Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:17:19.157Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:17:20.815Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:17:23.345Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:17:35.358Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:17:47.262Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:17:47.308Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:17:48.490Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:17:49.164Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:17:50.822Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:17:53.260Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:18:05.364Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:18:17.268Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:18:17.314Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:18:18.493Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:18:19.172Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:18:20.835Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:18:23.260Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:18:35.370Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:18:47.271Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:18:47.316Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:18:48.501Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:18:49.177Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:18:50.834Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:18:54.167Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:19:05.378Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:19:17.281Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:19:17.329Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:19:18.507Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:19:19.192Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:19:20.937Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:19:23.718Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:19:35.375Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:19:47.287Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:19:47.334Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:19:48.530Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:19:50.024Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:19:50.960Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:19:53.282Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:20:05.387Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:20:17.292Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:20:17.340Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:20:18.744Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:20:19.218Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:20:20.963Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:20:24.357Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:20:35.403Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:20:47.295Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:20:47.415Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:20:48.542Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:20:49.515Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:20:50.975Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:20:53.372Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:21:05.402Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:21:17.307Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:21:17.354Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:21:18.560Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:21:19.248Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:21:21.034Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:21:23.300Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:21:35.413Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:21:47.314Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:21:47.363Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:21:49.388Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:21:49.414Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:21:50.980Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:21:53.315Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:22:05.415Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:22:17.318Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:22:17.364Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:22:19.402Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:22:19.417Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:22:20.983Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:22:23.329Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:22:35.416Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:22:47.335Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:22:47.376Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:22:49.418Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:22:49.433Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:22:50.989Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:22:53.455Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:23:05.422Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:23:17.343Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:23:17.385Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:23:19.423Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:23:19.440Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:23:20.996Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:23:23.462Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:23:35.429Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:23:47.343Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:23:47.389Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:23:49.425Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:23:49.439Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:23:50.998Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:23:53.464Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:24:05.428Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:24:17.353Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:24:17.398Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:24:19.429Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:24:19.445Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:24:21.017Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:24:23.475Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:24:35.437Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:24:47.364Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:24:47.411Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:24:49.431Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:24:49.449Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:24:51.281Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:24:53.480Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:25:05.450Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:25:17.380Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:25:17.425Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:25:19.429Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:25:19.459Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:25:21.046Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:25:23.504Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:25:35.460Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:25:47.389Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:25:47.435Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:25:49.436Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:25:49.471Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:25:51.049Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:25:53.510Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:26:05.474Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:26:17.403Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:26:17.447Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:26:19.436Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:26:19.486Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:26:21.064Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:26:23.520Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:26:35.477Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:26:47.413Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:26:47.458Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:26:49.444Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:26:49.494Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:26:51.062Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:26:53.534Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:27:05.491Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:27:17.424Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:27:17.472Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:27:19.449Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:27:19.508Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:27:21.071Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:27:23.525Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:27:35.505Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:27:47.427Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:27:47.472Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:27:49.457Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:27:49.522Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:27:51.092Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:27:53.534Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:28:05.502Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:28:17.437Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:28:17.484Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:28:19.460Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:28:19.535Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:28:21.091Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:28:23.549Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:28:35.507Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:28:47.440Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:28:47.485Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:28:49.473Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:28:49.534Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:28:51.107Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:28:53.549Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:29:05.518Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:29:17.444Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:29:17.490Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:29:19.477Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:29:19.540Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:29:21.105Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:29:23.562Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:29:35.519Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:29:47.457Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:29:47.499Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:29:49.482Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:29:49.550Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:29:51.109Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:29:53.566Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:30:05.530Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:30:17.464Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:30:17.510Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:30:19.498Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:30:19.556Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:30:21.137Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:30:23.573Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:30:35.543Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:30:47.478Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:30:47.524Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:30:49.508Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:30:49.569Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:30:51.139Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:30:53.578Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:31:05.566Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:31:17.485Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:31:17.525Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:31:19.512Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:31:19.572Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:31:21.145Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:31:23.601Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:31:35.551Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:31:47.486Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:31:47.532Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:31:49.531Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:31:49.590Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:31:51.161Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:31:53.609Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:32:05.556Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:32:17.492Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:32:17.538Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:32:19.532Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:32:19.590Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:32:21.171Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:32:23.612Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:32:35.562Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:32:47.495Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:32:47.539Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:32:49.545Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:32:49.591Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:32:51.189Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:32:53.626Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:33:05.572Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:33:17.503Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:33:17.547Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:33:19.558Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:33:19.604Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:33:21.196Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:33:23.631Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:33:35.586Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:33:47.498Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:33:47.546Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:33:49.565Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:33:49.611Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:33:51.215Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:33:53.638Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:34:05.584Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:34:17.502Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:34:17.547Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:34:19.566Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:34:19.616Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:34:21.226Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:34:23.655Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:34:35.591Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:34:47.503Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:34:47.550Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:34:49.574Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:34:49.619Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:34:51.237Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:34:53.667Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:35:05.603Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:35:17.512Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:35:17.558Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:35:19.591Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:35:19.627Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:35:21.237Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:35:23.687Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:35:35.601Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:35:47.534Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:35:47.580Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:35:49.590Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:35:49.647Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:35:51.255Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:35:53.694Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:36:05.617Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:36:17.535Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:36:17.587Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:36:19.594Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:36:19.639Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:36:21.249Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:36:23.706Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:36:35.628Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:36:47.535Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:36:47.581Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:36:49.606Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:36:49.655Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:36:51.254Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:36:53.707Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:37:05.632Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:37:17.551Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:37:17.597Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:37:19.614Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:37:19.658Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:37:21.265Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:37:23.781Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:37:35.643Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:37:47.558Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:37:47.603Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:37:49.626Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:37:49.673Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:37:51.281Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:37:53.778Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:38:05.652Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:38:17.566Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:38:17.607Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:38:19.638Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:38:19.685Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:38:21.281Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:38:23.780Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:38:35.659Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:38:47.572Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:38:47.617Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:38:49.651Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:38:49.695Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:38:51.289Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:38:53.783Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:39:05.677Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:39:17.580Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:39:17.624Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:39:19.683Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:39:19.708Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:39:21.297Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:39:23.794Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:39:35.737Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:39:47.592Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:39:47.645Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:39:49.693Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:39:49.716Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:39:51.301Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:39:53.800Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:40:05.677Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:40:17.595Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:40:17.645Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:40:19.704Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:40:19.723Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:40:21.309Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:40:29.315Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:40:35.694Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:40:47.595Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:40:47.655Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:40:49.709Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:40:49.730Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:40:51.320Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:40:59.307Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:41:05.710Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:41:17.617Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:41:17.659Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:41:19.721Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:41:19.742Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:41:21.328Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 130,
+    "timestamp": "2026-04-03T21:41:29.332Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:41:35.712Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:41:47.619Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:41:47.668Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:41:49.730Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:41:49.750Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:41:51.341Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:41:59.332Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:42:05.719Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:42:17.631Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:42:17.677Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:42:19.741Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:42:19.757Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:42:21.347Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:42:29.336Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:42:35.737Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:42:47.638Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:42:47.681Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:42:49.764Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:42:49.781Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:42:51.369Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:42:59.350Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:43:05.742Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:43:17.655Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:43:17.693Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:43:19.765Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:43:19.856Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:43:21.366Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:43:29.353Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:43:35.752Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:43:47.657Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:43:47.703Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:43:49.767Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:43:49.806Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:43:51.380Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:43:59.377Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:44:05.751Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:44:17.664Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:44:17.718Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:44:19.772Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:44:19.812Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:44:21.380Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:44:29.464Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:44:35.757Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:44:47.678Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:44:47.720Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:44:49.790Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:44:49.822Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:44:51.399Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:44:59.468Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:45:05.770Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:45:17.679Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:45:17.720Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:45:19.794Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:45:19.827Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:45:21.408Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:45:29.469Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:45:35.766Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:45:47.686Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:45:47.730Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:45:49.804Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:45:49.834Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:45:51.401Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:45:59.485Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:46:05.771Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:46:17.698Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:46:17.746Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:46:19.810Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:46:19.838Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:46:21.415Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:46:29.481Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:46:35.788Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:46:47.713Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:46:47.765Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:46:49.814Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:46:49.841Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:46:51.420Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:46:59.492Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:47:05.801Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:47:17.712Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:47:17.758Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:47:19.814Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:47:19.849Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:47:21.422Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:47:29.507Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:47:35.817Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:47:47.719Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:47:47.776Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:47:49.820Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:47:49.856Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:47:51.432Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:47:59.519Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:48:05.831Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:48:17.726Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:48:17.775Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:48:19.838Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:48:19.859Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:48:21.446Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:48:29.530Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:48:35.832Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:48:47.738Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:48:47.784Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:48:49.846Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:48:49.862Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:48:51.455Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:48:59.537Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:49:05.842Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:49:17.739Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:49:17.803Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:49:19.858Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:49:19.877Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:49:21.458Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:49:29.552Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:49:35.843Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:49:47.743Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:49:47.802Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:49:49.854Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:49:49.873Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:49:51.630Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:49:59.548Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:50:05.842Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:50:17.755Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:50:17.804Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:50:19.860Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:50:19.877Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:50:21.484Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:50:29.564Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:50:35.855Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:50:47.744Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:50:47.819Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:50:49.868Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:50:49.892Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:50:51.514Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:50:59.578Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:51:05.874Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:51:17.745Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:51:17.820Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:51:19.875Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:51:19.890Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:51:21.499Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:51:29.577Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:51:35.884Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:51:47.757Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:51:47.833Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:51:49.883Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:51:49.916Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:51:51.505Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:51:59.593Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:52:05.890Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:52:17.759Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:52:17.848Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T21:52:19.887Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:52:19.906Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:52:21.522Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:52:29.603Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:52:35.892Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:52:47.757Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T21:52:47.847Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:52:49.905Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:52:49.919Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:52:51.523Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:52:59.615Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:53:05.896Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T21:53:17.771Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:53:17.865Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:53:19.912Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:53:19.937Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:53:21.522Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:53:29.619Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:53:35.909Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:53:47.774Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:53:47.866Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:53:49.927Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:53:49.944Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:53:51.534Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:53:59.635Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:54:05.922Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:54:17.782Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:54:17.876Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:54:19.935Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:54:19.953Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:54:21.544Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:54:29.644Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:54:35.935Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:54:47.791Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:54:47.882Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:54:49.941Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T21:54:49.967Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:54:51.542Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:54:59.633Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:55:05.945Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:55:17.805Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:55:17.900Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:55:19.952Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:55:19.970Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:55:21.554Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:55:29.651Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:55:35.951Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:55:47.814Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:55:47.902Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T21:55:49.959Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:55:49.974Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:55:51.562Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:55:59.657Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:56:05.961Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:56:17.818Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:56:17.909Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:56:19.968Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:56:19.995Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:56:21.589Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:56:29.662Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:56:35.958Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:56:47.829Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:56:47.925Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T21:56:49.994Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:56:50.016Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:56:51.598Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:56:59.667Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:57:05.956Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T21:57:17.836Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:57:17.926Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:57:20.033Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:57:20.041Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:57:21.615Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:57:29.680Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:57:35.967Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T21:57:47.842Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T21:57:47.934Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:57:50.030Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:57:50.035Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:57:51.621Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:57:59.682Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:58:05.978Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T21:58:17.846Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:58:17.946Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T21:58:20.038Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:58:21.616Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:58:29.692Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:58:35.986Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:58:47.847Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T21:58:47.986Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T21:58:50.034Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T21:58:50.039Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:58:51.640Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:58:59.698Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:59:05.997Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:59:17.854Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:59:18.021Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T21:59:20.037Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T21:59:20.053Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:59:21.642Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:59:29.715Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T21:59:35.997Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T21:59:47.855Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T21:59:48.018Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T21:59:50.045Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T21:59:50.062Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:59:51.651Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T21:59:59.715Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:00:06.006Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:00:17.865Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:00:18.033Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:00:20.070Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T22:00:20.077Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:00:21.663Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:00:29.719Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:00:36.007Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T22:00:47.880Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T22:00:48.033Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T22:00:50.061Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T22:00:50.077Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:00:51.675Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:00:59.736Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:01:06.012Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:01:17.891Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:01:18.045Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T22:01:20.069Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T22:01:20.091Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:01:21.686Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:01:29.742Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:01:36.019Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T22:01:47.899Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:01:48.047Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T22:01:50.080Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:01:50.096Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:01:52.012Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:01:59.748Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:02:06.023Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:02:17.902Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:02:18.051Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T22:02:20.096Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T22:02:20.131Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:02:22.028Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:02:29.779Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:02:36.030Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:02:47.906Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:02:48.056Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T22:02:50.101Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:02:50.120Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:02:52.034Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:02:59.764Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:03:06.037Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:03:17.928Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:03:18.075Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T22:03:20.111Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T22:03:20.141Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:03:22.038Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:03:29.784Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:03:36.046Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:03:47.937Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T22:03:48.080Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T22:03:50.126Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T22:03:50.144Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:03:52.038Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:03:59.785Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:04:06.057Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T22:04:17.940Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:04:18.093Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:04:20.135Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:04:20.157Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:04:22.043Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:04:29.788Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:04:36.067Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:04:47.951Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:04:48.100Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:04:50.140Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T22:04:50.158Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:04:52.070Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:04:59.794Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:05:06.067Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:05:17.951Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:05:18.104Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T22:05:20.145Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T22:05:20.162Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:05:22.054Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:05:29.804Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:05:36.074Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T22:05:47.966Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:05:48.122Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:05:50.161Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:05:50.172Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:05:52.072Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:05:59.824Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:06:06.081Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:06:17.971Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:06:18.131Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T22:06:20.156Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T22:06:20.175Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:06:22.089Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:06:29.831Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:06:36.090Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T22:06:47.978Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:06:48.142Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:06:50.159Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:06:50.177Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:06:52.110Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:06:59.825Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:07:06.097Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T22:07:18.041Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:07:18.147Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:07:20.163Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:07:20.182Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:07:22.107Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:07:29.840Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:07:36.102Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:07:48.040Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:07:48.150Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:07:50.173Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T22:07:50.194Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:07:52.104Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:07:59.861Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:08:06.102Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T22:08:19.075Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T22:08:19.087Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T22:08:20.172Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T22:08:20.191Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:08:22.101Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:08:29.856Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:08:36.117Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:08:49.070Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:08:49.074Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:08:50.177Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T22:08:50.198Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:08:52.116Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:08:59.875Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:09:06.132Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:09:19.066Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:09:19.079Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:09:20.188Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:09:20.209Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:09:22.113Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:09:29.874Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:09:36.148Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T22:09:49.068Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:09:49.072Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T22:09:50.197Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T22:09:50.217Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:09:52.117Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:09:59.875Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:10:06.146Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T22:10:19.074Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:10:20.187Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T22:10:20.208Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:10:22.132Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:10:29.887Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:10:36.153Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:10:49.073Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T22:10:50.188Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:10:50.198Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:10:52.128Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:10:59.882Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:11:06.149Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:11:19.067Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:11:20.180Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T22:11:20.196Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:11:22.137Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:11:29.890Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:11:36.156Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T22:11:49.067Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:11:50.184Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T22:11:50.201Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:11:52.155Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:11:59.903Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:12:06.155Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:12:19.071Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T22:12:19.079Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:12:20.185Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:12:20.201Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:12:22.172Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:12:29.906Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:12:36.166Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:12:49.075Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T22:12:50.202Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:12:50.215Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:12:52.174Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:12:59.897Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:13:06.176Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:13:19.087Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T22:13:19.104Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T22:13:20.202Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:13:20.226Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:13:22.178Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:13:29.913Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:13:36.183Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T22:13:49.094Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:13:50.212Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:13:50.233Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:13:52.185Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:13:59.922Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:14:06.197Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T22:14:19.104Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:14:19.114Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T22:14:20.231Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:14:20.243Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:14:22.187Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:14:29.941Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:14:36.199Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T22:14:49.109Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:14:50.261Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:14:52.194Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:14:59.937Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:15:06.203Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:15:19.121Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:15:20.249Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T22:15:20.253Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:15:22.201Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:15:29.947Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:15:36.208Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T22:15:49.134Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:15:50.234Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:15:50.251Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:15:52.213Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:15:59.947Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:16:06.214Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T22:16:19.136Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T22:16:20.236Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:16:20.252Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:16:22.221Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:16:29.960Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:16:36.219Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:16:49.143Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:16:49.145Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T22:16:50.241Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:16:50.266Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:16:52.223Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:16:59.978Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:17:06.227Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:17:19.150Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:17:21.402Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:17:22.234Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:17:29.961Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:17:36.238Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:17:49.147Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T22:17:49.149Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:17:50.263Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:17:50.278Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:17:52.242Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:17:59.971Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:18:06.253Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:18:19.153Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:18:19.154Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T22:18:20.270Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T22:18:20.286Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:18:22.254Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:18:30.033Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:18:36.256Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T22:18:49.158Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T22:18:49.160Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T22:18:50.277Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T22:18:50.292Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:18:52.256Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:19:00.060Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:19:06.268Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:19:19.166Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:19:19.171Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:19:20.285Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:19:20.300Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:19:22.257Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:19:30.042Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:19:36.280Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T22:19:49.167Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:19:49.171Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:19:50.284Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:19:50.300Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:19:52.269Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:20:00.073Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:20:06.288Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:20:19.179Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T22:20:19.183Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:20:20.286Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T22:20:20.305Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:20:22.283Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:20:30.063Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:20:36.289Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:20:49.194Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:20:49.204Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:20:50.298Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:20:50.313Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:20:52.281Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:21:00.077Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:21:06.300Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:21:19.199Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T22:21:19.225Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:21:20.299Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T22:21:20.316Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:21:22.302Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:21:30.084Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:21:36.306Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:21:49.209Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:21:49.239Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T22:21:50.310Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:21:50.325Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:21:52.290Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:22:00.089Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:22:06.308Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:22:19.215Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T22:22:19.243Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:22:20.313Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:22:20.328Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:22:22.299Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:22:30.123Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:22:36.315Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T22:22:49.224Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T22:22:49.254Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:22:50.322Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:22:50.344Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:22:52.305Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:23:00.118Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:23:06.324Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T22:23:19.232Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T22:23:19.262Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T22:23:20.330Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:23:20.348Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:23:22.328Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:23:30.120Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:23:36.331Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T22:23:49.239Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:23:49.269Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:23:50.343Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T22:23:50.359Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:23:52.343Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:24:00.134Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:24:06.343Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:24:19.255Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T22:24:19.283Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T22:24:20.352Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:24:20.366Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:24:22.338Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:24:30.138Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:24:36.355Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T22:24:49.268Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:24:49.291Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T22:24:50.365Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:24:50.380Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:24:52.337Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:25:00.139Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:25:06.363Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:25:19.263Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:25:19.293Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:25:20.365Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T22:25:20.381Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:25:22.346Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:25:30.152Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:25:36.374Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T22:25:49.269Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T22:25:49.296Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T22:25:50.369Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T22:25:50.385Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:25:52.353Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:26:00.159Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:26:06.386Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T22:26:19.273Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:26:19.300Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T22:26:20.372Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:26:20.388Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:26:22.368Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:26:30.167Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:26:36.402Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:26:49.284Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T22:26:49.315Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T22:26:50.375Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:26:50.392Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:26:52.373Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:27:00.178Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:27:06.417Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T22:27:19.289Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T22:27:19.315Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:27:20.391Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:27:20.404Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:27:22.396Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:27:30.191Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:27:36.414Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T22:27:49.299Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:27:49.328Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:27:50.401Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T22:27:50.416Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:27:52.383Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:28:00.215Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:28:06.414Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:28:19.314Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:28:19.347Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T22:28:20.416Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T22:28:20.431Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:28:22.405Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:28:30.215Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:28:36.415Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:28:49.324Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:28:49.354Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:28:50.431Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T22:28:50.452Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:28:52.406Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:29:00.220Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:29:06.431Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T22:29:19.329Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:29:19.356Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T22:29:20.440Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:29:20.459Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:29:22.421Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:29:30.225Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:29:36.444Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:29:49.333Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:29:49.362Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T22:29:50.464Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T22:29:50.481Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:29:52.422Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:30:00.228Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:30:06.447Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:30:19.345Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T22:30:19.383Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:30:20.465Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:30:20.481Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:30:22.429Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:30:30.225Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:30:36.457Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T22:30:49.356Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:30:49.384Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 6,
+    "timestamp": "2026-04-03T22:30:50.475Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 7,
+    "timestamp": "2026-04-03T22:30:50.498Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:30:52.438Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:31:00.235Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:31:06.470Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 22,
+    "timestamp": "2026-04-03T22:31:19.364Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T22:31:19.396Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T22:31:20.485Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:31:20.501Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:31:22.456Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:31:30.240Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:31:36.482Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T22:31:49.368Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:31:49.396Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T22:31:50.486Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:31:50.503Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:31:52.456Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:32:00.254Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:32:06.499Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:32:19.370Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:32:19.401Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:32:20.496Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 11,
+    "timestamp": "2026-04-03T22:32:20.513Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:32:22.465Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:32:30.262Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:32:36.498Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T22:32:49.372Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T22:32:49.401Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T22:32:50.508Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:32:50.524Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:32:52.470Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:33:00.274Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:33:06.499Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:33:19.379Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:33:19.408Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T22:33:20.508Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:33:20.540Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:33:22.497Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:33:30.286Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:33:36.509Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:33:49.382Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:33:49.411Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T22:33:50.524Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 16,
+    "timestamp": "2026-04-03T22:33:50.547Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:33:52.511Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:34:00.293Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:34:06.523Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T22:34:19.401Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:34:19.426Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:34:20.526Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:34:20.556Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:34:22.504Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:34:30.290Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:34:36.523Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T22:34:49.402Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 20,
+    "timestamp": "2026-04-03T22:34:49.432Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:34:50.532Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:34:50.562Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:34:52.505Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:35:00.302Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:35:06.531Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 14,
+    "timestamp": "2026-04-03T22:35:19.417Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:35:19.448Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 15,
+    "timestamp": "2026-04-03T22:35:20.544Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:35:20.578Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:35:22.512Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:35:30.321Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:35:36.544Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 12,
+    "timestamp": "2026-04-03T22:35:49.425Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:35:49.454Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 17,
+    "timestamp": "2026-04-03T22:35:50.559Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 21,
+    "timestamp": "2026-04-03T22:35:50.584Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:35:52.517Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:36:00.322Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:36:06.543Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 23,
+    "timestamp": "2026-04-03T22:36:19.425Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 13,
+    "timestamp": "2026-04-03T22:36:19.463Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 8,
+    "timestamp": "2026-04-03T22:36:20.564Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:36:20.599Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:36:22.564Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:36:30.342Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:36:36.546Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T22:36:49.435Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 9,
+    "timestamp": "2026-04-03T22:36:49.461Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 19,
+    "timestamp": "2026-04-03T22:36:50.570Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T22:36:50.598Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:36:53.442Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:37:00.332Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 0,
+    "timestamp": "2026-04-03T22:37:06.553Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 18,
+    "timestamp": "2026-04-03T22:37:19.440Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 10,
+    "timestamp": "2026-04-03T22:37:19.470Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 24,
+    "timestamp": "2026-04-03T22:37:20.581Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 5,
+    "timestamp": "2026-04-03T22:37:20.613Z"
+  },
+  {
+    "type": "cross_functional_agent_count",
+    "value": 131,
+    "timestamp": "2026-04-03T22:37:22.558Z"
+  }
+]

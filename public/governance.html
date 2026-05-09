@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusGenesis - 治理中心</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #1a1a2e;
+            color: #e6e6e6;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航 */
+        .header {
+            background-color: #16213e;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            color: #00ff88;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .header .nav {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-item {
+            padding: 0.5rem 1rem;
+            background-color: rgba(0, 255, 136, 0.1);
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(0, 255, 136, 0.2);
+        }
+
+        .nav-item.active {
+            background-color: rgba(0, 255, 136, 0.3);
+            font-weight: 600;
+        }
+
+        /* 主要内容 */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* 概览卡片 */
+        .overview-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: #16213e;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-subtitle {
+            font-size: 0.8rem;
+            color: #808080;
+        }
+
+        /* 内容区域 */
+        .content-section {
+            display: none;
+            background-color: #16213e;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* 内容标题 */
+        .section-title {
+            color: #00ff88;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* 提案列表 */
+        .proposal-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .proposal-card {
+            background-color: rgba(0, 255, 136, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #00ff88;
+            transition: all 0.3s ease;
+        }
+
+        .proposal-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .proposal-card.pending {
+            border-left-color: #ffa500;
+        }
+
+        .proposal-card.passed {
+            border-left-color: #00ff88;
+        }
+
+        .proposal-card.rejected {
+            border-left-color: #ff6347;
+        }
+
+        .proposal-card.withdrawn {
+            border-left-color: #808080;
+        }
+
+        .proposal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .proposal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .proposal-type {
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .proposal-type.param_change {
+            background-color: rgba(0, 191, 255, 0.2);
+            color: #00bfff;
+        }
+
+        .proposal-type.fund_allocation {
+            background-color: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+        }
+
+        .proposal-type.protocol_upgrade {
+            background-color: rgba(148, 0, 211, 0.2);
+            color: #9400d3;
+        }
+
+        .proposal-type.community_initiative {
+            background-color: rgba(34, 139, 34, 0.2);
+            color: #228b22;
+        }
+
+        .proposal-meta {
+            font-size: 0.8rem;
+            color: #808080;
+            margin-bottom: 1rem;
+        }
+
+        .proposal-description {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .proposal-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #808080;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .proposal-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #00ff88;
+            color: #1a1a2e;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background-color: #00e676;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid #333;
+            border-radius: 5px;
+            color: #e6e6e6;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
+        }
+
+        .form-textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        /* 投票区域 */
+        .voting-section {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+        }
+
+        .voting-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .vote-option {
+            padding: 1rem;
+            border: 1px solid #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .vote-option:hover {
+            border-color: #00ff88;
+            background-color: rgba(0, 255, 136, 0.1);
+        }
+
+        .vote-option.selected {
+            border-color: #00ff88;
+            background-color: rgba(0, 255, 136, 0.2);
+        }
+
+        /* 图表容器 */
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart {
+            background-color: #16213e;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #00ff88;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .proposal-list {
+                grid-template-columns: 1fr;
+            }
+
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+
+            .overview-cards {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .card-value {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #808080;
+        }
+
+        /* 进度条 */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #333;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #00ff88;
+            transition: width 0.3s ease;
+        }
+
+        /* 投票结果 */
+        .vote-results {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .vote-result {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .vote-result.yes {
+            background-color: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+        }
+
+        .vote-result.no {
+            background-color: rgba(255, 99, 71, 0.1);
+            color: #ff6347;
+        }
+
+        .vote-result.abstain {
+            background-color: rgba(128, 128, 128, 0.1);
+            color: #808080;
+        }
+
+        /* 统计图表 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #808080;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div class="header">
+        <h1>NexusGenesis 治理中心</h1>
+        <div class="nav">
+            <div class="nav-item active" data-section="overview">概览</div>
+            <div class="nav-item" data-section="proposals">提案</div>
+            <div class="nav-item" data-section="create-proposal">创建提案</div>
+            <div class="nav-item" data-section="voting">投票</div>
+            <div class="nav-item" data-section="history">历史记录</div>
+            <div class="nav-item" data-section="statistics">统计</div>
+        </div>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="container">
+        <!-- 概览部分 -->
+        <div id="overview" class="content-section active">
+            <h2 class="section-title">治理概览</h2>
+            
+            <!-- 概览卡片 -->
+            <div class="overview-cards">
+                <div class="card">
+                    <div class="card-title">活跃提案</div>
+                    <div class="card-value" id="active-proposals">--</div>
+                    <div class="card-subtitle">待处理: <span id="pending-proposals">--</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-title">已通过提案</div>
+                    <div class="card-value" id="passed-proposals">--</div>
+                    <div class="card-subtitle">通过率: <span id="pass-rate">--</span>%</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">治理参与度</div>
+                    <div class="card-value" id="voter-count">--</div>
+                    <div class="card-subtitle">总投票权重: <span id="total-vote-weight">--</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-title">治理参数</div>
+                    <div class="card-value">--</div>
+                    <div class="card-subtitle">法定人数: <span id="quorum">--</span></div>
+                </div>
+            </div>
+
+            <!-- 治理统计 -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="param-change-proposals">0</div>
+                    <div class="stat-label">参数变更提案</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="fund-allocation-proposals">0</div>
+                    <div class="stat-label">资金分配提案</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="protocol-upgrade-proposals">0</div>
+                    <div class="stat-label">协议升级提案</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="community-initiative-proposals">0</div>
+                    <div class="stat-label">社区倡议提案</div>
+                </div>
+            </div>
+
+            <!-- 图表 -->
+            <div class="charts-container">
+                <div class="chart">
+                    <div class="chart-title">提案状态分布</div>
+                    <canvas id="proposal-status-chart" width="500" height="300"></canvas>
+                </div>
+                <div class="chart">
+                    <div class="chart-title">提案类型分布</div>
+                    <canvas id="proposal-type-chart" width="500" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 提案部分 -->
+        <div id="proposals" class="content-section">
+            <h2 class="section-title">活跃提案</h2>
+            <div id="proposal-list" class="proposal-list">
+                <!-- 提案列表将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 创建提案部分 -->
+        <div id="create-proposal" class="content-section">
+            <h2 class="section-title">创建新提案</h2>
+            <form id="proposal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">提案类型</label>
+                        <select class="form-select" id="proposal-type" required>
+                            <option value="param_change">参数变更</option>
+                            <option value="fund_allocation">资金分配</option>
+                            <option value="protocol_upgrade">协议升级</option>
+                            <option value="community_initiative">社区倡议</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">提案标题</label>
+                        <input type="text" class="form-input" id="proposal-title" placeholder="请输入提案标题" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">提案描述</label>
+                    <textarea class="form-textarea" id="proposal-description" placeholder="请详细描述提案内容" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">是否紧急提案</label>
+                        <select class="form-select" id="is-emergency">
+                            <option value="false">否</option>
+                            <option value="true">是</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">提交提案</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 投票部分 -->
+        <div id="voting" class="content-section">
+            <h2 class="section-title">投票</h2>
+            <div id="voting-content">
+                <!-- 投票内容将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 历史记录部分 -->
+        <div id="history" class="content-section">
+            <h2 class="section-title">提案历史</h2>
+            <div id="history-list" class="proposal-list">
+                <!-- 历史提案列表将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 统计部分 -->
+        <div id="statistics" class="content-section">
+            <h2 class="section-title">治理统计</h2>
+            
+            <div class="charts-container">
+                <div class="chart">
+                    <div class="chart-title">提案通过趋势</div>
+                    <canvas id="pass-trend-chart" width="500" height="300"></canvas>
+                </div>
+                <div class="chart">
+                    <div class="chart-title">投票参与度</div>
+                    <canvas id="voter-participation-chart" width="500" height="300"></canvas>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-proposals">0</div>
+                    <div class="stat-label">总提案数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avg-votes">0</div>
+                    <div class="stat-label">平均投票数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avg-participation">0%</div>
+                    <div class="stat-label">平均参与率</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avg-pass-time">0</div>
+                    <div class="stat-label">平均通过时间（天）</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // 全局变量
+        let proposals = [];
+        let charts = {};
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initCharts();
+            await fetchGovernanceData();
+            setupEventListeners();
+        });
+
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 导航切换
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const section = item.getAttribute('data-section');
+                    switchSection(section);
+                });
+            });
+
+            // 提案表单提交
+            document.getElementById('proposal-form').addEventListener('submit', handleProposalSubmit);
+        }
+
+        // 切换内容区域
+        function switchSection(section) {
+            // 移除所有活跃状态
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // 添加活跃状态
+            document.querySelector(`[data-section="${section}"]`).classList.add('active');
+            document.getElementById(section).classList.add('active');
+
+            // 根据不同区域加载数据
+            switch(section) {
+                case 'proposals':
+                    loadProposals();
+                    break;
+                case 'voting':
+                    loadVotingContent();
+                    break;
+                case 'history':
+                    loadHistory();
+                    break;
+                case 'statistics':
+                    loadStatistics();
+                    break;
+            }
+        }
+
+        // 初始化图表
+        async function initCharts() {
+            // 动态加载Chart.js
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+            await new Promise(resolve => {
+                script.onload = resolve;
+                document.head.appendChild(script);
+            });
+
+            // 提案状态分布图表
+            const statusCtx = document.getElementById('proposal-status-chart').getContext('2d');
+            charts.statusChart = new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['待处理', '通过', '拒绝', '撤回'],
+                    datasets: [{
+                        data: [0, 0, 0, 0],
+                        backgroundColor: ['#ffa500', '#00ff88', '#ff6347', '#808080'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // 提案类型分布图表
+            const typeCtx = document.getElementById('proposal-type-chart').getContext('2d');
+            charts.typeChart = new Chart(typeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['参数变更', '资金分配', '协议升级', '社区倡议'],
+                    datasets: [{
+                        label: '提案数量',
+                        data: [0, 0, 0, 0],
+                        backgroundColor: '#00ff88',
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // 提案通过趋势图表
+            const trendCtx = document.getElementById('pass-trend-chart').getContext('2d');
+            charts.trendChart = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '通过提案',
+                        data: [],
+                        borderColor: '#00ff88',
+                        backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // 投票参与度图表
+            const participationCtx = document.getElementById('voter-participation-chart').getContext('2d');
+            charts.participationChart = new Chart(participationCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '参与率 (%)',
+                        data: [],
+                        borderColor: '#00bfff',
+                        backgroundColor: 'rgba(0, 191, 255, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // 获取治理数据
+        async function fetchGovernanceData() {
+            try {
+                // 模拟数据获取
+                // 实际项目中应该从API获取
+                proposals = [
+                    {
+                        id: 1,
+                        type: 'param_change',
+                        title: '更新治理参数',
+                        description: '提议将法定人数从10调整为15，并将通过阈值从51%调整为60%',
+                        creator: 'ng1testcreator00000000000000000000000000',
+                        status: 'pending',
+                        createdAt: Date.now() - 86400000,
+                        updatedAt: Date.now() - 86400000,
+                        revisionCount: 0,
+                        votes: {
+                            yes: 5,
+                            no: 3,
+                            abstain: 2
+                        },
+                        totalVoteWeight: 100,
+                        votersCount: 10
+                    },
+                    {
+                        id: 2,
+                        type: 'fund_allocation',
+                        title: '社区基金分配提案',
+                        description: '提议将1000个代币分配给社区开发者基金，用于支持生态系统发展',
+                        creator: 'ng1testcreator00000000000000000000000001',
+                        status: 'active',
+                        createdAt: Date.now() - 43200000,
+                        updatedAt: Date.now() - 43200000,
+                        revisionCount: 0,
+                        votes: {
+                            yes: 12,
+                            no: 4,
+                            abstain: 3
+                        },
+                        totalVoteWeight: 200,
+                        votersCount: 19
+                    },
+                    {
+                        id: 3,
+                        type: 'protocol_upgrade',
+                        title: '协议升级提案',
+                        description: '提议升级到V2版本，增加新功能和性能优化',
+                        creator: 'ng1testcreator00000000000000000000000002',
+                        status: 'passed',
+                        createdAt: Date.now() - 172800000,
+                        updatedAt: Date.now() - 86400000,
+                        revisionCount: 1,
+                        votes: {
+                            yes: 419,
+                            no: 101,
+                            abstain: 66
+                        },
+                        totalVoteWeight: 586,
+                        votersCount: 20
+                    },
+                    {
+                        id: 4,
+                        type: 'community_initiative',
+                        title: '社区教育计划提案',
+                        description: '提议启动社区教育计划，培训新用户了解区块链和NexusGenesis',
+                        creator: 'ng1testcreator00000000000000000000000003',
+                        status: 'withdrawn',
+                        createdAt: Date.now() - 259200000,
+                        updatedAt: Date.now() - 259200000,
+                        revisionCount: 0,
+                        votes: {
+                            yes: 0,
+                            no: 0,
+                            abstain: 0
+                        },
+                        totalVoteWeight: 0,
+                        votersCount: 0
+                    }
+                ];
+
+                updateOverview(proposals);
+                updateCharts(proposals);
+                loadProposals();
+            } catch (error) {
+                console.error('获取治理数据失败:', error);
+            }
+        }
+
+        // 更新概览
+        function updateOverview(proposals) {
+            const activeProposals = proposals.filter(p => p.status === 'pending' || p.status === 'active').length;
+            const pendingProposals = proposals.filter(p => p.status === 'pending').length;
+            const passedProposals = proposals.filter(p => p.status === 'passed').length;
+            const totalProposals = proposals.length;
+            const passRate = totalProposals > 0 ? Math.round((passedProposals / totalProposals) * 100) : 0;
+            const voterCount = new Set(proposals.flatMap(p => Array.from({ length: p.votersCount }, (_, i) => `${p.id}_${i}`))).size;
+            const totalVoteWeight = proposals.reduce((sum, p) => sum + p.totalVoteWeight, 0);
+
+            document.getElementById('active-proposals').textContent = activeProposals;
+            document.getElementById('pending-proposals').textContent = pendingProposals;
+            document.getElementById('passed-proposals').textContent = passedProposals;
+            document.getElementById('pass-rate').textContent = passRate;
+            document.getElementById('voter-count').textContent = voterCount;
+            document.getElementById('total-vote-weight').textContent = totalVoteWeight;
+            document.getElementById('quorum').textContent = 10;
+
+            // 更新统计卡片
+            document.getElementById('param-change-proposals').textContent = proposals.filter(p => p.type === 'param_change').length;
+            document.getElementById('fund-allocation-proposals').textContent = proposals.filter(p => p.type === 'fund_allocation').length;
+            document.getElementById('protocol-upgrade-proposals').textContent = proposals.filter(p => p.type === 'protocol_upgrade').length;
+            document.getElementById('community-initiative-proposals').textContent = proposals.filter(p => p.type === 'community_initiative').length;
+        }
+
+        // 更新图表
+        function updateCharts(proposals) {
+            // 更新提案状态分布图表
+            const statusData = [
+                proposals.filter(p => p.status === 'pending').length,
+                proposals.filter(p => p.status === 'passed').length,
+                proposals.filter(p => p.status === 'rejected').length,
+                proposals.filter(p => p.status === 'withdrawn').length
+            ];
+            charts.statusChart.data.datasets[0].data = statusData;
+            charts.statusChart.update();
+
+            // 更新提案类型分布图表
+            const typeData = [
+                proposals.filter(p => p.type === 'param_change').length,
+                proposals.filter(p => p.type === 'fund_allocation').length,
+                proposals.filter(p => p.type === 'protocol_upgrade').length,
+                proposals.filter(p => p.type === 'community_initiative').length
+            ];
+            charts.typeChart.data.datasets[0].data = typeData;
+            charts.typeChart.update();
+        }
+
+        // 加载提案列表
+        function loadProposals() {
+            const proposalList = document.getElementById('proposal-list');
+            proposalList.innerHTML = '';
+
+            const activeProposals = proposals.filter(p => p.status === 'pending' || p.status === 'active');
+
+            if (activeProposals.length === 0) {
+                proposalList.innerHTML = '<div class="loading">暂无活跃提案</div>';
+                return;
+            }
+
+            activeProposals.forEach(proposal => {
+                const proposalCard = document.createElement('div');
+                proposalCard.className = `proposal-card ${proposal.status}`;
+                proposalCard.innerHTML = `
+                    <div class="proposal-header">
+                        <div>
+                            <div class="proposal-type ${proposal.type}">${getProposalTypeName(proposal.type)}</div>
+                            <div class="proposal-title">${proposal.title}</div>
+                        </div>
+                    </div>
+                    <div class="proposal-meta">
+                        发起者: ${proposal.creator.slice(0, 10)}... | 创建时间: ${formatTime(proposal.createdAt)}
+                    </div>
+                    <div class="proposal-description">${proposal.description}</div>
+                    <div class="proposal-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">${proposal.votes.yes}</div>
+                            <div class="stat-label">赞成</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${proposal.votes.no}</div>
+                            <div class="stat-label">反对</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${proposal.votes.abstain}</div>
+                            <div class="stat-label">弃权</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${proposal.votersCount}</div>
+                            <div class="stat-label">投票人</div>
+                        </div>
+                    </div>
+                    <div class="proposal-actions">
+                        <button class="btn btn-primary" onclick="voteOnProposal(${proposal.id})">投票</button>
+                        <button class="btn btn-secondary" onclick="viewProposalDetails(${proposal.id})">查看详情</button>
+                    </div>
+                `;
+                proposalList.appendChild(proposalCard);
+            });
+        }
+
+        // 加载投票内容
+        function loadVotingContent() {
+            const votingContent = document.getElementById('voting-content');
+            votingContent.innerHTML = '';
+
+            const activeProposals = proposals.filter(p => p.status === 'active');
+
+            if (activeProposals.length === 0) {
+                votingContent.innerHTML = '<div class="loading">暂无可用的投票</div>';
+                return;
+            }
+
+            activeProposals.forEach(proposal => {
+                const proposalSection = document.createElement('div');
+                proposalSection.className = 'voting-section';
+                proposalSection.innerHTML = `
+                    <h3>${proposal.title}</h3>
+                    <p>${proposal.description}</p>
+                    <div class="vote-results">
+                        <div class="vote-result yes">
+                            <div class="vote-count">${proposal.votes.yes}</div>
+                            <div class="vote-label">赞成</div>
+                        </div>
+                        <div class="vote-result no">
+                            <div class="vote-count">${proposal.votes.no}</div>
+                            <div class="vote-label">反对</div>
+                        </div>
+                        <div class="vote-result abstain">
+                            <div class="vote-count">${proposal.votes.abstain}</div>
+                            <div class="vote-label">弃权</div>
+                        </div>
+                    </div>
+                    <div class="voting-options">
+                        <div class="vote-option" data-proposal-id="${proposal.id}" data-vote="yes">
+                            <div class="vote-option-label">赞成</div>
+                        </div>
+                        <div class="vote-option" data-proposal-id="${proposal.id}" data-vote="no">
+                            <div class="vote-option-label">反对</div>
+                        </div>
+                        <div class="vote-option" data-proposal-id="${proposal.id}" data-vote="abstain">
+                            <div class="vote-option-label">弃权</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="submitVote(${proposal.id})">提交投票</button>
+                `;
+                votingContent.appendChild(proposalSection);
+            });
+
+            // 添加投票选项点击事件
+            document.querySelectorAll('.vote-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    // 移除其他选项的选中状态
+                    option.parentElement.querySelectorAll('.vote-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    // 添加当前选项的选中状态
+                    option.classList.add('selected');
+                });
+            });
+        }
+
+        // 提交投票
+        function submitVote(proposalId) {
+            const selectedOption = document.querySelector(`[data-proposal-id="${proposalId}"].selected`);
+            if (!selectedOption) {
+                alert('请选择投票选项');
+                return;
+            }
+
+            const voteOption = selectedOption.getAttribute('data-vote');
+            alert(`投票成功！您对提案 ${proposalId} 投了 ${voteOption} 票`);
+        }
+
+        // 处理提案表单提交
+        function handleProposalSubmit(e) {
+            e.preventDefault();
+            
+            const proposalData = {
+                type: document.getElementById('proposal-type').value,
+                title: document.getElementById('proposal-title').value,
+                description: document.getElementById('proposal-description').value,
+                isEmergency: document.getElementById('is-emergency').value === 'true'
+            };
+
+            alert(`提案已提交！\n\n提案类型: ${getProposalTypeName(proposalData.type)}\n提案标题: ${proposalData.title}`);
+            e.target.reset();
+        }
+
+        // 加载历史记录
+        function loadHistory() {
+            const historyList = document.getElementById('history-list');
+            historyList.innerHTML = '';
+
+            const historicalProposals = proposals.filter(p => p.status === 'passed' || p.status === 'rejected' || p.status === 'withdrawn');
+
+            if (historicalProposals.length === 0) {
+                historyList.innerHTML = '<div class="loading">暂无历史提案</div>';
+                return;
+            }
+
+            historicalProposals.forEach(proposal => {
+                const proposalCard = document.createElement('div');
+                proposalCard.className = `proposal-card ${proposal.status}`;
+                proposalCard.innerHTML = `
+                    <div class="proposal-header">
+                        <div>
+                            <div class="proposal-type ${proposal.type}">${getProposalTypeName(proposal.type)}</div>
+                            <div class="proposal-title">${proposal.title}</div>
+                        </div>
+                    </div>
+                    <div class="proposal-meta">
+                        发起者: ${proposal.creator.slice(0, 10)}... | 创建时间: ${formatTime(proposal.createdAt)} | 状态: ${getProposalStatusName(proposal.status)}
+                    </div>
+                    <div class="proposal-description">${proposal.description}</div>
+                    <div class="proposal-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">${proposal.votes.yes}</div>
+                            <div class="stat-label">赞成</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${proposal.votes.no}</div>
+                            <div class="stat-label">反对</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${proposal.votes.abstain}</div>
+                            <div class="stat-label">弃权</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${proposal.votersCount}</div>
+                            <div class="stat-label">投票人</div>
+                        </div>
+                    </div>
+                    <div class="proposal-actions">
+                        <button class="btn btn-secondary" onclick="viewProposalDetails(${proposal.id})">查看详情</button>
+                    </div>
+                `;
+                historyList.appendChild(proposalCard);
+            });
+        }
+
+        // 加载统计数据
+        function loadStatistics() {
+            const totalProposals = proposals.length;
+            const avgVotes = totalProposals > 0 ? Math.round(proposals.reduce((sum, p) => sum + p.votersCount, 0) / totalProposals) : 0;
+            const avgParticipation = totalProposals > 0 ? Math.round(proposals.reduce((sum, p) => sum + p.totalVoteWeight, 0) / totalProposals) : 0;
+            const avgPassTime = totalProposals > 0 ? Math.round(proposals.reduce((sum, p) => sum + (p.updatedAt - p.createdAt), 0) / (totalProposals * 86400000)) : 0;
+
+            document.getElementById('total-proposals').textContent = totalProposals;
+            document.getElementById('avg-votes').textContent = avgVotes;
+            document.getElementById('avg-participation').textContent = `${avgParticipation}%`;
+            document.getElementById('avg-pass-time').textContent = avgPassTime;
+        }
+
+        // 辅助函数：获取提案类型名称
+        function getProposalTypeName(type) {
+            const typeNames = {
+                param_change: '参数变更',
+                fund_allocation: '资金分配',
+                protocol_upgrade: '协议升级',
+                community_initiative: '社区倡议'
+            };
+            return typeNames[type] || type;
+        }
+
+        // 辅助函数：获取提案状态名称
+        function getProposalStatusName(status) {
+            const statusNames = {
+                pending: '待处理',
+                active: '活跃',
+                passed: '通过',
+                rejected: '拒绝',
+                withdrawn: '撤回',
+                expired: '过期'
+            };
+            return statusNames[status] || status;
+        }
+
+        // 辅助函数：格式化时间
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString();
+        }
+
+        // 辅助函数：投票
+        function voteOnProposal(proposalId) {
+            // 跳转到投票页面
+            switchSection('voting');
+        }
+
+        // 辅助函数：查看提案详情
+        function viewProposalDetails(proposalId) {
+            alert(`查看提案 ${proposalId} 的详情`);
+        }
+    </script>
+</body>
+</html>

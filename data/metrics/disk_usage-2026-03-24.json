@@ -1,0 +1,137 @@
+[
+  {
+    "type": "disk_usage",
+    "value": 7.45,
+    "timestamp": "2026-03-24T23:59:24.016Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.43,
+    "timestamp": "2026-03-24T23:59:26.322Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.43,
+    "timestamp": "2026-03-24T23:59:26.445Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.36,
+    "timestamp": "2026-03-24T23:59:29.026Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.36,
+    "timestamp": "2026-03-24T23:59:29.027Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.33,
+    "timestamp": "2026-03-24T23:59:31.325Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.34,
+    "timestamp": "2026-03-24T23:59:31.448Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.37,
+    "timestamp": "2026-03-24T23:59:34.037Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.24,
+    "timestamp": "2026-03-24T23:59:36.339Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.26,
+    "timestamp": "2026-03-24T23:59:36.463Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.26,
+    "timestamp": "2026-03-24T23:59:39.043Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.25,
+    "timestamp": "2026-03-24T23:59:41.342Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.25,
+    "timestamp": "2026-03-24T23:59:41.466Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.24,
+    "timestamp": "2026-03-24T23:59:44.043Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.24,
+    "timestamp": "2026-03-24T23:59:44.044Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.31,
+    "timestamp": "2026-03-24T23:59:46.352Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.33,
+    "timestamp": "2026-03-24T23:59:46.475Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.37,
+    "timestamp": "2026-03-24T23:59:49.052Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 7.37,
+    "timestamp": "2026-03-24T23:59:49.053Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 6.71,
+    "timestamp": "2026-03-24T23:59:51.365Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 6.71,
+    "timestamp": "2026-03-24T23:59:51.490Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 6.62,
+    "timestamp": "2026-03-24T23:59:54.054Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 6.61,
+    "timestamp": "2026-03-24T23:59:54.056Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 6.56,
+    "timestamp": "2026-03-24T23:59:56.371Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 6.56,
+    "timestamp": "2026-03-24T23:59:56.497Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 6.64,
+    "timestamp": "2026-03-24T23:59:59.062Z"
+  },
+  {
+    "type": "disk_usage",
+    "value": 6.64,
+    "timestamp": "2026-03-24T23:59:59.062Z"
+  }
+]

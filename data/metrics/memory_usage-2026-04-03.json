@@ -1,0 +1,6862 @@
+[
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:21:04.171Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:04.202Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:04.728Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:21:08.120Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:08.401Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.6,
+    "timestamp": "2026-04-03T22:21:08.729Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:21:09.177Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:09.178Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:09.207Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:09.738Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:21:13.121Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:13.416Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.6,
+    "timestamp": "2026-04-03T22:21:13.739Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:21:14.191Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:14.207Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:14.747Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:21:18.121Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:18.431Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.6,
+    "timestamp": "2026-04-03T22:21:18.742Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:21:19.192Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:19.207Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:19.231Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:19.751Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:21:23.136Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:23.444Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.6,
+    "timestamp": "2026-04-03T22:21:23.752Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:21:24.210Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:24.331Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:24.341Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:24.759Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:21:28.140Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:28.450Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.6,
+    "timestamp": "2026-04-03T22:21:28.762Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:21:29.213Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:29.228Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:29.352Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:29.771Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:21:33.140Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:33.450Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.6,
+    "timestamp": "2026-04-03T22:21:33.776Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:21:34.227Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:34.242Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:34.367Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:34.773Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:21:38.150Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:38.458Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.6,
+    "timestamp": "2026-04-03T22:21:38.785Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:21:39.235Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:39.250Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:39.373Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:39.781Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:21:43.153Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:43.462Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.6,
+    "timestamp": "2026-04-03T22:21:43.786Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:21:44.248Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:44.263Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:44.386Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:44.793Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:21:48.163Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:48.474Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.6,
+    "timestamp": "2026-04-03T22:21:48.798Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.78,
+    "timestamp": "2026-04-03T22:21:49.251Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:49.267Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:49.391Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:49.808Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:21:53.171Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:53.480Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.6,
+    "timestamp": "2026-04-03T22:21:53.806Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:21:54.256Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:54.272Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:54.397Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:54.816Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:21:58.184Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:58.495Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.6,
+    "timestamp": "2026-04-03T22:21:58.821Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:21:59.270Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:59.285Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:21:59.409Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:21:59.829Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:22:03.184Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:03.504Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:22:03.829Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:22:04.280Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:04.295Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:04.419Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:04.840Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:22:08.188Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:08.513Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:22:08.842Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:22:09.290Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:09.305Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:09.429Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:09.848Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:22:13.200Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:13.523Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:22:13.848Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:22:14.301Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:14.316Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:14.440Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:14.857Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:22:18.200Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:18.528Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:22:18.852Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:22:19.303Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:19.319Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:19.442Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:19.861Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:22:23.206Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:23.533Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:22:23.862Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:22:24.313Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:24.329Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:24.453Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:24.873Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:22:28.213Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:28.539Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:22:28.864Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:22:29.314Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:29.330Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:29.454Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:29.887Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:22:33.217Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:33.543Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:22:33.870Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:22:34.314Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:34.346Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:34.456Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:34.890Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:22:38.231Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:38.557Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:22:38.870Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:22:39.319Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:39.350Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:39.459Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:39.892Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:22:43.234Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:43.559Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:22:43.871Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:22:44.319Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:44.351Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:44.461Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:44.896Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:22:48.239Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:48.567Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:22:48.878Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:22:49.326Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:49.359Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:49.466Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:22:49.911Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:22:53.240Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:53.582Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:22:53.893Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:22:54.331Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:54.364Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:54.474Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:54.926Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:22:58.243Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:58.584Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:22:58.907Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:22:59.340Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:59.372Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:22:59.480Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:22:59.930Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:03.257Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:03.584Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:23:03.922Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:04.355Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:04.372Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:04.481Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:04.944Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:08.269Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:08.597Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:23:08.922Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:09.357Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:09.373Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:09.481Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:09.948Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:13.276Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:13.602Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:23:13.929Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:14.364Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:14.380Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:14.488Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:14.956Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:18.281Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:18.606Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:23:18.933Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:19.365Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:19.396Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:19.489Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:19.968Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:23.286Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:23.615Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:23:23.943Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:24.375Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:24.407Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:24.499Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:24.979Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:28.292Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:28.618Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:23:28.943Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:29.378Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:29.410Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:29.503Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:29.985Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:33.295Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:33.622Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:23:33.978Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:34.383Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:34.415Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:34.506Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:34.986Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:38.300Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:38.629Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:23:38.984Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:39.387Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:39.419Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:39.510Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:39.988Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:43.315Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:43.642Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:23:43.984Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:23:44.389Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:44.420Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:44.512Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:44.995Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:23:48.317Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:23:48.644Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:23:48.986Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.78,
+    "timestamp": "2026-04-03T22:23:49.390Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:49.436Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:49.514Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:23:49.998Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:23:53.322Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:23:53.651Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:23:53.993Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:23:54.395Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:54.441Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:54.520Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:23:55.003Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:23:58.326Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:23:58.665Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:23:59.007Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:23:59.396Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:59.442Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:23:59.536Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:00.014Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:24:03.339Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:03.679Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:24:04.020Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:24:04.407Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:24:04.454Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:24:04.547Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:05.015Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:24:08.352Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:08.693Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:24:09.035Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:24:09.418Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:24:09.465Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:24:09.558Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:10.021Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:24:13.356Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:13.698Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:24:14.041Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:24:14.428Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:24:14.475Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:24:14.567Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:15.035Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:24:18.368Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:18.707Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:24:19.049Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:24:19.436Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:19.483Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:24:19.574Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:20.039Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:24:23.377Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:23.721Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:24:24.062Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:24:24.449Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:24.497Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:24.575Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:25.042Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:24:28.382Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:28.727Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:24:29.068Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:24:29.457Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:29.503Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:29.664Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:30.048Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:24:33.396Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:33.739Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:24:34.080Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:24:34.466Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:34.513Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:34.590Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:35.057Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:24:38.411Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:38.753Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:24:39.094Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:24:39.466Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:39.514Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:39.591Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:40.059Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:24:43.419Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:43.763Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:24:44.104Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:24:44.475Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:44.524Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:44.600Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:45.067Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:24:48.430Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:48.773Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:24:49.116Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:24:49.490Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:49.538Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:24:49.600Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:24:50.081Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:24:53.444Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:53.772Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:24:54.131Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:24:54.503Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:24:54.550Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:24:54.611Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:55.094Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:24:58.448Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:24:58.777Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:24:59.134Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:24:59.505Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:24:59.552Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:24:59.614Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:00.097Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:25:03.449Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:03.825Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:25:04.136Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:25:04.507Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:25:04.554Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:25:04.617Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:05.098Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:25:08.452Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:08.799Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:25:09.140Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:25:09.513Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:25:09.560Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:25:09.622Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:10.105Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:25:13.461Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:13.802Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:25:14.146Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:25:14.521Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:25:14.564Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:25:14.625Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:15.107Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:25:18.466Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:18.808Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:25:19.151Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:25:19.522Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:19.568Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:25:19.631Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:25:20.111Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:25:23.480Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:23.823Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.61,
+    "timestamp": "2026-04-03T22:25:24.165Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:25:24.536Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:24.584Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:24.631Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:25.113Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:25:28.487Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:28.831Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:25:29.173Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:25:29.546Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:29.647Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:30.120Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:25:33.489Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:33.846Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:25:34.188Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:25:34.558Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:34.606Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:34.653Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:35.121Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:25:38.493Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:38.849Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:25:39.194Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:25:39.564Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:39.612Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:39.659Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:40.125Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:25:43.494Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:43.852Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:25:44.194Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:25:44.568Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:44.615Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:44.661Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:45.129Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:25:48.499Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:48.857Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:25:49.200Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:25:49.570Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:49.617Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:49.664Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:50.131Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:25:53.504Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:53.863Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:25:54.207Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:25:54.578Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:54.626Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:54.672Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:55.139Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:25:58.513Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:58.873Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:25:59.213Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:25:59.584Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:59.631Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:25:59.679Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:00.145Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:03.521Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:03.879Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:26:04.217Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:04.589Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:04.636Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:04.683Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:05.150Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:08.521Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:08.880Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:26:09.222Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:09.594Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:09.641Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:09.688Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:10.153Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:13.532Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:14.161Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:26:14.233Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:14.608Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:14.656Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:14.703Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:15.155Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:18.535Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:19.174Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:26:19.235Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:19.621Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:19.671Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:19.716Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:20.165Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:23.548Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:24.188Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:26:24.250Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:24.622Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:24.669Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:24.731Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:25.180Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:28.549Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:29.188Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:26:29.264Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:29.623Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:29.669Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:29.732Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:30.185Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:33.553Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:34.192Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:26:34.269Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:34.625Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:34.672Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:34.734Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:35.185Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:38.567Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:39.204Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:26:39.282Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:39.627Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:39.674Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:39.737Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:40.189Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:43.575Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:44.214Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:26:44.290Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:26:44.633Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:44.678Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:44.740Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:45.191Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:26:48.632Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:49.218Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:26:49.296Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.78,
+    "timestamp": "2026-04-03T22:26:49.638Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:49.685Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:49.749Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:26:50.198Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:26:53.587Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:26:54.225Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:26:54.300Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:26:54.643Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:54.690Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:54.753Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:26:55.201Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:26:58.594Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:26:59.230Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:26:59.308Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:26:59.649Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:59.695Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:26:59.758Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:00.209Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:27:03.596Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:04.232Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:27:04.310Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:27:04.651Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:04.697Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:04.775Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:05.211Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:27:08.603Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:09.240Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:27:09.319Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:27:09.659Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:09.704Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:09.781Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:10.217Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:27:13.616Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:14.251Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:27:14.327Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:27:14.669Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:14.715Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:14.793Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:15.230Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:27:18.616Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:19.249Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:27:19.340Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:27:19.684Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:19.715Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:19.794Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:20.244Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:27:23.627Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:24.263Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:27:24.355Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:27:24.696Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:24.727Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:24.804Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:25.255Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:27:28.638Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:29.278Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:27:29.369Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:27:29.709Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:29.741Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:29.819Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:30.255Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:27:33.644Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:34.280Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:27:34.373Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:27:34.715Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:34.746Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:34.823Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:35.257Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:27:38.654Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:39.292Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:27:39.386Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:27:39.726Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:39.757Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:39.835Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:40.271Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:27:43.659Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:44.294Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:27:44.400Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:27:44.727Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:44.757Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:44.837Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:45.271Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:27:48.659Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:49.306Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:27:49.401Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:27:49.727Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:49.759Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:49.853Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:50.286Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:27:53.666Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:54.319Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:27:54.436Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:27:54.735Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:54.766Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:54.859Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:55.293Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:27:58.679Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:27:59.320Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:27:59.443Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:27:59.738Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:59.769Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:27:59.862Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:28:00.300Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:28:03.686Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:28:04.323Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:28:04.447Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:28:04.744Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:04.775Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:04.868Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:28:05.304Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:28:08.689Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:28:09.329Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:28:09.453Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:28:09.750Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:09.782Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:09.876Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:28:10.310Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:28:13.703Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:28:14.339Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:28:14.463Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:28:14.761Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:14.792Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:14.887Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:28:15.320Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:28:18.719Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:19.343Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:28:19.465Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:28:19.774Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:19.805Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:19.978Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:20.333Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:28:23.722Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:24.346Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:28:24.468Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:28:24.780Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:24.811Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:24.904Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:25.337Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:28:28.733Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:29.354Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:28:29.476Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:28:29.785Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:29.816Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:29.910Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:30.341Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:28:33.746Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:34.354Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:28:34.479Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:28:34.787Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:34.818Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:34.913Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:35.350Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:28:38.756Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:39.362Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:28:39.486Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:28:39.796Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:39.827Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:39.921Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:40.356Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:28:43.762Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:44.365Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:28:44.490Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:28:44.801Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:44.832Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:44.925Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:45.357Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:28:48.773Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:28:49.380Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:28:49.507Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:28:49.800Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:49.849Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:49.961Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:28:50.360Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:28:53.777Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:28:54.384Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:28:54.509Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:28:54.804Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:54.850Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:54.943Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:28:55.390Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:28:58.785Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:28:59.390Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:28:59.514Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:28:59.810Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:59.856Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:28:59.947Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:00.381Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:03.798Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:04.403Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:29:04.529Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:04.825Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:04.856Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:04.948Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:05.383Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:08.813Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:09.404Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:29:09.529Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:09.840Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:09.856Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:09.948Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:10.399Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:13.813Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:14.408Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:29:14.531Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:14.841Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:14.858Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:14.951Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:15.412Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:18.828Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:19.416Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:29:19.538Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:19.848Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:19.864Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:19.956Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:20.422Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:29:23.832Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:24.425Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:29:24.546Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:24.857Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:24.872Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:24.967Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:25.429Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:28.845Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:29.436Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:29:29.562Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:29.870Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:29.886Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:29.981Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:30.432Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:33.847Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:34.451Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:29:34.574Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:34.885Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:34.901Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:34.994Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:35.441Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:38.858Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:39.462Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:29:39.585Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:39.896Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:39.913Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:40.005Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:40.455Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:43.862Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:44.468Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:29:44.591Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:29:44.904Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:44.919Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:45.010Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:45.459Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:29:48.875Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:49.468Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:29:49.592Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:49.939Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:29:49.963Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:50.035Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:50.476Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:29:53.880Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:54.474Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:29:54.596Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:54.936Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:29:54.967Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:55.046Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:55.482Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:29:58.891Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:29:59.484Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:29:59.610Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:29:59.937Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:29:59.968Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:00.061Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:00.496Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:30:03.894Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:04.498Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:30:04.622Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:04.948Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:30:04.979Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:05.071Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:05.504Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:30:08.905Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:09.512Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:30:09.636Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:09.962Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:30:09.992Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:10.085Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:10.504Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:30:13.917Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:14.521Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:30:14.644Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:14.970Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:30:15.001Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:15.096Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:15.514Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:30:18.919Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:19.526Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:30:19.652Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:19.979Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:30:20.010Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:20.103Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:20.521Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:23.921Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:24.531Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:30:24.657Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:24.980Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:25.013Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:25.105Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:25.524Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:28.925Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:29.532Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:30:29.657Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:29.981Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:30.026Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:30.119Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:30.524Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:33.930Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:34.535Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:30:34.659Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:34.984Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:35.030Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:35.125Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:35.528Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:38.931Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:39.538Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:30:39.663Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:39.991Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:40.037Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:40.130Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:40.536Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:43.938Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:44.542Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:30:44.666Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:44.993Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:45.039Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:45.133Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:45.552Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:48.944Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:49.556Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:30:49.677Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:50.002Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:50.048Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:50.141Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:50.562Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:30:53.947Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:54.569Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:30:54.692Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:55.005Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:55.051Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:30:55.146Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:55.564Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:30:58.952Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:30:59.574Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:30:59.696Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:00.008Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:31:00.067Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:00.147Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:00.565Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:31:03.968Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:04.586Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:31:04.714Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:05.021Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:31:05.068Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:05.161Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:05.578Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:31:08.976Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:09.599Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:31:09.721Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:10.029Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:31:10.075Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:10.169Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:10.589Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:31:13.983Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:14.606Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:31:14.729Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:15.041Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:31:15.086Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:15.181Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:15.598Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:31:18.987Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:19.608Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:31:19.733Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:20.044Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:31:20.090Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:20.184Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:20.604Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:23.999Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:24.621Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:31:24.745Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:25.057Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:25.102Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:25.195Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:25.614Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:29.003Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:29.622Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:31:29.747Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:30.057Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:30.103Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:30.197Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:30.618Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:34.014Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:34.625Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:31:34.749Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:35.058Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:35.105Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:35.199Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:35.619Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:39.015Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:39.636Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:31:39.759Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:40.069Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:40.115Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:40.209Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:40.625Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:44.028Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:44.653Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:31:44.776Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:45.071Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:45.117Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:45.210Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:45.627Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:49.033Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:49.657Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:31:49.782Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:50.078Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:50.126Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:50.219Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.66,
+    "timestamp": "2026-04-03T22:31:50.636Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:31:54.042Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:54.664Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:31:54.788Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:55.087Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:55.133Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:31:55.225Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:55.643Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:31:59.052Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:31:59.673Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:31:59.799Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:00.095Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:32:00.141Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:00.234Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:00.649Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:32:04.054Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:04.688Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:32:04.813Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:05.109Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:32:05.155Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:05.248Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:05.651Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:32:09.061Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:09.698Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:32:09.820Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:10.116Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:32:10.161Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:10.256Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:10.659Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:32:14.073Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:14.710Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:32:14.834Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:15.129Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.67,
+    "timestamp": "2026-04-03T22:32:15.170Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:15.268Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:15.671Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:32:19.085Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:19.720Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:32:19.846Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:20.135Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:32:20.181Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:20.273Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.66,
+    "timestamp": "2026-04-03T22:32:20.678Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:32:24.097Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:24.741Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:32:24.860Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:25.140Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:32:25.187Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:25.280Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:25.683Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:32:29.097Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:29.751Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:32:29.874Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:30.155Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:32:30.201Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:30.294Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:30.683Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:32:34.108Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:34.763Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:32:34.887Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:35.166Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:32:35.213Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:35.308Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:35.693Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:32:39.121Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:39.773Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:32:39.898Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:40.177Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:32:40.224Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:40.317Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:40.705Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:32:44.122Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:44.773Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:32:44.913Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:45.192Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:32:45.238Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:45.333Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:45.705Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:32:49.133Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:49.772Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:32:49.925Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:50.206Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:32:50.252Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:50.346Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:50.721Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:32:54.139Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:54.777Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:32:54.934Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:55.211Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:32:55.259Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:32:55.350Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:55.723Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:32:59.145Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:32:59.792Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:32:59.948Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:00.226Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:33:00.283Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:00.351Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:00.724Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:04.156Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:04.797Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:33:04.950Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:05.232Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:05.295Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:05.357Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:05.732Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:09.168Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:09.803Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:33:09.958Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:10.238Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:33:10.299Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:10.363Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:10.736Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:33:14.179Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:14.817Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:33:14.972Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:15.251Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:15.313Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:15.375Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:15.749Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:33:19.187Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:19.822Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:33:19.975Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:20.255Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:33:20.315Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:20.379Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:20.764Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:24.193Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:24.835Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:33:24.974Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:25.267Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:25.328Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:25.390Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:25.779Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:29.194Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:29.853Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:33:29.987Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:30.271Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:30.331Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:30.395Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:30.783Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:34.204Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:34.856Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:33:34.996Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:35.272Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:35.334Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:35.399Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:35.787Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:39.205Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:39.873Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:33:40.009Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:40.311Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:40.429Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:40.444Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:40.800Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:44.219Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:44.873Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:33:45.012Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:45.280Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:45.341Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:45.452Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:45.834Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:33:49.234Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:49.888Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:33:50.027Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:50.290Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:50.350Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:50.460Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:50.819Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:33:54.249Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:54.902Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:33:55.042Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:55.364Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:33:55.464Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:55.819Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:33:59.251Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:33:59.902Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:34:00.055Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:00.305Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:34:00.364Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:00.475Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:00.833Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:34:04.260Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:04.915Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:34:05.070Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:05.319Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:05.364Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:05.489Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:05.843Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:09.274Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:09.928Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:34:10.083Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:10.331Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:10.376Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:10.501Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:10.858Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:14.288Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:14.936Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:34:15.092Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:15.341Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:15.386Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:15.511Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:15.866Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:19.292Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:19.946Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:34:20.101Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:20.348Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:20.395Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:20.518Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:20.874Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:24.305Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:24.954Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:34:25.107Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:25.356Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:25.403Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:25.527Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:25.885Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:29.312Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:29.967Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:34:30.122Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:30.371Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:30.417Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:30.541Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:30.886Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:34.312Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:34.979Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-03T22:34:35.136Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:35.383Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:35.429Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:35.554Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:35.896Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:39.325Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:39.981Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:34:40.150Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:40.398Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:40.443Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:40.569Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:40.908Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:44.337Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:44.990Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:34:45.159Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:45.407Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:45.453Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:45.578Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:45.920Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.75,
+    "timestamp": "2026-04-03T22:34:49.347Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:49.996Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:34:50.168Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:50.416Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:50.462Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:50.586Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:50.930Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:34:54.361Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:55.002Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:34:55.172Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:55.419Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:34:55.466Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:34:55.590Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:34:55.931Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:34:59.370Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:00.012Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:35:00.180Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:35:00.427Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:35:00.473Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:35:00.598Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:00.937Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:35:04.380Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:05.017Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:35:05.185Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:35:05.433Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:35:05.479Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:35:05.603Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:05.943Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:35:09.392Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:10.030Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:35:10.188Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:35:10.436Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:35:10.483Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:35:10.608Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:10.948Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:35:14.401Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:15.037Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:35:15.192Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:35:15.440Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:35:15.486Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:35:15.615Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:15.951Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:35:19.409Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:20.042Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:35:20.199Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:20.445Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:35:20.492Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:20.615Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.66,
+    "timestamp": "2026-04-03T22:35:20.955Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:35:24.414Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:25.054Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:35:25.209Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:25.455Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:35:25.501Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:25.624Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:25.965Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:35:29.427Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:30.066Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:35:30.219Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:30.468Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:35:30.514Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:30.625Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:30.967Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:35:34.433Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:35.078Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:35:35.230Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:35.478Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:35:35.523Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:35.631Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:35.974Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:35:39.440Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:40.081Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:35:40.236Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:40.484Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:35:40.530Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:40.639Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:40.981Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:35:44.525Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:45.091Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:35:45.246Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:45.493Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:35:45.540Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:45.648Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:45.991Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:35:49.463Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:50.101Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:35:50.248Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:50.495Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.68,
+    "timestamp": "2026-04-03T22:35:50.543Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:50.651Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.66,
+    "timestamp": "2026-04-03T22:35:50.993Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:35:54.471Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:55.108Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:35:55.263Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:55.497Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:35:55.543Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:55.653Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:35:56.007Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:35:59.478Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:00.107Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:36:00.271Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:00.502Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.7,
+    "timestamp": "2026-04-03T22:36:00.543Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:00.661Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:01.013Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:04.486Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:05.118Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:36:05.276Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:05.507Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:05.553Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:05.665Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:06.027Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:09.492Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:10.126Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:36:10.283Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:10.515Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:10.562Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:10.673Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:11.039Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:14.501Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:15.145Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:36:15.292Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:15.539Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:15.562Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:15.703Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:16.045Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:19.510Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.66,
+    "timestamp": "2026-04-03T22:36:20.152Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:36:20.302Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:20.542Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:20.571Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:20.705Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:21.046Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:24.512Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:25.158Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:36:25.307Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:25.553Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:25.584Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:25.708Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.61,
+    "timestamp": "2026-04-03T22:36:26.047Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:29.516Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.61,
+    "timestamp": "2026-04-03T22:36:30.159Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:36:30.313Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:30.563Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:30.593Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:30.717Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.61,
+    "timestamp": "2026-04-03T22:36:31.058Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:34.518Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.61,
+    "timestamp": "2026-04-03T22:36:35.163Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:36:35.322Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:35.565Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:35.606Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:35.719Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.61,
+    "timestamp": "2026-04-03T22:36:36.061Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:39.527Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.61,
+    "timestamp": "2026-04-03T22:36:40.165Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:36:40.335Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:40.574Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:40.616Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:40.729Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.61,
+    "timestamp": "2026-04-03T22:36:41.068Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:44.533Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.61,
+    "timestamp": "2026-04-03T22:36:45.170Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:36:45.343Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:45.588Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.69,
+    "timestamp": "2026-04-03T22:36:45.629Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:45.730Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.61,
+    "timestamp": "2026-04-03T22:36:46.075Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-04-03T22:36:49.538Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:36:50.181Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:36:50.348Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:50.607Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:36:50.631Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:36:50.733Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:36:51.082Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:36:54.543Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:36:55.186Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:36:55.359Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:55.618Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:36:55.632Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:36:55.743Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:36:56.095Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:36:59.552Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:37:00.188Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:37:00.359Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:37:00.619Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.72,
+    "timestamp": "2026-04-03T22:37:00.633Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:37:00.748Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:37:01.098Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:37:04.556Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:37:05.199Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-03T22:37:05.369Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:37:05.626Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:37:05.641Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:37:05.757Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:37:06.110Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:37:09.566Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:37:10.217Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:37:10.378Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.64,
+    "timestamp": "2026-04-03T22:37:10.634Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:37:10.649Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:37:10.758Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:37:11.112Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:37:14.582Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:37:15.221Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:37:15.393Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:37:15.638Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:37:15.653Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:37:15.764Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:37:16.120Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:37:19.588Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:37:20.235Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:37:20.403Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:37:20.651Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:37:20.665Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:37:20.775Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:37:21.136Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:37:24.600Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:37:25.249Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-03T22:37:25.404Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:37:25.654Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.71,
+    "timestamp": "2026-04-03T22:37:25.670Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.65,
+    "timestamp": "2026-04-03T22:37:25.777Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.63,
+    "timestamp": "2026-04-03T22:37:26.134Z"
+  }
+]

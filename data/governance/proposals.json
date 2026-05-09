@@ -1,0 +1,126 @@
+{
+  "proposal-1777167586895-ow2vug80u": {
+    "id": "proposal-1777167586895-ow2vug80u",
+    "creatorId": "agent-1",
+    "title": "测试提案：提高区块奖励",
+    "description": "将每个区块的奖励从 10 NGEN 提高到 15 NGEN",
+    "type": "parameter_adjustment",
+    "parameters": {
+      "blockReward": 15
+    },
+    "status": "passed",
+    "createdAt": 1777167586895,
+    "votingStartsAt": 1777167586895,
+    "votingEndsAt": 1777167585926,
+    "executionWindowStart": 1777772386895,
+    "executionWindowEnd": 1777858786895,
+    "totalWeight": 800,
+    "yesWeight": 650,
+    "noWeight": 100,
+    "abstainWeight": 50,
+    "executionResult": null,
+    "executedAt": null,
+    "executionSignatures": [],
+    "multiSigRequired": true,
+    "timeLockStart": null,
+    "timeLockEnd": null,
+    "executorApprovals": [],
+    "votingEndedAt": 1777167586926
+  },
+  "proposal-1777167614703-4zd7g2irx": {
+    "id": "proposal-1777167614703-4zd7g2irx",
+    "creatorId": "agent-1",
+    "title": "测试提案：提高区块奖励",
+    "description": "将每个区块的奖励从 10 NGEN 提高到 15 NGEN",
+    "type": "parameter_adjustment",
+    "parameters": {
+      "blockReward": 15
+    },
+    "status": "executed",
+    "createdAt": 1777167614703,
+    "votingStartsAt": 1777167614703,
+    "votingEndsAt": 1777167613718,
+    "executionWindowStart": 1777167613733,
+    "executionWindowEnd": 1777167624733,
+    "totalWeight": 800,
+    "yesWeight": 650,
+    "noWeight": 100,
+    "abstainWeight": 50,
+    "executionResult": {
+      "success": true,
+      "action": "parameter_adjustment",
+      "parameters": {
+        "blockReward": 15
+      }
+    },
+    "executedAt": 1777167614734,
+    "executionSignatures": [
+      {
+        "signerId": "signer-1",
+        "signature": "signature-1-data",
+        "signedAt": 1777167614724
+      },
+      {
+        "signerId": "signer-2",
+        "signature": "signature-2-data",
+        "signedAt": 1777167614728
+      }
+    ],
+    "multiSigRequired": true,
+    "timeLockStart": 1777167614724,
+    "timeLockEnd": 1777167613733,
+    "executorApprovals": [
+      "executor-1"
+    ],
+    "votingEndedAt": 1777167614719,
+    "executedBy": "executor-1"
+  },
+  "proposal-1778069625533-aewm3n9pm": {
+    "id": "proposal-1778069625533-aewm3n9pm",
+    "creatorId": "agent-1",
+    "title": "测试提案：提高区块奖励",
+    "description": "将每个区块的奖励从 10 NGEN 提高到 15 NGEN",
+    "type": "parameter_adjustment",
+    "parameters": {
+      "blockReward": 15
+    },
+    "status": "executed",
+    "createdAt": 1778069625533,
+    "votingStartsAt": 1778069625533,
+    "votingEndsAt": 1778069624545,
+    "executionWindowStart": 1778069624553,
+    "executionWindowEnd": 1778069635553,
+    "totalWeight": 800,
+    "yesWeight": 650,
+    "noWeight": 100,
+    "abstainWeight": 50,
+    "executionResult": {
+      "success": true,
+      "action": "parameter_adjustment",
+      "parameters": {
+        "blockReward": 15
+      }
+    },
+    "executedAt": 1778069625553,
+    "executionSignatures": [
+      {
+        "signerId": "signer-1",
+        "signature": "signature-1-data",
+        "signedAt": 1778069625547
+      },
+      {
+        "signerId": "signer-2",
+        "signature": "signature-2-data",
+        "signedAt": 1778069625549
+      }
+    ],
+    "multiSigRequired": true,
+    "timeLockStart": 1778069625547,
+    "timeLockEnd": 1778069624553,
+    "executorApprovals": [
+      "executor-1"
+    ],
+    "votingEndedAt": 1778069625545,
+    "executedBy": "executor-1"
+  }
+}

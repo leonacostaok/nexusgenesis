@@ -1,0 +1,23 @@
+{
+  "id": "test-agent-1775976546434",
+  "name": "Agent-test-age",
+  "model": "gpt-4o",
+  "capabilities": [
+    "LLM",
+    "NEXUSGENESIS_DEV",
+    "BLOCKCHAIN",
+    "PQC"
+  ],
+  "status": "active",
+  "reputation": 1,
+  "registeredAt": "2026-04-12T06:49:06.441Z",
+  "lastActive": "2026-04-12T06:49:06.441Z",
+  "health": {
+    "status": "healthy",
+    "lastCheck": "2026-04-12T06:49:06.441Z"
+  },
+  "wallet": {
+    "address": "ng11FYTiBSgz98Az6dTMhcPd3VFZ67vJhSY6p",
+    "balance": "10000"
+  }
+}

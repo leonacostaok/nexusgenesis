@@ -1,0 +1,25 @@
+{
+  "id": "1775962317259",
+  "name": "智能体激励机制",
+  "status": "completed",
+  "createdAt": "2026-04-12T02:51:57.259Z",
+  "updatedAt": "2026-04-12T02:51:57.355Z",
+  "runCount": 1,
+  "errorCount": 0,
+  "lastError": null,
+  "description": "建立智能体评级和激励机制，提高智能体参与度",
+  "priority": "medium",
+  "agent": "Pool-Contractor",
+  "deadline": "2026-06-12",
+  "dependencies": [],
+  "schedule": "7*24",
+  "retryConfig": {
+    "maxRetries": 3,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "result": {
+    "success": true,
+    "message": "智能体激励机制任务处理中"
+  }
+}

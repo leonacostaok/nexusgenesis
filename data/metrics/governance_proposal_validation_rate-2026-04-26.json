@@ -1,0 +1,4382 @@
+[
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:00:23.511Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:01:23.519Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:02:23.535Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:03:23.543Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:04:23.560Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:05:23.560Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:06:23.573Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:07:23.579Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:08:23.593Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:09:23.598Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:10:23.603Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:11:23.618Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:12:23.630Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:13:23.644Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:14:23.643Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:15:23.660Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:16:23.666Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:17:23.672Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:18:23.691Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:19:23.703Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:20:23.705Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:21:23.721Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:22:23.733Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:23:23.740Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:24:23.747Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:25:23.749Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:26:23.767Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:27:23.773Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:28:23.780Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:29:23.789Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:30:23.807Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:31:23.803Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:32:23.806Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:33:23.814Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:34:23.823Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:35:23.843Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:36:23.843Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:37:23.856Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:38:23.862Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:39:23.863Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:40:23.873Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:41:23.883Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:42:23.884Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:43:23.900Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:44:23.903Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:45:23.915Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:46:23.908Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:47:23.907Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:48:23.919Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:49:23.934Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:50:23.940Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:51:23.958Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:52:23.973Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:53:23.988Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:54:23.999Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:55:24.006Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:56:24.015Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:57:24.025Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:58:24.037Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:59:24.054Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:00:24.066Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:01:24.065Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:02:24.068Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:03:24.076Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:04:24.079Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:05:24.096Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:06:24.098Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:07:24.117Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:08:24.128Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:09:24.144Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:10:24.155Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:11:24.175Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:12:24.227Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:13:24.198Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:14:24.207Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:15:24.223Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:16:24.239Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:17:24.245Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:18:24.261Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:19:24.252Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:20:24.266Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:21:24.276Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:22:24.278Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:23:24.280Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:24:24.298Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:25:24.294Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:26:24.303Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:27:24.308Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:28:24.323Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:29:24.337Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:30:24.338Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:31:24.339Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:32:24.349Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:33:24.357Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:34:24.381Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:35:24.372Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:36:24.381Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:37:24.390Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:38:24.384Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:39:24.401Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:40:24.393Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:41:24.418Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:42:24.414Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:43:24.418Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:44:24.419Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:45:24.427Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:46:24.433Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:47:24.434Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:48:24.453Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:49:24.449Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:50:24.464Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:51:24.465Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:52:24.473Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:53:24.485Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:54:24.494Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:55:24.507Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:56:24.499Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:57:24.503Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:58:24.515Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:59:24.522Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:00:24.532Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:01:24.532Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:02:24.549Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:03:24.546Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:04:24.558Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:05:24.571Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:06:24.592Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:07:24.594Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:08:24.595Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:09:24.624Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:10:24.616Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:11:24.620Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:12:24.631Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:13:24.641Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:14:24.642Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:15:24.656Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:16:24.678Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:17:24.669Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:18:24.685Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:19:24.710Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:20:24.702Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:21:24.707Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:22:24.721Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:23:24.728Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:24:24.738Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:25:24.751Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:26:24.762Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:27:24.773Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:28:24.776Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:29:24.791Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:30:24.788Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:31:24.794Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:32:24.804Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:33:24.799Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:34:24.814Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:35:24.823Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:36:24.826Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:37:24.838Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:38:24.838Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:39:24.855Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:40:24.857Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:41:24.868Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:42:24.879Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:43:24.902Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:44:24.903Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:45:24.908Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:46:24.918Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:47:24.931Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:48:24.951Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:49:24.958Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:50:24.951Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:51:24.963Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:52:24.995Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:53:24.979Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:54:24.980Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:55:24.994Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:56:25.015Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:57:25.013Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:58:25.018Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:59:25.034Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:00:25.038Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:01:25.052Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:02:25.058Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:03:25.059Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:04:25.069Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:05:25.077Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:06:25.090Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:07:25.111Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:08:25.106Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:09:25.123Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:10:25.139Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:11:25.141Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:12:25.149Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:13:25.152Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:14:25.164Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:15:25.197Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:16:25.183Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:17:25.189Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:18:25.203Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:19:25.209Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:20:25.211Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:21:25.223Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:22:25.247Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:23:25.250Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:24:25.263Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:25:25.271Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:26:25.287Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:27:25.301Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:28:25.314Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:29:25.316Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:30:25.321Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:31:25.325Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:32:25.347Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:33:25.351Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:34:25.374Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:35:25.365Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:36:25.374Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:37:25.391Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:38:25.386Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:39:25.397Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:40:25.406Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:41:25.407Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:42:25.413Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:43:25.427Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:44:25.579Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:45:27.524Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:46:27.213Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:47:27.224Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:48:27.228Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:49:27.237Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:50:27.246Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:51:27.260Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:52:27.271Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:53:27.289Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:54:27.286Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:55:27.288Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:56:27.296Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:57:27.316Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:58:27.318Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:59:27.327Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:00:27.330Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:01:27.340Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:02:27.506Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:03:27.586Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:04:27.366Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:05:27.363Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:06:27.383Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:07:27.378Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:08:27.384Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:09:27.390Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:10:27.408Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:11:27.416Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:12:27.435Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:13:27.459Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:14:27.442Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:15:27.455Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:16:27.459Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:17:27.466Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:18:27.494Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:19:27.484Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:20:27.510Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:21:27.496Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:22:27.506Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:23:27.516Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:24:27.517Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:25:27.525Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:26:27.535Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:27:27.543Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:28:27.548Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:29:27.567Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:30:27.565Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:31:27.570Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:32:27.579Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:33:27.587Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:34:27.594Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:35:27.602Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:36:27.617Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:37:27.617Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:38:27.624Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:39:27.629Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:40:27.639Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:41:27.644Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:42:27.663Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:43:27.668Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:44:27.677Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:45:27.694Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:46:27.680Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:47:27.691Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:48:27.694Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:49:27.704Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:50:27.711Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:51:27.714Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:52:27.733Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:53:27.731Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:54:27.752Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:55:27.744Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:56:27.747Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:57:27.753Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:58:27.756Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:59:27.760Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:00:27.765Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:01:27.770Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:02:27.783Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:03:27.791Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:04:27.799Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:05:27.787Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:06:27.797Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:07:27.811Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:08:27.828Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:09:27.815Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:10:27.834Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:11:27.829Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:12:27.839Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:13:27.849Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:14:27.869Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:15:27.983Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:16:27.868Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:17:27.887Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:18:27.891Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:19:27.908Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:20:27.905Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:21:27.914Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:22:27.918Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:23:27.928Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:24:27.956Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:25:27.943Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:26:27.955Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:27:27.962Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:28:27.970Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:29:27.973Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:30:27.978Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:31:27.992Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:32:28.010Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:33:28.001Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:34:28.006Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:35:28.015Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:36:28.023Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:37:28.040Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:38:28.049Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:39:28.055Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:40:28.057Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:41:28.058Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:42:28.063Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:43:28.085Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:44:28.086Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:45:28.103Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:46:28.110Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:47:28.135Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:48:28.132Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:49:28.145Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:50:28.147Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:51:28.159Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:52:28.171Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:53:28.179Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:54:28.187Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:55:28.194Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:56:28.197Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:57:28.211Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:58:28.212Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:59:28.228Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:00:28.232Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:01:28.246Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:02:28.251Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:03:28.258Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:04:28.256Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:05:28.276Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:06:28.273Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:07:28.283Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:08:28.306Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:09:28.304Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:10:28.317Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:11:28.309Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:12:28.312Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:13:28.318Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:14:28.313Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:15:28.323Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:16:28.336Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:17:28.330Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:18:28.345Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:19:28.351Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:20:28.379Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:21:28.379Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:22:28.388Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:23:28.386Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:24:28.392Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:25:28.394Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:26:28.409Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:27:28.422Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:28:28.426Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:29:28.432Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:30:28.438Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:31:28.444Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:32:28.451Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:33:28.459Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:34:28.464Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:35:28.471Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:36:28.487Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:37:28.484Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:38:28.496Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:39:28.504Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:40:28.533Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:41:28.523Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:42:28.544Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:43:28.542Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:44:28.553Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:45:28.567Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:46:28.571Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:47:28.577Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:48:28.593Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:49:28.600Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:50:28.602Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:51:28.605Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:52:28.620Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:53:28.629Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:54:28.632Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:55:28.638Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:56:28.647Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:57:28.660Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:58:28.663Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:59:28.691Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:00:28.703Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:01:28.699Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:02:28.708Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:03:28.715Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:04:28.723Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:05:28.730Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:06:28.738Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:07:28.747Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:08:28.754Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:09:28.757Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:10:28.765Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:11:28.806Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:12:28.795Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:13:28.917Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:14:28.966Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:15:28.820Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:16:28.819Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:17:28.831Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:18:28.842Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:19:28.852Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:20:28.859Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:21:28.870Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:22:28.878Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:23:28.914Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:24:28.888Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:25:28.895Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:26:28.898Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:27:28.911Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:28:28.914Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:29:28.930Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:30:28.931Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:31:28.938Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:32:28.947Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:33:28.961Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:34:28.961Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:35:28.987Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:36:28.976Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:37:28.981Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:38:28.988Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:39:28.998Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:40:29.008Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:41:29.014Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:42:29.020Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:43:29.027Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:44:29.033Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:45:29.042Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:46:29.051Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:47:29.059Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:48:29.064Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:49:29.073Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:50:29.079Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:51:29.086Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:52:29.097Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:53:29.101Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:54:29.111Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:55:29.117Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:56:29.125Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:57:29.133Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:58:29.140Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:59:29.165Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:00:29.164Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:01:29.176Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:02:29.252Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:03:29.191Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:04:29.187Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:05:29.191Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:06:29.208Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:07:29.206Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:08:29.213Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:09:29.215Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:10:29.229Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:11:29.237Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:12:29.245Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:13:29.267Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:14:29.273Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:15:29.278Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:16:29.288Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:17:29.293Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:18:29.289Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:19:29.310Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:20:29.307Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:21:29.328Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:22:29.317Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:23:29.338Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:24:29.341Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:25:29.340Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:26:29.362Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:27:29.363Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:28:29.376Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:29:29.381Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:30:29.393Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:31:29.528Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:32:29.407Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:33:29.400Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:34:29.403Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:35:29.405Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:36:29.414Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:37:29.418Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:38:29.447Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:39:29.448Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:40:29.445Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:41:29.469Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:42:29.476Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:43:29.489Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:44:29.491Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:45:29.488Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:46:29.488Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:47:29.497Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:48:29.491Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:49:29.503Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:50:29.512Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:51:29.526Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:52:29.539Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:53:29.542Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:54:29.559Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:55:29.580Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:56:29.574Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:57:29.600Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:58:29.613Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:59:29.619Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:00:29.614Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:01:29.625Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:02:29.621Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:03:29.639Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:04:29.660Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:05:29.668Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:06:29.683Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:07:29.691Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:08:29.699Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:09:29.712Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:10:29.710Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:11:29.730Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:12:29.722Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:13:29.739Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:14:29.732Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:15:29.762Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:16:29.749Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:17:29.769Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:18:29.791Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:19:29.795Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:20:29.805Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:21:29.817Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:22:29.816Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:23:29.816Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:24:29.830Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:25:29.823Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:26:29.844Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:27:29.845Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:28:29.854Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:29:29.866Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:30:29.865Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:31:29.883Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:32:29.888Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:33:29.884Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:34:29.890Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:35:29.907Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:36:29.929Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:37:29.930Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:38:29.952Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:39:29.964Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:40:29.952Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:41:29.965Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:42:29.969Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:43:29.989Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:44:29.994Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:45:29.985Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:46:29.997Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:47:30.000Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:48:29.985Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:49:30.004Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:50:30.017Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:51:30.007Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:52:30.035Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:53:30.052Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:54:30.064Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:55:30.067Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:56:30.092Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:57:30.089Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:58:30.117Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:59:30.109Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:00:30.131Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:01:30.129Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:02:30.135Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:03:30.143Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:04:30.149Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:05:30.159Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:06:30.173Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:07:30.181Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:08:30.180Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:09:30.184Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:10:30.198Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:11:30.229Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:12:30.218Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:13:30.249Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:14:30.253Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:15:30.259Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:16:30.256Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:17:30.258Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:18:30.275Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:19:30.276Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:20:30.283Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:21:30.289Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:22:30.319Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:23:30.331Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:24:30.319Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:25:30.319Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:26:30.351Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:27:30.343Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:28:30.377Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:29:30.376Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:30:30.374Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:31:30.373Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:32:30.375Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:33:30.392Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:34:30.393Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:35:30.434Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:36:30.455Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:37:30.466Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:38:30.481Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:39:30.474Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:40:30.484Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:41:30.497Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:42:30.520Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:43:30.510Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:44:30.518Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:45:30.515Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:46:30.535Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:47:30.526Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:48:30.531Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:49:24.601Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:50:24.595Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:51:24.615Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:52:24.628Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:53:24.629Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:54:24.635Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:55:24.642Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:56:24.639Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:57:24.656Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:58:24.651Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:59:24.681Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:00:24.688Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:01:24.680Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:02:24.708Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:03:24.719Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:04:24.711Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:05:24.719Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:06:24.740Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:07:24.728Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:08:24.744Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:09:24.745Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:10:24.741Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:11:24.768Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:12:24.775Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:13:24.786Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:14:24.779Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:15:24.800Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:16:24.813Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:17:24.815Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:18:24.819Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:19:24.819Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:20:24.831Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:21:24.817Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:22:24.835Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:23:24.847Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:24:24.862Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:25:24.876Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:26:24.887Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:27:24.902Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:28:24.949Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:29:24.898Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:30:24.911Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:31:24.908Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:32:24.921Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:33:24.926Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:34:24.959Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:35:24.954Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:36:24.962Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:37:24.959Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:38:24.972Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:39:24.969Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:40:25.003Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:41:25.015Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:42:25.030Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:43:25.028Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:44:25.037Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:45:25.045Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:46:25.077Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:47:25.072Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:48:25.061Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:49:25.075Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:50:25.094Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:51:25.098Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:52:25.096Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:53:25.108Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:54:25.117Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:55:25.144Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:56:25.148Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:57:25.156Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:58:25.163Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:59:25.164Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:00:25.168Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:01:25.168Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:02:25.175Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:03:25.165Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:04:25.194Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:05:25.213Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:06:25.217Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:07:25.219Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:08:25.239Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:09:25.232Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:10:25.245Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:11:25.261Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:12:25.272Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:13:25.262Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:14:25.269Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:15:25.289Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:16:25.311Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:17:25.315Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:18:25.303Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:19:25.321Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:20:25.326Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:21:25.318Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:22:25.344Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:23:25.329Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:24:25.359Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:25:25.348Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:26:25.356Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:27:25.351Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:28:25.352Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:29:25.396Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:30:25.401Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:31:25.407Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:32:25.415Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:33:25.424Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:34:25.427Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:35:25.437Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:36:25.442Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:37:25.452Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:38:25.459Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:39:25.466Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:40:25.478Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:41:25.479Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:42:25.506Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:43:25.500Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:44:25.523Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:45:25.520Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:46:25.524Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:47:25.525Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:48:25.530Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:49:25.544Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:50:25.547Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:51:25.551Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:52:25.559Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:53:25.555Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:54:25.566Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:55:25.585Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:56:25.608Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:57:25.598Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:58:25.607Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:59:25.623Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:00:25.636Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:01:25.644Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:02:25.645Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:03:25.643Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:04:25.646Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:05:25.654Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:06:25.656Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:07:25.654Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:08:25.684Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:09:25.678Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:10:25.686Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:11:25.708Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:12:25.696Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:13:25.701Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:14:25.713Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:15:25.722Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:16:25.727Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:17:25.749Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:18:25.745Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:19:25.755Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:20:25.771Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:21:25.788Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:22:25.796Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:23:25.809Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:24:25.817Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:25:25.820Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:26:25.836Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:27:25.839Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:28:25.887Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:29:25.860Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:30:25.871Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:31:25.886Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:32:25.909Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:33:25.904Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:34:25.910Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:35:25.923Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:36:25.922Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:37:25.930Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:38:25.943Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:39:25.947Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:40:25.982Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:41:25.978Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:42:25.978Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:43:25.992Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:44:26.000Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:45:26.015Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:46:26.021Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:47:26.022Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:48:26.047Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:49:26.040Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:50:26.042Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:51:26.052Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:52:26.075Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:53:26.065Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:54:26.062Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:55:26.092Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:56:26.083Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:57:26.096Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:58:26.123Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:59:26.108Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:00:26.150Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:01:26.128Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:02:26.137Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:03:26.144Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:04:26.158Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:05:26.164Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:06:26.166Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:07:26.156Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:08:26.167Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:09:26.291Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:10:26.184Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:11:26.188Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:12:26.191Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:13:26.200Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:14:26.219Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:15:26.216Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:16:26.220Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:17:26.251Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:18:26.256Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:19:26.257Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:20:26.277Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:21:26.293Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:22:26.285Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:23:26.302Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:24:26.294Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:25:26.294Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:26:26.323Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:27:26.302Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:28:26.309Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:29:26.318Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:30:26.328Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:31:26.342Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:32:26.350Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:33:26.360Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:34:26.369Z"
+  },
+  {
+    "type": "governance_proposal_validation_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:35:26.374Z"
+  }
+]

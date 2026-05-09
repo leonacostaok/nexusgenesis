@@ -1,0 +1,4672 @@
+[
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:06:17.991Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:06:23.342Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:06:23.543Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:07:17.996Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:07:17.997Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:07:23.434Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:07:23.551Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:08:17.997Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:08:18.012Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:08:23.352Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:08:23.552Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:09:18.010Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:09:18.026Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:09:23.354Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:09:23.555Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:10:18.011Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:10:18.042Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:10:23.366Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:10:23.561Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:11:18.021Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:11:18.052Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:11:23.371Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:11:23.573Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:12:18.022Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:12:18.055Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:12:23.381Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:12:23.581Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:13:18.034Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:13:18.066Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:13:23.388Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:13:23.590Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:14:18.043Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:14:18.074Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:14:23.391Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:14:23.594Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:15:18.056Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:15:18.087Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:15:23.402Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:15:23.605Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:16:18.065Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:16:18.095Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:16:23.415Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:16:23.618Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:17:18.068Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:17:18.099Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:17:23.417Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:17:23.618Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:18:18.075Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:18:18.106Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:18:23.430Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:18:23.632Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:19:18.085Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:19:18.116Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:19:23.442Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:19:23.643Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:20:18.094Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:20:18.126Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:20:23.458Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:20:23.670Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:21:18.107Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:21:18.137Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:21:23.469Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:21:23.671Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:22:18.114Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:22:18.145Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:22:24.053Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:22:24.057Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:23:18.116Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:23:18.148Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:23:24.066Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:23:24.069Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:24:18.129Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:24:18.160Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:24:24.076Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:24:24.079Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:25:18.133Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:25:18.169Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:25:24.087Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:25:24.089Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:26:18.140Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:26:18.170Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:26:24.096Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:26:24.098Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:27:18.142Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:27:18.173Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:27:24.103Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:27:24.105Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:28:18.147Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:28:18.177Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:28:24.113Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:28:24.115Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:29:18.151Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:29:18.184Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:29:24.128Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:29:24.131Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:30:18.166Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:30:18.197Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:30:24.140Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:30:24.143Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:31:18.167Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:31:18.198Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:31:24.146Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:31:24.149Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:32:18.178Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:32:18.209Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:32:24.149Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:32:24.152Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:33:18.183Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:33:18.214Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:33:24.164Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:33:24.167Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:34:18.189Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:34:18.220Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:34:24.179Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:34:24.181Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:35:18.197Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:35:18.227Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:35:24.187Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:35:24.190Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:36:18.209Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:36:18.240Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:36:24.189Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:36:24.206Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:37:18.223Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:37:18.253Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:37:24.189Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:37:24.205Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:38:18.223Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:38:18.254Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:38:24.191Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:38:24.206Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:39:18.229Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:39:18.261Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:39:24.200Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:39:24.216Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:40:18.234Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:40:18.265Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:40:24.202Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:40:24.219Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:41:18.249Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:41:18.265Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:41:24.213Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:41:24.229Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:42:18.261Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:42:18.277Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:42:24.223Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:42:24.239Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:43:18.274Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:43:18.289Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:43:24.233Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:43:24.249Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:44:18.282Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:44:18.298Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:44:24.247Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:44:24.264Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:45:18.292Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:45:18.308Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:45:24.252Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:45:24.268Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:46:18.307Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:46:18.323Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:46:24.257Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:46:24.273Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:47:18.317Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:47:18.328Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:47:24.267Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:47:24.376Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:48:18.323Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:48:18.338Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:48:24.270Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:48:24.286Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:49:18.338Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:49:18.354Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:49:24.274Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:49:24.290Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:50:18.339Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:50:18.356Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:50:24.366Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:50:24.369Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:51:18.351Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:51:18.365Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:51:24.277Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:51:24.383Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:52:18.355Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:52:18.371Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:52:24.277Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:52:24.386Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:53:18.355Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:53:18.371Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:53:24.279Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:53:24.388Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:54:18.369Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:54:18.385Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:54:24.283Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:54:24.391Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:55:18.377Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:55:18.393Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:55:24.286Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:55:24.397Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:56:18.384Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:56:18.399Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:56:24.290Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:56:24.398Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:57:18.385Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:57:18.400Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:57:24.297Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:57:24.407Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:58:18.391Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:58:18.406Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:58:24.298Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:58:24.422Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:59:18.395Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:59:18.411Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:59:24.310Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T20:59:24.434Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:00:18.410Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:00:18.426Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:00:24.315Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:00:24.441Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:01:18.422Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:01:18.438Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:01:24.324Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:01:24.448Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:02:18.431Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:02:18.445Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:02:24.327Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:02:24.452Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:03:18.442Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:03:18.458Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:03:24.337Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:03:24.463Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:04:18.446Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:04:18.568Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:04:24.347Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:04:24.474Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:05:18.460Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:05:18.477Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:05:24.352Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:05:24.477Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:06:18.468Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:06:18.484Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:06:24.365Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:06:24.491Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:07:20.004Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:07:20.006Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:07:24.378Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:07:24.502Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:08:18.493Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:08:18.509Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:08:24.405Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:08:24.504Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:09:18.498Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:09:18.515Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:09:24.386Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:09:24.511Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:10:18.512Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:10:18.527Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:10:24.401Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:10:24.513Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:11:18.515Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:11:18.531Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:11:24.407Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:11:24.517Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:12:18.517Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:12:18.532Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:12:24.419Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:12:24.528Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:13:18.530Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:13:18.545Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:13:24.432Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:13:24.542Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:14:18.541Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:14:18.556Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:14:24.434Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:14:24.545Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:15:18.556Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:15:18.572Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:15:24.447Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:15:24.556Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:16:18.557Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:16:18.573Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:16:24.456Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:16:24.566Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:17:18.563Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:17:18.578Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:17:24.467Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:17:24.576Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:18:18.578Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:18:18.592Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:18:24.473Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:18:24.582Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:19:18.585Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:19:18.601Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:19:24.478Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:19:24.587Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:20:18.596Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:20:18.613Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:20:24.490Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:20:24.599Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:21:18.600Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:21:18.616Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:21:24.503Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:21:24.614Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:22:18.605Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:22:18.621Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:22:24.511Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:22:24.621Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:23:18.616Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:23:18.631Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:23:24.526Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:23:24.629Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:24:18.626Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:24:18.641Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:24:24.529Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:24:24.639Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:25:18.633Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:25:18.650Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:25:24.533Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:25:24.642Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:26:18.634Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:26:18.651Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:26:24.536Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:26:24.645Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:27:18.638Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:27:18.652Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:27:24.544Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:27:24.652Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:28:18.646Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:28:18.667Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:28:24.552Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:28:24.661Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:29:18.657Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:29:18.672Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:29:24.553Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:29:24.662Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:30:18.664Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:30:18.679Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:30:24.558Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:30:24.668Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:31:18.678Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:31:18.683Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:31:24.569Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:31:24.677Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:32:18.682Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:32:18.697Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:32:24.579Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:32:24.687Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:33:18.695Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:33:18.711Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:33:24.587Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:33:24.696Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:34:18.698Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:34:18.714Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:34:24.597Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:34:24.706Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:35:18.705Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:35:18.721Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:35:24.606Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:35:24.716Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:36:18.708Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:36:18.725Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:36:24.617Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:36:24.726Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:37:18.719Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:37:18.734Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:37:24.621Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:37:24.731Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:38:18.720Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:38:18.737Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:38:24.629Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:38:25.622Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:39:18.730Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:39:18.745Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:39:24.639Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:39:24.749Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:40:18.744Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:40:18.760Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:40:24.643Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:40:24.752Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:41:18.745Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:41:18.760Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:41:24.653Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:41:24.761Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:42:18.750Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:42:18.765Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:42:24.655Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:42:24.763Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:43:18.759Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:43:18.773Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:43:24.670Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:43:24.763Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:44:18.772Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:44:18.788Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:44:24.674Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:44:24.767Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:45:18.780Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:45:18.798Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:45:24.674Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:45:24.782Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:46:18.792Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:46:18.811Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:46:24.677Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:46:24.785Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:47:18.792Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:47:18.823Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:47:24.689Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:47:24.798Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:48:18.801Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:48:18.831Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:48:24.701Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:48:24.808Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:49:18.806Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:49:18.837Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:49:24.714Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:49:24.823Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:50:18.821Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:50:18.852Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:50:24.718Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:50:24.826Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:51:18.827Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:51:18.858Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:51:24.727Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:51:24.834Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:52:18.828Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:52:18.858Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:52:24.739Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:52:24.847Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:53:18.842Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:53:18.872Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:53:24.738Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:53:24.847Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:54:18.852Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:54:18.882Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:54:24.743Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:54:24.851Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:55:18.856Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:55:18.886Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:55:24.755Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:55:24.864Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:56:18.863Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:56:18.894Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:56:24.766Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:56:24.875Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:57:18.869Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:57:18.900Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:57:24.773Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:57:24.880Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:58:18.883Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:58:18.913Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:58:24.787Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:58:24.895Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:59:18.881Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:59:18.912Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:59:24.790Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T21:59:24.936Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:00:18.889Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:00:18.922Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:00:24.792Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:00:24.947Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:01:18.897Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:01:18.928Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:01:24.794Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:01:24.950Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:02:18.908Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:02:18.939Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:02:24.808Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:02:24.964Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:03:18.915Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:03:18.951Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:03:24.822Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:03:24.979Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:04:18.919Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:04:18.967Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:04:24.832Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:04:24.987Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:05:18.927Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:05:18.973Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:05:24.837Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:05:24.993Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:06:18.937Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:06:18.985Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:06:24.844Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:06:24.998Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:07:18.944Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:07:18.991Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:07:24.859Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:07:24.999Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:08:18.958Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:08:19.005Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:08:24.871Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:08:25.011Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:09:18.971Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:09:19.018Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:09:24.882Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:09:25.024Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:10:18.971Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:10:19.033Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:10:24.897Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:10:25.035Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:11:18.985Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:11:19.047Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:11:24.907Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:11:25.046Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:12:18.996Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:12:19.059Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:12:24.922Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:12:25.061Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:13:18.995Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:13:19.059Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:13:24.928Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:13:25.068Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:14:19.000Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:14:19.063Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:14:24.943Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:14:25.082Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:15:19.008Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:15:19.071Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:15:24.946Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:15:25.085Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:16:19.012Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:16:19.074Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:16:24.960Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:16:25.100Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:17:19.021Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:17:19.084Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:17:24.968Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:17:25.107Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:18:19.036Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:18:19.098Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:18:24.984Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:18:25.108Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:19:19.042Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:19:19.105Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:19:24.990Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:19:25.114Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:20:19.057Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:20:19.119Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:20:25.001Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:20:25.128Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:21:19.062Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:21:19.124Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:21:25.015Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:21:25.199Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:22:19.073Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:22:19.133Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:22:25.035Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:22:25.151Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:23:19.086Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:23:19.148Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:23:25.045Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:23:25.155Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:24:19.090Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:24:19.152Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:24:25.057Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:24:25.166Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:25:19.100Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:25:19.160Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:25:25.058Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:25:25.180Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:26:19.109Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:26:19.170Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:26:25.071Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:26:25.194Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:27:19.123Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:27:19.184Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:27:25.072Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:27:25.198Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:28:19.128Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:28:19.189Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:28:25.076Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:28:25.199Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:29:19.130Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:29:19.192Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:29:25.083Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:29:25.206Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:30:19.139Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:30:19.200Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:30:25.092Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:30:25.216Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:31:19.203Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:31:19.231Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:31:25.099Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:31:25.222Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:32:19.145Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:32:19.207Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:32:25.102Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:32:25.227Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:33:19.160Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:33:19.221Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:33:25.109Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:33:25.233Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:34:19.162Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:34:19.223Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:34:25.121Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:34:25.245Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:35:19.170Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:35:19.232Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:35:25.127Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:35:25.250Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:36:19.181Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:36:19.242Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:36:25.140Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:36:25.249Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:37:19.184Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:37:19.245Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:37:25.152Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:37:25.260Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:38:19.188Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:38:19.251Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:38:25.164Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:38:25.308Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:39:19.195Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:39:19.282Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:39:25.176Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:39:25.287Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:40:19.203Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:40:19.296Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:40:25.190Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:40:25.299Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:41:19.210Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:41:19.303Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:41:25.190Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:41:25.314Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:42:19.220Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:42:19.313Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:42:25.193Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:42:25.318Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:43:19.229Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:43:19.321Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:43:25.201Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:43:25.327Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:44:19.239Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:44:19.331Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:44:25.212Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:44:25.335Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:45:19.238Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:45:19.332Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:45:25.220Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:45:25.345Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:46:19.239Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:46:19.348Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:46:25.232Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:46:25.355Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:47:19.243Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:47:19.350Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:47:25.238Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:47:25.363Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:48:19.246Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:48:19.355Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:48:25.250Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:48:25.375Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:49:19.253Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:49:19.361Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:49:25.253Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:49:25.378Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:50:19.255Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:50:19.364Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:50:25.261Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:50:25.385Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:51:19.267Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:51:19.375Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:51:25.263Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:51:25.388Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:52:19.267Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:52:19.377Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:52:25.265Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:52:25.392Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:53:19.272Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:53:19.379Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:53:25.275Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:53:25.398Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:54:19.273Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:54:19.381Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:54:25.279Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:54:25.403Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:55:19.282Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:55:19.391Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:55:25.294Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:55:25.418Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:56:19.297Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:56:19.406Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:56:25.308Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:56:25.423Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:57:19.299Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:57:19.407Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:57:25.314Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:57:25.438Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:58:19.310Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:58:19.416Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:58:25.328Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:58:25.452Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:59:19.319Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:59:19.425Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:59:25.331Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T22:59:25.456Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:00:19.326Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:00:19.435Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:00:25.340Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:00:25.465Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:01:19.334Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:01:19.443Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:01:25.345Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:01:25.470Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:02:19.338Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:02:19.447Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:02:25.357Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:02:25.481Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:03:19.339Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:03:19.447Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:03:25.363Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:03:25.488Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:04:19.355Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:04:19.462Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:04:25.368Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:04:25.493Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:05:19.360Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:05:19.469Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:05:25.372Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:05:25.495Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:06:19.371Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:06:19.480Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:06:25.375Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:06:25.500Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:07:19.372Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:07:19.480Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:07:25.388Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:07:25.513Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:08:19.385Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:08:19.494Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:08:25.394Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:08:25.516Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:09:19.393Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:09:19.501Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:09:25.397Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:09:25.519Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:10:19.406Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:10:19.516Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:10:25.404Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:10:25.529Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:11:19.417Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:11:19.527Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:11:25.410Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:11:25.535Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:12:19.421Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:12:19.530Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:12:25.418Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:12:25.544Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:13:19.422Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:13:19.531Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:13:25.430Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:13:25.554Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:14:19.424Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:14:19.533Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:14:25.442Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:14:25.566Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:15:19.424Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:15:19.548Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:15:25.457Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:15:25.569Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:16:19.437Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:16:19.560Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:16:25.464Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:16:25.575Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:17:19.451Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:17:19.574Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:17:25.471Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:17:25.580Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:18:19.457Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:18:19.580Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:18:25.482Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:18:25.592Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:19:19.465Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:19:19.588Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:19:25.497Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:19:25.606Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:20:19.472Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:20:19.597Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:20:25.501Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:20:25.700Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:21:19.473Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:21:19.597Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:21:25.512Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:21:25.621Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:22:19.481Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:22:19.606Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:22:25.523Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:22:25.634Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:23:19.492Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:23:19.616Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:23:25.536Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:23:25.645Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:24:19.506Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:24:19.631Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:24:25.544Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:24:25.652Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:25:19.517Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:25:19.644Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:25:25.558Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:25:25.668Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:26:19.519Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:26:19.644Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:26:25.569Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:26:25.677Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:27:19.530Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:27:19.654Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:27:25.570Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:27:25.679Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:28:19.539Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:28:19.662Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:28:25.571Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:28:25.680Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:29:19.550Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:29:19.674Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:29:25.579Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:29:25.689Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:30:19.558Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:30:19.682Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:30:25.579Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:30:25.704Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:31:19.565Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:31:19.689Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:31:25.588Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:31:25.714Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:32:19.578Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:32:19.701Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:32:25.598Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:32:25.725Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:33:19.587Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:33:19.711Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:33:25.602Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:33:25.727Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:34:19.601Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:34:19.723Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:34:25.603Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:34:25.728Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:35:19.601Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:35:19.724Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:35:25.617Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:35:25.741Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:36:19.601Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:36:19.727Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:36:25.618Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:36:25.742Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:37:19.603Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:37:19.741Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:37:25.622Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:37:25.747Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:38:19.748Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:38:25.629Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:38:25.754Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:39:19.609Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:39:19.764Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:39:25.643Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:39:25.766Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:40:19.614Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:40:19.835Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:40:25.656Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:40:25.778Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:41:19.619Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:41:19.838Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:41:25.668Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:41:25.793Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:42:19.624Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:42:19.842Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:42:25.668Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:42:25.808Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:43:19.638Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:43:19.855Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:43:25.668Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:43:25.807Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:44:19.648Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:44:19.868Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:44:25.674Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:44:25.814Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:45:19.653Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:45:19.872Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:45:25.676Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:45:25.818Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:46:19.670Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:46:19.885Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:46:25.687Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:46:25.828Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:47:19.677Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:47:19.895Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:47:25.693Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:47:25.835Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:48:19.684Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:48:19.902Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:48:25.704Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:48:25.846Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:49:19.694Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:49:19.911Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:49:25.706Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:49:25.846Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:50:19.696Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:50:19.912Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:50:25.715Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:50:25.855Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:51:19.706Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:51:19.923Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:51:25.721Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:51:25.860Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:52:19.707Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:52:19.925Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:52:25.733Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:52:25.873Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:53:19.709Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:53:19.928Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:53:25.748Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:53:25.886Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:54:19.720Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:54:19.937Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:54:25.750Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:54:25.888Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:55:19.726Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:55:19.942Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:55:25.765Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:55:25.890Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:56:19.730Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:56:19.949Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:56:25.777Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:56:25.901Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:57:19.730Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:57:19.963Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:57:25.788Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:57:25.913Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:58:19.739Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:58:19.973Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:58:25.798Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:58:25.922Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:59:19.741Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:59:19.987Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:59:25.801Z"
+  },
+  {
+    "type": "p2p_peer_count",
+    "value": 0,
+    "timestamp": "2026-03-24T23:59:25.938Z"
+  }
+]

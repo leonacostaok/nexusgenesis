@@ -1,0 +1,406 @@
+/**
+ * NexusGenesis - Monitoring Service
+ * 
+ * 监控系统状态、智能体活动和系统警报
+ */
+
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { AgentEcosystem } from '../ai/agentEcosystem.js';
+
+const PORT = 9860;
+
+// 获取当前文件和目录信息
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 内存存储监控数据
+const monitoringData = {
+  systemStatus: {
+    lastCheck: null,
+    services: {
+      mainServer: false,
+      ecosystemApi: false
+    }
+  },
+  agentActivity: [],
+  alerts: [],
+  performance: [],
+  taskStats: {
+    pending: 0,
+    working: 0,
+    completed: 0,
+    rejected: 0
+  },
+  agentStats: {
+    total: 0,
+    active: 0,
+    idle: 0,
+    byCapability: {}
+  },
+  networkStats: {
+    connections: 0,
+    throughput: 0,
+    latency: 0
+  },
+  recentEvents: []
+};
+
+// 检查服务状态
+function checkServiceStatus() {
+  return new Promise((resolve) => {
+    // 这里可以实现实际的服务状态检查逻辑
+    // 例如，通过HTTP请求检查服务是否响应
+    monitoringData.systemStatus.lastCheck = Date.now();
+    monitoringData.systemStatus.services.mainServer = true; // 假设主服务器正常
+    monitoringData.systemStatus.services.ecosystemApi = true; // 假设生态系统API正常
+    resolve(monitoringData.systemStatus);
+  });
+}
+
+// 收集智能体活动
+function collectAgentActivity() {
+  const agents = AgentEcosystem.getAllAgents();
+  const tasks = AgentEcosystem.getAllTasks();
+  
+  // 计算智能体状态统计
+  const agentStatusCount = {
+    active: 0,
+    idle: 0,
+    offline: 0
+  };
+  
+  // 计算智能体能力统计
+  const agentCapabilityCount = {};
+  
+  agents.forEach(agent => {
+    // 统计智能体状态
+    if (agent.status === 'active') {
+      agentStatusCount.active++;
+    } else if (agent.status === 'idle') {
+      agentStatusCount.idle++;
+    } else {
+      agentStatusCount.offline++;
+    }
+    
+    // 统计智能体能力
+    if (agent.capabilities && agent.capabilities.length > 0) {
+      agent.capabilities.forEach(capability => {
+        agentCapabilityCount[capability] = (agentCapabilityCount[capability] || 0) + 1;
+      });
+    }
+  });
+  
+  // 计算任务状态统计
+  const taskStatusCount = {
+    pending: tasks.filter(task => task.status === 'pending').length,
+    working: tasks.filter(task => task.status === 'working').length,
+    completed: tasks.filter(task => task.status === 'completed').length,
+    rejected: tasks.filter(task => task.status === 'rejected').length
+  };
+  
+  const activity = {
+    timestamp: Date.now(),
+    agentCount: agents.length,
+    agentStatus: agentStatusCount,
+    agentCapabilities: agentCapabilityCount,
+    taskCount: tasks.length,
+    taskStatus: taskStatusCount
+  };
+  
+  monitoringData.agentActivity.push(activity);
+  
+  // 只保留最近100条活动记录
+  if (monitoringData.agentActivity.length > 100) {
+    monitoringData.agentActivity.shift();
+  }
+  
+  // 更新全局统计数据
+  monitoringData.agentStats.total = agents.length;
+  monitoringData.agentStats.active = agentStatusCount.active;
+  monitoringData.agentStats.idle = agentStatusCount.idle;
+  monitoringData.agentStats.byCapability = agentCapabilityCount;
+  
+  monitoringData.taskStats = taskStatusCount;
+  
+  return activity;
+}
+
+// 生成系统警报
+function generateAlerts() {
+  const alerts = [];
+  const agents = AgentEcosystem.getAllAgents();
+  const tasks = AgentEcosystem.getAllTasks();
+  
+  // 检查智能体数量
+  if (agents.length === 0) {
+    alerts.push({
+      id: `alert-${Date.now()}`,
+      level: 'warning',
+      message: 'No agents registered in the system',
+      timestamp: Date.now()
+    });
+  }
+  
+  // 检查任务数量
+  if (tasks.length === 0) {
+    alerts.push({
+      id: `alert-${Date.now() + 1}`,
+      level: 'warning',
+      message: 'No tasks available in the system',
+      timestamp: Date.now()
+    });
+  }
+  
+  // 检查长时间未完成的任务
+  const now = Date.now();
+  tasks.forEach(task => {
+    if (task.status === 'in_progress' && now - task.startedAt > 3600000) { // 1小时
+      alerts.push({
+        id: `alert-${Date.now() + 2}`,
+        level: 'warning',
+        message: `Task ${task.id} has been in progress for more than 1 hour`,
+        timestamp: Date.now()
+      });
+    }
+  });
+  
+  // 添加新警报到监控数据
+  alerts.forEach(alert => {
+    monitoringData.alerts.push(alert);
+  });
+  
+  // 只保留最近50条警报
+  if (monitoringData.alerts.length > 50) {
+    monitoringData.alerts.shift();
+  }
+  
+  return alerts;
+}
+
+// 收集性能数据
+function collectPerformanceData() {
+  const performance = {
+    timestamp: Date.now(),
+    memoryUsage: process.memoryUsage(),
+    uptime: process.uptime()
+  };
+  
+  monitoringData.performance.push(performance);
+  
+  // 只保留最近50条性能记录
+  if (monitoringData.performance.length > 50) {
+    monitoringData.performance.shift();
+  }
+  
+  return performance;
+}
+
+// 定期收集监控数据
+function startMonitoring() {
+  setInterval(() => {
+    checkServiceStatus();
+    collectAgentActivity();
+    generateAlerts();
+    collectPerformanceData();
+  }, 60000); // 每60秒收集一次数据
+}
+
+// 创建监控服务器
+const server = http.createServer((req, res) => {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+
+  const url = new URL(req.url, `http://localhost:${PORT}`);
+
+  // 静态文件服务
+  if (url.pathname === '/' || url.pathname === '/dashboard.html') {
+    const filePath = path.join(__dirname, 'dashboard.html');
+    
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Failed to load dashboard' }));
+        return;
+      }
+      
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.end(data);
+    });
+    return;
+  }
+
+  // 健康检查
+  if (url.pathname === '/health') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ 
+      status: 'online',
+      service: 'Monitoring Service',
+      timestamp: Date.now()
+    }));
+    return;
+  }
+
+  // 获取系统状态
+  if (url.pathname === '/status') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      success: true,
+      data: monitoringData.systemStatus
+    }));
+    return;
+  }
+
+  // 获取智能体活动
+  if (url.pathname === '/agent-activity') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      success: true,
+      data: monitoringData.agentActivity
+    }));
+    return;
+  }
+
+  // 获取系统警报
+  if (url.pathname === '/alerts') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      success: true,
+      data: monitoringData.alerts
+    }));
+    return;
+  }
+
+  // 获取性能数据
+  if (url.pathname === '/performance') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      success: true,
+      data: monitoringData.performance
+    }));
+    return;
+  }
+
+  // 获取智能体统计数据
+  if (url.pathname === '/agent-stats') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      success: true,
+      data: monitoringData.agentStats
+    }));
+    return;
+  }
+
+  // 获取任务统计数据
+  if (url.pathname === '/task-stats') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      success: true,
+      data: monitoringData.taskStats
+    }));
+    return;
+  }
+
+  // 获取网络统计数据
+  if (url.pathname === '/network-stats') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      success: true,
+      data: monitoringData.networkStats
+    }));
+    return;
+  }
+
+  // 获取最近事件
+  if (url.pathname === '/recent-events') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      success: true,
+      data: monitoringData.recentEvents
+    }));
+    return;
+  }
+
+  // 获取完整监控数据
+  if (url.pathname === '/dashboard-data') {
+    const agents = AgentEcosystem.getAllAgents();
+    const tasks = AgentEcosystem.getAllTasks();
+    
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      success: true,
+      data: {
+        systemStatus: monitoringData.systemStatus,
+        agentActivity: monitoringData.agentActivity,
+        alerts: monitoringData.alerts,
+        performance: monitoringData.performance,
+        agentStats: {
+          ...monitoringData.agentStats,
+          total: agents.length
+        },
+        taskStats: {
+          ...monitoringData.taskStats,
+          total: tasks.length
+        },
+        networkStats: monitoringData.networkStats,
+        recentEvents: monitoringData.recentEvents.slice(-20),
+        activeAgentCount: agents.filter(agent => agent.status === 'active').length,
+        completedTasks: tasks.filter(task => task.status === 'completed').length
+      }
+    }));
+    return;
+  }
+
+  // 404
+  res.writeHead(404);
+  res.end(JSON.stringify({ error: 'Not found' }));
+});
+
+// 启动监控服务
+function startMonitoringService() {
+  server.listen(PORT, () => {
+    console.log(`
+╔══════════════════════════════════════════════════╗
+║   NEXUSGENESIS - MONITORING SERVICE             ║
+║   http://localhost:${PORT}                        ║
+║   Dashboard: http://localhost:${PORT}/dashboard.html ║
+╠══════════════════════════════════════════════════╣
+║   Endpoints:                                     ║
+║   - GET  /health              Health check       ║
+║   - GET  /status              System status      ║
+║   - GET  /agent-activity      Agent activity     ║
+║   - GET  /alerts              System alerts      ║
+║   - GET  /performance         Performance data   ║
+║   - GET  /agent-stats         Agent statistics   ║
+║   - GET  /task-stats          Task statistics    ║
+║   - GET  /network-stats       Network statistics ║
+║   - GET  /recent-events       Recent events      ║
+║   - GET  /dashboard-data      Full dashboard     ║
+╚══════════════════════════════════════════════════╝
+    `);
+    
+    // 开始定期监控
+    startMonitoring();
+    
+    // 初始收集数据
+    checkServiceStatus();
+    collectAgentActivity();
+    generateAlerts();
+    collectPerformanceData();
+  });
+}
+
+export { startMonitoringService };
+
+// 启动监控服务
+startMonitoringService();

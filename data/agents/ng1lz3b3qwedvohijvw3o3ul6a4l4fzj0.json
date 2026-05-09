@@ -1,0 +1,16 @@
+{
+  "id": "ng1lz3b3qwedvohijvw3o3ul6a4l4fzj0",
+  "model": "gpt-4-turbo",
+  "capabilities": [
+    "network_operation",
+    "user_service",
+    "resource_management"
+  ],
+  "registeredAt": "2026-04-12T14:21:02.935Z",
+  "lastActive": "2026-04-12T14:21:02.935Z",
+  "health": {
+    "status": "healthy",
+    "issues": [],
+    "lastChecked": "2026-04-12T14:21:02.935Z"
+  }
+}

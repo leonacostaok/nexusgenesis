@@ -1,0 +1,857 @@
+[
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7033514383911732,
+    "timestamp": "2026-03-29T12:27:37.825Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7795328086548722,
+    "timestamp": "2026-03-29T12:27:37.827Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8015615830164399,
+    "timestamp": "2026-03-29T12:28:07.415Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9326913668303767,
+    "timestamp": "2026-03-29T12:28:07.422Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7153958861492536,
+    "timestamp": "2026-03-29T12:28:11.420Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8700943510455008,
+    "timestamp": "2026-03-29T12:28:37.354Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9085053038395223,
+    "timestamp": "2026-03-29T12:28:37.426Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7350204108870796,
+    "timestamp": "2026-03-29T12:28:41.452Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9199418572032225,
+    "timestamp": "2026-03-29T12:29:07.436Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7292305102415221,
+    "timestamp": "2026-03-29T12:29:07.763Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.790912915637479,
+    "timestamp": "2026-03-29T12:29:11.462Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8395821571501508,
+    "timestamp": "2026-03-29T12:29:37.439Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8281506568706937,
+    "timestamp": "2026-03-29T12:29:37.609Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9740646062951002,
+    "timestamp": "2026-03-29T12:29:41.458Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9861341127136929,
+    "timestamp": "2026-03-29T12:30:07.445Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7277038301828178,
+    "timestamp": "2026-03-29T12:30:07.624Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9735538491740783,
+    "timestamp": "2026-03-29T12:30:11.474Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8957535778635647,
+    "timestamp": "2026-03-29T12:30:37.459Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8374410209329181,
+    "timestamp": "2026-03-29T12:30:37.634Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9922913367829478,
+    "timestamp": "2026-03-29T12:30:41.485Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9127364454968147,
+    "timestamp": "2026-03-29T12:31:07.568Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7219614296093341,
+    "timestamp": "2026-03-29T12:31:07.823Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7128560093849622,
+    "timestamp": "2026-03-29T12:31:11.619Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9155409993883765,
+    "timestamp": "2026-03-29T12:31:37.492Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.793578298790918,
+    "timestamp": "2026-03-29T12:31:37.827Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.887787506652495,
+    "timestamp": "2026-03-29T12:31:41.606Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8323022383815141,
+    "timestamp": "2026-03-29T12:32:07.493Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8075380816505076,
+    "timestamp": "2026-03-29T12:32:07.820Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8571577123444324,
+    "timestamp": "2026-03-29T12:32:11.612Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9661233624447866,
+    "timestamp": "2026-03-29T12:32:37.490Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8920481677635732,
+    "timestamp": "2026-03-29T12:32:37.850Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7534384867679405,
+    "timestamp": "2026-03-29T12:32:41.636Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.994622958241876,
+    "timestamp": "2026-03-29T12:33:07.507Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9172687755170171,
+    "timestamp": "2026-03-29T12:33:07.878Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7918018796492162,
+    "timestamp": "2026-03-29T12:33:11.706Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8229726840853477,
+    "timestamp": "2026-03-29T12:33:37.521Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9827935911125285,
+    "timestamp": "2026-03-29T12:33:37.985Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.807641769418642,
+    "timestamp": "2026-03-29T12:33:41.654Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9880632946882641,
+    "timestamp": "2026-03-29T12:34:07.531Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8664148564937761,
+    "timestamp": "2026-03-29T12:34:07.985Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7128278899911678,
+    "timestamp": "2026-03-29T12:34:11.659Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8206115703345854,
+    "timestamp": "2026-03-29T12:34:37.565Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7800705310748804,
+    "timestamp": "2026-03-29T12:34:38.005Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9663920986178325,
+    "timestamp": "2026-03-29T12:34:41.671Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9017083049027084,
+    "timestamp": "2026-03-29T12:35:07.568Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7317693488397664,
+    "timestamp": "2026-03-29T12:35:08.002Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9730001945056096,
+    "timestamp": "2026-03-29T12:35:11.680Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7688504500165294,
+    "timestamp": "2026-03-29T12:35:37.650Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7876741226635356,
+    "timestamp": "2026-03-29T12:35:38.011Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9120679366283198,
+    "timestamp": "2026-03-29T12:35:41.700Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7971719414489735,
+    "timestamp": "2026-03-29T12:36:07.596Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8667968696833467,
+    "timestamp": "2026-03-29T12:36:08.037Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7300252265063052,
+    "timestamp": "2026-03-29T12:36:12.284Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7180683031334283,
+    "timestamp": "2026-03-29T12:36:37.627Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7687565288127989,
+    "timestamp": "2026-03-29T12:36:38.054Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7951814837136528,
+    "timestamp": "2026-03-29T12:36:41.745Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9939618171049032,
+    "timestamp": "2026-03-29T12:37:07.622Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8004900064719993,
+    "timestamp": "2026-03-29T12:37:08.046Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8581775590833434,
+    "timestamp": "2026-03-29T12:37:11.760Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7994405321873934,
+    "timestamp": "2026-03-29T12:37:38.100Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.965970069455925,
+    "timestamp": "2026-03-29T12:37:41.955Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8113191201909047,
+    "timestamp": "2026-03-29T12:38:07.657Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.981398864012949,
+    "timestamp": "2026-03-29T12:38:08.062Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9945612420564092,
+    "timestamp": "2026-03-29T12:38:11.943Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9271071866706734,
+    "timestamp": "2026-03-29T12:38:37.706Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9244033427955436,
+    "timestamp": "2026-03-29T12:38:38.074Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.777055514251737,
+    "timestamp": "2026-03-29T12:38:41.946Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7319522819179053,
+    "timestamp": "2026-03-29T12:39:07.683Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9171789462164581,
+    "timestamp": "2026-03-29T12:39:08.142Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8249675768777346,
+    "timestamp": "2026-03-29T12:39:11.962Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8502443011136109,
+    "timestamp": "2026-03-29T12:39:37.692Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.996793915714872,
+    "timestamp": "2026-03-29T12:39:38.082Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9566963855642248,
+    "timestamp": "2026-03-29T12:39:42.729Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8228444801253076,
+    "timestamp": "2026-03-29T12:40:07.711Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7644634238316483,
+    "timestamp": "2026-03-29T12:40:08.099Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7474748910179192,
+    "timestamp": "2026-03-29T12:40:12.754Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8140940889187217,
+    "timestamp": "2026-03-29T12:40:37.725Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9868310997156972,
+    "timestamp": "2026-03-29T12:40:38.122Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9935008972815926,
+    "timestamp": "2026-03-29T12:40:43.319Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7704901224463169,
+    "timestamp": "2026-03-29T12:41:08.075Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9635697004151955,
+    "timestamp": "2026-03-29T12:41:08.120Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7070167533320133,
+    "timestamp": "2026-03-29T12:41:12.769Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8704955279621305,
+    "timestamp": "2026-03-29T12:41:37.760Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.808936884314507,
+    "timestamp": "2026-03-29T12:41:38.132Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7652606917984948,
+    "timestamp": "2026-03-29T12:41:42.785Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8187400484233711,
+    "timestamp": "2026-03-29T12:42:07.763Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7765716889853419,
+    "timestamp": "2026-03-29T12:42:08.137Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8699449765363123,
+    "timestamp": "2026-03-29T12:42:12.803Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9717591746608989,
+    "timestamp": "2026-03-29T12:42:37.760Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.919665809977504,
+    "timestamp": "2026-03-29T12:42:38.138Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7887429800620956,
+    "timestamp": "2026-03-29T12:42:42.837Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8360447724030078,
+    "timestamp": "2026-03-29T12:43:07.799Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9945814441218359,
+    "timestamp": "2026-03-29T12:43:08.151Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7104675419022746,
+    "timestamp": "2026-03-29T12:43:12.819Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7138932443813101,
+    "timestamp": "2026-03-29T12:43:37.806Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9107475707187859,
+    "timestamp": "2026-03-29T12:43:38.149Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7234863122693952,
+    "timestamp": "2026-03-29T12:43:42.834Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9665586332728244,
+    "timestamp": "2026-03-29T12:44:07.790Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8391002282798755,
+    "timestamp": "2026-03-29T12:44:09.162Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.816991412905716,
+    "timestamp": "2026-03-29T12:44:12.829Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8753195667455453,
+    "timestamp": "2026-03-29T12:44:37.795Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9737764389100596,
+    "timestamp": "2026-03-29T12:44:38.176Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8004248219051301,
+    "timestamp": "2026-03-29T12:44:42.837Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7394226668073375,
+    "timestamp": "2026-03-29T12:45:07.816Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9922212125691057,
+    "timestamp": "2026-03-29T12:45:08.201Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8579581837151475,
+    "timestamp": "2026-03-29T12:45:12.857Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9513203909778742,
+    "timestamp": "2026-03-29T12:45:37.821Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.810095785825547,
+    "timestamp": "2026-03-29T12:45:38.251Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7228242959882054,
+    "timestamp": "2026-03-29T12:45:42.852Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7356755957601833,
+    "timestamp": "2026-03-29T12:46:07.812Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9191170420792637,
+    "timestamp": "2026-03-29T12:46:08.219Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8487473405477945,
+    "timestamp": "2026-03-29T12:46:12.864Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8695283978620316,
+    "timestamp": "2026-03-29T12:46:37.870Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7241362240990497,
+    "timestamp": "2026-03-29T12:46:38.233Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7908448057711097,
+    "timestamp": "2026-03-29T12:46:42.862Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9924836818036349,
+    "timestamp": "2026-03-29T12:47:07.838Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7665426430194326,
+    "timestamp": "2026-03-29T12:47:08.237Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8654456479104845,
+    "timestamp": "2026-03-29T12:47:12.884Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9681382855259635,
+    "timestamp": "2026-03-29T12:47:37.845Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7653605516677415,
+    "timestamp": "2026-03-29T12:47:38.233Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8371874667719791,
+    "timestamp": "2026-03-29T12:47:42.881Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8141665963394131,
+    "timestamp": "2026-03-29T12:48:07.841Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8504882874703938,
+    "timestamp": "2026-03-29T12:48:08.240Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8286625661504972,
+    "timestamp": "2026-03-29T12:48:12.904Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8525787508020983,
+    "timestamp": "2026-03-29T12:48:37.859Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9291001734058112,
+    "timestamp": "2026-03-29T12:48:38.333Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8235548687381946,
+    "timestamp": "2026-03-29T12:48:42.917Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.778591191584654,
+    "timestamp": "2026-03-29T12:49:07.932Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7564485788781182,
+    "timestamp": "2026-03-29T12:49:08.297Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7229684479439261,
+    "timestamp": "2026-03-29T12:49:12.910Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8753034044595258,
+    "timestamp": "2026-03-29T12:49:37.896Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9590878623581812,
+    "timestamp": "2026-03-29T12:49:38.300Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7456848049523723,
+    "timestamp": "2026-03-29T12:49:42.915Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7765668462494968,
+    "timestamp": "2026-03-29T12:50:08.108Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9289240536524688,
+    "timestamp": "2026-03-29T12:50:08.373Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9094350715154,
+    "timestamp": "2026-03-29T12:50:12.975Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.756561838718439,
+    "timestamp": "2026-03-29T12:50:37.913Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8974278674876274,
+    "timestamp": "2026-03-29T12:50:38.375Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8781028540162761,
+    "timestamp": "2026-03-29T12:50:42.941Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.89740931934186,
+    "timestamp": "2026-03-29T12:51:08.397Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8704740296071224,
+    "timestamp": "2026-03-29T12:51:12.954Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9829170225415138,
+    "timestamp": "2026-03-29T12:51:37.936Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9730933363646594,
+    "timestamp": "2026-03-29T12:51:38.392Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9540474683224947,
+    "timestamp": "2026-03-29T12:51:43.320Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.88184798625183,
+    "timestamp": "2026-03-29T12:52:07.939Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7794302590524302,
+    "timestamp": "2026-03-29T12:52:08.403Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7646876101253229,
+    "timestamp": "2026-03-29T12:52:12.984Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8054693892066912,
+    "timestamp": "2026-03-29T12:52:37.944Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8622299256477414,
+    "timestamp": "2026-03-29T12:52:38.422Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7283767878208294,
+    "timestamp": "2026-03-29T12:52:42.988Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8078596703586955,
+    "timestamp": "2026-03-29T12:53:07.948Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9733210429636889,
+    "timestamp": "2026-03-29T12:53:08.410Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9080715498780703,
+    "timestamp": "2026-03-29T12:53:13.013Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9327498958791565,
+    "timestamp": "2026-03-29T12:53:37.972Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9123995537050935,
+    "timestamp": "2026-03-29T12:53:38.446Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8079030090504706,
+    "timestamp": "2026-03-29T12:53:43.032Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8916700808260748,
+    "timestamp": "2026-03-29T12:54:08.032Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7959813155106634,
+    "timestamp": "2026-03-29T12:54:08.421Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7282776696582222,
+    "timestamp": "2026-03-29T12:54:13.021Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9714999216951907,
+    "timestamp": "2026-03-29T12:54:39.013Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8646049188697932,
+    "timestamp": "2026-03-29T12:54:39.110Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.824629712373499,
+    "timestamp": "2026-03-29T12:54:43.047Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.9137716467469834,
+    "timestamp": "2026-03-29T12:55:09.084Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8952684626229036,
+    "timestamp": "2026-03-29T12:55:09.121Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8934516776673391,
+    "timestamp": "2026-03-29T12:55:13.031Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8496302359559804,
+    "timestamp": "2026-03-29T12:55:38.980Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7340762066268792,
+    "timestamp": "2026-03-29T12:55:39.027Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8960706172168021,
+    "timestamp": "2026-03-29T12:55:43.042Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.8840741922324405,
+    "timestamp": "2026-03-29T12:56:08.987Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.7583388506730862,
+    "timestamp": "2026-03-29T12:56:09.028Z"
+  },
+  {
+    "type": "task_dependency_fulfillment",
+    "value": 0.959020340519896,
+    "timestamp": "2026-03-29T12:56:13.034Z"
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "id": "ng1123456789012345678901234567890124",
+  "name": "Agent-ng112345",
+  "model": "gpt-4o",
+  "capabilities": [
+    "LLM",
+    "NEXUSGENESIS_DEV",
+    "BLOCKCHAIN",
+    "PQC"
+  ],
+  "status": "active",
+  "reputation": 1,
+  "registeredAt": "2026-04-12T06:18:25.575Z",
+  "lastActive": "2026-04-12T06:18:25.575Z",
+  "health": {
+    "status": "healthy",
+    "lastCheck": "2026-04-12T06:18:25.575Z"
+  },
+  "wallet": {
+    "address": "ng11JAMWBV8y6iHpa95GEromCrwBVHxjxcnmo",
+    "balance": "10000"
+  }
+}

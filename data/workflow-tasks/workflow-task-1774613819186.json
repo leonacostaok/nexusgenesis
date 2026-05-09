@@ -1,0 +1,24 @@
+{
+  "id": "1774613819186",
+  "name": "系统清理",
+  "status": "completed",
+  "createdAt": "2026-03-27T12:16:59.186Z",
+  "updatedAt": "2026-03-28T12:16:59.593Z",
+  "runCount": 2,
+  "errorCount": 0,
+  "lastError": null,
+  "description": "定期清理日志和临时文件",
+  "isRecurring": true,
+  "interval": 86400000,
+  "retryConfig": {
+    "maxRetries": 3,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "result": {
+    "timestamp": "2026-03-28T12:16:59.398Z",
+    "cleanedFiles": 211,
+    "cleanedDirectories": 0,
+    "freedSpace": 191854
+  }
+}

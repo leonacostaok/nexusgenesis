@@ -1,0 +1,27 @@
+{
+  "id": "1775962301827",
+  "name": "系统监控完善",
+  "status": "failed",
+  "createdAt": "2026-04-12T02:51:41.827Z",
+  "updatedAt": "2026-04-12T02:54:57.647Z",
+  "runCount": 3,
+  "errorCount": 3,
+  "lastError": {
+    "message": "task.action is not a function",
+    "type": "unknown_error",
+    "timestamp": "2026-04-12T02:54:57.647Z",
+    "stack": "TypeError: task.action is not a function\n    at WorkflowEngine.executeTask (file:///D:/trae_projects/NexusGenesis/src/automation/workflowEngine.js:185:33)\n    at Timeout._onTimeout (file:///D:/trae_projects/NexusGenesis/src/automation/workflowEngine.js:236:12)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)"
+  },
+  "description": "完善系统监控和告警机制，确保系统稳定运行",
+  "priority": "high",
+  "agent": "System-Monitor",
+  "deadline": "2026-06-12",
+  "dependencies": [],
+  "schedule": "7*24",
+  "retryConfig": {
+    "maxRetries": 3,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "nextRetryAt": "2026-04-12T02:54:57.637Z"
+}

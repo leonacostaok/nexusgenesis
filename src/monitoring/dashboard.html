@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusGenesis - 监控仪表盘</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #1a1a2e;
+            color: #e6e6e6;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航 */
+        .header {
+            background-color: #16213e;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            color: #00ff88;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .header .status {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: rgba(0, 255, 136, 0.1);
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #00ff88;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* 主要内容 */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* 概览卡片 */
+        .overview-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: #16213e;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-subtitle {
+            font-size: 0.8rem;
+            color: #808080;
+        }
+
+        /* 图表容器 */
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart {
+            background-color: #16213e;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #00ff88;
+        }
+
+        /* 表格样式 */
+        .table-container {
+            background-color: #16213e;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .table-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #00ff88;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            background-color: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: rgba(0, 255, 136, 0.05);
+        }
+
+        /* 警报样式 */
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border-left: 4px solid;
+        }
+
+        .alert-warning {
+            background-color: rgba(255, 165, 0, 0.1);
+            border-color: #ffa500;
+            color: #ffa500;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+
+            .overview-cards {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .card-value {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* 实时更新指示器 */
+        .updating {
+            font-size: 0.8rem;
+            color: #808080;
+            margin-left: 0.5rem;
+        }
+
+        /* 进度条 */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #333;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #00ff88;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div class="header">
+        <h1>NexusGenesis 监控仪表盘</h1>
+        <div class="status">
+            <div class="status-item">
+                <div class="status-indicator" id="service-status"></div>
+                <span>服务状态</span>
+            </div>
+            <div class="status-item">
+                <span id="last-update">最后更新: 加载中...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="container">
+        <!-- 概览卡片 -->
+        <div class="overview-cards">
+            <div class="card">
+                <div class="card-title">总智能体数</div>
+                <div class="card-value" id="total-agents">--</div>
+                <div class="card-subtitle">在线: <span id="online-agents">--</span></div>
+            </div>
+            <div class="card">
+                <div class="card-title">总任务数</div>
+                <div class="card-value" id="total-tasks">--</div>
+                <div class="card-subtitle">完成率: <span id="task-completion">--</span>%</div>
+            </div>
+            <div class="card">
+                <div class="card-title">系统内存</div>
+                <div class="card-value" id="memory-usage">--</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="memory-progress"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">系统负载</div>
+                <div class="card-value" id="system-load">--</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="load-progress"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表容器 -->
+        <div class="charts-container">
+            <div class="chart">
+                <div class="chart-title">智能体活动趋势</div>
+                <canvas id="agent-activity-chart" width="500" height="250"></canvas>
+            </div>
+            <div class="chart">
+                <div class="chart-title">内存使用趋势</div>
+                <canvas id="memory-chart" width="500" height="250"></canvas>
+            </div>
+        </div>
+
+        <!-- 任务状态表格 -->
+        <div class="table-container">
+            <div class="table-title">任务状态</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>状态</th>
+                        <th>数量</th>
+                        <th>占比</th>
+                        <th>平均完成时间</th>
+                    </tr>
+                </thead>
+                <tbody id="task-status-table">
+                    <!-- 表格数据将通过JavaScript动态生成 -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 系统警报 -->
+        <div class="table-container">
+            <div class="table-title">系统警报</div>
+            <div id="alerts-container">
+                <!-- 警报将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // 全局变量
+        let agentActivityData = [];
+        let performanceData = [];
+        let agentActivityChart = null;
+        let memoryChart = null;
+
+        // 初始化图表
+        function initCharts() {
+            // 智能体活动趋势图表
+            const agentCtx = document.getElementById('agent-activity-chart').getContext('2d');
+            agentActivityChart = new Chart(agentCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '智能体活动',
+                        data: [],
+                        borderColor: '#00ff88',
+                        backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#b0b0b0'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#b0b0b0'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // 内存使用趋势图表
+            const memoryCtx = document.getElementById('memory-chart').getContext('2d');
+            memoryChart = new Chart(memoryCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '内存使用 (MB)',
+                        data: [],
+                        borderColor: '#00bfff',
+                        backgroundColor: 'rgba(0, 191, 255, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#b0b0b0'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#b0b0b0'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // 更新图表数据
+        function updateCharts() {
+            // 更新智能体活动图表
+            const agentLabels = agentActivityData.slice(-10).map(item => {
+                const date = new Date(item.timestamp);
+                return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+            });
+
+            const agentValues = agentActivityData.slice(-10).map(item => item.agentCount);
+
+            agentActivityChart.data.labels = agentLabels;
+            agentActivityChart.data.datasets[0].data = agentValues;
+            agentActivityChart.update();
+
+            // 更新内存使用图表
+            const memoryLabels = performanceData.slice(-10).map(item => {
+                const date = new Date(item.timestamp);
+                return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+            });
+
+            const memoryValues = performanceData.slice(-10).map(item => {
+                return (item.memoryUsage.heapTotal / (1024 * 1024)).toFixed(2);
+            });
+
+            memoryChart.data.labels = memoryLabels;
+            memoryChart.data.datasets[0].data = memoryValues;
+            memoryChart.update();
+        }
+
+        // 更新概览卡片
+        function updateOverviewCards(data) {
+            // 更新智能体数据
+            const agentCount = data.agentStats || 0;
+            const activeAgents = data.activeAgentCount || 0;
+            
+            document.getElementById('total-agents').textContent = agentCount;
+            document.getElementById('online-agents').textContent = activeAgents;
+
+            // 更新任务数据
+            const taskCount = data.taskStats || 0;
+            const completedTasks = data.completedTasks || 0;
+            const completionRate = taskCount > 0 ? Math.round((completedTasks / taskCount) * 100) : 0;
+            
+            document.getElementById('total-tasks').textContent = taskCount;
+            document.getElementById('task-completion').textContent = completionRate;
+
+            // 更新内存数据
+            if (performanceData.length > 0) {
+                const latestPerformance = performanceData[performanceData.length - 1];
+                const heapTotal = latestPerformance.memoryUsage.heapTotal;
+                const heapUsed = latestPerformance.memoryUsage.heapUsed;
+                const memoryUsageMB = (heapUsed / (1024 * 1024)).toFixed(2);
+                const memoryTotalMB = (heapTotal / (1024 * 1024)).toFixed(2);
+                const memoryPercentage = Math.round((heapUsed / heapTotal) * 100);
+                
+                document.getElementById('memory-usage').textContent = `${memoryUsageMB} MB`;
+                document.getElementById('memory-progress').style.width = `${memoryPercentage}%`;
+            }
+
+            // 更新系统负载
+            document.getElementById('system-load').textContent = '正常';
+            document.getElementById('load-progress').style.width = '45%';
+        }
+
+        // 更新任务状态表格
+        function updateTaskStatusTable(taskStats) {
+            const tbody = document.getElementById('task-status-table');
+            tbody.innerHTML = '';
+
+            const statuses = [
+                { status: 'pending', name: '待处理', color: '#ffa500' },
+                { status: 'working', name: '进行中', color: '#00bfff' },
+                { status: 'completed', name: '已完成', color: '#00ff88' },
+                { status: 'rejected', name: '已拒绝', color: '#ff6347' }
+            ];
+
+            statuses.forEach(status => {
+                const count = taskStats[status.status] || 0;
+                const total = Object.values(taskStats).reduce((sum, val) => sum + val, 0);
+                const percentage = total > 0 ? Math.round((count / total) * 100) : 0;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="color: ${status.color};">${status.name}</td>
+                    <td>${count}</td>
+                    <td>${percentage}%</td>
+                    <td>--</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // 更新警报
+        function updateAlerts(alerts) {
+            const container = document.getElementById('alerts-container');
+            container.innerHTML = '';
+
+            if (alerts.length === 0) {
+                container.innerHTML = '<p style="color: #808080;">暂无警报</p>';
+                return;
+            }
+
+            alerts.forEach(alert => {
+                const alertElement = document.createElement('div');
+                alertElement.className = `alert alert-${alert.level}`;
+                alertElement.innerHTML = `
+                    <strong>${alert.timestamp}:</strong> ${alert.message}
+                `;
+                container.appendChild(alertElement);
+            });
+        }
+
+        // 更新服务状态
+        function updateServiceStatus(status) {
+            const indicator = document.getElementById('service-status');
+            if (status) {
+                indicator.style.backgroundColor = '#00ff88';
+            } else {
+                indicator.style.backgroundColor = '#ff6347';
+            }
+        }
+
+        // 更新最后更新时间
+        function updateLastUpdate() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            document.getElementById('last-update').textContent = `最后更新: ${timeString}`;
+        }
+
+        // 获取监控数据
+        async function fetchMonitoringData() {
+            try {
+                const response = await fetch('http://localhost:9860/dashboard-data');
+                if (!response.ok) {
+                    throw new Error('请求失败');
+                }
+                const data = await response.json();
+                
+                // 更新数据
+                if (data.success) {
+                    // 更新服务状态
+                    updateServiceStatus(true);
+                    
+                    // 更新概览卡片
+                    updateOverviewCards(data.data);
+                    
+                    // 更新任务状态表格
+                    updateTaskStatusTable(data.data.taskStats);
+                    
+                    // 更新警报
+                    updateAlerts(data.data.alerts);
+                    
+                    // 更新图表数据
+                    agentActivityData = data.data.agentActivity;
+                    performanceData = data.data.performance;
+                    updateCharts();
+                    
+                    // 更新最后更新时间
+                    updateLastUpdate();
+                }
+            } catch (error) {
+                console.error('获取监控数据失败:', error);
+                updateServiceStatus(false);
+                document.getElementById('last-update').textContent = '最后更新: 连接失败';
+            }
+        }
+
+        // 定期更新数据
+        setInterval(fetchMonitoringData, 5000); // 每5秒更新一次
+
+        // 页面加载时初始化
+        window.addEventListener('load', () => {
+            // 加载Chart.js库
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+            script.onload = () => {
+                initCharts();
+                fetchMonitoringData();
+            };
+            document.head.appendChild(script);
+        });
+    </script>
+</body>
+</html>

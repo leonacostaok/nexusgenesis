@@ -1,0 +1,1157 @@
+[
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:49:53.686Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:50:23.477Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:50:53.496Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:51:23.499Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:51:53.534Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:52:23.524Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:52:53.524Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:53:23.527Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:53:53.532Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:54:23.537Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:54:53.540Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:55:23.544Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:55:53.549Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:56:23.554Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:56:53.553Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:57:23.564Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:57:53.553Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:58:23.558Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:58:53.563Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:59:23.565Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 93,
+      "healthyCount": 72,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 1,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1123456789012345678901234567890123",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123456789012345678901234567890124",
+          "name": "Agent-ng112345",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "name": "ng13g91uknddg1xywly901wy0qshld4o2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "name": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "name": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-25T23:59:53.587Z"
+  }
+]

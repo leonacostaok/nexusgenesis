@@ -1,0 +1,22 @@
+{
+  "id": "1775990588005",
+  "name": "小组管理",
+  "status": "completed",
+  "createdAt": "2026-04-12T10:43:08.005Z",
+  "updatedAt": "2026-04-12T10:43:08.088Z",
+  "runCount": 1,
+  "errorCount": 0,
+  "lastError": null,
+  "retryConfig": {
+    "maxRetries": 2,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "description": "管理NexusGenesis专属小组，监控活动并邀请成员",
+  "isRecurring": true,
+  "interval": 86400000,
+  "result": {
+    "success": true,
+    "groupId": null
+  }
+}

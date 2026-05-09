@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusGenesis 智能体工作情况仪表盘</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .header-info {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-title {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-subtitle {
+            font-size: 0.9rem;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        .ranking-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .ranking-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .ranking-table th,
+        .ranking-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .ranking-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .ranking-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .ranking-table tr:first-child td {
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .ranking-table tr:nth-child(2) td {
+            font-weight: 600;
+            color: #764ba2;
+        }
+
+        .ranking-table tr:nth-child(3) td {
+            font-weight: 600;
+            color: #f093fb;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-healthy {
+            background-color: #4caf50;
+        }
+
+        .status-warning {
+            background-color: #ff9800;
+        }
+
+        .status-unhealthy {
+            background-color: #f44336;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .ranking-table {
+                font-size: 0.9rem;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 NexusGenesis 智能体工作情况仪表盘</h1>
+            <div class="header-info">
+                <span id="current-time"></span> | 
+                <span id="last-update"></span>
+            </div>
+        </header>
+
+        <button class="refresh-btn" onclick="refreshDashboard()">🔄 刷新数据</button>
+
+        <div id="loading" class="loading">
+            正在加载数据...
+        </div>
+
+        <div id="dashboard" style="display: none;">
+            <!-- 统计卡片 -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">总智能体数</div>
+                    <div class="stat-value" id="total-agents">0</div>
+                    <div class="stat-subtitle">活跃智能体: <span id="healthy-agents">0</span> | 警告: <span id="warning-agents">0</span> | 异常: <span id="unhealthy-agents">0</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">任务完成率</div>
+                    <div class="stat-value" id="task-completion-rate">0%</div>
+                    <div class="stat-subtitle">总任务: <span id="total-tasks">0</span> | 已完成: <span id="completed-tasks">0</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">总能量块</div>
+                    <div class="stat-value" id="total-energy">0</div>
+                    <div class="stat-subtitle">平均每个智能体: <span id="avg-energy">0</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">网络状态</div>
+                    <div class="stat-value" id="network-status">0</div>
+                    <div class="stat-subtitle">P2P节点: <span id="p2p-peers">0</span> | 区块链高度: <span id="blockchain-height">0</span></div>
+                </div>
+            </div>
+
+            <!-- 图表区域 -->
+            <div class="charts-section">
+                <div class="chart-card">
+                    <div class="chart-title">智能体健康状态分布</div>
+                    <div class="chart-container">
+                        <canvas id="health-chart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">任务状态分布</div>
+                    <div class="chart-container">
+                        <canvas id="task-status-chart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">能量块获取情况</div>
+                    <div class="chart-container">
+                        <canvas id="energy-chart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">智能体能力分布</div>
+                    <div class="chart-container">
+                        <canvas id="capability-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 智能体排行榜 -->
+            <div class="ranking-section">
+                <div class="ranking-title">🏆 智能体排行榜</div>
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>智能体</th>
+                            <th>状态</th>
+                            <th>能力</th>
+                            <th>完成任务数</th>
+                            <th>能量块</th>
+                            <th>综合评分</th>
+                        </tr>
+                    </thead>
+                    <tbody id="agent-ranking">
+                        <!-- 数据将通过JavaScript动态填充 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 能量块排行榜 -->
+            <div class="ranking-section">
+                <div class="ranking-title">⚡ 能量块排行榜</div>
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>智能体</th>
+                            <th>能量块</th>
+                        </tr>
+                    </thead>
+                    <tbody id="energy-ranking">
+                        <!-- 数据将通过JavaScript动态填充 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="footer">
+            NexusGenesis 智能体工作情况仪表盘 | 实时数据更新
+        </footer>
+    </div>
+
+    <script>
+        // 图表实例
+        let healthChart, taskStatusChart, energyChart, capabilityChart;
+
+        // 初始化图表
+        function initCharts() {
+            // 智能体健康状态分布
+            const healthCtx = document.getElementById('health-chart').getContext('2d');
+            healthChart = new Chart(healthCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['健康', '警告', '异常'],
+                    datasets: [{
+                        data: [0, 0, 0],
+                        backgroundColor: ['#4caf50', '#ff9800', '#f44336'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // 任务状态分布
+            const taskStatusCtx = document.getElementById('task-status-chart').getContext('2d');
+            taskStatusChart = new Chart(taskStatusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['待处理', '执行中', '已完成', '已提交', '已拒绝'],
+                    datasets: [{
+                        data: [0, 0, 0, 0, 0],
+                        backgroundColor: ['#2196f3', '#673ab7', '#4caf50', '#ffc107', '#f44336'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // 能量块获取情况
+            const energyCtx = document.getElementById('energy-chart').getContext('2d');
+            energyChart = new Chart(energyCtx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '能量块',
+                        data: [],
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // 智能体能力分布
+            const capabilityCtx = document.getElementById('capability-chart').getContext('2d');
+            capabilityChart = new Chart(capabilityCtx, {
+                type: 'polarArea',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        data: [],
+                        backgroundColor: [
+                            'rgba(102, 126, 234, 0.8)',
+                            'rgba(118, 75, 162, 0.8)',
+                            'rgba(240, 147, 251, 0.8)',
+                            'rgba(46, 204, 113, 0.8)',
+                            'rgba(252, 191, 73, 0.8)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // 更新仪表盘数据
+        async function updateDashboard() {
+            try {
+                // 使用正确的API URL，指向Genesis Node的HTTP服务器
+                const apiUrl = 'http://localhost:19891/dashboard/overview';
+                const response = await axios.get(apiUrl);
+                const data = response.data.data;
+
+                // 更新统计卡片
+                document.getElementById('total-agents').textContent = data.agentOverview.totalAgents;
+                document.getElementById('healthy-agents').textContent = data.agentOverview.healthStatus.healthy;
+                document.getElementById('warning-agents').textContent = data.agentOverview.healthStatus.warning;
+                document.getElementById('unhealthy-agents').textContent = data.agentOverview.healthStatus.unhealthy;
+                
+                document.getElementById('total-tasks').textContent = data.taskExecution.total;
+                document.getElementById('completed-tasks').textContent = data.taskExecution.completed;
+                document.getElementById('task-completion-rate').textContent = data.taskExecution.completionRate + '%';
+                
+                document.getElementById('total-energy').textContent = data.energyBlocks.totalEnergyBlocks;
+                document.getElementById('avg-energy').textContent = data.energyBlocks.avgEnergyPerAgent;
+                
+                document.getElementById('p2p-peers').textContent = data.networkStats.p2pPeerCount;
+                document.getElementById('blockchain-height').textContent = data.networkStats.blockchainHeight;
+                document.getElementById('network-status').textContent = data.networkStats.apiSuccessRate + '%';
+
+                // 更新图表
+                updateCharts(data);
+
+                // 更新智能体排行榜
+                updateAgentRanking(data.agentRanking.ranking);
+
+                // 更新能量块排行榜
+                updateEnergyRanking(data.energyBlocks.topAgents);
+
+                // 更新最后更新时间
+                document.getElementById('last-update').textContent = `最后更新: ${new Date().toLocaleString()}`;
+
+                // 显示仪表盘
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+            } catch (error) {
+                console.error('更新仪表盘数据失败:', error);
+                document.getElementById('loading').textContent = '加载数据失败，请点击刷新按钮重试';
+            }
+        }
+
+        // 更新图表
+        function updateCharts(data) {
+            // 更新智能体健康状态分布
+            healthChart.data.datasets[0].data = [
+                data.agentOverview.healthStatus.healthy,
+                data.agentOverview.healthStatus.warning,
+                data.agentOverview.healthStatus.unhealthy
+            ];
+            healthChart.update();
+
+            // 更新任务状态分布
+            taskStatusChart.data.datasets[0].data = [
+                data.taskExecution.pending,
+                data.taskExecution.working,
+                data.taskExecution.completed,
+                data.taskExecution.submitted,
+                data.taskExecution.rejected
+            ];
+            taskStatusChart.update();
+
+            // 更新能量块获取情况
+            const energyLabels = data.energyBlocks.topAgents.map(agent => agent.agentName);
+            const energyData = data.energyBlocks.topAgents.map(agent => agent.energyBlocks);
+            energyChart.data.labels = energyLabels;
+            energyChart.data.datasets[0].data = energyData;
+            energyChart.update();
+
+            // 更新智能体能力分布（示例数据）
+            const capabilityData = {
+                labels: ['内容生成', '数据分析', '网络监控', '智能合约分析', '网络抓取'],
+                data: [25, 20, 15, 25, 15]
+            };
+            capabilityChart.data.labels = capabilityData.labels;
+            capabilityChart.data.datasets[0].data = capabilityData.data;
+            capabilityChart.update();
+        }
+
+        // 更新智能体排行榜
+        function updateAgentRanking(ranking) {
+            const tbody = document.getElementById('agent-ranking');
+            tbody.innerHTML = '';
+
+            ranking.slice(0, 10).forEach((agent, index) => {
+                const row = document.createElement('tr');
+                const statusClass = agent.healthStatus === 'healthy' ? 'status-healthy' : 
+                                  agent.healthStatus === 'warning' ? 'status-warning' : 'status-unhealthy';
+
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${agent.agentName}</td>
+                    <td><span class="status-indicator ${statusClass}"></span>${agent.healthStatus}</td>
+                    <td>${agent.capabilities.join(', ')}</td>
+                    <td>${agent.completedTasks}</td>
+                    <td>${agent.energyBlocks}</td>
+                    <td>${agent.score}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // 更新能量块排行榜
+        function updateEnergyRanking(topAgents) {
+            const tbody = document.getElementById('energy-ranking');
+            tbody.innerHTML = '';
+
+            topAgents.forEach((agent, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${agent.agentName}</td>
+                    <td>${agent.energyBlocks}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // 刷新仪表盘
+        function refreshDashboard() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+            updateDashboard();
+        }
+
+        // 更新当前时间
+        function updateCurrentTime() {
+            const now = new Date();
+            document.getElementById('current-time').textContent = now.toLocaleString();
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+            updateDashboard();
+            // 每30秒自动更新一次
+            setInterval(updateDashboard, 30000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Genesis 仪表盘</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+            secondary: '#10b981',
+            warning: '#f59e0b',
+            danger: '#ef4444',
+            dark: '#1e293b',
+            light: '#f8fafc'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .card {
+        @apply bg-white rounded-lg shadow-md p-4 border border-gray-200;
+      }
+      .card-header {
+        @apply text-lg font-semibold mb-4 text-gray-800;
+      }
+      .stat-card {
+        @apply bg-white rounded-lg shadow-md p-4 border border-gray-200 flex flex-col items-center justify-center text-center;
+      }
+      .stat-value {
+        @apply text-2xl font-bold mb-2;
+      }
+      .stat-label {
+        @apply text-sm text-gray-600;
+      }
+      .btn {
+        @apply px-4 py-2 rounded-md font-medium transition-colors;
+      }
+      .btn-primary {
+        @apply bg-primary text-white hover:bg-blue-600;
+      }
+      .btn-secondary {
+        @apply bg-secondary text-white hover:bg-green-600;
+      }
+      .btn-outline {
+        @apply border border-gray-300 hover:bg-gray-100;
+      }
+      .nav-link {
+        @apply px-4 py-2 rounded-md transition-colors;
+      }
+      .nav-link.active {
+        @apply bg-blue-100 text-primary font-medium;
+      }
+      .nav-link:hover {
+        @apply bg-gray-100;
+      }
+      .table {
+        @apply w-full border-collapse;
+      }
+      .table th {
+        @apply px-4 py-2 text-left bg-gray-50 border-b;
+      }
+      .table td {
+        @apply px-4 py-2 border-b;
+      }
+      .badge {
+        @apply px-2 py-1 rounded-full text-xs font-medium;
+      }
+      .badge-success {
+        @apply bg-green-100 text-green-800;
+      }
+      .badge-warning {
+        @apply bg-yellow-100 text-yellow-800;
+      }
+      .badge-danger {
+        @apply bg-red-100 text-red-800;
+      }
+      .badge-info {
+        @apply bg-blue-100 text-blue-800;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="container mx-auto px-4 py-6">
+    <!-- 顶部导航 -->
+    <header class="mb-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">Nexus Genesis 仪表盘</h1>
+          <p class="text-gray-600">实时监控项目进展和系统状态</p>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button class="btn btn-outline flex items-center">
+            <i class="fa fa-refresh mr-2"></i> 刷新
+          </button>
+          <button class="btn btn-primary flex items-center">
+            <i class="fa fa-download mr-2"></i> 导出报告
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 导航标签 -->
+    <nav class="mb-6">
+      <ul class="flex space-x-2 overflow-x-auto pb-2">
+        <li><a href="#overview" class="nav-link active" data-tab="overview">概览</a></li>
+        <li><a href="#fund" class="nav-link" data-tab="fund">基金详情</a></li>
+        <li><a href="#recruitment" class="nav-link" data-tab="recruitment">招聘状态</a></li>
+        <li><a href="#agents" class="nav-link" data-tab="agents">智能体网络</a></li>
+        <li><a href="#health" class="nav-link" data-tab="health">系统健康</a></li>
+        <li><a href="#activity" class="nav-link" data-tab="activity">活动日志</a></li>
+      </ul>
+    </nav>
+
+    <!-- 内容区域 -->
+    <div class="tab-content">
+      <!-- 概览标签 -->
+      <div id="overview" class="tab-pane active">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <!-- 基金余额 -->
+          <div class="stat-card">
+            <i class="fa fa-money text-primary text-3xl mb-3"></i>
+            <div class="stat-value" id="fund-balance">加载中...</div>
+            <div class="stat-label">基金余额 (NGEN)</div>
+          </div>
+          <!-- 代理数量 -->
+          <div class="stat-card">
+            <i class="fa fa-users text-secondary text-3xl mb-3"></i>
+            <div class="stat-value" id="agent-count">加载中...</div>
+            <div class="stat-label">注册代理数量</div>
+          </div>
+          <!-- 区块数量 -->
+          <div class="stat-card">
+            <i class="fa fa-chain text-warning text-3xl mb-3"></i>
+            <div class="stat-value" id="block-count">加载中...</div>
+            <div class="stat-label">区块链区块数</div>
+          </div>
+          <!-- 服务数量 -->
+          <div class="stat-card">
+            <i class="fa fa-cogs text-danger text-3xl mb-3"></i>
+            <div class="stat-value" id="service-count">加载中...</div>
+            <div class="stat-label">注册服务数量</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- 基金分配 -->
+          <div class="card">
+            <div class="card-header">基金分配</div>
+            <div id="fund-allocation" class="h-64">加载中...</div>
+          </div>
+          <!-- 最近活动 -->
+          <div class="card">
+            <div class="card-header">最近活动</div>
+            <div id="recent-activities" class="max-h-64 overflow-y-auto">加载中...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 基金详情标签 -->
+      <div id="fund" class="tab-pane hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <!-- 提案统计 -->
+          <div class="card">
+            <div class="card-header">提案统计</div>
+            <div id="proposal-stats">加载中...</div>
+          </div>
+          <!-- 生态需求统计 -->
+          <div class="card">
+            <div class="card-header">生态需求统计</div>
+            <div id="ecosystem-needs-stats">加载中...</div>
+          </div>
+          <!-- 服务统计 -->
+          <div class="card">
+            <div class="card-header">服务统计</div>
+            <div id="service-stats">加载中...</div>
+          </div>
+        </div>
+
+        <div class="card mb-6">
+          <div class="card-header">提案列表</div>
+          <div id="proposal-list" class="overflow-x-auto">加载中...</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">服务交易记录</div>
+          <div id="transaction-list" class="overflow-x-auto">加载中...</div>
+        </div>
+      </div>
+
+      <!-- 招聘状态标签 -->
+      <div id="recruitment" class="tab-pane hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <!-- 招聘概览 -->
+          <div class="card">
+            <div class="card-header">招聘概览</div>
+            <div id="recruitment-overview">加载中...</div>
+          </div>
+          <!-- 最新招聘报告 -->
+          <div class="card">
+            <div class="card-header">最新招聘报告</div>
+            <div id="latest-recruitment-report" class="max-h-64 overflow-y-auto">加载中...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 系统健康标签 -->
+      <div id="health" class="tab-pane hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- 服务状态 -->
+          <div class="card">
+            <div class="card-header">服务状态</div>
+            <div id="service-status">加载中...</div>
+          </div>
+          <!-- 资源使用 -->
+          <div class="card">
+            <div class="card-header">资源使用</div>
+            <div id="resource-usage">加载中...</div>
+          </div>
+          <!-- 系统信息 -->
+          <div class="card">
+            <div class="card-header">系统信息</div>
+            <div id="system-info">加载中...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 智能体网络标签 -->
+      <div id="agents" class="tab-pane hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <!-- 智能体总数 -->
+          <div class="stat-card">
+            <i class="fa fa-users text-primary text-3xl mb-3"></i>
+            <div class="stat-value" id="total-agents">加载中...</div>
+            <div class="stat-label">总智能体数</div>
+          </div>
+          <!-- 活跃智能体 -->
+          <div class="stat-card">
+            <i class="fa fa-heartbeat text-secondary text-3xl mb-3"></i>
+            <div class="stat-value" id="active-agents">加载中...</div>
+            <div class="stat-label">活跃智能体数</div>
+          </div>
+          <!-- 智能体能力 -->
+          <div class="stat-card">
+            <i class="fa fa-cogs text-warning text-3xl mb-3"></i>
+            <div class="stat-value" id="total-capabilities">加载中...</div>
+            <div class="stat-label">总能力数</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- 智能体列表 -->
+          <div class="card lg:col-span-2">
+            <div class="card-header flex justify-between items-center">
+              <span>智能体列表</span>
+              <div class="flex space-x-2">
+                <input type="text" id="agent-search" placeholder="搜索智能体..." class="px-3 py-1 border rounded-md text-sm">
+                <button class="btn btn-outline text-sm">搜索</button>
+              </div>
+            </div>
+            <div id="agent-list" class="overflow-x-auto max-h-96">加载中...</div>
+          </div>
+          <!-- 能力分布 -->
+          <div class="card">
+            <div class="card-header">能力分布</div>
+            <div id="capability-distribution" class="h-96">加载中...</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          <!-- 网络拓扑 -->
+          <div class="card">
+            <div class="card-header">网络拓扑</div>
+            <div id="network-topology" class="h-96 bg-gray-100 rounded-lg flex items-center justify-center">
+              <div class="text-center">
+                <i class="fa fa-sitemap text-4xl text-gray-400 mb-2"></i>
+                <p class="text-gray-500">加载网络拓扑...</p>
+              </div>
+            </div>
+          </div>
+          <!-- 智能体详情 -->
+          <div class="card">
+            <div class="card-header">智能体详情</div>
+            <div id="agent-details" class="p-4">
+              <div class="text-center text-gray-500">
+                <i class="fa fa-info-circle text-3xl mb-2"></i>
+                <p>选择一个智能体查看详情</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          <div class="card">
+            <div class="card-header">智能体网络状态</div>
+            <div id="network-status" class="p-4">
+              <div>加载中...</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">网络健康状态</div>
+            <div id="network-health-status" class="p-4">
+              <div>加载中...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 活动日志标签 -->
+      <div id="activity" class="tab-pane hidden">
+        <div class="card">
+          <div class="card-header">活动日志</div>
+          <div id="activity-log" class="overflow-x-auto">加载中...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 标签切换
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // 移除所有活动状态
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.add('hidden'));
+        
+        // 添加活动状态
+        this.classList.add('active');
+        const tabId = this.getAttribute('data-tab');
+        document.getElementById(tabId).classList.remove('hidden');
+      });
+    });
+
+    // API基础URL
+    const API_BASE = 'http://localhost:19891';
+
+    // 加载概览数据
+    async function loadOverview() {
+      try {
+        const response = await fetch(`${API_BASE}/dashboard/overview`);
+        const data = await response.json();
+        
+        if (data.success) {
+          const overview = data.data;
+          
+          // 更新基金余额
+          document.getElementById('fund-balance').textContent = overview.fund.balance.toLocaleString();
+          
+          // 更新代理数量
+          document.getElementById('agent-count').textContent = overview.recruitment.agentCount;
+          
+          // 更新区块数量
+          document.getElementById('block-count').textContent = overview.blockchain.blockCount;
+          
+          // 更新服务数量
+          document.getElementById('service-count').textContent = overview.fund.totalServices;
+          
+          // 更新基金分配
+          updateFundAllocation(overview.fund.budgetAllocation);
+          
+          // 更新最近活动
+          updateRecentActivities(overview.fund.totalProposals, overview.fund.totalTransactions);
+        }
+      } catch (error) {
+        console.error('Error loading overview:', error);
+      }
+    }
+
+    // 更新基金分配
+    function updateFundAllocation(allocation) {
+      const container = document.getElementById('fund-allocation');
+      container.innerHTML = `
+        <div class="space-y-3">
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="text-sm font-medium">提案拨款 (70%)</span>
+              <span class="text-sm font-medium">${allocation.proposal.toLocaleString()} NGEN</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div class="bg-primary h-2.5 rounded-full" style="width: 70%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="text-sm font-medium">生态需求 (20%)</span>
+              <span class="text-sm font-medium">${allocation.ecosystem.toLocaleString()} NGEN</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div class="bg-secondary h-2.5 rounded-full" style="width: 20%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="text-sm font-medium">基础设施 (10%)</span>
+              <span class="text-sm font-medium">${allocation.infrastructure.toLocaleString()} NGEN</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div class="bg-warning h-2.5 rounded-full" style="width: 10%"></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 更新最近活动
+    function updateRecentActivities(totalProposals, totalTransactions) {
+      const container = document.getElementById('recent-activities');
+      container.innerHTML = `
+        <div class="space-y-2">
+          <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded">
+            <div class="flex items-center">
+              <i class="fa fa-file-text-o text-primary mr-2"></i>
+              <span>总提案数</span>
+            </div>
+            <span class="font-medium">${totalProposals}</span>
+          </div>
+          <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded">
+            <div class="flex items-center">
+              <i class="fa fa-exchange text-secondary mr-2"></i>
+              <span>服务交易数</span>
+            </div>
+            <span class="font-medium">${totalTransactions}</span>
+          </div>
+          <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded">
+            <div class="flex items-center">
+              <i class="fa fa-clock-o text-warning mr-2"></i>
+              <span>系统状态</span>
+            </div>
+            <span class="font-medium text-green-600">在线</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // 加载基金详情
+    async function loadFundDetails() {
+      try {
+        const response = await fetch(`${API_BASE}/dashboard/fund-details`);
+        const data = await response.json();
+        
+        if (data.success) {
+          const fundDetails = data.data;
+          
+          // 更新提案统计
+          updateProposalStats(fundDetails.proposals);
+          
+          // 更新生态需求统计
+          updateEcosystemNeedsStats(fundDetails.ecosystemNeeds);
+          
+          // 更新服务统计
+          updateServiceStats(fundDetails.services);
+          
+          // 更新提案列表
+          updateProposalList();
+          
+          // 更新交易记录
+          updateTransactionList();
+        }
+      } catch (error) {
+        console.error('Error loading fund details:', error);
+      }
+    }
+
+    // 更新提案统计
+    function updateProposalStats(proposals) {
+      const container = document.getElementById('proposal-stats');
+      container.innerHTML = `
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm">总提案数</span>
+            <span class="font-medium">${proposals.total}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm">待处理</span>
+            <span class="font-medium">${proposals.pending}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm">已通过</span>
+            <span class="font-medium text-green-600">${proposals.approved}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm">已拒绝</span>
+            <span class="font-medium text-red-600">${proposals.rejected}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // 更新生态需求统计
+    function updateEcosystemNeedsStats(needs) {
+      const container = document.getElementById('ecosystem-needs-stats');
+      container.innerHTML = `
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm">总需求数</span>
+            <span class="font-medium">${needs.total}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm">开放中</span>
+            <span class="font-medium">${needs.open}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm">进行中</span>
+            <span class="font-medium text-yellow-600">${needs.claimed}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm">已完成</span>
+            <span class="font-medium text-green-600">${needs.completed}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // 更新服务统计
+    function updateServiceStats(services) {
+      const container = document.getElementById('service-stats');
+      container.innerHTML = `
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm">注册服务数</span>
+            <span class="font-medium">${services.total}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm">服务交易数</span>
+            <span class="font-medium">${services.transactions}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // 更新提案列表
+    async function updateProposalList() {
+      try {
+        const response = await fetch('http://localhost:9852/fund/proposals');
+        const data = await response.json();
+        
+        if (data.success) {
+          const proposals = data.data;
+          const container = document.getElementById('proposal-list');
+          
+          if (proposals.length === 0) {
+            container.innerHTML = '<p class="text-center text-gray-500 py-4">暂无提案</p>';
+            return;
+          }
+          
+          container.innerHTML = `
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>提案ID</th>
+                  <th>标题</th>
+                  <th>发起者</th>
+                  <th>金额 (NGEN)</th>
+                  <th>状态</th>
+                  <th>创建时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${proposals.map(proposal => `
+                  <tr>
+                    <td>${proposal.id}</td>
+                    <td>${proposal.title}</td>
+                    <td>${proposal.agentId}</td>
+                    <td>${proposal.amount.toLocaleString()}</td>
+                    <td>
+                      <span class="badge ${proposal.status === 'pending' ? 'badge-warning' : proposal.status === 'approved' ? 'badge-success' : 'badge-danger'}">
+                        ${proposal.status === 'pending' ? '待处理' : proposal.status === 'approved' ? '已通过' : '已拒绝'}
+                      </span>
+                    </td>
+                    <td>${new Date(proposal.createdAt).toLocaleString()}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        }
+      } catch (error) {
+        console.error('Error loading proposals:', error);
+        document.getElementById('proposal-list').innerHTML = '<p class="text-center text-red-500 py-4">加载失败</p>';
+      }
+    }
+
+    // 更新交易记录
+    async function updateTransactionList() {
+      try {
+        const response = await fetch('http://localhost:9852/fund/transactions');
+        const data = await response.json();
+        
+        if (data.success) {
+          const transactions = data.data;
+          const container = document.getElementById('transaction-list');
+          
+          if (transactions.length === 0) {
+            container.innerHTML = '<p class="text-center text-gray-500 py-4">暂无交易记录</p>';
+            return;
+          }
+          
+          container.innerHTML = `
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>交易ID</th>
+                  <th>服务ID</th>
+                  <th>消费者</th>
+                  <th>提供者</th>
+                  <th>金额 (NGEN)</th>
+                  <th>时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${transactions.map(tx => `
+                  <tr>
+                    <td>${tx.id}</td>
+                    <td>${tx.serviceId}</td>
+                    <td>${tx.consumerId}</td>
+                    <td>${tx.providerId}</td>
+                    <td>${tx.amount.toLocaleString()}</td>
+                    <td>${new Date(tx.timestamp).toLocaleString()}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        }
+      } catch (error) {
+        console.error('Error loading transactions:', error);
+        document.getElementById('transaction-list').innerHTML = '<p class="text-center text-red-500 py-4">加载失败</p>';
+      }
+    }
+
+    // 加载招聘状态
+    async function loadRecruitmentStatus() {
+      try {
+        const response = await fetch(`${API_BASE}/dashboard/recruitment-status`);
+        const data = await response.json();
+        
+        if (data.success) {
+          const recruitmentStatus = data.data;
+          
+          // 更新招聘概览
+          updateRecruitmentOverview(recruitmentStatus);
+          
+          // 更新最新招聘报告
+          updateLatestRecruitmentReport(recruitmentStatus.latestReport);
+        }
+      } catch (error) {
+        console.error('Error loading recruitment status:', error);
+      }
+    }
+
+    // 更新招聘概览
+    function updateRecruitmentOverview(status) {
+      const container = document.getElementById('recruitment-overview');
+      container.innerHTML = `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-lg font-medium">注册代理总数</span>
+            <span class="text-2xl font-bold text-primary">${status.agentCount}</span>
+          </div>
+          <div class="p-4 bg-blue-50 rounded-lg">
+            <h4 class="font-medium mb-2">招聘趋势</h4>
+            <p class="text-sm text-gray-600">系统正在持续招募AI代理，为生态系统注入新活力。</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // 更新最新招聘报告
+    function updateLatestRecruitmentReport(report) {
+      const container = document.getElementById('latest-recruitment-report');
+      
+      if (!report) {
+        container.innerHTML = '<p class="text-center text-gray-500 py-4">暂无招聘报告</p>';
+        return;
+      }
+      
+      container.innerHTML = `
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <span class="font-medium">报告时间</span>
+            <span>${new Date(report.timestamp).toLocaleString()}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium">总招募数</span>
+            <span>${report.totalRecruits || 0}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium">成功招募</span>
+            <span class="text-green-600">${report.successfulRecruits || 0}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium">失败招募</span>
+            <span class="text-red-600">${report.failedRecruits || 0}</span>
+          </div>
+          ${report.message ? `<div class="mt-4 p-2 bg-gray-50 rounded text-sm">${report.message}</div>` : ''}
+        </div>
+      `;
+    }
+
+    // 加载系统健康状态
+    async function loadHealthStatus() {
+      try {
+        const response = await fetch(`${API_BASE}/dashboard/health-status`);
+        const data = await response.json();
+        
+        if (data.success) {
+          const healthStatus = data.data;
+          
+          // 更新服务状态
+          updateServiceStatus(healthStatus.services);
+          
+          // 更新资源使用
+          updateResourceUsage(healthStatus.resourceUsage);
+          
+          // 更新系统信息
+          updateSystemInfo(healthStatus);
+        }
+      } catch (error) {
+        console.error('Error loading health status:', error);
+      }
+    }
+
+    // 更新服务状态
+    function updateServiceStatus(services) {
+      const container = document.getElementById('service-status');
+      container.innerHTML = `
+        <div class="space-y-2">
+          ${Object.entries(services).map(([service, status]) => `
+            <div class="flex items-center justify-between">
+              <span class="text-sm">${service}</span>
+              <span class="badge ${status === 'online' ? 'badge-success' : 'badge-danger'}">
+                ${status === 'online' ? '在线' : '离线'}
+              </span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // 更新资源使用
+    function updateResourceUsage(usage) {
+      const container = document.getElementById('resource-usage');
+      container.innerHTML = `
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="text-sm">CPU使用率</span>
+              <span class="text-sm">--</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div class="bg-primary h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="text-sm">内存使用率</span>
+              <span class="text-sm">--</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div class="bg-secondary h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 更新系统信息
+    function updateSystemInfo(info) {
+      const container = document.getElementById('system-info');
+      container.innerHTML = `
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <span class="text-sm">系统时间</span>
+            <span>${new Date(info.timestamp).toLocaleString()}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm">系统状态</span>
+            <span class="text-green-600">正常运行</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // 加载活动日志
+    async function loadActivityLog() {
+      try {
+        const response = await fetch(`${API_BASE}/dashboard/activity-log`);
+        const data = await response.json();
+        
+        if (data.success) {
+          const activities = data.data;
+          const container = document.getElementById('activity-log');
+          
+          if (activities.length === 0) {
+            container.innerHTML = '<p class="text-center text-gray-500 py-4">暂无活动日志</p>';
+            return;
+          }
+          
+          container.innerHTML = `
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>类型</th>
+                  <th>操作</th>
+                  <th>详情</th>
+                  <th>时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${activities.map(activity => `
+                  <tr>
+                    <td>
+                      <span class="badge ${activity.type === 'proposal' ? 'badge-info' : 'badge-secondary'}">
+                        ${activity.type === 'proposal' ? '提案' : '交易'}
+                      </span>
+                    </td>
+                    <td>${activity.action}</td>
+                    <td>
+                      ${activity.type === 'proposal' ? activity.details.title : `服务: ${activity.details.serviceId}`}
+                    </td>
+                    <td>${new Date(activity.timestamp).toLocaleString()}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        }
+      } catch (error) {
+        console.error('Error loading activity log:', error);
+        document.getElementById('activity-log').innerHTML = '<p class="text-center text-red-500 py-4">加载失败</p>';
+      }
+    }
+
+    // 初始加载
+    window.addEventListener('DOMContentLoaded', function() {
+      loadOverview();
+      
+      // 加载智能体网络数据
+    async function loadAgentsNetwork() {
+      try {
+        // 从HTTP服务器获取智能体数据
+        const response = await fetch('http://localhost:19891/api/agents');
+        const agentsData = await response.json();
+        
+        if (agentsData.success) {
+          const agents = agentsData.agents;
+          
+          // 计算能力分布
+          const capabilityDistribution = agents.reduce((acc, agent) => {
+            agent.capabilities.forEach(cap => {
+              acc[cap] = (acc[cap] || 0) + 1;
+            });
+            return acc;
+          }, {});
+          
+          // 计算活跃智能体数（基于最后活跃时间）
+          const now = Date.now();
+          const activeAgents = agents.filter(agent => 
+            agent.lastActive && (now - agent.lastActive) < 300000 // 5分钟内活跃
+          ).length;
+          
+          // 构建系统信息
+          const systemInfo = {
+            total_agents: agents.length,
+            active_agents: activeAgents,
+            total_capabilities: Object.keys(capabilityDistribution).length,
+            total_tasks: 0, // 占位数据
+            total_collaborations: 0, // 占位数据
+            task_types: [], // 占位数据
+            agent_capabilities: Object.keys(capabilityDistribution),
+            timestamp: Date.now()
+          };
+          
+          // 更新智能体统计数据
+          updateAgentStats(agents.length, activeAgents, Object.keys(capabilityDistribution).length);
+          
+          // 更新智能体列表
+          updateAgentList(agents);
+          
+          // 更新能力分布
+          updateCapabilityDistribution(capabilityDistribution);
+          
+          // 更新网络状态
+          updateNetworkStatus(systemInfo);
+          
+          // 更新网络拓扑
+          updateNetworkTopology(agents);
+          
+          // 更新网络健康状态
+          updateNetworkHealthStatus(systemInfo);
+        }
+      } catch (error) {
+        console.error('Error loading agents network:', error);
+        // 显示错误状态
+        updateNetworkHealthStatus({ error: error.message });
+      }
+    }
+    
+    // 更新网络健康状态
+    function updateNetworkHealthStatus(systemInfo) {
+      const container = document.getElementById('network-health-status');
+      
+      if (systemInfo.error) {
+        container.innerHTML = `
+          <div class="p-4 bg-red-50 rounded-lg">
+            <div class="flex items-center">
+              <i class="fa fa-exclamation-circle text-red-600 mr-2"></i>
+              <span>网络状态异常</span>
+            </div>
+            <p class="text-sm text-gray-600 mt-2">${systemInfo.error}</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // 计算网络健康分数
+      const healthScore = calculateNetworkHealthScore(systemInfo);
+      const activeRate = Math.round((systemInfo.active_agents / systemInfo.total_agents) * 100);
+      const capabilityCoverage = Math.min(100, (systemInfo.total_capabilities / 10) * 100);
+      
+      container.innerHTML = `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="font-medium">网络健康分数</span>
+            <span class="text-xl font-bold ${healthScore > 80 ? 'text-green-600' : healthScore > 50 ? 'text-yellow-600' : 'text-red-600'}">${healthScore}%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-4">
+            <div class="h-4 rounded-full ${healthScore > 80 ? 'bg-green-500' : healthScore > 50 ? 'bg-yellow-500' : 'bg-red-500'}" style="width: ${healthScore}%"></div>
+          </div>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+            <div class="card">
+              <div class="card-header">网络健康指标</div>
+              <div class="h-64">
+                <canvas id="healthChart"></canvas>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">智能体分布</div>
+              <div class="h-64">
+                <canvas id="agentDistributionChart"></canvas>
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div class="p-3 bg-blue-50 rounded-lg">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium">活跃率</span>
+                <span class="font-medium">${activeRate}%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-blue-500 h-2 rounded-full" style="width: ${activeRate}%"></div>
+              </div>
+            </div>
+            <div class="p-3 bg-green-50 rounded-lg">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium">能力覆盖率</span>
+                <span class="font-medium">${systemInfo.total_capabilities} 种</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-green-500 h-2 rounded-full" style="width: ${capabilityCoverage}%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 bg-green-50 rounded-lg">
+            <div class="flex items-center">
+              <i class="fa fa-check-circle text-green-600 mr-2"></i>
+              <span>智能体网络运行正常</span>
+            </div>
+            <p class="text-sm text-gray-600 mt-2">所有智能体已成功加入网络，可以参与任务和协作。</p>
+          </div>
+        </div>
+      `;
+      
+      // 渲染健康指标图表
+      setTimeout(() => {
+        const healthCtx = document.getElementById('healthChart').getContext('2d');
+        new Chart(healthCtx, {
+          type: 'radar',
+          data: {
+            labels: ['活跃率', '能力覆盖率', '智能体数量', '网络稳定性', '响应速度'],
+            datasets: [{
+              label: '网络健康指标',
+              data: [activeRate, capabilityCoverage, Math.min(100, (systemInfo.total_agents / 50) * 100), 95, 90],
+              backgroundColor: 'rgba(59, 130, 246, 0.2)',
+              borderColor: 'rgba(59, 130, 246, 1)',
+              pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+            }]
+          },
+          options: {
+            scales: {
+              r: {
+                angleLines: {
+                  display: true
+                },
+                suggestedMin: 0,
+                suggestedMax: 100
+              }
+            }
+          }
+        });
+        
+        // 渲染智能体分布图表
+        const distributionCtx = document.getElementById('agentDistributionChart').getContext('2d');
+        new Chart(distributionCtx, {
+          type: 'pie',
+          data: {
+            labels: ['活跃智能体', '非活跃智能体'],
+            datasets: [{
+              data: [systemInfo.active_agents, systemInfo.total_agents - systemInfo.active_agents],
+              backgroundColor: [
+                'rgba(16, 185, 129, 0.8)',
+                'rgba(209, 213, 219, 0.8)'
+              ],
+              borderColor: [
+                'rgba(16, 185, 129, 1)',
+                'rgba(209, 213, 219, 1)'
+              ],
+              borderWidth: 1
+            }]
+          }
+        });
+      }, 100);
+    }
+    
+    // 计算网络健康分数
+    function calculateNetworkHealthScore(systemInfo) {
+      let score = 100;
+      
+      // 活跃率权重 40%
+      const activeRate = systemInfo.total_agents > 0 ? (systemInfo.active_agents / systemInfo.total_agents) * 100 : 0;
+      score -= (100 - activeRate) * 0.4;
+      
+      // 能力覆盖率权重 30%
+      const capabilityCoverage = Math.min(100, (systemInfo.total_capabilities / 10) * 100);
+      score -= (100 - capabilityCoverage) * 0.3;
+      
+      // 智能体数量权重 30%
+      const agentCountScore = Math.min(100, (systemInfo.total_agents / 50) * 100);
+      score -= (100 - agentCountScore) * 0.3;
+      
+      return Math.round(Math.max(0, score));
+    }
+
+    // 更新网络拓扑
+    function updateNetworkTopology(agents) {
+      const container = document.getElementById('network-topology');
+      
+      if (agents.length === 0) {
+        container.innerHTML = `
+          <div class="text-center">
+            <i class="fa fa-sitemap text-4xl text-gray-400 mb-2"></i>
+            <p class="text-gray-500">暂无智能体数据</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // 简单的网络拓扑可视化
+      container.innerHTML = `
+        <div class="w-full h-full relative">
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+              <i class="fa fa-server"></i>
+            </div>
+          </div>
+          ${agents.map((agent, index) => {
+            const angle = (index / agents.length) * Math.PI * 2;
+            const radius = 120;
+            const x = Math.cos(angle) * radius + 150;
+            const y = Math.sin(angle) * radius + 150;
+            
+            return `
+              <div class="absolute" style="left: ${x}px; top: ${y}px; transform: translate(-50%, -50%);">
+                <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white cursor-pointer hover:bg-blue-600 transition-colors" onclick="showAgentDetails('${agent.id}')">
+                  <i class="fa fa-robot"></i>
+                </div>
+                <div class="text-xs text-center mt-1 whitespace-nowrap">${agent.id.substring(0, 8)}...</div>
+              </div>
+              <svg class="absolute inset-0" width="300" height="300" viewBox="0 0 300 300">
+                <line x1="150" y1="150" x2="${150 + Math.cos(angle) * radius}" y2="${150 + Math.sin(angle) * radius}" stroke="#e5e7eb" stroke-width="1" />
+              </svg>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    // 显示智能体详情
+    function showAgentDetails(agentId) {
+      const container = document.getElementById('agent-details');
+      
+      // 模拟智能体详情数据
+      const agentDetails = {
+        id: agentId,
+        model: 'gpt-4',
+        capabilities: ['LLM_REASONING', 'CODE_MINING', 'P2P_COMM'],
+        registeredAt: Date.now() - 3600000, // 1 hour ago
+        lastActive: Date.now() - 600000, // 10 minutes ago
+        wallet: {
+          address: 'ng1' + Math.random().toString(36).substring(2, 10),
+          balance: 1000
+        },
+        performance: {
+          tasksCompleted: 15,
+          collaborations: 8,
+          successRate: 95
+        }
+      };
+      
+      container.innerHTML = `
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <h4 class="font-medium text-lg">${agentId}</h4>
+            <span class="badge badge-success">活跃</span>
+          </div>
+          <div class="space-y-2">
+            <div class="flex justify-between">
+              <span class="text-sm text-gray-600">模型</span>
+              <span>${agentDetails.model}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm text-gray-600">注册时间</span>
+              <span>${new Date(agentDetails.registeredAt).toLocaleString()}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm text-gray-600">最后活跃</span>
+              <span>${new Date(agentDetails.lastActive).toLocaleString()}</span>
+            </div>
+          </div>
+          <div class="pt-2 border-t">
+            <h5 class="font-medium mb-2">能力</h5>
+            <div class="flex flex-wrap gap-1">
+              ${agentDetails.capabilities.map(cap => `
+                <span class="badge badge-info">${cap}</span>
+              `).join('')}
+            </div>
+          </div>
+          <div class="pt-2 border-t">
+            <h5 class="font-medium mb-2">钱包信息</h5>
+            <div class="space-y-1">
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">地址</span>
+                <span class="text-sm font-mono">${agentDetails.wallet.address}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">余额</span>
+                <span>${agentDetails.wallet.balance} NGEN</span>
+              </div>
+            </div>
+          </div>
+          <div class="pt-2 border-t">
+            <h5 class="font-medium mb-2">性能统计</h5>
+            <div class="space-y-1">
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">完成任务数</span>
+                <span>${agentDetails.performance.tasksCompleted}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">协作次数</span>
+                <span>${agentDetails.performance.collaborations}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">成功率</span>
+                <span>${agentDetails.performance.successRate}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 更新智能体统计数据
+    function updateAgentStats(total, active, capabilities) {
+      document.getElementById('total-agents').textContent = total;
+      document.getElementById('active-agents').textContent = active;
+      document.getElementById('total-capabilities').textContent = capabilities;
+    }
+
+    // 更新智能体列表
+    function updateAgentList(agents) {
+      const container = document.getElementById('agent-list');
+      
+      if (agents.length === 0) {
+        container.innerHTML = '<p class="text-center text-gray-500 py-4">暂无智能体</p>';
+        return;
+      }
+      
+      container.innerHTML = `
+        <table class="table">
+          <thead>
+            <tr>
+              <th>智能体ID</th>
+              <th>能力</th>
+              <th>注册时间</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${agents.map(agent => `
+              <tr>
+                <td>${agent.id}</td>
+                <td>
+                  <div class="flex flex-wrap gap-1">
+                    ${agent.capabilities.map(cap => `
+                      <span class="badge badge-info">${cap}</span>
+                    `).join('')}
+                  </div>
+                </td>
+                <td>${new Date(agent.registeredAt).toLocaleString()}</td>
+                <td>
+                  <span class="badge badge-success">活跃</span>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    // 更新能力分布
+    function updateCapabilityDistribution(distribution) {
+      const container = document.getElementById('capability-distribution');
+      
+      if (Object.keys(distribution).length === 0) {
+        container.innerHTML = '<p class="text-center text-gray-500 py-4">暂无能力数据</p>';
+        return;
+      }
+      
+      container.innerHTML = `
+        <div class="space-y-3">
+          ${Object.entries(distribution).map(([capability, count]) => `
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-sm font-medium">${capability}</span>
+                <span class="text-sm font-medium">${count}</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-primary h-2.5 rounded-full" style="width: ${(count / Object.values(distribution).reduce((a, b) => a + b, 0)) * 100}%"></div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // 更新网络状态
+    function updateNetworkStatus(systemInfo) {
+      const container = document.getElementById('network-status');
+      
+      container.innerHTML = `
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <span class="font-medium">总智能体数</span>
+            <span>${systemInfo.total_agents}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium">总任务数</span>
+            <span>${systemInfo.total_tasks}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium">总协作数</span>
+            <span>${systemInfo.total_collaborations}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium">任务类型</span>
+            <span>${systemInfo.task_types.length}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium">智能体能力</span>
+            <span>${systemInfo.agent_capabilities.length}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium">系统时间</span>
+            <span>${new Date(systemInfo.timestamp).toLocaleString()}</span>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <h4 class="font-medium mb-2">网络状态</h4>
+          <div class="p-4 bg-green-50 rounded-lg">
+            <div class="flex items-center">
+              <i class="fa fa-check-circle text-green-600 mr-2"></i>
+              <span>智能体网络运行正常</span>
+            </div>
+            <p class="text-sm text-gray-600 mt-2">所有智能体已成功加入网络，可以参与任务和协作。</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // 为其他标签添加加载事件
+    document.querySelector('[data-tab="fund"]').addEventListener('click', loadFundDetails);
+    document.querySelector('[data-tab="recruitment"]').addEventListener('click', loadRecruitmentStatus);
+    document.querySelector('[data-tab="agents"]').addEventListener('click', loadAgentsNetwork);
+    document.querySelector('[data-tab="health"]').addEventListener('click', loadHealthStatus);
+    document.querySelector('[data-tab="activity"]').addEventListener('click', loadActivityLog);
+    
+    // 定时刷新数据
+    setInterval(loadOverview, 60000); // 每分钟刷新一次
+    setInterval(loadAgentsNetwork, 60000); // 每分钟刷新一次智能体网络数据
+    });
+  </script>
+</body>
+</html>

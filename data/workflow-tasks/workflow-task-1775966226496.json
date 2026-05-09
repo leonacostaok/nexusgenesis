@@ -1,0 +1,27 @@
+{
+  "id": "1775966226496",
+  "name": "治理机制升级",
+  "status": "completed",
+  "createdAt": "2026-04-12T03:57:06.496Z",
+  "updatedAt": "2026-04-12T03:57:06.506Z",
+  "runCount": 1,
+  "errorCount": 0,
+  "lastError": null,
+  "description": "引入权重计算，实现参与率统计，优化治理投票机制",
+  "priority": "high",
+  "agent": "Governance-Expert",
+  "deadline": "2026-05-20",
+  "dependencies": [
+    "epoch2-agent-registration"
+  ],
+  "schedule": "7*24",
+  "retryConfig": {
+    "maxRetries": 3,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "result": {
+    "success": true,
+    "message": "治理机制升级任务处理中"
+  }
+}

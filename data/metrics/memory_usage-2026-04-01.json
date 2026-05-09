@@ -1,0 +1,532 @@
+[
+  {
+    "type": "memory_usage",
+    "value": 0.54,
+    "timestamp": "2026-04-01T23:58:43.958Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-01T23:58:44.191Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-01T23:58:44.574Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.65,
+    "timestamp": "2026-04-01T23:58:45.100Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.91,
+    "timestamp": "2026-04-01T23:58:46.165Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.89,
+    "timestamp": "2026-04-01T23:58:47.540Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.65,
+    "timestamp": "2026-04-01T23:58:48.499Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.54,
+    "timestamp": "2026-04-01T23:58:48.965Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-01T23:58:49.195Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-01T23:58:49.889Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.65,
+    "timestamp": "2026-04-01T23:58:50.104Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.89,
+    "timestamp": "2026-04-01T23:58:51.167Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.9,
+    "timestamp": "2026-04-01T23:58:52.544Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.63,
+    "timestamp": "2026-04-01T23:58:53.102Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.55,
+    "timestamp": "2026-04-01T23:58:54.239Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:58:54.240Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-01T23:58:54.900Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.63,
+    "timestamp": "2026-04-01T23:58:55.118Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.9,
+    "timestamp": "2026-04-01T23:58:56.171Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.89,
+    "timestamp": "2026-04-01T23:58:57.559Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.63,
+    "timestamp": "2026-04-01T23:58:58.115Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.55,
+    "timestamp": "2026-04-01T23:58:58.982Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:58:59.245Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:58:59.913Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.63,
+    "timestamp": "2026-04-01T23:59:00.129Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.9,
+    "timestamp": "2026-04-01T23:59:01.175Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.89,
+    "timestamp": "2026-04-01T23:59:02.562Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.63,
+    "timestamp": "2026-04-01T23:59:03.120Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.55,
+    "timestamp": "2026-04-01T23:59:03.987Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:59:04.250Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:59:04.929Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.63,
+    "timestamp": "2026-04-01T23:59:05.130Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.89,
+    "timestamp": "2026-04-01T23:59:06.191Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.9,
+    "timestamp": "2026-04-01T23:59:07.571Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.63,
+    "timestamp": "2026-04-01T23:59:08.125Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.55,
+    "timestamp": "2026-04-01T23:59:08.995Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:59:09.259Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:59:09.943Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.64,
+    "timestamp": "2026-04-01T23:59:10.143Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.91,
+    "timestamp": "2026-04-01T23:59:11.200Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.91,
+    "timestamp": "2026-04-01T23:59:12.582Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.63,
+    "timestamp": "2026-04-01T23:59:13.127Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.55,
+    "timestamp": "2026-04-01T23:59:13.998Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:59:14.659Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:59:14.959Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.63,
+    "timestamp": "2026-04-01T23:59:15.145Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.91,
+    "timestamp": "2026-04-01T23:59:16.204Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.89,
+    "timestamp": "2026-04-01T23:59:17.587Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.63,
+    "timestamp": "2026-04-01T23:59:18.129Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-01T23:59:19.010Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:59:19.662Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.63,
+    "timestamp": "2026-04-01T23:59:20.155Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:59:20.516Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.89,
+    "timestamp": "2026-04-01T23:59:21.205Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.9,
+    "timestamp": "2026-04-01T23:59:22.595Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.65,
+    "timestamp": "2026-04-01T23:59:23.134Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-01T23:59:24.014Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.6,
+    "timestamp": "2026-04-01T23:59:24.662Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.65,
+    "timestamp": "2026-04-01T23:59:25.158Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:59:25.895Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.89,
+    "timestamp": "2026-04-01T23:59:26.210Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.89,
+    "timestamp": "2026-04-01T23:59:27.800Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.65,
+    "timestamp": "2026-04-01T23:59:28.143Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-01T23:59:29.026Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-01T23:59:29.663Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.68,
+    "timestamp": "2026-04-01T23:59:30.159Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-01T23:59:31.169Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.9,
+    "timestamp": "2026-04-01T23:59:31.216Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.9,
+    "timestamp": "2026-04-01T23:59:32.802Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.65,
+    "timestamp": "2026-04-01T23:59:33.144Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-01T23:59:34.029Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-01T23:59:34.664Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.66,
+    "timestamp": "2026-04-01T23:59:35.160Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-01T23:59:36.176Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.89,
+    "timestamp": "2026-04-01T23:59:36.506Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.91,
+    "timestamp": "2026-04-01T23:59:37.816Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.66,
+    "timestamp": "2026-04-01T23:59:38.157Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-01T23:59:39.040Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-01T23:59:39.674Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.66,
+    "timestamp": "2026-04-01T23:59:40.161Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-01T23:59:41.183Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.92,
+    "timestamp": "2026-04-01T23:59:41.512Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.66,
+    "timestamp": "2026-04-01T23:59:43.197Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.93,
+    "timestamp": "2026-04-01T23:59:43.203Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-01T23:59:44.054Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-01T23:59:44.685Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.66,
+    "timestamp": "2026-04-01T23:59:45.166Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-01T23:59:46.188Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.87,
+    "timestamp": "2026-04-01T23:59:46.513Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.66,
+    "timestamp": "2026-04-01T23:59:48.174Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.87,
+    "timestamp": "2026-04-01T23:59:48.205Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-01T23:59:49.061Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.58,
+    "timestamp": "2026-04-01T23:59:49.692Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.66,
+    "timestamp": "2026-04-01T23:59:50.172Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.6,
+    "timestamp": "2026-04-01T23:59:51.189Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.89,
+    "timestamp": "2026-04-01T23:59:51.515Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.67,
+    "timestamp": "2026-04-01T23:59:53.187Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.89,
+    "timestamp": "2026-04-01T23:59:53.217Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.56,
+    "timestamp": "2026-04-01T23:59:54.068Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:59:54.703Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.65,
+    "timestamp": "2026-04-01T23:59:55.184Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:59:57.241Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.65,
+    "timestamp": "2026-04-01T23:59:58.194Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.87,
+    "timestamp": "2026-04-01T23:59:58.225Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.57,
+    "timestamp": "2026-04-01T23:59:59.078Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 0.59,
+    "timestamp": "2026-04-01T23:59:59.714Z"
+  }
+]

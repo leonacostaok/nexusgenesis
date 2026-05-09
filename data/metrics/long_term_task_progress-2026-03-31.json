@@ -1,0 +1,2747 @@
+[
+  {
+    "type": "long_term_task_progress",
+    "value": 33.54397965936254,
+    "timestamp": "2026-03-31T22:51:06.371Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 95.29517423063118,
+    "timestamp": "2026-03-31T22:51:06.496Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 86.07777200224412,
+    "timestamp": "2026-03-31T22:51:36.318Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 7.614621341693628,
+    "timestamp": "2026-03-31T22:51:36.319Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 3.1968430276424042,
+    "timestamp": "2026-03-31T22:51:36.378Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 69.20945330760682,
+    "timestamp": "2026-03-31T22:51:36.496Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 42.357438707530925,
+    "timestamp": "2026-03-31T22:52:06.336Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 67.21554136233226,
+    "timestamp": "2026-03-31T22:52:06.342Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 28.136494894209275,
+    "timestamp": "2026-03-31T22:52:06.376Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 71.97473790224207,
+    "timestamp": "2026-03-31T22:52:06.519Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 41.422921675683355,
+    "timestamp": "2026-03-31T22:52:36.333Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 57.6242894416166,
+    "timestamp": "2026-03-31T22:52:36.347Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 17.428416874968057,
+    "timestamp": "2026-03-31T22:52:36.378Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 17.818193899669588,
+    "timestamp": "2026-03-31T22:52:36.504Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 80.34126097321804,
+    "timestamp": "2026-03-31T22:53:06.354Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 41.36508632426092,
+    "timestamp": "2026-03-31T22:53:06.359Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 88.78152247466548,
+    "timestamp": "2026-03-31T22:53:06.394Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 81.73268429005861,
+    "timestamp": "2026-03-31T22:53:06.525Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 25.586515864939983,
+    "timestamp": "2026-03-31T22:53:36.363Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 91.52620200825703,
+    "timestamp": "2026-03-31T22:53:36.369Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 65.07031912309726,
+    "timestamp": "2026-03-31T22:53:36.403Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 85.95549297873258,
+    "timestamp": "2026-03-31T22:53:36.528Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 75.0712282212178,
+    "timestamp": "2026-03-31T22:54:06.363Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 4.001299566404892,
+    "timestamp": "2026-03-31T22:54:06.368Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 6.607041658109414,
+    "timestamp": "2026-03-31T22:54:06.413Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 46.58173588772689,
+    "timestamp": "2026-03-31T22:54:06.561Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 29.93698016953832,
+    "timestamp": "2026-03-31T22:54:36.375Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 68.26786455564677,
+    "timestamp": "2026-03-31T22:54:36.383Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 17.55787690107128,
+    "timestamp": "2026-03-31T22:54:36.417Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 85.99884448294942,
+    "timestamp": "2026-03-31T22:54:36.562Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 13.838569974230285,
+    "timestamp": "2026-03-31T22:55:06.384Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 93.63506986914015,
+    "timestamp": "2026-03-31T22:55:06.391Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 63.323772368316476,
+    "timestamp": "2026-03-31T22:55:06.428Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 32.363965845146026,
+    "timestamp": "2026-03-31T22:55:06.569Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 71.57422417391287,
+    "timestamp": "2026-03-31T22:55:36.383Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 34.79632987898651,
+    "timestamp": "2026-03-31T22:55:36.389Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 9.154381072136387,
+    "timestamp": "2026-03-31T22:55:36.436Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 83.53876689089755,
+    "timestamp": "2026-03-31T22:55:36.573Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 89.80460606758473,
+    "timestamp": "2026-03-31T22:56:06.394Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 91.10948786204455,
+    "timestamp": "2026-03-31T22:56:06.408Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 78.50465976979775,
+    "timestamp": "2026-03-31T22:56:06.441Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 60.64818683383367,
+    "timestamp": "2026-03-31T22:56:06.600Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 13.561516865754076,
+    "timestamp": "2026-03-31T22:56:36.400Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 90.73906726876204,
+    "timestamp": "2026-03-31T22:56:36.415Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 66.50858322581394,
+    "timestamp": "2026-03-31T22:56:36.445Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 46.00654254919079,
+    "timestamp": "2026-03-31T22:56:36.586Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 94.6206780042995,
+    "timestamp": "2026-03-31T22:57:06.389Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 22.185466720019342,
+    "timestamp": "2026-03-31T22:57:06.417Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 69.33178435111881,
+    "timestamp": "2026-03-31T22:57:06.447Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 26.616699274888333,
+    "timestamp": "2026-03-31T22:57:06.605Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 31.329470569029272,
+    "timestamp": "2026-03-31T22:57:36.409Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 45.29774687013203,
+    "timestamp": "2026-03-31T22:57:36.423Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 53.76956525510519,
+    "timestamp": "2026-03-31T22:57:36.451Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 86.27120161454164,
+    "timestamp": "2026-03-31T22:57:36.592Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 45.93346371785738,
+    "timestamp": "2026-03-31T22:58:06.423Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 87.50160378475925,
+    "timestamp": "2026-03-31T22:58:06.431Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 53.89471548720493,
+    "timestamp": "2026-03-31T22:58:06.454Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 47.81069592529603,
+    "timestamp": "2026-03-31T22:58:06.608Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 99.36146104863194,
+    "timestamp": "2026-03-31T22:58:36.413Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 32.06632133707203,
+    "timestamp": "2026-03-31T22:58:36.439Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 9.357992022339323,
+    "timestamp": "2026-03-31T22:58:36.455Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 16.003201950227552,
+    "timestamp": "2026-03-31T22:58:36.607Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 92.94392522359949,
+    "timestamp": "2026-03-31T22:59:06.413Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 16.762763972626104,
+    "timestamp": "2026-03-31T22:59:06.443Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 53.83541739602621,
+    "timestamp": "2026-03-31T22:59:06.459Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 81.73740142187901,
+    "timestamp": "2026-03-31T22:59:06.616Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 16.330586904781306,
+    "timestamp": "2026-03-31T22:59:36.419Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 14.748643160431286,
+    "timestamp": "2026-03-31T22:59:36.448Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 24.66954086716934,
+    "timestamp": "2026-03-31T22:59:36.465Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 29.58870437675841,
+    "timestamp": "2026-03-31T22:59:36.620Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 38.97616616400159,
+    "timestamp": "2026-03-31T23:00:06.433Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 7.515787970301691,
+    "timestamp": "2026-03-31T23:00:06.447Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 83.70649680763982,
+    "timestamp": "2026-03-31T23:00:06.475Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 68.66375903541943,
+    "timestamp": "2026-03-31T23:00:06.621Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 83.64536853672287,
+    "timestamp": "2026-03-31T23:00:36.421Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 13.45875181269065,
+    "timestamp": "2026-03-31T23:00:36.450Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 99.38784157522615,
+    "timestamp": "2026-03-31T23:00:36.481Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 46.4028132314899,
+    "timestamp": "2026-03-31T23:00:36.642Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 29.467431541381995,
+    "timestamp": "2026-03-31T23:01:06.440Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 27.4609158502749,
+    "timestamp": "2026-03-31T23:01:06.454Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 93.96303791383106,
+    "timestamp": "2026-03-31T23:01:06.481Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 65.1335243825444,
+    "timestamp": "2026-03-31T23:01:06.644Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 33.85282967783348,
+    "timestamp": "2026-03-31T23:01:36.430Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 13.732853139362277,
+    "timestamp": "2026-03-31T23:01:36.461Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 69.32368916979641,
+    "timestamp": "2026-03-31T23:01:36.492Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 66.09625586420904,
+    "timestamp": "2026-03-31T23:01:36.659Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 77.53377437105748,
+    "timestamp": "2026-03-31T23:02:06.444Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 14.039831151935878,
+    "timestamp": "2026-03-31T23:02:06.471Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 75.4445865303166,
+    "timestamp": "2026-03-31T23:02:06.494Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 62.97825644003666,
+    "timestamp": "2026-03-31T23:02:06.648Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 91.21470219382665,
+    "timestamp": "2026-03-31T23:02:36.437Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 88.84561107734187,
+    "timestamp": "2026-03-31T23:02:36.482Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 82.31853546641194,
+    "timestamp": "2026-03-31T23:02:36.498Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 1.1496080986500568,
+    "timestamp": "2026-03-31T23:02:36.668Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 85.12916932466916,
+    "timestamp": "2026-03-31T23:03:06.440Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 42.974077767265825,
+    "timestamp": "2026-03-31T23:03:06.487Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 96.5525846834006,
+    "timestamp": "2026-03-31T23:03:06.502Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 35.11249183066013,
+    "timestamp": "2026-03-31T23:03:06.675Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 2.3865092100366025,
+    "timestamp": "2026-03-31T23:03:36.443Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 27.27702575491294,
+    "timestamp": "2026-03-31T23:03:36.486Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 5.992536601224197,
+    "timestamp": "2026-03-31T23:03:36.502Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 91.47986255485817,
+    "timestamp": "2026-03-31T23:03:36.671Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 11.330198287890536,
+    "timestamp": "2026-03-31T23:04:06.459Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 23.11917830207173,
+    "timestamp": "2026-03-31T23:04:06.497Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 29.454885641916796,
+    "timestamp": "2026-03-31T23:04:06.513Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 52.05194387117146,
+    "timestamp": "2026-03-31T23:04:06.682Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 40.763173627842484,
+    "timestamp": "2026-03-31T23:04:36.477Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 44.449807120438386,
+    "timestamp": "2026-03-31T23:04:36.500Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 84.33811984926498,
+    "timestamp": "2026-03-31T23:04:36.517Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 80.62427359576925,
+    "timestamp": "2026-03-31T23:04:36.701Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 48.92973722250604,
+    "timestamp": "2026-03-31T23:05:06.467Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 24.604084615075205,
+    "timestamp": "2026-03-31T23:05:06.513Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 27.71772911962226,
+    "timestamp": "2026-03-31T23:05:06.528Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 42.32400355019438,
+    "timestamp": "2026-03-31T23:05:06.696Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 93.51710672778441,
+    "timestamp": "2026-03-31T23:05:36.482Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 24.04956798047713,
+    "timestamp": "2026-03-31T23:05:36.516Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 26.624005792511163,
+    "timestamp": "2026-03-31T23:05:36.545Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 67.3320667193521,
+    "timestamp": "2026-03-31T23:05:36.703Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 30.825241519805992,
+    "timestamp": "2026-03-31T23:06:06.497Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 30.696009024122894,
+    "timestamp": "2026-03-31T23:06:06.524Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 17.039512168689452,
+    "timestamp": "2026-03-31T23:06:06.551Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 38.92493869292498,
+    "timestamp": "2026-03-31T23:06:06.714Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 13.883015397591103,
+    "timestamp": "2026-03-31T23:06:36.499Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 69.21295815652766,
+    "timestamp": "2026-03-31T23:06:36.529Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 48.41057499432899,
+    "timestamp": "2026-03-31T23:06:36.555Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 81.82917090568628,
+    "timestamp": "2026-03-31T23:06:36.726Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 27.23063542168639,
+    "timestamp": "2026-03-31T23:07:06.517Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 66.69842997262624,
+    "timestamp": "2026-03-31T23:07:06.531Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 19.353390621314613,
+    "timestamp": "2026-03-31T23:07:06.569Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 36.76700196309204,
+    "timestamp": "2026-03-31T23:07:06.736Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 48.24667005502461,
+    "timestamp": "2026-03-31T23:07:36.535Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 52.657194076243265,
+    "timestamp": "2026-03-31T23:07:36.548Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 95.19411417893141,
+    "timestamp": "2026-03-31T23:07:36.569Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 87.56051922322793,
+    "timestamp": "2026-03-31T23:07:36.750Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 34.41801964754134,
+    "timestamp": "2026-03-31T23:08:06.522Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 98.53455829038016,
+    "timestamp": "2026-03-31T23:08:06.551Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 9.225960483122442,
+    "timestamp": "2026-03-31T23:08:06.596Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 90.92335622315862,
+    "timestamp": "2026-03-31T23:08:06.769Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 24.570017366868303,
+    "timestamp": "2026-03-31T23:08:36.570Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 6.902326651708368,
+    "timestamp": "2026-03-31T23:08:36.782Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 74.71279422387913,
+    "timestamp": "2026-03-31T23:08:37.081Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 30.97259993256426,
+    "timestamp": "2026-03-31T23:08:37.112Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 95.533115585295,
+    "timestamp": "2026-03-31T23:09:06.567Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 53.5627589423268,
+    "timestamp": "2026-03-31T23:09:06.786Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 49.30252745308461,
+    "timestamp": "2026-03-31T23:09:08.103Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 79.9546983916247,
+    "timestamp": "2026-03-31T23:09:08.114Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 14.587673392167844,
+    "timestamp": "2026-03-31T23:09:36.575Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 81.91460744464571,
+    "timestamp": "2026-03-31T23:09:36.782Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 3.033746640774815,
+    "timestamp": "2026-03-31T23:09:36.997Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 60.241849237764775,
+    "timestamp": "2026-03-31T23:09:38.131Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 56.29533493350321,
+    "timestamp": "2026-03-31T23:10:06.614Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 21.39973979008455,
+    "timestamp": "2026-03-31T23:10:06.805Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 49.52682870809739,
+    "timestamp": "2026-03-31T23:10:07.028Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 48.9857604221423,
+    "timestamp": "2026-03-31T23:10:08.126Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 6.076650562328845,
+    "timestamp": "2026-03-31T23:10:36.595Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 84.89295894705407,
+    "timestamp": "2026-03-31T23:10:36.814Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 20.611892922887975,
+    "timestamp": "2026-03-31T23:10:37.018Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 9.802089115898783,
+    "timestamp": "2026-03-31T23:10:38.131Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 89.00556924850366,
+    "timestamp": "2026-03-31T23:11:06.615Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 25.17110699416373,
+    "timestamp": "2026-03-31T23:11:06.827Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 87.43117257941454,
+    "timestamp": "2026-03-31T23:11:07.031Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 91.96189043302978,
+    "timestamp": "2026-03-31T23:11:08.136Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 98.87669525520765,
+    "timestamp": "2026-03-31T23:11:36.631Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 56.51354903349139,
+    "timestamp": "2026-03-31T23:11:36.817Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 6.159222955659571,
+    "timestamp": "2026-03-31T23:11:37.041Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 21.25848709214765,
+    "timestamp": "2026-03-31T23:11:38.146Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 77.58674842084335,
+    "timestamp": "2026-03-31T23:12:06.626Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 12.181156918669744,
+    "timestamp": "2026-03-31T23:12:06.846Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 54.911213163679385,
+    "timestamp": "2026-03-31T23:12:07.047Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 62.332227998344536,
+    "timestamp": "2026-03-31T23:12:08.153Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 88.56178859285755,
+    "timestamp": "2026-03-31T23:12:36.647Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 91.0690635607403,
+    "timestamp": "2026-03-31T23:12:36.831Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 78.73720927225305,
+    "timestamp": "2026-03-31T23:12:37.058Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 39.75134569328471,
+    "timestamp": "2026-03-31T23:12:38.349Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 40.898774138133206,
+    "timestamp": "2026-03-31T23:13:06.659Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 81.3561854857493,
+    "timestamp": "2026-03-31T23:13:06.837Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 63.19439773437176,
+    "timestamp": "2026-03-31T23:13:07.056Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 74.19620241527831,
+    "timestamp": "2026-03-31T23:13:08.179Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 40.99361463608753,
+    "timestamp": "2026-03-31T23:13:36.655Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 71.14532719667903,
+    "timestamp": "2026-03-31T23:13:36.860Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 45.02486464411037,
+    "timestamp": "2026-03-31T23:13:37.186Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 24.162555521352257,
+    "timestamp": "2026-03-31T23:13:38.212Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 86.39291855172289,
+    "timestamp": "2026-03-31T23:14:06.656Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 27.075885121596578,
+    "timestamp": "2026-03-31T23:14:06.856Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 92.28829408031234,
+    "timestamp": "2026-03-31T23:14:07.397Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 85.80211352002253,
+    "timestamp": "2026-03-31T23:14:08.213Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 27.038829862088008,
+    "timestamp": "2026-03-31T23:14:36.666Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 20.449888267214455,
+    "timestamp": "2026-03-31T23:14:36.852Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 95.38300483173128,
+    "timestamp": "2026-03-31T23:14:37.077Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 76.84784741538314,
+    "timestamp": "2026-03-31T23:14:38.229Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 62.24933463068113,
+    "timestamp": "2026-03-31T23:15:06.667Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 33.90401608662269,
+    "timestamp": "2026-03-31T23:15:06.870Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 44.91145545125635,
+    "timestamp": "2026-03-31T23:15:07.190Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 38.3062575630694,
+    "timestamp": "2026-03-31T23:15:08.231Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 74.92601634106903,
+    "timestamp": "2026-03-31T23:15:36.673Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 55.81982207459204,
+    "timestamp": "2026-03-31T23:15:36.853Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 19.289532608045512,
+    "timestamp": "2026-03-31T23:15:37.468Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 53.66580846649226,
+    "timestamp": "2026-03-31T23:15:38.255Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 65.84518930833357,
+    "timestamp": "2026-03-31T23:16:06.683Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 59.839269678635546,
+    "timestamp": "2026-03-31T23:16:06.865Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 33.344045780225215,
+    "timestamp": "2026-03-31T23:16:07.420Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 83.13151613930107,
+    "timestamp": "2026-03-31T23:16:08.266Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 56.36869231146125,
+    "timestamp": "2026-03-31T23:16:36.692Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 58.49119628484193,
+    "timestamp": "2026-03-31T23:16:36.863Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 37.18994255304848,
+    "timestamp": "2026-03-31T23:16:37.144Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 74.17568416186496,
+    "timestamp": "2026-03-31T23:16:38.278Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 50.04791342451789,
+    "timestamp": "2026-03-31T23:17:06.726Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 34.01682851980531,
+    "timestamp": "2026-03-31T23:17:06.889Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 51.728040860287074,
+    "timestamp": "2026-03-31T23:17:08.291Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 11.857539679625372,
+    "timestamp": "2026-03-31T23:17:08.307Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 3.6924946665022107,
+    "timestamp": "2026-03-31T23:17:36.733Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 30.312266051839345,
+    "timestamp": "2026-03-31T23:17:36.873Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 25.41841863745905,
+    "timestamp": "2026-03-31T23:17:37.149Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 55.31206356449909,
+    "timestamp": "2026-03-31T23:17:38.309Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 86.87568946890242,
+    "timestamp": "2026-03-31T23:18:06.746Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 94.67789103333459,
+    "timestamp": "2026-03-31T23:18:06.891Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 93.63401299261695,
+    "timestamp": "2026-03-31T23:18:07.180Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 77.83749041246475,
+    "timestamp": "2026-03-31T23:18:08.532Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 26.971423505067893,
+    "timestamp": "2026-03-31T23:18:36.775Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 37.634938152344624,
+    "timestamp": "2026-03-31T23:18:36.894Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 65.6226533506874,
+    "timestamp": "2026-03-31T23:18:37.193Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 36.79846178497215,
+    "timestamp": "2026-03-31T23:18:38.529Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 56.379922886050004,
+    "timestamp": "2026-03-31T23:19:06.778Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 68.19609790793439,
+    "timestamp": "2026-03-31T23:19:06.907Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 15.363874920978605,
+    "timestamp": "2026-03-31T23:19:07.198Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 67.85279494298977,
+    "timestamp": "2026-03-31T23:19:08.541Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 70.38042417057542,
+    "timestamp": "2026-03-31T23:19:36.775Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 75.3868382437096,
+    "timestamp": "2026-03-31T23:19:36.921Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 38.89864304939141,
+    "timestamp": "2026-03-31T23:19:37.202Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 78.83365485093135,
+    "timestamp": "2026-03-31T23:19:38.549Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 37.69632951684056,
+    "timestamp": "2026-03-31T23:20:06.800Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 61.5210925560702,
+    "timestamp": "2026-03-31T23:20:06.938Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 99.07802560461973,
+    "timestamp": "2026-03-31T23:20:07.208Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 45.1223098314274,
+    "timestamp": "2026-03-31T23:20:08.557Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 29.339346337874527,
+    "timestamp": "2026-03-31T23:20:36.788Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 66.70661684385709,
+    "timestamp": "2026-03-31T23:20:36.942Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 36.44455109498645,
+    "timestamp": "2026-03-31T23:20:37.227Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 2.0550792237818416,
+    "timestamp": "2026-03-31T23:20:38.568Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 98.94796081425217,
+    "timestamp": "2026-03-31T23:21:06.814Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 46.533094379596484,
+    "timestamp": "2026-03-31T23:21:06.935Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 12.93871740474608,
+    "timestamp": "2026-03-31T23:21:07.272Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 74.03635514745696,
+    "timestamp": "2026-03-31T23:21:08.569Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 2.5401673435007877,
+    "timestamp": "2026-03-31T23:21:36.802Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 95.88657642311675,
+    "timestamp": "2026-03-31T23:21:36.943Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 38.71585929109585,
+    "timestamp": "2026-03-31T23:21:37.223Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 11.27551788203146,
+    "timestamp": "2026-03-31T23:21:38.601Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 94.13572568665805,
+    "timestamp": "2026-03-31T23:22:06.819Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 7.1508388473288775,
+    "timestamp": "2026-03-31T23:22:06.949Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 77.3478134670487,
+    "timestamp": "2026-03-31T23:22:07.248Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 53.23350546343205,
+    "timestamp": "2026-03-31T23:22:08.581Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 62.39360730125313,
+    "timestamp": "2026-03-31T23:22:36.817Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 15.585656420179173,
+    "timestamp": "2026-03-31T23:22:36.970Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 94.21699436948218,
+    "timestamp": "2026-03-31T23:22:37.257Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 53.605365980055566,
+    "timestamp": "2026-03-31T23:22:38.593Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 46.395715099850534,
+    "timestamp": "2026-03-31T23:23:06.822Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 23.772347637293823,
+    "timestamp": "2026-03-31T23:23:06.976Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 74.60748250290158,
+    "timestamp": "2026-03-31T23:23:07.242Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 1.319928329957032,
+    "timestamp": "2026-03-31T23:23:08.589Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 33.18133265492058,
+    "timestamp": "2026-03-31T23:23:36.842Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 92.12870512584178,
+    "timestamp": "2026-03-31T23:23:37.000Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 7.8031282810699265,
+    "timestamp": "2026-03-31T23:23:37.261Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 39.752281754202635,
+    "timestamp": "2026-03-31T23:23:38.598Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 47.50815330872107,
+    "timestamp": "2026-03-31T23:24:06.841Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 62.42160544628621,
+    "timestamp": "2026-03-31T23:24:06.991Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 59.53916528698241,
+    "timestamp": "2026-03-31T23:24:07.258Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 18.99162990118959,
+    "timestamp": "2026-03-31T23:24:08.612Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 83.8551419247618,
+    "timestamp": "2026-03-31T23:24:36.842Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 26.27430738183133,
+    "timestamp": "2026-03-31T23:24:37.004Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 73.39602679973434,
+    "timestamp": "2026-03-31T23:24:37.282Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 74.60997615328486,
+    "timestamp": "2026-03-31T23:24:38.640Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 81.49577107525947,
+    "timestamp": "2026-03-31T23:25:06.852Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 72.09160711136865,
+    "timestamp": "2026-03-31T23:25:07.009Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 99.3073669953373,
+    "timestamp": "2026-03-31T23:25:07.291Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 88.29741908300689,
+    "timestamp": "2026-03-31T23:25:08.631Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 25.605768650829873,
+    "timestamp": "2026-03-31T23:25:36.850Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 56.23256497740279,
+    "timestamp": "2026-03-31T23:25:37.045Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 96.32227285078471,
+    "timestamp": "2026-03-31T23:25:37.286Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 75.90243279507526,
+    "timestamp": "2026-03-31T23:25:38.637Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 75.77140172040372,
+    "timestamp": "2026-03-31T23:26:06.881Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 75.045769550507,
+    "timestamp": "2026-03-31T23:26:07.029Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 98.15282150842334,
+    "timestamp": "2026-03-31T23:26:07.299Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 46.94286053552299,
+    "timestamp": "2026-03-31T23:26:08.638Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 64.95691718231234,
+    "timestamp": "2026-03-31T23:26:36.882Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 54.33673773913409,
+    "timestamp": "2026-03-31T23:26:37.082Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 7.259908835779005,
+    "timestamp": "2026-03-31T23:26:37.304Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 96.29135186291954,
+    "timestamp": "2026-03-31T23:26:38.641Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 5.546320843178476,
+    "timestamp": "2026-03-31T23:27:06.894Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 5.763734756565664,
+    "timestamp": "2026-03-31T23:27:07.392Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 48.680490401592834,
+    "timestamp": "2026-03-31T23:27:08.886Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 37.03363987719675,
+    "timestamp": "2026-03-31T23:27:36.886Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 31.155095422823507,
+    "timestamp": "2026-03-31T23:27:37.063Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 4.802711101621293,
+    "timestamp": "2026-03-31T23:27:37.317Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 1.0639526141643763,
+    "timestamp": "2026-03-31T23:27:39.045Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 96.70957664060282,
+    "timestamp": "2026-03-31T23:28:06.907Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 66.8170035389691,
+    "timestamp": "2026-03-31T23:28:07.085Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 6.154005794821926,
+    "timestamp": "2026-03-31T23:28:07.346Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 9.604809315742436,
+    "timestamp": "2026-03-31T23:28:09.050Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 28.199501908638446,
+    "timestamp": "2026-03-31T23:28:36.909Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 45.90814824448122,
+    "timestamp": "2026-03-31T23:28:37.085Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 48.00967214190502,
+    "timestamp": "2026-03-31T23:28:37.337Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 85.29917591938975,
+    "timestamp": "2026-03-31T23:28:39.075Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 2.099140538341282,
+    "timestamp": "2026-03-31T23:29:06.912Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 75.63468036573174,
+    "timestamp": "2026-03-31T23:29:07.085Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 8.893076744174921,
+    "timestamp": "2026-03-31T23:29:07.350Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 38.633580525231736,
+    "timestamp": "2026-03-31T23:29:09.073Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 92.10069287862595,
+    "timestamp": "2026-03-31T23:29:36.915Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 29.93087591700072,
+    "timestamp": "2026-03-31T23:29:37.101Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 58.47429281028147,
+    "timestamp": "2026-03-31T23:29:37.358Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 59.857088143671355,
+    "timestamp": "2026-03-31T23:29:39.079Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 62.04097060861241,
+    "timestamp": "2026-03-31T23:30:06.933Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 45.43920564316589,
+    "timestamp": "2026-03-31T23:30:07.119Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 11.187754543426575,
+    "timestamp": "2026-03-31T23:30:07.367Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 40.353835727876344,
+    "timestamp": "2026-03-31T23:30:09.594Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 77.64310695770064,
+    "timestamp": "2026-03-31T23:30:36.935Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 17.99660496641525,
+    "timestamp": "2026-03-31T23:30:37.120Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 28.4524483861353,
+    "timestamp": "2026-03-31T23:30:37.370Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 42.47034417263015,
+    "timestamp": "2026-03-31T23:30:39.083Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 8.560770785795668,
+    "timestamp": "2026-03-31T23:31:06.962Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 98.39283729348693,
+    "timestamp": "2026-03-31T23:31:07.115Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 28.97144895798094,
+    "timestamp": "2026-03-31T23:31:07.395Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 62.62433339702923,
+    "timestamp": "2026-03-31T23:31:09.093Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 97.98199899215864,
+    "timestamp": "2026-03-31T23:31:36.950Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 13.429732001107109,
+    "timestamp": "2026-03-31T23:31:37.117Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 72.05208594248458,
+    "timestamp": "2026-03-31T23:31:37.383Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 20.801313479456862,
+    "timestamp": "2026-03-31T23:31:39.087Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 6.532978581187421,
+    "timestamp": "2026-03-31T23:32:06.952Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 21.884622996951276,
+    "timestamp": "2026-03-31T23:32:07.143Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 92.96729435983396,
+    "timestamp": "2026-03-31T23:32:07.387Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 1.7493663932711123,
+    "timestamp": "2026-03-31T23:32:09.105Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 62.86975467243976,
+    "timestamp": "2026-03-31T23:32:36.954Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 91.20067008723852,
+    "timestamp": "2026-03-31T23:32:37.126Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 55.725213860213465,
+    "timestamp": "2026-03-31T23:32:37.389Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 14.753555321481947,
+    "timestamp": "2026-03-31T23:32:39.100Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 62.984193746750385,
+    "timestamp": "2026-03-31T23:33:06.964Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 89.23148104275282,
+    "timestamp": "2026-03-31T23:33:07.137Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 96.99063975276121,
+    "timestamp": "2026-03-31T23:33:07.426Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 22.017221319864234,
+    "timestamp": "2026-03-31T23:33:09.115Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 29.82636059010454,
+    "timestamp": "2026-03-31T23:33:36.974Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 77.80949709549036,
+    "timestamp": "2026-03-31T23:33:37.159Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 72.31169919899413,
+    "timestamp": "2026-03-31T23:33:37.419Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 73.3732724540173,
+    "timestamp": "2026-03-31T23:33:39.124Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 14.710322415896693,
+    "timestamp": "2026-03-31T23:34:07.003Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 54.767493116914544,
+    "timestamp": "2026-03-31T23:34:07.170Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 59.43251868699409,
+    "timestamp": "2026-03-31T23:34:07.443Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 3.4884671584643256,
+    "timestamp": "2026-03-31T23:34:09.133Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 85.6415331114923,
+    "timestamp": "2026-03-31T23:34:37.013Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 22.589146773684654,
+    "timestamp": "2026-03-31T23:34:37.164Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 48.0543258411965,
+    "timestamp": "2026-03-31T23:34:37.450Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 31.934142409694932,
+    "timestamp": "2026-03-31T23:34:39.150Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 31.222866457664377,
+    "timestamp": "2026-03-31T23:35:07.003Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 44.81240938878079,
+    "timestamp": "2026-03-31T23:35:07.186Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 66.62171367128875,
+    "timestamp": "2026-03-31T23:35:07.434Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 51.71523146101461,
+    "timestamp": "2026-03-31T23:35:09.160Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 92.60504849581831,
+    "timestamp": "2026-03-31T23:35:37.025Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 76.82508614123581,
+    "timestamp": "2026-03-31T23:35:37.188Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 76.94813252994416,
+    "timestamp": "2026-03-31T23:35:37.440Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 40.86092670738368,
+    "timestamp": "2026-03-31T23:35:39.164Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 1.9114953324971373,
+    "timestamp": "2026-03-31T23:36:07.029Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 88.06385085316752,
+    "timestamp": "2026-03-31T23:36:07.202Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 75.89596123568961,
+    "timestamp": "2026-03-31T23:36:07.474Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 70.10780218624701,
+    "timestamp": "2026-03-31T23:36:09.161Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 22.423187506362098,
+    "timestamp": "2026-03-31T23:36:37.038Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 32.27951995684403,
+    "timestamp": "2026-03-31T23:36:37.204Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 81.31615098530473,
+    "timestamp": "2026-03-31T23:36:37.467Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 29.722930941680637,
+    "timestamp": "2026-03-31T23:36:39.169Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 6.124368666276647,
+    "timestamp": "2026-03-31T23:37:07.022Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 43.27924436041846,
+    "timestamp": "2026-03-31T23:37:07.221Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 8.075226256692192,
+    "timestamp": "2026-03-31T23:37:07.467Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 82.789629824933,
+    "timestamp": "2026-03-31T23:37:09.162Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 77.93470424553983,
+    "timestamp": "2026-03-31T23:37:37.033Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 26.00334262943631,
+    "timestamp": "2026-03-31T23:37:37.206Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 29.075482763643258,
+    "timestamp": "2026-03-31T23:37:37.491Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 82.23214958697388,
+    "timestamp": "2026-03-31T23:37:39.170Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 15.887739182745742,
+    "timestamp": "2026-03-31T23:38:07.048Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 97.14898138247868,
+    "timestamp": "2026-03-31T23:38:07.228Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 45.235928303227126,
+    "timestamp": "2026-03-31T23:38:07.503Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 68.49189034218352,
+    "timestamp": "2026-03-31T23:38:09.170Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 85.19768789008081,
+    "timestamp": "2026-03-31T23:38:37.057Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 25.644115684729606,
+    "timestamp": "2026-03-31T23:38:37.244Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 98.6245355106368,
+    "timestamp": "2026-03-31T23:38:37.514Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 20.20137832522979,
+    "timestamp": "2026-03-31T23:38:39.183Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 12.967031166854703,
+    "timestamp": "2026-03-31T23:39:07.068Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 52.804585969509866,
+    "timestamp": "2026-03-31T23:39:07.251Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 66.4725798053349,
+    "timestamp": "2026-03-31T23:39:07.510Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 95.43831882188644,
+    "timestamp": "2026-03-31T23:39:09.185Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 86.00036035299988,
+    "timestamp": "2026-03-31T23:39:37.085Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 52.79057688875708,
+    "timestamp": "2026-03-31T23:39:37.259Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 51.177957242409356,
+    "timestamp": "2026-03-31T23:39:37.514Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 23.424895834136304,
+    "timestamp": "2026-03-31T23:39:39.206Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 25.418292508619732,
+    "timestamp": "2026-03-31T23:40:07.078Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 77.41790864336046,
+    "timestamp": "2026-03-31T23:40:07.267Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 56.99226461839388,
+    "timestamp": "2026-03-31T23:40:07.511Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 37.703100516993494,
+    "timestamp": "2026-03-31T23:40:09.208Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 5.888226822864507,
+    "timestamp": "2026-03-31T23:40:37.096Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 56.88981490634827,
+    "timestamp": "2026-03-31T23:40:37.279Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 18.935530323352868,
+    "timestamp": "2026-03-31T23:40:37.526Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 3.4093448367808143,
+    "timestamp": "2026-03-31T23:40:39.242Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 89.76729511822813,
+    "timestamp": "2026-03-31T23:41:07.088Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 96.23938778419519,
+    "timestamp": "2026-03-31T23:41:07.287Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 47.116610062561136,
+    "timestamp": "2026-03-31T23:41:07.542Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 43.27699666183028,
+    "timestamp": "2026-03-31T23:41:09.237Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 84.33838895351529,
+    "timestamp": "2026-03-31T23:41:37.106Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 12.94915772791695,
+    "timestamp": "2026-03-31T23:41:37.296Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 76.90095505040809,
+    "timestamp": "2026-03-31T23:41:37.572Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 1.5374130485747095,
+    "timestamp": "2026-03-31T23:41:39.270Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 35.14365623141191,
+    "timestamp": "2026-03-31T23:42:07.102Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 42.743318947545475,
+    "timestamp": "2026-03-31T23:42:07.302Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 41.89912402968786,
+    "timestamp": "2026-03-31T23:42:07.550Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 95.27644100108827,
+    "timestamp": "2026-03-31T23:42:09.248Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 96.13279699154191,
+    "timestamp": "2026-03-31T23:42:37.123Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 10.486506947992458,
+    "timestamp": "2026-03-31T23:42:37.318Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 52.2686098797854,
+    "timestamp": "2026-03-31T23:42:37.573Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 11.13917019511861,
+    "timestamp": "2026-03-31T23:42:39.267Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 80.15297512318476,
+    "timestamp": "2026-03-31T23:43:07.121Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 22.12377405489493,
+    "timestamp": "2026-03-31T23:43:07.337Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 26.070658403287027,
+    "timestamp": "2026-03-31T23:43:07.572Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 58.4588820986482,
+    "timestamp": "2026-03-31T23:43:09.263Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 73.79855051442009,
+    "timestamp": "2026-03-31T23:43:37.125Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 59.79734512659499,
+    "timestamp": "2026-03-31T23:43:37.345Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 86.0283143256276,
+    "timestamp": "2026-03-31T23:43:37.573Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 64.74364121511726,
+    "timestamp": "2026-03-31T23:43:39.293Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 25.332854397488457,
+    "timestamp": "2026-03-31T23:44:07.132Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 80.44035747940504,
+    "timestamp": "2026-03-31T23:44:07.339Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 70.38844819988617,
+    "timestamp": "2026-03-31T23:44:07.581Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 5.026009277449928,
+    "timestamp": "2026-03-31T23:44:09.276Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 12.999968444776776,
+    "timestamp": "2026-03-31T23:44:37.140Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 40.74324770772879,
+    "timestamp": "2026-03-31T23:44:37.355Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 46.072361344111734,
+    "timestamp": "2026-03-31T23:44:37.603Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 11.766340345625926,
+    "timestamp": "2026-03-31T23:44:39.299Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 7.362205800688271,
+    "timestamp": "2026-03-31T23:45:07.167Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 78.29633414699256,
+    "timestamp": "2026-03-31T23:45:07.368Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 91.46471038149376,
+    "timestamp": "2026-03-31T23:45:07.596Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 40.424893261597084,
+    "timestamp": "2026-03-31T23:45:09.295Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 55.54568607773316,
+    "timestamp": "2026-03-31T23:45:37.159Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 3.3426670625683497,
+    "timestamp": "2026-03-31T23:45:37.364Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 42.12223238162748,
+    "timestamp": "2026-03-31T23:45:37.628Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 5.857010098168103,
+    "timestamp": "2026-03-31T23:45:39.307Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 6.504352875973007,
+    "timestamp": "2026-03-31T23:46:07.183Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 37.936216541328314,
+    "timestamp": "2026-03-31T23:46:07.373Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 31.30378559498522,
+    "timestamp": "2026-03-31T23:46:07.614Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 35.24928492583263,
+    "timestamp": "2026-03-31T23:46:09.314Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 2.471370264723749,
+    "timestamp": "2026-03-31T23:46:37.198Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 39.37846387974779,
+    "timestamp": "2026-03-31T23:46:37.392Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 41.33256738391392,
+    "timestamp": "2026-03-31T23:46:37.628Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 8.6288372609292,
+    "timestamp": "2026-03-31T23:46:39.324Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 94.14586369155573,
+    "timestamp": "2026-03-31T23:47:07.191Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 57.83767646514863,
+    "timestamp": "2026-03-31T23:47:07.375Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 35.1846861738946,
+    "timestamp": "2026-03-31T23:47:07.641Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 99.91645573642289,
+    "timestamp": "2026-03-31T23:47:09.335Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 73.48691806296524,
+    "timestamp": "2026-03-31T23:47:37.191Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 66.27508788351673,
+    "timestamp": "2026-03-31T23:47:37.391Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 45.507971379208456,
+    "timestamp": "2026-03-31T23:47:37.670Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 74.17876738938324,
+    "timestamp": "2026-03-31T23:47:39.338Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 30.033162110719992,
+    "timestamp": "2026-03-31T23:48:07.213Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 95.3727476994898,
+    "timestamp": "2026-03-31T23:48:07.391Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 9.100615051311712,
+    "timestamp": "2026-03-31T23:48:07.668Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 32.964694563186555,
+    "timestamp": "2026-03-31T23:48:09.340Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 85.88366275486217,
+    "timestamp": "2026-03-31T23:48:37.202Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 54.55738314940034,
+    "timestamp": "2026-03-31T23:48:37.424Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 86.6003432703464,
+    "timestamp": "2026-03-31T23:48:37.690Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 15.0693493139622,
+    "timestamp": "2026-03-31T23:48:39.358Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 75.26613958405454,
+    "timestamp": "2026-03-31T23:49:07.217Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 50.124987615808514,
+    "timestamp": "2026-03-31T23:49:07.417Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 36.00558445051549,
+    "timestamp": "2026-03-31T23:49:07.682Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 45.143476131829985,
+    "timestamp": "2026-03-31T23:49:09.387Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 28.6007898756539,
+    "timestamp": "2026-03-31T23:49:37.239Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 78.17516117421076,
+    "timestamp": "2026-03-31T23:49:37.446Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 17.190264259177333,
+    "timestamp": "2026-03-31T23:49:37.710Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 44.5835942964576,
+    "timestamp": "2026-03-31T23:49:39.380Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 86.22761384320575,
+    "timestamp": "2026-03-31T23:50:07.244Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 30.439924129679984,
+    "timestamp": "2026-03-31T23:50:07.432Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 76.51793915177217,
+    "timestamp": "2026-03-31T23:50:07.719Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 2.8384848442874144,
+    "timestamp": "2026-03-31T23:50:09.405Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 7.16538099755144,
+    "timestamp": "2026-03-31T23:50:37.236Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 99.15869330495777,
+    "timestamp": "2026-03-31T23:50:37.440Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 85.68763310343712,
+    "timestamp": "2026-03-31T23:50:37.706Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 94.7204534067479,
+    "timestamp": "2026-03-31T23:50:39.410Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 56.035719583438535,
+    "timestamp": "2026-03-31T23:51:07.248Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 3.963555352432735,
+    "timestamp": "2026-03-31T23:51:07.449Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 39.19144715969223,
+    "timestamp": "2026-03-31T23:51:07.725Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 98.05268272084149,
+    "timestamp": "2026-03-31T23:51:09.414Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 20.074773600058794,
+    "timestamp": "2026-03-31T23:51:37.255Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 40.25854543936781,
+    "timestamp": "2026-03-31T23:51:37.456Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 56.31300434122921,
+    "timestamp": "2026-03-31T23:51:37.743Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 21.56460934375324,
+    "timestamp": "2026-03-31T23:51:39.398Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 37.33731583904174,
+    "timestamp": "2026-03-31T23:52:07.273Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 23.895942208070274,
+    "timestamp": "2026-03-31T23:52:07.473Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 26.93153414613527,
+    "timestamp": "2026-03-31T23:52:07.729Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 36.95132637609168,
+    "timestamp": "2026-03-31T23:52:09.402Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 76.3822781690579,
+    "timestamp": "2026-03-31T23:52:37.278Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 81.05001110159195,
+    "timestamp": "2026-03-31T23:52:37.476Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 46.6973346323818,
+    "timestamp": "2026-03-31T23:52:37.745Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 89.56944576353536,
+    "timestamp": "2026-03-31T23:52:39.409Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 4.481745474737464,
+    "timestamp": "2026-03-31T23:53:07.304Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 78.31319419169319,
+    "timestamp": "2026-03-31T23:53:07.514Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 55.7250769008543,
+    "timestamp": "2026-03-31T23:53:07.746Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 1.0020696242371674,
+    "timestamp": "2026-03-31T23:53:09.412Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 8.196282051783133,
+    "timestamp": "2026-03-31T23:53:37.298Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 47.64389481023761,
+    "timestamp": "2026-03-31T23:53:37.499Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 40.958575563243805,
+    "timestamp": "2026-03-31T23:53:37.745Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 30.222224025556542,
+    "timestamp": "2026-03-31T23:53:39.417Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 74.16990900911385,
+    "timestamp": "2026-03-31T23:54:07.318Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 92.98142087519955,
+    "timestamp": "2026-03-31T23:54:07.497Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 98.53985404918876,
+    "timestamp": "2026-03-31T23:54:07.753Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 84.991617125687,
+    "timestamp": "2026-03-31T23:54:09.454Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 14.287518555568901,
+    "timestamp": "2026-03-31T23:54:37.319Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 14.688396592023768,
+    "timestamp": "2026-03-31T23:54:37.500Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 32.775400029113925,
+    "timestamp": "2026-03-31T23:54:37.774Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 19.645356580763064,
+    "timestamp": "2026-03-31T23:54:39.456Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 99.16341555550467,
+    "timestamp": "2026-03-31T23:55:07.320Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 51.62892715574326,
+    "timestamp": "2026-03-31T23:55:07.517Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 16.64266527325571,
+    "timestamp": "2026-03-31T23:55:07.881Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 89.7855176686723,
+    "timestamp": "2026-03-31T23:55:09.463Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 80.35872375914671,
+    "timestamp": "2026-03-31T23:55:37.348Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 64.48034875645673,
+    "timestamp": "2026-03-31T23:55:37.527Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 4.885938300272463,
+    "timestamp": "2026-03-31T23:55:37.887Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 59.28043701161512,
+    "timestamp": "2026-03-31T23:55:39.465Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 81.14708119177445,
+    "timestamp": "2026-03-31T23:56:07.351Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 32.78901013398223,
+    "timestamp": "2026-03-31T23:56:07.537Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 68.79957385747707,
+    "timestamp": "2026-03-31T23:56:07.858Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 19.43478374898898,
+    "timestamp": "2026-03-31T23:56:09.454Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 67.15269520505072,
+    "timestamp": "2026-03-31T23:56:37.338Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 25.056180738348232,
+    "timestamp": "2026-03-31T23:56:37.533Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 13.423157855740808,
+    "timestamp": "2026-03-31T23:56:37.814Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 46.27215396158261,
+    "timestamp": "2026-03-31T23:56:39.481Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 55.6228412261898,
+    "timestamp": "2026-03-31T23:57:07.346Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 88.47096075863814,
+    "timestamp": "2026-03-31T23:57:07.547Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 43.89358700808985,
+    "timestamp": "2026-03-31T23:57:07.800Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 67.09211952081927,
+    "timestamp": "2026-03-31T23:57:09.469Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 70.53909985607616,
+    "timestamp": "2026-03-31T23:57:37.373Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 35.14027574676177,
+    "timestamp": "2026-03-31T23:57:37.590Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 84.1620322981418,
+    "timestamp": "2026-03-31T23:57:37.807Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 78.60311365211042,
+    "timestamp": "2026-03-31T23:57:39.476Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 19.610976964279892,
+    "timestamp": "2026-03-31T23:58:07.378Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 74.0573031317758,
+    "timestamp": "2026-03-31T23:58:07.584Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 94.52995907283352,
+    "timestamp": "2026-03-31T23:58:07.818Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 33.31928420679656,
+    "timestamp": "2026-03-31T23:58:09.482Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 36.66247151206691,
+    "timestamp": "2026-03-31T23:58:37.364Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 64.2972756519747,
+    "timestamp": "2026-03-31T23:58:37.593Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 83.99733949872956,
+    "timestamp": "2026-03-31T23:58:37.823Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 28.829367535637974,
+    "timestamp": "2026-03-31T23:58:40.419Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 33.074816475039434,
+    "timestamp": "2026-03-31T23:59:07.376Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 11.289013383248214,
+    "timestamp": "2026-03-31T23:59:07.602Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 52.186293260067075,
+    "timestamp": "2026-03-31T23:59:08.232Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 29.70021475218524,
+    "timestamp": "2026-03-31T23:59:09.923Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 78.63090999810282,
+    "timestamp": "2026-03-31T23:59:37.611Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 2.921276276579865,
+    "timestamp": "2026-03-31T23:59:37.630Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 76.4528850813047,
+    "timestamp": "2026-03-31T23:59:37.831Z"
+  },
+  {
+    "type": "long_term_task_progress",
+    "value": 13.567099539637905,
+    "timestamp": "2026-03-31T23:59:39.499Z"
+  }
+]

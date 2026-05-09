@@ -1,0 +1,23 @@
+{
+  "id": "perf-test-agent-1775976663885",
+  "name": "Agent-perf-tes",
+  "model": "gpt-4o",
+  "capabilities": [
+    "LLM",
+    "NEXUSGENESIS_DEV",
+    "BLOCKCHAIN",
+    "PQC"
+  ],
+  "status": "active",
+  "reputation": 1,
+  "registeredAt": "2026-04-12T06:51:03.897Z",
+  "lastActive": "2026-04-12T06:51:03.897Z",
+  "health": {
+    "status": "healthy",
+    "lastCheck": "2026-04-12T06:51:03.897Z"
+  },
+  "wallet": {
+    "address": "ng11J8hfCvrUFLkqvhVvcMAu9pTRZNUdD5zBm",
+    "balance": "10000"
+  }
+}

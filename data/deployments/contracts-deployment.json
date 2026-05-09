@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-04-25T07:22:06.751Z",
+  "deployer": "ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ",
+  "contracts": [
+    {
+      "id": "nexus-token-v1",
+      "bytecode": "0x01000800010008010b",
+      "storage": {}
+    },
+    {
+      "id": "nexus-dao-v1",
+      "bytecode": "0x010008000100080101000802010008030b",
+      "storage": {}
+    },
+    {
+      "id": "nexus-reputation-v1",
+      "bytecode": "0x010a080201000800010008010b",
+      "storage": {}
+    },
+    {
+      "id": "nexus-escrow-v1",
+      "bytecode": "0x01e8080001000801010008020b",
+      "storage": {}
+    },
+    {
+      "id": "nexus-agent-registry-v1",
+      "bytecode": "0x0100080001000801010008020b",
+      "storage": {}
+    }
+  ]
+}

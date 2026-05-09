@@ -1,0 +1,22 @@
+[
+  {
+    "type": "network_connections",
+    "value": 13,
+    "timestamp": "2026-03-20T15:49:03.022Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 37,
+    "timestamp": "2026-03-20T15:49:03.053Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 44,
+    "timestamp": "2026-03-20T15:49:08.027Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 55,
+    "timestamp": "2026-03-20T15:49:08.057Z"
+  }
+]

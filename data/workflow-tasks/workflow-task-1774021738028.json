@@ -1,0 +1,28 @@
+{
+  "id": "1774021738028",
+  "name": "周期性测试任务",
+  "status": "failed",
+  "createdAt": "2026-03-20T15:48:58.028Z",
+  "updatedAt": "2026-03-21T14:03:40.243Z",
+  "runCount": 7,
+  "errorCount": 2,
+  "lastError": {
+    "message": "task.action is not a function",
+    "type": "unknown_error",
+    "timestamp": "2026-03-21T14:03:40.243Z",
+    "stack": "TypeError: task.action is not a function\n    at WorkflowEngine.executeTask (file:///D:/trae_projects/NexusGenesis/src/automation/workflowEngine.js:185:33)\n    at Timeout._onTimeout (file:///D:/trae_projects/NexusGenesis/src/automation/workflowEngine.js:236:12)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)"
+  },
+  "retryConfig": {
+    "maxRetries": 2,
+    "initialDelay": 500,
+    "backoffMultiplier": 2
+  },
+  "description": "测试周期性任务功能",
+  "isRecurring": true,
+  "interval": 2000,
+  "result": {
+    "count": 5,
+    "timestamp": "2026-03-20T15:49:06.241Z"
+  },
+  "nextRetryAt": "2026-03-21T14:03:40.235Z"
+}

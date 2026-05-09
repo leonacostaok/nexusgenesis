@@ -1,0 +1,8757 @@
+[
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:00:23.584Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:00:53.596Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:01:23.606Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:01:53.622Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:02:23.642Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:02:53.631Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:03:23.633Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:03:53.648Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:04:23.664Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:04:53.679Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:05:23.671Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:05:53.683Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:06:23.691Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:06:53.709Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:07:23.709Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:07:53.715Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:08:23.712Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:08:53.719Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:09:23.739Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:09:53.833Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:10:23.740Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:10:53.749Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:11:23.774Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:11:53.758Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:12:23.791Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:12:53.789Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:13:23.812Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:13:53.801Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:14:23.823Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:14:53.824Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:15:23.840Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:15:53.843Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:16:23.862Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:16:53.867Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:17:23.968Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:17:54.002Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:18:23.890Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:18:53.894Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:19:23.923Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:19:53.919Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:20:23.920Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:20:53.920Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:21:23.926Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:21:53.943Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:22:23.946Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:22:53.966Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:23:23.972Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:23:53.970Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:24:23.973Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:24:54.003Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:25:24.012Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:25:54.011Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:26:24.017Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:26:54.023Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:27:24.036Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:27:54.036Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:28:24.036Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:28:54.054Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:29:24.061Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:29:54.078Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:30:24.162Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:30:54.089Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:31:24.114Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:31:54.125Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:32:24.120Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:32:54.121Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:33:24.138Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:33:54.153Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:34:24.148Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:34:54.157Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:35:24.174Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:35:54.186Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:36:24.200Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:36:54.207Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:37:24.199Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:37:54.205Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:38:24.209Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:38:54.218Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:39:24.228Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:39:54.238Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:40:24.247Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:40:54.259Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:41:24.264Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:41:54.265Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:42:24.283Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:42:54.290Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:43:24.308Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:43:54.296Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:44:24.310Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:44:54.321Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:45:24.331Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:45:54.331Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:46:24.350Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:46:54.340Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:47:24.344Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:47:54.355Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:48:24.364Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:48:54.366Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:49:24.374Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:49:54.390Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:50:24.392Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:50:54.399Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:51:24.397Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:51:54.404Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:52:24.420Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:52:54.405Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:53:24.427Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:53:54.428Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:54:24.439Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:54:54.441Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:55:24.472Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:55:54.462Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:56:24.470Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:56:54.454Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:57:24.455Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:57:54.458Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:58:24.466Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:58:54.465Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:59:24.492Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T00:59:54.486Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:00:24.484Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:00:54.493Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:01:24.512Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:01:54.516Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:02:24.516Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:02:54.543Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:03:24.537Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:03:54.547Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:04:24.562Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:04:54.553Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:05:24.564Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:05:54.573Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:06:24.589Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:06:54.614Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:07:24.602Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:07:54.614Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:08:24.633Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:08:54.634Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:09:24.664Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:09:54.649Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:10:24.652Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:10:54.665Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:11:24.666Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:11:54.669Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:12:24.682Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:12:54.710Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:13:24.712Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:13:54.717Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:14:24.716Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:14:54.720Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:15:24.729Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:15:54.734Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:16:24.747Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:16:54.765Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:17:24.754Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:17:54.765Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:18:24.795Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:18:54.789Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:19:24.787Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:19:54.809Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:20:24.795Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:20:54.807Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:21:24.804Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:21:54.816Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:22:24.825Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:22:54.831Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:23:24.838Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:23:54.843Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:24:24.855Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:24:54.900Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:25:24.887Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:25:54.886Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:26:24.906Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:26:54.912Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:27:24.928Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:27:54.955Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:28:24.957Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:28:54.989Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:29:24.979Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:29:54.976Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:30:24.985Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:30:54.992Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:31:24.995Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:31:55.013Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:32:25.010Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:32:55.028Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:33:25.040Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:33:55.040Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:34:25.053Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:34:55.069Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:35:25.078Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:35:55.093Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:36:25.090Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:36:55.100Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:37:25.103Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:37:55.114Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:38:25.120Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:38:55.133Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:39:25.153Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:39:55.157Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:40:25.171Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:40:55.164Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:41:25.173Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:41:55.243Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:42:25.182Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:42:55.215Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:43:25.204Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:43:55.211Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:44:25.219Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:44:55.234Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:45:25.244Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:45:55.250Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:46:25.265Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:46:55.259Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:47:25.274Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:47:55.290Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:48:25.306Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:48:55.293Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:49:25.310Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:49:55.319Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:50:25.309Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:50:55.312Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:51:25.318Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:51:55.361Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:52:25.346Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:52:55.367Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:53:25.352Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:53:55.377Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:54:25.368Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:54:55.389Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:55:25.388Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:55:55.399Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:56:25.408Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:56:55.417Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:57:25.436Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:57:55.440Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:58:25.440Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:58:55.448Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:59:25.470Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T01:59:55.450Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:00:25.454Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:00:55.455Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:01:25.469Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:01:55.472Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:02:25.474Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:02:55.492Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:03:25.500Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:03:55.508Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:04:25.513Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:04:55.509Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:05:25.520Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:05:55.524Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:06:25.520Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:06:55.528Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:07:25.534Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:07:55.543Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:08:25.558Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:08:55.568Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:09:25.570Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:09:55.586Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:10:25.580Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:10:55.592Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:11:25.620Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:11:55.608Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:12:25.636Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:12:55.625Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:13:25.633Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:13:55.639Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:14:25.670Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:14:55.665Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:15:25.673Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:15:55.671Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:16:25.678Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:16:55.689Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:17:25.703Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:17:55.713Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:18:25.720Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:18:55.736Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:19:25.735Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:19:55.740Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:20:25.756Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:20:55.765Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:21:25.780Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:21:55.777Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:22:25.792Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:22:55.797Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:23:25.813Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:23:55.902Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:24:25.835Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:24:55.840Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:25:25.847Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:25:55.865Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:26:25.869Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:26:55.880Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:27:25.884Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:27:55.887Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:28:25.892Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:28:55.904Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:29:25.909Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:29:55.913Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:30:25.914Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:30:55.922Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:31:25.930Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:31:55.943Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:32:25.955Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:32:55.962Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:33:25.967Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:33:55.970Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:34:25.971Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:34:55.989Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:35:25.995Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:35:56.002Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:36:26.008Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:36:56.027Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:37:26.018Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:37:56.052Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:38:26.036Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:38:56.046Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:39:26.056Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:39:56.056Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:40:26.079Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:40:56.101Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:41:26.077Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:41:56.085Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:42:26.091Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:42:56.093Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:43:26.107Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:43:56.109Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:44:26.118Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:44:56.144Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:45:26.156Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:45:56.149Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:46:26.149Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:46:56.163Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:47:26.178Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:47:56.185Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:48:26.199Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:48:56.204Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:49:26.212Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:49:56.220Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:50:26.224Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:50:56.224Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:51:26.234Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:51:56.238Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:52:26.248Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:52:56.251Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:53:26.264Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:53:56.291Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:54:26.277Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:54:56.282Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:55:26.289Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:55:56.303Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:56:26.318Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:56:56.334Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:57:26.347Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:57:56.352Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:58:26.371Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:58:56.363Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:59:26.382Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T02:59:56.366Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:00:26.370Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:00:56.396Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:01:26.392Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:01:56.394Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:02:26.400Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:02:56.431Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:03:26.415Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:03:56.421Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:04:26.489Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:04:56.435Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:05:26.441Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:05:56.482Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:06:26.466Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:06:56.479Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:07:26.479Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:07:56.488Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:08:26.501Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:08:56.506Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:09:26.524Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:09:56.528Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:10:26.546Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:10:56.544Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:11:26.577Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:11:56.561Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:12:26.566Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:12:56.581Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:13:26.587Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:13:56.617Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:14:26.606Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:14:56.610Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:15:26.617Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:15:56.644Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:16:26.635Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:16:56.642Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:17:26.650Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:17:56.660Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:18:26.668Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:18:56.680Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:19:26.697Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:19:56.699Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:20:26.708Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:20:56.715Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:21:26.713Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:21:56.718Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:22:26.743Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:22:56.749Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:23:26.757Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:23:56.777Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:24:26.761Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:24:56.772Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:25:26.778Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:25:56.784Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:26:26.799Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:26:56.788Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:27:26.798Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:27:56.809Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:28:26.825Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:28:56.833Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:29:26.814Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:29:56.817Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:30:26.829Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:30:56.841Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:31:26.848Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:31:56.859Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:32:26.874Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:32:56.882Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:33:26.884Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:33:56.890Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:34:26.893Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:34:56.896Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:35:26.902Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:35:56.916Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:36:26.926Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:36:56.925Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:37:26.931Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:37:56.979Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:38:26.944Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:38:56.951Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:39:26.966Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:39:56.968Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:40:26.974Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:40:57.035Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:41:26.990Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:41:57.006Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:42:27.014Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:42:57.019Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:43:27.028Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:43:57.037Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:44:27.092Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:44:57.484Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:45:28.983Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:45:58.842Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:46:28.844Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:46:58.854Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:47:28.875Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:47:58.874Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:48:28.870Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:48:58.901Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:49:28.883Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:49:58.905Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:50:28.903Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:50:58.909Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:51:28.913Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:51:58.915Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:52:28.921Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:52:59.005Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:53:29.010Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:53:59.044Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:54:29.064Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:54:59.037Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:55:29.046Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:55:59.051Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:56:29.052Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:56:59.061Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:57:29.061Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:57:59.081Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:58:29.084Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:58:59.077Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:59:29.108Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T03:59:59.107Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:00:29.107Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:00:59.115Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:01:29.116Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:01:59.132Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:02:29.217Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:02:59.550Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:03:29.182Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:03:59.159Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:04:29.161Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:04:59.186Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:05:29.172Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:05:59.181Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:06:29.186Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:06:59.200Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:07:29.198Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:07:59.224Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:08:29.234Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:08:59.251Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:09:29.233Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:09:59.249Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:10:29.246Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:10:59.284Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:11:29.268Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:11:59.274Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:12:29.297Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:12:59.286Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:13:29.294Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:13:59.314Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:14:29.320Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:14:59.428Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:15:29.334Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:15:59.355Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:16:29.385Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:16:59.345Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:17:29.380Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:17:59.357Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:18:29.357Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:18:59.380Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:19:29.375Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:19:59.389Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:20:29.369Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:20:59.379Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:21:29.384Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:21:59.420Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:22:29.400Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:22:59.401Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:23:29.412Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:23:59.419Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:24:29.417Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:24:59.420Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:25:29.445Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:25:59.435Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:26:29.431Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:26:59.456Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:27:29.464Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:27:59.473Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:28:29.462Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:28:59.491Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:29:29.471Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:29:59.493Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:30:29.484Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:30:59.504Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:31:29.484Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:31:59.491Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:32:29.495Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:32:59.519Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:33:29.502Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:33:59.524Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:34:29.508Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:34:59.513Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:35:29.523Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:35:59.516Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:36:29.522Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:36:59.534Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:37:29.547Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:37:59.533Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:38:29.537Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:38:59.561Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:39:29.544Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:39:59.550Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:40:29.551Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:40:59.579Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:41:29.566Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:41:59.576Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:42:29.573Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:42:59.568Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:43:29.598Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:43:59.602Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:44:29.580Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:44:59.589Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:45:29.613Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:45:59.595Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:46:29.596Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:46:59.601Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:47:29.606Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:47:59.610Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:48:29.611Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:48:59.638Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:49:29.620Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:49:59.639Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:50:29.628Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:50:59.651Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:51:29.638Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:51:59.658Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:52:29.659Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:52:59.661Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:53:29.661Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:53:59.673Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:54:29.680Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:54:59.689Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:55:29.689Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:55:59.696Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:56:29.707Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:56:59.717Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:57:29.712Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:57:59.726Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:58:29.732Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:58:59.738Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:59:29.746Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T04:59:59.754Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:00:29.771Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:00:59.768Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:01:29.774Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:01:59.775Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:02:29.781Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:02:59.810Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:03:29.786Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:03:59.812Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:04:29.814Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:04:59.815Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:05:29.823Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:05:59.835Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:06:29.825Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:06:59.833Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:07:29.832Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:07:59.847Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:08:29.860Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:08:59.881Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:09:29.874Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:09:59.883Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:10:29.889Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:10:59.938Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:11:29.928Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:11:59.949Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:12:29.950Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:12:59.966Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:13:29.972Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:13:59.993Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:14:29.999Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:15:00.010Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:15:30.021Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:16:00.040Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:16:30.046Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:17:00.053Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:17:30.066Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:18:00.072Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:18:30.085Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:19:00.082Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:19:30.106Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:20:00.110Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:20:30.105Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:21:00.122Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:21:30.120Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:22:00.120Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:22:30.123Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:23:00.122Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:23:30.128Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:24:00.131Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:24:30.142Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:25:00.146Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:25:30.143Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:26:00.166Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:26:30.178Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:27:00.176Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:27:30.175Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:28:00.188Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:28:30.222Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:29:00.209Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:29:30.207Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:30:00.218Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:30:30.244Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:31:00.257Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:31:30.256Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:32:00.246Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:32:30.258Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:33:00.269Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:33:30.270Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:34:00.281Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:34:30.294Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:35:00.295Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:35:30.305Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:36:00.328Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:36:30.315Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:37:00.320Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:37:30.350Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:38:00.328Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:38:30.337Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:39:00.347Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:39:30.339Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:40:00.346Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:40:30.353Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:41:00.367Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:41:30.354Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:42:00.363Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:42:30.380Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:43:00.383Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:43:30.389Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:44:00.394Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:44:30.394Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:45:00.413Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:45:30.423Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:46:00.437Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:46:30.466Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:47:00.447Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:47:30.479Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:48:00.461Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:48:30.471Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:49:00.480Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:49:30.493Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:50:00.508Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:50:30.508Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:51:00.516Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:51:30.529Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:52:00.532Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:52:30.546Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:53:00.554Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:53:30.564Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:54:00.570Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:54:30.601Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:55:00.585Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:55:30.589Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:56:00.609Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:56:30.630Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:57:00.642Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:57:30.654Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:58:00.674Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:58:30.685Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:59:00.691Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T05:59:30.699Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:00:00.706Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:00:30.714Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:01:00.730Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:01:30.749Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:02:00.753Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:02:30.761Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:03:00.768Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:03:30.777Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:04:00.785Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:04:30.808Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:05:00.811Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:05:30.815Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:06:00.825Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:06:30.854Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:07:00.845Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:07:30.844Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:08:00.868Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:08:30.889Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:09:00.885Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:09:30.898Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:10:00.912Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:10:30.915Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:11:00.918Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:11:30.946Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:12:00.946Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:12:30.950Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:13:00.971Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:13:30.965Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:14:00.962Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:14:30.965Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:15:00.977Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:15:31.000Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:16:01.001Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:16:31.042Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:17:01.037Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:17:31.028Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:18:01.040Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:18:31.040Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:19:01.051Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:19:31.214Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:20:01.072Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:20:31.079Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:21:01.103Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:21:31.114Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:22:01.104Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:22:31.099Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:23:01.117Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:23:31.120Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:24:01.133Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:24:31.162Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:25:01.155Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:25:31.163Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:26:01.188Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:26:31.183Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:27:01.178Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:27:31.183Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:28:01.187Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:28:31.192Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:29:01.203Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:29:31.210Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:30:01.208Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:30:31.217Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:31:01.240Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:31:31.239Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:32:01.243Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:32:31.263Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:33:01.257Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:33:31.254Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:34:01.258Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:34:31.278Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:35:01.269Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:35:31.270Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:36:01.281Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:36:31.281Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:37:01.304Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:37:31.286Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:38:01.286Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:38:31.300Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:39:01.309Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:39:31.338Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:40:01.320Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:40:31.319Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:41:01.341Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:41:31.333Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:42:01.379Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:42:31.381Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:43:01.418Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:43:31.395Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:44:01.394Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:44:31.394Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:45:01.410Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:45:31.440Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:46:01.430Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:46:31.438Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:47:01.451Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:47:31.464Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:48:01.485Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:48:31.487Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:49:01.490Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:49:31.513Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:50:01.516Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:50:31.534Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:51:01.530Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:51:31.537Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:52:01.551Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:52:31.546Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:53:01.559Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:53:31.573Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:54:01.576Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:54:31.576Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:55:01.601Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:55:31.582Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:56:01.589Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:56:31.606Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:57:01.605Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:57:31.600Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:58:01.613Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:58:31.623Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:59:01.619Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T06:59:31.627Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:00:01.638Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:00:31.639Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:01:01.654Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:01:31.647Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:02:01.651Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:02:31.654Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:03:01.658Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:03:31.702Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:04:01.724Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:04:31.717Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:05:01.730Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:05:31.724Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:06:01.743Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:06:31.738Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:07:01.751Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:07:31.739Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:08:01.755Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:08:31.763Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:09:01.770Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:09:31.771Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:10:01.777Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:10:31.783Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:11:01.783Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:11:31.801Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:12:01.816Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:12:31.796Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:13:01.802Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:13:31.821Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:14:02.219Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:14:31.832Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:15:01.834Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:15:31.830Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:16:01.869Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:16:31.860Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:17:01.858Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:17:31.855Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:18:01.874Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:18:31.914Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:19:01.883Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:19:31.892Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:20:01.898Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:20:31.905Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:21:01.909Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:21:31.933Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:22:01.925Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:22:31.934Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:23:01.926Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:23:31.932Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:24:01.954Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:24:31.969Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:25:01.960Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:25:31.965Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:26:01.968Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:26:31.967Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:27:01.976Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:27:31.974Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:28:01.983Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:28:31.984Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:29:01.991Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:29:32.010Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:30:02.026Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:30:32.028Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:31:02.023Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:31:32.022Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:32:02.026Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:32:32.033Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:33:02.058Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:33:32.054Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:34:02.081Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:34:32.060Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:35:02.081Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:35:32.106Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:36:02.104Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:36:32.111Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:37:02.119Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:37:32.095Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:38:02.102Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:38:32.112Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:39:02.118Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:39:32.110Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:40:02.120Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:40:32.130Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:41:02.135Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:41:32.156Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:42:02.156Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:42:32.163Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:43:02.161Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:43:32.158Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:44:02.161Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:44:32.168Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:45:02.175Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:45:32.183Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:46:02.181Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:46:32.182Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:47:02.193Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:47:32.207Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:48:02.224Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:48:32.225Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:49:02.222Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:49:32.244Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:50:02.263Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:50:32.264Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:51:02.272Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:51:32.272Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:52:02.277Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:52:32.279Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:53:02.293Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:53:32.287Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:54:02.293Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:54:32.295Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:55:02.299Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:55:32.300Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:56:02.302Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:56:32.306Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:57:02.311Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:57:32.318Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:58:02.320Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:58:32.336Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:59:02.344Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T07:59:32.370Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:00:02.353Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:00:32.376Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:01:02.359Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:01:32.386Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:02:02.371Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:02:32.382Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:03:02.399Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:03:32.400Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:04:02.399Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:04:32.400Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:05:02.417Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:05:32.409Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:06:02.434Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:06:32.450Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:07:02.423Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:07:32.425Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:08:02.432Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:08:32.462Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:09:02.438Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:09:32.439Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:10:02.447Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:10:32.447Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:11:02.451Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:11:32.457Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:12:02.458Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:12:32.461Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:13:02.466Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:13:32.469Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:14:02.476Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:14:32.507Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:15:02.561Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:15:32.579Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:16:02.609Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:16:32.616Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:17:02.621Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:17:32.625Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:18:02.609Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:18:32.615Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:19:02.618Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:19:32.629Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:20:02.646Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:20:32.634Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:21:02.649Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:21:32.647Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:22:02.663Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:22:32.647Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:23:02.644Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:23:32.665Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:24:02.674Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:24:32.687Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:25:02.673Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:25:32.677Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:26:02.683Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:26:32.688Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:27:02.686Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:27:32.694Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:28:02.706Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:28:32.714Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:29:02.704Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:29:32.717Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:30:02.709Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:30:32.710Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:31:02.741Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:31:32.739Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:32:02.726Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:32:32.740Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:33:02.769Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:33:32.769Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:34:02.769Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:34:32.787Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:35:02.792Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:35:32.807Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:36:02.811Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:36:32.835Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:37:02.836Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:37:32.834Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:38:02.856Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:38:32.860Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:39:02.871Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:39:32.883Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:40:02.875Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:40:32.894Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:41:02.913Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:41:32.908Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:42:02.931Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:42:32.921Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:43:02.951Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:43:32.936Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:44:02.960Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:44:32.953Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:45:02.994Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:45:32.984Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:46:02.975Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:46:33.005Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:47:02.988Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:47:32.999Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:48:03.011Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:48:33.013Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:49:03.050Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:49:33.041Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:50:03.030Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:50:33.062Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:51:03.051Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:51:33.078Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:52:03.064Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:52:33.096Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:53:03.083Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:53:33.091Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:54:03.098Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:54:33.113Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:55:03.128Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:55:33.113Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:56:03.155Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:56:33.157Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:57:03.159Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:57:33.165Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:58:03.153Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:58:33.164Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:59:03.170Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T08:59:33.173Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:00:03.182Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:00:33.196Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:01:03.193Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:01:33.196Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:02:03.204Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:02:33.217Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:03:03.219Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:03:33.231Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:04:03.246Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:04:33.247Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:05:03.262Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:05:33.277Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:06:03.291Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:06:33.301Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:07:03.304Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:07:33.315Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:08:03.331Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:08:33.322Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:09:03.333Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:09:33.369Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:10:03.359Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:10:33.378Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:11:03.385Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:11:33.382Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:12:03.386Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:12:33.410Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:13:03.399Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:13:33.418Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:14:03.399Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:14:33.426Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:15:03.440Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:15:33.431Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:16:03.445Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:16:33.447Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:17:03.476Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:17:33.464Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:18:03.490Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:18:33.473Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:19:03.488Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:19:33.495Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:20:03.509Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:20:33.568Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:21:03.591Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:21:33.627Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:22:03.686Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:22:33.732Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:23:03.778Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:23:33.808Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:24:03.833Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:24:33.832Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:25:03.848Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:25:33.860Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:26:03.863Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:26:33.881Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:27:03.886Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:27:33.884Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:28:03.885Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:28:33.891Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:29:03.908Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:29:33.911Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:30:03.938Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:30:33.930Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:31:03.948Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:31:33.973Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:32:03.973Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:32:33.994Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:33:03.976Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:33:33.981Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:34:04.010Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:34:34.005Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:35:04.022Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:35:34.013Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:36:04.030Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:36:34.054Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:37:04.053Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:37:34.053Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:38:04.091Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:38:34.089Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:39:04.069Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:39:34.091Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:40:04.094Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:40:34.092Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:41:04.111Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:41:34.120Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:42:04.136Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:42:34.115Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:43:04.131Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:43:34.307Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:44:04.158Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:44:34.159Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:45:04.161Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:45:34.184Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:46:04.184Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:46:34.606Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:47:04.210Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:47:34.231Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:48:04.212Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:48:34.239Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:49:04.232Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:49:34.230Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:50:04.263Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:50:34.265Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:51:04.260Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:51:34.280Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:52:04.271Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:52:34.286Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:53:04.274Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:53:34.281Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:54:04.298Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:54:34.308Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:55:04.335Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:55:34.321Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:56:04.345Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:56:34.351Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:57:04.354Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:57:34.356Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:58:04.357Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:58:34.371Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:59:04.374Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T09:59:34.387Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:00:04.373Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:00:34.381Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:01:04.382Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:01:34.396Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:02:04.414Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:02:34.432Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:03:04.438Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:03:34.429Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:04:04.451Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:04:34.450Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:05:04.462Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:05:34.464Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:06:04.479Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:06:34.461Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:07:04.476Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:07:34.480Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:08:04.493Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:08:34.505Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:09:04.531Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:09:34.537Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:10:04.541Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:10:34.532Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:11:04.549Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:11:34.573Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:12:04.577Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:12:34.582Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:13:04.578Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:13:34.603Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:14:04.620Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:14:34.616Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:15:04.625Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:15:34.634Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:16:04.644Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:16:34.658Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:17:04.646Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:17:34.658Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:18:04.650Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:18:34.651Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:19:04.667Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:19:34.683Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:20:04.718Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:20:34.718Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:21:04.748Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:21:34.752Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:22:04.750Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:22:34.768Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:23:04.782Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:23:34.782Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:24:04.793Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:24:34.805Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:25:04.796Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:25:34.805Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:26:04.809Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:26:34.839Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:27:04.836Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:27:34.840Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:28:04.858Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:28:34.856Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:29:04.870Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:29:34.891Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:30:04.913Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:30:34.957Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:31:05.021Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:31:35.063Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:32:05.106Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:32:35.125Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:33:05.131Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:33:35.149Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:34:05.163Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:34:35.140Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:35:05.173Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:35:35.178Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:36:05.185Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:36:35.184Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:37:05.192Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:37:35.202Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:38:05.212Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:38:35.217Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:39:05.218Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:39:35.231Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:40:05.239Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:40:35.240Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:41:05.245Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:41:35.261Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:42:05.270Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:42:35.261Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:43:05.274Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:43:35.287Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:44:05.293Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:44:35.320Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:45:05.307Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:45:35.320Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:46:05.327Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:46:35.325Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:47:05.332Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:47:35.350Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:48:05.334Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:48:29.406Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:48:59.537Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:49:29.408Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:49:59.409Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:50:29.439Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:50:59.441Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:51:29.458Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:51:59.460Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:52:29.479Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:52:59.484Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:53:29.497Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:53:59.491Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:54:29.513Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:54:59.497Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:55:29.511Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:55:59.528Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:56:29.528Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:56:59.540Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:57:29.537Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:57:59.559Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:58:29.556Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:58:59.571Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:59:29.572Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T10:59:59.597Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:00:29.594Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:00:59.612Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:01:29.622Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:01:59.656Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:02:29.666Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:02:59.671Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:03:29.664Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:03:59.664Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:04:29.695Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:04:59.696Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:05:29.712Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:05:59.704Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:06:29.699Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:06:59.707Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:07:29.709Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:07:59.710Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:08:29.730Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:08:59.761Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:09:29.737Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:09:59.741Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:10:29.764Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:10:59.772Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:11:29.763Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:11:59.793Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:12:29.775Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:12:59.802Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:13:29.817Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:13:59.814Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:14:29.814Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:14:59.831Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:15:29.823Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:15:59.850Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:16:29.840Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:16:59.851Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:17:29.874Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:17:59.875Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:18:29.875Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:18:59.908Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:19:29.911Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:19:59.914Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:20:29.937Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:20:59.938Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:21:29.954Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:21:59.960Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:22:29.969Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:22:59.981Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:23:29.969Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:23:59.974Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:24:30.013Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:25:00.021Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:25:30.013Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:26:00.021Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:26:30.043Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:27:00.033Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:27:30.041Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:28:00.054Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:28:30.045Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:29:00.061Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:29:30.079Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:30:00.067Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:30:30.071Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:31:00.077Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:31:30.082Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:32:00.083Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:32:30.085Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:33:00.101Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:33:30.152Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:34:00.166Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:34:30.180Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:35:00.175Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:35:30.200Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:36:00.187Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:36:30.199Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:37:00.200Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:37:30.202Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:38:00.211Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:38:30.225Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:39:00.236Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:39:30.238Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:40:00.249Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:40:30.250Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:41:00.263Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:41:30.282Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:42:00.292Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:42:30.294Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:43:00.302Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:43:30.323Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:44:00.357Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:44:30.359Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:45:00.382Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:45:30.396Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:46:00.410Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:46:30.431Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:47:00.446Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:47:30.445Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:48:00.451Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:48:30.462Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:49:00.478Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:49:30.464Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:50:00.474Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:50:30.502Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:51:00.523Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:51:30.510Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:52:00.508Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:52:30.517Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:53:00.548Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:53:30.533Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:54:00.541Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:54:30.565Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:55:00.584Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:55:30.579Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:56:00.570Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:56:30.577Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:57:00.599Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:57:30.594Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:58:00.627Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:58:30.619Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:59:00.629Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T11:59:30.633Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:00:00.652Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:00:30.659Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:01:00.829Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:01:30.690Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:02:00.707Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:02:30.693Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:03:00.700Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:03:30.719Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:04:00.723Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:04:30.724Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:05:00.732Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:05:30.750Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:06:00.770Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:06:30.782Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:07:00.792Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:07:30.789Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:08:00.774Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:08:30.799Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:09:00.797Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:09:30.797Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:10:00.821Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:10:30.830Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:11:00.823Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:11:30.845Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:12:00.850Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:12:30.850Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:13:00.857Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:13:30.892Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:14:00.885Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:14:30.892Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:15:00.887Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:15:30.905Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:16:00.901Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:16:30.909Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:17:00.889Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:17:30.906Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:18:00.912Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:18:30.925Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:19:00.934Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:19:30.936Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:20:00.946Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:20:30.952Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:21:00.988Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:21:30.970Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:22:00.980Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:22:30.986Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:23:00.995Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:23:30.999Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:24:01.005Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:24:31.005Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:25:01.012Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:25:31.015Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:26:01.026Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:26:31.041Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:27:01.039Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:27:31.055Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:28:01.071Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:28:31.071Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:29:01.076Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:29:31.077Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:30:01.105Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:30:31.108Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:31:01.113Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:31:31.112Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:32:01.132Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:32:31.123Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:33:01.132Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:33:31.142Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:34:01.145Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:34:31.150Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:35:01.154Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:35:31.176Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:36:01.160Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:36:31.163Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:37:01.168Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:37:31.172Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:38:01.173Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:38:31.179Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:39:01.199Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:39:31.239Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:40:01.277Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:40:31.309Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:41:01.351Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:41:31.382Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:42:01.418Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:42:31.472Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:43:01.506Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:43:31.532Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:44:01.578Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:44:31.584Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:45:01.594Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:45:31.601Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:46:01.616Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:46:31.622Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:47:01.626Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:47:31.645Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:48:01.644Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:48:31.644Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:49:01.661Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:49:31.667Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:50:01.685Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:50:31.681Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:51:01.687Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:51:31.696Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:52:01.700Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:52:31.705Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:53:01.695Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:53:31.708Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:54:01.699Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:54:31.729Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:55:01.716Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:55:31.727Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:56:01.733Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:56:31.741Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:57:01.755Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:57:31.766Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:58:01.771Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:58:31.783Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:59:01.784Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T12:59:31.798Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:00:01.808Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:00:31.815Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:01:01.832Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:01:31.847Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:02:01.848Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:02:31.870Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:03:01.846Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:03:31.846Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:04:01.855Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:04:31.878Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:05:01.863Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:05:31.891Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:06:01.882Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:06:31.886Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:07:01.896Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:07:31.909Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:08:01.917Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:08:31.961Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:09:01.956Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:09:31.944Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:10:01.945Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:10:31.945Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:11:01.960Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:11:31.988Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:12:01.974Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:12:31.984Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:13:01.983Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:13:31.988Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:14:02.012Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:14:32.034Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:15:02.023Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:15:32.028Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:16:02.056Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:16:32.051Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:17:02.077Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:17:32.073Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:18:02.076Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:18:32.091Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:19:02.111Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:19:32.111Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:20:02.102Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:20:32.122Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:21:02.109Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:21:32.110Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:22:02.124Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:22:32.143Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:23:02.147Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:23:32.164Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:24:02.178Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:24:32.167Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:25:02.166Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:25:32.181Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:26:02.174Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:26:32.194Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:27:02.186Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:27:32.175Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:28:02.206Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:28:32.183Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:29:02.185Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:29:32.206Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:30:02.216Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:30:32.224Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:31:02.241Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:31:32.232Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:32:02.243Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:32:32.252Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:33:02.250Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:33:32.257Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:34:02.266Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:34:32.261Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:35:02.264Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:35:32.271Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:36:02.278Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:36:32.301Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:37:02.293Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:37:32.309Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:38:02.314Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:38:32.323Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:39:02.336Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:39:32.359Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:40:02.367Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:40:32.355Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:41:02.368Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:41:32.377Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:42:02.402Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:42:32.384Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:43:02.411Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:43:32.408Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:44:02.420Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:44:32.442Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:45:02.435Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:45:32.452Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:46:02.452Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:46:32.478Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:47:02.518Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:47:32.559Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:48:02.580Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:48:32.572Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:49:02.577Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:49:32.572Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:50:02.579Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:50:32.584Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:51:02.608Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:51:32.600Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:52:02.602Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:52:32.619Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:53:02.626Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:53:32.633Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:54:02.649Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:54:32.649Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:55:02.665Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:55:32.685Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:56:02.690Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:56:32.689Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:57:02.713Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:57:32.712Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:58:02.729Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:58:32.752Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:59:02.745Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T13:59:32.769Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:00:02.776Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:00:32.784Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:01:02.811Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:01:32.834Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:02:02.826Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:02:32.813Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:03:02.824Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:03:32.835Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:04:02.841Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:04:32.849Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:05:02.884Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:05:32.882Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:06:02.885Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:06:32.896Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:07:02.928Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:07:32.924Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:08:02.920Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:08:32.922Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:09:02.946Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:09:32.953Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:10:02.951Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:10:32.954Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:11:02.989Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:11:32.979Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:12:02.979Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:12:32.986Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:13:02.997Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:13:33.018Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:14:03.012Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:14:33.032Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:15:03.040Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:15:33.030Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:16:03.028Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:16:33.104Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:17:03.047Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:17:33.051Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:18:03.047Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:18:33.059Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:19:03.073Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:19:33.069Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:20:03.082Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:20:33.096Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:21:03.108Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:21:33.122Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:22:03.110Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:22:33.125Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:23:03.129Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:23:33.133Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:24:03.151Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:24:33.152Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:25:03.182Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:25:33.177Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:26:03.179Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:26:33.178Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:27:03.184Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:27:33.193Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:28:03.207Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:28:33.207Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:29:03.213Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:29:33.227Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:30:03.232Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:30:33.233Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:31:03.253Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:31:33.245Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:32:03.249Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:32:33.263Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:33:03.263Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:33:33.273Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:34:03.275Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:34:33.295Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:35:03.310Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 0,
+    "timestamp": "2026-04-26T14:35:33.327Z"
+  }
+]

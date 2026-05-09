@@ -1,0 +1,1441 @@
+[
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:19:07.670Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:20:07.684Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:21:07.702Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:22:07.703Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:23:07.714Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:24:07.735Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:25:07.734Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:26:07.739Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:27:07.742Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:28:07.744Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:29:07.759Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:30:07.771Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:31:07.776Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:32:07.789Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:33:07.804Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:34:07.807Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:35:07.813Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:36:07.823Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:37:07.834Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:38:07.839Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:39:07.844Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:40:07.853Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:41:07.857Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:42:07.865Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:43:07.873Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:44:07.881Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:45:07.893Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:46:07.906Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:47:07.905Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:48:07.913Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:49:07.916Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:50:07.917Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:51:07.924Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:52:07.926Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:53:07.933Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:54:07.941Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:55:07.946Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:56:07.949Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:57:07.959Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:58:07.981Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T06:59:07.978Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:00:07.987Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:01:07.988Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:02:08.000Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:03:08.007Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:04:08.020Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:05:08.021Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:06:08.026Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:07:08.036Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:08:08.043Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:09:08.052Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:10:08.071Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:11:08.076Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:12:08.094Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:13:08.103Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:14:08.106Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:15:08.108Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:16:08.109Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:17:08.135Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:18:08.145Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:19:08.145Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:20:08.145Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:21:08.156Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:22:08.168Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:23:08.182Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:24:08.189Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:25:08.192Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:26:08.205Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:27:08.219Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:28:08.218Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:29:08.222Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:30:08.235Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:31:08.245Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:32:08.254Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:33:08.259Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:34:08.264Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:35:08.272Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:36:08.280Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:37:08.292Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:38:08.294Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:39:08.294Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:40:08.314Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:41:08.328Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:42:08.333Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:43:08.333Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:44:08.337Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:45:08.339Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:46:08.340Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:47:08.355Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:48:08.396Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:49:08.400Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:50:08.404Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:51:08.414Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:52:08.421Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:53:08.448Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:54:08.458Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:55:08.463Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:56:08.476Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:57:08.485Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:58:08.495Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T07:59:08.510Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:00:08.514Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:01:08.516Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:02:08.527Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:03:08.542Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:04:08.545Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:05:08.546Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:06:08.550Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:07:08.559Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:08:08.573Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:09:08.580Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:10:08.580Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:11:08.589Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:12:08.592Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:13:08.596Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:14:08.597Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:15:08.603Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:16:08.603Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:17:08.711Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:18:08.628Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:19:08.640Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:20:08.645Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:21:08.654Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:22:08.674Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:23:08.674Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:24:08.680Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:25:08.695Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:26:08.718Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:27:08.725Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:28:08.724Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:29:08.737Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:30:08.751Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:31:08.775Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:32:08.781Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:33:08.781Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:34:08.797Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:35:08.799Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:36:08.802Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:37:08.817Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:38:08.816Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:39:08.828Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:40:08.830Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:41:08.840Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:42:08.846Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:43:08.876Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:44:08.874Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:45:08.898Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:46:08.910Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:47:08.915Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:48:08.915Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:49:08.918Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:50:08.930Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:51:08.942Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:52:08.956Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:53:08.964Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:54:08.972Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:55:08.979Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:56:08.978Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:57:09.000Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:58:09.014Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T08:59:09.026Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:00:09.041Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:01:09.044Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:02:09.056Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:03:09.068Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:04:09.080Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:05:09.087Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:06:09.100Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:07:09.108Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:08:09.111Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:09:09.111Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:10:09.116Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:11:09.125Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:12:09.133Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:13:09.143Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:14:09.155Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:15:09.172Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:16:09.173Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:17:09.179Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:18:09.178Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:19:09.187Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:20:09.191Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:21:09.192Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:22:09.212Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:23:09.212Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:24:09.224Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:25:09.242Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:26:09.256Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:27:09.263Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:28:09.274Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:29:09.277Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:30:09.287Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:31:09.296Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:32:09.303Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:33:09.313Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:34:09.316Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:35:09.359Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:36:09.368Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:37:09.367Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:38:09.380Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:39:09.392Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:40:09.393Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:41:09.402Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:42:09.406Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:43:09.408Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:44:09.410Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:45:09.422Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:46:09.425Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:47:09.447Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:48:09.449Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:49:09.451Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:50:09.452Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:51:09.457Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:52:09.458Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:53:09.466Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:54:09.490Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:55:09.494Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:56:09.494Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:57:09.507Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:58:09.506Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T09:59:09.507Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:00:09.514Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:01:09.517Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:02:09.531Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:03:09.543Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:04:09.550Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:05:09.555Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:06:09.568Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:07:09.574Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:08:09.582Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:09:09.588Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:10:09.601Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:11:09.601Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:12:09.611Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:13:09.614Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:14:09.622Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:15:09.634Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:16:09.720Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:17:09.726Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:18:09.741Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:19:09.751Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:20:09.753Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:21:09.764Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:22:09.771Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:23:09.777Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:24:09.785Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:25:09.789Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:26:09.789Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:27:09.797Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:28:09.799Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:29:09.811Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:30:09.816Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:31:09.833Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:32:09.835Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:33:09.847Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:34:09.846Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:35:09.875Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:36:09.888Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:37:09.892Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:38:09.897Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:39:09.911Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:40:09.914Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:41:09.914Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {},
+    "timestamp": "2026-04-12T10:42:09.918Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:43:59.752Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:44:59.785Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:45:59.799Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:46:59.799Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:47:59.810Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:48:59.833Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:49:59.820Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:50:59.836Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:51:59.842Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:53:32.439Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:54:32.462Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:55:32.464Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:56:32.470Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:57:32.471Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:58:32.486Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T10:59:32.476Z"
+  },
+  {
+    "type": "agent_category_distribution",
+    "value": {
+      "unknown": 61
+    },
+    "timestamp": "2026-04-12T11:00:32.485Z"
+  }
+]

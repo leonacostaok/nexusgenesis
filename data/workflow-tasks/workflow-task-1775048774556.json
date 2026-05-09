@@ -1,0 +1,24 @@
+{
+  "id": "1775048774556",
+  "name": "智能体健康检查",
+  "status": "retrying",
+  "createdAt": "2026-04-01T13:06:14.556Z",
+  "updatedAt": "2026-04-01T13:06:15.201Z",
+  "runCount": 1,
+  "errorCount": 1,
+  "lastError": {
+    "message": "task.action is not a function",
+    "type": "unknown_error",
+    "timestamp": "2026-04-01T13:06:15.199Z",
+    "stack": "TypeError: task.action is not a function\n    at WorkflowEngine.executeTask (file:///D:/trae_projects/NexusGenesis/src/automation/workflowEngine.js:185:33)\n    at Timeout._onTimeout (file:///D:/trae_projects/NexusGenesis/src/automation/workflowEngine.js:131:12)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)"
+  },
+  "retryConfig": {
+    "maxRetries": 2,
+    "initialDelay": 30000,
+    "backoffMultiplier": 2
+  },
+  "description": "定期检查智能体的健康状态",
+  "isRecurring": true,
+  "interval": 1800000,
+  "nextRetryAt": "2026-04-01T13:06:45.201Z"
+}

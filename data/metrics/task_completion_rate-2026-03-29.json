@@ -1,0 +1,867 @@
+[
+  {
+    "type": "task_completion_rate",
+    "value": 10.95149715462644,
+    "timestamp": "2026-03-29T12:27:37.818Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 5.666942178384783,
+    "timestamp": "2026-03-29T12:27:37.818Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.7497371153862007,
+    "timestamp": "2026-03-29T12:28:07.405Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.404980495050439,
+    "timestamp": "2026-03-29T12:28:07.416Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.072825023341894,
+    "timestamp": "2026-03-29T12:28:11.413Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.483910951807247,
+    "timestamp": "2026-03-29T12:28:37.344Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.754280216799016,
+    "timestamp": "2026-03-29T12:28:37.402Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.19791473288784,
+    "timestamp": "2026-03-29T12:28:41.434Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.881718874971292,
+    "timestamp": "2026-03-29T12:29:07.424Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.270227427419604,
+    "timestamp": "2026-03-29T12:29:07.607Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 5.497643250141472,
+    "timestamp": "2026-03-29T12:29:11.455Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.371212789993513,
+    "timestamp": "2026-03-29T12:29:37.434Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.24050723714167,
+    "timestamp": "2026-03-29T12:29:37.604Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.330818296034754,
+    "timestamp": "2026-03-29T12:29:41.454Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.82676242244861,
+    "timestamp": "2026-03-29T12:30:07.435Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.388047619543458,
+    "timestamp": "2026-03-29T12:30:07.617Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.492015419542373,
+    "timestamp": "2026-03-29T12:30:11.470Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.5485862122286,
+    "timestamp": "2026-03-29T12:30:37.449Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.903168234838144,
+    "timestamp": "2026-03-29T12:30:37.623Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.081396513040864,
+    "timestamp": "2026-03-29T12:30:41.479Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.75115373493183,
+    "timestamp": "2026-03-29T12:31:07.489Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.177354414268019,
+    "timestamp": "2026-03-29T12:31:07.816Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.429088149726407,
+    "timestamp": "2026-03-29T12:31:11.601Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.299338448481306,
+    "timestamp": "2026-03-29T12:31:37.478Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.672272775352643,
+    "timestamp": "2026-03-29T12:31:37.816Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.933832054200329,
+    "timestamp": "2026-03-29T12:31:41.601Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.642528005060033,
+    "timestamp": "2026-03-29T12:32:07.478Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.952922584722273,
+    "timestamp": "2026-03-29T12:32:07.814Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 5.759393221607385,
+    "timestamp": "2026-03-29T12:32:11.609Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.6239178789561217,
+    "timestamp": "2026-03-29T12:32:37.485Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.564851544278012,
+    "timestamp": "2026-03-29T12:32:37.837Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.233832439359941,
+    "timestamp": "2026-03-29T12:32:41.630Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.684457375115002,
+    "timestamp": "2026-03-29T12:33:07.498Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.929707964672765,
+    "timestamp": "2026-03-29T12:33:07.873Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.1140885958291165,
+    "timestamp": "2026-03-29T12:33:11.699Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.247328572288051,
+    "timestamp": "2026-03-29T12:33:37.510Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.362768513212385,
+    "timestamp": "2026-03-29T12:33:37.973Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.3076665014090487,
+    "timestamp": "2026-03-29T12:33:41.649Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.028909254559832,
+    "timestamp": "2026-03-29T12:34:07.526Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.338963261893642,
+    "timestamp": "2026-03-29T12:34:07.980Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.919742464355021,
+    "timestamp": "2026-03-29T12:34:11.654Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.880736607530373,
+    "timestamp": "2026-03-29T12:34:37.560Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.729656810725869,
+    "timestamp": "2026-03-29T12:34:37.992Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.657538483910688,
+    "timestamp": "2026-03-29T12:34:41.661Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.937768021588322,
+    "timestamp": "2026-03-29T12:35:07.560Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.2881775213763937,
+    "timestamp": "2026-03-29T12:35:07.994Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.41608686883643,
+    "timestamp": "2026-03-29T12:35:11.673Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.153514568017364,
+    "timestamp": "2026-03-29T12:35:37.631Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.532648508358205,
+    "timestamp": "2026-03-29T12:35:38.000Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 5.0159419712189335,
+    "timestamp": "2026-03-29T12:35:41.690Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.823816657045111,
+    "timestamp": "2026-03-29T12:36:07.586Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.052861916047325,
+    "timestamp": "2026-03-29T12:36:08.030Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.837053348419118,
+    "timestamp": "2026-03-29T12:36:12.267Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.5505294679016,
+    "timestamp": "2026-03-29T12:36:37.618Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.564726395305605,
+    "timestamp": "2026-03-29T12:36:38.039Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.13399175850348,
+    "timestamp": "2026-03-29T12:36:41.739Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.575635386479419,
+    "timestamp": "2026-03-29T12:37:07.617Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.6796278452899926,
+    "timestamp": "2026-03-29T12:37:08.042Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.123968835046696,
+    "timestamp": "2026-03-29T12:37:11.753Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.593280657400846,
+    "timestamp": "2026-03-29T12:37:37.857Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.719767578359196,
+    "timestamp": "2026-03-29T12:37:38.064Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.725293589344797,
+    "timestamp": "2026-03-29T12:37:41.940Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.542403984860101,
+    "timestamp": "2026-03-29T12:38:07.647Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.1041708845577,
+    "timestamp": "2026-03-29T12:38:08.048Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.403626775684273,
+    "timestamp": "2026-03-29T12:38:11.939Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.647915050144393,
+    "timestamp": "2026-03-29T12:38:37.682Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.305176625305592,
+    "timestamp": "2026-03-29T12:38:38.066Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.054041102574869,
+    "timestamp": "2026-03-29T12:38:41.943Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.693996504902902,
+    "timestamp": "2026-03-29T12:39:07.679Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.597130742378226,
+    "timestamp": "2026-03-29T12:39:08.083Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.384770841709353,
+    "timestamp": "2026-03-29T12:39:11.958Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.758665896954607,
+    "timestamp": "2026-03-29T12:39:37.687Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.83118053287074,
+    "timestamp": "2026-03-29T12:39:38.076Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.121605477666661,
+    "timestamp": "2026-03-29T12:39:42.721Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.038726409701318,
+    "timestamp": "2026-03-29T12:40:07.704Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 5.311151534513948,
+    "timestamp": "2026-03-29T12:40:08.089Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.375597349123215,
+    "timestamp": "2026-03-29T12:40:12.745Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.803048403019462,
+    "timestamp": "2026-03-29T12:40:37.716Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.190046912107679,
+    "timestamp": "2026-03-29T12:40:38.111Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.9150859283883905,
+    "timestamp": "2026-03-29T12:40:43.308Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.992367727067755,
+    "timestamp": "2026-03-29T12:41:08.068Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.314468227894423,
+    "timestamp": "2026-03-29T12:41:08.108Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.366386856181916,
+    "timestamp": "2026-03-29T12:41:12.759Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.346167661486576,
+    "timestamp": "2026-03-29T12:41:37.740Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.618978401624473,
+    "timestamp": "2026-03-29T12:41:38.123Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.3555843200780275,
+    "timestamp": "2026-03-29T12:41:42.777Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.853292801100908,
+    "timestamp": "2026-03-29T12:42:07.757Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.9879619754624525,
+    "timestamp": "2026-03-29T12:42:08.128Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.321524703903962,
+    "timestamp": "2026-03-29T12:42:12.797Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.864545016106248,
+    "timestamp": "2026-03-29T12:42:37.756Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.097981319909255,
+    "timestamp": "2026-03-29T12:42:38.133Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.239431448859443,
+    "timestamp": "2026-03-29T12:42:42.821Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.256679901638527,
+    "timestamp": "2026-03-29T12:43:07.793Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.67933070556079,
+    "timestamp": "2026-03-29T12:43:08.137Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.543305895747684,
+    "timestamp": "2026-03-29T12:43:12.808Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.266803932655861,
+    "timestamp": "2026-03-29T12:43:37.797Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.611581634545664,
+    "timestamp": "2026-03-29T12:43:38.139Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.0726222166390444,
+    "timestamp": "2026-03-29T12:43:42.827Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.428213636089016,
+    "timestamp": "2026-03-29T12:44:07.784Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.3665115624333115,
+    "timestamp": "2026-03-29T12:44:09.157Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.476011336910354,
+    "timestamp": "2026-03-29T12:44:12.821Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.08168593513642,
+    "timestamp": "2026-03-29T12:44:37.787Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.286079526061198,
+    "timestamp": "2026-03-29T12:44:38.166Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.854502212835701,
+    "timestamp": "2026-03-29T12:44:42.828Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.65129517051608,
+    "timestamp": "2026-03-29T12:45:07.808Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.652839532438612,
+    "timestamp": "2026-03-29T12:45:08.182Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.749617391624814,
+    "timestamp": "2026-03-29T12:45:12.840Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.318629376956105,
+    "timestamp": "2026-03-29T12:45:37.814Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.211088431570894,
+    "timestamp": "2026-03-29T12:45:38.193Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.391076712221153,
+    "timestamp": "2026-03-29T12:45:42.841Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.023263673058824,
+    "timestamp": "2026-03-29T12:46:07.806Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 5.868501091433778,
+    "timestamp": "2026-03-29T12:46:08.209Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.5929532137956297,
+    "timestamp": "2026-03-29T12:46:12.856Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.773226604386444,
+    "timestamp": "2026-03-29T12:46:37.862Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.988325474619866,
+    "timestamp": "2026-03-29T12:46:38.226Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.273813935314042,
+    "timestamp": "2026-03-29T12:46:42.854Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.476906061197658,
+    "timestamp": "2026-03-29T12:47:07.827Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.464606547543827,
+    "timestamp": "2026-03-29T12:47:08.228Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.512319200110344,
+    "timestamp": "2026-03-29T12:47:12.871Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 5.091611264295134,
+    "timestamp": "2026-03-29T12:47:37.834Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.095707176122113,
+    "timestamp": "2026-03-29T12:47:38.224Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.139093758474354,
+    "timestamp": "2026-03-29T12:47:42.875Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.549428519023145,
+    "timestamp": "2026-03-29T12:48:07.834Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.585022409153515,
+    "timestamp": "2026-03-29T12:48:08.233Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.551779143052684,
+    "timestamp": "2026-03-29T12:48:12.890Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 5.095858981698066,
+    "timestamp": "2026-03-29T12:48:37.851Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.741276308638579,
+    "timestamp": "2026-03-29T12:48:38.315Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.008452452640391,
+    "timestamp": "2026-03-29T12:48:42.906Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.954279726825627,
+    "timestamp": "2026-03-29T12:49:07.895Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.624524131865616,
+    "timestamp": "2026-03-29T12:49:08.289Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.853733191053106,
+    "timestamp": "2026-03-29T12:49:12.901Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.6639292828803365,
+    "timestamp": "2026-03-29T12:49:37.892Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.702434618094836,
+    "timestamp": "2026-03-29T12:49:38.294Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.7966177570527186,
+    "timestamp": "2026-03-29T12:49:42.908Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.842311444650291,
+    "timestamp": "2026-03-29T12:50:07.942Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.768706039068697,
+    "timestamp": "2026-03-29T12:50:08.362Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.426947624866566,
+    "timestamp": "2026-03-29T12:50:12.960Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.9519207068399735,
+    "timestamp": "2026-03-29T12:50:37.908Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.384402117296048,
+    "timestamp": "2026-03-29T12:50:38.369Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.298929482975997,
+    "timestamp": "2026-03-29T12:50:42.936Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.6835086170168685,
+    "timestamp": "2026-03-29T12:51:07.983Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.610458643296038,
+    "timestamp": "2026-03-29T12:51:08.371Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.7991892465557635,
+    "timestamp": "2026-03-29T12:51:12.950Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.17885003365176,
+    "timestamp": "2026-03-29T12:51:37.931Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 6.2578071549292416,
+    "timestamp": "2026-03-29T12:51:38.386Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.101431005016233,
+    "timestamp": "2026-03-29T12:51:43.312Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.18782579443474,
+    "timestamp": "2026-03-29T12:52:07.935Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 5.483723412770073,
+    "timestamp": "2026-03-29T12:52:08.398Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.3320084386234345,
+    "timestamp": "2026-03-29T12:52:12.979Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.853848700710821,
+    "timestamp": "2026-03-29T12:52:37.938Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.56996785734026,
+    "timestamp": "2026-03-29T12:52:38.417Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 5.683480509617988,
+    "timestamp": "2026-03-29T12:52:42.982Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 5.687584047486519,
+    "timestamp": "2026-03-29T12:53:07.943Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 5.987979701885622,
+    "timestamp": "2026-03-29T12:53:08.404Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.716156871314944,
+    "timestamp": "2026-03-29T12:53:13.000Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.8494407181893875,
+    "timestamp": "2026-03-29T12:53:37.962Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.542721984657868,
+    "timestamp": "2026-03-29T12:53:38.435Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.7222651234781994,
+    "timestamp": "2026-03-29T12:53:43.022Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.183553303858893,
+    "timestamp": "2026-03-29T12:54:08.017Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.03175753853623,
+    "timestamp": "2026-03-29T12:54:08.415Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.081714928336255,
+    "timestamp": "2026-03-29T12:54:13.016Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.762553620675778,
+    "timestamp": "2026-03-29T12:54:38.973Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.8636888160174685,
+    "timestamp": "2026-03-29T12:54:39.006Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.372424789059622,
+    "timestamp": "2026-03-29T12:54:43.036Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.756970771591188,
+    "timestamp": "2026-03-29T12:55:09.067Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 9.767307995235083,
+    "timestamp": "2026-03-29T12:55:09.100Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 10.086471793031873,
+    "timestamp": "2026-03-29T12:55:13.026Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 4.841409440244896,
+    "timestamp": "2026-03-29T12:55:38.969Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.1259197792281244,
+    "timestamp": "2026-03-29T12:55:39.019Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 7.860096958085782,
+    "timestamp": "2026-03-29T12:55:43.034Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 8.023550666713277,
+    "timestamp": "2026-03-29T12:56:08.977Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 3.329709954997405,
+    "timestamp": "2026-03-29T12:56:09.023Z"
+  },
+  {
+    "type": "task_completion_rate",
+    "value": 5.573909011454753,
+    "timestamp": "2026-03-29T12:56:13.030Z"
+  }
+]

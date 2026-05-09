@@ -1,0 +1,359 @@
+{
+  "timestamp": "2026-05-06T13:39:04.918Z",
+  "testCount": 50,
+  "successCount": 0,
+  "successRate": 0,
+  "totalTime": 5638,
+  "testResults": [
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 68,
+      "timestamp": "2026-05-06T13:38:59.348Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 184,
+      "timestamp": "2026-05-06T13:38:59.464Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 294,
+      "timestamp": "2026-05-06T13:38:59.574Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 406,
+      "timestamp": "2026-05-06T13:38:59.686Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 517,
+      "timestamp": "2026-05-06T13:38:59.797Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 628,
+      "timestamp": "2026-05-06T13:38:59.908Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 745,
+      "timestamp": "2026-05-06T13:39:00.025Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 856,
+      "timestamp": "2026-05-06T13:39:00.136Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 967,
+      "timestamp": "2026-05-06T13:39:00.247Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 1075,
+      "timestamp": "2026-05-06T13:39:00.355Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 1184,
+      "timestamp": "2026-05-06T13:39:00.464Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 1290,
+      "timestamp": "2026-05-06T13:39:00.570Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 1404,
+      "timestamp": "2026-05-06T13:39:00.684Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 1518,
+      "timestamp": "2026-05-06T13:39:00.798Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 1627,
+      "timestamp": "2026-05-06T13:39:00.907Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 1746,
+      "timestamp": "2026-05-06T13:39:01.026Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 1857,
+      "timestamp": "2026-05-06T13:39:01.137Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 1969,
+      "timestamp": "2026-05-06T13:39:01.249Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 2079,
+      "timestamp": "2026-05-06T13:39:01.359Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 2187,
+      "timestamp": "2026-05-06T13:39:01.467Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 2292,
+      "timestamp": "2026-05-06T13:39:01.572Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 2402,
+      "timestamp": "2026-05-06T13:39:01.682Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 2511,
+      "timestamp": "2026-05-06T13:39:01.791Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 2624,
+      "timestamp": "2026-05-06T13:39:01.904Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 2730,
+      "timestamp": "2026-05-06T13:39:02.010Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 2840,
+      "timestamp": "2026-05-06T13:39:02.120Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 2955,
+      "timestamp": "2026-05-06T13:39:02.235Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 3065,
+      "timestamp": "2026-05-06T13:39:02.345Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 3172,
+      "timestamp": "2026-05-06T13:39:02.452Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 3282,
+      "timestamp": "2026-05-06T13:39:02.562Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 3388,
+      "timestamp": "2026-05-06T13:39:02.668Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 3496,
+      "timestamp": "2026-05-06T13:39:02.776Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 3610,
+      "timestamp": "2026-05-06T13:39:02.890Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 3724,
+      "timestamp": "2026-05-06T13:39:03.004Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 3841,
+      "timestamp": "2026-05-06T13:39:03.121Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 3949,
+      "timestamp": "2026-05-06T13:39:03.229Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 4063,
+      "timestamp": "2026-05-06T13:39:03.343Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 4170,
+      "timestamp": "2026-05-06T13:39:03.450Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 4277,
+      "timestamp": "2026-05-06T13:39:03.557Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 4412,
+      "timestamp": "2026-05-06T13:39:03.692Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 4527,
+      "timestamp": "2026-05-06T13:39:03.807Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 4644,
+      "timestamp": "2026-05-06T13:39:03.924Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 4754,
+      "timestamp": "2026-05-06T13:39:04.034Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 4867,
+      "timestamp": "2026-05-06T13:39:04.147Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 4975,
+      "timestamp": "2026-05-06T13:39:04.255Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 5088,
+      "timestamp": "2026-05-06T13:39:04.368Z",
+      "error": ""
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 5196,
+      "timestamp": "2026-05-06T13:39:04.476Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 5302,
+      "timestamp": "2026-05-06T13:39:04.582Z",
+      "error": ""
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 5413,
+      "timestamp": "2026-05-06T13:39:04.693Z",
+      "error": ""
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 5535,
+      "timestamp": "2026-05-06T13:39:04.815Z",
+      "error": ""
+    }
+  ]
+}

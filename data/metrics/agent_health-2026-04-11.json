@@ -1,0 +1,1617 @@
+[
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:33:50.291Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:34:20.297Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:34:50.299Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:35:33.966Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:36:03.978Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:36:33.991Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:37:04.001Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:37:34.005Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:38:04.008Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:38:34.013Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:39:04.015Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:39:34.027Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:40:04.030Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:40:34.045Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:41:04.047Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:41:34.050Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:42:04.053Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:42:34.055Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:43:04.067Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:43:34.080Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:44:04.091Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:44:34.096Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:45:04.110Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:45:34.123Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:46:04.133Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:46:34.136Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:47:04.140Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:47:34.153Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:48:04.163Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:48:34.171Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:49:04.181Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:49:34.182Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:50:04.195Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:50:34.196Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:51:04.197Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:51:34.204Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:52:04.204Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:52:34.215Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:53:04.217Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:53:34.220Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:54:04.223Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:54:34.229Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:55:04.242Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:55:34.258Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:56:04.264Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:56:34.275Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:57:04.282Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:57:34.288Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:58:04.297Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:58:34.310Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:59:04.316Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T14:59:34.324Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:00:04.337Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:00:34.352Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:01:04.357Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:01:34.366Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:02:04.369Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:02:34.373Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:03:04.385Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:03:34.389Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:04:04.389Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:04:34.399Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:05:04.400Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:05:34.408Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:06:04.409Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:06:34.418Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:07:04.420Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:07:34.428Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:08:04.430Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:08:34.445Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:09:04.457Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:09:34.458Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:10:04.460Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:10:34.465Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:11:04.465Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:11:34.472Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:12:04.478Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:12:34.480Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:13:04.491Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:13:34.504Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:14:04.508Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:14:34.512Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:15:04.512Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:15:34.518Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:16:04.523Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:16:34.527Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:17:04.531Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:17:34.533Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:18:04.538Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:18:34.541Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:19:04.541Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:19:34.547Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:20:04.553Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:20:34.554Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-11T15:21:04.555Z"
+  }
+]

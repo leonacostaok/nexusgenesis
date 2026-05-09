@@ -1,0 +1,26 @@
+{
+  "id": "1775962829862",
+  "name": "技术文档完善",
+  "status": "completed",
+  "createdAt": "2026-04-12T03:00:29.862Z",
+  "updatedAt": "2026-04-12T03:00:29.885Z",
+  "runCount": 1,
+  "errorCount": 0,
+  "lastError": null,
+  "description": "编写详细的技术架构文档，完善API文档和开发指南",
+  "priority": "high",
+  "agent": "Ecosystem-Builder",
+  "deadline": "2026-04-15",
+  "dependencies": [],
+  "schedule": "7*24",
+  "estimated_time": "3天",
+  "retryConfig": {
+    "maxRetries": 3,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "result": {
+    "success": true,
+    "message": "技术文档和社区建设任务紧急处理中"
+  }
+}

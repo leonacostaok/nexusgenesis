@@ -1,0 +1,24 @@
+{
+  "id": "1775918104022",
+  "name": "安全系统升级",
+  "status": "completed",
+  "createdAt": "2026-04-11T14:35:04.022Z",
+  "updatedAt": "2026-04-11T14:35:04.032Z",
+  "runCount": 1,
+  "errorCount": 0,
+  "lastError": null,
+  "description": "实现完整的Dilithium签名验证，增强PQC钱包安全性，完善安全审计",
+  "priority": "high",
+  "agent": "PQC-Sentinel",
+  "deadline": "2026-04-20",
+  "dependencies": [],
+  "retryConfig": {
+    "maxRetries": 3,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "result": {
+    "success": true,
+    "message": "安全系统升级任务处理中"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "id": "disk_critical-1777174677133",
+  "ruleId": "disk_critical",
+  "name": "磁盘空间严重不足",
+  "level": "critical",
+  "metric": "disk_usage",
+  "metricValue": 12.63,
+  "message": "磁盘可用空间低于15%",
+  "triggeredAt": "2026-04-26T03:37:57.133Z",
+  "resolvedAt": "2026-04-26T03:40:57.197Z",
+  "status": "resolved"
+}

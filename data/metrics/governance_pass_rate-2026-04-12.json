@@ -1,0 +1,2957 @@
+[
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T02:52:57.204Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T02:53:57.206Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T02:54:57.225Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T02:55:57.233Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T02:56:57.241Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T02:57:57.249Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T02:58:57.255Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T02:59:57.264Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:00:57.265Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:01:29.814Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:01:57.275Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:02:29.816Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:02:57.282Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:03:29.825Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:03:57.315Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:04:29.827Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:04:57.314Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:05:29.841Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:05:57.329Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:06:29.844Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:06:57.329Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:07:29.856Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:07:57.344Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:08:29.863Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:08:57.365Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:09:29.865Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:09:57.372Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:10:29.874Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:10:57.383Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:11:29.889Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:11:57.388Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:12:29.885Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:12:57.391Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:13:29.891Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:13:57.404Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:14:29.903Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:14:57.412Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:15:29.918Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:15:57.414Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:16:29.963Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:16:57.422Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:17:29.946Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:17:57.422Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:18:29.953Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:18:57.438Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:19:29.962Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:19:57.445Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:20:29.973Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:20:57.453Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:21:29.981Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:21:57.463Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:22:29.985Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:22:57.469Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:23:29.985Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:23:57.478Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:24:30.001Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:24:57.485Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:25:30.013Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:25:57.495Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:26:30.023Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:26:57.494Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:27:30.040Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:27:57.503Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:28:30.047Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:28:57.551Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:29:30.051Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:29:57.523Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:30:30.059Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:30:57.531Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:31:30.059Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:31:57.542Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:32:30.067Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:32:57.546Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:33:30.080Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:33:57.549Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:34:30.094Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:34:57.558Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:35:30.102Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:35:57.566Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:36:30.111Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:36:57.563Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:37:30.160Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:37:57.585Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:38:30.158Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:38:57.597Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:39:30.160Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:39:57.604Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:40:30.160Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:40:57.614Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:41:30.173Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:41:57.627Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:42:30.174Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:42:57.632Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:43:30.173Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:43:57.637Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:44:30.187Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:44:57.642Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:45:30.201Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:45:57.653Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:46:30.207Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:46:57.650Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:47:30.214Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:47:57.664Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:48:30.218Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:48:57.666Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:49:30.234Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:49:57.674Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:50:30.247Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:50:57.672Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:51:30.263Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:51:57.683Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:52:30.266Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:52:57.696Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:53:30.266Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:53:57.700Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:54:57.711Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:55:57.717Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:56:57.722Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:57:57.728Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:58:04.322Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:58:57.736Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:59:04.332Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T03:59:57.749Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:00:04.342Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:00:57.749Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:01:04.350Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:01:57.758Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:02:04.359Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:02:57.764Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:03:04.365Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:03:57.774Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:04:04.368Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:04:57.781Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:05:04.378Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:05:57.782Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:06:04.380Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:06:57.793Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:07:04.390Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:07:57.806Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:08:04.391Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:08:57.814Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:09:04.397Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:09:57.822Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:10:04.405Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:10:57.821Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:11:04.410Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:11:57.838Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:12:04.413Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:12:57.840Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:13:04.426Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:13:57.852Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:14:04.429Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:14:57.855Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:15:04.445Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:15:57.867Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:16:04.459Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:16:57.884Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:17:04.457Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:17:57.892Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:18:04.468Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:18:57.935Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:19:04.483Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:19:57.948Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:20:04.489Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:20:57.949Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:21:04.493Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:21:57.960Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:22:04.496Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:22:57.961Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:23:04.507Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:23:57.970Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:24:04.510Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:24:57.977Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:25:04.516Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:25:57.982Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:26:04.531Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:26:57.996Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:27:04.536Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:27:58.002Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:28:04.541Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:28:58.014Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:29:04.542Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:29:58.018Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:30:04.568Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:30:58.176Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:31:04.575Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:31:58.059Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:32:04.587Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:32:58.064Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:33:04.586Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:33:58.071Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:34:04.596Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:34:58.084Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:35:04.601Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:35:58.097Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:36:04.606Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:36:58.105Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:37:04.617Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:37:58.112Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:38:04.630Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:38:58.113Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:39:04.637Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:39:58.127Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:40:04.639Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:40:58.137Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:41:04.644Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:41:58.138Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:42:04.648Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:42:58.148Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:43:04.655Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:43:58.160Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:44:04.664Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:44:58.175Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:45:04.674Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:45:58.185Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:46:04.684Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:46:58.189Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:47:04.699Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:47:58.198Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:48:04.708Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:48:58.200Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:49:04.711Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:49:58.203Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:50:04.722Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:50:58.214Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:51:04.728Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:51:58.221Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:52:04.740Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:52:58.225Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:53:04.749Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:53:58.233Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:54:04.759Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:54:58.232Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:55:04.763Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:55:58.245Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:56:04.768Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:56:58.269Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:57:04.774Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:57:58.284Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:58:04.787Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:58:58.292Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:59:04.794Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T04:59:58.285Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:00:04.821Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:00:58.293Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:01:04.821Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:01:58.297Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:02:04.824Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:02:58.307Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:03:04.843Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:03:58.304Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:04:04.858Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:04:58.326Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:05:04.852Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:05:58.324Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:06:04.850Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:06:58.326Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:07:04.867Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:07:58.335Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:08:04.873Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:08:58.339Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:09:04.877Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:09:58.343Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:10:04.895Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:10:58.352Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:11:04.892Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:11:58.360Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:12:04.891Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:12:58.366Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:13:04.899Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:13:58.369Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:14:04.904Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:14:58.384Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:15:04.912Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:15:58.387Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:16:04.911Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:16:58.386Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:17:04.910Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:17:58.441Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:18:04.914Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:18:58.414Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:19:04.920Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:19:58.418Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:20:04.932Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:20:58.418Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:21:04.935Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:21:58.428Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:22:04.945Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:22:58.436Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:23:04.960Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:23:58.440Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:24:04.961Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:24:58.455Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:25:04.969Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:25:58.458Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T05:26:04.976Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:04:29.093Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:05:29.002Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:06:29.012Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:07:29.023Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:08:29.020Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:09:29.033Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:10:29.051Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:11:29.048Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:12:29.063Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:13:29.072Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:14:29.088Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:15:29.091Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:16:29.110Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:17:29.119Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:19:07.664Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:20:07.670Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:21:07.687Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:22:07.688Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:23:07.707Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:24:07.719Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:25:07.719Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:26:07.724Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:27:07.727Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:28:07.735Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:29:07.744Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:30:07.745Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:31:07.750Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:32:07.751Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:33:07.756Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:34:07.768Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:35:07.771Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:36:07.780Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:37:07.802Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:38:07.807Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:39:07.813Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:40:07.824Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:41:07.824Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:42:07.834Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:43:07.840Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:44:07.836Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:45:07.862Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:46:07.871Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:47:07.871Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:48:07.878Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:49:07.874Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:50:07.883Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:51:07.895Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:52:07.900Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:53:07.910Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:54:07.917Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:55:07.917Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:56:07.920Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:57:07.932Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:58:07.951Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T06:59:07.949Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:00:07.965Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:01:07.964Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:02:07.979Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:03:07.986Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:04:07.997Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:05:08.014Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:06:08.017Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:07:08.029Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:08:08.037Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:09:08.046Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:10:08.064Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:11:08.070Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:12:08.078Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:13:08.075Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:14:08.084Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:15:08.092Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:16:08.102Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:17:08.121Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:18:08.132Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:19:08.138Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:20:08.139Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:21:08.146Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:22:08.161Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:23:08.160Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:24:08.174Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:25:08.170Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:26:08.191Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:27:08.205Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:28:08.211Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:29:08.215Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:30:08.228Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:31:08.238Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:32:08.247Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:33:08.252Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:34:08.256Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:35:08.264Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:36:08.273Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:37:08.281Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:38:08.287Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:39:08.287Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:40:08.302Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:41:08.301Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:42:08.322Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:43:08.326Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:44:08.330Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:45:08.333Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:46:08.333Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:47:08.349Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:48:08.387Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:49:08.393Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:50:08.398Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:51:08.407Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:52:08.414Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:53:08.431Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:54:08.435Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:55:08.440Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:56:08.448Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:57:08.458Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:58:08.457Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T07:59:08.476Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:00:08.497Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:01:08.493Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:02:08.498Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:03:08.524Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:04:08.522Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:05:08.523Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:06:08.543Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:07:08.548Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:08:08.565Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:09:08.572Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:10:08.572Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:11:08.582Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:12:08.579Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:13:08.590Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:14:08.589Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:15:08.596Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:16:08.596Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:17:08.611Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:18:08.621Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:19:08.633Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:20:08.637Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:21:08.646Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:22:08.657Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:23:08.661Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:24:08.672Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:25:08.688Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:26:08.710Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:27:08.702Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:28:08.715Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:29:08.729Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:30:08.740Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:31:08.763Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:32:08.765Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:33:08.771Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:34:08.783Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:35:08.784Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:36:08.794Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:37:08.802Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:38:08.807Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:39:08.813Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:40:08.822Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:41:08.832Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:42:08.839Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:43:08.861Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:44:08.866Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:45:08.887Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:46:08.887Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:47:08.895Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:48:08.893Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:49:08.909Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:50:08.911Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:51:08.912Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:52:08.942Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:53:08.949Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:54:08.946Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:55:08.955Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:56:08.968Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:57:08.990Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:58:09.001Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T08:59:08.997Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:00:09.012Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:01:09.021Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:02:09.027Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:03:09.040Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:04:09.048Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:05:09.049Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:06:09.066Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:07:09.077Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:08:09.078Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:09:09.079Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:10:09.084Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:11:09.094Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:12:09.102Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:13:09.113Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:14:09.116Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:15:09.124Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:16:09.129Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:17:09.149Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:18:09.149Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:19:09.173Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:20:09.178Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:21:09.180Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:22:09.198Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:23:09.203Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:24:09.215Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:25:09.228Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:26:09.230Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:27:09.234Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:28:09.250Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:29:09.251Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:30:09.264Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:31:09.269Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:32:09.274Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:33:09.286Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:34:09.290Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:35:09.339Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:36:09.338Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:37:09.352Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:38:09.368Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:39:09.380Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:40:09.386Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:41:09.391Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:42:09.394Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:43:09.395Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:44:09.397Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:45:09.409Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:46:09.417Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:47:09.429Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:48:09.434Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:49:09.441Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:50:09.439Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:51:09.442Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:52:09.446Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:53:09.453Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:54:09.469Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:55:09.474Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:56:09.474Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:57:09.475Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:58:09.484Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T09:59:09.491Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:00:09.495Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:01:09.490Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:02:09.503Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:03:09.515Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:04:09.522Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:05:09.529Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:06:09.538Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:07:09.548Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:08:09.561Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:09:09.561Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:10:09.570Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:11:09.571Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:12:09.580Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:13:09.584Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:14:09.593Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:15:09.605Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:16:09.711Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:17:09.718Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:18:09.733Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:19:09.743Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:20:09.744Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:21:09.754Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:22:09.761Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:23:09.769Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:24:09.774Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:25:09.778Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:26:09.781Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:27:09.787Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:28:09.790Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:29:09.804Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:30:09.807Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:31:09.820Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:32:09.827Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:33:09.839Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:34:09.839Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:35:09.856Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:36:09.856Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:37:09.867Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:38:09.867Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:39:09.879Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:40:09.884Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:41:09.898Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:42:09.907Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:43:59.733Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:44:59.759Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:45:59.757Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:46:59.758Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:47:59.767Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:48:59.777Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:49:59.794Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:50:59.795Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:51:59.819Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:53:32.415Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:54:32.439Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:55:32.440Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:56:32.441Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:57:32.449Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:58:32.457Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T10:59:32.459Z"
+  },
+  {
+    "type": "governance_pass_rate",
+    "value": 0,
+    "timestamp": "2026-04-12T11:00:32.463Z"
+  }
+]

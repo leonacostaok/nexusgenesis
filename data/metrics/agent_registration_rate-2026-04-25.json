@@ -1,0 +1,52 @@
+[
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-04-25T23:50:23.472Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-04-25T23:51:23.482Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-04-25T23:52:23.486Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-04-25T23:53:23.489Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-04-25T23:54:23.496Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-04-25T23:55:23.497Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-04-25T23:56:23.507Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-04-25T23:57:23.514Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-04-25T23:58:23.518Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-04-25T23:59:23.535Z"
+  }
+]

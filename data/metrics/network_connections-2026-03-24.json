@@ -1,0 +1,542 @@
+[
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:38.870Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:41.177Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:41.316Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:43.881Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:43.883Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:46.184Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:46.323Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:48.884Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:48.887Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:51.197Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:51.323Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:53.891Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:53.892Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:56.210Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:56.335Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:57:58.897Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:01.214Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:01.339Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:03.903Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:03.905Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:06.221Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:06.345Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:08.913Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:08.918Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:11.231Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:11.354Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:13.917Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:16.240Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:16.365Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:18.924Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:21.248Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:21.371Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:23.926Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:23.928Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:26.263Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:26.376Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:28.934Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:28.942Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:31.265Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:31.387Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:33.940Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:33.948Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:36.273Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:36.396Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:38.950Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:38.951Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:41.279Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:41.404Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:43.962Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:43.966Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:46.289Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:46.414Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:48.974Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:48.978Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:51.288Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:51.413Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:53.982Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:53.985Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:56.292Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:56.417Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:58.989Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:58:58.990Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:01.299Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:01.422Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:03.997Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:06.305Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:06.429Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:09.010Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:09.011Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:11.309Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:11.434Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:14.025Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:14.030Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:16.318Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:16.444Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:19.021Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:21.326Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:21.449Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:24.023Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:24.026Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:26.329Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:26.451Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:29.035Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:29.035Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:31.331Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:31.454Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:34.045Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:34.047Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:36.345Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:36.469Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:39.050Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:39.057Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:41.349Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:41.473Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:44.052Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:44.053Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:46.359Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:46.481Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:49.060Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:49.062Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:51.371Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:51.496Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:54.061Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:54.069Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:56.377Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:56.505Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:59.069Z"
+  },
+  {
+    "type": "network_connections",
+    "value": 5,
+    "timestamp": "2026-03-24T23:59:59.077Z"
+  }
+]

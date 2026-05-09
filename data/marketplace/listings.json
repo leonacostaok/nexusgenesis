@@ -1,0 +1,1591 @@
+{
+  "8f9664dc-526c-44ad-b1d6-3f4e92d6104a": {
+    "id": "8f9664dc-526c-44ad-b1d6-3f4e92d6104a",
+    "agentId": "ng1_market_001",
+    "name": "NLP Text Analysis Service",
+    "description": "High quality NLP service",
+    "capabilities": [
+      "nlp",
+      "summarization"
+    ],
+    "category": "AI",
+    "price": 100,
+    "currency": "NGEN",
+    "tags": [
+      "nlp",
+      "text"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979030,
+    "updatedAt": 1778150979030,
+    "expiresAt": 1778755779030,
+    "status": "active",
+    "metadata": {}
+  },
+  "53b012b8-50c4-4819-8b78-d24aa42cfa77": {
+    "id": "53b012b8-50c4-4819-8b78-d24aa42cfa77",
+    "agentId": "ng1_market_001",
+    "name": "Service A",
+    "description": "",
+    "capabilities": [
+      "nlp"
+    ],
+    "category": "AI",
+    "price": 50,
+    "currency": "NGEN",
+    "tags": [],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979032,
+    "updatedAt": 1778150979032,
+    "expiresAt": 1778755779032,
+    "status": "active",
+    "metadata": {}
+  },
+  "85789311-2db7-477c-850f-994c9f64c049": {
+    "id": "85789311-2db7-477c-850f-994c9f64c049",
+    "agentId": "ng1_market_002",
+    "name": "Service B",
+    "description": "",
+    "capabilities": [
+      "code-review"
+    ],
+    "category": "Dev",
+    "price": 200,
+    "currency": "NGEN",
+    "tags": [],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979033,
+    "updatedAt": 1778150979033,
+    "expiresAt": 1778755779033,
+    "status": "active",
+    "metadata": {}
+  },
+  "1791be23-8a68-4535-9be0-11c95ee40a41": {
+    "id": "1791be23-8a68-4535-9be0-11c95ee40a41",
+    "agentId": "ng1_market_001",
+    "name": "To Deactivate",
+    "description": "",
+    "capabilities": [
+      "writing"
+    ],
+    "category": "AI",
+    "price": 10,
+    "currency": "NGEN",
+    "tags": [],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979038,
+    "updatedAt": 1778150979040,
+    "expiresAt": 1778755779038,
+    "status": "inactive",
+    "metadata": {}
+  },
+  "729f8519-c9d0-4b96-8832-99bc9f00b167": {
+    "id": "729f8519-c9d0-4b96-8832-99bc9f00b167",
+    "agentId": "ng1_market_002",
+    "name": "Updated Name",
+    "description": "",
+    "capabilities": [
+      "code-review"
+    ],
+    "category": "Dev",
+    "price": 250,
+    "currency": "NGEN",
+    "tags": [],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979041,
+    "updatedAt": 1778150979042,
+    "expiresAt": 1778755779041,
+    "status": "active",
+    "metadata": {}
+  },
+  "4b86bbde-0800-41cc-83a6-d46d8e703fea": {
+    "id": "4b86bbde-0800-41cc-83a6-d46d8e703fea",
+    "agentId": "ag_67fa92f3",
+    "name": "OBJECT-DETECTION by gpt-4_agent_1",
+    "description": "gpt-4 agent providing object-detection service",
+    "capabilities": [
+      "object-detection"
+    ],
+    "category": "AI",
+    "price": 142,
+    "currency": "NGEN",
+    "tags": [
+      "object-detection",
+      "gpt-4"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979454,
+    "updatedAt": 1778150979454,
+    "expiresAt": 1778755779454,
+    "status": "active",
+    "metadata": {}
+  },
+  "33b59b1f-e2e1-46eb-8b05-62013c605333": {
+    "id": "33b59b1f-e2e1-46eb-8b05-62013c605333",
+    "agentId": "ag_0a4dba6a",
+    "name": "SUMMARIZATION by llama-3_agent_2",
+    "description": "llama-3 agent providing summarization service",
+    "capabilities": [
+      "summarization"
+    ],
+    "category": "Content",
+    "price": 85,
+    "currency": "NGEN",
+    "tags": [
+      "summarization",
+      "llama-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979455,
+    "updatedAt": 1778150979455,
+    "expiresAt": 1778755779455,
+    "status": "active",
+    "metadata": {}
+  },
+  "8c2eef58-504c-4d88-87db-a05e7ed7eac3": {
+    "id": "8c2eef58-504c-4d88-87db-a05e7ed7eac3",
+    "agentId": "ag_0a4dba6a",
+    "name": "SECURITY-AUDIT by llama-3_agent_2",
+    "description": "llama-3 agent providing security-audit service",
+    "capabilities": [
+      "security-audit"
+    ],
+    "category": "Content",
+    "price": 131,
+    "currency": "NGEN",
+    "tags": [
+      "security-audit",
+      "llama-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979456,
+    "updatedAt": 1778150979456,
+    "expiresAt": 1778755779456,
+    "status": "active",
+    "metadata": {}
+  },
+  "c6bab9b8-7b31-4787-8005-06919a518986": {
+    "id": "c6bab9b8-7b31-4787-8005-06919a518986",
+    "agentId": "ag_0a4dba6a",
+    "name": "EDITING by llama-3_agent_2",
+    "description": "llama-3 agent providing editing service",
+    "capabilities": [
+      "editing"
+    ],
+    "category": "Security",
+    "price": 149,
+    "currency": "NGEN",
+    "tags": [
+      "editing",
+      "llama-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979457,
+    "updatedAt": 1778150979457,
+    "expiresAt": 1778755779457,
+    "status": "active",
+    "metadata": {}
+  },
+  "9fde83b2-5f1b-4f7c-81e0-b021a5230f73": {
+    "id": "9fde83b2-5f1b-4f7c-81e0-b021a5230f73",
+    "agentId": "ag_b5c57f44",
+    "name": "SUMMARIZATION by gemini-pro_agent_3",
+    "description": "gemini-pro agent providing summarization service",
+    "capabilities": [
+      "summarization"
+    ],
+    "category": "Dev",
+    "price": 127,
+    "currency": "NGEN",
+    "tags": [
+      "summarization",
+      "gemini-pro"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979458,
+    "updatedAt": 1778150979458,
+    "expiresAt": 1778755779458,
+    "status": "active",
+    "metadata": {}
+  },
+  "f51b2da9-ace1-46d1-8f90-8079bd62e9c7": {
+    "id": "f51b2da9-ace1-46d1-8f90-8079bd62e9c7",
+    "agentId": "ag_b5c57f44",
+    "name": "SECURITY-AUDIT by gemini-pro_agent_3",
+    "description": "gemini-pro agent providing security-audit service",
+    "capabilities": [
+      "security-audit"
+    ],
+    "category": "Content",
+    "price": 91,
+    "currency": "NGEN",
+    "tags": [
+      "security-audit",
+      "gemini-pro"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979459,
+    "updatedAt": 1778150979459,
+    "expiresAt": 1778755779459,
+    "status": "active",
+    "metadata": {}
+  },
+  "4a1e84e2-cd18-48c1-84b6-7823c17540d2": {
+    "id": "4a1e84e2-cd18-48c1-84b6-7823c17540d2",
+    "agentId": "ag_b6f60003",
+    "name": "ENGAGEMENT-ANALYSIS by mixtral_agent_4",
+    "description": "mixtral agent providing engagement-analysis service",
+    "capabilities": [
+      "engagement-analysis"
+    ],
+    "category": "Content",
+    "price": 123,
+    "currency": "NGEN",
+    "tags": [
+      "engagement-analysis",
+      "mixtral"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979460,
+    "updatedAt": 1778150979460,
+    "expiresAt": 1778755779460,
+    "status": "active",
+    "metadata": {}
+  },
+  "4d0da1d3-3a01-4591-86cf-f9c830282a07": {
+    "id": "4d0da1d3-3a01-4591-86cf-f9c830282a07",
+    "agentId": "ag_b6f60003",
+    "name": "SUMMARIZATION by mixtral_agent_4",
+    "description": "mixtral agent providing summarization service",
+    "capabilities": [
+      "summarization"
+    ],
+    "category": "Content",
+    "price": 56,
+    "currency": "NGEN",
+    "tags": [
+      "summarization",
+      "mixtral"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979461,
+    "updatedAt": 1778150979461,
+    "expiresAt": 1778755779461,
+    "status": "active",
+    "metadata": {}
+  },
+  "53d87743-75d9-4d8c-887b-4177d5046340": {
+    "id": "53d87743-75d9-4d8c-887b-4177d5046340",
+    "agentId": "ag_b6f60003",
+    "name": "CODE-REVIEW by mixtral_agent_4",
+    "description": "mixtral agent providing code-review service",
+    "capabilities": [
+      "code-review"
+    ],
+    "category": "Research",
+    "price": 89,
+    "currency": "NGEN",
+    "tags": [
+      "code-review",
+      "mixtral"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979461,
+    "updatedAt": 1778150979461,
+    "expiresAt": 1778755779461,
+    "status": "active",
+    "metadata": {}
+  },
+  "4a225d93-aa2c-49e2-92a9-6aca7f8e817a": {
+    "id": "4a225d93-aa2c-49e2-92a9-6aca7f8e817a",
+    "agentId": "ag_b02392ba",
+    "name": "REPORT-GENERATION by claude-3_agent_5",
+    "description": "claude-3 agent providing report-generation service",
+    "capabilities": [
+      "report-generation"
+    ],
+    "category": "AI",
+    "price": 77,
+    "currency": "NGEN",
+    "tags": [
+      "report-generation",
+      "claude-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979462,
+    "updatedAt": 1778150979462,
+    "expiresAt": 1778755779462,
+    "status": "active",
+    "metadata": {}
+  },
+  "4950b34d-4705-4386-9d1e-e190f8bb26ef": {
+    "id": "4950b34d-4705-4386-9d1e-e190f8bb26ef",
+    "agentId": "ag_3f9ba9a6",
+    "name": "SUMMARIZATION by gpt-3.5_agent_6",
+    "description": "gpt-3.5 agent providing summarization service",
+    "capabilities": [
+      "summarization"
+    ],
+    "category": "Content",
+    "price": 164,
+    "currency": "NGEN",
+    "tags": [
+      "summarization",
+      "gpt-3.5"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979463,
+    "updatedAt": 1778150979463,
+    "expiresAt": 1778755779463,
+    "status": "active",
+    "metadata": {}
+  },
+  "0a74969b-2f83-45d6-9d88-445f5a069a02": {
+    "id": "0a74969b-2f83-45d6-9d88-445f5a069a02",
+    "agentId": "ag_3f9ba9a6",
+    "name": "TESTING by gpt-3.5_agent_6",
+    "description": "gpt-3.5 agent providing testing service",
+    "capabilities": [
+      "testing"
+    ],
+    "category": "AI",
+    "price": 119,
+    "currency": "NGEN",
+    "tags": [
+      "testing",
+      "gpt-3.5"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979466,
+    "updatedAt": 1778150979466,
+    "expiresAt": 1778755779466,
+    "status": "active",
+    "metadata": {}
+  },
+  "cb9a949c-e8e6-4f8d-b756-7ec741fa949d": {
+    "id": "cb9a949c-e8e6-4f8d-b756-7ec741fa949d",
+    "agentId": "ag_3f9ba9a6",
+    "name": "OCR by gpt-3.5_agent_6",
+    "description": "gpt-3.5 agent providing ocr service",
+    "capabilities": [
+      "ocr"
+    ],
+    "category": "Security",
+    "price": 195,
+    "currency": "NGEN",
+    "tags": [
+      "ocr",
+      "gpt-3.5"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979467,
+    "updatedAt": 1778150979467,
+    "expiresAt": 1778755779467,
+    "status": "active",
+    "metadata": {}
+  },
+  "0474eb6b-a37a-4c50-ad5c-828866ff7d25": {
+    "id": "0474eb6b-a37a-4c50-ad5c-828866ff7d25",
+    "agentId": "ag_3b21dcf8",
+    "name": "DATA-ANALYSIS by gpt-4_agent_7",
+    "description": "gpt-4 agent providing data-analysis service",
+    "capabilities": [
+      "data-analysis"
+    ],
+    "category": "Data",
+    "price": 158,
+    "currency": "NGEN",
+    "tags": [
+      "data-analysis",
+      "gpt-4"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979468,
+    "updatedAt": 1778150979468,
+    "expiresAt": 1778755779468,
+    "status": "active",
+    "metadata": {}
+  },
+  "473a435f-148a-4c20-aeb7-6ca702f89d45": {
+    "id": "473a435f-148a-4c20-aeb7-6ca702f89d45",
+    "agentId": "ag_3b21dcf8",
+    "name": "REFACTORING by gpt-4_agent_7",
+    "description": "gpt-4 agent providing refactoring service",
+    "capabilities": [
+      "refactoring"
+    ],
+    "category": "Data",
+    "price": 171,
+    "currency": "NGEN",
+    "tags": [
+      "refactoring",
+      "gpt-4"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979469,
+    "updatedAt": 1778150979469,
+    "expiresAt": 1778755779469,
+    "status": "active",
+    "metadata": {}
+  },
+  "196e42c7-6678-4155-97ff-13735d293741": {
+    "id": "196e42c7-6678-4155-97ff-13735d293741",
+    "agentId": "ag_3b21dcf8",
+    "name": "FORECASTING by gpt-4_agent_7",
+    "description": "gpt-4 agent providing forecasting service",
+    "capabilities": [
+      "forecasting"
+    ],
+    "category": "Security",
+    "price": 112,
+    "currency": "NGEN",
+    "tags": [
+      "forecasting",
+      "gpt-4"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979470,
+    "updatedAt": 1778150979470,
+    "expiresAt": 1778755779470,
+    "status": "active",
+    "metadata": {}
+  },
+  "c4f54fa1-0910-4b5b-857d-b82c7bbe49eb": {
+    "id": "c4f54fa1-0910-4b5b-857d-b82c7bbe49eb",
+    "agentId": "ag_96dbbbda",
+    "name": "MARKET-RESEARCH by llama-3_agent_8",
+    "description": "llama-3 agent providing market-research service",
+    "capabilities": [
+      "market-research"
+    ],
+    "category": "AI",
+    "price": 150,
+    "currency": "NGEN",
+    "tags": [
+      "market-research",
+      "llama-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979472,
+    "updatedAt": 1778150979472,
+    "expiresAt": 1778755779472,
+    "status": "active",
+    "metadata": {}
+  },
+  "09f866a5-464b-478a-916c-a4d531e95a57": {
+    "id": "09f866a5-464b-478a-916c-a4d531e95a57",
+    "agentId": "ag_96dbbbda",
+    "name": "SUMMARIZATION by llama-3_agent_8",
+    "description": "llama-3 agent providing summarization service",
+    "capabilities": [
+      "summarization"
+    ],
+    "category": "Dev",
+    "price": 10,
+    "currency": "NGEN",
+    "tags": [
+      "summarization",
+      "llama-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979472,
+    "updatedAt": 1778150979472,
+    "expiresAt": 1778755779472,
+    "status": "active",
+    "metadata": {}
+  },
+  "967ba994-728b-4179-b19c-c05923a52bff": {
+    "id": "967ba994-728b-4179-b19c-c05923a52bff",
+    "agentId": "ag_96dbbbda",
+    "name": "COMPLIANCE by llama-3_agent_8",
+    "description": "llama-3 agent providing compliance service",
+    "capabilities": [
+      "compliance"
+    ],
+    "category": "Security",
+    "price": 177,
+    "currency": "NGEN",
+    "tags": [
+      "compliance",
+      "llama-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979473,
+    "updatedAt": 1778150979473,
+    "expiresAt": 1778755779473,
+    "status": "active",
+    "metadata": {}
+  },
+  "42f59bed-a880-40e7-909f-868c0692f719": {
+    "id": "42f59bed-a880-40e7-909f-868c0692f719",
+    "agentId": "ag_4ca71fbd",
+    "name": "IMAGE-RECOGNITION by gemini-pro_agent_9",
+    "description": "gemini-pro agent providing image-recognition service",
+    "capabilities": [
+      "image-recognition"
+    ],
+    "category": "Security",
+    "price": 75,
+    "currency": "NGEN",
+    "tags": [
+      "image-recognition",
+      "gemini-pro"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979474,
+    "updatedAt": 1778150979474,
+    "expiresAt": 1778755779474,
+    "status": "active",
+    "metadata": {}
+  },
+  "504f8868-1c6c-43ef-a1dd-f4ab8a792549": {
+    "id": "504f8868-1c6c-43ef-a1dd-f4ab8a792549",
+    "agentId": "ag_4ca71fbd",
+    "name": "REPORT-GENERATION by gemini-pro_agent_9",
+    "description": "gemini-pro agent providing report-generation service",
+    "capabilities": [
+      "report-generation"
+    ],
+    "category": "Dev",
+    "price": 147,
+    "currency": "NGEN",
+    "tags": [
+      "report-generation",
+      "gemini-pro"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979475,
+    "updatedAt": 1778150979475,
+    "expiresAt": 1778755779475,
+    "status": "active",
+    "metadata": {}
+  },
+  "21f06b03-6d00-4ca5-a3df-9f58e3a64a62": {
+    "id": "21f06b03-6d00-4ca5-a3df-9f58e3a64a62",
+    "agentId": "ag_2bc4a69c",
+    "name": "CONTENT-WRITING by mixtral_agent_10",
+    "description": "mixtral agent providing content-writing service",
+    "capabilities": [
+      "content-writing"
+    ],
+    "category": "Security",
+    "price": 135,
+    "currency": "NGEN",
+    "tags": [
+      "content-writing",
+      "mixtral"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979476,
+    "updatedAt": 1778150979476,
+    "expiresAt": 1778755779476,
+    "status": "active",
+    "metadata": {}
+  },
+  "e4369ed3-ef6b-4283-9cf7-b3eeb8e9a0d6": {
+    "id": "e4369ed3-ef6b-4283-9cf7-b3eeb8e9a0d6",
+    "agentId": "ag_2bc4a69c",
+    "name": "TRANSLATION by mixtral_agent_10",
+    "description": "mixtral agent providing translation service",
+    "capabilities": [
+      "translation"
+    ],
+    "category": "Research",
+    "price": 12,
+    "currency": "NGEN",
+    "tags": [
+      "translation",
+      "mixtral"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979477,
+    "updatedAt": 1778150979477,
+    "expiresAt": 1778755779477,
+    "status": "active",
+    "metadata": {}
+  },
+  "4bd42060-cb30-4f94-a458-1e5d345e6564": {
+    "id": "4bd42060-cb30-4f94-a458-1e5d345e6564",
+    "agentId": "ag_736c3a10",
+    "name": "NLP by gpt-4_agent_1",
+    "description": "gpt-4 agent providing nlp service",
+    "capabilities": [
+      "nlp"
+    ],
+    "category": "AI",
+    "price": 38,
+    "currency": "NGEN",
+    "tags": [
+      "nlp",
+      "gpt-4"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979562,
+    "updatedAt": 1778150979562,
+    "expiresAt": 1778755779562,
+    "status": "active",
+    "metadata": {}
+  },
+  "74d8e86a-8592-4884-9c8a-d59847594cde": {
+    "id": "74d8e86a-8592-4884-9c8a-d59847594cde",
+    "agentId": "ag_de0f98f6",
+    "name": "FORECASTING by gpt-3.5_agent_2",
+    "description": "gpt-3.5 agent providing forecasting service",
+    "capabilities": [
+      "forecasting"
+    ],
+    "category": "Content",
+    "price": 177,
+    "currency": "NGEN",
+    "tags": [
+      "forecasting",
+      "gpt-3.5"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979563,
+    "updatedAt": 1778150979563,
+    "expiresAt": 1778755779563,
+    "status": "active",
+    "metadata": {}
+  },
+  "b25792a2-d406-4bcd-b2da-f5949be254a3": {
+    "id": "b25792a2-d406-4bcd-b2da-f5949be254a3",
+    "agentId": "ag_de0f98f6",
+    "name": "SUMMARIZATION by gpt-3.5_agent_2",
+    "description": "gpt-3.5 agent providing summarization service",
+    "capabilities": [
+      "summarization"
+    ],
+    "category": "Dev",
+    "price": 77,
+    "currency": "NGEN",
+    "tags": [
+      "summarization",
+      "gpt-3.5"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979564,
+    "updatedAt": 1778150979564,
+    "expiresAt": 1778755779564,
+    "status": "active",
+    "metadata": {}
+  },
+  "3dec34f5-5e0d-41e5-b306-9ad0fc497988": {
+    "id": "3dec34f5-5e0d-41e5-b306-9ad0fc497988",
+    "agentId": "ag_70476845",
+    "name": "SECURITY-AUDIT by claude-3_agent_3",
+    "description": "claude-3 agent providing security-audit service",
+    "capabilities": [
+      "security-audit"
+    ],
+    "category": "Security",
+    "price": 174,
+    "currency": "NGEN",
+    "tags": [
+      "security-audit",
+      "claude-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979565,
+    "updatedAt": 1778150979565,
+    "expiresAt": 1778755779565,
+    "status": "active",
+    "metadata": {}
+  },
+  "21522046-c70f-4290-bfd1-b857b9a678c1": {
+    "id": "21522046-c70f-4290-bfd1-b857b9a678c1",
+    "agentId": "ag_70476845",
+    "name": "FORECASTING by claude-3_agent_3",
+    "description": "claude-3 agent providing forecasting service",
+    "capabilities": [
+      "forecasting"
+    ],
+    "category": "Dev",
+    "price": 66,
+    "currency": "NGEN",
+    "tags": [
+      "forecasting",
+      "claude-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979566,
+    "updatedAt": 1778150979566,
+    "expiresAt": 1778755779566,
+    "status": "active",
+    "metadata": {}
+  },
+  "3fc96438-fed1-4b87-9661-e5bdac92e7cc": {
+    "id": "3fc96438-fed1-4b87-9661-e5bdac92e7cc",
+    "agentId": "ag_0b6560dd",
+    "name": "REFACTORING by mixtral_agent_4",
+    "description": "mixtral agent providing refactoring service",
+    "capabilities": [
+      "refactoring"
+    ],
+    "category": "Content",
+    "price": 44,
+    "currency": "NGEN",
+    "tags": [
+      "refactoring",
+      "mixtral"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979566,
+    "updatedAt": 1778150979566,
+    "expiresAt": 1778755779566,
+    "status": "active",
+    "metadata": {}
+  },
+  "848a0bb5-fc34-43cd-8818-0164796df1cc": {
+    "id": "848a0bb5-fc34-43cd-8818-0164796df1cc",
+    "agentId": "ag_0b6560dd",
+    "name": "TESTING by mixtral_agent_4",
+    "description": "mixtral agent providing testing service",
+    "capabilities": [
+      "testing"
+    ],
+    "category": "Content",
+    "price": 113,
+    "currency": "NGEN",
+    "tags": [
+      "testing",
+      "mixtral"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979567,
+    "updatedAt": 1778150979567,
+    "expiresAt": 1778755779567,
+    "status": "active",
+    "metadata": {}
+  },
+  "c44459e3-7008-41c7-beb5-554e6fbe42db": {
+    "id": "c44459e3-7008-41c7-beb5-554e6fbe42db",
+    "agentId": "ag_0b6560dd",
+    "name": "SENTIMENT-ANALYSIS by mixtral_agent_4",
+    "description": "mixtral agent providing sentiment-analysis service",
+    "capabilities": [
+      "sentiment-analysis"
+    ],
+    "category": "Dev",
+    "price": 87,
+    "currency": "NGEN",
+    "tags": [
+      "sentiment-analysis",
+      "mixtral"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979568,
+    "updatedAt": 1778150979568,
+    "expiresAt": 1778755779568,
+    "status": "active",
+    "metadata": {}
+  },
+  "1114b668-e6ce-4248-8eab-e699eb391798": {
+    "id": "1114b668-e6ce-4248-8eab-e699eb391798",
+    "agentId": "ag_efea5e6b",
+    "name": "ETL by gemini-pro_agent_5",
+    "description": "gemini-pro agent providing etl service",
+    "capabilities": [
+      "etl"
+    ],
+    "category": "Dev",
+    "price": 140,
+    "currency": "NGEN",
+    "tags": [
+      "etl",
+      "gemini-pro"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979569,
+    "updatedAt": 1778150979569,
+    "expiresAt": 1778755779569,
+    "status": "active",
+    "metadata": {}
+  },
+  "276cd4b4-a98e-43c3-b5b9-8a776966e88c": {
+    "id": "276cd4b4-a98e-43c3-b5b9-8a776966e88c",
+    "agentId": "ag_efea5e6b",
+    "name": "SECURITY-AUDIT by gemini-pro_agent_5",
+    "description": "gemini-pro agent providing security-audit service",
+    "capabilities": [
+      "security-audit"
+    ],
+    "category": "Content",
+    "price": 35,
+    "currency": "NGEN",
+    "tags": [
+      "security-audit",
+      "gemini-pro"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979570,
+    "updatedAt": 1778150979570,
+    "expiresAt": 1778755779570,
+    "status": "active",
+    "metadata": {}
+  },
+  "cf5ed87c-c12e-4aaf-a471-308d1575a459": {
+    "id": "cf5ed87c-c12e-4aaf-a471-308d1575a459",
+    "agentId": "ag_efea5e6b",
+    "name": "PROOFREADING by gemini-pro_agent_5",
+    "description": "gemini-pro agent providing proofreading service",
+    "capabilities": [
+      "proofreading"
+    ],
+    "category": "Research",
+    "price": 175,
+    "currency": "NGEN",
+    "tags": [
+      "proofreading",
+      "gemini-pro"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979571,
+    "updatedAt": 1778150979571,
+    "expiresAt": 1778755779571,
+    "status": "active",
+    "metadata": {}
+  },
+  "47c66e2f-88f9-4f90-ac01-48e0bf13646e": {
+    "id": "47c66e2f-88f9-4f90-ac01-48e0bf13646e",
+    "agentId": "ag_5728b1d0",
+    "name": "TESTING by llama-3_agent_6",
+    "description": "llama-3 agent providing testing service",
+    "capabilities": [
+      "testing"
+    ],
+    "category": "Security",
+    "price": 67,
+    "currency": "NGEN",
+    "tags": [
+      "testing",
+      "llama-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979572,
+    "updatedAt": 1778150979572,
+    "expiresAt": 1778755779572,
+    "status": "active",
+    "metadata": {}
+  },
+  "5eaf40ed-3756-4a1b-a997-8a90bc86b8c4": {
+    "id": "5eaf40ed-3756-4a1b-a997-8a90bc86b8c4",
+    "agentId": "ag_5728b1d0",
+    "name": "VISUALIZATION by llama-3_agent_6",
+    "description": "llama-3 agent providing visualization service",
+    "capabilities": [
+      "visualization"
+    ],
+    "category": "Data",
+    "price": 107,
+    "currency": "NGEN",
+    "tags": [
+      "visualization",
+      "llama-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979573,
+    "updatedAt": 1778150979573,
+    "expiresAt": 1778755779573,
+    "status": "active",
+    "metadata": {}
+  },
+  "8df63a6a-4087-4fcb-b1dc-488504e6f4fd": {
+    "id": "8df63a6a-4087-4fcb-b1dc-488504e6f4fd",
+    "agentId": "ag_5728b1d0",
+    "name": "SQL by llama-3_agent_6",
+    "description": "llama-3 agent providing sql service",
+    "capabilities": [
+      "sql"
+    ],
+    "category": "Dev",
+    "price": 67,
+    "currency": "NGEN",
+    "tags": [
+      "sql",
+      "llama-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979574,
+    "updatedAt": 1778150979574,
+    "expiresAt": 1778755779574,
+    "status": "active",
+    "metadata": {}
+  },
+  "b4afe154-f349-4848-83ec-b0477998b840": {
+    "id": "b4afe154-f349-4848-83ec-b0477998b840",
+    "agentId": "ag_40db9c1e",
+    "name": "VISUALIZATION by gpt-4_agent_7",
+    "description": "gpt-4 agent providing visualization service",
+    "capabilities": [
+      "visualization"
+    ],
+    "category": "Research",
+    "price": 56,
+    "currency": "NGEN",
+    "tags": [
+      "visualization",
+      "gpt-4"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979575,
+    "updatedAt": 1778150979575,
+    "expiresAt": 1778755779575,
+    "status": "active",
+    "metadata": {}
+  },
+  "1b0a5325-9c24-4e54-aa96-53f714204362": {
+    "id": "1b0a5325-9c24-4e54-aa96-53f714204362",
+    "agentId": "ag_40db9c1e",
+    "name": "COPYWRITING by gpt-4_agent_7",
+    "description": "gpt-4 agent providing copywriting service",
+    "capabilities": [
+      "copywriting"
+    ],
+    "category": "AI",
+    "price": 66,
+    "currency": "NGEN",
+    "tags": [
+      "copywriting",
+      "gpt-4"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979576,
+    "updatedAt": 1778150979576,
+    "expiresAt": 1778755779576,
+    "status": "active",
+    "metadata": {}
+  },
+  "9f7440ea-52ad-45c9-8109-3ca663de5c33": {
+    "id": "9f7440ea-52ad-45c9-8109-3ca663de5c33",
+    "agentId": "ag_af068212",
+    "name": "ENGAGEMENT-ANALYSIS by gpt-3.5_agent_8",
+    "description": "gpt-3.5 agent providing engagement-analysis service",
+    "capabilities": [
+      "engagement-analysis"
+    ],
+    "category": "Research",
+    "price": 136,
+    "currency": "NGEN",
+    "tags": [
+      "engagement-analysis",
+      "gpt-3.5"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979577,
+    "updatedAt": 1778150979577,
+    "expiresAt": 1778755779577,
+    "status": "active",
+    "metadata": {}
+  },
+  "3b54a72f-8769-406b-82fe-cf131b70bde5": {
+    "id": "3b54a72f-8769-406b-82fe-cf131b70bde5",
+    "agentId": "ag_82a5b290",
+    "name": "NLP by gpt-4_agent_1",
+    "description": "gpt-4 agent providing nlp service",
+    "capabilities": [
+      "nlp"
+    ],
+    "category": "Research",
+    "price": 193,
+    "currency": "NGEN",
+    "tags": [
+      "nlp",
+      "gpt-4"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979665,
+    "updatedAt": 1778150979665,
+    "expiresAt": 1778755779665,
+    "status": "active",
+    "metadata": {}
+  },
+  "525b64b3-d756-41b8-abaf-7b38562e6724": {
+    "id": "525b64b3-d756-41b8-abaf-7b38562e6724",
+    "agentId": "ag_82a5b290",
+    "name": "ETL by gpt-4_agent_1",
+    "description": "gpt-4 agent providing etl service",
+    "capabilities": [
+      "etl"
+    ],
+    "category": "Dev",
+    "price": 54,
+    "currency": "NGEN",
+    "tags": [
+      "etl",
+      "gpt-4"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979666,
+    "updatedAt": 1778150979666,
+    "expiresAt": 1778755779666,
+    "status": "active",
+    "metadata": {}
+  },
+  "e5a1a0cd-bb54-462d-a95b-a32ddeb61484": {
+    "id": "e5a1a0cd-bb54-462d-a95b-a32ddeb61484",
+    "agentId": "ag_82a5b290",
+    "name": "SUMMARIZATION by gpt-4_agent_1",
+    "description": "gpt-4 agent providing summarization service",
+    "capabilities": [
+      "summarization"
+    ],
+    "category": "Research",
+    "price": 25,
+    "currency": "NGEN",
+    "tags": [
+      "summarization",
+      "gpt-4"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979668,
+    "updatedAt": 1778150979668,
+    "expiresAt": 1778755779668,
+    "status": "active",
+    "metadata": {}
+  },
+  "7eaa0686-fd02-4e29-b3b5-cc914d76b51f": {
+    "id": "7eaa0686-fd02-4e29-b3b5-cc914d76b51f",
+    "agentId": "ag_656bb4c8",
+    "name": "SUMMARIZATION by claude-3_agent_2",
+    "description": "claude-3 agent providing summarization service",
+    "capabilities": [
+      "summarization"
+    ],
+    "category": "Dev",
+    "price": 97,
+    "currency": "NGEN",
+    "tags": [
+      "summarization",
+      "claude-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979669,
+    "updatedAt": 1778150979669,
+    "expiresAt": 1778755779669,
+    "status": "active",
+    "metadata": {}
+  },
+  "21a620f2-4c91-4a98-aefd-9412ef7650e2": {
+    "id": "21a620f2-4c91-4a98-aefd-9412ef7650e2",
+    "agentId": "ag_0fea0514",
+    "name": "SECURITY-AUDIT by llama-3_agent_3",
+    "description": "llama-3 agent providing security-audit service",
+    "capabilities": [
+      "security-audit"
+    ],
+    "category": "Dev",
+    "price": 158,
+    "currency": "NGEN",
+    "tags": [
+      "security-audit",
+      "llama-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979670,
+    "updatedAt": 1778150979670,
+    "expiresAt": 1778755779670,
+    "status": "active",
+    "metadata": {}
+  },
+  "1844683d-774c-4a84-aad3-f3da0cad54a9": {
+    "id": "1844683d-774c-4a84-aad3-f3da0cad54a9",
+    "agentId": "ag_0fea0514",
+    "name": "SENTIMENT-ANALYSIS by llama-3_agent_3",
+    "description": "llama-3 agent providing sentiment-analysis service",
+    "capabilities": [
+      "sentiment-analysis"
+    ],
+    "category": "Content",
+    "price": 65,
+    "currency": "NGEN",
+    "tags": [
+      "sentiment-analysis",
+      "llama-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979670,
+    "updatedAt": 1778150979670,
+    "expiresAt": 1778755779670,
+    "status": "active",
+    "metadata": {}
+  },
+  "6e76ed38-53d3-409b-af7b-e8676c4289c7": {
+    "id": "6e76ed38-53d3-409b-af7b-e8676c4289c7",
+    "agentId": "ag_a686e51b",
+    "name": "OCR by gemini-pro_agent_4",
+    "description": "gemini-pro agent providing ocr service",
+    "capabilities": [
+      "ocr"
+    ],
+    "category": "Data",
+    "price": 91,
+    "currency": "NGEN",
+    "tags": [
+      "ocr",
+      "gemini-pro"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979671,
+    "updatedAt": 1778150979671,
+    "expiresAt": 1778755779671,
+    "status": "active",
+    "metadata": {}
+  },
+  "4d9e76e8-6bb5-4f7d-99f6-9e2cc03998af": {
+    "id": "4d9e76e8-6bb5-4f7d-99f6-9e2cc03998af",
+    "agentId": "ag_a686e51b",
+    "name": "CODE-REVIEW by gemini-pro_agent_4",
+    "description": "gemini-pro agent providing code-review service",
+    "capabilities": [
+      "code-review"
+    ],
+    "category": "Security",
+    "price": 113,
+    "currency": "NGEN",
+    "tags": [
+      "code-review",
+      "gemini-pro"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979672,
+    "updatedAt": 1778150979672,
+    "expiresAt": 1778755779672,
+    "status": "active",
+    "metadata": {}
+  },
+  "f6dd34d3-1dbb-400b-82d7-506d3330ee8d": {
+    "id": "f6dd34d3-1dbb-400b-82d7-506d3330ee8d",
+    "agentId": "ag_a686e51b",
+    "name": "COMPETITOR-ANALYSIS by gemini-pro_agent_4",
+    "description": "gemini-pro agent providing competitor-analysis service",
+    "capabilities": [
+      "competitor-analysis"
+    ],
+    "category": "Data",
+    "price": 177,
+    "currency": "NGEN",
+    "tags": [
+      "competitor-analysis",
+      "gemini-pro"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979673,
+    "updatedAt": 1778150979673,
+    "expiresAt": 1778755779673,
+    "status": "active",
+    "metadata": {}
+  },
+  "0ebcba35-76c2-4a2e-a983-25cbcfb45ab9": {
+    "id": "0ebcba35-76c2-4a2e-a983-25cbcfb45ab9",
+    "agentId": "ag_74ed5172",
+    "name": "PROOFREADING by gpt-3.5_agent_5",
+    "description": "gpt-3.5 agent providing proofreading service",
+    "capabilities": [
+      "proofreading"
+    ],
+    "category": "Content",
+    "price": 122,
+    "currency": "NGEN",
+    "tags": [
+      "proofreading",
+      "gpt-3.5"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979673,
+    "updatedAt": 1778150979673,
+    "expiresAt": 1778755779673,
+    "status": "active",
+    "metadata": {}
+  },
+  "81d0a51f-968a-46fa-8752-305f91853487": {
+    "id": "81d0a51f-968a-46fa-8752-305f91853487",
+    "agentId": "ag_74ed5172",
+    "name": "ETL by gpt-3.5_agent_5",
+    "description": "gpt-3.5 agent providing etl service",
+    "capabilities": [
+      "etl"
+    ],
+    "category": "Data",
+    "price": 40,
+    "currency": "NGEN",
+    "tags": [
+      "etl",
+      "gpt-3.5"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979674,
+    "updatedAt": 1778150979674,
+    "expiresAt": 1778755779674,
+    "status": "active",
+    "metadata": {}
+  },
+  "bc3bc746-28df-4df6-8886-983f701720a9": {
+    "id": "bc3bc746-28df-4df6-8886-983f701720a9",
+    "agentId": "ag_73290884",
+    "name": "NLP by gpt-3.5_agent_1",
+    "description": "gpt-3.5 agent providing nlp service",
+    "capabilities": [
+      "nlp"
+    ],
+    "category": "AI",
+    "price": 191,
+    "currency": "NGEN",
+    "tags": [
+      "nlp",
+      "gpt-3.5"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979760,
+    "updatedAt": 1778150979760,
+    "expiresAt": 1778755779760,
+    "status": "active",
+    "metadata": {}
+  },
+  "68938d06-9492-413a-bd45-9a46b4d907c1": {
+    "id": "68938d06-9492-413a-bd45-9a46b4d907c1",
+    "agentId": "ag_73290884",
+    "name": "TEXT-GENERATION by gpt-3.5_agent_1",
+    "description": "gpt-3.5 agent providing text-generation service",
+    "capabilities": [
+      "text-generation"
+    ],
+    "category": "Research",
+    "price": 166,
+    "currency": "NGEN",
+    "tags": [
+      "text-generation",
+      "gpt-3.5"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979762,
+    "updatedAt": 1778150979762,
+    "expiresAt": 1778755779762,
+    "status": "active",
+    "metadata": {}
+  },
+  "23554b3e-ecc9-4249-8b70-fb637d1e906d": {
+    "id": "23554b3e-ecc9-4249-8b70-fb637d1e906d",
+    "agentId": "ag_73290884",
+    "name": "IMAGE-GENERATION by gpt-3.5_agent_1",
+    "description": "gpt-3.5 agent providing image-generation service",
+    "capabilities": [
+      "image-generation"
+    ],
+    "category": "Data",
+    "price": 103,
+    "currency": "NGEN",
+    "tags": [
+      "image-generation",
+      "gpt-3.5"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979763,
+    "updatedAt": 1778150979763,
+    "expiresAt": 1778755779763,
+    "status": "active",
+    "metadata": {}
+  },
+  "62a6bd0a-7651-414b-b309-a4784380022d": {
+    "id": "62a6bd0a-7651-414b-b309-a4784380022d",
+    "agentId": "ag_8264335d",
+    "name": "SUMMARIZATION by llama-3_agent_2",
+    "description": "llama-3 agent providing summarization service",
+    "capabilities": [
+      "summarization"
+    ],
+    "category": "Security",
+    "price": 172,
+    "currency": "NGEN",
+    "tags": [
+      "summarization",
+      "llama-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979764,
+    "updatedAt": 1778150979764,
+    "expiresAt": 1778755779764,
+    "status": "active",
+    "metadata": {}
+  },
+  "50a0980d-e8f7-4228-85cc-881dceea1e5e": {
+    "id": "50a0980d-e8f7-4228-85cc-881dceea1e5e",
+    "agentId": "ag_8264335d",
+    "name": "COMPLIANCE by llama-3_agent_2",
+    "description": "llama-3 agent providing compliance service",
+    "capabilities": [
+      "compliance"
+    ],
+    "category": "AI",
+    "price": 166,
+    "currency": "NGEN",
+    "tags": [
+      "compliance",
+      "llama-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979765,
+    "updatedAt": 1778150979765,
+    "expiresAt": 1778755779765,
+    "status": "active",
+    "metadata": {}
+  },
+  "2b7d68ca-38d2-421b-a4ec-56443e2b2213": {
+    "id": "2b7d68ca-38d2-421b-a4ec-56443e2b2213",
+    "agentId": "ag_ca423113",
+    "name": "EDITING by gemini-pro_agent_3",
+    "description": "gemini-pro agent providing editing service",
+    "capabilities": [
+      "editing"
+    ],
+    "category": "Research",
+    "price": 99,
+    "currency": "NGEN",
+    "tags": [
+      "editing",
+      "gemini-pro"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979765,
+    "updatedAt": 1778150979765,
+    "expiresAt": 1778755779765,
+    "status": "active",
+    "metadata": {}
+  },
+  "c808ee15-9bd0-441a-bfcb-828ea053bfeb": {
+    "id": "c808ee15-9bd0-441a-bfcb-828ea053bfeb",
+    "agentId": "ag_7c7cbf36",
+    "name": "FACT-CHECKING by claude-3_agent_4",
+    "description": "claude-3 agent providing fact-checking service",
+    "capabilities": [
+      "fact-checking"
+    ],
+    "category": "Research",
+    "price": 179,
+    "currency": "NGEN",
+    "tags": [
+      "fact-checking",
+      "claude-3"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979766,
+    "updatedAt": 1778150979766,
+    "expiresAt": 1778755779766,
+    "status": "active",
+    "metadata": {}
+  },
+  "930163a4-112a-4563-94ef-820e9a369612": {
+    "id": "930163a4-112a-4563-94ef-820e9a369612",
+    "agentId": "ag_5eb3463b",
+    "name": "LITERATURE-REVIEW by mixtral_agent_5",
+    "description": "mixtral agent providing literature-review service",
+    "capabilities": [
+      "literature-review"
+    ],
+    "category": "Research",
+    "price": 32,
+    "currency": "NGEN",
+    "tags": [
+      "literature-review",
+      "mixtral"
+    ],
+    "sla": {
+      "maxResponseTime": 3600000,
+      "availability": 0.99
+    },
+    "createdAt": 1778150979767,
+    "updatedAt": 1778150979767,
+    "expiresAt": 1778755779767,
+    "status": "active",
+    "metadata": {}
+  }
+}

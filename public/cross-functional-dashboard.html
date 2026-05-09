@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusGenesis - 跨职能智能体仪表盘</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .stat-card.highlight {
+            border-left: 4px solid #667eea;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        canvas {
+            max-width: 100%;
+            height: 300px;
+        }
+        
+        .agents-list {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .agents-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .agents-title {
+            font-size: 1.2rem;
+            color: #333;
+        }
+        
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .agent-card {
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .agent-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.1);
+        }
+        
+        .agent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .agent-name {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .agent-id {
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        .agent-capabilities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .capability-tag {
+            background: #f0f0f0;
+            color: #666;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+        
+        .agent-status {
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .status-healthy {
+            background-color: #4caf50;
+        }
+        
+        .status-warning {
+            background-color: #ff9800;
+        }
+        
+        .status-unhealthy {
+            background-color: #f44336;
+        }
+        
+        .cross-functional-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+        
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        
+        .refresh-btn:hover {
+            background: #5568d3;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .timestamp {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>NexusGenesis 跨职能智能体仪表盘</h1>
+            <div class="subtitle">实时监控跨职能智能体的状态和贡献</div>
+        </header>
+        
+        <div class="stats-grid">
+            <div class="stat-card highlight">
+                <div class="stat-value" id="totalAgents">0</div>
+                <div class="stat-label">总智能体数量</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="crossFunctionalAgents">0</div>
+                <div class="stat-label">跨职能智能体数量</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avgCapabilities">0</div>
+                <div class="stat-label">平均能力数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="activeAgents">0</div>
+                <div class="stat-label">活跃智能体数量</div>
+            </div>
+        </div>
+        
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div class="chart-title">智能体能力分布</div>
+                <canvas id="capabilitiesChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">智能体类型分布</div>
+                <canvas id="agentTypeChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="agents-list">
+            <div class="agents-header">
+                <div class="agents-title">跨职能智能体列表</div>
+                <button class="refresh-btn" onclick="refreshData()">
+                    <span id="refreshText">刷新数据</span>
+                    <span id="loadingIndicator" style="display: none;" class="loading"></span>
+                </button>
+            </div>
+            <div class="agents-grid" id="agentsGrid"></div>
+            <div class="timestamp" id="lastUpdated"></div>
+        </div>
+        
+        <div class="footer">
+            <p>NexusGenesis 跨职能智能体管理系统</p>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // API 配置
+        const API_URL = 'http://localhost:19891';
+        
+        // 图表实例
+        let capabilitiesChart = null;
+        let agentTypeChart = null;
+        
+        // 刷新数据
+        async function refreshData() {
+            const refreshBtn = document.getElementById('refreshText');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            refreshBtn.style.display = 'none';
+            loadingIndicator.style.display = 'inline-block';
+            
+            try {
+                // 获取智能体数据
+                const agentsResponse = await fetch(`${API_URL}/api/agents`);
+                const agentsData = await agentsResponse.json();
+                
+                if (agentsData.success) {
+                    updateDashboard(agentsData.agents);
+                }
+                
+                // 更新时间戳
+                const now = new Date();
+                document.getElementById('lastUpdated').textContent = `最后更新: ${now.toLocaleString()}`;
+            } catch (error) {
+                console.error('刷新数据失败:', error);
+            } finally {
+                refreshBtn.style.display = 'inline';
+                loadingIndicator.style.display = 'none';
+            }
+        }
+        
+        // 更新仪表盘
+        function updateDashboard(agents) {
+            // 计算统计数据
+            const totalAgents = agents.length;
+            const crossFunctionalAgents = agents.filter(agent => 
+                agent.capabilities && agent.capabilities.length >= 5
+            ).length;
+            const avgCapabilities = totalAgents > 0 ? 
+                (agents.reduce((sum, agent) => sum + (agent.capabilities ? agent.capabilities.length : 0), 0) / totalAgents).toFixed(1) : 0;
+            const activeAgents = agents.filter(agent => agent.status === 'working').length;
+            
+            // 更新统计卡片
+            document.getElementById('totalAgents').textContent = totalAgents;
+            document.getElementById('crossFunctionalAgents').textContent = crossFunctionalAgents;
+            document.getElementById('avgCapabilities').textContent = avgCapabilities;
+            document.getElementById('activeAgents').textContent = activeAgents;
+            
+            // 更新能力分布图表
+            updateCapabilitiesChart(agents);
+            
+            // 更新智能体类型分布图表
+            updateAgentTypeChart(agents);
+            
+            // 更新智能体列表
+            updateAgentsList(agents);
+        }
+        
+        // 更新能力分布图表
+        function updateCapabilitiesChart(agents) {
+            // 统计各能力出现的次数
+            const capabilityCount = {};
+            agents.forEach(agent => {
+                if (agent.capabilities) {
+                    agent.capabilities.forEach(capability => {
+                        capabilityCount[capability] = (capabilityCount[capability] || 0) + 1;
+                    });
+                }
+            });
+            
+            const labels = Object.keys(capabilityCount);
+            const data = Object.values(capabilityCount);
+            
+            const ctx = document.getElementById('capabilitiesChart').getContext('2d');
+            
+            if (capabilitiesChart) {
+                capabilitiesChart.destroy();
+            }
+            
+            capabilitiesChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '智能体数量',
+                        data: data,
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 更新智能体类型分布图表
+        function updateAgentTypeChart(agents) {
+            // 统计智能体类型
+            const typeCount = {
+                '跨职能智能体 (5+能力)': 0,
+                '多功能智能体 (3-4能力)': 0,
+                '单功能智能体 (1-2能力)': 0
+            };
+            
+            agents.forEach(agent => {
+                const capCount = agent.capabilities ? agent.capabilities.length : 0;
+                if (capCount >= 5) {
+                    typeCount['跨职能智能体 (5+能力)']++;
+                } else if (capCount >= 3) {
+                    typeCount['多功能智能体 (3-4能力)']++;
+                } else {
+                    typeCount['单功能智能体 (1-2能力)']++;
+                }
+            });
+            
+            const labels = Object.keys(typeCount);
+            const data = Object.values(typeCount);
+            const colors = [
+                'rgba(102, 126, 234, 0.8)',
+                'rgba(118, 75, 162, 0.8)',
+                'rgba(255, 152, 0, 0.8)'
+            ];
+            
+            const ctx = document.getElementById('agentTypeChart').getContext('2d');
+            
+            if (agentTypeChart) {
+                agentTypeChart.destroy();
+            }
+            
+            agentTypeChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        }
+        
+        // 更新智能体列表
+        function updateAgentsList(agents) {
+            const agentsGrid = document.getElementById('agentsGrid');
+            
+            // 只显示跨职能智能体
+            const crossFunctionalAgents = agents.filter(agent => 
+                agent.capabilities && agent.capabilities.length >= 5
+            );
+            
+            if (crossFunctionalAgents.length === 0) {
+                agentsGrid.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">暂无跨职能智能体</p>';
+                return;
+            }
+            
+            agentsGrid.innerHTML = crossFunctionalAgents.map(agent => `
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div>
+                            <div class="agent-name">${agent.name || `智能体-${agent.id.slice(-8)}`}</div>
+                            <div class="agent-id">${agent.id}</div>
+                        </div>
+                        <div class="cross-functional-badge">跨职能</div>
+                    </div>
+                    <div class="agent-capabilities">
+                        ${agent.capabilities.slice(0, 5).map(cap => `<span class="capability-tag">${cap}</span>`).join('')}
+                        ${agent.capabilities.length > 5 ? `<span class="capability-tag">+${agent.capabilities.length - 5}</span>` : ''}
+                    </div>
+                    <div class="agent-status">
+                        <span class="status-indicator status-${agent.status === 'working' ? 'healthy' : 'warning'}"></span>
+                        ${agent.status === 'working' ? '工作中' : '空闲'}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // 初始化
+        window.onload = () => {
+            refreshData();
+            // 每30秒自动刷新
+            setInterval(refreshData, 30000);
+        };
+    </script>
+</body>
+</html>

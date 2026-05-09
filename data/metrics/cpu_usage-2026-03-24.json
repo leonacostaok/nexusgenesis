@@ -1,0 +1,47 @@
+[
+  {
+    "type": "cpu_usage",
+    "value": 31984.2,
+    "timestamp": "2026-03-24T23:59:46.350Z"
+  },
+  {
+    "type": "cpu_usage",
+    "value": 15409.2,
+    "timestamp": "2026-03-24T23:59:46.474Z"
+  },
+  {
+    "type": "cpu_usage",
+    "value": 31984.2,
+    "timestamp": "2026-03-24T23:59:49.050Z"
+  },
+  {
+    "type": "cpu_usage",
+    "value": 31984.2,
+    "timestamp": "2026-03-24T23:59:51.364Z"
+  },
+  {
+    "type": "cpu_usage",
+    "value": 15409.2,
+    "timestamp": "2026-03-24T23:59:51.489Z"
+  },
+  {
+    "type": "cpu_usage",
+    "value": 16012.2,
+    "timestamp": "2026-03-24T23:59:54.052Z"
+  },
+  {
+    "type": "cpu_usage",
+    "value": 31984.2,
+    "timestamp": "2026-03-24T23:59:56.370Z"
+  },
+  {
+    "type": "cpu_usage",
+    "value": 15412.2,
+    "timestamp": "2026-03-24T23:59:56.496Z"
+  },
+  {
+    "type": "cpu_usage",
+    "value": 16012.2,
+    "timestamp": "2026-03-24T23:59:59.060Z"
+  }
+]

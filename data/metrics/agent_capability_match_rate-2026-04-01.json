@@ -1,0 +1,3747 @@
+[
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8985039641123636,
+    "timestamp": "2026-04-01T23:06:20.767Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:06:31.179Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:06:31.229Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:06:46.144Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9899143066885266,
+    "timestamp": "2026-04-01T23:06:48.363Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7195733457116944,
+    "timestamp": "2026-04-01T23:06:48.383Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8868281495704181,
+    "timestamp": "2026-04-01T23:06:50.143Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9606998403977577,
+    "timestamp": "2026-04-01T23:06:50.216Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:07:01.420Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:07:01.459Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:07:16.144Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7092505959935823,
+    "timestamp": "2026-04-01T23:07:18.368Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9550649532670211,
+    "timestamp": "2026-04-01T23:07:19.855Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7435485959774859,
+    "timestamp": "2026-04-01T23:07:20.147Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.826084880553794,
+    "timestamp": "2026-04-01T23:07:20.209Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:07:31.254Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:07:31.468Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:07:46.157Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9582383344642182,
+    "timestamp": "2026-04-01T23:07:48.369Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8126914764610095,
+    "timestamp": "2026-04-01T23:07:48.384Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8409850412085391,
+    "timestamp": "2026-04-01T23:07:50.392Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7114344692317653,
+    "timestamp": "2026-04-01T23:07:50.449Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:08:03.298Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:08:03.341Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:08:16.227Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.953662182091527,
+    "timestamp": "2026-04-01T23:08:18.378Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9490081567667639,
+    "timestamp": "2026-04-01T23:08:18.394Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9905223388906405,
+    "timestamp": "2026-04-01T23:08:21.361Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:08:34.300Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:08:34.471Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:08:46.234Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9315589033781291,
+    "timestamp": "2026-04-01T23:08:48.400Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8424323561545086,
+    "timestamp": "2026-04-01T23:08:49.028Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8431257895122113,
+    "timestamp": "2026-04-01T23:08:51.040Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8998267155489038,
+    "timestamp": "2026-04-01T23:08:51.042Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:09:01.923Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:09:04.462Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:09:18.530Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8699719540066471,
+    "timestamp": "2026-04-01T23:09:18.561Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9725643028029072,
+    "timestamp": "2026-04-01T23:09:19.036Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8798275858252722,
+    "timestamp": "2026-04-01T23:09:21.050Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9348702212211559,
+    "timestamp": "2026-04-01T23:09:22.459Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:09:31.777Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:09:34.471Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:09:47.413Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7454782799749746,
+    "timestamp": "2026-04-01T23:09:48.962Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8394303118103226,
+    "timestamp": "2026-04-01T23:09:49.047Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8723330434482921,
+    "timestamp": "2026-04-01T23:09:51.493Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8138788653750922,
+    "timestamp": "2026-04-01T23:09:52.460Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:10:02.844Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:10:04.476Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:10:16.256Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8191869423009566,
+    "timestamp": "2026-04-01T23:10:18.976Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8339288125657767,
+    "timestamp": "2026-04-01T23:10:20.029Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7138037446674388,
+    "timestamp": "2026-04-01T23:10:21.508Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7684959802177513,
+    "timestamp": "2026-04-01T23:10:22.473Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:10:33.405Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:10:34.797Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:10:46.275Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.932399238965959,
+    "timestamp": "2026-04-01T23:10:48.989Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9697458480880896,
+    "timestamp": "2026-04-01T23:10:50.808Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9136911916143438,
+    "timestamp": "2026-04-01T23:10:52.297Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7452663384216172,
+    "timestamp": "2026-04-01T23:10:52.482Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:11:02.853Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:11:04.796Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:11:16.281Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7883064048257189,
+    "timestamp": "2026-04-01T23:11:18.999Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7044190892796582,
+    "timestamp": "2026-04-01T23:11:21.318Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9636796243160323,
+    "timestamp": "2026-04-01T23:11:21.527Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8688829610143336,
+    "timestamp": "2026-04-01T23:11:22.492Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:11:32.897Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:11:34.892Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:11:46.457Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7596258072580524,
+    "timestamp": "2026-04-01T23:11:49.002Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8968398839177731,
+    "timestamp": "2026-04-01T23:11:50.568Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7459530064394201,
+    "timestamp": "2026-04-01T23:11:51.528Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8796760604156344,
+    "timestamp": "2026-04-01T23:11:52.505Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:12:03.590Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:12:04.974Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:12:16.290Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9489058921120317,
+    "timestamp": "2026-04-01T23:12:19.011Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8367147538623698,
+    "timestamp": "2026-04-01T23:12:20.080Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8471110784411698,
+    "timestamp": "2026-04-01T23:12:21.532Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.848234836051422,
+    "timestamp": "2026-04-01T23:12:22.511Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:12:32.879Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:12:34.812Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:12:46.293Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8934528560174899,
+    "timestamp": "2026-04-01T23:12:49.019Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7850026564424835,
+    "timestamp": "2026-04-01T23:12:50.090Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.701669171499227,
+    "timestamp": "2026-04-01T23:12:51.537Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.849468777858495,
+    "timestamp": "2026-04-01T23:12:52.512Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:13:02.888Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:13:04.816Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:13:16.296Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7821755422048778,
+    "timestamp": "2026-04-01T23:13:19.019Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7975493703628784,
+    "timestamp": "2026-04-01T23:13:20.105Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8380752286033251,
+    "timestamp": "2026-04-01T23:13:21.549Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.848203852226485,
+    "timestamp": "2026-04-01T23:13:22.524Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:13:32.890Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:13:35.238Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:13:46.739Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7702154528166474,
+    "timestamp": "2026-04-01T23:13:49.033Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9838464600073731,
+    "timestamp": "2026-04-01T23:13:50.117Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9813545529022383,
+    "timestamp": "2026-04-01T23:13:51.563Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8391089303425833,
+    "timestamp": "2026-04-01T23:13:52.527Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:14:05.336Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:14:05.419Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:14:16.743Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7997922872622145,
+    "timestamp": "2026-04-01T23:14:19.038Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7783610059471467,
+    "timestamp": "2026-04-01T23:14:20.121Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.730130400093017,
+    "timestamp": "2026-04-01T23:14:21.566Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9241443820856277,
+    "timestamp": "2026-04-01T23:14:22.530Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:14:35.748Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:14:35.839Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:14:46.756Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9201690632408261,
+    "timestamp": "2026-04-01T23:14:49.049Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8489732894518207,
+    "timestamp": "2026-04-01T23:14:50.303Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9146247318579318,
+    "timestamp": "2026-04-01T23:14:51.568Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9773776890631967,
+    "timestamp": "2026-04-01T23:14:52.668Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:15:05.771Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:15:05.809Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:15:17.422Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8809096692532573,
+    "timestamp": "2026-04-01T23:15:19.255Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8375555096998779,
+    "timestamp": "2026-04-01T23:15:20.480Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7985367119171876,
+    "timestamp": "2026-04-01T23:15:21.574Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7595751417559369,
+    "timestamp": "2026-04-01T23:15:22.550Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:15:35.771Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:15:35.812Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:15:47.430Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.949356525861437,
+    "timestamp": "2026-04-01T23:15:49.067Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9438754952349426,
+    "timestamp": "2026-04-01T23:15:50.308Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9440992389019119,
+    "timestamp": "2026-04-01T23:15:51.575Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9976171251416628,
+    "timestamp": "2026-04-01T23:15:52.701Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:16:05.794Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:16:05.886Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:16:17.438Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8629146597372013,
+    "timestamp": "2026-04-01T23:16:19.083Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9932731213464887,
+    "timestamp": "2026-04-01T23:16:20.321Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7984049046272712,
+    "timestamp": "2026-04-01T23:16:21.590Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7858710160883158,
+    "timestamp": "2026-04-01T23:16:22.567Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:16:35.791Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:16:36.016Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:16:47.475Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8615994942367485,
+    "timestamp": "2026-04-01T23:16:49.227Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8248867575087182,
+    "timestamp": "2026-04-01T23:16:50.342Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7409059409207964,
+    "timestamp": "2026-04-01T23:16:51.591Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8272899112044015,
+    "timestamp": "2026-04-01T23:16:52.773Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:17:05.802Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:17:05.847Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:17:17.444Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9139048157318715,
+    "timestamp": "2026-04-01T23:17:19.100Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7544633793083896,
+    "timestamp": "2026-04-01T23:17:20.343Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7223996953272352,
+    "timestamp": "2026-04-01T23:17:21.599Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8747069967210629,
+    "timestamp": "2026-04-01T23:17:22.575Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:17:35.810Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:17:35.852Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:17:48.136Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9249340233194179,
+    "timestamp": "2026-04-01T23:17:49.776Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9124798490771582,
+    "timestamp": "2026-04-01T23:17:50.346Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7516131693362138,
+    "timestamp": "2026-04-01T23:17:51.600Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8596998588144713,
+    "timestamp": "2026-04-01T23:17:52.582Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:18:05.813Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:18:05.857Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:18:18.142Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8625890995208534,
+    "timestamp": "2026-04-01T23:18:19.124Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7412884759354799,
+    "timestamp": "2026-04-01T23:18:20.356Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9175170135804078,
+    "timestamp": "2026-04-01T23:18:21.607Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9061378556400409,
+    "timestamp": "2026-04-01T23:18:22.597Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:18:35.917Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:18:35.962Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:18:48.158Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7300096656334071,
+    "timestamp": "2026-04-01T23:18:49.938Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7193360920082029,
+    "timestamp": "2026-04-01T23:18:50.358Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7285053942703691,
+    "timestamp": "2026-04-01T23:18:51.615Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7438900447176836,
+    "timestamp": "2026-04-01T23:18:52.612Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:19:06.361Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:19:06.400Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:19:18.169Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7368019000926347,
+    "timestamp": "2026-04-01T23:19:19.146Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8000607542244649,
+    "timestamp": "2026-04-01T23:19:20.363Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9315777489872461,
+    "timestamp": "2026-04-01T23:19:21.625Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9644880946663192,
+    "timestamp": "2026-04-01T23:19:22.618Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:19:35.820Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:19:36.405Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:19:48.177Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.967201294424086,
+    "timestamp": "2026-04-01T23:19:49.207Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7792728115876937,
+    "timestamp": "2026-04-01T23:19:50.366Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.931494412893157,
+    "timestamp": "2026-04-01T23:19:51.634Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7496489085682784,
+    "timestamp": "2026-04-01T23:19:52.626Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:20:05.953Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:20:06.425Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:20:18.187Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7832435871895448,
+    "timestamp": "2026-04-01T23:20:19.598Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8505369243197831,
+    "timestamp": "2026-04-01T23:20:20.375Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7261877441392013,
+    "timestamp": "2026-04-01T23:20:22.055Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.769126956329756,
+    "timestamp": "2026-04-01T23:20:23.791Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:20:35.956Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:20:37.153Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:20:49.188Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.923813303879821,
+    "timestamp": "2026-04-01T23:20:49.599Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8113354964319399,
+    "timestamp": "2026-04-01T23:20:50.382Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7882309794350044,
+    "timestamp": "2026-04-01T23:20:51.655Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8010496284303923,
+    "timestamp": "2026-04-01T23:20:53.801Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:21:05.956Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:21:06.436Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:21:19.187Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8159748092724014,
+    "timestamp": "2026-04-01T23:21:19.606Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7676354148372015,
+    "timestamp": "2026-04-01T23:21:20.391Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8033065285762654,
+    "timestamp": "2026-04-01T23:21:21.663Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8107468756025255,
+    "timestamp": "2026-04-01T23:21:23.814Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:21:36.002Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:21:36.443Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:21:49.203Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9067613157343225,
+    "timestamp": "2026-04-01T23:21:49.818Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9517625085882343,
+    "timestamp": "2026-04-01T23:21:50.398Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8727525341642777,
+    "timestamp": "2026-04-01T23:21:51.671Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8192051533581635,
+    "timestamp": "2026-04-01T23:21:53.870Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:22:06.040Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:22:06.448Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:22:19.222Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8313067223506517,
+    "timestamp": "2026-04-01T23:22:19.813Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8950622101487917,
+    "timestamp": "2026-04-01T23:22:20.412Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9811927465596249,
+    "timestamp": "2026-04-01T23:22:21.685Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.824624400534331,
+    "timestamp": "2026-04-01T23:22:23.875Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:22:36.092Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:22:36.694Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:22:49.223Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8500897688188407,
+    "timestamp": "2026-04-01T23:22:49.821Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7777260176263076,
+    "timestamp": "2026-04-01T23:22:50.816Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7782979259062045,
+    "timestamp": "2026-04-01T23:22:51.697Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8687066099911871,
+    "timestamp": "2026-04-01T23:22:53.880Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:23:05.977Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:23:06.736Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:23:19.220Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8431545421964409,
+    "timestamp": "2026-04-01T23:23:19.833Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9595299245902262,
+    "timestamp": "2026-04-01T23:23:20.417Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7708137348816106,
+    "timestamp": "2026-04-01T23:23:21.706Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8640686301760994,
+    "timestamp": "2026-04-01T23:23:23.897Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:23:36.557Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:23:37.777Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:23:49.233Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.836019932328415,
+    "timestamp": "2026-04-01T23:23:49.839Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7029839408190471,
+    "timestamp": "2026-04-01T23:23:50.956Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9506259324122761,
+    "timestamp": "2026-04-01T23:23:51.708Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9565552329119178,
+    "timestamp": "2026-04-01T23:23:53.895Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:24:05.997Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:24:07.793Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:24:19.244Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7674771197711432,
+    "timestamp": "2026-04-01T23:24:19.849Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9605718030427721,
+    "timestamp": "2026-04-01T23:24:20.426Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.902547359584564,
+    "timestamp": "2026-04-01T23:24:21.713Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8540813633103066,
+    "timestamp": "2026-04-01T23:24:23.936Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:24:36.021Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:24:37.799Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:24:49.258Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7250663574630034,
+    "timestamp": "2026-04-01T23:24:49.864Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9507387090445347,
+    "timestamp": "2026-04-01T23:24:50.439Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7631176862223142,
+    "timestamp": "2026-04-01T23:24:51.725Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7717865328697067,
+    "timestamp": "2026-04-01T23:24:53.909Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:25:06.011Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:25:08.810Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:25:19.271Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9657806949206708,
+    "timestamp": "2026-04-01T23:25:19.870Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9174398104511221,
+    "timestamp": "2026-04-01T23:25:20.451Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9831985474030032,
+    "timestamp": "2026-04-01T23:25:21.729Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9838015094349171,
+    "timestamp": "2026-04-01T23:25:23.916Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:25:36.345Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:25:37.875Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:25:49.277Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8828819564240445,
+    "timestamp": "2026-04-01T23:25:49.878Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8627054884868156,
+    "timestamp": "2026-04-01T23:25:50.445Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7878101958091207,
+    "timestamp": "2026-04-01T23:25:51.729Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8069447717826717,
+    "timestamp": "2026-04-01T23:25:53.930Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:26:06.014Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:26:08.376Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:26:19.283Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7884612372004405,
+    "timestamp": "2026-04-01T23:26:19.884Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9089030275048972,
+    "timestamp": "2026-04-01T23:26:20.449Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.748515884430767,
+    "timestamp": "2026-04-01T23:26:21.770Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7409236548060126,
+    "timestamp": "2026-04-01T23:26:24.653Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:26:36.315Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:26:38.391Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:26:49.286Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8103752319794946,
+    "timestamp": "2026-04-01T23:26:49.888Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7538182292754698,
+    "timestamp": "2026-04-01T23:26:50.453Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7649817266823695,
+    "timestamp": "2026-04-01T23:26:51.786Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9585836215160739,
+    "timestamp": "2026-04-01T23:26:54.667Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:27:06.320Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:27:08.736Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:27:19.291Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8703996060501784,
+    "timestamp": "2026-04-01T23:27:19.908Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9142314331284545,
+    "timestamp": "2026-04-01T23:27:20.457Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7505522376027016,
+    "timestamp": "2026-04-01T23:27:21.788Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9290060611959965,
+    "timestamp": "2026-04-01T23:27:24.671Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:27:36.326Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:27:38.402Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:27:49.292Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7789594009376186,
+    "timestamp": "2026-04-01T23:27:49.909Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8459296319910147,
+    "timestamp": "2026-04-01T23:27:50.456Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8617189895803967,
+    "timestamp": "2026-04-01T23:27:51.791Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7593092354861491,
+    "timestamp": "2026-04-01T23:27:54.681Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:28:06.328Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:28:08.410Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:28:19.304Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7673750968248703,
+    "timestamp": "2026-04-01T23:28:19.923Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9671167271708729,
+    "timestamp": "2026-04-01T23:28:20.468Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9171817302861378,
+    "timestamp": "2026-04-01T23:28:21.802Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7269224827139573,
+    "timestamp": "2026-04-01T23:28:24.687Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:28:36.340Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:28:38.424Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:28:49.328Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.762886055661231,
+    "timestamp": "2026-04-01T23:28:49.968Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8631567527934193,
+    "timestamp": "2026-04-01T23:28:50.480Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8228582081574908,
+    "timestamp": "2026-04-01T23:28:51.810Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7211690483360602,
+    "timestamp": "2026-04-01T23:28:54.700Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:29:06.344Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:29:08.434Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:29:19.331Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9873449678017414,
+    "timestamp": "2026-04-01T23:29:19.976Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.984012229456234,
+    "timestamp": "2026-04-01T23:29:20.481Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.820090969037638,
+    "timestamp": "2026-04-01T23:29:21.816Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9607123131601606,
+    "timestamp": "2026-04-01T23:29:24.712Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:29:36.356Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:29:38.440Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:29:49.341Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7544329788159875,
+    "timestamp": "2026-04-01T23:29:49.988Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8025387581701143,
+    "timestamp": "2026-04-01T23:29:50.496Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.793138757851881,
+    "timestamp": "2026-04-01T23:29:51.811Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.780922034193825,
+    "timestamp": "2026-04-01T23:29:54.710Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:30:06.379Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:30:08.628Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:30:19.370Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.796694758471879,
+    "timestamp": "2026-04-01T23:30:19.988Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8974824971541362,
+    "timestamp": "2026-04-01T23:30:20.493Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7153137994416474,
+    "timestamp": "2026-04-01T23:30:21.815Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7220110980793988,
+    "timestamp": "2026-04-01T23:30:24.720Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:30:36.378Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:30:38.568Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:30:49.353Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9073291655293847,
+    "timestamp": "2026-04-01T23:30:50.001Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8116048538427806,
+    "timestamp": "2026-04-01T23:30:50.503Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9658822591983686,
+    "timestamp": "2026-04-01T23:30:51.838Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8881698176271641,
+    "timestamp": "2026-04-01T23:30:54.725Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:31:06.382Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:31:08.473Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:31:19.372Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9917022444060322,
+    "timestamp": "2026-04-01T23:31:20.009Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8748160620122043,
+    "timestamp": "2026-04-01T23:31:20.518Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7667993632859895,
+    "timestamp": "2026-04-01T23:31:21.842Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9902585766394173,
+    "timestamp": "2026-04-01T23:31:24.726Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:31:36.390Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:31:38.473Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:31:49.374Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9972173690601362,
+    "timestamp": "2026-04-01T23:31:50.019Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9422914408147958,
+    "timestamp": "2026-04-01T23:31:50.526Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8556064431422595,
+    "timestamp": "2026-04-01T23:31:51.853Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9350186197890086,
+    "timestamp": "2026-04-01T23:31:54.737Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:32:06.400Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:32:08.536Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:32:19.381Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7125431978867385,
+    "timestamp": "2026-04-01T23:32:20.030Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8935715337507815,
+    "timestamp": "2026-04-01T23:32:20.528Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.88247379649381,
+    "timestamp": "2026-04-01T23:32:21.857Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9847375928816442,
+    "timestamp": "2026-04-01T23:32:24.754Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:32:36.420Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:32:38.472Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:32:49.374Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8910185363678251,
+    "timestamp": "2026-04-01T23:32:50.040Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7386198079289517,
+    "timestamp": "2026-04-01T23:32:50.534Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8844903748584392,
+    "timestamp": "2026-04-01T23:32:51.891Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8741562634933104,
+    "timestamp": "2026-04-01T23:32:54.815Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:33:06.427Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:33:08.518Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:33:19.379Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7464014754185273,
+    "timestamp": "2026-04-01T23:33:20.054Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9452867526109198,
+    "timestamp": "2026-04-01T23:33:20.540Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9349260710591718,
+    "timestamp": "2026-04-01T23:33:21.880Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.974262832909397,
+    "timestamp": "2026-04-01T23:33:24.806Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:33:36.453Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:33:38.489Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:33:49.379Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9226928341545559,
+    "timestamp": "2026-04-01T23:33:50.054Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8129354789749605,
+    "timestamp": "2026-04-01T23:33:50.541Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9720846969545052,
+    "timestamp": "2026-04-01T23:33:51.889Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9644423067327872,
+    "timestamp": "2026-04-01T23:33:54.788Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:34:06.447Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:34:08.486Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:34:19.393Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9908351166865134,
+    "timestamp": "2026-04-01T23:34:20.056Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9739210393067324,
+    "timestamp": "2026-04-01T23:34:20.543Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9230328276493146,
+    "timestamp": "2026-04-01T23:34:21.893Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.897636343548565,
+    "timestamp": "2026-04-01T23:34:24.797Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:34:36.456Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:34:38.492Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:34:49.396Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.83071759575492,
+    "timestamp": "2026-04-01T23:34:50.060Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8140997676827104,
+    "timestamp": "2026-04-01T23:34:50.547Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8884202528445151,
+    "timestamp": "2026-04-01T23:34:51.903Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7888828030646367,
+    "timestamp": "2026-04-01T23:34:54.804Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:35:06.466Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:35:08.499Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:35:19.407Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.854498585416701,
+    "timestamp": "2026-04-01T23:35:20.070Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7283817273371506,
+    "timestamp": "2026-04-01T23:35:20.556Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8691994777292957,
+    "timestamp": "2026-04-01T23:35:21.909Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9424600941077041,
+    "timestamp": "2026-04-01T23:35:24.807Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:35:36.477Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:35:38.502Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:35:49.422Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8051595760511259,
+    "timestamp": "2026-04-01T23:35:50.085Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8947554038483465,
+    "timestamp": "2026-04-01T23:35:50.571Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8751931486302926,
+    "timestamp": "2026-04-01T23:35:51.918Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.921378989179663,
+    "timestamp": "2026-04-01T23:35:54.814Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:36:06.481Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:36:08.520Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:36:19.436Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7087026407322351,
+    "timestamp": "2026-04-01T23:36:20.098Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7132083579636237,
+    "timestamp": "2026-04-01T23:36:20.586Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8485915619443549,
+    "timestamp": "2026-04-01T23:36:21.953Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7958929404883934,
+    "timestamp": "2026-04-01T23:36:24.814Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:36:36.492Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:36:38.526Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:36:49.448Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7953389858027703,
+    "timestamp": "2026-04-01T23:36:50.104Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8367530260643946,
+    "timestamp": "2026-04-01T23:36:50.591Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7086333964586509,
+    "timestamp": "2026-04-01T23:36:51.948Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8722534220821598,
+    "timestamp": "2026-04-01T23:36:54.819Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:37:06.517Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:37:08.546Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:37:19.455Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9235046955465325,
+    "timestamp": "2026-04-01T23:37:20.117Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9101305675963993,
+    "timestamp": "2026-04-01T23:37:20.600Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7912488328114176,
+    "timestamp": "2026-04-01T23:37:21.963Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7730962690527702,
+    "timestamp": "2026-04-01T23:37:24.830Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:37:36.517Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:37:38.546Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:37:49.462Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7432206107350282,
+    "timestamp": "2026-04-01T23:37:50.127Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9524421465565127,
+    "timestamp": "2026-04-01T23:37:50.607Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8546349255423942,
+    "timestamp": "2026-04-01T23:37:51.973Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8399303021907975,
+    "timestamp": "2026-04-01T23:37:54.831Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:38:06.515Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:38:08.542Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:38:19.479Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.846919026298498,
+    "timestamp": "2026-04-01T23:38:20.128Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9981921475893727,
+    "timestamp": "2026-04-01T23:38:20.619Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7929652175352462,
+    "timestamp": "2026-04-01T23:38:21.993Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.780379391440821,
+    "timestamp": "2026-04-01T23:38:24.845Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:38:36.535Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:38:39.039Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:38:49.483Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8552416500676827,
+    "timestamp": "2026-04-01T23:38:50.129Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8524552474214127,
+    "timestamp": "2026-04-01T23:38:50.616Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7619865186079721,
+    "timestamp": "2026-04-01T23:38:51.987Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8197190707157999,
+    "timestamp": "2026-04-01T23:38:55.081Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:39:06.684Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:39:09.056Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:39:19.493Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9154122812937848,
+    "timestamp": "2026-04-01T23:39:20.504Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.952752056457933,
+    "timestamp": "2026-04-01T23:39:20.624Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.767024515726548,
+    "timestamp": "2026-04-01T23:39:22.392Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8614385346241995,
+    "timestamp": "2026-04-01T23:39:24.858Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:39:36.555Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:39:39.056Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:39:49.494Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.796237214502677,
+    "timestamp": "2026-04-01T23:39:50.141Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9861201546840526,
+    "timestamp": "2026-04-01T23:39:50.631Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8245406376064239,
+    "timestamp": "2026-04-01T23:39:52.403Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7588520777473896,
+    "timestamp": "2026-04-01T23:39:54.865Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:40:06.561Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:40:09.080Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:40:19.493Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7712198829080505,
+    "timestamp": "2026-04-01T23:40:20.156Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8837845481833586,
+    "timestamp": "2026-04-01T23:40:20.643Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7477156439138846,
+    "timestamp": "2026-04-01T23:40:22.405Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9118811911769251,
+    "timestamp": "2026-04-01T23:40:24.876Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:40:36.562Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:40:39.077Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:40:49.501Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9699263941406604,
+    "timestamp": "2026-04-01T23:40:50.157Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8752405793350169,
+    "timestamp": "2026-04-01T23:40:50.649Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9226866975412235,
+    "timestamp": "2026-04-01T23:40:52.405Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9586570764534712,
+    "timestamp": "2026-04-01T23:40:54.894Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:41:06.569Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:41:09.086Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:41:19.502Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9900743757407546,
+    "timestamp": "2026-04-01T23:41:20.165Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9928990808894708,
+    "timestamp": "2026-04-01T23:41:20.653Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7343132848381415,
+    "timestamp": "2026-04-01T23:41:22.407Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9002403822346494,
+    "timestamp": "2026-04-01T23:41:24.898Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:41:36.584Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:41:39.278Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:41:49.506Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.941344843250342,
+    "timestamp": "2026-04-01T23:41:50.169Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8609914117148307,
+    "timestamp": "2026-04-01T23:41:50.655Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8002824412886586,
+    "timestamp": "2026-04-01T23:41:52.420Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.900542530782461,
+    "timestamp": "2026-04-01T23:41:54.906Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:42:06.589Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:42:09.221Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:42:19.512Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.81478846437241,
+    "timestamp": "2026-04-01T23:42:20.186Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9852245646003519,
+    "timestamp": "2026-04-01T23:42:20.655Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7558039867238471,
+    "timestamp": "2026-04-01T23:42:22.431Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7699747952324393,
+    "timestamp": "2026-04-01T23:42:24.912Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:42:36.601Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:42:39.230Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:42:49.517Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7493573678076838,
+    "timestamp": "2026-04-01T23:42:50.188Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9490556617028705,
+    "timestamp": "2026-04-01T23:42:50.658Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.968633003902776,
+    "timestamp": "2026-04-01T23:42:52.441Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7536482753924434,
+    "timestamp": "2026-04-01T23:42:54.909Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:43:06.632Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:43:09.121Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:43:19.519Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8836725836669935,
+    "timestamp": "2026-04-01T23:43:20.193Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.730863903351578,
+    "timestamp": "2026-04-01T23:43:20.664Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9797025591863746,
+    "timestamp": "2026-04-01T23:43:22.447Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8972583322318676,
+    "timestamp": "2026-04-01T23:43:25.204Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:43:37.185Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:43:39.936Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:43:49.525Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7412373768097926,
+    "timestamp": "2026-04-01T23:43:50.284Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8531363667211675,
+    "timestamp": "2026-04-01T23:43:50.676Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9754481303253055,
+    "timestamp": "2026-04-01T23:43:52.455Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7428962835469541,
+    "timestamp": "2026-04-01T23:43:55.213Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:44:06.643Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:44:09.126Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:44:19.524Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8431858929607722,
+    "timestamp": "2026-04-01T23:44:20.214Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7716153582095244,
+    "timestamp": "2026-04-01T23:44:20.683Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.988337594158011,
+    "timestamp": "2026-04-01T23:44:22.463Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9179429265983949,
+    "timestamp": "2026-04-01T23:44:25.224Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:44:36.647Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:44:39.148Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:44:49.535Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7866227848307478,
+    "timestamp": "2026-04-01T23:44:50.226Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9639404030143582,
+    "timestamp": "2026-04-01T23:44:50.698Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8073369293253103,
+    "timestamp": "2026-04-01T23:44:52.469Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7389303362861455,
+    "timestamp": "2026-04-01T23:44:55.232Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:45:06.649Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:45:09.155Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:45:19.548Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8224105190439461,
+    "timestamp": "2026-04-01T23:45:20.300Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9122939720857548,
+    "timestamp": "2026-04-01T23:45:20.700Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7353719921925453,
+    "timestamp": "2026-04-01T23:45:22.471Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.764591268909342,
+    "timestamp": "2026-04-01T23:45:25.234Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:45:36.649Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:45:39.179Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:45:49.539Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8799961370771455,
+    "timestamp": "2026-04-01T23:45:50.230Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8371107486058853,
+    "timestamp": "2026-04-01T23:45:50.707Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9746519691888664,
+    "timestamp": "2026-04-01T23:45:52.472Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8666271248213877,
+    "timestamp": "2026-04-01T23:45:55.249Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:46:06.650Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:46:09.164Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:46:19.551Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7323971885702981,
+    "timestamp": "2026-04-01T23:46:20.295Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9533761612300202,
+    "timestamp": "2026-04-01T23:46:20.705Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8279685068007019,
+    "timestamp": "2026-04-01T23:46:22.500Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7738886626796829,
+    "timestamp": "2026-04-01T23:46:25.262Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:46:36.660Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:46:39.167Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:46:49.552Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8115529942030821,
+    "timestamp": "2026-04-01T23:46:50.298Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8857690257103208,
+    "timestamp": "2026-04-01T23:46:50.715Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.971451959776974,
+    "timestamp": "2026-04-01T23:46:52.497Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8554191141656841,
+    "timestamp": "2026-04-01T23:46:55.265Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:47:06.668Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:47:09.183Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:47:19.564Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9636203282057852,
+    "timestamp": "2026-04-01T23:47:20.250Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8221613596204568,
+    "timestamp": "2026-04-01T23:47:20.717Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7430446890162496,
+    "timestamp": "2026-04-01T23:47:22.502Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9004160292376464,
+    "timestamp": "2026-04-01T23:47:25.273Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:47:36.670Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:47:39.373Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:47:49.573Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8335772909741053,
+    "timestamp": "2026-04-01T23:47:50.261Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8698681598522845,
+    "timestamp": "2026-04-01T23:47:50.727Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9987010443361357,
+    "timestamp": "2026-04-01T23:47:52.504Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7310981217293638,
+    "timestamp": "2026-04-01T23:47:55.294Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:48:06.678Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:48:10.310Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:48:19.585Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9441637722702712,
+    "timestamp": "2026-04-01T23:48:20.333Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.709507934335661,
+    "timestamp": "2026-04-01T23:48:20.732Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8604043637596318,
+    "timestamp": "2026-04-01T23:48:22.512Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9743118223110007,
+    "timestamp": "2026-04-01T23:48:25.305Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:48:36.689Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:48:39.200Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:48:50.030Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9063332477521744,
+    "timestamp": "2026-04-01T23:48:50.275Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9447224621639668,
+    "timestamp": "2026-04-01T23:48:50.739Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9193027816910362,
+    "timestamp": "2026-04-01T23:48:52.518Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7115278604595181,
+    "timestamp": "2026-04-01T23:48:55.316Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:49:06.746Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:49:09.208Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:49:20.038Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9569251128942782,
+    "timestamp": "2026-04-01T23:49:20.286Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8008741802857451,
+    "timestamp": "2026-04-01T23:49:20.753Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7879717430291034,
+    "timestamp": "2026-04-01T23:49:22.523Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.940268572175747,
+    "timestamp": "2026-04-01T23:49:25.317Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:49:36.715Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:49:39.219Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:49:50.053Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9913030020069709,
+    "timestamp": "2026-04-01T23:49:50.420Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7418728863669535,
+    "timestamp": "2026-04-01T23:49:50.768Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7015715725943766,
+    "timestamp": "2026-04-01T23:49:52.532Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9057674384239104,
+    "timestamp": "2026-04-01T23:49:55.322Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:50:06.785Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:50:09.225Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:50:20.054Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8408878479327033,
+    "timestamp": "2026-04-01T23:50:20.427Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7269456376490459,
+    "timestamp": "2026-04-01T23:50:20.772Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9485097988522858,
+    "timestamp": "2026-04-01T23:50:22.529Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.816909563683782,
+    "timestamp": "2026-04-01T23:50:25.324Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:50:36.736Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:50:39.228Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:50:50.056Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7563791574163129,
+    "timestamp": "2026-04-01T23:50:50.428Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9015941731531056,
+    "timestamp": "2026-04-01T23:50:50.770Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7234522762182959,
+    "timestamp": "2026-04-01T23:50:52.534Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8724419121680009,
+    "timestamp": "2026-04-01T23:50:55.329Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:51:06.753Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:51:09.233Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:51:20.070Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9747495436195797,
+    "timestamp": "2026-04-01T23:51:20.441Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9460849427753458,
+    "timestamp": "2026-04-01T23:51:20.780Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7867324107397622,
+    "timestamp": "2026-04-01T23:51:22.547Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7973322542744856,
+    "timestamp": "2026-04-01T23:51:25.329Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:51:36.754Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:51:39.246Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:51:50.066Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7893564134358612,
+    "timestamp": "2026-04-01T23:51:50.440Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8011546925945223,
+    "timestamp": "2026-04-01T23:51:50.782Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.72575969158006,
+    "timestamp": "2026-04-01T23:51:52.561Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7051266696463651,
+    "timestamp": "2026-04-01T23:51:55.340Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:52:06.785Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:52:09.278Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:52:20.078Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8689306626104552,
+    "timestamp": "2026-04-01T23:52:20.458Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7598008349207581,
+    "timestamp": "2026-04-01T23:52:20.795Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7433744845787985,
+    "timestamp": "2026-04-01T23:52:22.571Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.845170377995884,
+    "timestamp": "2026-04-01T23:52:25.347Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:52:36.777Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:52:39.263Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:52:50.074Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8624718244745109,
+    "timestamp": "2026-04-01T23:52:50.461Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8227909507421596,
+    "timestamp": "2026-04-01T23:52:50.804Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8013624935600034,
+    "timestamp": "2026-04-01T23:52:52.580Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7837207568864349,
+    "timestamp": "2026-04-01T23:52:55.354Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:53:06.800Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:53:09.264Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:53:20.082Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7717334079855949,
+    "timestamp": "2026-04-01T23:53:20.469Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9376786881836171,
+    "timestamp": "2026-04-01T23:53:20.807Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7424867533718499,
+    "timestamp": "2026-04-01T23:53:22.587Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9747425518601947,
+    "timestamp": "2026-04-01T23:53:25.356Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:53:36.808Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:53:40.572Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:53:50.098Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9926428747840673,
+    "timestamp": "2026-04-01T23:53:50.483Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7182580412304702,
+    "timestamp": "2026-04-01T23:53:50.809Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7339907806542213,
+    "timestamp": "2026-04-01T23:53:52.592Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8457345918091029,
+    "timestamp": "2026-04-01T23:53:55.364Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:54:06.815Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:54:10.225Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:54:20.107Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9573654837953187,
+    "timestamp": "2026-04-01T23:54:20.496Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9318808865030008,
+    "timestamp": "2026-04-01T23:54:20.822Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8575717328081371,
+    "timestamp": "2026-04-01T23:54:22.606Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.851430429739259,
+    "timestamp": "2026-04-01T23:54:25.374Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:54:37.039Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:54:40.665Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:54:50.116Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8764217500232809,
+    "timestamp": "2026-04-01T23:54:50.506Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9082668009669383,
+    "timestamp": "2026-04-01T23:54:50.828Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8550204629852516,
+    "timestamp": "2026-04-01T23:54:52.619Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7762288864557286,
+    "timestamp": "2026-04-01T23:54:56.348Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:55:07.033Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:55:10.252Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:55:20.129Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8721441432641954,
+    "timestamp": "2026-04-01T23:55:20.505Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7276946655011839,
+    "timestamp": "2026-04-01T23:55:20.836Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7531733486347492,
+    "timestamp": "2026-04-01T23:55:22.630Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9057384927393628,
+    "timestamp": "2026-04-01T23:55:25.390Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:55:39.567Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:55:40.244Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:55:50.134Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7704273283955548,
+    "timestamp": "2026-04-01T23:55:50.506Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.774501769723918,
+    "timestamp": "2026-04-01T23:55:50.834Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9566509047668352,
+    "timestamp": "2026-04-01T23:55:52.633Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9646976162680223,
+    "timestamp": "2026-04-01T23:55:55.403Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:56:07.039Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:56:10.248Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:56:20.137Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8411572757765201,
+    "timestamp": "2026-04-01T23:56:20.526Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9879465537894951,
+    "timestamp": "2026-04-01T23:56:21.761Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8071173310389635,
+    "timestamp": "2026-04-01T23:56:22.647Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8531518264081375,
+    "timestamp": "2026-04-01T23:56:25.745Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:56:37.042Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:56:40.246Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:56:50.148Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.834093888196831,
+    "timestamp": "2026-04-01T23:56:50.513Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.974405300666834,
+    "timestamp": "2026-04-01T23:56:50.839Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9956261139492455,
+    "timestamp": "2026-04-01T23:56:52.649Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7137386952522138,
+    "timestamp": "2026-04-01T23:56:55.744Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:57:07.195Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:57:10.271Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:57:20.144Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7224574050094458,
+    "timestamp": "2026-04-01T23:57:20.527Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8561345983058155,
+    "timestamp": "2026-04-01T23:57:20.859Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9555903252580678,
+    "timestamp": "2026-04-01T23:57:22.660Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9638729729284039,
+    "timestamp": "2026-04-01T23:57:25.763Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:57:37.084Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:57:40.268Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:57:50.157Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7331820352318664,
+    "timestamp": "2026-04-01T23:57:50.529Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8325199148969779,
+    "timestamp": "2026-04-01T23:57:50.870Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.943784238997999,
+    "timestamp": "2026-04-01T23:57:52.666Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9762368083630473,
+    "timestamp": "2026-04-01T23:57:55.769Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:58:07.071Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:58:10.278Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:58:20.168Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8114888905830182,
+    "timestamp": "2026-04-01T23:58:21.153Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7142898908925674,
+    "timestamp": "2026-04-01T23:58:21.168Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.718920726738081,
+    "timestamp": "2026-04-01T23:58:22.966Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9344526585923006,
+    "timestamp": "2026-04-01T23:58:25.778Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:58:37.267Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:58:40.580Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:58:50.173Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8058771521911874,
+    "timestamp": "2026-04-01T23:58:50.545Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8123658215449415,
+    "timestamp": "2026-04-01T23:58:50.888Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9240622128427204,
+    "timestamp": "2026-04-01T23:58:52.690Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9644641239939594,
+    "timestamp": "2026-04-01T23:58:55.788Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:59:07.486Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:59:10.981Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:59:20.190Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8528115018759718,
+    "timestamp": "2026-04-01T23:59:20.552Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9000345917721687,
+    "timestamp": "2026-04-01T23:59:20.901Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8734976761325852,
+    "timestamp": "2026-04-01T23:59:22.731Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7508628391085206,
+    "timestamp": "2026-04-01T23:59:25.951Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:59:37.099Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:59:40.591Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-04-01T23:59:50.184Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7801934902054383,
+    "timestamp": "2026-04-01T23:59:50.553Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7109354143906625,
+    "timestamp": "2026-04-01T23:59:50.902Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.8344283579749225,
+    "timestamp": "2026-04-01T23:59:52.695Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.9156500886588652,
+    "timestamp": "2026-04-01T23:59:55.951Z"
+  }
+]

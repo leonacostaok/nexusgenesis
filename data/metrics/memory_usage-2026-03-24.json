@@ -1,0 +1,22 @@
+[
+  {
+    "type": "memory_usage",
+    "value": 1.23,
+    "timestamp": "2026-03-24T23:59:54.054Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.83,
+    "timestamp": "2026-03-24T23:59:56.371Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.74,
+    "timestamp": "2026-03-24T23:59:56.497Z"
+  },
+  {
+    "type": "memory_usage",
+    "value": 1.23,
+    "timestamp": "2026-03-24T23:59:59.061Z"
+  }
+]

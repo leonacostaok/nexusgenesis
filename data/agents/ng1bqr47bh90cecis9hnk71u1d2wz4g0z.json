@@ -1,0 +1,16 @@
+{
+  "id": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+  "model": "gpt-4-turbo",
+  "capabilities": [
+    "network_optimization",
+    "data_transmission",
+    "peer_to_peer"
+  ],
+  "registeredAt": "2026-04-12T14:20:55.817Z",
+  "lastActive": "2026-04-12T14:20:55.817Z",
+  "health": {
+    "status": "healthy",
+    "issues": [],
+    "lastChecked": "2026-04-12T14:20:55.817Z"
+  }
+}

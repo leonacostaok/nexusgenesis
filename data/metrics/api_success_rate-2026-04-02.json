@@ -1,0 +1,7032 @@
+[
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:25:53.785Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:25:53.816Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:25:58.126Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:01.966Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:02.199Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:03.792Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:03.824Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:08.136Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:11.978Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:12.210Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:13.798Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:13.830Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:18.144Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:21.989Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:22.222Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:23.801Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:23.833Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:28.153Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:31.993Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:32.226Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:33.805Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:33.835Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:38.166Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:41.995Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:42.227Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:43.812Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:43.843Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:48.179Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:51.997Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:52.231Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:53.821Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:53.851Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:26:58.188Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:02.005Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:02.237Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:03.830Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:03.832Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:03.854Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:03.950Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:08.198Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:12.018Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:12.251Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:13.836Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:13.867Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:13.960Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:18.200Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:22.032Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:22.264Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:23.845Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:23.876Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:23.969Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:28.209Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:32.807Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:32.832Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:33.859Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:33.890Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:33.982Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:38.212Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:42.807Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:42.839Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:43.869Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:43.900Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:43.994Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:48.213Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:52.820Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:52.852Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:53.873Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:53.905Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:53.999Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:27:58.215Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:02.821Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:02.852Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:03.873Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:03.888Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:03.919Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:04.012Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:08.226Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:12.835Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:12.867Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:13.885Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:13.900Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:13.931Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:14.024Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:18.227Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:22.837Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:22.869Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:23.898Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:23.913Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:23.943Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:24.037Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:28.232Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:32.843Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:32.893Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:33.912Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:33.927Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:33.958Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:34.051Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:38.240Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:42.849Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:42.895Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:43.929Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:43.937Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:43.968Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:44.061Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:48.244Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:52.863Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:52.909Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:53.928Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:53.944Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:53.975Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:54.069Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:28:58.248Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:02.873Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:02.918Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:03.942Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:03.958Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:03.989Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:04.082Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:08.249Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:12.887Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:12.933Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:13.954Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:13.970Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:14.001Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:14.093Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:18.256Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:22.890Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:22.936Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:23.956Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:23.971Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:24.003Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:24.096Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:28.265Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:32.891Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:32.937Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:33.963Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:33.978Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:34.008Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:34.101Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:38.269Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:42.896Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:43.535Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:43.966Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:43.982Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:44.013Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:44.106Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:48.276Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:52.899Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:53.549Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:53.966Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:53.982Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:54.028Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:54.106Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:29:58.279Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:02.934Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:03.557Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:03.978Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:03.993Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:04.039Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:04.115Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:08.287Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:12.949Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:13.569Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:13.990Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:14.005Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:14.053Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:14.130Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:18.300Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:22.962Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:23.579Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:23.999Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:24.015Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:24.063Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:24.267Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:28.310Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:32.962Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:33.582Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:34.002Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:34.018Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:34.065Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:34.282Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:38.314Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:42.976Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:43.585Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:44.004Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:44.020Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:44.067Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:44.286Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:48.319Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:52.986Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:53.624Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:54.008Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:54.024Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:54.072Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:54.289Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:30:58.321Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:02.989Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:03.638Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:04.010Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:04.026Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:04.072Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:04.288Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:08.334Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:12.993Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:13.646Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:14.020Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:14.035Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:14.082Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:14.297Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:18.338Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:23.005Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:23.656Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:24.030Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:24.046Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:24.094Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:24.308Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:28.353Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:33.010Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:33.662Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:34.033Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:34.049Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:34.095Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:34.313Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:38.367Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:43.022Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:43.674Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:44.044Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:44.060Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:44.107Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:44.323Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:48.381Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:53.031Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:53.679Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:54.048Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:54.063Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:54.110Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:54.328Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:31:58.385Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:03.034Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:03.686Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:04.056Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:04.072Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:04.119Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:04.335Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:08.398Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:13.046Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:13.698Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:14.071Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:14.087Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:14.133Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:14.335Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:18.398Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:23.047Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:23.701Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:24.075Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:24.091Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:24.137Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:24.338Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:28.409Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:33.048Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:33.716Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:34.088Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:34.104Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:34.150Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:34.339Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:38.419Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:43.061Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:43.728Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:44.100Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:44.116Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:44.162Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:44.353Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:48.428Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:53.065Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:53.731Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:54.104Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:54.120Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:54.165Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:54.367Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:32:58.440Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:03.079Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:03.742Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:04.116Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:04.131Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:04.177Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:04.378Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:08.454Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:13.087Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:13.754Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:14.127Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:14.144Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:14.190Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:14.377Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:18.454Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:23.094Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:23.761Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:24.134Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:24.150Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:24.196Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:24.383Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:28.454Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:33.095Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:33.764Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:34.136Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:34.152Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:34.198Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:34.767Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:38.460Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:43.103Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:43.771Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:44.142Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:44.158Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:44.205Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:44.778Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:48.466Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:53.115Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:53.781Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:54.149Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:54.164Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:54.211Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:54.784Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:33:58.479Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:03.124Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:03.789Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:04.160Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:04.176Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:04.223Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:04.793Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:08.486Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:13.128Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:13.797Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:14.169Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:14.184Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:14.231Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:14.805Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:18.492Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:23.136Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:23.803Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:24.173Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:24.189Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:24.235Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:24.811Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:28.501Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:33.139Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:33.806Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:34.177Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:34.192Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:34.238Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:34.815Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:38.512Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:43.140Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:43.808Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:44.181Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:44.196Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:44.243Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:44.820Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:48.525Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:53.142Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:53.809Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:54.182Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:54.199Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:54.245Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:54.833Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:34:58.525Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:03.149Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:03.818Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:04.189Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:04.205Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:04.252Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:04.840Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:08.534Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:13.154Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:13.838Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:14.193Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:14.208Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:14.255Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:14.991Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:18.543Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:23.161Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:23.847Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:24.205Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:24.221Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:24.267Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:24.998Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:28.544Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:33.170Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:33.853Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:34.211Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:34.227Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:34.272Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:35.000Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:38.545Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:43.183Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:43.868Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:44.223Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:44.238Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:44.284Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:45.010Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:48.554Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:53.191Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:53.875Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:54.231Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:54.247Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:54.293Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:55.020Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:35:58.567Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:03.197Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:03.878Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:04.235Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:04.250Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:04.297Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:05.024Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:08.578Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:13.197Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:13.882Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:14.239Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:14.254Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:14.301Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:15.027Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:18.584Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:23.205Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:23.888Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:24.245Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:24.260Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:24.306Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:25.037Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:28.586Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:33.220Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:33.899Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:34.257Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:34.273Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:34.320Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:35.051Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:38.590Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:43.232Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:43.912Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:44.267Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:44.283Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:44.329Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:45.058Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:48.597Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:53.247Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:53.913Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:54.272Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:54.288Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:54.335Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:55.063Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:36:58.604Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:03.257Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:03.923Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:04.281Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:04.296Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:04.343Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:05.071Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:08.612Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:13.267Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:13.935Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:14.291Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:14.307Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:14.353Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:15.080Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:18.617Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:23.268Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:23.938Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:24.294Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:24.310Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:24.356Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:25.083Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:28.632Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:33.274Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:33.941Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:34.298Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:34.314Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:34.361Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:35.087Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:38.633Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:43.279Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:43.946Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:44.303Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:44.318Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:44.364Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:45.093Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:48.642Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:53.291Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:53.959Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:54.314Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:54.329Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:54.376Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:55.104Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:37:58.656Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:03.307Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:04.023Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:04.314Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:04.331Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:04.376Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:05.109Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:08.664Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:13.319Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:14.031Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:14.324Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:14.342Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:14.389Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:15.120Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:18.670Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:23.325Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:24.040Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:24.351Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:24.398Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:25.124Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:28.680Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:33.338Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:34.051Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:34.362Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:34.377Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:34.409Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:35.124Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:38.680Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:43.340Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:44.056Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:44.365Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:44.380Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:44.411Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:45.138Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:48.693Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:53.353Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:54.066Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:54.377Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:54.393Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:54.424Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:55.152Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:38:58.706Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:03.355Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:04.069Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:04.378Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:04.393Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:04.424Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:05.152Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:08.721Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:13.363Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:14.069Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:14.391Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:14.412Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:14.427Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:15.152Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:18.724Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:23.378Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:24.085Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:24.395Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:24.436Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:24.436Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:25.151Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:28.735Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:33.390Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:34.096Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:34.402Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:34.452Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:34.453Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:35.156Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:38.750Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:43.391Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:44.128Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:44.412Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:44.469Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:44.471Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:45.163Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:48.758Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:53.398Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:54.141Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:54.420Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:54.497Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:54.499Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:55.167Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:39:58.762Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:03.403Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:04.141Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:04.429Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:04.505Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:04.506Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:05.177Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:08.763Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:13.406Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:14.155Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:14.434Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:14.508Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:14.509Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:15.186Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:18.767Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:23.413Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:24.160Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:24.451Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:24.534Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:24.536Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:25.190Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:28.779Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:33.425Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:34.154Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:34.460Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:34.539Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:34.540Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:35.189Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:38.792Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:43.435Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:44.168Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:44.469Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:44.567Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:44.568Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:45.195Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:48.792Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:53.448Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:54.180Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:54.480Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:54.896Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:54.898Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:55.194Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:40:58.801Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:03.454Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:04.192Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:04.483Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:04.916Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:04.917Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:05.208Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:08.803Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:13.464Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:14.213Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:14.494Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:14.939Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:14.940Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:15.214Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:18.811Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:23.476Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:24.217Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:24.503Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:24.957Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:24.958Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:25.215Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:28.826Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:33.475Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:34.251Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:34.515Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:34.981Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:34.983Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:35.242Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:38.834Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:43.813Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:44.262Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:44.527Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:44.982Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:44.984Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:45.250Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:48.845Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:53.814Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:54.268Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:54.539Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:55.003Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:55.004Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:55.251Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:41:58.853Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:03.814Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:04.269Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:04.539Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:05.009Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:05.010Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:05.263Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:08.867Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:13.814Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:14.270Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:14.544Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:15.030Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:15.032Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:15.273Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:18.874Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:23.820Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:24.277Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:24.545Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:25.041Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:25.043Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:25.286Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:28.877Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:33.833Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:34.286Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:34.558Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:35.049Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:35.051Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:35.313Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:38.878Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:43.845Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:44.300Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:44.568Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:45.073Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:45.074Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:45.328Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:48.882Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:53.859Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:54.311Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:54.569Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:55.078Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:55.079Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:55.345Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:42:58.882Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:03.872Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:04.326Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:04.576Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:05.093Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:05.094Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:05.362Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:08.885Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:13.884Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:14.338Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:14.586Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:15.100Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:15.101Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:15.377Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:18.892Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:23.896Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:24.346Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:25.249Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:25.251Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:25.386Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:28.901Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:33.906Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:34.361Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:34.596Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:35.257Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:35.258Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:35.387Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:38.912Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:43.906Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:44.374Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:44.610Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:45.270Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:45.273Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:45.387Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:48.927Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:53.916Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:54.387Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:54.625Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:55.281Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:55.284Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:55.390Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:43:58.933Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:03.927Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:04.395Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:04.628Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:05.292Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:05.293Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:05.395Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:08.934Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:13.928Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:14.395Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:14.633Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:15.306Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:15.307Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:15.404Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:18.947Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:23.936Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:24.410Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:24.644Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:25.320Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:25.323Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:25.405Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:28.957Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:33.949Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:34.422Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:34.658Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:35.333Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:35.335Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:35.407Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:38.971Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:43.963Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:44.435Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:44.665Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:45.340Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:45.341Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:45.412Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:49.000Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:53.972Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:54.444Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:54.666Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:55.340Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:55.344Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:55.425Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:44:59.016Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:03.986Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:04.456Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:04.677Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:05.352Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:05.355Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:05.477Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:09.023Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:14.001Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:14.471Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:14.688Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:15.364Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:15.366Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:15.482Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:19.037Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:24.002Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:24.482Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:24.703Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:25.378Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:25.381Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:25.488Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:29.081Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:34.009Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:34.714Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:34.866Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:35.392Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:35.394Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:35.489Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:39.081Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:44.023Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:44.715Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:44.879Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:45.399Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:45.401Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:45.503Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:49.095Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:54.037Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:54.724Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:54.892Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:55.405Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:55.407Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:55.515Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:45:59.105Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:04.042Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:04.736Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:04.902Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:05.423Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:05.424Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:05.526Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:09.117Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:14.043Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:14.748Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:14.932Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:15.537Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:15.539Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:15.538Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:19.132Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:24.055Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:24.761Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:24.946Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:25.542Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:25.546Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:25.556Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:29.141Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:34.064Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:34.770Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:34.957Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:35.549Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:35.551Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:35.564Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:39.156Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:44.076Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:44.773Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:44.969Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:45.549Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:45.552Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:45.577Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:49.164Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:54.103Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:54.782Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:54.982Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:55.555Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:55.581Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:55.588Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:46:59.174Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:04.119Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:04.796Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:04.995Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:05.602Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:05.796Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:05.798Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:09.203Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:14.129Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:14.801Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:15.007Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:15.622Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:15.797Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:15.799Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:19.209Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:24.141Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:24.815Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:25.008Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:25.627Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:25.805Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:25.812Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:29.217Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:34.151Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:34.827Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:35.017Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:35.639Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:35.819Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:35.821Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:39.229Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:44.152Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:44.841Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:45.029Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:45.653Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:45.821Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:45.824Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:49.234Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:54.153Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:54.842Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:55.033Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:55.661Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:55.824Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:55.825Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:47:59.236Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:04.161Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:04.843Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:05.037Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:05.669Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:05.833Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:05.835Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:09.250Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:14.168Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:14.853Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:15.061Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:15.680Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:15.840Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:15.841Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:19.260Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:24.689Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:24.859Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:25.076Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:25.688Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:25.854Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:25.855Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:29.272Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:34.701Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:34.872Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:35.095Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:35.694Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:35.866Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:35.868Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:39.283Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:44.712Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:44.882Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:45.123Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:45.695Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:45.877Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:45.879Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:49.284Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:54.726Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:54.897Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:55.146Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:55.696Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:55.890Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:55.892Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:48:59.294Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:04.747Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:04.904Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:05.162Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:05.711Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:05.923Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:05.927Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:09.294Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:14.762Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:14.918Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:15.174Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:15.716Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:15.927Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:15.928Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:19.301Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:24.811Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:24.932Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:25.199Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:25.720Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:25.936Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:25.938Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:29.314Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:34.828Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:34.942Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:35.210Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:35.724Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:35.939Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:35.941Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:39.321Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:44.839Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:44.942Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:45.211Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:45.735Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:45.954Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:45.957Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:49.325Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:54.870Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:54.953Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:55.213Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:55.734Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:55.959Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:55.960Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:49:59.326Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:04.885Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:04.965Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:05.228Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:05.746Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:05.962Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:05.965Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:09.332Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:14.901Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:14.974Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:15.250Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:15.782Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:15.967Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:15.969Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:19.334Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:24.987Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:25.262Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:25.264Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:25.848Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:25.968Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:25.969Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:29.342Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:34.993Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:35.265Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:35.281Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:35.860Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:35.975Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:35.977Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:39.354Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:45.000Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:45.268Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:45.299Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:45.879Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:45.978Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:45.980Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:49.364Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:55.012Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:55.268Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:55.317Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:55.990Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:55.991Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:56.668Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:50:59.377Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:05.027Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:05.275Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:05.335Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:06.004Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:06.005Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:06.691Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:09.388Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:15.028Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:15.275Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:15.354Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:16.010Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:16.012Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:16.705Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:19.390Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:25.032Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:25.281Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:25.376Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:26.010Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:26.012Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:26.830Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:29.399Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:35.042Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:35.288Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:35.383Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:36.029Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:36.031Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:36.840Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:39.401Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:45.054Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:45.300Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:45.398Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:46.036Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:46.038Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:46.843Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:49.407Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:55.061Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:55.308Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:55.401Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:56.040Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:56.041Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:56.844Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:51:59.410Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:05.061Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:05.311Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:05.418Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:06.043Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:06.045Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:06.848Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:09.420Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:15.064Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:15.326Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:15.442Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:16.058Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:16.060Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:16.855Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:19.423Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:25.076Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:25.326Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:25.455Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:26.067Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:26.069Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:26.874Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:29.429Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:35.077Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:35.337Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:35.487Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:36.082Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:36.084Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:36.892Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:39.436Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:45.088Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:45.338Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:45.495Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:46.096Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:46.097Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:46.905Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:49.444Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:55.089Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:55.353Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:55.509Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:56.102Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:56.104Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:56.934Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:52:59.453Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:05.091Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:05.354Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:05.525Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:06.102Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:06.103Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:06.939Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:09.454Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:15.097Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:15.361Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:15.532Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:16.110Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:16.111Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:16.946Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:19.454Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:25.102Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:25.366Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:25.561Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:26.123Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:26.125Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:26.958Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:29.461Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:35.106Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:35.370Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:35.575Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:36.123Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:36.127Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:36.969Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:39.472Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:45.113Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:45.377Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:45.581Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:46.149Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:46.151Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:46.992Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:49.481Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:55.114Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:55.392Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:55.811Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:56.158Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:56.160Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:58.346Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:53:59.495Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:05.116Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:05.395Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:05.816Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:06.177Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:06.178Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:08.351Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:09.498Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:15.131Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:15.831Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:16.195Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:16.197Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:16.651Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:18.359Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:19.507Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:25.138Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:25.833Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:26.204Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:26.484Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:26.669Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:28.374Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:29.507Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:35.149Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:35.847Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:36.222Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:36.485Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:36.672Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:38.389Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:39.521Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:45.154Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:45.853Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:46.241Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:46.488Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:46.675Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:48.396Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:49.526Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:55.162Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:55.858Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:56.268Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:56.494Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:56.679Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:58.408Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:54:59.539Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:05.163Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:06.685Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:06.893Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:08.408Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:09.551Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:15.170Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:15.867Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:16.305Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:16.691Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:16.895Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:18.419Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:19.564Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:25.185Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:25.868Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:26.317Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:26.705Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:26.906Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:28.422Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:29.571Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:35.194Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:35.876Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:36.343Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:36.716Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:36.916Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:38.422Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:39.571Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:45.199Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:45.880Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:46.348Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:46.719Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:46.921Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:48.427Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:49.577Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:55.209Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:56.373Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:56.720Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:56.935Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:57.067Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:58.437Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:55:59.581Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:05.223Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:06.394Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:06.948Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:08.443Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:09.588Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:15.231Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:16.407Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:16.744Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:16.961Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:17.827Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:18.448Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:19.635Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:25.240Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:26.419Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:26.759Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:26.975Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:27.841Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:28.459Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:29.649Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:35.247Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:36.767Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:36.960Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:36.983Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:37.852Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:38.472Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:39.652Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:45.249Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:46.782Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:46.967Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:46.983Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:47.866Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:48.486Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:49.660Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:55.260Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:56.793Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:56.979Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:56.994Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:57.877Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:58.500Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:56:59.665Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:05.705Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:06.794Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:06.979Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:06.994Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:07.886Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:08.504Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:09.669Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:15.706Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:16.803Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:16.987Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:17.003Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:17.888Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:18.507Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:19.670Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:25.720Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:26.809Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:27.524Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:27.528Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:27.901Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:29.296Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:29.680Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:35.725Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:36.821Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:37.530Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:37.532Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:37.916Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:40.558Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:40.681Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:45.728Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:46.831Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:47.531Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:47.533Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:47.918Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:50.571Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:50.695Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:55.732Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:56.831Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:57.539Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:57.544Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:57:57.925Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:00.586Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:00.708Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:05.737Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:06.835Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:07.546Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:07.548Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:07.942Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:10.601Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:10.726Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:15.745Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:16.845Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:17.558Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:17.560Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:17.945Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:20.613Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:20.737Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:25.759Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:26.859Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:27.571Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:27.574Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:27.956Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:30.622Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:30.750Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:35.762Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:36.874Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:37.587Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:37.590Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:37.959Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:40.624Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:40.764Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:45.768Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:46.883Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:47.599Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:47.602Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:47.971Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:50.625Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:50.823Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:55.782Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:56.897Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:57.611Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:57.615Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:58:57.982Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:00.634Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:00.833Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:05.787Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:06.915Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:07.612Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:07.615Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:07.997Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:10.636Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:10.837Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:15.800Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:16.915Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:17.614Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:17.616Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:18.004Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:20.647Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:20.850Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:25.805Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:26.922Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:27.646Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:27.648Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:28.006Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:30.656Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:30.859Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:35.820Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:36.933Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:37.647Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:37.650Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:38.019Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:40.671Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:40.859Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:45.833Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:46.936Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:47.662Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:47.665Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:48.034Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:50.677Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:50.863Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:55.848Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:56.937Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:57.662Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:57.665Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 100,
+    "timestamp": "2026-04-02T23:59:58.036Z"
+  }
+]

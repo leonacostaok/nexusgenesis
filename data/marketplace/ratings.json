@@ -1,0 +1,132 @@
+{
+  "ng1_market_001": {
+    "averageRating": 5,
+    "recentAverage": 5,
+    "totalReviews": 1,
+    "distribution": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    },
+    "updatedAt": 1778150979036
+  },
+  "ag_b02392ba": {
+    "averageRating": 3,
+    "recentAverage": 3,
+    "totalReviews": 1,
+    "distribution": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 0,
+      "5": 0
+    },
+    "updatedAt": 1778150979486
+  },
+  "ag_736c3a10": {
+    "averageRating": 5,
+    "recentAverage": 5,
+    "totalReviews": 1,
+    "distribution": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    },
+    "updatedAt": 1778150979580
+  },
+  "ag_70476845": {
+    "averageRating": 4,
+    "recentAverage": 4,
+    "totalReviews": 1,
+    "distribution": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 0
+    },
+    "updatedAt": 1778150979583
+  },
+  "ag_82a5b290": {
+    "averageRating": 4,
+    "recentAverage": 4,
+    "totalReviews": 2,
+    "distribution": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 0,
+      "5": 1
+    },
+    "updatedAt": 1778150979687
+  },
+  "ag_656bb4c8": {
+    "averageRating": 5,
+    "recentAverage": 5,
+    "totalReviews": 1,
+    "distribution": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    },
+    "updatedAt": 1778150979677
+  },
+  "ag_a686e51b": {
+    "averageRating": 4,
+    "recentAverage": 4,
+    "totalReviews": 2,
+    "distribution": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 2,
+      "5": 0
+    },
+    "updatedAt": 1778150979680
+  },
+  "ag_74ed5172": {
+    "averageRating": 5,
+    "recentAverage": 5,
+    "totalReviews": 1,
+    "distribution": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    },
+    "updatedAt": 1778150979681
+  },
+  "ag_0fea0514": {
+    "averageRating": 3.67,
+    "recentAverage": 3.67,
+    "totalReviews": 3,
+    "distribution": {
+      "1": 0,
+      "2": 0,
+      "3": 2,
+      "4": 0,
+      "5": 1
+    },
+    "updatedAt": 1778150979685
+  },
+  "ag_ca423113": {
+    "averageRating": 3,
+    "recentAverage": 3,
+    "totalReviews": 1,
+    "distribution": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 0,
+      "5": 0
+    },
+    "updatedAt": 1778150979768
+  }
+}

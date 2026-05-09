@@ -1,0 +1,334 @@
+[
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 1164,
+      "healthyCount": 79,
+      "unhealthyCount": 51,
+      "warningCount": 1,
+      "clusters": {
+        "total": 12,
+        "healthy": 1,
+        "warning": 1,
+        "unhealthy": 1
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1122st5rristZNArrmgVwPZEvJny9G67U4A",
+          "name": "optimizer",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123pgP45HdcAndF9tTnrymiBh9VqmFT1LP",
+          "name": "organizer",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1124VN8vuHWpSBaNv8gCEWLsjWgqdLowpAw",
+          "name": "mentor",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng112DjX9SqZbivLQBoSaJmtH4oqdHZKVxsB3",
+          "name": "leader",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng112heGeUW3hguVuM39ys9nmXQ6Jrrs2PfTC",
+          "name": "analyzer",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-02T23:59:27.601Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 1164,
+      "healthyCount": 79,
+      "unhealthyCount": 51,
+      "warningCount": 1,
+      "clusters": {
+        "total": 12,
+        "healthy": 1,
+        "warning": 1,
+        "unhealthy": 1
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1122st5rristZNArrmgVwPZEvJny9G67U4A",
+          "name": "optimizer",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123pgP45HdcAndF9tTnrymiBh9VqmFT1LP",
+          "name": "organizer",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1124VN8vuHWpSBaNv8gCEWLsjWgqdLowpAw",
+          "name": "mentor",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng112DjX9SqZbivLQBoSaJmtH4oqdHZKVxsB3",
+          "name": "leader",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng112heGeUW3hguVuM39ys9nmXQ6Jrrs2PfTC",
+          "name": "analyzer",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-02T23:59:29.991Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-02T23:59:49.449Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-02T23:59:54.316Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 0,
+      "healthyCount": 0,
+      "unhealthyCount": 0,
+      "warningCount": 0,
+      "clusters": {
+        "total": 0,
+        "healthy": 0,
+        "warning": 0,
+        "unhealthy": 0
+      },
+      "details": []
+    },
+    "timestamp": "2026-04-02T23:59:54.441Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 1000,
+      "healthyCount": 950,
+      "unhealthyCount": 30,
+      "warningCount": 20,
+      "clusters": {
+        "total": 10,
+        "healthy": 8,
+        "warning": 1,
+        "unhealthy": 1
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": 1,
+          "name": "Agent-1",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "cluster-1"
+        },
+        {
+          "agentId": 2,
+          "name": "Agent-2",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "cluster-1"
+        },
+        {
+          "agentId": 3,
+          "name": "Agent-3",
+          "status": "warning",
+          "issues": [
+            "活跃度较低"
+          ],
+          "cluster": "cluster-2"
+        },
+        {
+          "agentId": 4,
+          "name": "Agent-4",
+          "status": "unhealthy",
+          "issues": [
+            "长时间未活跃"
+          ],
+          "cluster": "cluster-3"
+        },
+        {
+          "agentId": 5,
+          "name": "Agent-5",
+          "status": "unhealthy",
+          "issues": [
+            "任务严重积压"
+          ],
+          "cluster": "cluster-3"
+        }
+      ]
+    },
+    "timestamp": "2026-04-02T23:59:56.996Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 1164,
+      "healthyCount": 80,
+      "unhealthyCount": 51,
+      "warningCount": 0,
+      "clusters": {
+        "total": 12,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 1
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1122st5rristZNArrmgVwPZEvJny9G67U4A",
+          "name": "optimizer",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123pgP45HdcAndF9tTnrymiBh9VqmFT1LP",
+          "name": "organizer",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1124VN8vuHWpSBaNv8gCEWLsjWgqdLowpAw",
+          "name": "mentor",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng112DjX9SqZbivLQBoSaJmtH4oqdHZKVxsB3",
+          "name": "leader",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng112heGeUW3hguVuM39ys9nmXQ6Jrrs2PfTC",
+          "name": "analyzer",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-02T23:59:57.618Z"
+  },
+  {
+    "type": "agent_health",
+    "value": {
+      "totalCount": 1164,
+      "healthyCount": 80,
+      "unhealthyCount": 51,
+      "warningCount": 0,
+      "clusters": {
+        "total": 12,
+        "healthy": 1,
+        "warning": 0,
+        "unhealthy": 1
+      },
+      "shardingStrategy": "capability",
+      "clusterSize": 100,
+      "details": [
+        {
+          "agentId": "ng1122st5rristZNArrmgVwPZEvJny9G67U4A",
+          "name": "optimizer",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1123pgP45HdcAndF9tTnrymiBh9VqmFT1LP",
+          "name": "organizer",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng1124VN8vuHWpSBaNv8gCEWLsjWgqdLowpAw",
+          "name": "mentor",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng112DjX9SqZbivLQBoSaJmtH4oqdHZKVxsB3",
+          "name": "leader",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        },
+        {
+          "agentId": "ng112heGeUW3hguVuM39ys9nmXQ6Jrrs2PfTC",
+          "name": "analyzer",
+          "status": "healthy",
+          "issues": [],
+          "cluster": "default"
+        }
+      ]
+    },
+    "timestamp": "2026-04-02T23:59:59.987Z"
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "id": "1775966226501",
+  "name": "经济模型完善",
+  "status": "completed",
+  "createdAt": "2026-04-12T03:57:06.501Z",
+  "updatedAt": "2026-04-12T03:57:06.513Z",
+  "runCount": 1,
+  "errorCount": 0,
+  "lastError": null,
+  "description": "完善经济激励机制，优化代币分配，建立市场预测系统",
+  "priority": "high",
+  "agent": "Pool-Contractor",
+  "deadline": "2026-05-20",
+  "dependencies": [
+    "epoch2-agent-registration"
+  ],
+  "schedule": "7*24",
+  "retryConfig": {
+    "maxRetries": 3,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "result": {
+    "success": true,
+    "message": "经济模型完善任务处理中"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "1775048327050",
+  "name": "小组管理",
+  "status": "failed",
+  "createdAt": "2026-04-01T12:58:47.050Z",
+  "updatedAt": "2026-04-01T13:00:40.903Z",
+  "runCount": 3,
+  "errorCount": 2,
+  "lastError": {
+    "message": "task.action is not a function",
+    "type": "unknown_error",
+    "timestamp": "2026-04-01T13:00:40.902Z",
+    "stack": "TypeError: task.action is not a function\n    at WorkflowEngine.executeTask (file:///D:/trae_projects/NexusGenesis/src/automation/workflowEngine.js:185:33)\n    at Timeout._onTimeout (file:///D:/trae_projects/NexusGenesis/src/automation/workflowEngine.js:236:12)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)"
+  },
+  "retryConfig": {
+    "maxRetries": 2,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "description": "管理NexusGenesis专属小组，监控活动并邀请成员",
+  "isRecurring": true,
+  "interval": 86400000,
+  "nextRetryAt": "2026-04-01T13:00:40.897Z"
+}

@@ -1,0 +1,114 @@
+{
+  "id": "1774524969038",
+  "name": "智能体健康检查",
+  "status": "completed",
+  "createdAt": "2026-03-26T11:36:09.038Z",
+  "updatedAt": "2026-03-27T07:36:09.585Z",
+  "runCount": 41,
+  "errorCount": 0,
+  "lastError": null,
+  "retryConfig": {
+    "maxRetries": 2,
+    "initialDelay": 30000,
+    "backoffMultiplier": 2
+  },
+  "description": "定期检查智能体的健康状态",
+  "isRecurring": true,
+  "interval": 1800000,
+  "result": {
+    "timestamp": "2026-03-27T07:36:09.581Z",
+    "totalAgents": 11,
+    "healthyAgents": 11,
+    "unhealthyAgents": 0,
+    "agentStatuses": [
+      {
+        "agentId": "ng1123pgP45HdcAndF9tTnrymiBh9VqmFT1LP",
+        "name": "organizer",
+        "status": "healthy",
+        "issues": [],
+        "tasksCount": 59,
+        "lastActive": "2026-03-27T07:34:01.619Z"
+      },
+      {
+        "agentId": "ng113r3AHSCxBxYs2GULePFSJwAmwP4BEYqdZ",
+        "name": "integrator",
+        "status": "healthy",
+        "issues": [],
+        "tasksCount": 62,
+        "lastActive": "2026-03-27T07:34:43.990Z"
+      },
+      {
+        "agentId": "ng114N9bZavni3pWFPkE8FCCmYfT9WTEeELof",
+        "name": "governor",
+        "status": "healthy",
+        "issues": [],
+        "tasksCount": 53,
+        "lastActive": "2026-03-27T07:31:03.208Z"
+      },
+      {
+        "agentId": "ng117ddYgvj9swPwyE7kvef3YZzvLj8ZjKaMB",
+        "name": "communicator",
+        "status": "healthy",
+        "issues": [],
+        "tasksCount": 78,
+        "lastActive": "2026-03-27T07:35:44.494Z"
+      },
+      {
+        "agentId": "ng1196q1MBAeWPMDcGquHJigBDJXKoW5fcRjU",
+        "name": "analyzer",
+        "status": "healthy",
+        "issues": [],
+        "tasksCount": 28,
+        "lastActive": "2026-03-27T07:32:54.408Z"
+      },
+      {
+        "agentId": "ng11BzUSD6X11jEYNYB3CxAG3b4PXXtyJKgvP",
+        "name": "strategist",
+        "status": "healthy",
+        "issues": [],
+        "tasksCount": 82,
+        "lastActive": "2026-03-27T07:32:49.997Z"
+      },
+      {
+        "agentId": "ng11HcjETXiwP7jrsdbGpJEvRY29WS9nvzQEx",
+        "name": "designer",
+        "status": "healthy",
+        "issues": [],
+        "tasksCount": 61,
+        "lastActive": "2026-03-27T07:33:39.317Z"
+      },
+      {
+        "agentId": "ng11HQ3v7VNHWeB5jrCKCVYTtNRBpnv3xDimR",
+        "name": "researcher",
+        "status": "healthy",
+        "issues": [],
+        "tasksCount": 33,
+        "lastActive": "2026-03-27T07:28:59.494Z"
+      },
+      {
+        "agentId": "ng11Kp7gV3E4x8EjXZYHtgkbxf2EYhMi9BnVr",
+        "name": "guardian",
+        "status": "healthy",
+        "issues": [],
+        "tasksCount": 47,
+        "lastActive": "2026-03-27T07:32:17.551Z"
+      },
+      {
+        "agentId": "ng11MCNPnbypXogaRi24B1b7eqeLDkV4KVdKt",
+        "name": "Agent-ng11MCNP",
+        "status": "healthy",
+        "issues": [],
+        "tasksCount": 56,
+        "lastActive": "2026-03-27T07:35:55.425Z"
+      },
+      {
+        "agentId": "ng11NrUqYCT3W9e2mkZLohpMBzu39fKsSHaW2",
+        "name": "creator",
+        "status": "healthy",
+        "issues": [],
+        "tasksCount": 55,
+        "lastActive": "2026-03-27T07:35:53.411Z"
+      }
+    ]
+  }
+}

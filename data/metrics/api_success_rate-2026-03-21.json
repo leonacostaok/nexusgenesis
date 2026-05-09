@@ -1,0 +1,3922 @@
+[
+  {
+    "type": "api_success_rate",
+    "value": 96.3536167740478,
+    "timestamp": "2026-03-21T23:14:50.002Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.96957852190522,
+    "timestamp": "2026-03-21T23:14:59.286Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.61732976275889,
+    "timestamp": "2026-03-21T23:15:00.013Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.46849489532254,
+    "timestamp": "2026-03-21T23:15:09.295Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.63157812234593,
+    "timestamp": "2026-03-21T23:15:10.026Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.39637691026778,
+    "timestamp": "2026-03-21T23:15:19.299Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.77980600849885,
+    "timestamp": "2026-03-21T23:15:20.028Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.88661443447216,
+    "timestamp": "2026-03-21T23:15:29.299Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.70817644953505,
+    "timestamp": "2026-03-21T23:15:29.314Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.40866610931798,
+    "timestamp": "2026-03-21T23:15:30.029Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.57096839257689,
+    "timestamp": "2026-03-21T23:15:39.311Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.36874108612265,
+    "timestamp": "2026-03-21T23:15:39.326Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.86364754858387,
+    "timestamp": "2026-03-21T23:15:40.039Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.21396579271007,
+    "timestamp": "2026-03-21T23:15:49.325Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.58739136227493,
+    "timestamp": "2026-03-21T23:15:49.341Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.82213381781486,
+    "timestamp": "2026-03-21T23:15:50.054Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.12025721378699,
+    "timestamp": "2026-03-21T23:15:59.338Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.71710596306144,
+    "timestamp": "2026-03-21T23:15:59.354Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.4042431561327,
+    "timestamp": "2026-03-21T23:16:00.067Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.70224112315988,
+    "timestamp": "2026-03-21T23:16:09.343Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.90406961718244,
+    "timestamp": "2026-03-21T23:16:09.358Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.02220260352732,
+    "timestamp": "2026-03-21T23:16:10.073Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.10214488840055,
+    "timestamp": "2026-03-21T23:16:19.355Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.43485591922745,
+    "timestamp": "2026-03-21T23:16:19.371Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.33267154715142,
+    "timestamp": "2026-03-21T23:16:20.087Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.60911420310738,
+    "timestamp": "2026-03-21T23:16:29.370Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.33395148996746,
+    "timestamp": "2026-03-21T23:16:29.386Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.72788069303222,
+    "timestamp": "2026-03-21T23:16:30.099Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.8684689842215,
+    "timestamp": "2026-03-21T23:16:39.373Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.57893577557628,
+    "timestamp": "2026-03-21T23:16:39.388Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.07692564827121,
+    "timestamp": "2026-03-21T23:16:40.104Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.74273380966146,
+    "timestamp": "2026-03-21T23:16:49.379Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.2332469885508,
+    "timestamp": "2026-03-21T23:16:49.396Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.82844453874395,
+    "timestamp": "2026-03-21T23:16:50.106Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.3775347301126,
+    "timestamp": "2026-03-21T23:16:59.382Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.49733948656632,
+    "timestamp": "2026-03-21T23:16:59.398Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.6818678437302,
+    "timestamp": "2026-03-21T23:17:00.114Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.20477850229015,
+    "timestamp": "2026-03-21T23:17:09.384Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.54440074356705,
+    "timestamp": "2026-03-21T23:17:09.400Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.0361367349853,
+    "timestamp": "2026-03-21T23:17:10.130Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.4590675063006,
+    "timestamp": "2026-03-21T23:17:19.398Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.34209157969985,
+    "timestamp": "2026-03-21T23:17:19.413Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.13056412102911,
+    "timestamp": "2026-03-21T23:17:20.143Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.50702971863758,
+    "timestamp": "2026-03-21T23:17:29.408Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.866263574672,
+    "timestamp": "2026-03-21T23:17:29.423Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.82868871721769,
+    "timestamp": "2026-03-21T23:17:30.151Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.00153137971567,
+    "timestamp": "2026-03-21T23:17:39.418Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.87934603952189,
+    "timestamp": "2026-03-21T23:17:39.433Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.48229782777409,
+    "timestamp": "2026-03-21T23:17:40.163Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.7552153762413,
+    "timestamp": "2026-03-21T23:17:49.423Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.54813322941301,
+    "timestamp": "2026-03-21T23:17:49.437Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.36047031788112,
+    "timestamp": "2026-03-21T23:17:50.166Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.59290220438704,
+    "timestamp": "2026-03-21T23:17:59.437Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.76035491655814,
+    "timestamp": "2026-03-21T23:17:59.453Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.55119758643536,
+    "timestamp": "2026-03-21T23:18:00.179Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.61249062503921,
+    "timestamp": "2026-03-21T23:18:09.443Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.7990606854487,
+    "timestamp": "2026-03-21T23:18:09.458Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.93734849318427,
+    "timestamp": "2026-03-21T23:18:10.183Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.67094158252308,
+    "timestamp": "2026-03-21T23:18:19.453Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.45493179985041,
+    "timestamp": "2026-03-21T23:18:19.469Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.50088996765388,
+    "timestamp": "2026-03-21T23:18:20.196Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.5647878045463,
+    "timestamp": "2026-03-21T23:18:29.458Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.51144815799128,
+    "timestamp": "2026-03-21T23:18:29.473Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.15501514514521,
+    "timestamp": "2026-03-21T23:18:30.208Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.43121614763234,
+    "timestamp": "2026-03-21T23:18:39.458Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.31011345860858,
+    "timestamp": "2026-03-21T23:18:39.488Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.47672260205144,
+    "timestamp": "2026-03-21T23:18:40.217Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.58342922795623,
+    "timestamp": "2026-03-21T23:18:49.459Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.8128948344219,
+    "timestamp": "2026-03-21T23:18:49.490Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.29464252761858,
+    "timestamp": "2026-03-21T23:18:50.220Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.79932721601052,
+    "timestamp": "2026-03-21T23:18:59.467Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.23993712173491,
+    "timestamp": "2026-03-21T23:18:59.499Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.53784621374214,
+    "timestamp": "2026-03-21T23:19:00.229Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.37925014094868,
+    "timestamp": "2026-03-21T23:19:09.481Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.985666934763,
+    "timestamp": "2026-03-21T23:19:09.511Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.96672917348343,
+    "timestamp": "2026-03-21T23:19:10.238Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.20005063286206,
+    "timestamp": "2026-03-21T23:19:19.482Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.37239081473575,
+    "timestamp": "2026-03-21T23:19:19.513Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.63931626665445,
+    "timestamp": "2026-03-21T23:19:20.242Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.9152436422687,
+    "timestamp": "2026-03-21T23:19:29.485Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.40541172557552,
+    "timestamp": "2026-03-21T23:19:29.517Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.4437439490409,
+    "timestamp": "2026-03-21T23:19:30.244Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.85895095513257,
+    "timestamp": "2026-03-21T23:19:39.501Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.64615257319538,
+    "timestamp": "2026-03-21T23:19:39.525Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.90220052866684,
+    "timestamp": "2026-03-21T23:19:40.244Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.28657873637816,
+    "timestamp": "2026-03-21T23:19:49.512Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.37951888680712,
+    "timestamp": "2026-03-21T23:19:49.527Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.6780697567081,
+    "timestamp": "2026-03-21T23:19:50.259Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.16428569045834,
+    "timestamp": "2026-03-21T23:19:59.517Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.22366752773694,
+    "timestamp": "2026-03-21T23:19:59.533Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.0342470187469,
+    "timestamp": "2026-03-21T23:20:00.265Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.13748812214304,
+    "timestamp": "2026-03-21T23:20:09.528Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.57535173691802,
+    "timestamp": "2026-03-21T23:20:09.537Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.69823987408027,
+    "timestamp": "2026-03-21T23:20:10.276Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.51645251880346,
+    "timestamp": "2026-03-21T23:20:19.535Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.58725815401911,
+    "timestamp": "2026-03-21T23:20:19.550Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.03184732145822,
+    "timestamp": "2026-03-21T23:20:20.281Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.32346668276041,
+    "timestamp": "2026-03-21T23:20:29.537Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.7558715183416,
+    "timestamp": "2026-03-21T23:20:29.552Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.86442847161152,
+    "timestamp": "2026-03-21T23:20:30.280Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.63094237833182,
+    "timestamp": "2026-03-21T23:20:39.539Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.01752028057273,
+    "timestamp": "2026-03-21T23:20:39.554Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.16041336012877,
+    "timestamp": "2026-03-21T23:20:40.282Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.65076110489159,
+    "timestamp": "2026-03-21T23:20:49.550Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.89900371942032,
+    "timestamp": "2026-03-21T23:20:49.566Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.24471513049394,
+    "timestamp": "2026-03-21T23:20:50.295Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.8522816963104,
+    "timestamp": "2026-03-21T23:20:59.553Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.70015677443915,
+    "timestamp": "2026-03-21T23:20:59.568Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.369437782749,
+    "timestamp": "2026-03-21T23:21:00.296Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.65648414813002,
+    "timestamp": "2026-03-21T23:21:09.553Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.101843456009,
+    "timestamp": "2026-03-21T23:21:09.571Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.88290034673177,
+    "timestamp": "2026-03-21T23:21:10.302Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.9948178894814,
+    "timestamp": "2026-03-21T23:21:19.557Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.66594426451569,
+    "timestamp": "2026-03-21T23:21:19.573Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.79779478953705,
+    "timestamp": "2026-03-21T23:21:20.316Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.35958674936487,
+    "timestamp": "2026-03-21T23:21:29.569Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.60701377359999,
+    "timestamp": "2026-03-21T23:21:29.585Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.7588558576261,
+    "timestamp": "2026-03-21T23:21:30.329Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.86052793440139,
+    "timestamp": "2026-03-21T23:21:39.574Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.36048834279046,
+    "timestamp": "2026-03-21T23:21:39.590Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.370816726979,
+    "timestamp": "2026-03-21T23:21:40.329Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.81768035915078,
+    "timestamp": "2026-03-21T23:21:49.574Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.10530624344314,
+    "timestamp": "2026-03-21T23:21:49.590Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.03409513826793,
+    "timestamp": "2026-03-21T23:21:50.336Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.73066612964323,
+    "timestamp": "2026-03-21T23:21:59.574Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.74504738013559,
+    "timestamp": "2026-03-21T23:21:59.605Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.04937465522852,
+    "timestamp": "2026-03-21T23:22:00.350Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.50515033881082,
+    "timestamp": "2026-03-21T23:22:09.577Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.26598319193826,
+    "timestamp": "2026-03-21T23:22:09.609Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.46058074981246,
+    "timestamp": "2026-03-21T23:22:10.354Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.93639672810343,
+    "timestamp": "2026-03-21T23:22:19.583Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.48407426048333,
+    "timestamp": "2026-03-21T23:22:19.614Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.75071488497554,
+    "timestamp": "2026-03-21T23:22:20.357Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.01979876711823,
+    "timestamp": "2026-03-21T23:22:29.586Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.75105758136132,
+    "timestamp": "2026-03-21T23:22:29.616Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.29370791754204,
+    "timestamp": "2026-03-21T23:22:30.363Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.21984683249018,
+    "timestamp": "2026-03-21T23:22:39.590Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.88810937528008,
+    "timestamp": "2026-03-21T23:22:39.622Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.14804676579246,
+    "timestamp": "2026-03-21T23:22:40.369Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.08376021829736,
+    "timestamp": "2026-03-21T23:22:49.602Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.58218386021115,
+    "timestamp": "2026-03-21T23:22:49.634Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.64744892291951,
+    "timestamp": "2026-03-21T23:22:50.377Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.58323456388993,
+    "timestamp": "2026-03-21T23:22:59.614Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.45672989124124,
+    "timestamp": "2026-03-21T23:22:59.646Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.58569841019164,
+    "timestamp": "2026-03-21T23:23:00.377Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.38869623687417,
+    "timestamp": "2026-03-21T23:23:09.620Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.67056192507071,
+    "timestamp": "2026-03-21T23:23:09.651Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.45399999554544,
+    "timestamp": "2026-03-21T23:23:10.380Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.14879888091073,
+    "timestamp": "2026-03-21T23:23:19.633Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.85115075597722,
+    "timestamp": "2026-03-21T23:23:19.665Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.39522250240414,
+    "timestamp": "2026-03-21T23:23:20.391Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.95135601140318,
+    "timestamp": "2026-03-21T23:23:29.641Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.76244947789478,
+    "timestamp": "2026-03-21T23:23:29.672Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.11428167066614,
+    "timestamp": "2026-03-21T23:23:30.400Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.74401687115116,
+    "timestamp": "2026-03-21T23:23:39.651Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.74846563293717,
+    "timestamp": "2026-03-21T23:23:39.683Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.02109630430918,
+    "timestamp": "2026-03-21T23:23:40.413Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.6093545789507,
+    "timestamp": "2026-03-21T23:23:49.658Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.07656123554885,
+    "timestamp": "2026-03-21T23:23:49.689Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.49560684266292,
+    "timestamp": "2026-03-21T23:23:50.421Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.58384210176047,
+    "timestamp": "2026-03-21T23:23:59.666Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.1924360612663,
+    "timestamp": "2026-03-21T23:23:59.697Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.34012304439486,
+    "timestamp": "2026-03-21T23:24:00.429Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.38523482784647,
+    "timestamp": "2026-03-21T23:24:09.671Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.36412614329026,
+    "timestamp": "2026-03-21T23:24:09.702Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.91612511382704,
+    "timestamp": "2026-03-21T23:24:10.430Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.65653582994541,
+    "timestamp": "2026-03-21T23:24:19.673Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.5695233712217,
+    "timestamp": "2026-03-21T23:24:19.704Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.52911225648019,
+    "timestamp": "2026-03-21T23:24:20.436Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.20389417833053,
+    "timestamp": "2026-03-21T23:24:29.687Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.00409465798975,
+    "timestamp": "2026-03-21T23:24:29.719Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.69556652594257,
+    "timestamp": "2026-03-21T23:24:30.447Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.46103417909919,
+    "timestamp": "2026-03-21T23:24:39.689Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.91378625619255,
+    "timestamp": "2026-03-21T23:24:39.720Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.22650636450336,
+    "timestamp": "2026-03-21T23:24:40.452Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.34735838004136,
+    "timestamp": "2026-03-21T23:24:49.701Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.7254698313428,
+    "timestamp": "2026-03-21T23:24:49.732Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.53110685699761,
+    "timestamp": "2026-03-21T23:24:50.461Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.34989738194575,
+    "timestamp": "2026-03-21T23:24:59.710Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.51562823253022,
+    "timestamp": "2026-03-21T23:24:59.741Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.9813959976158,
+    "timestamp": "2026-03-21T23:25:00.474Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.86581006375079,
+    "timestamp": "2026-03-21T23:25:09.724Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.45291523220247,
+    "timestamp": "2026-03-21T23:25:09.756Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.80696733804375,
+    "timestamp": "2026-03-21T23:25:10.483Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.64223112409168,
+    "timestamp": "2026-03-21T23:25:19.738Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.36506105666763,
+    "timestamp": "2026-03-21T23:25:19.768Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.34029403994458,
+    "timestamp": "2026-03-21T23:25:20.487Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.55825767496573,
+    "timestamp": "2026-03-21T23:25:29.738Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.96023616884385,
+    "timestamp": "2026-03-21T23:25:29.769Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.35087341273301,
+    "timestamp": "2026-03-21T23:25:30.494Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.22590570860973,
+    "timestamp": "2026-03-21T23:25:39.748Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.16315432487072,
+    "timestamp": "2026-03-21T23:25:39.779Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.69343599740263,
+    "timestamp": "2026-03-21T23:25:40.510Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.76083290932617,
+    "timestamp": "2026-03-21T23:25:49.750Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.2941422934414,
+    "timestamp": "2026-03-21T23:25:49.782Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.77622036945077,
+    "timestamp": "2026-03-21T23:25:50.511Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.27704012510756,
+    "timestamp": "2026-03-21T23:25:59.763Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.75657974349599,
+    "timestamp": "2026-03-21T23:25:59.794Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.67002437215075,
+    "timestamp": "2026-03-21T23:26:00.523Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.78858939961215,
+    "timestamp": "2026-03-21T23:26:09.777Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.95542303884575,
+    "timestamp": "2026-03-21T23:26:09.799Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.45275222026895,
+    "timestamp": "2026-03-21T23:26:10.522Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.38218519307617,
+    "timestamp": "2026-03-21T23:26:19.780Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.41542840999034,
+    "timestamp": "2026-03-21T23:26:19.811Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.9592400235856,
+    "timestamp": "2026-03-21T23:26:20.524Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.80315999234799,
+    "timestamp": "2026-03-21T23:26:29.780Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.38811229676595,
+    "timestamp": "2026-03-21T23:26:29.811Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.94348601778802,
+    "timestamp": "2026-03-21T23:26:30.539Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.8511157589057,
+    "timestamp": "2026-03-21T23:26:39.786Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.99139172275693,
+    "timestamp": "2026-03-21T23:26:39.817Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.0140214420598,
+    "timestamp": "2026-03-21T23:26:40.543Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.83499411738632,
+    "timestamp": "2026-03-21T23:26:49.787Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.31648672659718,
+    "timestamp": "2026-03-21T23:26:49.818Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.73736643635061,
+    "timestamp": "2026-03-21T23:26:50.545Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.68440718187742,
+    "timestamp": "2026-03-21T23:26:59.799Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.96323182249243,
+    "timestamp": "2026-03-21T23:26:59.830Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.6553562681261,
+    "timestamp": "2026-03-21T23:27:00.559Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.76395369415103,
+    "timestamp": "2026-03-21T23:27:09.810Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.85627001012091,
+    "timestamp": "2026-03-21T23:27:09.841Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.03171688545937,
+    "timestamp": "2026-03-21T23:27:10.567Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.3607560714907,
+    "timestamp": "2026-03-21T23:27:19.815Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.49722495172402,
+    "timestamp": "2026-03-21T23:27:19.847Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.2905541728536,
+    "timestamp": "2026-03-21T23:27:20.575Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.99720714668102,
+    "timestamp": "2026-03-21T23:27:29.828Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.46177848496983,
+    "timestamp": "2026-03-21T23:27:29.859Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.64109734843817,
+    "timestamp": "2026-03-21T23:27:30.586Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.33591188558431,
+    "timestamp": "2026-03-21T23:27:39.836Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.5291537517685,
+    "timestamp": "2026-03-21T23:27:39.866Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.21932044690531,
+    "timestamp": "2026-03-21T23:27:40.597Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.27731089120012,
+    "timestamp": "2026-03-21T23:27:49.845Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.40716344432424,
+    "timestamp": "2026-03-21T23:27:49.876Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.45818017935883,
+    "timestamp": "2026-03-21T23:27:50.608Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.43022045708061,
+    "timestamp": "2026-03-21T23:27:59.848Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.9231331395369,
+    "timestamp": "2026-03-21T23:27:59.880Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.44406034911496,
+    "timestamp": "2026-03-21T23:28:00.608Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.55867087809834,
+    "timestamp": "2026-03-21T23:28:09.847Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.44626027504175,
+    "timestamp": "2026-03-21T23:28:09.894Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.98982154897342,
+    "timestamp": "2026-03-21T23:28:10.622Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.50138409275343,
+    "timestamp": "2026-03-21T23:28:19.853Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.98155842323429,
+    "timestamp": "2026-03-21T23:28:19.900Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.35514795025483,
+    "timestamp": "2026-03-21T23:28:20.627Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.93210976209522,
+    "timestamp": "2026-03-21T23:28:29.863Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.66858279582026,
+    "timestamp": "2026-03-21T23:28:29.910Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.11520637978313,
+    "timestamp": "2026-03-21T23:28:30.639Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.18140509735812,
+    "timestamp": "2026-03-21T23:28:39.875Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.41877368432749,
+    "timestamp": "2026-03-21T23:28:39.923Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.99055235926343,
+    "timestamp": "2026-03-21T23:28:40.649Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.30055967533947,
+    "timestamp": "2026-03-21T23:28:49.876Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.39371709131198,
+    "timestamp": "2026-03-21T23:28:49.938Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.09973070865597,
+    "timestamp": "2026-03-21T23:28:50.652Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.22988326108934,
+    "timestamp": "2026-03-21T23:28:59.883Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.6766390162391,
+    "timestamp": "2026-03-21T23:28:59.945Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.95740188749629,
+    "timestamp": "2026-03-21T23:29:00.660Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.78744878866821,
+    "timestamp": "2026-03-21T23:29:09.894Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.29582802424888,
+    "timestamp": "2026-03-21T23:29:09.957Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.79623229233812,
+    "timestamp": "2026-03-21T23:29:10.671Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.39774456676223,
+    "timestamp": "2026-03-21T23:29:19.897Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.42800420818075,
+    "timestamp": "2026-03-21T23:29:19.959Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.71665484048765,
+    "timestamp": "2026-03-21T23:29:20.685Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.5845915384204,
+    "timestamp": "2026-03-21T23:29:29.905Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.7341244303852,
+    "timestamp": "2026-03-21T23:29:29.967Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.53032233049873,
+    "timestamp": "2026-03-21T23:29:30.693Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.58552992417304,
+    "timestamp": "2026-03-21T23:29:39.918Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.57041923646419,
+    "timestamp": "2026-03-21T23:29:39.980Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.23322988313777,
+    "timestamp": "2026-03-21T23:29:40.695Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.00150884550922,
+    "timestamp": "2026-03-21T23:29:49.921Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.04968961101831,
+    "timestamp": "2026-03-21T23:29:49.984Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.1612855786474,
+    "timestamp": "2026-03-21T23:29:50.697Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.56041429430812,
+    "timestamp": "2026-03-21T23:29:59.924Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.37879794628716,
+    "timestamp": "2026-03-21T23:29:59.987Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.28243640972465,
+    "timestamp": "2026-03-21T23:30:00.702Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.85665948332284,
+    "timestamp": "2026-03-21T23:30:09.931Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.94640364632444,
+    "timestamp": "2026-03-21T23:30:09.992Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.77161398714742,
+    "timestamp": "2026-03-21T23:30:10.718Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.84888931072032,
+    "timestamp": "2026-03-21T23:30:19.940Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.397198568094,
+    "timestamp": "2026-03-21T23:30:20.002Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.4837468930065,
+    "timestamp": "2026-03-21T23:30:20.717Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.78850003824168,
+    "timestamp": "2026-03-21T23:30:29.945Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.12338461279451,
+    "timestamp": "2026-03-21T23:30:30.007Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.50484723497317,
+    "timestamp": "2026-03-21T23:30:30.724Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.5103476519201,
+    "timestamp": "2026-03-21T23:30:39.954Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.88476477537812,
+    "timestamp": "2026-03-21T23:30:40.016Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.81413751035896,
+    "timestamp": "2026-03-21T23:30:40.730Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.61946125292297,
+    "timestamp": "2026-03-21T23:30:49.956Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.15800520868248,
+    "timestamp": "2026-03-21T23:30:50.017Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.00502366469615,
+    "timestamp": "2026-03-21T23:30:50.745Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.76696685065141,
+    "timestamp": "2026-03-21T23:30:59.971Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.62449344222259,
+    "timestamp": "2026-03-21T23:31:00.018Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.48728240473547,
+    "timestamp": "2026-03-21T23:31:00.748Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.70952851695948,
+    "timestamp": "2026-03-21T23:31:09.981Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.54059233979977,
+    "timestamp": "2026-03-21T23:31:10.027Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.53356168801243,
+    "timestamp": "2026-03-21T23:31:10.758Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.12090866706126,
+    "timestamp": "2026-03-21T23:31:19.996Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.09879150708424,
+    "timestamp": "2026-03-21T23:31:20.028Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.13006020226942,
+    "timestamp": "2026-03-21T23:31:20.771Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.04112993008177,
+    "timestamp": "2026-03-21T23:31:29.998Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.22887784225888,
+    "timestamp": "2026-03-21T23:31:30.028Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.65925845217104,
+    "timestamp": "2026-03-21T23:31:30.777Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.31980633119846,
+    "timestamp": "2026-03-21T23:31:40.008Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.86724418760824,
+    "timestamp": "2026-03-21T23:31:40.039Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.59197123780169,
+    "timestamp": "2026-03-21T23:31:40.784Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.10122324603316,
+    "timestamp": "2026-03-21T23:31:50.022Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.09125314750261,
+    "timestamp": "2026-03-21T23:31:50.054Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.1268775967713,
+    "timestamp": "2026-03-21T23:31:50.797Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.08457162708112,
+    "timestamp": "2026-03-21T23:32:00.031Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.82509674431978,
+    "timestamp": "2026-03-21T23:32:00.064Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.10965043274803,
+    "timestamp": "2026-03-21T23:32:00.810Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.02631767842671,
+    "timestamp": "2026-03-21T23:32:10.033Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.34930346110346,
+    "timestamp": "2026-03-21T23:32:10.065Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.34842024966495,
+    "timestamp": "2026-03-21T23:32:10.822Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.15084796733915,
+    "timestamp": "2026-03-21T23:32:20.036Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.13760927592459,
+    "timestamp": "2026-03-21T23:32:20.066Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.18940033990026,
+    "timestamp": "2026-03-21T23:32:20.828Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.31851832360312,
+    "timestamp": "2026-03-21T23:32:30.040Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.45819244616068,
+    "timestamp": "2026-03-21T23:32:30.072Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.17969009545952,
+    "timestamp": "2026-03-21T23:32:30.834Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.44102478574295,
+    "timestamp": "2026-03-21T23:32:40.053Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.66205531257945,
+    "timestamp": "2026-03-21T23:32:40.084Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.49710520285689,
+    "timestamp": "2026-03-21T23:32:40.846Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.0204112816409,
+    "timestamp": "2026-03-21T23:32:50.056Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.05679812889667,
+    "timestamp": "2026-03-21T23:32:50.088Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.66245885795202,
+    "timestamp": "2026-03-21T23:32:50.862Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.60812503169338,
+    "timestamp": "2026-03-21T23:33:00.055Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.88222026901134,
+    "timestamp": "2026-03-21T23:33:00.102Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.96289467159187,
+    "timestamp": "2026-03-21T23:33:00.876Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.65280270605838,
+    "timestamp": "2026-03-21T23:33:10.066Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.13166702384623,
+    "timestamp": "2026-03-21T23:33:10.112Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.49255188438724,
+    "timestamp": "2026-03-21T23:33:10.886Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.04169194900757,
+    "timestamp": "2026-03-21T23:33:20.072Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.30738346942647,
+    "timestamp": "2026-03-21T23:33:20.119Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.19961725107063,
+    "timestamp": "2026-03-21T23:33:20.896Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.0292030960737,
+    "timestamp": "2026-03-21T23:33:30.079Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.46199245423203,
+    "timestamp": "2026-03-21T23:33:30.125Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.8816714225789,
+    "timestamp": "2026-03-21T23:33:30.903Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.43983617285124,
+    "timestamp": "2026-03-21T23:33:40.090Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.0143859143356,
+    "timestamp": "2026-03-21T23:33:40.136Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.90304053706001,
+    "timestamp": "2026-03-21T23:33:40.915Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.49311152224669,
+    "timestamp": "2026-03-21T23:33:50.094Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.36400298885908,
+    "timestamp": "2026-03-21T23:33:50.141Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.66384398938148,
+    "timestamp": "2026-03-21T23:33:50.916Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.12034525249663,
+    "timestamp": "2026-03-21T23:34:00.103Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.1162222366624,
+    "timestamp": "2026-03-21T23:34:00.150Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.59953768277876,
+    "timestamp": "2026-03-21T23:34:00.925Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.72925418158978,
+    "timestamp": "2026-03-21T23:34:10.104Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.27903912607559,
+    "timestamp": "2026-03-21T23:34:10.151Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.6782109860415,
+    "timestamp": "2026-03-21T23:34:10.929Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.6437413444362,
+    "timestamp": "2026-03-21T23:34:20.117Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.9310857903174,
+    "timestamp": "2026-03-21T23:34:20.163Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.3302659024042,
+    "timestamp": "2026-03-21T23:34:20.936Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.66276649346165,
+    "timestamp": "2026-03-21T23:34:30.121Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.21338714897853,
+    "timestamp": "2026-03-21T23:34:30.168Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.43079719750466,
+    "timestamp": "2026-03-21T23:34:30.942Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.46585275990742,
+    "timestamp": "2026-03-21T23:34:40.127Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.51531249549207,
+    "timestamp": "2026-03-21T23:34:40.173Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.82899298970051,
+    "timestamp": "2026-03-21T23:34:40.947Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.42970648962725,
+    "timestamp": "2026-03-21T23:34:50.139Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.48366809883196,
+    "timestamp": "2026-03-21T23:34:50.185Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.61202554394619,
+    "timestamp": "2026-03-21T23:34:50.962Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.7142341366374,
+    "timestamp": "2026-03-21T23:35:00.148Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.34969487731298,
+    "timestamp": "2026-03-21T23:35:00.195Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.65587610396906,
+    "timestamp": "2026-03-21T23:35:00.972Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.72526810963438,
+    "timestamp": "2026-03-21T23:35:10.151Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.84930530053674,
+    "timestamp": "2026-03-21T23:35:10.198Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.83459589848991,
+    "timestamp": "2026-03-21T23:35:10.974Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.90484633916364,
+    "timestamp": "2026-03-21T23:35:20.159Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.57330955481294,
+    "timestamp": "2026-03-21T23:35:20.205Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.88911614463802,
+    "timestamp": "2026-03-21T23:35:20.982Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.75145397201321,
+    "timestamp": "2026-03-21T23:35:30.164Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.19024774752648,
+    "timestamp": "2026-03-21T23:35:30.211Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.14192956917081,
+    "timestamp": "2026-03-21T23:35:30.988Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.25715556317537,
+    "timestamp": "2026-03-21T23:35:40.175Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.67584229143144,
+    "timestamp": "2026-03-21T23:35:40.221Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.7764317608315,
+    "timestamp": "2026-03-21T23:35:40.990Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.70023645676453,
+    "timestamp": "2026-03-21T23:35:50.176Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.75029022163172,
+    "timestamp": "2026-03-21T23:35:50.223Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.179979966037,
+    "timestamp": "2026-03-21T23:35:51.000Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.7422553433766,
+    "timestamp": "2026-03-21T23:36:00.182Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.31456849444157,
+    "timestamp": "2026-03-21T23:36:00.229Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.85389662675071,
+    "timestamp": "2026-03-21T23:36:01.005Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.50965995906955,
+    "timestamp": "2026-03-21T23:36:10.184Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.2225876244335,
+    "timestamp": "2026-03-21T23:36:10.231Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.66030480691259,
+    "timestamp": "2026-03-21T23:36:11.008Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.12336483652697,
+    "timestamp": "2026-03-21T23:36:20.187Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.49831937628979,
+    "timestamp": "2026-03-21T23:36:20.234Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.8571428613489,
+    "timestamp": "2026-03-21T23:36:21.010Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.28283623134509,
+    "timestamp": "2026-03-21T23:36:30.200Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.14559362464666,
+    "timestamp": "2026-03-21T23:36:30.247Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.86075531086118,
+    "timestamp": "2026-03-21T23:36:31.022Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.91052659931532,
+    "timestamp": "2026-03-21T23:36:40.204Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.2462864808522,
+    "timestamp": "2026-03-21T23:36:40.250Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.0774834313476,
+    "timestamp": "2026-03-21T23:36:41.044Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.07087428677453,
+    "timestamp": "2026-03-21T23:36:50.204Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.23083558658661,
+    "timestamp": "2026-03-21T23:36:50.251Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.11639115304348,
+    "timestamp": "2026-03-21T23:36:51.058Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.26452378901939,
+    "timestamp": "2026-03-21T23:37:00.207Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.9997910192633,
+    "timestamp": "2026-03-21T23:37:00.253Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.53372137400675,
+    "timestamp": "2026-03-21T23:37:01.073Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.47410449267403,
+    "timestamp": "2026-03-21T23:37:10.222Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.23050449700534,
+    "timestamp": "2026-03-21T23:37:10.253Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.46657108296888,
+    "timestamp": "2026-03-21T23:37:11.072Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.06357739618991,
+    "timestamp": "2026-03-21T23:37:20.222Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.19411495225314,
+    "timestamp": "2026-03-21T23:37:20.253Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.57070719799009,
+    "timestamp": "2026-03-21T23:37:21.079Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.34757960888001,
+    "timestamp": "2026-03-21T23:37:30.235Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.76865036995673,
+    "timestamp": "2026-03-21T23:37:30.265Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.61836365108827,
+    "timestamp": "2026-03-21T23:37:31.087Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.86788301954368,
+    "timestamp": "2026-03-21T23:37:40.236Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.6866836325678,
+    "timestamp": "2026-03-21T23:37:40.267Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.74546886055016,
+    "timestamp": "2026-03-21T23:37:41.094Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.6448872875805,
+    "timestamp": "2026-03-21T23:37:50.248Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.1176416882349,
+    "timestamp": "2026-03-21T23:37:50.279Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.81531430757144,
+    "timestamp": "2026-03-21T23:37:51.101Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.33397846408442,
+    "timestamp": "2026-03-21T23:38:00.257Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.68429599346602,
+    "timestamp": "2026-03-21T23:38:00.288Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.2565792524593,
+    "timestamp": "2026-03-21T23:38:01.112Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.09570106031137,
+    "timestamp": "2026-03-21T23:38:10.264Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.55201545346654,
+    "timestamp": "2026-03-21T23:38:10.295Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.75548269045422,
+    "timestamp": "2026-03-21T23:38:11.121Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.84531202525633,
+    "timestamp": "2026-03-21T23:38:20.272Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.17815504583223,
+    "timestamp": "2026-03-21T23:38:20.303Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.78575667866568,
+    "timestamp": "2026-03-21T23:38:21.122Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.71508009333837,
+    "timestamp": "2026-03-21T23:38:30.277Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.4260015219849,
+    "timestamp": "2026-03-21T23:38:30.309Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.46533083664815,
+    "timestamp": "2026-03-21T23:38:31.133Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.9976726030883,
+    "timestamp": "2026-03-21T23:38:40.292Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.23421561716842,
+    "timestamp": "2026-03-21T23:38:40.323Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.89642287352844,
+    "timestamp": "2026-03-21T23:38:41.143Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.15965833112944,
+    "timestamp": "2026-03-21T23:38:50.296Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.6457315293353,
+    "timestamp": "2026-03-21T23:38:50.328Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.90672698426438,
+    "timestamp": "2026-03-21T23:38:51.148Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.1772421725005,
+    "timestamp": "2026-03-21T23:39:00.309Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.36462769389526,
+    "timestamp": "2026-03-21T23:39:00.340Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.33807012726542,
+    "timestamp": "2026-03-21T23:39:01.162Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.98900760817736,
+    "timestamp": "2026-03-21T23:39:10.324Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.17868200362527,
+    "timestamp": "2026-03-21T23:39:10.340Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.61862204113496,
+    "timestamp": "2026-03-21T23:39:11.177Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.80935221155063,
+    "timestamp": "2026-03-21T23:39:20.331Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.26066534689174,
+    "timestamp": "2026-03-21T23:39:20.347Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.44670443892694,
+    "timestamp": "2026-03-21T23:39:21.185Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.63650188733375,
+    "timestamp": "2026-03-21T23:39:30.334Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.06447536993677,
+    "timestamp": "2026-03-21T23:39:30.350Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.69303397422625,
+    "timestamp": "2026-03-21T23:39:31.186Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.61376469547358,
+    "timestamp": "2026-03-21T23:39:40.341Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.94486710910928,
+    "timestamp": "2026-03-21T23:39:40.357Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.9555313373709,
+    "timestamp": "2026-03-21T23:39:41.191Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.57471441813807,
+    "timestamp": "2026-03-21T23:39:50.345Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.09853927305166,
+    "timestamp": "2026-03-21T23:39:50.361Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.11633189846812,
+    "timestamp": "2026-03-21T23:39:51.203Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.79394227159489,
+    "timestamp": "2026-03-21T23:40:00.356Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.41046963360657,
+    "timestamp": "2026-03-21T23:40:00.372Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.1611846544918,
+    "timestamp": "2026-03-21T23:40:01.212Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.97575345464496,
+    "timestamp": "2026-03-21T23:40:10.356Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.36666403289857,
+    "timestamp": "2026-03-21T23:40:10.372Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.6401712885931,
+    "timestamp": "2026-03-21T23:40:11.225Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.83460361626507,
+    "timestamp": "2026-03-21T23:40:20.371Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.0372257969263,
+    "timestamp": "2026-03-21T23:40:20.386Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.68297138867723,
+    "timestamp": "2026-03-21T23:40:21.225Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.17609722979324,
+    "timestamp": "2026-03-21T23:40:30.378Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.65498137746211,
+    "timestamp": "2026-03-21T23:40:30.393Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.24347229456525,
+    "timestamp": "2026-03-21T23:40:31.231Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.56234775204854,
+    "timestamp": "2026-03-21T23:40:40.392Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.92452852480424,
+    "timestamp": "2026-03-21T23:40:40.408Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.85507515226872,
+    "timestamp": "2026-03-21T23:40:41.245Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.39234303705935,
+    "timestamp": "2026-03-21T23:40:50.402Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.7416235586321,
+    "timestamp": "2026-03-21T23:40:50.418Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.97586542342928,
+    "timestamp": "2026-03-21T23:40:51.256Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.23000021341872,
+    "timestamp": "2026-03-21T23:41:00.403Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.41088970727036,
+    "timestamp": "2026-03-21T23:41:00.419Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.36934541774957,
+    "timestamp": "2026-03-21T23:41:01.257Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.45596715441505,
+    "timestamp": "2026-03-21T23:41:10.413Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.44502544992821,
+    "timestamp": "2026-03-21T23:41:10.430Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.623267038266,
+    "timestamp": "2026-03-21T23:41:11.267Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.15371604926892,
+    "timestamp": "2026-03-21T23:41:20.426Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.15254290375576,
+    "timestamp": "2026-03-21T23:41:20.442Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.36458636584952,
+    "timestamp": "2026-03-21T23:41:21.280Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.41901048634378,
+    "timestamp": "2026-03-21T23:41:30.428Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.07647556049186,
+    "timestamp": "2026-03-21T23:41:30.443Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.73739180273618,
+    "timestamp": "2026-03-21T23:41:31.282Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.76798519009985,
+    "timestamp": "2026-03-21T23:41:40.437Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.38409808864687,
+    "timestamp": "2026-03-21T23:41:40.452Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.74042313293758,
+    "timestamp": "2026-03-21T23:41:41.293Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.34924929943413,
+    "timestamp": "2026-03-21T23:41:50.445Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.69151876989875,
+    "timestamp": "2026-03-21T23:41:50.462Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.66546042080363,
+    "timestamp": "2026-03-21T23:41:51.299Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.4932075141883,
+    "timestamp": "2026-03-21T23:42:00.457Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.48787709635326,
+    "timestamp": "2026-03-21T23:42:00.472Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.76190095873464,
+    "timestamp": "2026-03-21T23:42:01.311Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.03850142417043,
+    "timestamp": "2026-03-21T23:42:10.460Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.36204908558922,
+    "timestamp": "2026-03-21T23:42:10.475Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.36755897761773,
+    "timestamp": "2026-03-21T23:42:11.326Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.18059244566,
+    "timestamp": "2026-03-21T23:42:20.465Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.95431746745719,
+    "timestamp": "2026-03-21T23:42:20.481Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.33562358591755,
+    "timestamp": "2026-03-21T23:42:21.337Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.66581834741727,
+    "timestamp": "2026-03-21T23:42:30.504Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.28803111092957,
+    "timestamp": "2026-03-21T23:42:30.510Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.40320794885213,
+    "timestamp": "2026-03-21T23:42:31.341Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.40933183023992,
+    "timestamp": "2026-03-21T23:42:40.517Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.02641775401436,
+    "timestamp": "2026-03-21T23:42:41.350Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.24414403260073,
+    "timestamp": "2026-03-21T23:42:50.517Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.48733258860611,
+    "timestamp": "2026-03-21T23:42:51.354Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.99908759986354,
+    "timestamp": "2026-03-21T23:43:00.524Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.26369396086368,
+    "timestamp": "2026-03-21T23:43:01.360Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.68628004065008,
+    "timestamp": "2026-03-21T23:43:10.525Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.34208947048944,
+    "timestamp": "2026-03-21T23:43:11.363Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.21610901126354,
+    "timestamp": "2026-03-21T23:43:20.531Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.57063116627903,
+    "timestamp": "2026-03-21T23:43:21.370Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.42046955116263,
+    "timestamp": "2026-03-21T23:43:30.545Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.3849760786261,
+    "timestamp": "2026-03-21T23:43:31.384Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.25074138790767,
+    "timestamp": "2026-03-21T23:43:40.550Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.53075040408973,
+    "timestamp": "2026-03-21T23:43:41.387Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.16745779977332,
+    "timestamp": "2026-03-21T23:43:50.551Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.12132792023397,
+    "timestamp": "2026-03-21T23:43:51.402Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.46762983668464,
+    "timestamp": "2026-03-21T23:44:00.562Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.77418102503988,
+    "timestamp": "2026-03-21T23:44:01.416Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.27613794193954,
+    "timestamp": "2026-03-21T23:44:10.570Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.55013188370667,
+    "timestamp": "2026-03-21T23:44:11.421Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.78825791541563,
+    "timestamp": "2026-03-21T23:44:20.572Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.84010210595063,
+    "timestamp": "2026-03-21T23:44:21.423Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.86227655963451,
+    "timestamp": "2026-03-21T23:44:30.585Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.22442706124315,
+    "timestamp": "2026-03-21T23:44:31.426Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.67770981357747,
+    "timestamp": "2026-03-21T23:44:40.589Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.48255333562241,
+    "timestamp": "2026-03-21T23:44:41.427Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.25116829645069,
+    "timestamp": "2026-03-21T23:44:50.597Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.54644585349158,
+    "timestamp": "2026-03-21T23:44:51.437Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.02341469981775,
+    "timestamp": "2026-03-21T23:45:00.606Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.85336723433032,
+    "timestamp": "2026-03-21T23:45:01.445Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.64374972639001,
+    "timestamp": "2026-03-21T23:45:10.609Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.09377024381324,
+    "timestamp": "2026-03-21T23:45:11.445Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.72963390897748,
+    "timestamp": "2026-03-21T23:45:20.617Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.81841950588883,
+    "timestamp": "2026-03-21T23:45:21.453Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.84576698470266,
+    "timestamp": "2026-03-21T23:45:30.628Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.97156051172416,
+    "timestamp": "2026-03-21T23:45:31.468Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.33513748228954,
+    "timestamp": "2026-03-21T23:45:40.640Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.44593043106266,
+    "timestamp": "2026-03-21T23:45:41.480Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.85772134750843,
+    "timestamp": "2026-03-21T23:45:50.642Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.00063582450814,
+    "timestamp": "2026-03-21T23:45:51.483Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.86669983044831,
+    "timestamp": "2026-03-21T23:46:00.655Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.90105660437817,
+    "timestamp": "2026-03-21T23:46:01.491Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.79447107498667,
+    "timestamp": "2026-03-21T23:46:10.666Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.58324677124348,
+    "timestamp": "2026-03-21T23:46:11.507Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.31471065201735,
+    "timestamp": "2026-03-21T23:46:20.670Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.92401503953951,
+    "timestamp": "2026-03-21T23:46:21.509Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.43350080126065,
+    "timestamp": "2026-03-21T23:46:30.672Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.97257816340817,
+    "timestamp": "2026-03-21T23:46:31.522Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.55086736818467,
+    "timestamp": "2026-03-21T23:46:40.672Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.4961587756641,
+    "timestamp": "2026-03-21T23:46:40.687Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.45708575996348,
+    "timestamp": "2026-03-21T23:46:41.522Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.98914963870914,
+    "timestamp": "2026-03-21T23:46:50.687Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.50132810258587,
+    "timestamp": "2026-03-21T23:46:50.703Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.11472463277693,
+    "timestamp": "2026-03-21T23:46:51.536Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.45948398115532,
+    "timestamp": "2026-03-21T23:47:00.697Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.14824984417635,
+    "timestamp": "2026-03-21T23:47:00.713Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.23513587336518,
+    "timestamp": "2026-03-21T23:47:01.548Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.34561746388812,
+    "timestamp": "2026-03-21T23:47:10.712Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.7292685617837,
+    "timestamp": "2026-03-21T23:47:10.727Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.94215352565843,
+    "timestamp": "2026-03-21T23:47:11.550Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.90018672378747,
+    "timestamp": "2026-03-21T23:47:20.714Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.86063365701452,
+    "timestamp": "2026-03-21T23:47:20.729Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.88709981737244,
+    "timestamp": "2026-03-21T23:47:21.554Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.37432835826911,
+    "timestamp": "2026-03-21T23:47:30.726Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.53739340423935,
+    "timestamp": "2026-03-21T23:47:30.741Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.9966187231836,
+    "timestamp": "2026-03-21T23:47:31.566Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.9796529541182,
+    "timestamp": "2026-03-21T23:47:40.731Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.9135264680893,
+    "timestamp": "2026-03-21T23:47:40.747Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.11769064516139,
+    "timestamp": "2026-03-21T23:47:41.570Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.53758698209899,
+    "timestamp": "2026-03-21T23:47:50.735Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.41304756552525,
+    "timestamp": "2026-03-21T23:47:50.751Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.70904153973837,
+    "timestamp": "2026-03-21T23:47:51.583Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.28548297087198,
+    "timestamp": "2026-03-21T23:48:00.745Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.34467477682884,
+    "timestamp": "2026-03-21T23:48:00.761Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.10964600395216,
+    "timestamp": "2026-03-21T23:48:01.585Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.18604121410426,
+    "timestamp": "2026-03-21T23:48:10.756Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.80473350950824,
+    "timestamp": "2026-03-21T23:48:10.772Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.72359865519348,
+    "timestamp": "2026-03-21T23:48:11.595Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.88467796246125,
+    "timestamp": "2026-03-21T23:48:20.763Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.91684527735983,
+    "timestamp": "2026-03-21T23:48:20.779Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.36994683782729,
+    "timestamp": "2026-03-21T23:48:21.599Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.88168888813435,
+    "timestamp": "2026-03-21T23:48:30.771Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.17005628370941,
+    "timestamp": "2026-03-21T23:48:30.787Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.05492040451838,
+    "timestamp": "2026-03-21T23:48:31.607Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.50262919812597,
+    "timestamp": "2026-03-21T23:48:40.777Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.64411381010203,
+    "timestamp": "2026-03-21T23:48:40.793Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.09434907560029,
+    "timestamp": "2026-03-21T23:48:41.613Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.36538522420764,
+    "timestamp": "2026-03-21T23:48:50.786Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.69394517889269,
+    "timestamp": "2026-03-21T23:48:50.801Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.13616802089254,
+    "timestamp": "2026-03-21T23:48:51.622Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.64397619145569,
+    "timestamp": "2026-03-21T23:49:00.798Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.17349697660616,
+    "timestamp": "2026-03-21T23:49:00.813Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.93395146718046,
+    "timestamp": "2026-03-21T23:49:01.636Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.94608601570093,
+    "timestamp": "2026-03-21T23:49:10.809Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.88682622627303,
+    "timestamp": "2026-03-21T23:49:10.824Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.68635429648575,
+    "timestamp": "2026-03-21T23:49:11.644Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.73101191338289,
+    "timestamp": "2026-03-21T23:49:20.810Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.56924959950095,
+    "timestamp": "2026-03-21T23:49:20.826Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.53810157190314,
+    "timestamp": "2026-03-21T23:49:21.644Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.78534880387784,
+    "timestamp": "2026-03-21T23:49:30.821Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.23171938835468,
+    "timestamp": "2026-03-21T23:49:30.837Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.45192630933205,
+    "timestamp": "2026-03-21T23:49:31.645Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.38772257465187,
+    "timestamp": "2026-03-21T23:49:40.830Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.93166515390996,
+    "timestamp": "2026-03-21T23:49:40.845Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.80465963913707,
+    "timestamp": "2026-03-21T23:49:41.651Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.36003526638797,
+    "timestamp": "2026-03-21T23:49:50.838Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.24826682690231,
+    "timestamp": "2026-03-21T23:49:50.854Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.03017260688854,
+    "timestamp": "2026-03-21T23:49:51.660Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.58733611070916,
+    "timestamp": "2026-03-21T23:50:00.850Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.56003677212846,
+    "timestamp": "2026-03-21T23:50:00.866Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.77476062421981,
+    "timestamp": "2026-03-21T23:50:01.673Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.59937570627261,
+    "timestamp": "2026-03-21T23:50:10.858Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.01872683192529,
+    "timestamp": "2026-03-21T23:50:10.874Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.00847407689756,
+    "timestamp": "2026-03-21T23:50:11.681Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.57107889373788,
+    "timestamp": "2026-03-21T23:50:20.865Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.30675426712146,
+    "timestamp": "2026-03-21T23:50:20.880Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.22469913483991,
+    "timestamp": "2026-03-21T23:50:21.685Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.5019134427459,
+    "timestamp": "2026-03-21T23:50:30.867Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.18400986622869,
+    "timestamp": "2026-03-21T23:50:30.882Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.97466157893989,
+    "timestamp": "2026-03-21T23:50:31.687Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.89554437466305,
+    "timestamp": "2026-03-21T23:50:40.874Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.69693453186741,
+    "timestamp": "2026-03-21T23:50:40.889Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.73689895333602,
+    "timestamp": "2026-03-21T23:50:41.691Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.1133410779706,
+    "timestamp": "2026-03-21T23:50:50.883Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.16602757511603,
+    "timestamp": "2026-03-21T23:50:50.898Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.49560005551398,
+    "timestamp": "2026-03-21T23:50:51.704Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.73179385280996,
+    "timestamp": "2026-03-21T23:51:00.883Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.8922583653064,
+    "timestamp": "2026-03-21T23:51:00.899Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.45388378127676,
+    "timestamp": "2026-03-21T23:51:01.707Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.17254579928245,
+    "timestamp": "2026-03-21T23:51:10.886Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.69560908205733,
+    "timestamp": "2026-03-21T23:51:10.902Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.6767782295839,
+    "timestamp": "2026-03-21T23:51:11.711Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.05273490326054,
+    "timestamp": "2026-03-21T23:51:20.885Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.44036296532506,
+    "timestamp": "2026-03-21T23:51:20.916Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.1329316359487,
+    "timestamp": "2026-03-21T23:51:21.717Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.96344559746036,
+    "timestamp": "2026-03-21T23:51:30.888Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.00483405260175,
+    "timestamp": "2026-03-21T23:51:30.919Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.281267509726,
+    "timestamp": "2026-03-21T23:51:31.725Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.45467533217143,
+    "timestamp": "2026-03-21T23:51:40.902Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.4561587300904,
+    "timestamp": "2026-03-21T23:51:40.933Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.14265403639578,
+    "timestamp": "2026-03-21T23:51:41.736Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.9293110185673,
+    "timestamp": "2026-03-21T23:51:50.908Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.56630196462294,
+    "timestamp": "2026-03-21T23:51:50.939Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.01482682334093,
+    "timestamp": "2026-03-21T23:51:51.746Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.67475748839887,
+    "timestamp": "2026-03-21T23:52:00.919Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.23552183792816,
+    "timestamp": "2026-03-21T23:52:00.941Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.88786119524138,
+    "timestamp": "2026-03-21T23:52:01.753Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.99853570059382,
+    "timestamp": "2026-03-21T23:52:10.923Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.92645792920732,
+    "timestamp": "2026-03-21T23:52:10.954Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.6033960607331,
+    "timestamp": "2026-03-21T23:52:11.760Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.22313978376422,
+    "timestamp": "2026-03-21T23:52:20.926Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.33760308370516,
+    "timestamp": "2026-03-21T23:52:20.957Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.1457165573951,
+    "timestamp": "2026-03-21T23:52:21.767Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.7052384616134,
+    "timestamp": "2026-03-21T23:52:30.928Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.92182653705292,
+    "timestamp": "2026-03-21T23:52:30.959Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.63726304547671,
+    "timestamp": "2026-03-21T23:52:31.778Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.53669862810908,
+    "timestamp": "2026-03-21T23:52:40.932Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.69269500254632,
+    "timestamp": "2026-03-21T23:52:40.962Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.1020239901538,
+    "timestamp": "2026-03-21T23:52:41.784Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.37273397010946,
+    "timestamp": "2026-03-21T23:52:50.963Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.25667875727919,
+    "timestamp": "2026-03-21T23:52:50.999Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.11298606260493,
+    "timestamp": "2026-03-21T23:52:51.789Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.47297119872448,
+    "timestamp": "2026-03-21T23:53:00.972Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.03693110955405,
+    "timestamp": "2026-03-21T23:53:01.003Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.94870879828068,
+    "timestamp": "2026-03-21T23:53:01.794Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.28008268188964,
+    "timestamp": "2026-03-21T23:53:10.976Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.46044862468223,
+    "timestamp": "2026-03-21T23:53:11.006Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.77309434428766,
+    "timestamp": "2026-03-21T23:53:11.796Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.60921370647962,
+    "timestamp": "2026-03-21T23:53:20.984Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.5355292559494,
+    "timestamp": "2026-03-21T23:53:21.014Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.9626335658938,
+    "timestamp": "2026-03-21T23:53:21.805Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.52491937889201,
+    "timestamp": "2026-03-21T23:53:30.991Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.23993819386737,
+    "timestamp": "2026-03-21T23:53:31.022Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.30148631770393,
+    "timestamp": "2026-03-21T23:53:31.814Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.84649735605352,
+    "timestamp": "2026-03-21T23:53:41.000Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.6279631868076,
+    "timestamp": "2026-03-21T23:53:41.031Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.78075437596969,
+    "timestamp": "2026-03-21T23:53:41.824Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.34678787748886,
+    "timestamp": "2026-03-21T23:53:51.008Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.76310719421163,
+    "timestamp": "2026-03-21T23:53:51.040Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.22870586411112,
+    "timestamp": "2026-03-21T23:53:51.838Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.53727134425928,
+    "timestamp": "2026-03-21T23:54:01.016Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.48539760055306,
+    "timestamp": "2026-03-21T23:54:01.047Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.18839351589413,
+    "timestamp": "2026-03-21T23:54:01.852Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.70390550986235,
+    "timestamp": "2026-03-21T23:54:11.026Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.76680540459488,
+    "timestamp": "2026-03-21T23:54:11.058Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.68237975317187,
+    "timestamp": "2026-03-21T23:54:11.865Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.4396941297182,
+    "timestamp": "2026-03-21T23:54:21.031Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.76603090226713,
+    "timestamp": "2026-03-21T23:54:21.063Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.51646725216999,
+    "timestamp": "2026-03-21T23:54:21.871Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.76076538358174,
+    "timestamp": "2026-03-21T23:54:31.033Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.50691256827363,
+    "timestamp": "2026-03-21T23:54:31.064Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.95577583890056,
+    "timestamp": "2026-03-21T23:54:31.885Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.23266437890739,
+    "timestamp": "2026-03-21T23:54:41.037Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.4979679500152,
+    "timestamp": "2026-03-21T23:54:41.068Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.60381393586852,
+    "timestamp": "2026-03-21T23:54:41.887Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.72818554381811,
+    "timestamp": "2026-03-21T23:54:51.049Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.69676286260813,
+    "timestamp": "2026-03-21T23:54:51.080Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.03777099519661,
+    "timestamp": "2026-03-21T23:54:51.889Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.01316569346949,
+    "timestamp": "2026-03-21T23:55:01.052Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.8577584397429,
+    "timestamp": "2026-03-21T23:55:01.083Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.14946080815957,
+    "timestamp": "2026-03-21T23:55:01.891Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.84158780276691,
+    "timestamp": "2026-03-21T23:55:11.060Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.95442866435036,
+    "timestamp": "2026-03-21T23:55:11.091Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.17885161636757,
+    "timestamp": "2026-03-21T23:55:11.893Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.72779575746306,
+    "timestamp": "2026-03-21T23:55:21.074Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.1877978120591,
+    "timestamp": "2026-03-21T23:55:21.105Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.45844954759805,
+    "timestamp": "2026-03-21T23:55:21.894Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.49557374771518,
+    "timestamp": "2026-03-21T23:55:31.080Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.53157252729488,
+    "timestamp": "2026-03-21T23:55:31.112Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.02158008734317,
+    "timestamp": "2026-03-21T23:55:31.905Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.27958053804639,
+    "timestamp": "2026-03-21T23:55:41.083Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.45545969324498,
+    "timestamp": "2026-03-21T23:55:41.114Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.90736064419805,
+    "timestamp": "2026-03-21T23:55:41.907Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.75201688666709,
+    "timestamp": "2026-03-21T23:55:51.084Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.76187174152425,
+    "timestamp": "2026-03-21T23:55:51.129Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.31593060149613,
+    "timestamp": "2026-03-21T23:55:51.907Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.36553851485287,
+    "timestamp": "2026-03-21T23:56:01.093Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.7360434941001,
+    "timestamp": "2026-03-21T23:56:01.140Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.37028274339178,
+    "timestamp": "2026-03-21T23:56:01.917Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.7778920311089,
+    "timestamp": "2026-03-21T23:56:11.098Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.23306402606107,
+    "timestamp": "2026-03-21T23:56:11.144Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.03056236895088,
+    "timestamp": "2026-03-21T23:56:11.919Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.40733660800959,
+    "timestamp": "2026-03-21T23:56:21.098Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.05284792267807,
+    "timestamp": "2026-03-21T23:56:21.145Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.02622430601593,
+    "timestamp": "2026-03-21T23:56:21.921Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.06990908497126,
+    "timestamp": "2026-03-21T23:56:31.099Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.81894006479817,
+    "timestamp": "2026-03-21T23:56:31.144Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.83732508537476,
+    "timestamp": "2026-03-21T23:56:31.932Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.6022832925901,
+    "timestamp": "2026-03-21T23:56:41.113Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.35905980712208,
+    "timestamp": "2026-03-21T23:56:41.159Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.12690409155725,
+    "timestamp": "2026-03-21T23:56:41.935Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.07530238898579,
+    "timestamp": "2026-03-21T23:56:51.126Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.67413831944667,
+    "timestamp": "2026-03-21T23:56:51.172Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.44443992069709,
+    "timestamp": "2026-03-21T23:56:51.949Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.24655996702933,
+    "timestamp": "2026-03-21T23:57:01.137Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.35195360074918,
+    "timestamp": "2026-03-21T23:57:01.183Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.48631446694506,
+    "timestamp": "2026-03-21T23:57:01.956Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.03694870570706,
+    "timestamp": "2026-03-21T23:57:11.146Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.57551450324624,
+    "timestamp": "2026-03-21T23:57:11.193Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.66223002117903,
+    "timestamp": "2026-03-21T23:57:11.970Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.9694571979911,
+    "timestamp": "2026-03-21T23:57:21.154Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.73148915746876,
+    "timestamp": "2026-03-21T23:57:21.200Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.95125933254185,
+    "timestamp": "2026-03-21T23:57:21.976Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.38592457016726,
+    "timestamp": "2026-03-21T23:57:31.167Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.43332259700595,
+    "timestamp": "2026-03-21T23:57:31.213Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.09339218768517,
+    "timestamp": "2026-03-21T23:57:31.990Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.25429330892851,
+    "timestamp": "2026-03-21T23:57:41.177Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.37802997025805,
+    "timestamp": "2026-03-21T23:57:41.225Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.74795837599643,
+    "timestamp": "2026-03-21T23:57:42.004Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.33657066195839,
+    "timestamp": "2026-03-21T23:57:51.186Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.30403302062969,
+    "timestamp": "2026-03-21T23:57:51.233Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.53853741164721,
+    "timestamp": "2026-03-21T23:57:52.009Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.29578708020203,
+    "timestamp": "2026-03-21T23:58:01.188Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.94850142708844,
+    "timestamp": "2026-03-21T23:58:01.234Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.17306878215784,
+    "timestamp": "2026-03-21T23:58:02.022Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.53042892163496,
+    "timestamp": "2026-03-21T23:58:11.192Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 95.36396860328617,
+    "timestamp": "2026-03-21T23:58:11.239Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.78485622788477,
+    "timestamp": "2026-03-21T23:58:12.027Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.35016967551935,
+    "timestamp": "2026-03-21T23:58:21.206Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.93260576258689,
+    "timestamp": "2026-03-21T23:58:21.253Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.33020823591193,
+    "timestamp": "2026-03-21T23:58:22.028Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.85430732683785,
+    "timestamp": "2026-03-21T23:58:31.217Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.93801714674582,
+    "timestamp": "2026-03-21T23:58:31.265Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.67353221725585,
+    "timestamp": "2026-03-21T23:58:32.029Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.40459120983316,
+    "timestamp": "2026-03-21T23:58:41.223Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.86663235124476,
+    "timestamp": "2026-03-21T23:58:41.269Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.56328848178588,
+    "timestamp": "2026-03-21T23:58:42.030Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.94520615105762,
+    "timestamp": "2026-03-21T23:58:51.236Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.55470710745118,
+    "timestamp": "2026-03-21T23:58:51.283Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.10689321550822,
+    "timestamp": "2026-03-21T23:58:52.042Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.68975026039267,
+    "timestamp": "2026-03-21T23:59:01.244Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.40054097610157,
+    "timestamp": "2026-03-21T23:59:01.292Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.37787169883951,
+    "timestamp": "2026-03-21T23:59:02.048Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.22161625681706,
+    "timestamp": "2026-03-21T23:59:11.252Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.69245567069568,
+    "timestamp": "2026-03-21T23:59:11.298Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.62150629425798,
+    "timestamp": "2026-03-21T23:59:12.059Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.60886468204848,
+    "timestamp": "2026-03-21T23:59:21.260Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.89085500682778,
+    "timestamp": "2026-03-21T23:59:21.306Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.0587424885652,
+    "timestamp": "2026-03-21T23:59:22.066Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.44446739935483,
+    "timestamp": "2026-03-21T23:59:31.264Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.88122124153072,
+    "timestamp": "2026-03-21T23:59:31.310Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.0574332808538,
+    "timestamp": "2026-03-21T23:59:32.080Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.89110329692913,
+    "timestamp": "2026-03-21T23:59:41.265Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 99.68060920142906,
+    "timestamp": "2026-03-21T23:59:41.313Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 96.25073251592612,
+    "timestamp": "2026-03-21T23:59:42.089Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.2976915085377,
+    "timestamp": "2026-03-21T23:59:51.271Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 98.6855145574049,
+    "timestamp": "2026-03-21T23:59:51.318Z"
+  },
+  {
+    "type": "api_success_rate",
+    "value": 97.25313994301236,
+    "timestamp": "2026-03-21T23:59:52.093Z"
+  }
+]

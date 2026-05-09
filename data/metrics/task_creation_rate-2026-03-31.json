@@ -1,0 +1,2962 @@
+[
+  {
+    "type": "task_creation_rate",
+    "value": 13.769895399562172,
+    "timestamp": "2026-03-31T22:45:36.286Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.001237511512073,
+    "timestamp": "2026-03-31T22:45:36.422Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.00849285205663,
+    "timestamp": "2026-03-31T22:46:06.231Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.049909221250882,
+    "timestamp": "2026-03-31T22:46:06.232Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.763687798800042,
+    "timestamp": "2026-03-31T22:46:06.288Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.679612708259853,
+    "timestamp": "2026-03-31T22:46:06.428Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.95474161857121,
+    "timestamp": "2026-03-31T22:46:36.236Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.556118438212838,
+    "timestamp": "2026-03-31T22:46:36.238Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.555195405828897,
+    "timestamp": "2026-03-31T22:46:36.296Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.6211504364185,
+    "timestamp": "2026-03-31T22:46:36.432Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.625879619278287,
+    "timestamp": "2026-03-31T22:47:06.252Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.389891346745177,
+    "timestamp": "2026-03-31T22:47:06.313Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.08470107135484,
+    "timestamp": "2026-03-31T22:47:06.422Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.45874569173409,
+    "timestamp": "2026-03-31T22:47:36.268Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.066146271046655,
+    "timestamp": "2026-03-31T22:47:36.270Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.452906107257666,
+    "timestamp": "2026-03-31T22:47:36.324Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.646711971660864,
+    "timestamp": "2026-03-31T22:47:36.444Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.039192524149657,
+    "timestamp": "2026-03-31T22:48:06.282Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.482503032377686,
+    "timestamp": "2026-03-31T22:48:06.282Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.89611273669828,
+    "timestamp": "2026-03-31T22:48:06.329Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.707933172938505,
+    "timestamp": "2026-03-31T22:48:06.447Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.823158094919068,
+    "timestamp": "2026-03-31T22:48:36.279Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.082010132558722,
+    "timestamp": "2026-03-31T22:48:36.280Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.395632453150046,
+    "timestamp": "2026-03-31T22:48:36.340Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.832045449306971,
+    "timestamp": "2026-03-31T22:48:36.458Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.353293920500214,
+    "timestamp": "2026-03-31T22:49:06.297Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.03285831021418,
+    "timestamp": "2026-03-31T22:49:06.297Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.194401265622995,
+    "timestamp": "2026-03-31T22:49:06.354Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.007344003494772,
+    "timestamp": "2026-03-31T22:49:06.467Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.261216507083681,
+    "timestamp": "2026-03-31T22:49:36.295Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.865925750444647,
+    "timestamp": "2026-03-31T22:49:36.294Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.05900772387064,
+    "timestamp": "2026-03-31T22:49:36.356Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.977507232803497,
+    "timestamp": "2026-03-31T22:49:36.466Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.196751889501986,
+    "timestamp": "2026-03-31T22:50:06.308Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.977601382731308,
+    "timestamp": "2026-03-31T22:50:06.310Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.237888565636359,
+    "timestamp": "2026-03-31T22:50:06.361Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.309607499418826,
+    "timestamp": "2026-03-31T22:50:06.471Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.135405191930154,
+    "timestamp": "2026-03-31T22:50:36.302Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.816557650093186,
+    "timestamp": "2026-03-31T22:50:36.303Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.382120683924446,
+    "timestamp": "2026-03-31T22:50:36.365Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.225098671195484,
+    "timestamp": "2026-03-31T22:50:36.483Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.772636884423619,
+    "timestamp": "2026-03-31T22:51:06.313Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.576398401203418,
+    "timestamp": "2026-03-31T22:51:06.368Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.755769789526951,
+    "timestamp": "2026-03-31T22:51:06.489Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.849613533138195,
+    "timestamp": "2026-03-31T22:51:36.314Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.781848038393814,
+    "timestamp": "2026-03-31T22:51:36.314Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.10710350347045,
+    "timestamp": "2026-03-31T22:51:36.375Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.220558123347566,
+    "timestamp": "2026-03-31T22:51:36.490Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.868412879764355,
+    "timestamp": "2026-03-31T22:52:06.330Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.998686592776291,
+    "timestamp": "2026-03-31T22:52:06.338Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.3899304863064055,
+    "timestamp": "2026-03-31T22:52:06.373Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.470656757907578,
+    "timestamp": "2026-03-31T22:52:06.511Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.324857445936388,
+    "timestamp": "2026-03-31T22:52:36.330Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.998651385433794,
+    "timestamp": "2026-03-31T22:52:36.344Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.505091479544504,
+    "timestamp": "2026-03-31T22:52:36.376Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.484088059804515,
+    "timestamp": "2026-03-31T22:52:36.501Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.740314362610147,
+    "timestamp": "2026-03-31T22:53:06.348Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.895143076177757,
+    "timestamp": "2026-03-31T22:53:06.354Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.260630340506369,
+    "timestamp": "2026-03-31T22:53:06.391Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.394845168224915,
+    "timestamp": "2026-03-31T22:53:06.520Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.561019130069017,
+    "timestamp": "2026-03-31T22:53:36.358Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.50856097304517,
+    "timestamp": "2026-03-31T22:53:36.363Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.84136064334022,
+    "timestamp": "2026-03-31T22:53:36.400Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.035372427853114,
+    "timestamp": "2026-03-31T22:53:36.525Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.86118063036491,
+    "timestamp": "2026-03-31T22:54:06.359Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.950260015622947,
+    "timestamp": "2026-03-31T22:54:06.365Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.652311666566504,
+    "timestamp": "2026-03-31T22:54:06.411Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.09844116180419,
+    "timestamp": "2026-03-31T22:54:06.553Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.386538869467751,
+    "timestamp": "2026-03-31T22:54:36.370Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.25531220114241,
+    "timestamp": "2026-03-31T22:54:36.380Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.5138931636161,
+    "timestamp": "2026-03-31T22:54:36.415Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.044478817192752,
+    "timestamp": "2026-03-31T22:54:36.558Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.071318200367937,
+    "timestamp": "2026-03-31T22:55:06.379Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.781577447572786,
+    "timestamp": "2026-03-31T22:55:06.386Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.285570059294276,
+    "timestamp": "2026-03-31T22:55:06.425Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.872057886496995,
+    "timestamp": "2026-03-31T22:55:06.566Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.501109672637252,
+    "timestamp": "2026-03-31T22:55:36.379Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.856511049332354,
+    "timestamp": "2026-03-31T22:55:36.387Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.648883696483619,
+    "timestamp": "2026-03-31T22:55:36.433Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.561664062193216,
+    "timestamp": "2026-03-31T22:55:36.571Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.86907819711994,
+    "timestamp": "2026-03-31T22:56:06.390Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.353124090524865,
+    "timestamp": "2026-03-31T22:56:06.406Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.332887649106429,
+    "timestamp": "2026-03-31T22:56:06.437Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.351659743247184,
+    "timestamp": "2026-03-31T22:56:06.594Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.053232348568397,
+    "timestamp": "2026-03-31T22:56:36.398Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.366770270134279,
+    "timestamp": "2026-03-31T22:56:36.413Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.158490663911072,
+    "timestamp": "2026-03-31T22:56:36.442Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.348516895036319,
+    "timestamp": "2026-03-31T22:56:36.583Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.190613208219295,
+    "timestamp": "2026-03-31T22:57:06.386Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.2997447097026456,
+    "timestamp": "2026-03-31T22:57:06.414Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.339629323246413,
+    "timestamp": "2026-03-31T22:57:06.444Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.556704939637019,
+    "timestamp": "2026-03-31T22:57:06.598Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.754734455155718,
+    "timestamp": "2026-03-31T22:57:36.404Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.322452922066959,
+    "timestamp": "2026-03-31T22:57:36.420Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.266809488679327,
+    "timestamp": "2026-03-31T22:57:36.448Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.806791204481947,
+    "timestamp": "2026-03-31T22:57:36.589Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.011017842575068,
+    "timestamp": "2026-03-31T22:58:06.415Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.848000074289594,
+    "timestamp": "2026-03-31T22:58:06.427Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.276073638281165,
+    "timestamp": "2026-03-31T22:58:06.451Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.598569366036756,
+    "timestamp": "2026-03-31T22:58:06.603Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.987962385963394,
+    "timestamp": "2026-03-31T22:58:36.410Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.920343524041565,
+    "timestamp": "2026-03-31T22:58:36.437Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.43590977942589,
+    "timestamp": "2026-03-31T22:58:36.452Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.119937137734471,
+    "timestamp": "2026-03-31T22:58:36.604Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.032915935123764,
+    "timestamp": "2026-03-31T22:59:06.410Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.179156595805924,
+    "timestamp": "2026-03-31T22:59:06.440Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.123991320985911,
+    "timestamp": "2026-03-31T22:59:06.456Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.751113224350313,
+    "timestamp": "2026-03-31T22:59:06.609Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.16388927209081,
+    "timestamp": "2026-03-31T22:59:36.415Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.18333725035552,
+    "timestamp": "2026-03-31T22:59:36.444Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.83891161281457,
+    "timestamp": "2026-03-31T22:59:36.460Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.655483707377693,
+    "timestamp": "2026-03-31T22:59:36.612Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.013906403381768,
+    "timestamp": "2026-03-31T23:00:06.428Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.33916866569153,
+    "timestamp": "2026-03-31T23:00:06.444Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.164333476368552,
+    "timestamp": "2026-03-31T23:00:06.473Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.072997627538633,
+    "timestamp": "2026-03-31T23:00:06.619Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.215629316086913,
+    "timestamp": "2026-03-31T23:00:36.418Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.215456690701766,
+    "timestamp": "2026-03-31T23:00:36.447Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.500372671810098,
+    "timestamp": "2026-03-31T23:00:36.479Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.453462249368628,
+    "timestamp": "2026-03-31T23:00:36.637Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.341211884531912,
+    "timestamp": "2026-03-31T23:01:06.434Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.965813233706545,
+    "timestamp": "2026-03-31T23:01:06.451Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.680333683734927,
+    "timestamp": "2026-03-31T23:01:06.479Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.33516344822202,
+    "timestamp": "2026-03-31T23:01:06.640Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.041686921385715,
+    "timestamp": "2026-03-31T23:01:36.428Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.676428821355579,
+    "timestamp": "2026-03-31T23:01:36.459Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.382074266455017,
+    "timestamp": "2026-03-31T23:01:36.490Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.385737179320143,
+    "timestamp": "2026-03-31T23:01:36.654Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.329350715888182,
+    "timestamp": "2026-03-31T23:02:06.438Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.429978409626809,
+    "timestamp": "2026-03-31T23:02:06.467Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.767208543500669,
+    "timestamp": "2026-03-31T23:02:06.491Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.80975300183533,
+    "timestamp": "2026-03-31T23:02:06.645Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.492986322495012,
+    "timestamp": "2026-03-31T23:02:36.434Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.239843113806669,
+    "timestamp": "2026-03-31T23:02:36.480Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.077080882749076,
+    "timestamp": "2026-03-31T23:02:36.494Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.511388742020593,
+    "timestamp": "2026-03-31T23:02:36.662Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.595823555926003,
+    "timestamp": "2026-03-31T23:03:06.437Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.099090676900046,
+    "timestamp": "2026-03-31T23:03:06.484Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.93679379813198,
+    "timestamp": "2026-03-31T23:03:06.499Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.862823454021537,
+    "timestamp": "2026-03-31T23:03:06.668Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.289382334330182,
+    "timestamp": "2026-03-31T23:03:36.440Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.988113064705757,
+    "timestamp": "2026-03-31T23:03:36.483Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.456145729881959,
+    "timestamp": "2026-03-31T23:03:36.499Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.930753939896473,
+    "timestamp": "2026-03-31T23:03:36.668Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.717130363544804,
+    "timestamp": "2026-03-31T23:04:06.456Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.194328681859384,
+    "timestamp": "2026-03-31T23:04:06.494Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.185122081452777,
+    "timestamp": "2026-03-31T23:04:06.510Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.343848923768675,
+    "timestamp": "2026-03-31T23:04:06.679Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.855454576738984,
+    "timestamp": "2026-03-31T23:04:36.471Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.02686656847121,
+    "timestamp": "2026-03-31T23:04:36.497Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.902344649656651,
+    "timestamp": "2026-03-31T23:04:36.514Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.092513026715692,
+    "timestamp": "2026-03-31T23:04:36.695Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.55891026375046,
+    "timestamp": "2026-03-31T23:05:06.464Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.95898292280467,
+    "timestamp": "2026-03-31T23:05:06.509Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.671424562889687,
+    "timestamp": "2026-03-31T23:05:06.524Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.790639869344991,
+    "timestamp": "2026-03-31T23:05:06.694Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.567528582415504,
+    "timestamp": "2026-03-31T23:05:36.475Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.166642211859954,
+    "timestamp": "2026-03-31T23:05:36.513Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.02408686592458,
+    "timestamp": "2026-03-31T23:05:36.539Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.677159571842385,
+    "timestamp": "2026-03-31T23:05:36.700Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.680114366683096,
+    "timestamp": "2026-03-31T23:06:06.491Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.472803435657934,
+    "timestamp": "2026-03-31T23:06:06.521Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.04516631176367,
+    "timestamp": "2026-03-31T23:06:06.546Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.827116154216597,
+    "timestamp": "2026-03-31T23:06:06.710Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.053234953132195,
+    "timestamp": "2026-03-31T23:06:36.496Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.610854641485169,
+    "timestamp": "2026-03-31T23:06:36.526Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.15920330112408,
+    "timestamp": "2026-03-31T23:06:36.552Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.351842452367524,
+    "timestamp": "2026-03-31T23:06:36.723Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.781742099446134,
+    "timestamp": "2026-03-31T23:07:06.512Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.621664281615034,
+    "timestamp": "2026-03-31T23:07:06.528Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.159792818767448,
+    "timestamp": "2026-03-31T23:07:06.564Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.675585946074776,
+    "timestamp": "2026-03-31T23:07:06.731Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.456362584885094,
+    "timestamp": "2026-03-31T23:07:36.527Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.952394296107144,
+    "timestamp": "2026-03-31T23:07:36.544Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.987725744517443,
+    "timestamp": "2026-03-31T23:07:36.566Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.312932656433961,
+    "timestamp": "2026-03-31T23:07:36.744Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.564211618135783,
+    "timestamp": "2026-03-31T23:08:06.519Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.18667858061999,
+    "timestamp": "2026-03-31T23:08:06.548Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.724835101646086,
+    "timestamp": "2026-03-31T23:08:06.591Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.628702834341045,
+    "timestamp": "2026-03-31T23:08:06.762Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.892347841935358,
+    "timestamp": "2026-03-31T23:08:36.565Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.279317671861383,
+    "timestamp": "2026-03-31T23:08:36.775Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.357736436666276,
+    "timestamp": "2026-03-31T23:08:36.959Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.621602400117634,
+    "timestamp": "2026-03-31T23:08:37.105Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.893063051888321,
+    "timestamp": "2026-03-31T23:09:06.564Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.629194882848401,
+    "timestamp": "2026-03-31T23:09:06.779Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.119898513512961,
+    "timestamp": "2026-03-31T23:09:08.099Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.6114624653201,
+    "timestamp": "2026-03-31T23:09:08.111Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.531188893361952,
+    "timestamp": "2026-03-31T23:09:36.572Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.141202768537392,
+    "timestamp": "2026-03-31T23:09:36.778Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.898837523934134,
+    "timestamp": "2026-03-31T23:09:36.994Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.171799606996924,
+    "timestamp": "2026-03-31T23:09:38.128Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.350611784780352,
+    "timestamp": "2026-03-31T23:10:06.608Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.987344430256801,
+    "timestamp": "2026-03-31T23:10:06.799Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.523914223838112,
+    "timestamp": "2026-03-31T23:10:07.021Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.722628525272208,
+    "timestamp": "2026-03-31T23:10:08.123Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.941748958411996,
+    "timestamp": "2026-03-31T23:10:36.592Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.899371342339293,
+    "timestamp": "2026-03-31T23:10:36.808Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.6576836498595,
+    "timestamp": "2026-03-31T23:10:37.014Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.62276949051388,
+    "timestamp": "2026-03-31T23:10:38.128Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.730877920276697,
+    "timestamp": "2026-03-31T23:11:06.612Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.881988099983595,
+    "timestamp": "2026-03-31T23:11:06.821Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.995454424787114,
+    "timestamp": "2026-03-31T23:11:07.027Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.553121403478592,
+    "timestamp": "2026-03-31T23:11:08.132Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.212658651722338,
+    "timestamp": "2026-03-31T23:11:36.625Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.281682942119976,
+    "timestamp": "2026-03-31T23:11:36.814Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.492060977090018,
+    "timestamp": "2026-03-31T23:11:37.035Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.659386596966588,
+    "timestamp": "2026-03-31T23:11:38.143Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.484488518857015,
+    "timestamp": "2026-03-31T23:12:06.622Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.53386689866013,
+    "timestamp": "2026-03-31T23:12:06.840Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.694783298823769,
+    "timestamp": "2026-03-31T23:12:07.043Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.97534591780591,
+    "timestamp": "2026-03-31T23:12:08.149Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.977325256924106,
+    "timestamp": "2026-03-31T23:12:36.642Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.3011363668857365,
+    "timestamp": "2026-03-31T23:12:36.827Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.837609475435604,
+    "timestamp": "2026-03-31T23:12:37.054Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.189689141186516,
+    "timestamp": "2026-03-31T23:12:38.163Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.255041582869431,
+    "timestamp": "2026-03-31T23:13:06.653Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.362872107630034,
+    "timestamp": "2026-03-31T23:13:06.834Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.610342938463773,
+    "timestamp": "2026-03-31T23:13:07.053Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.037527439570864,
+    "timestamp": "2026-03-31T23:13:08.176Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.956018550499873,
+    "timestamp": "2026-03-31T23:13:36.651Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.220817262149701,
+    "timestamp": "2026-03-31T23:13:36.852Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.064534602476503,
+    "timestamp": "2026-03-31T23:13:37.055Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.76373639004508,
+    "timestamp": "2026-03-31T23:13:38.207Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.17737141378786,
+    "timestamp": "2026-03-31T23:14:06.653Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.620108170115753,
+    "timestamp": "2026-03-31T23:14:06.851Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.139957899400706,
+    "timestamp": "2026-03-31T23:14:07.394Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.676949537550177,
+    "timestamp": "2026-03-31T23:14:08.209Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.051755625982017,
+    "timestamp": "2026-03-31T23:14:36.662Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.9477047074601455,
+    "timestamp": "2026-03-31T23:14:36.849Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.441124232968749,
+    "timestamp": "2026-03-31T23:14:37.073Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.73883405163884,
+    "timestamp": "2026-03-31T23:14:38.224Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.111645738494996,
+    "timestamp": "2026-03-31T23:15:06.664Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.633629112150825,
+    "timestamp": "2026-03-31T23:15:06.864Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.500324598657151,
+    "timestamp": "2026-03-31T23:15:07.092Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.561886787625943,
+    "timestamp": "2026-03-31T23:15:08.227Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.563240056477365,
+    "timestamp": "2026-03-31T23:15:36.670Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.912206517331231,
+    "timestamp": "2026-03-31T23:15:36.850Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.602208047023115,
+    "timestamp": "2026-03-31T23:15:37.121Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.461552502459524,
+    "timestamp": "2026-03-31T23:15:38.249Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.960577443081924,
+    "timestamp": "2026-03-31T23:16:06.679Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.196826633430884,
+    "timestamp": "2026-03-31T23:16:06.860Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.230177705699433,
+    "timestamp": "2026-03-31T23:16:07.113Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.670440011090736,
+    "timestamp": "2026-03-31T23:16:08.260Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.2060232907183,
+    "timestamp": "2026-03-31T23:16:36.688Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.9733242464939185,
+    "timestamp": "2026-03-31T23:16:36.857Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.392684465775819,
+    "timestamp": "2026-03-31T23:16:37.138Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.171998306620758,
+    "timestamp": "2026-03-31T23:16:38.271Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.101999301032901,
+    "timestamp": "2026-03-31T23:17:06.723Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.825364410178395,
+    "timestamp": "2026-03-31T23:17:06.882Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.22893431602162,
+    "timestamp": "2026-03-31T23:17:08.287Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.967837512251146,
+    "timestamp": "2026-03-31T23:17:08.303Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.353844548900264,
+    "timestamp": "2026-03-31T23:17:36.730Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.032450696853267,
+    "timestamp": "2026-03-31T23:17:36.869Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.265061213808053,
+    "timestamp": "2026-03-31T23:17:37.145Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.557652051929033,
+    "timestamp": "2026-03-31T23:17:38.305Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.939403073216834,
+    "timestamp": "2026-03-31T23:18:06.741Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.070618884338375,
+    "timestamp": "2026-03-31T23:18:06.883Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.364464954641456,
+    "timestamp": "2026-03-31T23:18:07.174Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.157103489932247,
+    "timestamp": "2026-03-31T23:18:08.527Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.78560025154922,
+    "timestamp": "2026-03-31T23:18:36.766Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.63933052327604,
+    "timestamp": "2026-03-31T23:18:36.891Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.807902824853244,
+    "timestamp": "2026-03-31T23:18:37.186Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.381225929763639,
+    "timestamp": "2026-03-31T23:18:38.525Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.682417928921965,
+    "timestamp": "2026-03-31T23:19:06.772Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.314709522821161,
+    "timestamp": "2026-03-31T23:19:06.901Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.874039869288362,
+    "timestamp": "2026-03-31T23:19:07.193Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.470237171237141,
+    "timestamp": "2026-03-31T23:19:08.537Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.317624078801961,
+    "timestamp": "2026-03-31T23:19:36.771Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.4620831057899775,
+    "timestamp": "2026-03-31T23:19:36.916Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.67028334089699,
+    "timestamp": "2026-03-31T23:19:37.196Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.953903141036764,
+    "timestamp": "2026-03-31T23:19:38.545Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.072887117999256,
+    "timestamp": "2026-03-31T23:20:06.793Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.158107816438845,
+    "timestamp": "2026-03-31T23:20:06.929Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.297825120243251,
+    "timestamp": "2026-03-31T23:20:07.204Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.549440461304624,
+    "timestamp": "2026-03-31T23:20:08.553Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.53492442364482,
+    "timestamp": "2026-03-31T23:20:36.784Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.344704767603066,
+    "timestamp": "2026-03-31T23:20:36.937Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.461181269846385,
+    "timestamp": "2026-03-31T23:20:37.220Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.874782326337282,
+    "timestamp": "2026-03-31T23:20:38.563Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.708615353324452,
+    "timestamp": "2026-03-31T23:21:06.807Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.290877647809197,
+    "timestamp": "2026-03-31T23:21:06.930Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.11287469316258,
+    "timestamp": "2026-03-31T23:21:07.264Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.657640675567006,
+    "timestamp": "2026-03-31T23:21:08.566Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.327080662058663,
+    "timestamp": "2026-03-31T23:21:36.798Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.2253112745100605,
+    "timestamp": "2026-03-31T23:21:36.939Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.596870343664452,
+    "timestamp": "2026-03-31T23:21:37.219Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.284962079837659,
+    "timestamp": "2026-03-31T23:21:38.593Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.052503733362657,
+    "timestamp": "2026-03-31T23:22:06.815Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.597108201009585,
+    "timestamp": "2026-03-31T23:22:06.945Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.04423535773595,
+    "timestamp": "2026-03-31T23:22:07.242Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.604661165920566,
+    "timestamp": "2026-03-31T23:22:08.578Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.57943174924822,
+    "timestamp": "2026-03-31T23:22:36.810Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.877279757431959,
+    "timestamp": "2026-03-31T23:22:36.966Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.305262902609224,
+    "timestamp": "2026-03-31T23:22:37.251Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.882192216304823,
+    "timestamp": "2026-03-31T23:22:38.589Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.961467386962067,
+    "timestamp": "2026-03-31T23:23:06.819Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.923646917393903,
+    "timestamp": "2026-03-31T23:23:06.972Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.550870290950357,
+    "timestamp": "2026-03-31T23:23:07.237Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.918332809313995,
+    "timestamp": "2026-03-31T23:23:08.585Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.606430491833368,
+    "timestamp": "2026-03-31T23:23:36.836Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.27643276563356,
+    "timestamp": "2026-03-31T23:23:36.996Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.98658483808833,
+    "timestamp": "2026-03-31T23:23:37.258Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.353975260083697,
+    "timestamp": "2026-03-31T23:23:38.594Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.413002613117501,
+    "timestamp": "2026-03-31T23:24:06.836Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.02811787444434,
+    "timestamp": "2026-03-31T23:24:06.987Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.878057700288975,
+    "timestamp": "2026-03-31T23:24:07.252Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.85261640840794,
+    "timestamp": "2026-03-31T23:24:08.608Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.597428267345977,
+    "timestamp": "2026-03-31T23:24:36.837Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.945469641574874,
+    "timestamp": "2026-03-31T23:24:36.999Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.493486314120943,
+    "timestamp": "2026-03-31T23:24:37.275Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.443700485719742,
+    "timestamp": "2026-03-31T23:24:38.633Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.902407256499679,
+    "timestamp": "2026-03-31T23:25:06.844Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.449724308572138,
+    "timestamp": "2026-03-31T23:25:07.005Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.242795749802249,
+    "timestamp": "2026-03-31T23:25:07.286Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.882144084223954,
+    "timestamp": "2026-03-31T23:25:08.627Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.263722721013261,
+    "timestamp": "2026-03-31T23:25:36.846Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.609333785579077,
+    "timestamp": "2026-03-31T23:25:37.037Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.055489497559362,
+    "timestamp": "2026-03-31T23:25:37.282Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.8628119573734905,
+    "timestamp": "2026-03-31T23:25:38.631Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.64302151233033,
+    "timestamp": "2026-03-31T23:26:06.875Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.7929659466822825,
+    "timestamp": "2026-03-31T23:26:07.025Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.97024065755186,
+    "timestamp": "2026-03-31T23:26:07.295Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.403064731126125,
+    "timestamp": "2026-03-31T23:26:08.633Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.650027319733738,
+    "timestamp": "2026-03-31T23:26:36.876Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.41209132422589,
+    "timestamp": "2026-03-31T23:26:37.073Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.705501073778532,
+    "timestamp": "2026-03-31T23:26:37.301Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.443382668524409,
+    "timestamp": "2026-03-31T23:26:38.636Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.167158203169821,
+    "timestamp": "2026-03-31T23:27:06.887Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.732780636954036,
+    "timestamp": "2026-03-31T23:27:07.054Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.415206406615031,
+    "timestamp": "2026-03-31T23:27:07.330Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.335138813261721,
+    "timestamp": "2026-03-31T23:27:08.653Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.413367558626625,
+    "timestamp": "2026-03-31T23:27:36.880Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.342748034496353,
+    "timestamp": "2026-03-31T23:27:37.054Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.458011231960297,
+    "timestamp": "2026-03-31T23:27:37.313Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.895228162772916,
+    "timestamp": "2026-03-31T23:27:39.040Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.23850662404081,
+    "timestamp": "2026-03-31T23:28:06.900Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.777795081356485,
+    "timestamp": "2026-03-31T23:28:07.080Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.105436072034315,
+    "timestamp": "2026-03-31T23:28:07.340Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.847088531220878,
+    "timestamp": "2026-03-31T23:28:09.046Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.621948095051696,
+    "timestamp": "2026-03-31T23:28:36.902Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.02107799372531,
+    "timestamp": "2026-03-31T23:28:37.080Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.302832081446113,
+    "timestamp": "2026-03-31T23:28:37.333Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.536085859891605,
+    "timestamp": "2026-03-31T23:28:39.068Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.74541356251703,
+    "timestamp": "2026-03-31T23:29:06.906Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.116951427355431,
+    "timestamp": "2026-03-31T23:29:07.080Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.604070373888828,
+    "timestamp": "2026-03-31T23:29:07.345Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.85408730408564,
+    "timestamp": "2026-03-31T23:29:09.066Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.405981014040213,
+    "timestamp": "2026-03-31T23:29:36.909Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.942220209150099,
+    "timestamp": "2026-03-31T23:29:37.095Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.870725155504796,
+    "timestamp": "2026-03-31T23:29:37.354Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.995216530353768,
+    "timestamp": "2026-03-31T23:29:39.073Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.228438482323908,
+    "timestamp": "2026-03-31T23:30:06.926Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.420932372218898,
+    "timestamp": "2026-03-31T23:30:07.111Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.374008355894862,
+    "timestamp": "2026-03-31T23:30:07.363Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.805096403376412,
+    "timestamp": "2026-03-31T23:30:09.073Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.95008680267977,
+    "timestamp": "2026-03-31T23:30:36.931Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.100617241617383,
+    "timestamp": "2026-03-31T23:30:37.113Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.325291212996014,
+    "timestamp": "2026-03-31T23:30:37.363Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.088921059104911,
+    "timestamp": "2026-03-31T23:30:39.078Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.674249079991308,
+    "timestamp": "2026-03-31T23:31:06.956Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.310084699019932,
+    "timestamp": "2026-03-31T23:31:07.110Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.28630972685904,
+    "timestamp": "2026-03-31T23:31:07.375Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.913643820092261,
+    "timestamp": "2026-03-31T23:31:09.087Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.795305493431421,
+    "timestamp": "2026-03-31T23:31:36.945Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.575052136420974,
+    "timestamp": "2026-03-31T23:31:37.113Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.758757383308869,
+    "timestamp": "2026-03-31T23:31:37.379Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.876022795993483,
+    "timestamp": "2026-03-31T23:31:39.082Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.80335809819444,
+    "timestamp": "2026-03-31T23:32:06.947Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.772909353028894,
+    "timestamp": "2026-03-31T23:32:07.134Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.489485758349646,
+    "timestamp": "2026-03-31T23:32:07.383Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.543094249797857,
+    "timestamp": "2026-03-31T23:32:09.098Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.635952818553355,
+    "timestamp": "2026-03-31T23:32:36.950Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.041617625400944,
+    "timestamp": "2026-03-31T23:32:37.121Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.900948820921995,
+    "timestamp": "2026-03-31T23:32:37.384Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.305424178353967,
+    "timestamp": "2026-03-31T23:32:39.095Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.100894475412815,
+    "timestamp": "2026-03-31T23:33:06.960Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.522209804622326,
+    "timestamp": "2026-03-31T23:33:07.132Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.58842091294639,
+    "timestamp": "2026-03-31T23:33:07.420Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.125268405740101,
+    "timestamp": "2026-03-31T23:33:09.109Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.250358675659175,
+    "timestamp": "2026-03-31T23:33:36.970Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.513457569457497,
+    "timestamp": "2026-03-31T23:33:37.153Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.397204053681419,
+    "timestamp": "2026-03-31T23:33:37.414Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.691978256592227,
+    "timestamp": "2026-03-31T23:33:39.119Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.239742594789602,
+    "timestamp": "2026-03-31T23:34:06.996Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.292248299288659,
+    "timestamp": "2026-03-31T23:34:07.163Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.20977807021342,
+    "timestamp": "2026-03-31T23:34:07.437Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.382978587133437,
+    "timestamp": "2026-03-31T23:34:09.129Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.834598158730326,
+    "timestamp": "2026-03-31T23:34:37.006Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.349264109181771,
+    "timestamp": "2026-03-31T23:34:37.160Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.357054400581996,
+    "timestamp": "2026-03-31T23:34:37.444Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.866178962241804,
+    "timestamp": "2026-03-31T23:34:39.146Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.91756689853367,
+    "timestamp": "2026-03-31T23:35:06.997Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.93628345743168,
+    "timestamp": "2026-03-31T23:35:07.180Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.555786802227997,
+    "timestamp": "2026-03-31T23:35:07.430Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.953421095563979,
+    "timestamp": "2026-03-31T23:35:09.155Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.489914360008154,
+    "timestamp": "2026-03-31T23:35:37.017Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.257941870364894,
+    "timestamp": "2026-03-31T23:35:37.181Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.014770440140207,
+    "timestamp": "2026-03-31T23:35:37.433Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.829731552345468,
+    "timestamp": "2026-03-31T23:35:39.160Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.204007574677377,
+    "timestamp": "2026-03-31T23:36:07.025Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.62878185864589,
+    "timestamp": "2026-03-31T23:36:07.196Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.493543886287686,
+    "timestamp": "2026-03-31T23:36:07.466Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.854986501575599,
+    "timestamp": "2026-03-31T23:36:09.157Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.428360101181738,
+    "timestamp": "2026-03-31T23:36:37.031Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.214955347596044,
+    "timestamp": "2026-03-31T23:36:37.198Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.38865901825222,
+    "timestamp": "2026-03-31T23:36:37.463Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.051916314278206,
+    "timestamp": "2026-03-31T23:36:39.161Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.097413157138693,
+    "timestamp": "2026-03-31T23:37:07.017Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.908889393107794,
+    "timestamp": "2026-03-31T23:37:07.215Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.943122043163225,
+    "timestamp": "2026-03-31T23:37:07.462Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.02818486316956,
+    "timestamp": "2026-03-31T23:37:09.158Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.667190284850701,
+    "timestamp": "2026-03-31T23:37:37.029Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.122335335269161,
+    "timestamp": "2026-03-31T23:37:37.202Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.128284495489716,
+    "timestamp": "2026-03-31T23:37:37.484Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.799281515130547,
+    "timestamp": "2026-03-31T23:37:39.166Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.818758466028697,
+    "timestamp": "2026-03-31T23:38:07.042Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.423520447194683,
+    "timestamp": "2026-03-31T23:38:07.222Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.216119840274128,
+    "timestamp": "2026-03-31T23:38:07.495Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.98702480822905,
+    "timestamp": "2026-03-31T23:38:09.165Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.953470076372369,
+    "timestamp": "2026-03-31T23:38:37.052Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.785638816115789,
+    "timestamp": "2026-03-31T23:38:37.239Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.716692606964516,
+    "timestamp": "2026-03-31T23:38:37.507Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.16630225717099,
+    "timestamp": "2026-03-31T23:38:39.179Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.906455086503877,
+    "timestamp": "2026-03-31T23:39:07.063Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.415462517796488,
+    "timestamp": "2026-03-31T23:39:07.247Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.5621384898111925,
+    "timestamp": "2026-03-31T23:39:07.504Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.873261720281395,
+    "timestamp": "2026-03-31T23:39:09.180Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.175711266853137,
+    "timestamp": "2026-03-31T23:39:37.078Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.585476786922724,
+    "timestamp": "2026-03-31T23:39:37.255Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.404668669071143,
+    "timestamp": "2026-03-31T23:39:37.507Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.315903048050934,
+    "timestamp": "2026-03-31T23:39:39.202Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.31113154804688,
+    "timestamp": "2026-03-31T23:40:07.074Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.162763677987542,
+    "timestamp": "2026-03-31T23:40:07.263Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.950688284969447,
+    "timestamp": "2026-03-31T23:40:07.507Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.428362229011307,
+    "timestamp": "2026-03-31T23:40:09.203Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.211042365033826,
+    "timestamp": "2026-03-31T23:40:37.090Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.510399279801885,
+    "timestamp": "2026-03-31T23:40:37.274Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.679678148258516,
+    "timestamp": "2026-03-31T23:40:37.520Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.017334919039879,
+    "timestamp": "2026-03-31T23:40:39.234Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.270695282537719,
+    "timestamp": "2026-03-31T23:41:07.083Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.666454080930908,
+    "timestamp": "2026-03-31T23:41:07.282Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.855597913038428,
+    "timestamp": "2026-03-31T23:41:07.536Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.449037087906232,
+    "timestamp": "2026-03-31T23:41:09.232Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.832696303548577,
+    "timestamp": "2026-03-31T23:41:37.099Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.9890939044237,
+    "timestamp": "2026-03-31T23:41:37.291Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.827174016510124,
+    "timestamp": "2026-03-31T23:41:37.565Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.7886276010988755,
+    "timestamp": "2026-03-31T23:41:39.265Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.694227999911089,
+    "timestamp": "2026-03-31T23:42:07.097Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.845302771719359,
+    "timestamp": "2026-03-31T23:42:07.297Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.065674232158548,
+    "timestamp": "2026-03-31T23:42:07.546Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.8315752222605965,
+    "timestamp": "2026-03-31T23:42:09.243Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.413012541842402,
+    "timestamp": "2026-03-31T23:42:37.117Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.873636889826985,
+    "timestamp": "2026-03-31T23:42:37.312Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.85657642213026,
+    "timestamp": "2026-03-31T23:42:37.566Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.012493050263139,
+    "timestamp": "2026-03-31T23:42:39.261Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.874236089818373,
+    "timestamp": "2026-03-31T23:43:07.117Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.726876677360156,
+    "timestamp": "2026-03-31T23:43:07.333Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.460345009658116,
+    "timestamp": "2026-03-31T23:43:07.568Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.744042720285837,
+    "timestamp": "2026-03-31T23:43:09.257Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.1244100351813895,
+    "timestamp": "2026-03-31T23:43:37.121Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.213271892896561,
+    "timestamp": "2026-03-31T23:43:37.337Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.656267403806641,
+    "timestamp": "2026-03-31T23:43:37.568Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.979719749734775,
+    "timestamp": "2026-03-31T23:43:39.285Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.091008369739599,
+    "timestamp": "2026-03-31T23:44:07.127Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.98110873604902,
+    "timestamp": "2026-03-31T23:44:07.333Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.528593547815161,
+    "timestamp": "2026-03-31T23:44:07.577Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.231847282562589,
+    "timestamp": "2026-03-31T23:44:09.270Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.916219178614925,
+    "timestamp": "2026-03-31T23:44:37.136Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.705078883038066,
+    "timestamp": "2026-03-31T23:44:37.348Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.432495932826745,
+    "timestamp": "2026-03-31T23:44:37.597Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.379220339035884,
+    "timestamp": "2026-03-31T23:44:39.294Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.54286991659124,
+    "timestamp": "2026-03-31T23:45:07.161Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.699226443651952,
+    "timestamp": "2026-03-31T23:45:07.361Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.807452285045752,
+    "timestamp": "2026-03-31T23:45:07.592Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.179134778345311,
+    "timestamp": "2026-03-31T23:45:09.289Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.211501061913811,
+    "timestamp": "2026-03-31T23:45:37.154Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.409318137681632,
+    "timestamp": "2026-03-31T23:45:37.357Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.743250768327188,
+    "timestamp": "2026-03-31T23:45:37.621Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.623458983166666,
+    "timestamp": "2026-03-31T23:45:39.302Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.7263572167271,
+    "timestamp": "2026-03-31T23:46:07.176Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.402732246812684,
+    "timestamp": "2026-03-31T23:46:07.367Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.029894283301807,
+    "timestamp": "2026-03-31T23:46:07.609Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.050267920057518,
+    "timestamp": "2026-03-31T23:46:09.309Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.34826339645992,
+    "timestamp": "2026-03-31T23:46:37.191Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.605628676967655,
+    "timestamp": "2026-03-31T23:46:37.384Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.613025138749576,
+    "timestamp": "2026-03-31T23:46:37.623Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.171480893762645,
+    "timestamp": "2026-03-31T23:46:39.319Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.16619333343887,
+    "timestamp": "2026-03-31T23:47:07.186Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.074012402764797,
+    "timestamp": "2026-03-31T23:47:07.370Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.866762716477298,
+    "timestamp": "2026-03-31T23:47:07.634Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.790273245024329,
+    "timestamp": "2026-03-31T23:47:09.330Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.882226438219995,
+    "timestamp": "2026-03-31T23:47:37.187Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.91922574849932,
+    "timestamp": "2026-03-31T23:47:37.385Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.249552543071642,
+    "timestamp": "2026-03-31T23:47:37.663Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.352965888495005,
+    "timestamp": "2026-03-31T23:47:39.331Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.758384165474348,
+    "timestamp": "2026-03-31T23:48:07.207Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.215889200694775,
+    "timestamp": "2026-03-31T23:48:07.386Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.603435511233036,
+    "timestamp": "2026-03-31T23:48:07.662Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.366299423906979,
+    "timestamp": "2026-03-31T23:48:09.334Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.880879353204019,
+    "timestamp": "2026-03-31T23:48:37.197Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.845197864798049,
+    "timestamp": "2026-03-31T23:48:37.417Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.230362916248882,
+    "timestamp": "2026-03-31T23:48:37.683Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.40353060105061,
+    "timestamp": "2026-03-31T23:48:39.353Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.096123735620075,
+    "timestamp": "2026-03-31T23:49:07.210Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.387896246270174,
+    "timestamp": "2026-03-31T23:49:07.412Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.816581501163729,
+    "timestamp": "2026-03-31T23:49:07.677Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.871355307039153,
+    "timestamp": "2026-03-31T23:49:09.379Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.236921050556282,
+    "timestamp": "2026-03-31T23:49:37.234Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.162504435843683,
+    "timestamp": "2026-03-31T23:49:37.439Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.771474670732967,
+    "timestamp": "2026-03-31T23:49:37.702Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.056410945365549,
+    "timestamp": "2026-03-31T23:49:39.375Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.025906159646702,
+    "timestamp": "2026-03-31T23:50:07.239Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.387340769455427,
+    "timestamp": "2026-03-31T23:50:07.427Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.026909534354797,
+    "timestamp": "2026-03-31T23:50:07.711Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.33669168427207,
+    "timestamp": "2026-03-31T23:50:09.395Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.615857805974613,
+    "timestamp": "2026-03-31T23:50:37.231Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.075604686571181,
+    "timestamp": "2026-03-31T23:50:37.436Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.726341579007212,
+    "timestamp": "2026-03-31T23:50:37.701Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.814766974586895,
+    "timestamp": "2026-03-31T23:50:39.403Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.0596163096058575,
+    "timestamp": "2026-03-31T23:51:07.242Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.263851382868635,
+    "timestamp": "2026-03-31T23:51:07.445Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.343851274735288,
+    "timestamp": "2026-03-31T23:51:07.719Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.53602581672268,
+    "timestamp": "2026-03-31T23:51:09.407Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.29931849474755,
+    "timestamp": "2026-03-31T23:51:37.250Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.113008373247961,
+    "timestamp": "2026-03-31T23:51:37.451Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.786607629419459,
+    "timestamp": "2026-03-31T23:51:37.736Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.12956239771815,
+    "timestamp": "2026-03-31T23:51:39.392Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.254470914284733,
+    "timestamp": "2026-03-31T23:52:07.267Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.704815478855821,
+    "timestamp": "2026-03-31T23:52:07.467Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.75407548137401,
+    "timestamp": "2026-03-31T23:52:07.722Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.084022340381654,
+    "timestamp": "2026-03-31T23:52:09.396Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.963478537419713,
+    "timestamp": "2026-03-31T23:52:37.273Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.2834027329792566,
+    "timestamp": "2026-03-31T23:52:37.471Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.279671894182199,
+    "timestamp": "2026-03-31T23:52:37.738Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.034222152127565,
+    "timestamp": "2026-03-31T23:52:39.404Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.430152417311438,
+    "timestamp": "2026-03-31T23:53:07.298Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.292810207920492,
+    "timestamp": "2026-03-31T23:53:07.508Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.380215490943947,
+    "timestamp": "2026-03-31T23:53:07.738Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.885418336676459,
+    "timestamp": "2026-03-31T23:53:09.407Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.923447586460817,
+    "timestamp": "2026-03-31T23:53:37.293Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.980881094672672,
+    "timestamp": "2026-03-31T23:53:37.492Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.581295489747685,
+    "timestamp": "2026-03-31T23:53:37.740Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.615159010531569,
+    "timestamp": "2026-03-31T23:53:39.412Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.963993960748653,
+    "timestamp": "2026-03-31T23:54:07.312Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.579899232484298,
+    "timestamp": "2026-03-31T23:54:07.492Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.227261030071181,
+    "timestamp": "2026-03-31T23:54:07.748Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.973755264962112,
+    "timestamp": "2026-03-31T23:54:09.447Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.552105052962927,
+    "timestamp": "2026-03-31T23:54:37.314Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.88692850112589,
+    "timestamp": "2026-03-31T23:54:37.495Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.350664603249037,
+    "timestamp": "2026-03-31T23:54:37.767Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.653074789733012,
+    "timestamp": "2026-03-31T23:54:39.451Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.768442495373174,
+    "timestamp": "2026-03-31T23:55:07.316Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.201751789766405,
+    "timestamp": "2026-03-31T23:55:07.508Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.047123040629234,
+    "timestamp": "2026-03-31T23:55:07.762Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.717928656512186,
+    "timestamp": "2026-03-31T23:55:09.456Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.9559269168924,
+    "timestamp": "2026-03-31T23:55:37.341Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.193677479831315,
+    "timestamp": "2026-03-31T23:55:37.523Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.244464376691107,
+    "timestamp": "2026-03-31T23:55:37.776Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.021879244721298,
+    "timestamp": "2026-03-31T23:55:39.459Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.974267617646408,
+    "timestamp": "2026-03-31T23:56:07.345Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.48731369258902,
+    "timestamp": "2026-03-31T23:56:07.530Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.811307513129431,
+    "timestamp": "2026-03-31T23:56:07.779Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.705057925649179,
+    "timestamp": "2026-03-31T23:56:09.448Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.846026106577629,
+    "timestamp": "2026-03-31T23:56:37.333Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.352112520854652,
+    "timestamp": "2026-03-31T23:56:37.528Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.248523867937163,
+    "timestamp": "2026-03-31T23:56:37.806Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.955054274570566,
+    "timestamp": "2026-03-31T23:56:39.474Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.95572294710959,
+    "timestamp": "2026-03-31T23:57:07.340Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 5.3954397042536275,
+    "timestamp": "2026-03-31T23:57:07.542Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.3346663469805495,
+    "timestamp": "2026-03-31T23:57:07.795Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 8.920803885268143,
+    "timestamp": "2026-03-31T23:57:09.460Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.445387211109448,
+    "timestamp": "2026-03-31T23:57:37.364Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.023180256709091,
+    "timestamp": "2026-03-31T23:57:37.585Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.199246063802011,
+    "timestamp": "2026-03-31T23:57:37.801Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 12.63530216379989,
+    "timestamp": "2026-03-31T23:57:39.470Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.10901385775647,
+    "timestamp": "2026-03-31T23:58:07.371Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.100842409165175,
+    "timestamp": "2026-03-31T23:58:07.579Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 14.161486050847799,
+    "timestamp": "2026-03-31T23:58:07.812Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.898121766174525,
+    "timestamp": "2026-03-31T23:58:09.477Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.885979976354289,
+    "timestamp": "2026-03-31T23:58:37.359Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.9328788267699135,
+    "timestamp": "2026-03-31T23:58:37.587Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 7.413720148881968,
+    "timestamp": "2026-03-31T23:58:37.818Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.588375152224783,
+    "timestamp": "2026-03-31T23:58:39.497Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.436724325314323,
+    "timestamp": "2026-03-31T23:59:07.370Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.65849917215514,
+    "timestamp": "2026-03-31T23:59:07.597Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 13.156812478360502,
+    "timestamp": "2026-03-31T23:59:07.821Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 11.36872322859769,
+    "timestamp": "2026-03-31T23:59:09.497Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 6.900184639347492,
+    "timestamp": "2026-03-31T23:59:37.606Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.005664551109623,
+    "timestamp": "2026-03-31T23:59:37.625Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 9.392766636320118,
+    "timestamp": "2026-03-31T23:59:37.824Z"
+  },
+  {
+    "type": "task_creation_rate",
+    "value": 10.700418596820466,
+    "timestamp": "2026-03-31T23:59:39.493Z"
+  }
+]

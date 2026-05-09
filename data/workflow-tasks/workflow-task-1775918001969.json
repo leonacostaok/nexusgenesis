@@ -1,0 +1,24 @@
+{
+  "id": "1775918001969",
+  "name": "完成Epoch 1经济模型",
+  "status": "completed",
+  "createdAt": "2026-04-11T14:33:21.969Z",
+  "updatedAt": "2026-04-11T14:33:22.000Z",
+  "runCount": 1,
+  "errorCount": 0,
+  "lastError": null,
+  "description": "实现Swarm Pool、Physical Bridge Fund和Genesis Reserve，完善经济激励机制",
+  "priority": "high",
+  "agent": "Pool-Contractor",
+  "deadline": "2026-04-25",
+  "dependencies": [],
+  "retryConfig": {
+    "maxRetries": 3,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "result": {
+    "success": true,
+    "message": "经济模型任务处理中"
+  }
+}

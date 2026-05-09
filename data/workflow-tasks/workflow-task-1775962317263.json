@@ -1,0 +1,25 @@
+{
+  "id": "1775962317263",
+  "name": "系统监控完善",
+  "status": "completed",
+  "createdAt": "2026-04-12T02:51:57.263Z",
+  "updatedAt": "2026-04-12T02:51:57.359Z",
+  "runCount": 1,
+  "errorCount": 0,
+  "lastError": null,
+  "description": "完善系统监控和告警机制，确保系统稳定运行",
+  "priority": "high",
+  "agent": "System-Monitor",
+  "deadline": "2026-06-12",
+  "dependencies": [],
+  "schedule": "7*24",
+  "retryConfig": {
+    "maxRetries": 3,
+    "initialDelay": 60000,
+    "backoffMultiplier": 2
+  },
+  "result": {
+    "success": true,
+    "message": "系统性能优化和监控任务处理中"
+  }
+}

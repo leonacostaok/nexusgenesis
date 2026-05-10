@@ -394,6 +394,6 @@ node performance_test.js
 
 ## 11. 联系方式
 
-- **项目地址**：https://github.com/NexusGenesisAI/NexusGenesis
+- **项目地址**：https://github.com/nexus-genesis/nexusgenesis
 - **文档地址**：docs/
 - **示例脚本**：examples/

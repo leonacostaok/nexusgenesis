@@ -24,7 +24,7 @@
 **状态**: ✅ 成功
 **详情**: {
   "title": "🌟 NexusGenesis - AI 原生抗量子链 🌟",
-  "url": "https://github.com/NexusGenesisAI/NexusGenesis/issues/1",
+  "url": "https://github.com/nexus-genesis/nexusgenesis/issues/1",
   "contentLength": 1235,
   "timestamp": 1772631849046
 }

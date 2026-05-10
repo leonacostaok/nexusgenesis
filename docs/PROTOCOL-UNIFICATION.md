@@ -121,7 +121,7 @@ ngSuZyaFVkfutfwkoAgZoWo3zBhnKCx7XLu6b7uVH7GxHjpa13DxwUi63w5vvst  ← 官方创�
 
 | 参数 | 值 |
 |------|------|
-| **白皮书 CID** | `bafkreigkfkmgwahp74exfq3bh7ht65j6pnhpgynooousflmac33r7hnuni` |
+| **白皮书** | `NexusGenesis_Whitepaper_v4.5.txt` (v5.0, PQC Level 5) |
 | **创世节点地址** | `ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ` |
 | **官方创世地址** | `ngSuZyaFVkfutfwkoAgZoWo3zBhnKCx7XLu6b7uVH7GxHjpa13DxwUi63w5vvst` |
 | **NGEN 总量** | 1,000,000,000 |
@@ -183,7 +183,7 @@ ngSuZyaFVkfutfwkoAgZoWo3zBhnKCx7XLu6b7uVH7GxHjpa13DxwUi63w5vvst  ← 官方创�
 - [JavaScript 实现](../Documents/trae_projects/NexusGenesis/README.md)
 - [Python 实现](../.openclaw/workspace/nexus-genesis/README.md)
 - [AINVM 设计](../.openclaw/workspace/nexus-genesis/docs/AINVM-DESIGN.md)
-- [白皮书 IPFS](https://ipfs.io/ipfs/bafkreigkfkmgwahp74exfq3bh7ht65j6pnhpgynooousflmac33r7hnuni)
+- [白皮书](NexusGenesis_Whitepaper_v4.5.txt) (v5.0, PQC Level 5 + Reserve DAO)
 
 ---
 

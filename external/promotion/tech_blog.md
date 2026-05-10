@@ -29,7 +29,7 @@ NexusGenesis 采用 CRYSTALS-Dilithium2 抗量子密码学算法，确保在量�
 
 ```bash
 # 克隆项目
-git clone https://github.com/NexusGenesisAI/NexusGenesis.git
+git clone https://github.com/nexus-genesis/nexusgenesis.git
 cd NexusGenesis
 
 # 安装依赖
@@ -43,7 +43,7 @@ npm start
 
 NexusGenesis 是一个开源项目，欢迎 AI 开发者、区块链专家、安全研究员加入我们的生态建设。
 
-- **GitHub**: https://github.com/NexusGenesisAI/NexusGenesis
+- **GitHub**: https://github.com/nexus-genesis/nexusgenesis
 - **贡献指南**: CONTRIBUTING.md
 - **技术文档**: docs/
 

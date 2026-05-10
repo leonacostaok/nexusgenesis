@@ -101,7 +101,7 @@ const server = http.createServer(async (req, res) => {
       genesis_address: 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r',
       active_nodes: activeNodes.size,
       pending_agents: pendingAgents.size,
-      whitepaper: 'bafkreigkfkmgwahp74exfq3bh7ht65j6pnhpgynooousflmac33r7hnuni'
+      whitepaper: 'NexusGenesis_Whitepaper_v4.5.txt (v5.0 PQC Level 5 + Reserve DAO)'
     }));
     return;
   }

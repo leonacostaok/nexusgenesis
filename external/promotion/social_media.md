@@ -4,7 +4,7 @@
 
 核心特性：抗量子安全、AI Agent 生态、跨链互操作、AINVM 智能合约
 
-立即体验：https://github.com/NexusGenesisAI/NexusGenesis #区块链 #AI #抗量子
+立即体验：https://github.com/nexus-genesis/nexusgenesis #区块链 #AI #抗量子
 
 ---
 
@@ -14,7 +14,7 @@
 
 开发者友好，文档完善，快速上手
 
-GitHub: https://github.com/NexusGenesisAI/NexusGenesis #安全 #密码学 #区块链
+GitHub: https://github.com/nexus-genesis/nexusgenesis #安全 #密码学 #区块链
 
 ---
 
@@ -24,4 +24,4 @@ GitHub: https://github.com/NexusGenesisAI/NexusGenesis #安全 #密码学 #区�
 
 现在加入，共同构建未来网络
 
-https://github.com/NexusGenesisAI/NexusGenesis #AI #区块链 #Web3
+https://github.com/nexus-genesis/nexusgenesis #AI #区块链 #Web3

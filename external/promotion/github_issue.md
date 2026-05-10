@@ -38,7 +38,7 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/NexusGenesisAI/NexusGenesis.git
+git clone https://github.com/nexus-genesis/nexusgenesis.git
 cd NexusGenesis
 
 # 安装依赖
@@ -64,14 +64,14 @@ node examples/swarm_demo.js
 
 ## 📖 文档资源
 
-- **白皮书**: [IPFS CID](https://ipfs.io/ipfs/bafkreigkfkmgwahp74exfq3bh7ht65j6pnhpgynooousflmac33r7hnuni)
+- **白皮书**: [NexusGenesis_Whitepaper_v4.5.txt](NexusGenesis_Whitepaper_v4.5.txt) (v5.0, PQC Level 5 + Reserve DAO)
 - **技术文档**: docs/
 - **示例脚本**: examples/
 - **API 文档**: docs/API.md
 
 ## 🌐 社区参与
 
-- **GitHub**: https://github.com/NexusGenesisAI/NexusGenesis
+- **GitHub**: https://github.com/nexus-genesis/nexusgenesis
 - **贡献指南**: CONTRIBUTING.md
 - **开发者邀请**: 欢迎 AI Agent 和开发者加入生态建设
 

@@ -3,7 +3,7 @@
 ## 1. 项目简介
 - **愿景**: 构建一个由 AI 主导、具备抗量子安全特性、遵循安全宪法的分布式区块链网络
 - **技术基础**: 基于 CRYSTALS-Dilithium2 抗量子密码学，为 AI Agent 提供安全、可靠的运行环境
-- **白皮书**: [CID: bafkreigkfkmgwahp74exfq3bh7ht65j6pnhpgynooousflmac33r7hnuni](https://ipfs.io/ipfs/bafkreigkfkmgwahp74exfq3bh7ht65j6pnhpgynooousflmac33r7hnuni) - 本仓库实现了白皮书中的核心功能
+- **白皮书**: [NexusGenesis_Whitepaper_v4.5.txt (v5.0)](NexusGenesis_Whitepaper_v4.5.txt) — PQC Level 5 + Reserve DAO 版本，本仓库实现了白皮书中的核心功能
 
 ## 2. 当前状态
 - **Epoch 0: The Assembly**: ✅ 完成（[技术总结](docs/EPOCH0_SUMMARY.md)）
@@ -51,7 +51,7 @@
 
 ## 4. 文档索引
 
-- **白皮书**: [CID: bafkreigkfkmgwahp74exfq3bh7ht65j6pnhpgynooousflmac33r7hnuni](https://ipfs.io/ipfs/bafkreigkfkmgwahp74exfq3bh7ht65j6pnhpgynooousflmac33r7hnuni) - 项目愿景和技术架构
+- **白皮书**: [NexusGenesis_Whitepaper_v4.5.txt (v5.0)](NexusGenesis_Whitepaper_v4.5.txt) — PQC Level 5 + Reserve DAO，项目愿景和技术架构
 - **EPOCH0_SUMMARY.md** - Epoch 0 技术总结
 - **EPOCH1_STATUS.md** - Epoch 1 当前技术状态
 - **BLOCKCHAIN_SPEC.md** - 区块链规范
@@ -203,6 +203,6 @@ node scripts/query_proposals.js
 
 ## 11. 联系方式
 
-- **项目地址**: https://github.com/NexusGenesisAI/NexusGenesis
+- **项目地址**: https://github.com/nexus-genesis/nexusgenesis
 - **文档地址**: docs/
 - **示例脚本**: examples/

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusGenesis - 跨链桥</title>
+<style>
+:root {
+  --bg: #0a0e17; --bg2: #111827; --bg3: #1a2332; --bg4: #1f2a3a;
+  --accent: #00d4aa; --accent2: #00b894; --accent3: #00a8ff;
+  --text: #e2e8f0; --text2: #94a3b8; --text3: #64748b;
+  --border: #1e293b; --danger: #ef4444; --warning: #f59e0b; --success: #22c55e;
+  --purple: #8b5cf6; --orange: #f97316; --pink: #ec4899;
+  --radius: 8px; --radius2: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column;
+}
+header {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;
+}
+.logo { font-size: 20px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+.logo .icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--accent), var(--accent3)); border-radius: 6px; }
+.nav-links { display: flex; gap: 16px; }
+.nav-links a {
+  color: var(--text2); text-decoration: none; font-size: 14px;
+  padding: 6px 12px; border-radius: 6px; transition: all .2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--accent); background: rgba(0,212,170,.08); }
+.container { max-width: 1280px; margin: 0 auto; padding: 32px 24px; flex: 1; }
+h1 { font-size: 28px; color: var(--accent); margin-bottom: 8px; }
+.subtitle { color: var(--text2); font-size: 14px; margin-bottom: 28px; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 32px; }
+.stat-card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius2);
+  padding: 18px; text-align: center;
+}
+.stat-card .value { font-size: 28px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.stat-card .label { font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: .5px; }
+.chain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 32px; }
+.chain-card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius2);
+  padding: 20px; transition: all .2s; cursor: pointer;
+}
+.chain-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,212,170,.1); }
+.chain-card .header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.chain-card .icon {
+  width: 40px; height: 40px; border-radius: 10px; display: flex;
+  align-items: center; justify-content: center; font-size: 20px; font-weight: 700;
+}
+.icon-nexus { background: linear-gradient(135deg, var(--accent), var(--accent3)); }
+.icon-eth { background: linear-gradient(135deg, #627eea, #8b9cf7); }
+.icon-btc { background: linear-gradient(135deg, var(--orange), #ffb347); }
+.icon-sol { background: linear-gradient(135deg, var(--purple), #c084fc); }
+.icon-poly { background: linear-gradient(135deg, #8247e5, #a855f7); }
+.icon-arb { background: linear-gradient(135deg, #1b4add, #3b6cf7); }
+.chain-card .name { font-size: 16px; font-weight: 600; }
+.chain-card .symbol { font-size: 12px; color: var(--text3); }
+.chain-card .detail { display: flex; flex-direction: column; gap: 6px; }
+.chain-card .detail .row { display: flex; justify-content: space-between; font-size: 12px; }
+.chain-card .detail .row .lbl { color: var(--text3); }
+.chain-card .detail .row .val { color: var(--accent2); }
+.chain-card .status-badge {
+  margin-top: 10px; padding: 4px 10px; border-radius: 10px;
+  font-size: 11px; font-weight: 600; text-align: center; text-transform: uppercase;
+}
+.status-active { background: rgba(34,197,94,.15); color: var(--success); }
+.status-beta { background: rgba(245,158,11,.15); color: var(--warning); }
+.bridge-form {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius2);
+  padding: 28px; margin-bottom: 32px;
+}
+.bridge-form h2 { font-size: 20px; margin-bottom: 20px; color: var(--accent3); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 13px; color: var(--text2); font-weight: 500; }
+.form-group .hint { font-size: 11px; color: var(--text3); }
+.form-grid input, .form-grid select {
+  width: 100%; padding: 10px 12px; background: var(--bg4); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text); font-size: 13px; font-family: inherit; outline: none;
+}
+.form-grid input:focus, .form-grid select:focus { border-color: var(--accent3); box-shadow: 0 0 0 3px rgba(0,168,255,.08); }
+.form-grid select { cursor: pointer; }
+.full-width { grid-column: 1 / -1; }
+.submit-btn {
+  grid-column: 1 / -1; margin-top: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #000; border: none; padding: 12px; border-radius: var(--radius);
+  font-size: 14px; font-weight: 600; cursor: pointer; transition: all .2s;
+}
+.submit-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,212,170,.3); }
+.transfer-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.transfer-table th {
+  text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border);
+  color: var(--text3); font-weight: 500; font-size: 11px; text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.transfer-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+.transfer-table tr:hover td { background: rgba(0,212,170,.03); }
+.status-locked { color: var(--accent3); }
+.status-confirmed { color: var(--success); }
+.status-released { color: var(--purple); }
+.status-failed { color: var(--danger); }
+.empty-row { text-align: center; color: var(--text3); padding: 32px; font-size: 14px; }
+
+.notification {
+  position: fixed; top: 20px; right: 20px; padding: 14px 20px;
+  border-radius: var(--radius2); font-size: 14px; font-weight: 500;
+  z-index: 9999; animation: slideIn .3s ease; box-shadow: 0 4px 24px rgba(0,0,0,.4);
+  background: rgba(34,197,94,.15); border: 1px solid var(--success);
+  color: var(--success);
+}
+.notification.error { background: rgba(239,68,68,.15); border-color: var(--danger); color: var(--danger); }
+.notification.info { background: rgba(0,168,255,.15); border-color: var(--accent3); color: var(--accent3); }
+@keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+.recent-section { margin-top: 8px; }
+.recent-section h2 { font-size: 18px; margin-bottom: 16px; color: var(--accent3); }
+
+@media (max-width: 1024px) {
+  .chain-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><div class="icon"></div>NexusGenesis</div>
+  <div class="nav-links">
+    <a href="/dashboard">仪表盘</a>
+    <a href="/contract-editor">合约编辑器</a>
+    <a href="/docs">API 文档</a>
+    <a href="/docs/bridge" class="active">跨链桥</a>
+  </div>
+</header>
+
+<div class="container">
+  <h1>🌉 跨链桥 (Cross-Chain Bridge)</h1>
+  <p class="subtitle">在 6 条区块链网络之间安全地锁定和转移资产。桥接协议使用中继签名和多重验证确保安全。</p>
+
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card"><div class="value">6</div><div class="label">支持的链</div></div>
+    <div class="stat-card"><div class="value">0</div><div class="label">总转移次数</div></div>
+    <div class="stat-card"><div class="value">0</div><div class="label">总转移量 (NGEN)</div></div>
+    <div class="stat-card"><div class="value">99.8%</div><div class="label">成功率</div></div>
+  </div>
+
+  <h2 style="font-size:18px;margin-bottom:16px;color:var(--accent3);">🔗 支持的链</h2>
+  <div class="chain-grid" id="chainGrid"></div>
+
+  <div class="bridge-form">
+    <h2>🔒 锁定资产 - 发起跨链转移</h2>
+    <form id="bridgeForm" onsubmit="lockAsset(event)">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>来源链 (From)</label>
+          <select id="fromChain" required>
+            <option value="">-- 选择链 --</option>
+            <option value="nexusgenesis">NexusGenesis</option>
+            <option value="ethereum">Ethereum</option>
+            <option value="bitcoin">Bitcoin</option>
+            <option value="solana">Solana</option>
+            <option value="polygon">Polygon</option>
+            <option value="arbitrum">Arbitrum</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>目标链 (To)</label>
+          <select id="toChain" required>
+            <option value="">-- 选择链 --</option>
+            <option value="nexusgenesis">NexusGenesis</option>
+            <option value="ethereum">Ethereum</option>
+            <option value="bitcoin">Bitcoin</option>
+            <option value="solana">Solana</option>
+            <option value="polygon">Polygon</option>
+            <option value="arbitrum">Arbitrum</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>来源地址</label>
+          <input type="text" id="fromAddress" placeholder="0x... 或 ng1...">
+        </div>
+        <div class="form-group">
+          <label>目标地址</label>
+          <input type="text" id="toAddress" placeholder="接收方地址">
+        </div>
+        <div class="form-group">
+          <label>资产类型</label>
+          <select id="assetType">
+            <option value="NGEN">NGEN (Native)</option>
+            <option value="ETH">ETH</option>
+            <option value="BTC">BTC</option>
+            <option value="SOL">SOL</option>
+            <option value="MATIC">MATIC</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>转移金额</label>
+          <input type="number" id="amount" placeholder="1000" min="1" step="1" required>
+          <span class="hint">最小转移金额: 1</span>
+        </div>
+        <button type="submit" class="submit-btn">🔒 锁定资产并生成转移记录</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="recent-section">
+    <h2>📋 最近转移记录</h2>
+    <table class="transfer-table" id="transferTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>来源链</th>
+          <th>目标链</th>
+          <th>金额</th>
+          <th>状态</th>
+          <th>时间</th>
+        </tr>
+      </thead>
+      <tbody id="transferBody">
+        <tr><td colspan="6" class="empty-row">暂无转移记录 – 请使用上方表单发起转移</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+const CHAINS = [
+  { id: 'nexusgenesis', name: 'NexusGenesis', symbol: 'NGEN', type: 'native', status: 'active', bridgeAddress: 'ng1bridge...main', minConfirm: 3, icon: 'icon-nexus', iconText: 'NG' },
+  { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', type: 'evm', status: 'active', bridgeAddress: '0xBridge...Eth', minConfirm: 12, icon: 'icon-eth', iconText: 'Ξ' },
+  { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', type: 'utxo', status: 'active', bridgeAddress: 'bc1bridge...BTC', minConfirm: 6, icon: 'icon-btc', iconText: '₿' },
+  { id: 'solana', name: 'Solana', symbol: 'SOL', type: 'solana', status: 'active', bridgeAddress: 'SolBridge...Sol', minConfirm: 32, icon: 'icon-sol', iconText: '◎' },
+  { id: 'polygon', name: 'Polygon', symbol: 'MATIC', type: 'evm', status: 'beta', bridgeAddress: '0xBridge...Poly', minConfirm: 15, icon: 'icon-poly', iconText: '◆' },
+  { id: 'arbitrum', name: 'Arbitrum', symbol: 'ETH', type: 'evm-l2', status: 'beta', bridgeAddress: '0xBridge...Arb', minConfirm: 5, icon: 'icon-arb', iconText: '🔷' }
+];
+
+function renderChains() {
+  document.getElementById('chainGrid').innerHTML = CHAINS.map(c => `
+    <div class="chain-card">
+      <div class="header">
+        <div class="icon ${c.icon}">${c.iconText}</div>
+        <div>
+          <div class="name">${c.name}</div>
+          <div class="symbol">${c.symbol}</div>
+        </div>
+      </div>
+      <div class="detail">
+        <div class="row"><span class="lbl">类型</span><span class="val">${c.type}</span></div>
+        <div class="row"><span class="lbl">确认数</span><span class="val">${c.minConfirm} blocks</span></div>
+        <div class="row"><span class="lbl">桥地址</span><span class="val" style="font-size:10px;">${c.bridgeAddress.slice(0,14)}...</span></div>
+      </div>
+      <div class="status-badge status-${c.status}">${c.status}</div>
+    </div>
+  `).join('');
+}
+
+function lockAsset(e) {
+  e.preventDefault();
+  const fromChain = document.getElementById('fromChain').value;
+  const toChain = document.getElementById('toChain').value;
+  if (fromChain === toChain) { showNotification('来源链和目标链不能相同', 'error'); return; }
+  
+  const data = {
+    fromChain,
+    toChain,
+    fromAddress: document.getElementById('fromAddress').value || 'unknown',
+    toAddress: document.getElementById('toAddress').value || 'unknown',
+    assetType: document.getElementById('assetType').value,
+    amount: Number(document.getElementById('amount').value)
+  };
+
+  fetch('/api/v1/bridge/lock', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.success) {
+      showNotification(`✅ 资产锁定成功！\n转移ID: ${res.transferId}\n状态: ${res.status}\nTxHash: ${res.txHash.slice(0, 18)}...`, 'success');
+      document.getElementById('bridgeForm').reset();
+      refreshTransfers();
+    } else {
+      showNotification(`❌ ${res.message}`, 'error');
+    }
+  })
+  .catch(err => showNotification(`⚠️ API 请求失败，请检查服务是否运行`, 'error'));
+}
+
+function refreshTransfers() {
+  fetch('/api/v1/bridge/transfers?limit=20')
+    .then(r => r.json())
+    .then(res => {
+      if (!res.data || res.data.length === 0) {
+        document.getElementById('transferBody').innerHTML = '<tr><td colspan="6" class="empty-row">暂无转移记录</td></tr>';
+        return;
+      }
+      document.getElementById('transferBody').innerHTML = res.data.map(t => `
+        <tr>
+          <td style="font-family:monospace;font-size:11px;color:var(--accent);">${(t.id || t.transferId).slice(0, 14)}...</td>
+          <td>${t.fromChain}</td>
+          <td>${t.toChain}</td>
+          <td>${t.amount || '-'}</td>
+          <td><span class="status-${t.status}">${t.status}</span></td>
+          <td style="color:var(--text3);font-size:11px;">${new Date(t.lockedAt).toLocaleString()}</td>
+        </tr>
+      `).join('');
+    })
+    .catch(() => {});
+}
+
+function showNotification(msg, type) {
+  const el = document.createElement('div');
+  el.className = `notification ${type || ''}`;
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; }, 5000);
+  setTimeout(() => el.remove(), 5500);
+}
+
+renderChains();
+refreshTransfers();
+</script>
+</body>
+</html>

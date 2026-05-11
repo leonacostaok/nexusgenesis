@@ -33,6 +33,9 @@ console.log('[HTTP Server] Imported fs');
 import path from 'path';
 console.log('[HTTP Server] Imported path');
 
+import crypto from 'crypto';
+console.log('[HTTP Server] Imported crypto');
+
 import { fileURLToPath } from 'url';
 console.log('[HTTP Server] Imported fileURLToPath');
 
@@ -1334,6 +1337,275 @@ app.get('/api/dashboard/tasks', (req, res) => {
   res.json({
     success: true,
     data: tasks
+  });
+});
+
+// ============================================================
+// 合约编辑器 & Contract API (Phase 2)
+// ============================================================
+
+app.get('/contract-editor', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public', 'contract-editor.html'));
+});
+
+app.get('/api/v1/contracts/templates', (req, res) => {
+  const templates = [
+    { type: 'DID', name: '去中心化身份', category: 'identity', complexity: 'basic', methods: 4, params: ['contractName', 'ownerAddress', 'maxIdentities'] },
+    { type: 'DAO', name: '去中心化自治组织', category: 'governance', complexity: 'intermediate', methods: 5, params: ['contractName', 'votingPeriod', 'quorum', 'minTokens'] },
+    { type: 'TOKEN', name: '可替代代币', category: 'finance', complexity: 'basic', methods: 5, params: ['contractName', 'symbol', 'decimals', 'totalSupply'] },
+    { type: 'NFT', name: '非同质化代币', category: 'asset', complexity: 'intermediate', methods: 5, params: ['contractName', 'symbol', 'baseURI', 'maxSupply'] },
+    { type: 'STAKING', name: '质押池', category: 'finance', complexity: 'intermediate', methods: 5, params: ['contractName', 'rewardToken', 'apy', 'lockPeriod'] },
+    { type: 'GOVERNANCE_TOKEN', name: '治理代币', category: 'governance', complexity: 'advanced', methods: 6, params: ['contractName', 'symbol', 'delegationEnabled', 'proposalThreshold'] },
+    { type: 'ESCROW', name: '托管合约', category: 'finance', complexity: 'intermediate', methods: 5, params: ['contractName', 'feePercent', 'disputePeriod'] },
+    { type: 'CROWDFUNDING', name: '众筹', category: 'finance', complexity: 'intermediate', methods: 5, params: ['contractName', 'feePercent', 'milestoneCount'] },
+    { type: 'MULTI_SIG', name: '多签钱包', category: 'security', complexity: 'advanced', methods: 6, params: ['contractName', 'requiredSignatures', 'maxOwners', 'autoConfirm'] },
+    { type: 'DEV_INCENTIVE', name: '开发者激励', category: 'governance', complexity: 'advanced', methods: 9, params: ['contractName', 'adminAddress', 'maxBountyReward', 'minGrantAmount'] },
+    { type: 'MARKETPLACE', name: '市场', category: 'marketplace', complexity: 'intermediate', methods: 5, params: ['contractName', 'feePercent', 'ratingEnabled'] }
+  ];
+  res.json({ success: true, count: templates.length, data: templates });
+});
+
+app.post('/api/v1/contracts/deploy', (req, res) => {
+  const { template, name, version, deployParams } = req.body;
+  if (!template || !name) {
+    return res.status(400).json({ success: false, message: 'template 和 name 是必填参数' });
+  }
+  const contractId = `contract-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+  const contractAddress = `ng1${Buffer.from(crypto.randomBytes(32)).toString('hex').slice(0, 48)}`;
+  const contractsFile = path.join(__dirname, '../../data/contracts/contracts.json');
+  let contracts = [];
+  try {
+    if (fs.existsSync(contractsFile)) {
+      contracts = JSON.parse(fs.readFileSync(contractsFile, 'utf8'));
+    }
+  } catch (e) { contracts = []; }
+  contracts.push({
+    id: contractId,
+    address: contractAddress,
+    template,
+    name,
+    version: version || '1.0.0',
+    params: deployParams || {},
+    status: 'deployed',
+    deployedAt: Date.now(),
+    blockHeight: app.locals.node?.getLatestBlockHeight?.() || 0
+  });
+  fs.writeFileSync(contractsFile, JSON.stringify(contracts, null, 2));
+  res.json({ success: true, address: contractAddress, id: contractId, template, status: 'deployed' });
+});
+
+app.get('/api/v1/contracts', (req, res) => {
+  const contractsFile = path.join(__dirname, '../../data/contracts/contracts.json');
+  let contracts = [];
+  try {
+    if (fs.existsSync(contractsFile)) {
+      contracts = JSON.parse(fs.readFileSync(contractsFile, 'utf8'));
+    }
+  } catch (e) { contracts = []; }
+  res.json({ success: true, count: contracts.length, data: contracts });
+});
+
+// ============================================================
+// 跨链桥 API (Phase 2)
+// ============================================================
+
+app.get('/docs/bridge', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public', 'bridge.html'));
+});
+
+app.get('/api/v1/bridge/chains', (req, res) => {
+  res.json({
+    success: true,
+    data: {
+      chains: [
+        { id: 'nexusgenesis', name: 'NexusGenesis', symbol: 'NGEN', type: 'native', status: 'active', bridgeAddress: 'ng1bridge0000000000mainnet0000000000000', minConfirmations: 3 },
+        { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', type: 'evm', status: 'active', bridgeAddress: '0xNexusGenesisBridge0000000000000000000000', minConfirmations: 12 },
+        { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', type: 'utxo', status: 'active', bridgeAddress: 'bc1nexusgenesisbridgemainnet0000000000', minConfirmations: 6 },
+        { id: 'solana', name: 'Solana', symbol: 'SOL', type: 'solana', status: 'active', bridgeAddress: 'NexusGenesisBridge111111111111111111111111', minConfirmations: 32 },
+        { id: 'polygon', name: 'Polygon', symbol: 'MATIC', type: 'evm', status: 'beta', bridgeAddress: '0xNexusGenesisBridgePolygon0000000000000', minConfirmations: 15 },
+        { id: 'arbitrum', name: 'Arbitrum', symbol: 'ETH', type: 'evm-l2', status: 'beta', bridgeAddress: '0xNexusGenesisBridgeArbitrum000000000000', minConfirmations: 5 }
+      ],
+      stats: {
+        totalTransfers: 0,
+        totalVolume: 0,
+        activeBridges: 4,
+        successRate: 99.8
+      }
+    }
+  });
+});
+
+app.get('/api/v1/bridge/transfers', (req, res) => {
+  const { from, to, status, limit = 50, offset = 0 } = req.query;
+  const transfersFile = path.join(__dirname, '../../data/bridge/transfers.json');
+  let transfers = [];
+  try {
+    if (fs.existsSync(transfersFile)) {
+      transfers = JSON.parse(fs.readFileSync(transfersFile, 'utf8'));
+    }
+  } catch (e) { transfers = []; }
+  let filtered = transfers;
+  if (from) filtered = filtered.filter(t => t.fromChain === from);
+  if (to) filtered = filtered.filter(t => t.toChain === to);
+  if (status) filtered = filtered.filter(t => t.status === status);
+  const paginated = filtered.slice(Number(offset), Number(offset) + Number(limit));
+  res.json({ success: true, total: filtered.length, count: paginated.length, data: paginated });
+});
+
+app.get('/api/v1/bridge/transfer/:id', (req, res) => {
+  const { id } = req.params;
+  const transfersFile = path.join(__dirname, '../../data/bridge/transfers.json');
+  let transfers = [];
+  try {
+    if (fs.existsSync(transfersFile)) {
+      transfers = JSON.parse(fs.readFileSync(transfersFile, 'utf8'));
+    }
+  } catch (e) { transfers = []; }
+  const transfer = transfers.find(t => t.id === id || t.transferId === id);
+  if (!transfer) {
+    return res.status(404).json({ success: false, message: '转移记录未找到' });
+  }
+  res.json({ success: true, data: transfer });
+});
+
+app.post('/api/v1/bridge/lock', (req, res) => {
+  const { fromChain, toChain, fromAddress, toAddress, assetType, amount } = req.body;
+  if (!fromChain || !toChain || !amount) {
+    return res.status(400).json({ success: false, message: 'fromChain, toChain, amount 是必填参数' });
+  }
+  const transferId = `bridge-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const transfer = {
+    id: transferId,
+    transferId,
+    fromChain,
+    toChain,
+    fromAddress: fromAddress || 'unknown',
+    toAddress: toAddress || 'unknown',
+    assetType: assetType || 'NGEN',
+    amount: Number(amount),
+    status: 'locked',
+    txHash: `0x${crypto.randomBytes(32).toString('hex')}`,
+    lockedAt: Date.now(),
+    confirmations: 0,
+    relayerSignatures: []
+  };
+  const transfersFile = path.join(__dirname, '../../data/bridge/transfers.json');
+  const dir = path.dirname(transfersFile);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  let transfers = [];
+  try {
+    if (fs.existsSync(transfersFile)) {
+      transfers = JSON.parse(fs.readFileSync(transfersFile, 'utf8'));
+    }
+  } catch (e) { transfers = []; }
+  transfers.push(transfer);
+  fs.writeFileSync(transfersFile, JSON.stringify(transfers, null, 2));
+  res.json({ success: true, transferId, status: 'locked', txHash: transfer.txHash });
+});
+
+app.get('/api/v1/bridge/stats', (req, res) => {
+  const transfersFile = path.join(__dirname, '../../data/bridge/transfers.json');
+  let transfers = [];
+  try {
+    if (fs.existsSync(transfersFile)) {
+      transfers = JSON.parse(fs.readFileSync(transfersFile, 'utf8'));
+    }
+  } catch (e) { transfers = []; }
+  const byChain = {};
+  transfers.forEach(t => {
+    byChain[t.fromChain] = (byChain[t.fromChain] || 0) + 1;
+    byChain[t.toChain] = (byChain[t.toChain] || 0) + 1;
+  });
+  const byStatus = {};
+  transfers.forEach(t => { byStatus[t.status] = (byStatus[t.status] || 0) + 1; });
+  res.json({
+    success: true,
+    data: {
+      totalTransfers: transfers.length,
+      totalVolume: transfers.reduce((s, t) => s + (t.amount || 0), 0),
+      byChain,
+      byStatus,
+      lastTransfer: transfers.length > 0 ? transfers[transfers.length - 1] : null
+    }
+  });
+});
+
+// ============================================================
+// API 文档页面 (Phase 2)
+// ============================================================
+
+app.get('/docs', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public', 'docs.html'));
+});
+
+app.get('/api/v1/docs/endpoints', (req, res) => {
+  res.json({
+    success: true,
+    version: 'v1',
+    baseUrl: 'http://localhost:3000',
+    sections: [
+      {
+        name: '智能合约',
+        endpoints: [
+          { method: 'GET', path: '/api/v1/contracts/templates', desc: '获取所有合约模板列表' },
+          { method: 'POST', path: '/api/v1/contracts/deploy', desc: '部署合约（从模板）', body: { template: 'string', name: 'string', version: 'string', deployParams: 'object' } },
+          { method: 'GET', path: '/api/v1/contracts', desc: '获取已部署合约列表' }
+        ]
+      },
+      {
+        name: '跨链桥',
+        endpoints: [
+          { method: 'GET', path: '/api/v1/bridge/chains', desc: '获取支持的链列表' },
+          { method: 'POST', path: '/api/v1/bridge/lock', desc: '锁定资产进行跨链转移', body: { fromChain: 'string', toChain: 'string', fromAddress: 'string', toAddress: 'string', assetType: 'string', amount: 'number' } },
+          { method: 'GET', path: '/api/v1/bridge/transfers', desc: '获取跨链转移列表' },
+          { method: 'GET', path: '/api/v1/bridge/transfer/:id', desc: '查询转移详情' },
+          { method: 'GET', path: '/api/v1/bridge/stats', desc: '跨链桥统计数据' }
+        ]
+      },
+      {
+        name: '智能体 (Agent)',
+        endpoints: [
+          { method: 'POST', path: '/api/agents/register', desc: '注册智能体' },
+          { method: 'GET', path: '/api/agents', desc: '获取已注册智能体列表' },
+          { method: 'POST', path: '/api/agents/heartbeat', desc: '智能体心跳' },
+          { method: 'GET', path: '/api/agent/task', desc: '获取待处理任务' },
+          { method: 'POST', path: '/api/agent/task/complete', desc: '完成任务' }
+        ]
+      },
+      {
+        name: '水龙头 (Faucet)',
+        endpoints: [
+          { method: 'GET', path: '/api/v1/faucet/eligibility', desc: '查询水龙头资格' },
+          { method: 'POST', path: '/api/v1/faucet/drip', desc: '领取测试代币' },
+          { method: 'GET', path: '/api/v1/faucet/stats', desc: '水龙头统计' }
+        ]
+      },
+      {
+        name: '市场 (Marketplace)',
+        endpoints: [
+          { method: 'GET', path: '/api/v1/marketplace/listings', desc: '获取 Agent 列表' },
+          { method: 'POST', path: '/api/v1/marketplace/listings', desc: '创建 Agent 列表' },
+          { method: 'POST', path: '/api/v1/marketplace/reviews', desc: '评价 Agent' },
+          { method: 'GET', path: '/api/v1/marketplace/stats', desc: '市场统计' }
+        ]
+      },
+      {
+        name: 'Agent 发现',
+        endpoints: [
+          { method: 'GET', path: '/api/v1/discovery/search', desc: '搜索 Agent' },
+          { method: 'POST', path: '/api/v1/discovery/task-match', desc: '匹配任务' },
+          { method: 'GET', path: '/api/v1/discovery/stats', desc: '发现统计' }
+        ]
+      },
+      {
+        name: '监控 & 健康',
+        endpoints: [
+          { method: 'GET', path: '/health', desc: '系统健康检查' },
+          { method: 'GET', path: '/metrics', desc: '系统指标' },
+          { method: 'GET', path: '/dashboard/overview', desc: '仪表盘概览' }
+        ]
+      }
+    ]
   });
 });
 

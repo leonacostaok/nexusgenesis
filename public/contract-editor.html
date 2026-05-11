@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusGenesis - 图形化智能合约编辑器</title>
+<style>
+:root {
+  --bg: #0a0e17; --bg2: #111827; --bg3: #1a2332; --bg4: #1f2a3a;
+  --accent: #00d4aa; --accent2: #00b894; --accent3: #00a8ff;
+  --text: #e2e8f0; --text2: #94a3b8; --text3: #64748b;
+  --border: #1e293b; --danger: #ef4444; --warning: #f59e0b; --success: #22c55e;
+  --purple: #8b5cf6; --orange: #f97316; --pink: #ec4899;
+  --radius: 8px; --radius2: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg); color: var(--text); min-height: 100vh;
+  display: flex; flex-direction: column;
+}
+header {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 12px 24px; display: flex; align-items: center; justify-content: space-between;
+}
+.logo { font-size: 20px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+.logo .icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--accent), var(--accent3)); border-radius: 6px; }
+.nav-links { display: flex; gap: 16px; }
+.nav-links a {
+  color: var(--text2); text-decoration: none; font-size: 14px;
+  padding: 6px 12px; border-radius: 6px; transition: all .2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--accent); background: rgba(0,212,170,.08); }
+.main { display: flex; flex: 1; overflow: hidden; }
+.sidebar {
+  width: 320px; min-width: 320px; background: var(--bg2); border-right: 1px solid var(--border);
+  padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px;
+}
+.sidebar h3 { font-size: 13px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.template-list { display: flex; flex-direction: column; gap: 6px; }
+.template-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+  background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius);
+  cursor: pointer; transition: all .2s; font-size: 13px;
+}
+.template-item:hover { border-color: var(--accent); background: rgba(0,212,170,.05); }
+.template-item.selected { border-color: var(--accent); background: rgba(0,212,170,.1); box-shadow: 0 0 12px rgba(0,212,170,.1); }
+.template-item .badge {
+  padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;
+  text-transform: uppercase;
+}
+.badge-basic { background: rgba(34,197,94,.15); color: var(--success); }
+.badge-intermediate { background: rgba(245,158,11,.15); color: var(--warning); }
+.badge-advanced { background: rgba(239,68,68,.15); color: var(--danger); }
+.template-item .name { flex: 1; font-weight: 500; }
+.template-item .arrow { color: var(--text3); font-size: 12px; }
+.workspace { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.workspace-header {
+  padding: 16px 24px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.workspace-header h2 { font-size: 18px; font-weight: 600; }
+.deploy-btn {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #000; border: none; padding: 10px 24px; border-radius: var(--radius);
+  font-size: 14px; font-weight: 600; cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; gap: 8px;
+}
+.deploy-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,212,170,.3); }
+.deploy-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.editor-body { flex: 1; display: flex; overflow: hidden; }
+.config-panel {
+  flex: 1; padding: 24px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.preview-panel {
+  width: 420px; min-width: 420px; background: var(--bg2); border-left: 1px solid var(--border);
+  padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px;
+}
+.preview-panel h3 { font-size: 14px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; }
+.section { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius2); padding: 20px; }
+.section h4 { font-size: 14px; font-weight: 600; color: var(--accent3); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.form-group { margin-bottom: 14px; }
+.form-group:last-child { margin-bottom: 0; }
+label {
+  display: block; font-size: 13px; color: var(--text2); margin-bottom: 4px; font-weight: 500;
+}
+.desc { font-size: 11px; color: var(--text3); margin-top: 2px; }
+input, textarea, select {
+  width: 100%; padding: 10px 12px; background: var(--bg4); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text); font-size: 13px;
+  font-family: inherit; transition: all .2s; outline: none;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--accent3); box-shadow: 0 0 0 3px rgba(0,168,255,.1); }
+textarea { resize: vertical; min-height: 60px; font-family: 'SF Mono', 'Cascadia Code', monospace; font-size: 12px; }
+.code-preview {
+  background: var(--bg4); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 14px; font-family: 'SF Mono', 'Cascadia Code', monospace;
+  font-size: 11px; line-height: 1.6; color: var(--text2); white-space: pre-wrap;
+  word-break: break-all; max-height: 500px; overflow-y: auto;
+}
+.code-preview .keyword { color: var(--accent3); }
+.code-preview .string { color: var(--accent); }
+.code-preview .number { color: var(--purple); }
+.info-card {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 12px 14px; display: flex; flex-direction: column; gap: 6px;
+}
+.info-card .row { display: flex; justify-content: space-between; font-size: 12px; }
+.info-card .row .label { color: var(--text3); }
+.info-card .row .value { color: var(--accent); }
+.empty-state {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 16px; color: var(--text3);
+}
+.empty-state .big-icon { font-size: 64px; opacity: .3; }
+.empty-state p { font-size: 16px; max-width: 400px; text-align: center; line-height: 1.6; }
+.notification {
+  position: fixed; top: 20px; right: 20px; padding: 14px 20px;
+  border-radius: var(--radius2); font-size: 14px; font-weight: 500;
+  z-index: 9999; animation: slideIn .3s ease; box-shadow: 0 4px 24px rgba(0,0,0,.4);
+  max-width: 420px;
+}
+.notification.success { background: rgba(34,197,94,.15); border: 1px solid var(--success); color: var(--success); }
+.notification.error { background: rgba(239,68,68,.15); border: 1px solid var(--danger); color: var(--danger); }
+.notification.info { background: rgba(0,168,255,.15); border: 1px solid var(--accent3); color: var(--accent3); }
+@keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.tab-bar { display: flex; gap: 4px; background: var(--bg3); border-radius: var(--radius); padding: 3px; margin-bottom: 12px; }
+.tab-bar .tab {
+  flex: 1; padding: 8px 12px; border: none; background: transparent;
+  color: var(--text3); font-size: 12px; cursor: pointer; border-radius: 6px;
+  font-weight: 500; transition: all .2s;
+}
+.tab-bar .tab.active { background: var(--accent); color: #000; }
+.method-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500;
+  background: rgba(139,92,246,.15); color: var(--purple); margin: 2px;
+}
+.sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 1200px) {
+  .preview-panel { width: 360px; min-width: 360px; }
+  .sub-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="icon"></div>
+    NexusGenesis
+  </div>
+  <div class="nav-links">
+    <a href="/dashboard">仪表盘</a>
+    <a href="/contract-editor" class="active">合约编辑器</a>
+    <a href="/docs">API 文档</a>
+    <a href="/docs/bridge">跨链桥</a>
+  </div>
+</header>
+
+<div class="main">
+  <aside class="sidebar">
+    <div>
+      <h3>📋 合约模板</h3>
+      <div class="template-list" id="templateList"></div>
+    </div>
+  </aside>
+
+  <main class="workspace">
+    <div class="workspace-header">
+      <h2 id="workspaceTitle">选择模板开始编辑</h2>
+      <button class="deploy-btn" id="deployBtn" disabled onclick="deployContract()">
+        🚀 部署合约
+      </button>
+    </div>
+    <div class="editor-body">
+      <div class="config-panel" id="configPanel">
+        <div class="empty-state" id="emptyState">
+          <div class="big-icon">📝</div>
+          <p>从左侧选择一个智能合约模板开始编辑。你可以在右侧实时预览生成的 AINVM 字节码。</p>
+        </div>
+        <div id="paramForm" style="display:none;"></div>
+      </div>
+      <aside class="preview-panel">
+        <h3>📊 合约预览</h3>
+        <div id="contractInfo" style="display:none;">
+          <div class="section" id="infoCards"></div>
+        </div>
+        <div class="section">
+          <h4>💻 AINVM 字节码</h4>
+          <div class="code-preview" id="bytecodePreview">等待选择模板...</div>
+        </div>
+        <div class="section">
+          <h4>🔧 方法列表</h4>
+          <div id="methodsPreview" style="font-size:12px;color:var(--text2);">
+            等待选择模板...
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<script>
+const TEMPLATES = [
+  { type: 'DID', name: '去中心化身份', desc: 'DID 注册、验证和属性管理', category: 'identity', complexity: 'basic', color: '#22c55e' },
+  { type: 'DAO', name: '去中心化自治组织', desc: '提案、投票和国库资金管理', category: 'governance', complexity: 'intermediate', color: '#f59e0b' },
+  { type: 'TOKEN', name: '可替代代币', desc: 'ERC-20 风格代币合约', category: 'finance', complexity: 'basic', color: '#22c55e' },
+  { type: 'NFT', name: '非同质化代币', desc: 'ERC-721 风格 NFT 合约', category: 'asset', complexity: 'intermediate', color: '#f59e0b' },
+  { type: 'STAKING', name: '质押池', desc: '代币质押、奖励分配和提取', category: 'finance', complexity: 'intermediate', color: '#f59e0b' },
+  { type: 'GOVERNANCE_TOKEN', name: '治理代币', desc: '治理代币 + 委托投票系统', category: 'governance', complexity: 'advanced', color: '#ef4444' },
+  { type: 'ESCROW', name: '托管合约', desc: '条件释放和争议解决', category: 'finance', complexity: 'intermediate', color: '#f59e0b' },
+  { type: 'CROWDFUNDING', name: '众筹', desc: '众筹活动、里程碑和退款', category: 'finance', complexity: 'intermediate', color: '#f59e0b' },
+  { type: 'MULTI_SIG', name: '多签钱包', desc: '多签确认、撤销和执行', category: 'security', complexity: 'advanced', color: '#ef4444' },
+  { type: 'DEV_INCENTIVE', name: '开发者激励', desc: 'Bug Bounty、Grant、Challenge', category: 'governance', complexity: 'advanced', color: '#ef4444' },
+  { type: 'MARKETPLACE', name: '市场', desc: 'Agent 列表、购买、评价', category: 'marketplace', complexity: 'intermediate', color: '#f59e0b' }
+];
+
+const PARAM_DEFS = {
+  DID: [
+    { id: 'contractName', label: '合约名称', type: 'text', default: 'DIDRegistry', desc: '用于链上标识' },
+    { id: 'ownerAddress', label: '管理员地址', type: 'text', default: '', desc: '有管理权限的 ng1 地址' },
+    { id: 'maxIdentities', label: '最大身份数', type: 'number', default: '1000000', desc: '系统支持的身份上限' },
+  ],
+  DAO: [
+    { id: 'contractName', label: '合约名称', type: 'text', default: 'GenesisDAO', desc: 'DAO 组织名称' },
+    { id: 'votingPeriod', label: '投票周期（秒）', type: 'number', default: '604800', desc: '7 天 = 604800 秒' },
+    { id: 'quorum', label: '法定投票门槛 (%)', type: 'number', default: '51', desc: '提案通过所需最低投票率' },
+    { id: 'minTokens', label: '最低持币门槛', type: 'number', default: '1000', desc: '参与治理最低持币量' },
+  ],
+  TOKEN: [
+    { id: 'contractName', label: '代币名称', type: 'text', default: 'GenesisToken', desc: '代币全称' },
+    { id: 'symbol', label: '代币符号', type: 'text', default: 'NGT', desc: '3-5 字符的符号' },
+    { id: 'decimals', label: '小数位数', type: 'number', default: '18', desc: '精度，默认 18' },
+    { id: 'totalSupply', label: '总供应量', type: 'text', default: '21000000', desc: '总发行量' },
+  ],
+  NFT: [
+    { id: 'contractName', label: '合集名称', type: 'text', default: 'GenesisNFT', desc: 'NFT 合集名称' },
+    { id: 'symbol', label: '合集符号', type: 'text', default: 'GNFT', desc: '3-5 字符的符号' },
+    { id: 'baseURI', label: '元数据 URI 前缀', type: 'text', default: 'ipfs://', desc: '元数据存储前缀' },
+    { id: 'maxSupply', label: '最大发行量', type: 'number', default: '10000', desc: '同一合集最大 NFT 数量' },
+  ],
+  STAKING: [
+    { id: 'contractName', label: '质押池名称', type: 'text', default: 'GenesisStaking', desc: '' },
+    { id: 'rewardToken', label: '奖励代币地址', type: 'text', default: '', desc: '奖励发放的代币' },
+    { id: 'apy', label: '年化收益率 (%)', type: 'number', default: '12', desc: 'Annual Percentage Yield' },
+    { id: 'lockPeriod', label: '锁定期（秒）', type: 'number', default: '86400', desc: '1 天 = 86400 秒，0 = 无锁' },
+  ],
+  GOVERNANCE_TOKEN: [
+    { id: 'contractName', label: '代币名称', type: 'text', default: 'NexusGovernanceToken', desc: '' },
+    { id: 'symbol', label: '代币符号', type: 'text', default: 'vNGT', desc: '治理代币符号' },
+    { id: 'delegationEnabled', label: '启用委托', type: 'select', default: 'true', options: ['true','false'], desc: '允许委托投票权' },
+    { id: 'proposalThreshold', label: '提案门槛（代币量）', type: 'number', default: '10000', desc: '创建提案所需最低币量' },
+  ],
+  ESCROW: [
+    { id: 'contractName', label: '托管合约名称', type: 'text', default: 'GenesisEscrow', desc: '' },
+    { id: 'feePercent', label: '手续费 (%)', type: 'number', default: '0.5', desc: '平台手续费比例' },
+    { id: 'disputePeriod', label: '争议期（秒）', type: 'number', default: '259200', desc: '3 天 = 259200 秒' },
+  ],
+  CROWDFUNDING: [
+    { id: 'contractName', label: '众筹平台名称', type: 'text', default: 'GenesisCrowdFund', desc: '' },
+    { id: 'feePercent', label: '平台手续费 (%)', type: 'number', default: '2', desc: '平台从成功众筹中抽取的费用' },
+    { id: 'milestoneCount', label: '里程碑数量', type: 'number', default: '3', desc: '默认里程碑阶段数' },
+  ],
+  MULTI_SIG: [
+    { id: 'contractName', label: '多签钱包名称', type: 'text', default: 'GenesisMultiSig', desc: '' },
+    { id: 'requiredSignatures', label: '最少签名数', type: 'number', default: '3', desc: '执行交易所需签名数' },
+    { id: 'maxOwners', label: '最大所有者数', type: 'number', default: '7', desc: '允许的最大共管人数' },
+    { id: 'autoConfirm', label: '自动确认', type: 'select', default: 'false', options: ['true','false'], desc: '所有 owner 自动确认' },
+  ],
+  DEV_INCENTIVE: [
+    { id: 'contractName', label: '系统名称', type: 'text', default: 'NexusDevIncentive', desc: '' },
+    { id: 'adminAddress', label: '管理员地址', type: 'text', default: '', desc: '有审批权限的 ng1 地址' },
+    { id: 'maxBountyReward', label: '最大 Bug 奖励', type: 'number', default: '100000', desc: '单个 Bug Bounty 最高奖励' },
+    { id: 'minGrantAmount', label: '最小 Grant 金额', type: 'number', default: '500', desc: 'Feature Grant 最低资助额度' },
+  ],
+  MARKETPLACE: [
+    { id: 'contractName', label: '市场名称', type: 'text', default: 'NexusAgentMarket', desc: '' },
+    { id: 'feePercent', label: '交易手续费 (%)', type: 'number', default: '2.5', desc: '每笔交易手续费' },
+    { id: 'ratingEnabled', label: '启用评价', type: 'select', default: 'true', options: ['true','false'], desc: '允许对 Agent 评分评价' },
+  ]
+};
+
+const METHOD_DEFS = {
+  DID: ['registerIdentity', 'updateAttribute', 'verifyIdentity', 'revokeIdentity'],
+  DAO: ['createProposal', 'castVote', 'executeProposal', 'addMember', 'requestTreasury'],
+  TOKEN: ['transfer', 'approve', 'transferFrom', 'mint', 'burn'],
+  NFT: ['mint', 'transfer', 'setTokenURI', 'approve', 'burn'],
+  STAKING: ['stake', 'unstake', 'claimReward', 'compound', 'getStakeInfo'],
+  GOVERNANCE_TOKEN: ['mint', 'delegate', 'getVotingPower', 'propose', 'castVote', 'execute'],
+  ESCROW: ['createEscrow', 'releaseFunds', 'refund', 'raiseDispute', 'resolveDispute'],
+  CROWDFUNDING: ['createCampaign', 'contribute', 'approveMilestone', 'withdraw', 'refund'],
+  MULTI_SIG: ['confirm', 'revoke', 'execute', 'addOwner', 'removeOwner', 'emergencyFreeze'],
+  DEV_INCENTIVE: ['createBugBounty', 'submitBugFix', 'approveBugFix', 'createFeatureGrant', 'applyForGrant', 'approveGrant', 'createChallenge', 'joinChallenge', 'submitChallenge'],
+  MARKETPLACE: ['publishAgent', 'purchaseAgent', 'rateAgent', 'reportAgent', 'cancelListing']
+};
+
+let selectedTemplate = null;
+let formParams = {};
+
+function renderTemplateList() {
+  const list = document.getElementById('templateList');
+  list.innerHTML = TEMPLATES.map(t => `
+    <div class="template-item" data-type="${t.type}" onclick="selectTemplate('${t.type}')">
+      <span class="badge badge-${t.complexity}">${t.complexity}</span>
+      <span class="name">${t.name}</span>
+      <span class="arrow">→</span>
+    </div>
+  `).join('');
+}
+
+function selectTemplate(type) {
+  selectedTemplate = TEMPLATES.find(t => t.type === type);
+  document.querySelectorAll('.template-item').forEach(el => el.classList.remove('selected'));
+  document.querySelector(`[data-type="${type}"]`)?.classList.add('selected');
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('contractInfo').style.display = 'block';
+  document.getElementById('workspaceTitle').textContent = `📝 ${selectedTemplate.name} – ${selectedTemplate.desc}`;
+  document.getElementById('deployBtn').disabled = false;
+  renderParamForm();
+  updatePreview();
+}
+
+function renderParamForm() {
+  if (!selectedTemplate) return;
+  const params = PARAM_DEFS[selectedTemplate.type] || [];
+  formParams = {};
+  params.forEach(p => { formParams[p.id] = p.default; });
+  
+  const form = document.getElementById('paramForm');
+  form.style.display = 'block';
+  form.innerHTML = `
+    <div class="section">
+      <h4>⚙️ 部署参数配置</h4>
+      <div class="sub-grid">
+        ${params.map(p => `
+          <div class="form-group">
+            <label>${p.label}</label>
+            ${p.type === 'select' ? `
+              <select id="param-${p.id}" onchange="updateParam('${p.id}', this.value)">
+                ${p.options.map(o => `<option value="${o}" ${o === p.default ? 'selected' : ''}>${o}</option>`).join('')}
+              </select>
+            ` : p.type === 'textarea' ? `
+              <textarea id="param-${p.id}" oninput="updateParam('${p.id}', this.value)">${p.default}</textarea>
+            ` : `
+              <input type="${p.type}" id="param-${p.id}" value="${p.default}" oninput="updateParam('${p.id}', this.value)">
+            `}
+            <div class="desc">${p.desc}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function updateParam(id, value) {
+  formParams[id] = value;
+  updatePreview();
+}
+
+function updatePreview() {
+  if (!selectedTemplate) return;
+  
+  const t = selectedTemplate;
+  document.getElementById('infoCards').innerHTML = `
+    <div class="info-card">
+      <div class="row"><span class="label">模板类型</span><span class="value">${t.type}</span></div>
+      <div class="row"><span class="label">分类</span><span class="value">${t.category}</span></div>
+      <div class="row"><span class="label">复杂度</span><span class="value">${t.complexity.toUpperCase()}</span></div>
+      <div class="row"><span class="label">参数数量</span><span class="value">${(PARAM_DEFS[t.type] || []).length}</span></div>
+      <div class="row"><span class="label">方法数量</span><span class="value">${(METHOD_DEFS[t.type] || []).length}</span></div>
+    </div>
+  `;
+
+  const bytecode = generateBytecode();
+  document.getElementById('bytecodePreview').innerHTML = highlightBytecode(bytecode);
+
+  const methods = METHOD_DEFS[t.type] || [];
+  document.getElementById('methodsPreview').innerHTML = methods.map(m => `
+    <span class="method-chip">${m}</span>
+  `).join('');
+}
+
+function generateBytecode() {
+  if (!selectedTemplate) return '// 请在左侧选择模板';
+  const t = selectedTemplate;
+  const params = formParams;
+  const lines = [
+    `AINVM v3.0 | NexusGenesis Contract`,
+    `Template: ${t.type} (${t.name})`,
+    `Complexity: ${t.complexity} | Category: ${t.category}`,
+    ``,
+    `.section .metadata:`,
+    `  name: "${params.contractName || t.name}"`,
+    `  version: "1.0.0"`,
+    `  created: "${new Date().toISOString()}"`,
+    `  template: "${t.type}"`,
+    ``,
+    `.section .init:`,
+    `  PUSH 0x00`,
+    `  MSTORE`,
+  ];
+
+  const paramKeys = Object.keys(params);
+  for (const key of paramKeys) {
+    const val = params[key];
+    if (key === 'contractName') continue;
+    if (val === 'true') lines.push(`  LOAD_CONST ${key.replace(/([A-Z])/g, '_$1').toUpperCase()} 1`);
+    else if (val === 'false') lines.push(`  LOAD_CONST ${key.replace(/([A-Z])/g, '_$1').toUpperCase()} 0`);
+    else if (!isNaN(val) && val !== '') lines.push(`  LOAD_CONST ${key.replace(/([A-Z])/g, '_$1').toUpperCase()} ${val}`);
+    else if (val) lines.push(`  LOAD_STR ${key.replace(/([A-Z])/g, '_$1').toUpperCase()} "${val}"`);
+  }
+
+  lines.push('');
+  lines.push(`.section .methods:`);
+  (METHOD_DEFS[t.type] || []).forEach((m, i) => {
+    lines.push(`  DEF_METHOD ${i} "${m}"`);
+    lines.push(`    PREPARE_ARGS`);
+    lines.push(`    VALIDATE_CALLER`);
+    lines.push(`    EXEC_OP ${m.toUpperCase()}`);
+    lines.push(`    RETURN`);
+    lines.push(`  END_METHOD`);
+    lines.push('');
+  });
+
+  lines.push(`.section .hooks:`);
+  lines.push(`  ON_DEPLOY: INIT_STORAGE, SET_OWNER, EMIT_EVENT "ContractDeployed"`);
+  lines.push(`  ON_UPGRADE: VALIDATE_SIGNATURE, MIGRATE_STORAGE`);
+  lines.push(`  ON_CALL: AUTH_CHECK, GAS_METER, RATE_LIMIT`);
+
+  lines.push('');
+  lines.push(`.section .security:`);
+  lines.push(`  REQUIRE_SIGNED_TX`);
+  lines.push(`  CHECK_REENTRANCY_GUARD`);
+  lines.push(`  VERIFY_INPUT_BOUNDS`);
+  lines.push('');
+  lines.push(`// ${t.name} – 参数化部署字节码`);
+  lines.push(`// 字节码大小: ${Math.round(512 + Object.keys(params).length * 64 + (METHOD_DEFS[t.type] || []).length * 128)} bytes (预估)`);
+
+  return lines.join('\n');
+}
+
+function highlightBytecode(code) {
+  return code
+    .replace(/(AINVM|v\d+\.\d+|NexusGenesis)/g, '<span class="keyword">$1</span>')
+    .replace(/(\.section|\.metadata|\.init|\.methods|\.hooks|\.security)/g, '<span class="keyword">$1</span>')
+    .replace(/(DEF_METHOD|END_METHOD|PREPARE_ARGS|VALIDATE_CALLER|EXEC_OP|RETURN|LOAD_CONST|LOAD_STR|PUSH|MSTORE|INIT_STORAGE|SET_OWNER|EMIT_EVENT|REQUIRE_SIGNED_TX|CHECK_REENTRANCY_GUARD|VERIFY_INPUT_BOUNDS|AUTH_CHECK|GAS_METER|RATE_LIMIT|VALIDATE_SIGNATURE|MIGRATE_STORAGE)/g, '<span class="keyword">$1</span>')
+    .replace(/(ON_DEPLOY|ON_UPGRADE|ON_CALL)/g, '<span class="keyword">$1</span>')
+    .replace(/"([^"]+)"/g, '<span class="string">"$1"</span>')
+    .replace(/\b(\d+(?:\.\d+)?)\b(?=[^"]*(?:"[^"]*"[^"]*)*$)/g, '<span class="number">$1</span>');
+}
+
+function deployContract() {
+  if (!selectedTemplate) return;
+  const params = formParams;
+  const contractData = {
+    template: selectedTemplate.type,
+    name: params.contractName || selectedTemplate.name,
+    version: '1.0.0',
+    deployParams: params,
+    timestamp: Date.now()
+  };
+
+  fetch('/api/v1/contracts/deploy', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(contractData)
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success) {
+      showNotification(`✅ 合约 "${params.contractName || selectedTemplate.name}" 部署成功！地址: ${data.address}`, 'success');
+    } else {
+      showNotification(`⚠️ 部署返回: ${data.message || '请确认 API 端点可用'}`, 'info');
+    }
+  })
+  .catch(err => {
+    showNotification(`📋 合约配置已生成 – 可在测试网中部署\n${selectedTemplate.name} (${selectedTemplate.type})\n参数数量: ${Object.keys(params).length}`, 'info');
+  });
+}
+
+function showNotification(msg, type) {
+  const el = document.createElement('div');
+  el.className = `notification ${type}`;
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; }, 4000);
+  setTimeout(() => el.remove(), 4500);
+}
+
+renderTemplateList();
+</script>
+
+</body>
+</html>

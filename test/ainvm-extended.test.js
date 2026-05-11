@@ -185,7 +185,8 @@ test('Test 16: Gas optimization', () => {
 
 test('Test 17: Cross-chain bridge', () => {
   const bridge = new CrossChainBridge({
-    chainId: 'nexus-testnet',
+    chainId: 'nexusgenesis',
+    supportedChains: ['nexus', 'ethereum', 'bitcoin', 'solana'],
     minValidators: 2
   });
   

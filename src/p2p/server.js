@@ -22,22 +22,31 @@ import CompressionService from './services/CompressionService.js';
 // 导入职责链管理器
 import MessageHandlerChainManager from './chain/MessageHandlerChainManager.js';
 
-// 模拟Kyber密钥协商（实际生产环境中应使用真实的Kyber实现）
-class KyberMock {
+import { ml_kem768 } from '@noble/post-quantum/ml-kem.js';
+
+class KyberKEM {
   static generateKeyPair() {
-    const privateKey = crypto.randomBytes(32);
-    const publicKey = crypto.randomBytes(32);
-    return { privateKey, publicKey };
+    const { publicKey, secretKey } = ml_kem768.keygen();
+    return {
+      publicKey: Buffer.from(publicKey),
+      privateKey: Buffer.from(secretKey)
+    };
   }
 
   static encapsulate(publicKey) {
-    const sharedSecret = crypto.randomBytes(32);
-    const ciphertext = crypto.randomBytes(32);
-    return { sharedSecret, ciphertext };
+    const pk = new Uint8Array(publicKey);
+    const { ciphertext, sharedSecret } = ml_kem768.encapsulate(pk);
+    return {
+      ciphertext: Buffer.from(ciphertext),
+      sharedSecret: Buffer.from(sharedSecret)
+    };
   }
 
   static decapsulate(ciphertext, privateKey) {
-    return crypto.randomBytes(32); // 模拟共享密钥
+    const ct = new Uint8Array(ciphertext);
+    const sk = new Uint8Array(privateKey);
+    const sharedSecret = ml_kem768.decapsulate(ct, sk);
+    return Buffer.from(sharedSecret);
   }
 }
 
@@ -77,6 +86,8 @@ class P2PServer {
     this.peerAddresses = new Map();
     this.heartbeatTimers = new Map();
     this.reconnectTimers = new Map();
+    this.batchTimers = new Map();
+    this.batchQueues = new Map();
     this.seenMessages = new Set();
     
     // 待握手连接 (peerId -> {ws, timeout})
@@ -90,7 +101,7 @@ class P2PServer {
     
     // 加密相关
     this.encryptionKeys = new Map(); // peerId -> sharedSecret
-    this.kyberKeyPair = KyberMock.generateKeyPair(); // 本节点的Kyber密钥对
+    this.kyberKeyPair = KyberKEM.generateKeyPair(); // 本节点的ML-KEM-768密钥对
     
     // 网络安全监控
     this.securityEvents = []; // 安全事件日志
@@ -428,7 +439,8 @@ class P2PServer {
       'GET_TRANSACTION_STATUS', 'TRANSACTION_STATUS',
       'GET_ADDRESS_BALANCE', 'SEND_TRANSACTION',
       'CROSS_CHAIN_MESSAGE', 'CROSS_CHAIN_RESPONSE',
-      'AGENT_MESSAGE', 'DIRECT_MESSAGE', 'DIRECT_MESSAGE_ACK'
+      'AGENT_MESSAGE', 'DIRECT_MESSAGE', 'DIRECT_MESSAGE_ACK',
+      'KEY_EXCHANGE'
     ];
     
     // 检查是否为有效的消息类型
@@ -505,6 +517,11 @@ class P2PServer {
   
   async handleSingleMessage(peerId, msg) {
     try {
+      if (msg.type === 'KEY_EXCHANGE') {
+        await this.handleKeyExchange(peerId, msg);
+        return;
+      }
+      
       // 使用职责链处理消息
       const context = {
         seenMessages: this.seenMessages,
@@ -582,7 +599,7 @@ class P2PServer {
       console.log(`Generated signature: ${signature.slice(0, 32)}...`);
       
       // 生成Kyber密钥对用于密钥协商
-      const kyberKeyPair = KyberMock.generateKeyPair();
+      const kyberKeyPair = KyberKEM.generateKeyPair();
       
       // 发送 HELLO_ACK
       this.send(peerId, {
@@ -674,17 +691,14 @@ class P2PServer {
         console.log(`Signature verification result: ${isValid}`);
         
         if (!isValid) {
-          console.log(`[!] Handshake signature verification failed for ${peerId}`);
-          // 降级：跳过签名验证，允许连接（仅用于测试）
-          console.log(`[⚠️] Skipping signature verification for testing purposes`);
-          // 不关闭连接，继续进行
+          console.log(`[!] Handshake signature verification failed for ${peerId} — rejecting connection`);
+          conn.ws.close(1002, 'Signature verification failed');
+          return;
         }
       } catch (error) {
-        console.log(`[!] Signature verification error: ${error.message}`);
-        console.log(error.stack);
-        
-        // 降级：跳过签名验证，允许连接（仅用于测试）
-        console.log(`[⚠️] Skipping signature verification for testing purposes`);
+        console.log(`[!] Handshake signature verification error: ${error.message} — rejecting connection`);
+        conn.ws.close(1002, 'Signature verification failed');
+        return;
       }
       
       // 执行Kyber密钥协商
@@ -693,10 +707,14 @@ class P2PServer {
         try {
           const kyberPublicKey = Buffer.from(msg.kyberPublicKey, 'hex');
           // 使用Kyber封装生成共享密钥
-          const { sharedSecret } = KyberMock.encapsulate(kyberPublicKey);
-          // 存储共享密钥用于加密通信
+          const { sharedSecret, ciphertext: kyberCiphertext } = KyberKEM.encapsulate(kyberPublicKey);
           this.encryptionKeys.set(peerId, sharedSecret);
-          console.log('Kyber key exchange completed, encryption enabled');
+          console.log('ML-KEM-768 key exchange completed, encryption enabled');
+          
+          this.send(peerId, {
+            type: 'KEY_EXCHANGE',
+            kyberCiphertext: kyberCiphertext.toString('hex')
+          });
         } catch (error) {
           console.error('Kyber key exchange failed:', error.message);
           // 即使密钥协商失败，也继续连接（降级到非加密通信）
@@ -731,6 +749,29 @@ class P2PServer {
     
     // 请求状态
     this.send(peerId, { type: 'GET_STATUS' });
+  }
+
+  async handleKeyExchange(peerId, msg) {
+    const conn = this.connections.get(peerId);
+    if (!conn || !conn.handshakeData) {
+      console.log(`[!] KEY_EXCHANGE received without active handshake from ${peerId}`);
+      return;
+    }
+
+    const { kyberPrivateKey } = conn.handshakeData;
+    if (!kyberPrivateKey) {
+      console.log(`[!] No Kyber private key for peer ${peerId}`);
+      return;
+    }
+
+    try {
+      const kyberCiphertext = Buffer.from(msg.kyberCiphertext, 'hex');
+      const sharedSecret = KyberKEM.decapsulate(kyberCiphertext, kyberPrivateKey);
+      this.encryptionKeys.set(peerId, sharedSecret);
+      console.log(`[✓] ML-KEM-768 shared secret established with ${peerId}`);
+    } catch (error) {
+      console.error(`[!] ML-KEM-768 decapsulate failed for ${peerId}:`, error.message);
+    }
   }
 
   // ==================== 发送/广播 ====================

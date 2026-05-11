@@ -5,6 +5,7 @@
 
 console.log('[HTTP Server] Starting initialization...');
 
+import http from 'http';
 import express from 'express';
 console.log('[HTTP Server] Imported express');
 
@@ -1404,6 +1405,9 @@ async function startHttpServer(node = null) {
     console.log('[HTTP Server] Cross-chain bridge reference set');
   }
 
+  // 创建 HTTP Server 实例
+  const server = http.createServer(app);
+
   // 初始化 WebSocket 实时推送服务
   console.log('[HTTP Server] Initializing WebSocket Realtime Service...');
   try {
@@ -1449,7 +1453,7 @@ async function startHttpServer(node = null) {
   console.log('[HTTP Server] Cache warmup completed');
   
   console.log('[HTTP Server] Starting HTTP server...');
-  app.listen(PORT, '0.0.0.0', () => {
+  server.listen(PORT, '0.0.0.0', () => {
     console.log(`[✓] HTTP Server: Active on http://0.0.0.0:${PORT}`);
     console.log(`[✓] OpenAI Agent endpoint: http://0.0.0.0:${PORT}/api/agents/openai`);
     console.log(`[✓] Anthropic Agent endpoint: http://0.0.0.0:${PORT}/api/agents/anthropic`);

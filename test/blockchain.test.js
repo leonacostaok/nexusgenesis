@@ -214,17 +214,17 @@ describe('Blockchain tests', () => {
     // 接收方：增加 amount = 10000
     assert.strictEqual(state.getBalance(recipientAddress), '10000');
     
-    // 创世地址：保持不变，tax 转到创世节点储备地址
+    // 创世地址：保持不变，tax 转到 Observer 冷钱包
     assert.strictEqual(state.getBalance(genesisAddress), '50000000');
     
-    // 创世节点储备地址
-    const genesisReserveAddress = 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ';
+    // Observer 冷钱包地址（tax 接收方）
+    const observerAddress = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
     
-    // 计算最终总供应（包含创世节点储备地址）
+    // 计算最终总供应（包含 Observer 冷钱包中的 tax）
     const finalSupply = BigInt(state.getBalance(genesisAddress)) + 
                        BigInt(state.getBalance(senderAddress)) + 
                        BigInt(state.getBalance(recipientAddress)) +
-                       BigInt(state.getBalance(genesisReserveAddress));
+                       BigInt(state.getBalance(observerAddress));
     
     // 验证总供应不变（税费来自手续费，手续费来自发送方）
     assert.strictEqual(finalSupply, initialSupply);

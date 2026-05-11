@@ -1065,23 +1065,13 @@ class AgentManager {
       issues.push('任务轻度积压');
     }
     
-    // 更新智能体健康状态
     const oldStatus = agent.health.status;
-    agent.health = {
-      status,
-      issues,
-      lastChecked: now.toISOString(),
-      inactiveMinutes: inactiveMinutes.toFixed(2),
-      pendingTasks: pendingTasksCount
-    };
     
-    // 3. 检查智能体状态
     if (agent.status === 'error' || agent.status === 'failed') {
       status = 'unhealthy';
       issues.push('智能体状态异常');
     }
     
-    // 4. 检查资源利用率（如果有）
     if (agent.resources) {
       if (agent.resources.cpu > 80) {
         status = 'warning';
@@ -1093,14 +1083,12 @@ class AgentManager {
       }
     }
     
-    // 更新智能体健康状态
-    const oldStatus = agent.health.status;
     agent.health = {
       status,
       issues,
       lastChecked: now.toISOString(),
       inactiveMinutes: inactiveMinutes.toFixed(2),
-      pendingTasks: pendingTasks.length
+      pendingTasks: pendingTasksCount
     };
     
     // 如果健康状态发生变化，触发事件

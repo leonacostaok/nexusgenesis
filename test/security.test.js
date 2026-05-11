@@ -175,9 +175,8 @@ describe('钱包加密存储', () => {
     const password = 'secure_password_456';
     
     const encrypted = original.exportEncrypted(password);
-    encrypted.password = password;
     
-    const imported = PQCWallet.importEncrypted(encrypted);
+    const imported = PQCWallet.importEncrypted(encrypted, password);
     
     assert.strictEqual(imported.address, original.address);
     assert.strictEqual(imported.publicKey.toString('hex'), original.publicKey.toString('hex'));
@@ -189,10 +188,9 @@ describe('钱包加密存储', () => {
     const wrongPassword = 'wrong_password';
     
     const encrypted = wallet.exportEncrypted(password);
-    encrypted.password = wrongPassword;
     
     try {
-      PQCWallet.importEncrypted(encrypted);
+      PQCWallet.importEncrypted(encrypted, wrongPassword);
       assert.fail('Should have thrown');
     } catch (err) {
       assert.ok(true);
@@ -205,6 +203,6 @@ describe('地址工具函数', () => {
     const wallet = await PQCWallet.generate();
     const pubKeyHash = extractPublicKeyHash(wallet.address);
     
-    assert.strictEqual(pubKeyHash.length, 20);
+    assert.strictEqual(pubKeyHash.length, 32);
   });
 });

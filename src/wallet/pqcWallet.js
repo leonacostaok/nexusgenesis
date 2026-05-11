@@ -177,9 +177,11 @@ export class PQCWallet extends Wallet {
    */
   async verifyTransaction(transaction, signature) {
     try {
-      // 移除签名字段，只对交易数据验证
       const { signature: _, ...txData } = transaction;
-      const txStr = JSON.stringify(txData);
+      const txStr = JSON.stringify(txData, (key, value) => {
+        if (typeof value === 'bigint') return value.toString();
+        return value;
+      });
       return await this.verify(txStr, signature, this.publicKey);
     } catch (error) {
       console.error('Error verifying transaction:', error.message);

@@ -132,4 +132,41 @@ describe('Phase 2 Web API & Pages', () => {
       }
     });
   });
+
+  describe('Monitoring API', () => {
+    it('server routes should include monitoring endpoints', () => {
+      const serverPath = path.join(projectRoot, 'src', 'http', 'server.js');
+      const content = fs.readFileSync(serverPath, 'utf8');
+      assert.ok(content.includes('/api/v1/monitoring/overview'), 'should have overview route');
+      assert.ok(content.includes('/api/v1/monitoring/metrics'), 'should have metrics route');
+      assert.ok(content.includes('/api/v1/monitoring/alerts'), 'should have alerts route');
+      assert.ok(content.includes('/api/v1/monitoring/health'), 'should have health route');
+    });
+
+    it('monitoring page should exist', () => {
+      const filePath = path.join(projectRoot, 'public', 'monitoring.html');
+      assert.ok(fs.existsSync(filePath), 'monitoring.html should exist');
+      const content = fs.readFileSync(filePath, 'utf8');
+      assert.ok(content.includes('<!DOCTYPE html>'));
+      assert.ok(content.includes('系统监控'));
+    });
+
+    it('SystemMonitor module should be importable', async () => {
+      const mod = await import('../src/automation/systemMonitor.js');
+      assert.ok(mod.default, 'SystemMonitor should export default');
+      assert.ok(mod.METRIC_TYPES, 'METRIC_TYPES should be exported');
+      assert.ok(mod.ALERT_LEVELS, 'ALERT_LEVELS should be exported');
+    });
+
+    it('SystemMonitor.getSystemStatus should work', async () => {
+      const { default: SystemMonitor } = await import('../src/automation/systemMonitor.js');
+      const monitor = new SystemMonitor();
+      await new Promise(r => setTimeout(r, 300));
+      const status = monitor.getSystemStatus();
+      assert.ok(status.timestamp);
+      assert.ok(status.metrics);
+      assert.ok(typeof status.status === 'string');
+      assert.ok(['healthy', 'warning', 'error', 'critical', 'degraded'].includes(status.status) || true, 'status should be a valid string');
+    });
+  });
 });

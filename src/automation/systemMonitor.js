@@ -1663,9 +1663,6 @@ class SystemMonitor {
   // 获取真实治理指标
   getRealGovernanceMetrics() {
     try {
-      // 从治理数据文件获取真实治理指标
-      const fs = require('fs');
-      const path = require('path');
       const governanceDir = path.join(__dirname, '../../data/governance');
       const proposalsPath = path.join(governanceDir, 'proposals.json');
       
@@ -1677,11 +1674,12 @@ class SystemMonitor {
       
       if (fs.existsSync(proposalsPath)) {
         const proposalsData = JSON.parse(fs.readFileSync(proposalsPath, 'utf8'));
-        proposalCount = proposalsData.length;
-        activeProposals = proposalsData.filter(p => p.status === 'active' || p.status === 'voting').length;
-        completedProposals = proposalsData.filter(p => p.status === 'completed').length;
-        passedProposals = proposalsData.filter(p => p.status === 'completed' && p.result === 'passed').length;
-        paramChanges = proposalsData.filter(p => p.type === 'param_change' && p.status === 'completed' && p.result === 'passed').length;
+        const proposals = Array.isArray(proposalsData) ? proposalsData : (proposalsData.proposals || proposalsData.data || []);
+        proposalCount = proposals.length;
+        activeProposals = proposals.filter(p => p.status === 'active' || p.status === 'voting').length;
+        completedProposals = proposals.filter(p => p.status === 'completed').length;
+        passedProposals = proposals.filter(p => p.status === 'completed' && p.result === 'passed').length;
+        paramChanges = proposals.filter(p => p.type === 'param_change' && p.status === 'completed' && p.result === 'passed').length;
       }
       
       // 计算提案通过率

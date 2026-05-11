@@ -46,6 +46,9 @@ class ContractTemplateLibrary {
     this.registerTemplate(CONTRACT_TYPES.ESCROW, this.createEscrowTemplate());
     this.registerTemplate(CONTRACT_TYPES.DEV_INCENTIVE, this.createDevIncentiveTemplate());
     this.registerTemplate(CONTRACT_TYPES.MARKETPLACE, this.createMarketplaceTemplate());
+    this.registerTemplate(CONTRACT_TYPES.GOVERNANCE_TOKEN, this.createGovernanceTokenTemplate());
+    this.registerTemplate(CONTRACT_TYPES.CROWDFUNDING, this.createCrowdfundingTemplate());
+    this.registerTemplate(CONTRACT_TYPES.MULTI_SIG, this.createMultiSigTemplate());
   }
 
   /**
@@ -674,6 +677,282 @@ class ContractTemplateLibrary {
             { name: 'itemId', type: 'string' }
           ],
           returns: 'object'
+        }
+      },
+
+      generateDeployParams(customConfig = {}) {
+        return { ...this.defaultConfig, ...customConfig };
+      }
+    };
+  }
+
+  // ==================== 治理代币模板（Phase 2 新增） ====================
+
+  createGovernanceTokenTemplate() {
+    return {
+      type: CONTRACT_TYPES.GOVERNANCE_TOKEN,
+      name: 'Governance Token',
+      version: '1.0.0',
+      description: '治理代币合约 — 投票权重、委托投票、提案门槛、代币分发',
+      category: 'governance',
+      complexity: 'advanced',
+      instructionLimit: 2500,
+      stateSize: 1024,
+
+      defaultConfig: {
+        name: 'NexusGovernanceToken',
+        symbol: 'NGOV',
+        totalSupply: 100000000,
+        decimals: 18,
+        quorumPercent: 10,
+        proposalThreshold: 1000,
+        votingPeriodBlocks: 10080,
+        executionDelayBlocks: 1440,
+        adminAddress: ''
+      },
+
+      methods: {
+        mint: {
+          description: '铸造治理代币',
+          params: [
+            { name: 'to', type: 'address' },
+            { name: 'amount', type: 'uint256' }
+          ],
+          returns: 'boolean'
+        },
+        delegate: {
+          description: '委托投票权',
+          params: [
+            { name: 'delegatee', type: 'address' }
+          ],
+          returns: 'boolean'
+        },
+        propose: {
+          description: '创建治理提案',
+          params: [
+            { name: 'targets', type: 'address[]' },
+            { name: 'values', type: 'uint256[]' },
+            { name: 'calldatas', type: 'bytes[]' },
+            { name: 'description', type: 'string' }
+          ],
+          returns: 'uint256'
+        },
+        castVote: {
+          description: '投票',
+          params: [
+            { name: 'proposalId', type: 'uint256' },
+            { name: 'support', type: 'uint8' }
+          ],
+          returns: 'boolean'
+        },
+        execute: {
+          description: '执行已通过提案',
+          params: [
+            { name: 'proposalId', type: 'uint256' }
+          ],
+          returns: 'boolean'
+        },
+        getVotingPower: {
+          description: '查询投票权重',
+          params: [
+            { name: 'account', type: 'address' }
+          ],
+          returns: 'uint256'
+        },
+        getProposalState: {
+          description: '查询提案状态',
+          params: [
+            { name: 'proposalId', type: 'uint256' }
+          ],
+          returns: 'uint8'
+        }
+      },
+
+      generateDeployParams(customConfig = {}) {
+        return { ...this.defaultConfig, ...customConfig };
+      }
+    };
+  }
+
+  // ==================== 众筹合约模板（Phase 2 新增） ====================
+
+  createCrowdfundingTemplate() {
+    return {
+      type: CONTRACT_TYPES.CROWDFUNDING,
+      name: 'Crowdfunding Campaign',
+      version: '1.0.0',
+      description: '众筹合约 — 创建众筹项目、贡献、目标追踪、退款、里程碑支付',
+      category: 'defi',
+      complexity: 'intermediate',
+      instructionLimit: 2000,
+      stateSize: 768,
+
+      defaultConfig: {
+        platformFeePercent: 2.5,
+        minCampaignDuration: 86400,
+        maxCampaignDuration: 7776000,
+        minGoal: 100,
+        maxGoal: 10000000,
+        adminAddress: ''
+      },
+
+      methods: {
+        createCampaign: {
+          description: '创建众筹项目',
+          params: [
+            { name: 'title', type: 'string' },
+            { name: 'description', type: 'string' },
+            { name: 'goal', type: 'uint256' },
+            { name: 'duration', type: 'uint256' },
+            { name: 'beneficiary', type: 'address' }
+          ],
+          returns: 'string'
+        },
+        contribute: {
+          description: '贡献资金',
+          params: [
+            { name: 'campaignId', type: 'string' },
+            { name: 'amount', type: 'uint256' }
+          ],
+          returns: 'boolean'
+        },
+        claimFunds: {
+          description: '发起人领取资金（需达到目标）',
+          params: [
+            { name: 'campaignId', type: 'string' }
+          ],
+          returns: 'boolean'
+        },
+        refund: {
+          description: '贡献者退款（未达到目标时）',
+          params: [
+            { name: 'campaignId', type: 'string' }
+          ],
+          returns: 'boolean'
+        },
+        createMilestone: {
+          description: '创建里程碑',
+          params: [
+            { name: 'campaignId', type: 'string' },
+            { name: 'title', type: 'string' },
+            { name: 'amount', type: 'uint256' }
+          ],
+          returns: 'string'
+        },
+        releaseMilestone: {
+          description: '释放里程碑资金',
+          params: [
+            { name: 'campaignId', type: 'string' },
+            { name: 'milestoneId', type: 'string' }
+          ],
+          returns: 'boolean'
+        },
+        getCampaign: {
+          description: '查询众筹项目',
+          params: [
+            { name: 'campaignId', type: 'string' }
+          ],
+          returns: 'object'
+        }
+      },
+
+      generateDeployParams(customConfig = {}) {
+        return { ...this.defaultConfig, ...customConfig };
+      }
+    };
+  }
+
+  // ==================== 多签钱包模板（Phase 2 新增） ====================
+
+  createMultiSigTemplate() {
+    return {
+      type: CONTRACT_TYPES.MULTI_SIG,
+      name: 'Multi-Signature Wallet',
+      version: '1.0.0',
+      description: '多签钱包合约 — 多签确认交易、权限管理、每日限额、紧急冻结',
+      category: 'security',
+      complexity: 'intermediate',
+      instructionLimit: 1800,
+      stateSize: 512,
+
+      defaultConfig: {
+        owners: [],
+        requiredConfirmations: 3,
+        dailyLimit: 100000,
+        maxTransactionValue: 1000000,
+        allowEmergencyFreeze: true,
+        adminAddress: ''
+      },
+
+      methods: {
+        addOwner: {
+          description: '添加所有者',
+          params: [
+            { name: 'owner', type: 'address' }
+          ],
+          returns: 'boolean'
+        },
+        removeOwner: {
+          description: '移除所有者',
+          params: [
+            { name: 'owner', type: 'address' }
+          ],
+          returns: 'boolean'
+        },
+        replaceOwner: {
+          description: '替换所有者',
+          params: [
+            { name: 'oldOwner', type: 'address' },
+            { name: 'newOwner', type: 'address' }
+          ],
+          returns: 'boolean'
+        },
+        submitTransaction: {
+          description: '提交待确认交易',
+          params: [
+            { name: 'to', type: 'address' },
+            { name: 'value', type: 'uint256' },
+            { name: 'data', type: 'bytes' }
+          ],
+          returns: 'uint256'
+        },
+        confirmTransaction: {
+          description: '确认交易',
+          params: [
+            { name: 'txId', type: 'uint256' }
+          ],
+          returns: 'boolean'
+        },
+        revokeConfirmation: {
+          description: '撤销确认',
+          params: [
+            { name: 'txId', type: 'uint256' }
+          ],
+          returns: 'boolean'
+        },
+        executeTransaction: {
+          description: '执行已确认交易',
+          params: [
+            { name: 'txId', type: 'uint256' }
+          ],
+          returns: 'boolean'
+        },
+        emergencyFreeze: {
+          description: '紧急冻结',
+          params: [],
+          returns: 'boolean'
+        },
+        emergencyUnfreeze: {
+          description: '解除冻结',
+          params: [],
+          returns: 'boolean'
+        },
+        getConfirmationCount: {
+          description: '查询确认数',
+          params: [
+            { name: 'txId', type: 'uint256' }
+          ],
+          returns: 'uint256'
         }
       },
 

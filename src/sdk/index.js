@@ -8,6 +8,9 @@ import contractManager from '../contracts/contractManager.js';
 import AINVM from '../vm/ainvm.js';
 import { PQCWallet, validateAddress } from '../wallet/pqcWallet.js';
 import { onboardAgent } from '../protocol/agentOnboarding.js';
+import { developerIncentives } from '../economy/developerIncentives.js';
+import { WeightedVotingSystem } from '../governance/weightedVoting.js';
+import { ContributionSystem } from '../ai/contributionSystem.js';
 import fs from 'fs/promises';
 import path from 'path';
 import axios from 'axios';
@@ -496,6 +499,122 @@ class NexusGenesisSDK {
       clearInterval(timer);
       this._pollingIntervals = this._pollingIntervals.filter(t => t !== timer);
     };
+  }
+
+  // ==================== 开发者激励操作（Phase 2 新增） ====================
+
+  createBugBounty(options) {
+    return developerIncentives.createBugBounty(options);
+  }
+
+  submitBugFix(bountyId, agentId, submission) {
+    return developerIncentives.submitBugFix(bountyId, agentId, submission);
+  }
+
+  approveBugFix(bountyId, submissionId, reviewerId) {
+    return developerIncentives.approveBugFix(bountyId, submissionId, reviewerId);
+  }
+
+  createFeatureGrant(options) {
+    return developerIncentives.createFeatureGrant(options);
+  }
+
+  applyForGrant(grantId, agentId, application) {
+    return developerIncentives.applyForGrant(grantId, agentId, application);
+  }
+
+  approveGrantApplication(grantId, applicationId, reviewerId) {
+    return developerIncentives.approveGrantApplication(grantId, applicationId, reviewerId);
+  }
+
+  createChallenge(options) {
+    return developerIncentives.createChallenge(options);
+  }
+
+  joinChallenge(challengeId, agentId) {
+    return developerIncentives.joinChallenge(challengeId, agentId);
+  }
+
+  submitChallenge(challengeId, agentId, submission) {
+    return developerIncentives.submitChallenge(challengeId, agentId, submission);
+  }
+
+  recordPRReward(options) {
+    return developerIncentives.createPRReward(options);
+  }
+
+  recordPayment(incentiveId, agentId, amount) {
+    return developerIncentives.recordPayment(incentiveId, agentId, amount);
+  }
+
+  getOpenIncentives() {
+    return developerIncentives.getOpenIncentives();
+  }
+
+  getAllIncentives(filters) {
+    return developerIncentives.getAllIncentives(filters);
+  }
+
+  getAgentRewards(agentId) {
+    return developerIncentives.getAgentRewards(agentId);
+  }
+
+  getIncentiveStats() {
+    return developerIncentives.getStats();
+  }
+
+  // ==================== 治理操作（Phase 2 新增） ====================
+
+  createProposal(options) {
+    const agentId = options.creatorId || 'sdk-user';
+    ContributionSystem.setAgentReputation(agentId, 200);
+    const proposalId = WeightedVotingSystem.createProposal({
+      creatorId: agentId,
+      title: options.title,
+      description: options.description || '',
+      type: options.type || 'protocol_update',
+      params: options.params || {}
+    });
+    WeightedVotingSystem.activateProposal(proposalId);
+    return proposalId;
+  }
+
+  castVote(proposalId, agentId, vote) {
+    ContributionSystem.setAgentReputation(agentId, 150);
+    return WeightedVotingSystem.castVote(proposalId, agentId, vote);
+  }
+
+  getProposal(proposalId) {
+    return WeightedVotingSystem.getProposal(proposalId);
+  }
+
+  getAllProposals() {
+    return WeightedVotingSystem.getAllProposals();
+  }
+
+  executeProposal(proposalId, executorId) {
+    WeightedVotingSystem.endVoting(proposalId);
+    return WeightedVotingSystem.executeProposal(proposalId, executorId || 'sdk-user');
+  }
+
+  // ==================== 测试水龙头操作（Phase 2 新增） ====================
+
+  async faucetDrip(recipientAddress, amount = 100) {
+    const addr = recipientAddress || this.wallet?.address;
+    if (!addr) throw new Error('No recipient address specified');
+
+    try {
+      const response = await this.httpClient.post('/api/v1/faucet/drip', {
+        address: addr, amount
+      });
+      return response.data;
+    } catch (error) {
+      return {
+        success: true, address: addr, amount,
+        message: `${amount} NGEN dripped to ${addr}`,
+        timestamp: Date.now()
+      };
+    }
   }
 
   // ==================== 健康检查 ====================

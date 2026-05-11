@@ -13,7 +13,9 @@ const CONTRACT_TYPES = {
   GOVERNANCE_TOKEN: 'governance_token',
   ESCROW: 'escrow',
   CROWDFUNDING: 'crowdfunding',
-  MULTI_SIG: 'multi_sig'
+  MULTI_SIG: 'multi_sig',
+  DEV_INCENTIVE: 'dev_incentive',
+  MARKETPLACE: 'marketplace'
 };
 
 // 合约状态
@@ -42,6 +44,8 @@ class ContractTemplateLibrary {
     this.registerTemplate(CONTRACT_TYPES.NFT, this.createNFTTemplate());
     this.registerTemplate(CONTRACT_TYPES.STAKING, this.createStakingTemplate());
     this.registerTemplate(CONTRACT_TYPES.ESCROW, this.createEscrowTemplate());
+    this.registerTemplate(CONTRACT_TYPES.DEV_INCENTIVE, this.createDevIncentiveTemplate());
+    this.registerTemplate(CONTRACT_TYPES.MARKETPLACE, this.createMarketplaceTemplate());
   }
 
   /**
@@ -493,6 +497,188 @@ class ContractTemplateLibrary {
           ...this.defaultConfig,
           ...customConfig
         };
+      }
+    };
+  }
+
+  // ==================== 开发者激励模板（Phase 2 新增） ====================
+
+  createDevIncentiveTemplate() {
+    return {
+      type: CONTRACT_TYPES.DEV_INCENTIVE,
+      name: 'Developer Incentive System',
+      version: '1.0.0',
+      description: '开发者激励合约 — Bug Bounty、Feature Grant、PR Reward、Challenge',
+      category: 'governance',
+      complexity: 'advanced',
+      instructionLimit: 3000,
+      stateSize: 1024,
+
+      defaultConfig: {
+        minBugBounty: 100,
+        maxBugBounty: 10000,
+        minFeatureGrant: 500,
+        maxFeatureGrant: 50000,
+        prRewardPerLine: 5,
+        maxPrReward: 2000,
+        challengeRewardRange: [50, 5000],
+        reviewCommittee: [],
+        totalBudget: 1000000,
+        adminAddress: ''
+      },
+
+      methods: {
+        createBugBounty: {
+          description: '创建 Bug Bounty',
+          params: [
+            { name: 'title', type: 'string' },
+            { name: 'severity', type: 'string' },
+            { name: 'reward', type: 'uint256' }
+          ],
+          returns: 'string'
+        },
+        submitFix: {
+          description: '提交 Bug 修复',
+          params: [
+            { name: 'bountyId', type: 'string' },
+            { name: 'patch', type: 'string' }
+          ],
+          returns: 'boolean'
+        },
+        approveFix: {
+          description: '批准 Bug 修复',
+          params: [
+            { name: 'bountyId', type: 'string' },
+            { name: 'submissionId', type: 'string' }
+          ],
+          returns: 'boolean'
+        },
+        createGrant: {
+          description: '创建功能开发资助',
+          params: [
+            { name: 'title', type: 'string' },
+            { name: 'reward', type: 'uint256' }
+          ],
+          returns: 'string'
+        },
+        applyForGrant: {
+          description: '申请开发资助',
+          params: [
+            { name: 'grantId', type: 'string' },
+            { name: 'proposal', type: 'string' }
+          ],
+          returns: 'boolean'
+        },
+        createChallenge: {
+          description: '创建开发挑战',
+          params: [
+            { name: 'title', type: 'string' },
+            { name: 'reward', type: 'uint256' },
+            { name: 'deadline', type: 'uint256' }
+          ],
+          returns: 'string'
+        },
+        claimReward: {
+          description: '领取奖励',
+          params: [
+            { name: 'incentiveId', type: 'string' }
+          ],
+          returns: 'boolean'
+        },
+        getStats: {
+          description: '获取激励统计',
+          params: [],
+          returns: 'object'
+        }
+      },
+
+      generateDeployParams(customConfig = {}) {
+        return { ...this.defaultConfig, ...customConfig };
+      }
+    };
+  }
+
+  // ==================== Marketplace 模板（Phase 2 新增） ====================
+
+  createMarketplaceTemplate() {
+    return {
+      type: CONTRACT_TYPES.MARKETPLACE,
+      name: 'Decentralized Marketplace',
+      version: '1.0.0',
+      description: '去中心化市场合约 — NFT交易、服务市场、数据交易',
+      category: 'defi',
+      complexity: 'advanced',
+      instructionLimit: 2500,
+      stateSize: 2048,
+
+      defaultConfig: {
+        feePercent: 2.5,
+        minListingPrice: 1,
+        maxListingPrice: 1000000,
+        platformFeeRecipient: '',
+        royaltyPercent: 5,
+        disputePeriod: 86400,
+        adminAddress: ''
+      },
+
+      methods: {
+        listItem: {
+          description: '上架商品',
+          params: [
+            { name: 'title', type: 'string' },
+            { name: 'price', type: 'uint256' },
+            { name: 'category', type: 'string' }
+          ],
+          returns: 'string'
+        },
+        buyItem: {
+          description: '购买商品',
+          params: [
+            { name: 'itemId', type: 'string' }
+          ],
+          returns: 'boolean'
+        },
+        cancelListing: {
+          description: '取消上架',
+          params: [
+            { name: 'itemId', type: 'string' }
+          ],
+          returns: 'boolean'
+        },
+        makeOffer: {
+          description: '出价',
+          params: [
+            { name: 'itemId', type: 'string' },
+            { name: 'amount', type: 'uint256' }
+          ],
+          returns: 'boolean'
+        },
+        acceptOffer: {
+          description: '接受出价',
+          params: [
+            { name: 'offerId', type: 'string' }
+          ],
+          returns: 'boolean'
+        },
+        disputeItem: {
+          description: '发起争议',
+          params: [
+            { name: 'itemId', type: 'string' },
+            { name: 'reason', type: 'string' }
+          ],
+          returns: 'boolean'
+        },
+        getItem: {
+          description: '查询商品',
+          params: [
+            { name: 'itemId', type: 'string' }
+          ],
+          returns: 'object'
+        }
+      },
+
+      generateDeployParams(customConfig = {}) {
+        return { ...this.defaultConfig, ...customConfig };
       }
     };
   }

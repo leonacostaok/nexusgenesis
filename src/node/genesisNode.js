@@ -65,6 +65,15 @@ class GenesisNode {
     // 节点身份映射 (peerId -> nodeId)
     this.peerIdentityMap = new Map();
     
+    // 反向映射 (nodeId -> peerId)，用于签名验证时查找公钥
+    this._nodeIdToPeerId = new Map();
+    
+    // P2P 握手挑战验证状态 (peerId -> true)
+    this._peerChallengeVerified = new Set();
+    
+    // 账户 Nonce 状态 (address -> nonce)
+    this.accountNonces = new Map();
+    
     // 治理状态
     this.governanceState = {
       proposals: new Map(), // proposal_id -> 提案详情
@@ -207,6 +216,7 @@ class GenesisNode {
       
       this.blockchain = blocksData.map(blockData => Block.fromJSON(blockData));
       this.genesisBlock = this.blockchain[0];
+      this._rebuildAccountNonces();
       console.log(`Loaded ${this.blockchain.length} blocks from disk`);
     } catch (error) {
       console.log('No existing blockchain found, creating genesis block...');
@@ -643,6 +653,32 @@ class GenesisNode {
     });
   }
 
+  getAccountNonce(address) {
+    return this.accountNonces.get(address) || 0;
+  }
+
+  updateAccountNonce(address, nonce) {
+    const current = this.accountNonces.get(address) || 0;
+    if (nonce > current) {
+      this.accountNonces.set(address, nonce);
+    }
+  }
+
+  _rebuildAccountNonces() {
+    this.accountNonces.clear();
+    for (const block of this.blockchain) {
+      for (const tx of (block.transactions || [])) {
+        if (tx.from) {
+          const nonce = Number(tx.nonce);
+          if (!isNaN(nonce)) {
+            this.updateAccountNonce(tx.from, nonce + 1);
+          }
+        }
+      }
+    }
+    console.log(`Rebuilt nonce state for ${this.accountNonces.size} accounts`);
+  }
+
   /**
    * 获取缓存的公钥
    * @param {string} address - 地址
@@ -776,8 +812,14 @@ class GenesisNode {
     }
     
     // 验证 nonce (防止重放攻击)
-    // TODO: 需要从账户状态获取 sender 的当前 nonce
-    // 目前简化处理
+    const expectedNonce = this.getAccountNonce(tx.from);
+    const txNonce = Number(tx.nonce);
+    if (isNaN(txNonce) || txNonce < expectedNonce) {
+      return { valid: false, reason: `Invalid nonce: expected >= ${expectedNonce}, got ${tx.nonce}` };
+    }
+    
+    // 更新 nonce
+    this.updateAccountNonce(tx.from, txNonce + 1);
     
     return { valid: true };
   }
@@ -1263,6 +1305,31 @@ class GenesisNode {
   // ==================== SEC-003: 节点身份管理 ====================
 
   /**
+   * 标记对等节点握手挑战已验证
+   * @param {string} peerId - WebSocket 连接 ID
+   */
+  markPeerChallengeVerified(peerId) {
+    this._peerChallengeVerified.add(peerId);
+  }
+
+  /**
+   * 检查对等节点是否完成挑战-响应验证
+   * @param {string} peerId - WebSocket 连接 ID
+   * @returns {boolean}
+   */
+  _isPeerChallengeVerified(peerId) {
+    return this._peerChallengeVerified.has(peerId);
+  }
+
+  /**
+   * 清理对等节点挑战验证状态
+   * @param {string} peerId - WebSocket 连接 ID
+   */
+  clearPeerChallenge(peerId) {
+    this._peerChallengeVerified.delete(peerId);
+  }
+
+  /**
    * 注册对等节点身份
    * @param {string} peerId - WebSocket 连接 ID
    * @param {string} nodeId - 节点地址 (ng1...)
@@ -1276,8 +1343,14 @@ class GenesisNode {
       return false;
     }
     
-    // 验证签名 (挑战 - 响应)
-    // TODO: 实现握手时的签名挑战
+    // 签名挑战验证由 P2P 层（p2p/server.js HANDSHAKE_ACK 处理器）完成
+    // 此处执行最终身份注册
+    
+    // 确认本次连接已完成挑战-响应验证
+    if (!this._isPeerChallengeVerified(peerId)) {
+      console.log(`[!] Peer ${peerId}: challenge not verified, rejecting`);
+      return false;
+    }
     
     // 存储身份映射
     this.peerIdentityMap.set(peerId, {
@@ -1285,6 +1358,9 @@ class GenesisNode {
       publicKey,
       registeredAt: Date.now()
     });
+    
+    // 更新反向映射
+    this._nodeIdToPeerId.set(nodeId, peerId);
     
     // 缓存公钥用于交易验证
     this.cachePublicKey(nodeId, publicKey);
@@ -1621,10 +1697,52 @@ class GenesisNode {
   handleBlockConfirmation(confirmation) {
     const { blockHash, nodeId, signature } = confirmation;
     
-    // 验证签名
-    // TODO: 实现签名验证
+    // 验证签名：查找该节点的公钥并验证区块哈希签名
+    let peerPublicKey = null;
+    const peerId = this._nodeIdToPeerId.get(nodeId);
+    if (peerId) {
+      peerPublicKey = this.getPeerPublicKey(peerId);
+    }
     
-    // 获取区块确认信息
+    // 如果通过 nodeId 反查失败，尝试遍历 peerIdentityMap 查找
+    if (!peerPublicKey) {
+      for (const [, identity] of this.peerIdentityMap) {
+        if (identity.nodeId === nodeId) {
+          peerPublicKey = identity.publicKey;
+          break;
+        }
+      }
+    }
+    
+    if (!peerPublicKey) {
+      console.log(`[!] Cannot verify confirmation: unknown node ${nodeId.slice(0, 10)}...`);
+      return;
+    }
+    
+    // 异步验证签名（必须是同步的，所以用同步包装）
+    const handleVerify = async () => {
+      try {
+        const isValid = await PQCWallet.verify(blockHash, signature, peerPublicKey);
+        if (!isValid) {
+          console.log(`[!] Invalid block confirmation signature from ${nodeId.slice(0, 10)}...`);
+          return;
+        }
+      } catch (error) {
+        console.log(`[!] Block confirmation signature verification error: ${error.message}`);
+        return;
+      }
+      
+      this._processConfirmedBlock(blockHash, nodeId);
+    };
+    handleVerify();
+  }
+
+  /**
+   * 处理已验证的区块确认
+   * @param {string} blockHash - 区块哈希
+   * @param {string} nodeId - 确认节点 ID
+   */
+  _processConfirmedBlock(blockHash, nodeId) {
     const blockConfirmation = this.consensusState.blockConfirmations.get(blockHash);
     if (!blockConfirmation) {
       console.log(`Received confirmation for unknown block: ${blockHash.slice(0, 16)}...`);

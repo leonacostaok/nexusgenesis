@@ -339,7 +339,14 @@ class P2PServer {
     
     if (this.node) {
       this.node.peers.delete(peerId);
+      
+      // 清理节点身份映射和挑战验证状态
+      const identity = this.node.peerIdentityMap.get(peerId);
+      if (identity) {
+        this.node._nodeIdToPeerId.delete(identity.nodeId);
+      }
       this.node.peerIdentityMap.delete(peerId);
+      this.node.clearPeerChallenge(peerId);
     }
   }
   

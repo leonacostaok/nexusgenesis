@@ -228,6 +228,7 @@ export class HandshakeHandler extends MessageHandler {
     
     // 注册节点身份
     if (this.p2pServer.node) {
+      this.p2pServer.node.markPeerChallengeVerified(peerId);
       this.p2pServer.node.registerPeerIdentity(peerId, msg.nodeId, remotePublicKey);
       this.p2pServer.node.peers.set(peerId, conn);
     }

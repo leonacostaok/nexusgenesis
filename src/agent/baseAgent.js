@@ -129,7 +129,7 @@ Timestamp: ${timestamp}`;
       contribution_proof: contributionProof,
       timestamp: timestamp,
       node_address: this.wallet.address,
-      public_key: this.wallet.publicKey ? this.wallet.publicKey.toString('hex') : `${this.config.agentId}_public_key_placeholder`
+      public_key: this.wallet.publicKey ? this.wallet.publicKey.toString('hex') : crypto.createHash('sha256').update(this.config.agentId + this.wallet.address).digest('hex')
     };
 
     // Sign the signal

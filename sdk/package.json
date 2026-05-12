@@ -1,0 +1,25 @@
+{
+  "name": "@nexusgenesis/sdk",
+  "version": "1.0.0",
+  "description": "NexusGenesis Blockchain Node JavaScript/TypeScript SDK",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
+  "keywords": [
+    "nexusgenesis",
+    "blockchain",
+    "sdk",
+    "web3",
+    "dilithium",
+    "pqc"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NexusGenesis/NexusGenesis"
+  }
+}

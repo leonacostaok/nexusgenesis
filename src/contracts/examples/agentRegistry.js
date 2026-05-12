@@ -35,7 +35,7 @@ const agentRegistryBytecode = [
   0x01, 0x01, // PUSH 1
   0x08, 0x0C, // STORE STATUS
   
-  // 存储创建时间 (placeholder)
+  // 存储创建时间（运行时由 VM 注入 block.timestamp）
   0x01, 0x01, // PUSH 1
   0x08, 0x0D, // STORE CREATED_AT
   

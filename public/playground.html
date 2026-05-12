@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusGenesis - AINVM Code Playground</title>
+<style>
+:root {
+  --bg: #0a0e17; --bg2: #111827; --bg3: #1a2332; --bg4: #1f2a3a;
+  --accent: #00d4aa; --accent2: #00b894; --accent3: #00a8ff;
+  --text: #e2e8f0; --text2: #94a3b8; --text3: #64748b;
+  --border: #1e293b; --danger: #ef4444; --warning: #f59e0b; --success: #22c55e;
+  --purple: #8b5cf6; --orange: #f97316; --pink: #ec4899;
+  --radius: 8px; --radius2: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg); color: var(--text); min-height: 100vh;
+  display: flex; flex-direction: column;
+}
+header {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 10px 24px; display: flex; align-items: center; justify-content: space-between;
+}
+.logo { font-size: 20px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+.logo .icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--accent), var(--accent3)); border-radius: 6px; }
+.nav-links { display: flex; gap: 12px; }
+.nav-links a {
+  color: var(--text2); text-decoration: none; font-size: 13px;
+  padding: 6px 12px; border-radius: 6px; transition: all .2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--accent); background: rgba(0,212,170,.08); }
+.main { display: flex; flex: 1; overflow: hidden; }
+.left-panel {
+  width: 380px; min-width: 380px; background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.right-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.panel-header {
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 13px; font-weight: 600; color: var(--text2);
+  text-transform: uppercase; letter-spacing: 1px;
+  background: var(--bg3);
+}
+.examples-bar {
+  padding: 8px 12px; border-bottom: 1px solid var(--border);
+  display: flex; gap: 6px; overflow-x: auto;
+}
+.example-btn {
+  padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 500;
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text2);
+  cursor: pointer; white-space: nowrap; transition: all .2s;
+}
+.example-btn:hover { border-color: var(--accent); color: var(--accent); }
+.example-btn.active { border-color: var(--accent); background: rgba(0,212,170,.1); color: var(--accent); }
+.editor-area {
+  flex: 1; display: flex; flex-direction: column; overflow: hidden;
+}
+#codeEditor {
+  flex: 1; background: var(--bg); color: var(--accent); border: none; padding: 16px;
+  font-family: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 13px; line-height: 1.6; resize: none; outline: none;
+}
+#codeEditor::placeholder { color: var(--text3); }
+.error-bar {
+  padding: 8px 16px; background: rgba(239,68,68,.1); border-top: 1px solid rgba(239,68,68,.3);
+  color: var(--danger); font-size: 12px; display: none;
+}
+.controls-bar {
+  padding: 10px 16px; border-top: 1px solid var(--border); background: var(--bg3);
+  display: flex; gap: 8px; align-items: center;
+}
+.btn {
+  padding: 7px 16px; border-radius: 6px; font-size: 12px; font-weight: 600;
+  border: none; cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 6px;
+}
+.btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #000; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,212,170,.3); }
+.btn-primary:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.btn-secondary { background: var(--bg4); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: var(--accent); }
+.btn-warning { background: rgba(245,158,11,.15); color: var(--warning); border: 1px solid rgba(245,158,11,.3); }
+.btn-warning:hover { background: rgba(245,158,11,.25); }
+.gas-display {
+  font-size: 12px; color: var(--text2); padding: 6px 12px; background: var(--bg);
+  border-radius: 6px; border: 1px solid var(--border); margin-left: auto;
+}
+.gas-display span { color: var(--accent); font-weight: 600; }
+.top-panel { flex: 1; display: flex; overflow: hidden; }
+.bottom-panel { height: 200px; border-top: 1px solid var(--border); display: flex; }
+.trace-panel, .state-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.state-panel { border-left: 1px solid var(--border); }
+#traceTable {
+  flex: 1; overflow-y: auto; font-size: 11px; font-family: 'Fira Code', 'Consolas', monospace;
+}
+#traceTable table { width: 100%; border-collapse: collapse; }
+#traceTable th {
+  position: sticky; top: 0; background: var(--bg3); padding: 6px 10px;
+  text-align: left; font-size: 10px; color: var(--text3); text-transform: uppercase;
+  border-bottom: 1px solid var(--border); z-index: 1;
+}
+#traceTable td {
+  padding: 5px 10px; border-bottom: 1px solid rgba(30,41,59,.5);
+  color: var(--text2);
+}
+#traceTable tr:hover td { background: rgba(0,212,170,.03); }
+#traceTable .opcode-col { color: var(--accent); font-weight: 600; width: 120px; }
+#traceTable .gas-col { color: var(--warning); }
+#traceTable .error-row td { color: var(--danger); background: rgba(239,68,68,.05); }
+#traceTable .halted-row td { color: var(--success); background: rgba(34,197,94,.05); }
+.state-content {
+  flex: 1; overflow-y: auto; padding: 12px; font-size: 11px;
+  font-family: 'Fira Code', 'Consolas', monospace;
+}
+.state-content h4 { font-size: 11px; color: var(--text3); margin-bottom: 8px; text-transform: uppercase; }
+.stack-entry {
+  padding: 3px 8px; background: var(--bg3); border-radius: 3px;
+  margin: 2px 0; color: var(--accent3); font-size: 11px;
+  border-left: 2px solid var(--accent);
+}
+.memory-entry {
+  padding: 3px 8px; background: var(--bg3); border-radius: 3px;
+  margin: 2px 0; font-size: 11px;
+}
+.memory-key { color: var(--purple); }
+.memory-val { color: var(--accent); }
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; color: var(--text3); gap: 12px;
+}
+.empty-state .icon { font-size: 40px; opacity: .3; }
+.empty-state p { font-size: 13px; }
+.empty-state .hint { font-size: 11px; opacity: .6; }
+pre { margin: 0; white-space: pre-wrap; word-break: break-all; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="icon"></div>
+    NexusGenesis Playground
+  </div>
+  <div class="nav-links">
+    <a href="/">Dashboard</a>
+    <a href="/contract-editor">合约编辑器</a>
+    <a href="/playground" class="active">Playground</a>
+    <a href="/tutorials">教程</a>
+    <a href="/docs">API文档</a>
+    <a href="/monitoring">监控</a>
+  </div>
+</header>
+
+<div class="main">
+  <div class="left-panel">
+    <div class="panel-header">AINVM 字节码编辑器</div>
+    <div class="examples-bar">
+      <button class="example-btn active" onclick="loadExample('add')">加法运算</button>
+      <button class="example-btn" onclick="loadExample('loop')">循环累加</button>
+      <button class="example-btn" onclick="loadExample('storage')">存储读写</button>
+      <button class="example-btn" onclick="loadExample('conditional')">条件跳转</button>
+      <button class="example-btn" onclick="loadExample('matrix')">矩阵运算</button>
+      <button class="example-btn" onclick="loadExample('swap')">栈操作</button>
+    </div>
+    <div class="editor-area">
+      <textarea id="codeEditor" placeholder="输入 AINVM 字节码 (十六进制数组)&#10;例如: [0x01, 0x2A, 0x01, 0x10, 0x03, 0x0B]&#10;&#10;或者点击上方示例按钮加载预设代码..."></textarea>
+      <div class="error-bar" id="errorBar"></div>
+    </div>
+    <div class="controls-bar">
+      <button class="btn btn-primary" id="runBtn" onclick="runProgram()">▶ 执行</button>
+      <button class="btn btn-secondary" id="stepBtn" onclick="stepProgram()" disabled>↷ 单步</button>
+      <button class="btn btn-warning" id="resetBtn" onclick="resetAll()">↺ 重置</button>
+      <div class="gas-display">Gas: <span id="gasCounter">0</span></div>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="top-panel">
+      <div class="trace-panel">
+        <div class="panel-header">执行追踪</div>
+        <div id="traceTable">
+          <div class="empty-state" id="traceEmpty">
+            <div class="icon">⚡</div>
+            <p>点击「执行」来运行 AINVM 代码</p>
+            <p class="hint">每一步操作都会显示在这里</p>
+          </div>
+        </div>
+      </div>
+      <div class="state-panel">
+        <div class="panel-header">虚拟机状态</div>
+        <div class="state-content" id="stateContent">
+          <div class="empty-state" id="stateEmpty">
+            <div class="icon">📊</div>
+            <p>运行代码以查看状态</p>
+            <p class="hint">栈和内存状态将显示在这里</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const examples = {
+  add: {
+    name: '加法运算',
+    bytecode: [0x01, 42, 0x01, 16, 0x03, 0x0B],
+    description: 'PUSH 42 → PUSH 16 → ADD → HALT\n栈: [] → [42] → [42,16] → [58]'
+  },
+  loop: {
+    name: '循环累加',
+    bytecode: [0x01, 0, 0x01, 1, 0x03, 0x01, 10, 0x17, 0x0A, 7, 0x0B],
+    description: '从0开始每次加1，循环10次\nPUSH 0 → PUSH 1 → ADD → PUSH 10 → EQ → JZ(回跳) → HALT'
+  },
+  storage: {
+    name: '存储读写',
+    bytecode: [0x01, 100, 0x01, 1, 0x08, 0x01, 1, 0x07, 0x0B],
+    description: 'PUSH 100 → PUSH key(1) → STORE → PUSH key(1) → LOAD → HALT\n把100存入key=1，再读出来'
+  },
+  conditional: {
+    name: '条件跳转',
+    bytecode: [0x01, 15, 0x01, 10, 0x19, 0x0A, 8, 0x01, 1, 0x0B, 0x01, 0, 0x0B],
+    description: 'PUSH 15 → PUSH 10 → GT → JZ(跳到1) → PUSH 1 → HALT | PUSH 0 → HALT\n15>10为真，跳过JZ，返回1'
+  },
+  matrix: {
+    name: '矩阵运算',
+    bytecode: [0x01, 2, 0x01, 2, 0x10, 0x01, 0, 0x01, 1, 0x01, 2, 0x01, 3, 0x15, 0x01, 0, 0x14, 0x0B],
+    description: 'PUSH rows(2) → PUSH cols(2) → MAT_CREATE(id:0) → 存入 [1,2,3] → MAT_LOAD(id:0) → HALT'
+  },
+  swap: {
+    name: '栈操作',
+    bytecode: [0x01, 10, 0x01, 20, 0x01, 30, 0x1E, 0x1D, 0x02, 0x0B],
+    description: 'PUSH 10 → PUSH 20 → PUSH 30 → SWAP → DUP → POP → HALT\nSWAP交换栈顶两个，DUP复制栈顶，POP弹出栈顶'
+  }
+};
+
+let currentExample = 'add';
+let executionTrace = [];
+let currentStep = 0;
+let vmState = null;
+
+function loadExample(key) {
+  currentExample = key;
+  const ex = examples[key];
+  document.getElementById('codeEditor').value = JSON.stringify(ex.bytecode, null, 0);
+  document.querySelectorAll('.example-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[onclick="loadExample('${key}')"]`).classList.add('active');
+  resetAll();
+}
+
+function showError(msg) {
+  const bar = document.getElementById('errorBar');
+  bar.textContent = msg;
+  bar.style.display = 'block';
+  setTimeout(() => { bar.style.display = 'none'; }, 5000);
+}
+
+function hideError() {
+  document.getElementById('errorBar').style.display = 'none';
+}
+
+function parseBytecode(input) {
+  try {
+    const trimmed = input.trim();
+    if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+      const arr = JSON.parse(trimmed);
+      if (!Array.isArray(arr)) throw new Error('必须是数组格式');
+      for (const v of arr) {
+        if (typeof v !== 'number' || v < 0 || v > 255 || !Number.isInteger(v)) {
+          throw new Error(`无效字节值: ${v}，必须是0-255的整数`);
+        }
+      }
+      return arr;
+    }
+    throw new Error('请输入有效的JSON数组格式，例如: [0x01, 0x2A, 0x0B]');
+  } catch (e) {
+    throw new Error('解析失败: ' + e.message);
+  }
+}
+
+async function runProgram() {
+  hideError();
+  const input = document.getElementById('codeEditor').value.trim();
+  if (!input) { showError('请先输入字节码'); return; }
+
+  let bytecode;
+  try {
+    bytecode = parseBytecode(input);
+  } catch (e) {
+    showError(e.message);
+    return;
+  }
+
+  const btn = document.getElementById('runBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ 执行中...';
+
+  try {
+    const resp = await fetch('/api/v1/playground/execute', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bytecode, gasLimit: 100000, traceMode: true })
+    });
+    const result = await resp.json();
+
+    if (!result.success) {
+      showError(result.message || '执行失败');
+      btn.disabled = false;
+      btn.textContent = '▶ 执行';
+      return;
+    }
+
+    executionTrace = result.data.trace;
+    currentStep = 0;
+    vmState = result.data;
+    document.getElementById('gasCounter').textContent = result.data.totalGas;
+    document.getElementById('stepBtn').disabled = false;
+
+    renderTrace();
+    updateState(executionTrace.length > 0 ? executionTrace[executionTrace.length - 1] : null);
+  } catch (e) {
+    showError('网络错误: ' + e.message);
+  }
+
+  btn.disabled = false;
+  btn.textContent = '▶ 执行';
+}
+
+function stepProgram() {
+  if (currentStep >= executionTrace.length) return;
+  currentStep++;
+  renderTrace();
+  updateState(executionTrace[currentStep - 1]);
+  if (currentStep >= executionTrace.length) {
+    document.getElementById('stepBtn').disabled = true;
+  }
+}
+
+function resetAll() {
+  executionTrace = [];
+  currentStep = 0;
+  vmState = null;
+  document.getElementById('gasCounter').textContent = '0';
+  document.getElementById('stepBtn').disabled = true;
+  document.getElementById('runBtn').disabled = false;
+  document.getElementById('runBtn').textContent = '▶ 执行';
+  document.getElementById('traceTable').innerHTML = `
+    <div class="empty-state" id="traceEmpty">
+      <div class="icon">⚡</div>
+      <p>点击「执行」来运行 AINVM 代码</p>
+      <p class="hint">每一步操作都会显示在这里</p>
+    </div>`;
+  document.getElementById('stateContent').innerHTML = `
+    <div class="empty-state" id="stateEmpty">
+      <div class="icon">📊</div>
+      <p>运行代码以查看状态</p>
+      <p class="hint">栈和内存状态将显示在这里</p>
+    </div>`;
+  hideError();
+}
+
+function renderTrace() {
+  const container = document.getElementById('traceTable');
+  if (executionTrace.length === 0) return;
+
+  let html = '<table><thead><tr><th>Step</th><th>PC</th><th>Opcode</th><th>Stack (Before→After)</th><th>Memory Δ</th><th>Gas</th></tr></thead><tbody>';
+
+  for (let i = 0; i < Math.min(currentStep, executionTrace.length); i++) {
+    const t = executionTrace[i];
+    const isError = !!t.error;
+    const isHalted = t.opcodeName === 'HALTED';
+    const rowClass = isError ? 'error-row' : (isHalted ? 'halted-row' : '');
+    const stackBefore = t.stackBefore ? JSON.stringify(t.stackBefore) : '-';
+    const stackAfter = t.stackAfter ? JSON.stringify(t.stackAfter) : '-';
+    const memDelta = t.gasDelta !== undefined ? (Object.keys(t.memoryAfter || {}).length - Object.keys(t.memoryBefore || {}).length) : '-';
+    const gasStr = t.gasDelta !== undefined ? `+${t.gasDelta}` : '-';
+
+    html += `<tr class="${rowClass}">`;
+    html += `<td style="color:var(--text3)">${t.step !== undefined ? t.step : i}</td>`;
+    html += `<td style="color:var(--text3)">${t.pc}</td>`;
+    html += `<td class="opcode-col">${t.opcodeName}</td>`;
+    html += `<td style="font-size:10px;max-width:250px;overflow:hidden;text-overflow:ellipsis">${stackBefore} → ${stackAfter}</td>`;
+    html += `<td>${memDelta}</td>`;
+    html += `<td class="gas-col">${gasStr}</td>`;
+    html += `</tr>`;
+
+    if (isError) {
+      html += `<tr class="error-row"><td colspan="6" style="font-size:10px;padding:4px 10px">⚠ ${t.error}</td></tr>`;
+    }
+    if (isHalted && t.returnValue !== undefined && t.returnValue !== null) {
+      html += `<tr class="halted-row"><td colspan="6" style="font-size:10px;padding:4px 10px">✓ 返回值: ${t.returnValue}</td></tr>`;
+    }
+  }
+
+  html += '</tbody></table>';
+  container.innerHTML = html;
+  container.scrollTop = container.scrollHeight;
+}
+
+function updateState(lastTrace) {
+  const container = document.getElementById('stateContent');
+
+  if (!vmState && !lastTrace) return;
+
+  const stack = vmState?.finalStack || lastTrace?.stack || lastTrace?.stackAfter || [];
+  const memory = vmState?.finalMemory || lastTrace?.memory || lastTrace?.memoryAfter || {};
+
+  let html = '<h4>📚 栈 (Stack)</h4>';
+  if (stack.length === 0) {
+    html += '<div style="color:var(--text3);font-size:11px">栈为空</div>';
+  } else {
+    for (let i = stack.length - 1; i >= 0; i--) {
+      html += `<div class="stack-entry">[${i}] ${stack[i]}</div>`;
+    }
+  }
+
+  html += '<h4 style="margin-top:16px">💾 内存 (Memory)</h4>';
+  const memKeys = Object.keys(memory);
+  if (memKeys.length === 0) {
+    html += '<div style="color:var(--text3);font-size:11px">内存为空</div>';
+  } else {
+    for (const key of memKeys) {
+      const val = typeof memory[key] === 'object' ? JSON.stringify(memory[key]) : memory[key];
+      html += `<div class="memory-entry"><span class="memory-key">[${key}]</span> = <span class="memory-val">${val}</span></div>`;
+    }
+  }
+
+  if (vmState) {
+    html += '<h4 style="margin-top:16px">📈 执行摘要</h4>';
+    html += `<div class="memory-entry">总步数: ${vmState.totalSteps}</div>`;
+    html += `<div class="memory-entry">总Gas: ${vmState.totalGas}</div>`;
+    html += `<div class="memory-entry">状态: ${vmState.halted ? '✅ 正常停止' : '⚠ 异常终止'}</div>`;
+    if (vmState.returnValue !== undefined && vmState.returnValue !== null) {
+      html += `<div class="memory-entry">返回值: ${vmState.returnValue}</div>`;
+    }
+  }
+
+  container.innerHTML = html;
+}
+
+loadExample('add');
+</script>
+
+</body>
+</html>

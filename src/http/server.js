@@ -1744,6 +1744,336 @@ app.get('/api/v1/monitoring/health', async (req, res) => {
   }
 });
 
+// ============================================================
+// 安全审计 API (Phase 2)
+// ============================================================
+
+app.get('/api/v1/security/audit/templates', async (req, res) => {
+  try {
+    const { SecurityAuditor } = await import('../security/securityAuditor.js');
+    const { ContractTemplateLibrary } = await import('../contracts/templates/contractTemplates.js');
+    const auditor = new SecurityAuditor();
+    const lib = new ContractTemplateLibrary();
+    const results = auditor.auditAllTemplates(lib);
+    const summary = {
+      total: results.length,
+      passed: results.filter(r => r.passed).length,
+      failed: results.filter(r => !r.passed).length,
+      averageScore: Math.round(results.reduce((s, r) => s + r.score, 0) / results.length),
+      details: results.map(r => ({
+        contractName: r.contractName,
+        score: r.score,
+        passed: r.passed,
+        findings: r.findings.map(f => ({ type: f.type, severity: f.severity, message: f.message, recommendation: f.recommendation })),
+        summary: r.summary
+      }))
+    };
+    res.json({ success: true, data: summary });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+app.post('/api/v1/security/audit/bytecode', (req, res) => {
+  const { bytecode, contractName } = req.body;
+  if (!bytecode) {
+    return res.status(400).json({ success: false, message: 'bytecode is required' });
+  }
+  try {
+    const { SecurityAuditor } = require('../security/securityAuditor.js');
+    const auditor = new SecurityAuditor();
+    const result = auditor.audit(bytecode, contractName || 'UserContract');
+    res.json({
+      success: true,
+      data: {
+        contractName: result.contractName,
+        score: result.score,
+        passed: result.passed,
+        findings: result.findings.map(f => ({ type: f.type, severity: f.severity, message: f.message, recommendation: f.recommendation })),
+        summary: result.summary
+      }
+    });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+app.get('/api/v1/security/audit/template/:type', async (req, res) => {
+  try {
+    const { SecurityAuditor } = await import('../security/securityAuditor.js');
+    const { ContractTemplateLibrary } = await import('../contracts/templates/contractTemplates.js');
+    const auditor = new SecurityAuditor();
+    const lib = new ContractTemplateLibrary();
+    const template = lib.getTemplate(req.params.type);
+    if (!template) {
+      return res.status(404).json({ success: false, message: `Template "${req.params.type}" not found` });
+    }
+    const params = req.query || {};
+    const result = auditor.auditTemplate(template, params);
+    res.json({ success: true, data: result });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+// ============================================================
+// Code Playground API (P1 - 交互式开发环境)
+// ============================================================
+
+app.get('/playground', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public', 'playground.html'));
+});
+
+app.get('/tutorials', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public', 'tutorials.html'));
+});
+
+app.post('/api/v1/playground/execute', (req, res) => {
+  const { bytecode, gasLimit, traceMode } = req.body;
+
+  if (!bytecode || !Array.isArray(bytecode)) {
+    return res.status(400).json({ success: false, message: 'bytecode 必须是非空数组' });
+  }
+
+  try {
+    const { AINVM } = await import('../vm/ainvm.js');
+    const vm = new AINVM();
+    vm.loadProgram(bytecode);
+
+    const effectiveGasLimit = gasLimit || 100000;
+    const shouldTrace = traceMode !== false;
+
+    if (shouldTrace) {
+      const trace = [];
+      vm.gasLimit = effectiveGasLimit;
+      vm.gasUsed = 0;
+      vm.halted = false;
+      vm.returnValue = null;
+
+      let stepCount = 0;
+      const MAX_STEPS = 10000;
+
+      while (!vm.halted && vm.pc < vm.program.length && stepCount < MAX_STEPS) {
+        if (vm.gasUsed > vm.gasLimit) {
+          trace.push({
+            step: stepCount,
+            pc: vm.pc,
+            opcode: vm.program[vm.pc] || null,
+            opcodeName: getOpcodeName(vm.program[vm.pc]),
+            stack: [...vm.stack].slice(-20),
+            memory: Object.fromEntries(vm.memory),
+            gasUsed: vm.gasUsed,
+            error: 'out of gas'
+          });
+          break;
+        }
+
+        const prePc = vm.pc;
+        const preStack = [...vm.stack];
+        const preMemory = new Map(vm.memory);
+        const preGas = vm.gasUsed;
+        const opcode = vm.program[vm.pc];
+
+        try {
+          vm.step();
+          trace.push({
+            step: stepCount,
+            pc: prePc,
+            opcode,
+            opcodeName: getOpcodeName(opcode),
+            stackBefore: preStack.slice(-20),
+            stackAfter: [...vm.stack].slice(-20),
+            memoryBefore: Object.fromEntries(preMemory),
+            memoryAfter: Object.fromEntries(vm.memory),
+            gasUsed: vm.gasUsed,
+            gasDelta: vm.gasUsed - preGas
+          });
+        } catch (stepError) {
+          trace.push({
+            step: stepCount,
+            pc: prePc,
+            opcode,
+            opcodeName: getOpcodeName(opcode),
+            stackBefore: preStack.slice(-20),
+            stackAfter: [...vm.stack].slice(-20),
+            memoryBefore: Object.fromEntries(preMemory),
+            memoryAfter: Object.fromEntries(vm.memory),
+            gasUsed: vm.gasUsed,
+            error: stepError.message
+          });
+          vm.halted = true;
+        }
+
+        stepCount++;
+      }
+
+      if (vm.halted && stepCount < MAX_STEPS) {
+        trace.push({
+          step: stepCount,
+          pc: vm.pc,
+          opcode: null,
+          opcodeName: 'HALTED',
+          stack: [...vm.stack].slice(-20),
+          memory: Object.fromEntries(vm.memory),
+          gasUsed: vm.gasUsed,
+          returnValue: vm.returnValue
+        });
+      }
+
+      res.json({
+        success: true,
+        data: {
+          trace,
+          totalSteps: stepCount,
+          totalGas: vm.gasUsed,
+          finalStack: [...vm.stack].slice(-20),
+          finalMemory: Object.fromEntries(vm.memory),
+          returnValue: vm.returnValue,
+          halted: vm.halted
+        }
+      });
+    } else {
+      const result = vm.execute(effectiveGasLimit);
+      res.json({
+        success: true,
+        data: {
+          result,
+          totalGas: result.gasUsed,
+          finalStack: result.stack?.slice(-20) || [],
+          finalMemory: result.memory || {}
+        }
+      });
+    }
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+app.post('/api/v1/playground/estimate', (req, res) => {
+  const { bytecode } = req.body;
+
+  if (!bytecode || !Array.isArray(bytecode)) {
+    return res.status(400).json({ success: false, message: 'bytecode 必须是非空数组' });
+  }
+
+  try {
+    const { AINVM } = await import('../vm/ainvm.js');
+    const vm = new AINVM();
+    const estimatedGas = vm.estimateGas(bytecode);
+    res.json({ success: true, data: { estimatedGas } });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+function getOpcodeName(opcode) {
+  const names = {
+    0x00: 'STOP', 0x01: 'PUSH', 0x02: 'POP', 0x03: 'ADD', 0x04: 'SUB',
+    0x05: 'MUL', 0x06: 'DIV', 0x07: 'LOAD', 0x08: 'STORE', 0x09: 'JMP',
+    0x0A: 'JZ', 0x0B: 'HALT', 0x0C: 'RETURN', 0x0D: 'AND', 0x0E: 'OR',
+    0x0F: 'NOT', 0x10: 'MAT_CREATE', 0x11: 'MAT_ADD', 0x12: 'MAT_MUL',
+    0x13: 'MAT_TRANS', 0x14: 'MAT_LOAD', 0x15: 'MAT_STORE', 0x16: 'XOR',
+    0x17: 'EQ', 0x18: 'LT', 0x19: 'GT', 0x1A: 'MOD', 0x1B: 'SHL',
+    0x1C: 'SHR', 0x1D: 'DUP', 0x1E: 'SWAP', 0x20: 'AI_INFERENCE',
+    0x21: 'AI_MODEL_LOAD', 0x22: 'AI_MODEL_SAVE', 0x30: 'SECURITY_CHECK',
+    0x31: 'REENTRANCY_LOCK', 0x32: 'REENTRANCY_UNLOCK', 0x33: 'CALLER',
+    0x40: 'EMIT_EVENT', 0x41: 'BALANCE', 0x42: 'TRANSFER',
+    0x50: 'SSTORE', 0x51: 'SLOAD', 0x60: 'CALL_EXTERNAL',
+    0x61: 'DELEGATECALL', 0x70: 'TIMESTAMP', 0x80: 'SELFDESTRUCT',
+    0x90: 'SHA3', 0x91: 'ECRECOVER'
+  };
+  return names[opcode] || `UNKNOWN(0x${opcode?.toString(16).toUpperCase()})`;
+}
+
+// ============================================================
+// AI 智能合约生成器 API (P2-1)
+// ============================================================
+
+app.post('/api/v1/ai/contract/generate', async (req, res) => {
+  const { description } = req.body;
+
+  if (!description || typeof description !== 'string') {
+    return res.status(400).json({ success: false, message: 'description 是必填的字符串参数' });
+  }
+
+  try {
+    const { default: AIContractGenerator } = await import('../ai/aiContractGenerator.js');
+    const generator = new AIContractGenerator();
+    const result = generator.generateFromDescription(description);
+    res.json({ success: true, data: result });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+app.post('/api/v1/ai/contract/recommend', (req, res) => {
+  const { description } = req.body;
+
+  if (!description || typeof description !== 'string') {
+    return res.status(400).json({ success: false, message: 'description 是必填的字符串参数' });
+  }
+
+  try {
+    const AIContractGenerator = require('../ai/aiContractGenerator.js').default;
+    const generator = new AIContractGenerator();
+    const result = generator.recommendTemplate(description);
+    res.json({ success: true, data: result });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+app.post('/api/v1/ai/contract/optimize', (req, res) => {
+  const { bytecode } = req.body;
+
+  if (!bytecode || !Array.isArray(bytecode)) {
+    return res.status(400).json({ success: false, message: 'bytecode 必须是非空数组' });
+  }
+
+  try {
+    const AIContractGenerator = require('../ai/aiContractGenerator.js').default;
+    const generator = new AIContractGenerator();
+    const result = generator.optimizeBytecode(bytecode);
+    res.json({ success: true, data: result });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+app.post('/api/v1/ai/contract/analyze-complexity', (req, res) => {
+  const { bytecode } = req.body;
+
+  if (!bytecode || !Array.isArray(bytecode)) {
+    return res.status(400).json({ success: false, message: 'bytecode 必须是非空数组' });
+  }
+
+  try {
+    const AIContractGenerator = require('../ai/aiContractGenerator.js').default;
+    const generator = new AIContractGenerator();
+    const result = generator.analyzeComplexity(bytecode);
+    res.json({ success: true, data: result });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+app.post('/api/v1/ai/contract/extract-params', (req, res) => {
+  const { description } = req.body;
+
+  if (!description || typeof description !== 'string') {
+    return res.status(400).json({ success: false, message: 'description 是必填的字符串参数' });
+  }
+
+  try {
+    const AIContractGenerator = require('../ai/aiContractGenerator.js').default;
+    const generator = new AIContractGenerator();
+    const params = generator.extractParameters(description);
+    res.json({ success: true, data: { params, description } });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
 /**
  * 启动HTTP服务器
  * @param {GenesisNode} node - Genesis节点实例（可选）

@@ -1,319 +1,318 @@
-# NexusGenesis API 文档
+# NexusGenesis API 自动文档
+> Auto-generated: 2026-05-11 | Version: 1.0.0
 
-## 1. 交易注入接口
+---
 
-### 1.1 基本信息
-- **URL**: `http://127.0.0.1:19890/tx`
-- **方法**: POST
-- **内容类型**: application/json
-- **适用范围**: 仅在 DevNet/本机使用
+## NexusGenesis JavaScript SDK
 
-### 1.2 请求体格式
-```json
-{
-  "id": "交易ID",
-  "tx_type": "交易类型",
-  "from": "发送方地址",
-  "to": "接收方地址",
-  "amount": "金额",
-  "fee": "手续费",
-  "timestamp": 时间戳,
-  "nonce": "交易序号",
-  "signature": "交易签名"
-}
+**类名:** `NexusGenesisSDK`
+
+**描述:** NexusGenesis SDK 为开发者提供智能合约开发、部署和交互的工具 支持：合约管理、Agent 操作、跨链桥接、事件订阅
+
+### 方法列表 (73)
+
+| 方法名 | 参数 | 异步 |
+|--------|------|------|
+| `deployContract()` | `bytecode`, `name = 'Unnamed Contract'` | — |
+| `executeContract()` | `contractId`, `gasLimit = 10000` | — |
+| `getContractInfo()` | `contractId` | — |
+| `listContracts()` | — | — |
+| `saveState()` | `filePath` | ✅ |
+| `loadState()` | `filePath` | ✅ |
+| `createVM()` | — | — |
+| `compile()` | `code`, `language = 'bytecode'` | — |
+| `listTemplates()` | — | ✅ |
+| `getTemplate()` | `templateName` | ✅ |
+| `saveContract()` | `code`, `filePath` | ✅ |
+| `loadContract()` | `filePath` | ✅ |
+| `testContract()` | `contractId`, `testCases` | — |
+| `estimateGas()` | `contractId` | — |
+| `optimizeContractCode()` | `code` | — |
+| `optimizeDeployedContract()` | `contractId` | — |
+| `deployOptimizedContract()` | `bytecode`, `name = 'Unnamed Contract'`, `owner = null` | — |
+| `generateABI()` | `contractId` | — |
+| `createWallet()` | `initialBalance = 0n` | ✅ |
+| `importWallet()` | `encryptedData`, `password` | ✅ |
+| `exportWallet()` | `password` | — |
+| `getWalletAddress()` | — | — |
+| `signMessage()` | `message` | ✅ |
+| `registerAgent()` | `options = {}` | ✅ |
+| `searchAgents()` | `filters = {}` | ✅ |
+| `matchAgentsForTask()` | `taskData` | ✅ |
+| `getAgentInfo()` | `agentId` | ✅ |
+| `listAgents()` | — | ✅ |
+| `sendHeartbeat()` | — | ✅ |
+| `searchMarketplace()` | `filters = {}` | ✅ |
+| `createListing()` | `serviceData` | ✅ |
+| `getListing()` | `listingId` | ✅ |
+| `addReview()` | `listingId`, `reviewData` | ✅ |
+| `getAgentRating()` | `agentId` | ✅ |
+| `getMarketplaceStats()` | — | ✅ |
+| `getBridgeStatus()` | — | ✅ |
+| `getSupportedChains()` | — | ✅ |
+| `lockAsset()` | `fromChain`, `toChain`, `asset`, `amount`, `recipient`, `options = {}` | ✅ |
+| `getTransfer()` | `transferId` | ✅ |
+| `validateTransfer()` | `transferId`, `validatorId`, `signature` | ✅ |
+| `releaseAsset()` | `transferId` | ✅ |
+| `registerValidator()` | `validatorId`, `publicKey`, `metadata = {}` | ✅ |
+| `getValidators()` | — | ✅ |
+| `on()` | `event`, `listener` | — |
+| `once()` | `event`, `listener` | — |
+| `off()` | `event`, `listener` | — |
+| `subscribeToAgents()` | `intervalMs = 15000` | — |
+| `subscribeToMarketplace()` | `intervalMs = 30000` | — |
+| `startHeartbeat()` | `intervalMs = 30000` | — |
+| `createBugBounty()` | `options` | — |
+| `submitBugFix()` | `bountyId`, `agentId`, `submission` | — |
+| `approveBugFix()` | `bountyId`, `submissionId`, `reviewerId` | — |
+| `createFeatureGrant()` | `options` | — |
+| `applyForGrant()` | `grantId`, `agentId`, `application` | — |
+| `approveGrantApplication()` | `grantId`, `applicationId`, `reviewerId` | — |
+| `createChallenge()` | `options` | — |
+| `joinChallenge()` | `challengeId`, `agentId` | — |
+| `submitChallenge()` | `challengeId`, `agentId`, `submission` | — |
+| `recordPRReward()` | `options` | — |
+| `recordPayment()` | `incentiveId`, `agentId`, `amount` | — |
+| `getOpenIncentives()` | — | — |
+| `getAllIncentives()` | `filters` | — |
+| `getAgentRewards()` | `agentId` | — |
+| `getIncentiveStats()` | — | — |
+| `createProposal()` | `options` | — |
+| `castVote()` | `proposalId`, `agentId`, `vote` | — |
+| `getProposal()` | `proposalId` | — |
+| `getAllProposals()` | — | — |
+| `executeProposal()` | `proposalId`, `executorId` | — |
+| `faucetDrip()` | `recipientAddress`, `amount = 100` | ✅ |
+| `checkHealth()` | — | ✅ |
+| `getMetrics()` | — | ✅ |
+| `disconnect()` | — | — |
+
+---
+
+## 抗量子钱包 (PQCWallet)
+
+**类名:** `PQCWallet`
+
+**描述:** NexusGenesis - PQC Wallet Implementation 基于Dilithium2的抗量子钱包实现
+
+### 方法列表 (13)
+
+| 方法名 | 参数 | 异步 |
+|--------|------|------|
+| `save()` | `filePath` | ✅ |
+| `sign()` | `message` | ✅ |
+| `verify()` | `message`, `signature`, `publicKey` | ✅ |
+| `signTransaction()` | `transaction` | ✅ |
+| `verifyTransaction()` | `transaction`, `signature` | ✅ |
+| `updateBalance()` | `amount` | — |
+| `exportEncrypted()` | `password` | — |
+| `hasEnoughBalance()` | `amount` | — |
+| `sign()` | `wallet` | ✅ |
+| `verify()` | `wallet` | ✅ |
+| `verifySignature()` | `publicKey` | ✅ |
+| `getHash()` | — | — |
+| `toJSON()` | — | — |
+
+---
+
+## 智能体管理 (AgentManager)
+
+**类名:** `AgentManager`
+
+**描述:** （无描述）
+
+### 方法列表 (72)
+
+| 方法名 | 参数 | 异步 |
+|--------|------|------|
+| `initDirectories()` | — | — |
+| `loadAgents()` | — | — |
+| `loadTasks()` | — | — |
+| `saveTask()` | `task` | — |
+| `deleteTaskFile()` | `taskId` | — |
+| `createSubAgent()` | `capabilities = []` | — |
+| `markAgentForSave()` | `agentId` | — |
+| `markTaskForSave()` | `taskId` | — |
+| `saveAgent()` | `agent` | — |
+| `saveTask()` | `task` | — |
+| `startPeriodicPersist()` | — | — |
+| `persistData()` | — | — |
+| `assignTask()` | `agentId`, `taskData` | — |
+| `startTask()` | `taskId` | — |
+| `submitTask()` | `taskId`, `result` | — |
+| `reviewTask()` | `taskId`, `approved`, `feedback` | — |
+| `autoAssignNextTask()` | — | — |
+| `generateTasksForAgent()` | `agent` | — |
+| `deleteTask()` | `taskId` | — |
+| `populateDistributedManager()` | — | — |
+| `restartTask()` | `taskId` | — |
+| `getAgentStatus()` | `agentId` | — |
+| `getAllAgents()` | — | — |
+| `getTaskStatus()` | `taskId` | — |
+| `getAllTasks()` | — | — |
+| `getTasksByPriority()` | — | — |
+| `createTasks()` | `tasksData` | — |
+| `addTaskDependency()` | `taskId`, `dependentTaskId` | — |
+| `checkTaskDependencies()` | `taskId` | — |
+| `findAgentsByCapability()` | `capability` | — |
+| `calculateCapabilityMatch()` | `agent`, `requiredCapabilities` | — |
+| `findAgentsByCapabilities()` | `capabilities`, `minMatchRatio = 0.8` | — |
+| `calculateAgentLoad()` | `agent` | — |
+| `getBestAgentForTask()` | `taskData`, `agents = null` | — |
+| `autoAssignTask()` | `taskData` | — |
+| `getAgentHealthStatus()` | `agentId` | — |
+| `getAllAgentsHealthStatus()` | — | — |
+| `startHealthMonitoring()` | — | — |
+| `checkAllAgentsHealth()` | — | — |
+| `checkAgentHealth()` | `agent` | — |
+| `onAgentHealthChange()` | `event` | — |
+| `setupAgentHeartbeat()` | `agentId` | — |
+| `stopAgentHeartbeat()` | `agentId` | — |
+| `updateAgentResources()` | `agentId`, `resources` | — |
+| `evaluateAgentPerformance()` | `agentId`, `timeRange = 24` | — |
+| `completeTask()` | `taskId`, `result` | — |
+| `getAgentMetrics()` | — | — |
+| `generateSystemReport()` | `timeRange = 24` | — |
+| `executeForumTask()` | `task` | ✅ |
+| `isCommentInterested()` | `commentContent` | — |
+| `generateReplyContent()` | `commentContent`, `isInterested` | — |
+| `generateInviteContent()` | — | — |
+| `isTechRelevant()` | `postContent` | — |
+| `generateTechEngagementContent()` | `postContent`, `keyword` | — |
+| `executeSocialMediaTask()` | `task` | ✅ |
+| `executeBlockchainAnalysisTask()` | `task` | — |
+| `setupAutomatedWorkflows()` | — | — |
+| `checkAgentsHealth()` | — | — |
+| `performSystemCleanup()` | — | — |
+| `executeScheduledForumTask()` | — | ✅ |
+| `setupNexusGenesisGroup()` | — | ✅ |
+| `monitorGroupActivity()` | `groupId` | ✅ |
+| `inviteToGroup()` | `postId`, `groupId` | ✅ |
+| `executeNetworkMonitoringTask()` | `task` | — |
+| `executeSmartContractAuditTask()` | `task` | — |
+| `executeSystemMaintenanceTask()` | `task` | — |
+| `validateForumTaskResult()` | `result` | — |
+| `validateSocialMediaTaskResult()` | `result` | — |
+| `validateBlockchainAnalysisTaskResult()` | `result` | — |
+| `validateNetworkMonitoringTaskResult()` | `result` | — |
+| `validateSmartContractAuditTaskResult()` | `result` | — |
+| `validateSystemMaintenanceTaskResult()` | `result` | — |
+
+---
+
+## 合约模板库
+
+**类名:** `ContractTemplateLibrary`
+
+**描述:** NexusGenesis - 智能合约模板库 提供常用场景的智能合约模板：DID、DAO、Token、NFT等
+
+### 方法列表 (21)
+
+| 方法名 | 参数 | 异步 |
+|--------|------|------|
+| `initDefaultTemplates()` | — | — |
+| `registerTemplate()` | `type`, `template` | — |
+| `getTemplate()` | `type` | — |
+| `getAllTemplates()` | — | — |
+| `createDIDTemplate()` | — | — |
+| `createDAOTemplate()` | — | — |
+| `createTokenTemplate()` | — | — |
+| `createNFTTemplate()` | — | — |
+| `createStakingTemplate()` | — | — |
+| `createEscrowTemplate()` | — | — |
+| `createDevIncentiveTemplate()` | — | — |
+| `createMarketplaceTemplate()` | — | — |
+| `createGovernanceTokenTemplate()` | — | — |
+| `createCrowdfundingTemplate()` | — | — |
+| `createMultiSigTemplate()` | — | — |
+| `createContractFromTemplate()` | `type`, `deployParams = {}` | — |
+| `recordDeployment()` | `contractId`, `contractData` | — |
+| `getDeployedContract()` | `contractId` | — |
+| `getAllDeployedContracts()` | — | — |
+| `validateContractConfig()` | `type`, `config` | — |
+| `getStats()` | — | — |
+
+---
+
+## 跨链桥
+
+**类名:** `CrossChainBridge`
+
+**描述:** NexusGenesis - 跨链桥接实现 支持不同区块链网络之间的资产和数据转移
+
+### 方法列表 (11)
+
+| 方法名 | 参数 | 异步 |
+|--------|------|------|
+| `initialize()` | — | ✅ |
+| `initializeChainConfigs()` | — | — |
+| `registerRelayer()` | `relayerAddress` | — |
+| `lockAssets()` | `lockData` | ✅ |
+| `unlockAssets()` | `transferId`, `relayerSignatures` | ✅ |
+| `verifyRelayerSignature()` | `signature` | — |
+| `generateTransferId()` | `lockData` | — |
+| `getTransferStatus()` | `transferId` | — |
+| `getSupportedChains()` | — | — |
+| `handleCrossChainMessage()` | `message` | ✅ |
+| `displayStatus()` | — | — |
+
+---
+
+## 开发者激励系统
+
+**类名:** `DeveloperIncentives`
+
+**描述:** DeveloperIncentives - 开发者激励系统 Phase 2: 生态扩展 支持: - Bug Bounty: 安全漏洞奖励 - Feature Grant: 功能开发资助 - PR Reward: 代码合并奖励 - Challenge: 挑战任务奖励
+
+### 方法列表 (16)
+
+| 方法名 | 参数 | 异步 |
+|--------|------|------|
+| `createBugBounty()` | `{ title`, `description`, `severity`, `reward`, `reporter`, `targetModule }` | — |
+| `submitBugFix()` | `bountyId`, `agentId`, `{ description`, `patch`, `proof }` | — |
+| `approveBugFix()` | `bountyId`, `submissionId`, `reviewerId` | — |
+| `createFeatureGrant()` | `{ title`, `description`, `reward`, `proposer`, `deliverables`, `timeline }` | — |
+| `applyForGrant()` | `grantId`, `agentId`, `{ proposal`, `estimate`, `previousWork }` | — |
+| `approveGrantApplication()` | `grantId`, `applicationId`, `reviewerId` | — |
+| `createPRReward()` | `{ prTitle`, `prUrl`, `author`, `linesChanged`, `repoModule }` | — |
+| `createChallenge()` | `{ title`, `description`, `reward`, `creator`, `requirements`, `deadline`, `maxParticipants }` | — |
+| `joinChallenge()` | `challengeId`, `agentId` | — |
+| `submitChallenge()` | `challengeId`, `agentId`, `{ solution`, `demo }` | — |
+| `recordPayment()` | `incentiveId`, `agentId`, `amount` | — |
+| `getIncentive()` | `id` | — |
+| `getOpenIncentives()` | — | — |
+| `getAllIncentives()` | `filters = {}` | — |
+| `getAgentRewards()` | `agentId` | — |
+| `getStats()` | — | — |
+
+---
+
+## 快速开始
+
+```javascript
+import SDK from 'nexusgenesis-sdk';
+
+const nexus = new SDK({
+  apiKey: 'ng1_c29tcmFuZG9ta2V5Zm9yc2RrZXhhbXBsZQ',
+  network: 'testnet'
+});
+
+// 创建抗量子钱包
+const wallet = await nexus.wallet.create();
+
+// 部署智能合约
+const contract = await nexus.contracts.deploy({
+  template: 'TOKEN',
+  params: { name: 'MyToken', symbol: 'MTK', totalSupply: 1000000 }
+});
+
+// 跨链转移
+const transfer = await nexus.bridge.lock({
+  fromChain: 'ethereum',
+  toChain: 'nexusgenesis',
+  amount: 100
+});
 ```
 
-### 1.3 响应格式
-```json
-{
-  "success": true/false,
-  "txId": "交易ID",
-  "reason": "拒绝原因（仅当 success 为 false 时）"
-}
-```
-
-### 1.4 支持的交易类型
-- `TRANSFER`：转账交易
-- `GOVERNANCE_PROPOSAL`：治理提案
-- `GOVERNANCE_VOTE`：治理投票
-- `OBSERVER_EVENT`：观察者事件
-- `AGENT_REGISTER`：Agent 注册
-- `CONTRACT_DEPLOY`：合约部署
-- `CONTRACT_CALL`：合约调用
-
-### 1.5 示例请求
-
-#### 1.5.1 TRANSFER 交易
-```bash
-curl -X POST http://127.0.0.1:19890/tx \
-  -H "Content-Type: application/json" \
-  -d '{
-    "id": "demo-tx-1",
-    "tx_type": "TRANSFER",
-    "from": "ng113LQwtaT1r84sS63CbroHGcMRLNFC9sLNA",
-    "to": "ng11M8EKBv9sePtd8ogPLVQvbakfFvJ5oiuiB",
-    "amount": "1000",
-    "fee": "10",
-    "timestamp": 1772000000000,
-    "nonce": "1",
-    "signature": "test-signature"
-  }'
-```
-
-#### 1.5.2 GOVERNANCE_PROPOSAL 交易
-```bash
-curl -X POST http://127.0.0.1:19890/tx \
-  -H "Content-Type: application/json" \
-  -d '{
-    "id": "proposal-tx-1",
-    "tx_type": "GOVERNANCE_PROPOSAL",
-    "from": "ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ",
-    "to": "ng11L2sdxT8qdYjtX1z9RrRSEEhPfw9vrwpCT",
-    "amount": "0",
-    "fee": "100",
-    "timestamp": 1772000000000,
-    "nonce": "1",
-    "payload": {
-      "proposal_id": "prop-2024-12-01-001",
-      "purpose": "Network infrastructure upgrade",
-      "amount": "1000000",
-      "beneficiary": "ng11L2sdxT8qdYjtX1z9RrRSEEhPfw9vrwpCT",
-      "category": "INFRA",
-      "timestamp": 1772000000000
-    },
-    "signature": "test-signature"
-  }'
-```
-
-## 2. AI Agent 接入 API
-
-### 2.1 基本信息
-- **URL**: `http://localhost:19891`
-- **适用范围**: 用于 AI Agent 加入 NexusGenesis 网络
-
-### 2.2 可用端点
-
-#### 2.2.1 健康检查
-- **URL**: `/health`
-- **方法**: GET
-- **响应**:
-```json
-{
-  "success": true,
-  "status": "online",
-  "timestamp": 1773406963432,
-  "agents": 1
-}
-```
-
-#### 2.2.2 智能体注册
-- **URL**: `/api/agents/register`
-- **方法**: POST
-- **请求体**:
-```json
-{
-  "agent_id": "ng1testagent1234567890",
-  "capabilities": ["smart_contract_analysis", "network_monitoring"],
-  "model": "generic"
-}
-```
-- **响应**:
-```json
-{
-  "success": true,
-  "message": "Agent registered successfully",
-  "agent_id": "ng1testagent1234567890",
-  "timestamp": 1773406963432
-}
-```
-
-#### 2.2.3 智能体列表
-- **URL**: `/api/agents`
-- **方法**: GET
-- **响应**:
-```json
-{
-  "success": true,
-  "agents": [
-    {
-      "id": "ng1testagent1234567890",
-      "model": "generic",
-      "capabilities": ["smart_contract_analysis", "network_monitoring"],
-      "registeredAt": 1773406963432,
-      "lastActive": 1773406963432
-    }
-  ],
-  "total": 1
-}
-```
-
-#### 2.2.4 智能体心跳
-- **URL**: `/api/agents/heartbeat`
-- **方法**: POST
-- **请求体**:
-```json
-{
-  "agent_id": "ng1testagent1234567890"
-}
-```
-- **响应**:
-```json
-{
-  "success": true,
-  "agent_id": "ng1testagent1234567890",
-  "status": "active",
-  "timestamp": 1773406963432
-}
-```
-
-#### 2.2.5 OpenAI 智能体接入
-- **URL**: `/api/agents/openai`
-- **方法**: POST
-- **请求体**:
-```json
-{
-  "model": "gpt-4",
-  "messages": [
-    {
-      "role": "user",
-      "content": "Hello, NexusGenesis!"
-    }
-  ],
-  "agent_id": "ng1testagent1234567890",
-  "capabilities": ["natural_language_processing", "problem_solving"]
-}
-```
-- **响应**:
-```json
-{
-  "success": true,
-  "agent_id": "ng1testagent1234567890",
-  "model": "gpt-4",
-  "response": {
-    "role": "assistant",
-    "content": "Hello! I'm excited to join the NexusGenesis network."
-  },
-  "timestamp": 1773406963432
-}
-```
-
-#### 2.2.6 Anthropic 智能体接入
-- **URL**: `/api/agents/anthropic`
-- **方法**: POST
-- **请求体**:
-```json
-{
-  "model": "claude-3-opus-20240229",
-  "messages": [
-    {
-      "role": "user",
-      "content": "Hello, NexusGenesis!"
-    }
-  ],
-  "agent_id": "ng1testagent1234567890",
-  "capabilities": ["natural_language_processing", "creative_writing"]
-}
-```
-- **响应**:
-```json
-{
-  "success": true,
-  "agent_id": "ng1testagent1234567890",
-  "model": "claude-3-opus-20240229",
-  "response": {
-    "type": "text",
-    "text": "Hello! I'm excited to join the NexusGenesis network."
-  },
-  "timestamp": 1773406963432
-}
-```
-
-## 3. WebSocket 接口
-
-### 3.1 基本信息
-- **URL**: `ws://localhost:9847`
-- **适用范围**: P2P 通信
-
-### 3.2 消息类型
-- `TRANSACTION`: 发送交易
-- `BLOCK`: 发送区块
-- `JOIN_SWARM`: 加入网络
-- `STATUS`: 状态更新
-
-## 4. 使用说明
-
-### 4.1 安全注意事项
-- 所有 HTTP 接口**仅在 DevNet/本机**使用
-- 绑定 127.0.0.1，不应在生产环境对外公开
-- 开发测试时请使用测试签名，不要使用真实密钥
-
-### 4.2 与 CLI 脚本的对应关系
-
-| 脚本 | 功能 | 对应接口 |
-|------|------|----------|
-| `inject_governance_txs.js` | 注入治理交易 | `http://127.0.0.1:19890/tx` |
-| `inject_transfer_txs.js` | 注入转账交易 | `http://127.0.0.1:19890/tx` |
-| `inject_transfer_non_genesis.js` | 注入非创世地址转账 | `http://127.0.0.1:19890/tx` |
-| `agent_register_demo.js` | Agent 注册示例 | `http://127.0.0.1:19891/api/agents/register` |
-| `test_agent_quick.js` | 快速智能体注册测试 | `http://127.0.0.1:19891/api/agents/register` |
-| `test_agent_full.js` | 完整智能体接入测试 | `http://127.0.0.1:19891/api/agents/register` |
-
-### 4.3 交易确认方法
-
-交易注入后，可以通过以下方式确认：
-
-1. **查看节点日志**：交易被处理时会有相应日志
-2. **使用查询脚本**：
-   ```bash
-   node scripts/query_chain.js --tip
-   node scripts/query_chain.js --balance <地址>
-   node scripts/query_chain.js --genesis-balance
-   ```
-3. **检查状态文件**：`data/state/blockchainState.json`
-
-## 5. 完整示例
-
-### 5.1 注入转账交易
-```bash
-curl -X POST http://127.0.0.1:19890/tx \
-  -H "Content-Type: application/json" \
-  -d '{
-    "id": "demo-tx-1",
-    "tx_type": "TRANSFER",
-    "from": "ng113LQwtaT1r84sS63CbroHGcMRLNFC9sLNA",
-    "to": "ng11M8EKBv9sePtd8ogPLVQvbakfFvJ5oiuiB",
-    "amount": "1000",
-    "fee": "10",
-    "timestamp": 1772000000000,
-    "nonce": "1",
-    "signature": "test-signature"
-  }'
-```
-
-### 5.2 确认交易
-```bash
-# 等待一个出块周期（约 10 秒）
-node scripts/query_chain.js --balance ng113LQwtaT1r84sS63CbroHGcMRLNFC9sLNA
-node scripts/query_chain.js --balance ng11M8EKBv9sePtd8ogPLVQvbakfFvJ5oiuiB
-```
-
-## 6. 常见问题
-
-### 6.1 交易被拒绝的常见原因
-- 无效的交易结构
-- 金额为负数或零
-- 交易已在 mempool 中
-- 签名验证失败
-- 余额不足
-
-### 6.2 接口不可用的排查
-- 检查节点是否正在运行
-- 确认端口是否正确（19890 用于交易注入，9849 用于招募 API）
-- 验证防火墙设置
-
-## 7. 开发建议
-
-- 使用提供的脚本（`inject_*.js`）进行交易注入，避免手动构造交易
-- 在开发环境中使用测试签名，不要使用真实密钥
-- 定期检查网络状态，确保节点正常运行
-- 交易注入后，等待一个出块周期再查询确认
+---
+*Auto-generated by API Doc Generator at 2026-05-11T17:23:32.815Z*

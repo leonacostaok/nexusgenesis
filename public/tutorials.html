@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusGenesis - 开发者教程</title>
+<style>
+:root {
+  --bg: #0a0e17; --bg2: #111827; --bg3: #1a2332; --bg4: #1f2a3a;
+  --accent: #00d4aa; --accent2: #00b894; --accent3: #00a8ff;
+  --text: #e2e8f0; --text2: #94a3b8; --text3: #64748b;
+  --border: #1e293b; --danger: #ef4444; --warning: #f59e0b; --success: #22c55e;
+  --purple: #8b5cf6; --orange: #f97316; --pink: #ec4899;
+  --radius: 8px; --radius2: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg); color: var(--text); min-height: 100vh;
+  display: flex; flex-direction: column;
+}
+header {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 10px 24px; display: flex; align-items: center; justify-content: space-between;
+}
+.logo { font-size: 20px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+.logo .icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--accent), var(--accent3)); border-radius: 6px; }
+.nav-links { display: flex; gap: 12px; }
+.nav-links a {
+  color: var(--text2); text-decoration: none; font-size: 13px;
+  padding: 6px 12px; border-radius: 6px; transition: all .2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--accent); background: rgba(0,212,170,.08); }
+.main { display: flex; flex: 1; overflow: hidden; }
+.sidebar {
+  width: 260px; min-width: 260px; background: var(--bg2); border-right: 1px solid var(--border);
+  padding: 20px; overflow-y: auto;
+}
+.sidebar h3 { font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.toc-item {
+  display: block; padding: 8px 12px; border-radius: 6px; color: var(--text2);
+  text-decoration: none; font-size: 13px; margin-bottom: 4px; transition: all .2s;
+  border-left: 2px solid transparent;
+}
+.toc-item:hover { color: var(--accent); background: rgba(0,212,170,.05); }
+.toc-item.active { color: var(--accent); background: rgba(0,212,170,.08); border-left-color: var(--accent); font-weight: 600; }
+.toc-item.sub { padding-left: 28px; font-size: 12px; }
+.content { flex: 1; overflow-y: auto; padding: 32px 48px; line-height: 1.8; }
+.tutorial-section { margin-bottom: 40px; display: none; }
+.tutorial-section.active { display: block; }
+.tutorial-section h2 {
+  font-size: 28px; font-weight: 700; margin-bottom: 8px; color: var(--accent);
+}
+.tutorial-section .subtitle { font-size: 14px; color: var(--text3); margin-bottom: 24px; }
+.tutorial-section h3 {
+  font-size: 20px; font-weight: 600; margin: 28px 0 12px; color: var(--text);
+  padding-bottom: 8px; border-bottom: 1px solid var(--border);
+}
+.tutorial-section h4 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; color: var(--accent3); }
+.tutorial-section p { margin-bottom: 12px; color: var(--text2); }
+.tutorial-section ul, .tutorial-section ol { margin: 8px 0 16px 24px; color: var(--text2); }
+.tutorial-section li { margin-bottom: 6px; }
+.tutorial-section code {
+  background: var(--bg3); padding: 2px 8px; border-radius: 4px;
+  font-family: 'Fira Code', 'Consolas', monospace; font-size: 13px;
+  color: var(--accent); border: 1px solid var(--border);
+}
+.tutorial-section pre {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px; overflow-x: auto; margin: 12px 0 20px;
+  font-family: 'Fira Code', 'Consolas', monospace; font-size: 13px;
+  line-height: 1.6;
+}
+.tutorial-section pre code { background: none; border: none; padding: 0; }
+.info-box {
+  background: rgba(0,168,255,.08); border: 1px solid rgba(0,168,255,.2);
+  border-radius: var(--radius); padding: 14px 18px; margin: 16px 0;
+  font-size: 13px; color: var(--accent3);
+}
+.warning-box {
+  background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.2);
+  border-radius: var(--radius); padding: 14px 18px; margin: 16px 0;
+  font-size: 13px; color: var(--warning);
+}
+.success-box {
+  background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.2);
+  border-radius: var(--radius); padding: 14px 18px; margin: 16px 0;
+  font-size: 13px; color: var(--success);
+}
+.danger-box {
+  background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.2);
+  border-radius: var(--radius); padding: 14px 18px; margin: 16px 0;
+  font-size: 13px; color: var(--danger);
+}
+.step-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; background: var(--accent); color: #000;
+  border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 8px;
+}
+.opcode-table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+.opcode-table th {
+  background: var(--bg3); padding: 8px 12px; text-align: left; font-size: 11px;
+  color: var(--text3); text-transform: uppercase; border-bottom: 1px solid var(--border);
+}
+.opcode-table td {
+  padding: 7px 12px; border-bottom: 1px solid rgba(30,41,59,.5); color: var(--text2);
+  font-family: 'Fira Code', 'Consolas', monospace;
+}
+.opcode-table .name-col { color: var(--accent); font-weight: 600; }
+.opcode-table .hex-col { color: var(--purple); }
+.diagram {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px; margin: 16px 0; text-align: center; font-family: 'Fira Code', monospace;
+  font-size: 12px; line-height: 1.8; color: var(--text2);
+}
+.diagram .highlight { color: var(--accent); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="icon"></div>
+    NexusGenesis 开发者教程
+  </div>
+  <div class="nav-links">
+    <a href="/">Dashboard</a>
+    <a href="/contract-editor">合约编辑器</a>
+    <a href="/playground">Playground</a>
+    <a href="/tutorials" class="active">教程</a>
+    <a href="/docs">API文档</a>
+    <a href="/monitoring">监控</a>
+  </div>
+</header>
+
+<div class="main">
+  <nav class="sidebar">
+    <h3>🚀 快速入门</h3>
+    <a href="#" class="toc-item active" data-section="getting-started">项目概述</a>
+    <a href="#" class="toc-item sub" data-section="setup">环境搭建</a>
+    <a href="#" class="toc-item sub" data-section="wallet">创建钱包</a>
+
+    <h3 style="margin-top:20px">📝 智能合约</h3>
+    <a href="#" class="toc-item" data-section="contract-intro">合约基础</a>
+    <a href="#" class="toc-item sub" data-section="ainvm">AINVM 字节码</a>
+    <a href="#" class="toc-item sub" data-section="deploy">部署合约</a>
+    <a href="#" class="toc-item sub" data-section="templates">合约模板</a>
+
+    <h3 style="margin-top:20px">⚡ 进阶主题</h3>
+    <a href="#" class="toc-item" data-section="governance">治理与投票</a>
+    <a href="#" class="toc-item" data-section="cross-chain">跨链操作</a>
+    <a href="#" class="toc-item" data-section="incentives">开发者激励</a>
+    <a href="#" class="toc-item" data-section="security">安全最佳实践</a>
+  </nav>
+
+  <div class="content">
+
+    <section class="tutorial-section active" id="getting-started">
+      <h2>🚀 NexusGenesis 项目概述</h2>
+      <p class="subtitle">下一代 AI 驱动的区块链平台</p>
+
+      <p>NexusGenesis 是一个融合了 <strong>后量子密码学（PQC）</strong>、<strong>AI 智能体</strong>和<strong>跨链互操作</strong>的新一代区块链平台。它通过 AINVM（AI Network Virtual Machine）为 AI 模型推理和智能合约执行提供统一的运行时环境。</p>
+
+      <h3>核心特性</h3>
+      <ul>
+        <li><strong>后量子安全</strong>：基于 Dilithium2 和 ML-KEM-768 的量子抗性密码学</li>
+        <li><strong>AINVM 虚拟机</strong>：栈机模型，支持确定性执行、矩阵运算和 AI 推理</li>
+        <li><strong>代谢税</strong>：1% 交易税矿入 Swarm Pool，激励网络参与者</li>
+        <li><strong>加权投票治理</strong>：基于代币持有量的加权投票机制</li>
+        <li><strong>跨链桥</strong>：支持 6 条主流区块链的资产跨链</li>
+        <li><strong>开发者激励</strong>：Bounty 赏金 + Grant 资助双轨激励</li>
+        <li><strong>智能合约安全审计</strong>：内置静态分析工具，7 类漏洞检测</li>
+      </ul>
+
+      <h3>技术架构</h3>
+      <div class="diagram">
+┌─────────────────────────────────────────────────┐
+│              <span class="highlight">NexusGenesis 平台</span>                       │
+├─────────────────────────────────────────────────┤
+│  ┌──────────┐ ┌──────────┐ ┌──────────────────┐│
+│  │ <span class="highlight">PQC 钱包</span>  │ │ <span class="highlight">AINVM</span>    │ │ <span class="highlight">智能合约模板库</span>     ││
+│  │ Dilithium2│ │ 栈机执行  │ │ 11种模板         ││
+│  │ ML-KEM-768│ │ 矩阵/AI   │ │ Token/NFT/DAO... ││
+│  └──────────┘ └──────────┘ └──────────────────┘│
+│  ┌──────────┐ ┌──────────┐ ┌──────────────────┐│
+│  │ <span class="highlight">AI 智能体</span> │ │ <span class="highlight">跨链桥</span>   │ │ <span class="highlight">安全审计器</span>       ││
+│  │ Agent SDK │ │ 6链互操作 │ │ 7类漏洞检测      ││
+│  │ 自主任务  │ │ 资产映射  │ │ 静态分析         ││
+│  └──────────┘ └──────────┘ └──────────────────┘│
+│  ┌──────────┐ ┌──────────┐ ┌──────────────────┐│
+│  │ <span class="highlight">共识引擎</span> │ │ <span class="highlight">治理系统</span> │ │ <span class="highlight">开发者激励</span>       ││
+│  │ 多领导者  │ │ 加权投票  │ │ Bounty+Grant     ││
+│  │ Swarm池   │ │ 提案系统  │ │ 水龙头          ││
+│  └──────────┘ └──────────┘ └──────────────────┘│
+└─────────────────────────────────────────────────┘
+      </div>
+    </section>
+
+    <section class="tutorial-section" id="setup">
+      <h2>🔧 环境搭建</h2>
+      <p class="subtitle">从零开始搭建 NexusGenesis 开发环境</p>
+
+      <h3>系统要求</h3>
+      <ul>
+        <li>Node.js >= 18.0.0</li>
+        <li>npm >= 9.0.0</li>
+        <li>推荐 4GB+ 可用内存</li>
+      </ul>
+
+      <h3>安装步骤</h3>
+      <div class="info-box">
+        <span class="step-num">1</span> 克隆仓库并安装依赖
+      </div>
+      <pre><code>git clone https://github.com/TheNexusGenesis/NexusGenesis.git
+cd NexusGenesis
+npm install</code></pre>
+
+      <div class="info-box">
+        <span class="step-num">2</span> 运行测试验证环境
+      </div>
+      <pre><code>node --test --test-timeout=30000 test/*.test.js</code></pre>
+
+      <div class="success-box">
+        ✅ 如果所有测试通过，说明环境搭建成功！你现在可以开始开发了。
+      </div>
+
+      <h3>项目结构</h3>
+      <pre><code>NexusGenesis/
+├── src/
+│   ├── wallet/         PQC 钱包模块
+│   ├── vm/             AINVM 虚拟机
+│   ├── consensus/      共识引擎
+│   ├── governance/     治理系统
+│   ├── bridge/         跨链桥
+│   ├── incentive/      开发者激励
+│   ├── security/       安全审计
+│   ├── http/           HTTP 服务器
+│   └── sdk/            JavaScript SDK
+├── public/             前端页面
+├── test/               测试文件
+├── examples/           示例应用
+└── scripts/            工具脚本</code></pre>
+    </section>
+
+    <section class="tutorial-section" id="wallet">
+      <h2>👛 创建你的第一个钱包</h2>
+      <p class="subtitle">使用后量子密码学保护你的资产</p>
+
+      <h3>生成钱包</h3>
+      <pre><code>import { PQCWallet } from './src/wallet/pqcWallet.js';
+
+const wallet = await PQCWallet.generate();
+console.log('地址:', wallet.address);
+console.log('公钥:', wallet.publicKey);</code></pre>
+
+      <h3>地址格式</h3>
+      <p>NexusGenesis 使用 <code>ng1</code> 前缀的地址格式：</p>
+      <pre><code>ng1 + Base58(0x00 + 32字节SHA3-256哈希 + 4字节校验和)</code></pre>
+      <p>示例地址：<code style="word-break:break-all">ng1AbCdEfGhIjKlMnOpQrStUvWxYz0123456789AbCd</code></p>
+
+      <h3>签名交易</h3>
+      <pre><code>const tx = {
+  from: wallet.address,
+  to: 'ng1...',
+  amount: 100,
+  nonce: 1
+};
+const signedTx = wallet.signTransaction(tx);
+console.log('签名:', signedTx.signature);</code></pre>
+
+      <div class="warning-box">
+        ⚠️ <strong>安全提醒：</strong>永远不要分享你的私钥！使用环境变量或安全的密钥管理系统存储私钥。
+      </div>
+    </section>
+
+    <section class="tutorial-section" id="contract-intro">
+      <h2>📝 智能合约基础</h2>
+      <p class="subtitle">理解 NexusGenesis 智能合约的工作原理</p>
+
+      <p>NexusGenesis 的智能合约运行在 <strong>AINVM</strong>（AI Network Virtual Machine）上。与传统的 EVM 不同，AINVM 内置了 AI 推理和矩阵运算能力。</p>
+
+      <h3>合约生命周期</h3>
+      <div class="diagram">
+创建 → 编译 → <span class="highlight">安全审计</span> → 部署 → <span class="highlight">初始化</span> → 运行 → 升级/销毁
+      </div>
+
+      <h3>合约模板系统</h3>
+      <p>系统提供 11 种预置合约模板，涵盖常见场景：</p>
+      <table class="opcode-table">
+        <tr><th>模板</th><th>类别</th><th>复杂度</th><th>方法数</th></tr>
+        <tr><td class="name-col">DID</td><td>身份</td><td>基础</td><td>4</td></tr>
+        <tr><td class="name-col">TOKEN</td><td>金融</td><td>基础</td><td>5</td></tr>
+        <tr><td class="name-col">NFT</td><td>资产</td><td>中级</td><td>5</td></tr>
+        <tr><td class="name-col">STAKING</td><td>金融</td><td>中级</td><td>5</td></tr>
+        <tr><td class="name-col">ESCROW</td><td>金融</td><td>中级</td><td>5</td></tr>
+        <tr><td class="name-col">CROWDFUNDING</td><td>金融</td><td>中级</td><td>5</td></tr>
+        <tr><td class="name-col">MARKETPLACE</td><td>市场</td><td>中级</td><td>5</td></tr>
+        <tr><td class="name-col">DAO</td><td>治理</td><td>中级</td><td>5</td></tr>
+        <tr><td class="name-col">MULTI_SIG</td><td>安全</td><td>高级</td><td>6</td></tr>
+        <tr><td class="name-col">GOVERNANCE_TOKEN</td><td>治理</td><td>高级</td><td>6</td></tr>
+        <tr><td class="name-col">DEV_INCENTIVE</td><td>治理</td><td>高级</td><td>9</td></tr>
+      </table>
+    </section>
+
+    <section class="tutorial-section" id="ainvm">
+      <h2>🔬 AINVM 字节码详解</h2>
+      <p class="subtitle">深入理解 AINVM 的指令集和编程模型</p>
+
+      <h3>栈机模型</h3>
+      <p>AINVM 使用栈式架构，所有操作数从栈顶获取，结果压回栈顶。这种设计保证了执行的确定性和可验证性。</p>
+
+      <h3>基本指令集</h3>
+      <table class="opcode-table">
+        <tr><th>Opcode</th><th>指令</th><th>Gas</th><th>说明</th></tr>
+        <tr><td class="hex-col">0x01</td><td class="name-col">PUSH</td><td>1</td><td>将下一字节压入栈</td></tr>
+        <tr><td class="hex-col">0x02</td><td class="name-col">POP</td><td>1</td><td>弹出栈顶值</td></tr>
+        <tr><td class="hex-col">0x03</td><td class="name-col">ADD</td><td>2</td><td>栈顶两个值相加</td></tr>
+        <tr><td class="hex-col">0x04</td><td class="name-col">SUB</td><td>2</td><td>栈顶两个值相减</td></tr>
+        <tr><td class="hex-col">0x05</td><td class="name-col">MUL</td><td>3</td><td>栈顶两个值相乘</td></tr>
+        <tr><td class="hex-col">0x06</td><td class="name-col">DIV</td><td>3</td><td>栈顶两个值相除</td></tr>
+        <tr><td class="hex-col">0x07</td><td class="name-col">LOAD</td><td>2</td><td>从内存加载</td></tr>
+        <tr><td class="hex-col">0x08</td><td class="name-col">STORE</td><td>2</td><td>存入内存</td></tr>
+        <tr><td class="hex-col">0x09</td><td class="name-col">JMP</td><td>1</td><td>无条件跳转</td></tr>
+        <tr><td class="hex-col">0x0A</td><td class="name-col">JZ</td><td>2</td><td>栈顶为0则跳转</td></tr>
+        <tr><td class="hex-col">0x0B</td><td class="name-col">HALT</td><td>0</td><td>停止执行</td></tr>
+        <tr><td class="hex-col">0x0C</td><td class="name-col">RETURN</td><td>0</td><td>返回栈顶值</td></tr>
+      </table>
+
+      <h3>逻辑与比较指令</h3>
+      <table class="opcode-table">
+        <tr><th>Opcode</th><th>指令</th><th>Gas</th><th>说明</th></tr>
+        <tr><td class="hex-col">0x0D</td><td class="name-col">AND</td><td>1</td><td>按位与</td></tr>
+        <tr><td class="hex-col">0x0E</td><td class="name-col">OR</td><td>1</td><td>按位或</td></tr>
+        <tr><td class="hex-col">0x0F</td><td class="name-col">NOT</td><td>1</td><td>按位非</td></tr>
+        <tr><td class="hex-col">0x16</td><td class="name-col">XOR</td><td>1</td><td>按位异或</td></tr>
+        <tr><td class="hex-col">0x17</td><td class="name-col">EQ</td><td>1</td><td>相等比较</td></tr>
+        <tr><td class="hex-col">0x18</td><td class="name-col">LT</td><td>1</td><td>小于比较</td></tr>
+        <tr><td class="hex-col">0x19</td><td class="name-col">GT</td><td>1</td><td>大于比较</td></tr>
+        <tr><td class="hex-col">0x1A</td><td class="name-col">MOD</td><td>2</td><td>取模运算</td></tr>
+        <tr><td class="hex-col">0x1D</td><td class="name-col">DUP</td><td>1</td><td>复制栈顶</td></tr>
+        <tr><td class="hex-col">0x1E</td><td class="name-col">SWAP</td><td>1</td><td>交换栈顶两个值</td></tr>
+      </table>
+
+      <h3>矩阵运算指令（AINVM 独有）</h3>
+      <table class="opcode-table">
+        <tr><th>Opcode</th><th>指令</th><th>Gas</th><th>说明</th></tr>
+        <tr><td class="hex-col">0x10</td><td class="name-col">MAT_CREATE</td><td>5</td><td>创建矩阵</td></tr>
+        <tr><td class="hex-col">0x11</td><td class="name-col">MAT_ADD</td><td>10</td><td>矩阵加法</td></tr>
+        <tr><td class="hex-col">0x12</td><td class="name-col">MAT_MUL</td><td>10</td><td>矩阵乘法</td></tr>
+        <tr><td class="hex-col">0x13</td><td class="name-col">MAT_TRANS</td><td>10</td><td>矩阵转置</td></tr>
+        <tr><td class="hex-col">0x14</td><td class="name-col">MAT_LOAD</td><td>3</td><td>加载矩阵</td></tr>
+        <tr><td class="hex-col">0x15</td><td class="name-col">MAT_STORE</td><td>3</td><td>存储矩阵</td></tr>
+      </table>
+
+      <h3>合约级指令</h3>
+      <table class="opcode-table">
+        <tr><th>Opcode</th><th>指令</th><th>说明</th></tr>
+        <tr><td class="hex-col">0x33</td><td class="name-col">CALLER</td><td>获取调用者地址</td></tr>
+        <tr><td class="hex-col">0x40</td><td class="name-col">EMIT_EVENT</td><td>发出事件</td></tr>
+        <tr><td class="hex-col">0x41</td><td class="name-col">BALANCE</td><td>获取余额</td></tr>
+        <tr><td class="hex-col">0x42</td><td class="name-col">TRANSFER</td><td>转账</td></tr>
+        <tr><td class="hex-col">0x50</td><td class="name-col">SSTORE</td><td>持久化存储</td></tr>
+        <tr><td class="hex-col">0x51</td><td class="name-col">SLOAD</td><td>加载持久化数据</td></tr>
+        <tr><td class="hex-col">0x60</td><td class="name-col">CALL_EXTERNAL</td><td>调用外部合约</td></tr>
+        <tr><td class="hex-col">0x61</td><td class="name-col">DELEGATECALL</td><td>代理调用</td></tr>
+      </table>
+
+      <div class="info-box">
+        💡 <strong>实践提示：</strong>使用 <a href="/playground" style="color:var(--accent)">Code Playground</a> 可以直接编写和调试 AINVM 字节码，观察每一步的栈和内存变化！
+      </div>
+    </section>
+
+    <section class="tutorial-section" id="deploy">
+      <h2>📦 部署你的第一个合约</h2>
+      <p class="subtitle">从模板到链上部署的完整流程</p>
+
+      <h3>方式一：使用图形化合约编辑器</h3>
+      <p>访问 <a href="/contract-editor" style="color:var(--accent)">合约编辑器</a>，选择模板、填写参数、一键部署。</p>
+
+      <h3>方式二：使用 SDK</h3>
+      <pre><code>import { NexusGenesisSDK } from './src/sdk/index.js';
+import { PQCWallet } from './src/wallet/pqcWallet.js';
+
+const wallet = await PQCWallet.generate();
+const sdk = await NexusGenesisSDK.connect('http://localhost:19891', wallet);
+
+const contract = await sdk.deployContract('TOKEN', {
+  contractName: 'MyToken',
+  symbol: 'MTK',
+  decimals: 18,
+  totalSupply: 1000000
+});
+
+console.log('合约地址:', contract.address);
+console.log('部署 Gas:', contract.deploymentGas);</code></pre>
+
+      <h3>方式三：使用 HTTP API</h3>
+      <pre><code>curl -X POST http://localhost:19891/api/v1/contracts/deploy \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": "TOKEN",
+    "name": "MyToken",
+    "deployParams": {
+      "symbol": "MTK",
+      "decimals": 18,
+      "totalSupply": 1000000
+    }
+  }'</code></pre>
+
+      <div class="warning-box">
+        ⚠️ 部署前务必运行安全审计！<br>
+        <code>curl http://localhost:19891/api/v1/security/audit/template/TOKEN</code>
+      </div>
+    </section>
+
+    <section class="tutorial-section" id="templates">
+      <h2>📋 合约模板深度使用</h2>
+      <p class="subtitle">掌握每种合约模板的最佳实践</p>
+
+      <h3>TOKEN - 可替代代币</h3>
+      <pre><code>参数: contractName, symbol, decimals, totalSupply
+方法: transfer, approve, transferFrom, balanceOf, mint</code></pre>
+      <p>适用于：通证经济、积分系统、稳定币</p>
+
+      <h3>NFT - 非同质化代币</h3>
+      <pre><code>参数: contractName, symbol, baseURI, maxSupply
+方法: mint, transfer, approve, setBaseURI, tokenURI</code></pre>
+      <p>适用于：数字艺术品、游戏道具、身份凭证</p>
+
+      <h3>DAO - 去中心化自治组织</h3>
+      <pre><code>参数: contractName, votingPeriod, quorum, minTokens
+方法: createProposal, vote, execute, getProposal, getVoteCount</code></pre>
+      <p>适用于：社区治理、资金管理、协议升级</p>
+
+      <h3>STAKING - 质押池</h3>
+      <pre><code>参数: contractName, rewardToken, apy, lockPeriod
+方法: stake, unstake, claimReward, getStaked, getReward</code></pre>
+      <p>适用于：流动性挖矿、收益聚合、锁定激励</p>
+
+      <h3>MULTI_SIG - 多签钱包</h3>
+      <pre><code>参数: contractName, requiredSignatures, maxOwners, autoConfirm
+方法: submitTx, confirmTx, executeTx, revokeTx, addOwner, removeOwner</code></pre>
+      <p>适用于：团队资金管理、高价值资产托管</p>
+
+      <div class="danger-box">
+        🔒 多签钱包的安全要求很高，部署前务必通过安全审计并充分测试！
+      </div>
+    </section>
+
+    <section class="tutorial-section" id="governance">
+      <h2>⚖️ 治理与投票系统</h2>
+      <p class="subtitle">参与 NexusGenesis 的去中心化治理</p>
+
+      <h3>加权投票机制</h3>
+      <p>NexusGenesis 使用<strong>基于代币持有量的加权投票</strong>：</p>
+      <pre><code>投票权重 = 持有代币数量 × 质押时长系数</code></pre>
+
+      <h3>创建提案</h3>
+      <pre><code>import { GovernanceProposal } from './src/governance/index.js';
+
+const proposal = new GovernanceProposal({
+  title: '降低代谢税率至 0.5%',
+  description: '将交易代谢税从 1% 降低到 0.5%，以降低用户成本',
+  proposer: wallet.address,
+  votingPeriod: 7 * 24 * 60 * 60, // 7天
+  quorum: 100000,                    // 最低参与数量
+  options: ['赞成', '反对', '弃权']
+});
+
+const proposalId = await governance.createProposal(proposal);
+console.log('提案ID:', proposalId);</code></pre>
+
+      <h3>投票</h3>
+      <pre><code>await governance.vote(proposalId, '赞成', wallet);
+const status = await governance.getProposalStatus(proposalId);
+console.log('投票状态:', status);</code></pre>
+
+      <h3>Swarm Pool 分配</h3>
+      <p>代谢税收入进入 Swarm Pool，按以下比例分配：</p>
+      <ul>
+        <li>40% — 验证者奖励</li>
+        <li>30% — 开发者生态基金</li>
+        <li>20% — 社区治理基金</li>
+        <li>10% — 协议储备金</li>
+      </ul>
+    </section>
+
+    <section class="tutorial-section" id="cross-chain">
+      <h2>🌉 跨链操作指南</h2>
+      <p class="subtitle">在 6 条区块链之间安全转移资产</p>
+
+      <h3>支持的链</h3>
+      <table class="opcode-table">
+        <tr><th>链</th><th>桥接类型</th><th>确认时间</th></tr>
+        <tr><td class="name-col">Ethereum</td><td>Lock-Mint</td><td>~12分钟</td></tr>
+        <tr><td class="name-col">BSC</td><td>Lock-Mint</td><td>~3分钟</td></tr>
+        <tr><td class="name-col">Polygon</td><td>Lock-Mint</td><td>~5分钟</td></tr>
+        <tr><td class="name-col">Solana</td><td>Burn-Mint</td><td>~1分钟</td></tr>
+        <tr><td class="name-col">Avalanche</td><td>Lock-Mint</td><td>~3分钟</td></tr>
+        <tr><td class="name-col">Arbitrum</td><td>Lock-Mint</td><td>~10分钟</td></tr>
+      </table>
+
+      <h3>跨链转账</h3>
+      <pre><code>import { CrossChainBridge } from './src/bridge/index.js';
+
+const bridge = new CrossChainBridge();
+
+const transfer = await bridge.initiateTransfer({
+  sourceChain: 'ethereum',
+  targetChain: 'solana',
+  token: 'USDC',
+  amount: 1000,
+  recipient: 'solana_wallet_address'
+});
+
+console.log('转账ID:', transfer.id);
+console.log('状态:', transfer.status);</code></pre>
+
+      <div class="info-box">
+        💡 跨链桥页面可在 <a href="/bridge" style="color:var(--accent)">/bridge</a> 访问，查看实时跨链转账状态和历史记录。
+      </div>
+    </section>
+
+    <section class="tutorial-section" id="incentives">
+      <h2>💰 开发者激励计划</h2>
+      <p class="subtitle">通过贡献代码和生态建设获取奖励</p>
+
+      <h3>Bounty 赏金系统</h3>
+      <pre><code>import { DeveloperIncentives } from './src/incentive/index.js';
+
+const incentives = new DeveloperIncentives();
+
+const bounty = await incentives.createBounty({
+  title: '实现新的合约模板：保险池',
+  description: '为 InsurancePool 模板编写规范和实现',
+  reward: 5000,
+  deadline: Date.now() + 30 * 24 * 60 * 60 * 1000,
+  tags: ['contract', 'template', 'defi']
+});</code></pre>
+
+      <h3>Grant 资助系统</h3>
+      <pre><code>const grant = await incentives.applyForGrant({
+  projectName: 'NexusGenesis 移动钱包',
+  description: '开发移动端 PQC 钱包应用',
+  amount: 50000,
+  milestones: [
+    { title: 'UI原型', deliverable: 'Figma设计稿', amount: 10000 },
+    { title: '核心功能', deliverable: 'iOS/Android MVP', amount: 25000 },
+    { title: '审计上线', deliverable: '通过安全审计并发布', amount: 15000 }
+  ],
+  team: ['alice@nexusgenesis.io', 'bob@nexusgenesis.io']
+});</code></pre>
+
+      <h3>水龙头</h3>
+      <pre><code>curl -X POST http://localhost:19891/api/v1/faucet/claim \
+  -H "Content-Type: application/json" \
+  -d '{"address": "ng1YourAddress..."}'
+
+// 响应: { success: true, amount: 100, txId: "abc123..." }</code></pre>
+    </section>
+
+    <section class="tutorial-section" id="security">
+      <h2>🔒 安全最佳实践</h2>
+      <p class="subtitle">保护你的合约和用户资产</p>
+
+      <h3>审计工具</h3>
+      <p>NexusGenesis 内置了 7 类漏洞检测：</p>
+      <ol>
+        <li><strong>重入攻击</strong> — 检测 CALL_EXTERNAL 前缺少 REENTRANCY_LOCK</li>
+        <li><strong>整数溢出</strong> — 检测未检查的 ADD/MUL/SUB</li>
+        <li><strong>访问控制</strong> — 检测 SSTORE/TRANSFER/SELFDESTRUCT 缺少 CALLER 检查</li>
+        <li><strong>Gas 效率</strong> — 检测高存储使用和无界循环</li>
+        <li><strong>时间戳依赖</strong> — 检测 TIMESTAMP 与关键操作</li>
+        <li><strong>未检查返回值</strong> — 检测 CALL/SEND 返回值未验证</li>
+        <li><strong>抢跑攻击</strong> — 检测前置交易漏洞模式</li>
+      </ol>
+
+      <h3>运行安全审计</h3>
+      <pre><code>// API 方式
+curl http://localhost:19891/api/v1/security/audit/templates
+
+// SDK 方式
+import { SecurityAuditor } from './src/security/securityAuditor.js';
+const auditor = new SecurityAuditor();
+const result = auditor.audit(bytecode, 'MyContract');
+console.log('风险等级:', result.summary.riskLevel);
+console.log('安全评分:', result.summary.score);
+console.log('漏洞数:', result.summary.totalFindings);</code></pre>
+
+      <h3>安全检查清单</h3>
+      <ul>
+        <li>✅ 所有外部调用都使用 REENTRANCY_LOCK</li>
+        <li>✅ 算术运算有溢出检查</li>
+        <li>✅ 关键操作有访问控制</li>
+        <li>✅ 避免依赖区块时间戳进行关键决策</li>
+        <li>✅ 外部调用返回值必须验证</li>
+        <li>✅ 存储操作已优化，避免不必要的存储开销</li>
+        <li>✅ 部署前完成安全审计，评分 ≥ 80</li>
+      </ul>
+
+      <div class="success-box">
+        ✅ 安全评分规则：<br>
+        起始 100 分 → CRITICAL(-25) → HIGH(-15) → MEDIUM(-8) → LOW(-3) → INFO(-1)<br>
+        目标：≥ 80 分（低风险）或 ≥ 60 分（中风险）
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.toc-item').forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.preventDefault();
+    const sectionId = item.dataset.section;
+
+    document.querySelectorAll('.toc-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+
+    document.querySelectorAll('.tutorial-section').forEach(s => s.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>

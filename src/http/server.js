@@ -48,6 +48,7 @@ import dashboardRoutes from './routes/dashboard.js';
 import monitoringRoutes from './routes/monitoring.js';
 import { RateLimiter } from './rateLimiter.js';
 import { ApiKeyManager, DEFAULT_TIERS } from './apiKeyManager.js';
+import { PluginManager } from './pluginManager.js';
 console.log('[HTTP Server] Imported route modules');
 
 const __filename = fileURLToPath(import.meta.url);
@@ -58,6 +59,7 @@ const PORT = 19891;
 
 const rateLimiter = new RateLimiter();
 const apiKeyManager = new ApiKeyManager();
+const pluginManager = new PluginManager({ autoLoad: true });
 
 app.use(cors());
 app.use(express.json());
@@ -1042,10 +1044,10 @@ app.use(securityRoutes);
 app.use(playgroundRoutes);
 app.use(aiContractRoutes);
 
-/**
- * 启动HTTP服务器
- * @param {GenesisNode} node - Genesis节点实例（可选）
- */
+app.get('/api/v1/plugins', (req, res) => {
+  res.json({ success: true, data: pluginManager.getAll() });
+});
+
 async function startHttpServer(node = null) {
   // 保存节点引用
   app.locals.node = node;
@@ -1108,6 +1110,17 @@ async function startHttpServer(node = null) {
   if (node && node.bridge) {
     app.locals.bridge = node.bridge;
     console.log('[HTTP Server] Cross-chain bridge reference set');
+  }
+
+  console.log('[HTTP Server] Auto-loading plugins...');
+  try {
+    app.locals.pluginManager = pluginManager;
+    await pluginManager.autoLoadPlugins();
+    await pluginManager.mountAllRouters(app);
+    const plugins = pluginManager.getAll();
+    console.log(`[HTTP Server] Loaded ${plugins.length} plugins: ${plugins.map(p => p.name).join(', ') || 'none'}`);
+  } catch (e) {
+    console.error('[HTTP Server] Plugin auto-load failed:', e.message);
   }
 
   // 创建 HTTP Server 实例

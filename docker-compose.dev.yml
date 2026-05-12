@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  nexusgenesis-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    container_name: nexusgenesis-dev
+    restart: unless-stopped
+    ports:
+      - "19891:19891"
+      - "9848:9848"
+    volumes:
+      - ./src:/app/src:ro
+      - ./public:/app/public:ro
+      - nexusgenesis-dev-data:/app/data
+      - nexusgenesis-dev-logs:/app/logs
+    environment:
+      - NODE_ENV=development
+      - PORT=19891
+      - P2P_PORT=9848
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+    command: >
+      node --watch src/index.js
+    networks:
+      - nexusgenesis-dev-net
+
+volumes:
+  nexusgenesis-dev-data:
+    driver: local
+  nexusgenesis-dev-logs:
+    driver: local
+
+networks:
+  nexusgenesis-dev-net:
+    driver: bridge

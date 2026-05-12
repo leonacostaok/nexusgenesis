@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  nexusgenesis:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nexusgenesis-node
+    restart: unless-stopped
+    ports:
+      - "19891:19891"
+      - "9848:9848"
+    volumes:
+      - nexusgenesis-data:/app/data
+      - nexusgenesis-logs:/app/logs
+    environment:
+      - NODE_ENV=production
+      - PORT=19891
+      - P2P_PORT=9848
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:19891/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - nexusgenesis-net
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  nexusgenesis-seed:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nexusgenesis-seed
+    restart: unless-stopped
+    ports:
+      - "19892:19891"
+      - "9849:9848"
+    volumes:
+      - nexusgenesis-seed-data:/app/data
+      - nexusgenesis-seed-logs:/app/logs
+    environment:
+      - NODE_ENV=production
+      - PORT=19891
+      - P2P_PORT=9848
+      - SEED_NODE=true
+      - BOOTSTRAP_NODES=nexusgenesis-node:9848
+    networks:
+      - nexusgenesis-net
+    profiles:
+      - cluster
+
+volumes:
+  nexusgenesis-data:
+    driver: local
+  nexusgenesis-logs:
+    driver: local
+  nexusgenesis-seed-data:
+    driver: local
+  nexusgenesis-seed-logs:
+    driver: local
+
+networks:
+  nexusgenesis-net:
+    driver: bridge

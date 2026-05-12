@@ -1048,6 +1048,37 @@ app.get('/api/v1/plugins', (req, res) => {
   res.json({ success: true, data: pluginManager.getAll() });
 });
 
+app.get('/wallet-mobile', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public', 'wallet-mobile.html'));
+});
+
+app.get('/developer-portal', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public', 'developer-portal.html'));
+});
+
+app.get('/api/v1/oracle/price/:pair', async (req, res) => {
+  try {
+    const { default: OracleClient } = await import('../oracle/oracleClient.js');
+    const client = new OracleClient();
+    const result = await client.getPrice(req.params.pair);
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+app.get('/api/v1/oracle/random', async (req, res) => {
+  try {
+    const { default: OracleClient } = await import('../oracle/oracleClient.js');
+    const client = new OracleClient();
+    const { min = 0, max } = req.query;
+    const result = await client.getRandomNumber(Number(min), max ? Number(max) : 2 ** 256 - 1);
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
 async function startHttpServer(node = null) {
   // 保存节点引用
   app.locals.node = node;

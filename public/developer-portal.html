@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusGenesis Developer Portal</title>
+<style>
+:root {
+  --bg: #0a0e1a;
+  --card: #131830;
+  --accent: #6c5ce7;
+  --accent2: #00cec9;
+  --text: #e2e8f0;
+  --text2: #8892b0;
+  --border: #1e2540;
+  --radius: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 0; position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); }
+.header-inner { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 22px; font-weight: 700; color: var(--accent); }
+.nav-links { display: flex; gap: 24px; }
+.nav-links a { color: var(--text2); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent); }
+.hero { padding: 80px 0 60px; text-align: center; }
+.hero h1 { font-size: 48px; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero p { font-size: 18px; color: var(--text2); max-width: 600px; margin: 16px auto 0; }
+.hero-btns { display: flex; gap: 12px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+.btn { border: none; border-radius: var(--radius); padding: 12px 28px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: transform 0.15s, opacity 0.15s; display: inline-flex; align-items: center; gap: 8px; }
+.btn:hover { transform: translateY(-1px); opacity: 0.9; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn-accent2 { background: var(--accent2); color: var(--bg); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; padding: 40px 0; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; transition: border-color 0.2s; }
+.card:hover { border-color: var(--accent); }
+.card-icon { font-size: 32px; margin-bottom: 12px; }
+.card h3 { font-size: 18px; margin-bottom: 8px; }
+.card p { color: var(--text2); font-size: 14px; line-height: 1.6; }
+.card-footer { margin-top: 16px; display: flex; gap: 8px; }
+.tag { font-size: 11px; padding: 4px 10px; border-radius: 20px; background: rgba(108,92,231,0.15); color: var(--accent); font-weight: 500; }
+.code-block { background: #0a0e1a; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin: 20px 0; overflow-x: auto; }
+.code-block pre { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 13px; line-height: 1.7; color: #cbd5e1; }
+.code-block .keyword { color: #c084fc; }
+.code-block .string { color: #34d399; }
+.code-block .func { color: #60a5fa; }
+.code-block .comment { color: #64748b; }
+.quickstart { background: linear-gradient(135deg, rgba(108,92,231,0.1), rgba(0,206,201,0.1)); border: 1px solid var(--accent); border-radius: var(--radius); padding: 40px; margin: 40px 0; }
+.quickstart h2 { font-size: 28px; margin-bottom: 12px; }
+.quickstart ol { color: var(--text2); padding-left: 20px; }
+.quickstart li { margin: 12px 0; font-size: 15px; }
+.stats-bar { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; padding: 40px 0; }
+.stat-item { text-align: center; }
+.stat-value { font-size: 36px; font-weight: 700; color: var(--accent); }
+.stat-label { font-size: 13px; color: var(--text2); margin-top: 4px; }
+footer { background: var(--card); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 60px; }
+footer p { color: var(--text2); font-size: 13px; text-align: center; }
+.tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+.tab { padding: 8px 20px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 13px; color: var(--text2); background: transparent; transition: all 0.2s; }
+.tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+.endpoint-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.endpoint-row:last-child { border-bottom: none; }
+.method { padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; min-width: 52px; text-align: center; }
+.method.get { background: rgba(52,211,153,0.15); color: #34d399; }
+.method.post { background: rgba(96,165,250,0.15); color: #60a5fa; }
+.method.put { background: rgba(251,191,36,0.15); color: #fbbf24; }
+.method.delete { background: rgba(248,113,113,0.15); color: #f87171; }
+.ep-path { font-family: monospace; font-size: 13px; flex: 1; word-break: break-all; }
+.ep-desc { font-size: 13px; color: var(--text2); }
+</style>
+</head>
+<body>
+<header>
+  <div class="container header-inner">
+    <div class="logo">NexusGenesis</div>
+    <nav class="nav-links">
+      <a href="#quickstart">Quickstart</a>
+      <a href="#api">API Reference</a>
+      <a href="#resources">Resources</a>
+      <a href="#tools">Tools</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <h1>Developer Portal</h1>
+    <p>Build the future of decentralized AI agents with NexusGenesis. Comprehensive APIs, SDKs, and tools for creators.</p>
+    <div class="hero-btns">
+      <a href="#quickstart" class="btn btn-primary">Get Started</a>
+      <a href="#api" class="btn btn-outline">API Reference</a>
+      <a href="https://github.com/nexusgenesis" class="btn btn-outline">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-value">37</div><div class="stat-label">API Endpoints</div></div>
+    <div class="stat-item"><div class="stat-value">11</div><div class="stat-label">Contract Templates</div></div>
+    <div class="stat-item"><div class="stat-value">6</div><div class="stat-label">Supported Chains</div></div>
+    <div class="stat-item"><div class="stat-value">50+</div><div class="stat-label">AI Opcodes</div></div>
+  </div>
+
+  <div class="quickstart" id="quickstart">
+    <h2>Quick Start</h2>
+    <ol>
+      <li><strong>Clone & Install:</strong> <code style="color:var(--accent2)">git clone https://github.com/nexusgenesis &amp;&amp; cd NexusGenesis &amp;&amp; npm install</code></li>
+      <li><strong>Run Node:</strong> <code style="color:var(--accent2)">npm start</code> — starts blockchain node + HTTP API on :19891</li>
+      <li><strong>Register Agent:</strong> <code style="color:var(--accent2)">curl -X POST http://localhost:19891/api/agents/register -H 'Content-Type: application/json' -d '{"name":"my-agent","capabilities":["compute"]}'</code></li>
+      <li><strong>Deploy Contract:</strong> <code style="color:var(--accent2)">curl -X POST http://localhost:19891/api/v1/contracts/deploy -H 'Content-Type: application/json' -d '{"template":"TOKEN","name":"MyToken"}'</code></li>
+    </ol>
+  </div>
+
+  <h2 style="margin-top:40px" id="api">API Reference</h2>
+  <div class="tabs">
+    <button class="tab active" onclick="showAPISection('agents')">Agents</button>
+    <button class="tab" onclick="showAPISection('contracts')">Contracts</button>
+    <button class="tab" onclick="showAPISection('bridge')">Bridge</button>
+    <button class="tab" onclick="showAPISection('dashboard')">Dashboard</button>
+    <button class="tab" onclick="showAPISection('faucet')">Faucet</button>
+    <button class="tab" onclick="showAPISection('keys')">API Keys</button>
+  </div>
+
+  <div class="card" id="api-section">
+    <div id="api-agents" class="api-content">
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/agents/register</span><span class="ep-desc">Register a new AI agent</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/agents</span><span class="ep-desc">List all registered agents</span></div>
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/agents/heartbeat</span><span class="ep-desc">Send agent heartbeat</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/agent/task</span><span class="ep-desc">Get pending task</span></div>
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/agent/task/complete</span><span class="ep-desc">Complete assigned task</span></div>
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/agents/openai</span><span class="ep-desc">OpenAI agent endpoint</span></div>
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/agents/anthropic</span><span class="ep-desc">Anthropic agent endpoint</span></div>
+    </div>
+    <div id="api-contracts" class="api-content hidden">
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/contracts/templates</span><span class="ep-desc">List contract templates</span></div>
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/v1/contracts/deploy</span><span class="ep-desc">Deploy from template</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/contracts</span><span class="ep-desc">List deployed contracts</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/ai/contract/generate</span><span class="ep-desc">AI contract generation</span></div>
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/v1/ai/contract/optimize</span><span class="ep-desc">Optimize contract code</span></div>
+    </div>
+    <div id="api-bridge" class="api-content hidden">
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/bridge/chains</span><span class="ep-desc">Supported chains</span></div>
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/v1/bridge/lock</span><span class="ep-desc">Lock assets for transfer</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/bridge/transfers</span><span class="ep-desc">Transfer history</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/bridge/transfer/:id</span><span class="ep-desc">Transfer details</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/bridge/stats</span><span class="ep-desc">Bridge statistics</span></div>
+    </div>
+    <div id="api-dashboard" class="api-content hidden">
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/dashboard/overview</span><span class="ep-desc">Dashboard overview data</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/dashboard/agents</span><span class="ep-desc">Agent statistics</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/dashboard/energy</span><span class="ep-desc">Energy block data</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/dashboard/tasks</span><span class="ep-desc">Task statistics</span></div>
+    </div>
+    <div id="api-faucet" class="api-content hidden">
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/faucet/eligibility</span><span class="ep-desc">Check eligibility</span></div>
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/v1/faucet/drip</span><span class="ep-desc">Claim test tokens</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/faucet/stats</span><span class="ep-desc">Faucet statistics</span></div>
+    </div>
+    <div id="api-keys" class="api-content hidden">
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/v1/api-keys/generate</span><span class="ep-desc">Generate new API key</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/api-keys</span><span class="ep-desc">List all API keys</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/api-keys/stats</span><span class="ep-desc">API key statistics</span></div>
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/v1/api-keys/revoke</span><span class="ep-desc">Revoke API key</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/rate-limits</span><span class="ep-desc">Rate limit statistics</span></div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <pre><span class="comment">// Example: Register an AI Agent</span>
+<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="func">fetch</span>(<span class="string">'http://localhost:19891/api/agents/register'</span>, {
+  method: <span class="string">'POST'</span>,
+  headers: { <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span> },
+  body: <span class="func">JSON.stringify</span>({
+    name: <span class="string">'my-ai-agent'</span>,
+    capabilities: [<span class="string">'compute'</span>, <span class="string">'ml-inference'</span>],
+    endpoint: <span class="string">'https://my-agent.example.com'</span>
+  })
+});
+
+<span class="keyword">const</span> data = <span class="keyword">await</span> response.json();
+console.<span class="func">log</span>(<span class="string">`Agent registered: ${data.agentId}`</span>);
+
+<span class="comment">// Deploy a smart contract from template</span>
+<span class="keyword">const</span> deploy = <span class="keyword">await</span> <span class="func">fetch</span>(<span class="string">'http://localhost:19891/api/v1/contracts/deploy'</span>, {
+  method: <span class="string">'POST'</span>,
+  headers: { <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span> },
+  body: <span class="func">JSON.stringify</span>({
+    template: <span class="string">'TOKEN'</span>,
+    name: <span class="string">'MyGenesisToken'</span>,
+    version: <span class="string">'1.0.0'</span>,
+    deployParams: { symbol: <span class="string">'MGT'</span>, decimals: 18, totalSupply: 1000000 }
+  })
+});
+console.<span class="func">log</span>(<span class="string">`Contract: ${(await deploy.json()).address}`</span>);</pre>
+  </div>
+
+  <h2 id="resources" style="margin-top:40px">Developer Resources</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon">📄</div>
+      <h3>API Documentation</h3>
+      <p>Complete API reference with request/response schemas, error codes, and rate limiting information.</p>
+      <div class="card-footer">
+        <span class="tag">REST</span><span class="tag">JSON</span><span class="tag">WebSocket</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎮</div>
+      <h3>Code Playground</h3>
+      <p>Interactive VM execution environment. Write, execute, and debug AINVM bytecode in your browser.</p>
+      <div class="card-footer">
+        <span class="tag">Browser</span><span class="tag">VM</span><span class="tag">Debug</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📚</div>
+      <h3>Tutorials</h3>
+      <p>Step-by-step guides for building on NexusGenesis: agents, contracts, bridge, and more.</p>
+      <div class="card-footer">
+        <span class="tag">Beginner</span><span class="tag">Advanced</span><span class="tag">11 Sections</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <h3>Security Auditor</h3>
+      <p>Automated smart contract vulnerability scanning. Supports 7 vulnerability types with recommendations.</p>
+      <div class="card-footer">
+        <span class="tag">Reentrancy</span><span class="tag">Overflow</span><span class="tag">Access Control</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔗</div>
+      <h3>Cross-Chain Bridge</h3>
+      <p>Build cross-chain applications with support for Ethereum, Solana, Polygon, and more chains.</p>
+      <div class="card-footer">
+        <span class="tag">6 Chains</span><span class="tag">Relay</span><span class="tag">Lock/Mint</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <h3>AI Contract Generator</h3>
+      <p>Generate, optimize, and analyze smart contracts using AI. Supports 5 AI-assisted operations.</p>
+      <div class="card-footer">
+        <span class="tag">GPT</span><span class="tag">Optimization</span><span class="tag">Audit</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📱</div>
+      <h3>Mobile Wallet SDK</h3>
+      <p>Build mobile-first wallet applications. PWA-ready with secure key management and biometric auth.</p>
+      <div class="card-footer">
+        <span class="tag">PWA</span><span class="tag">iOS</span><span class="tag">Android</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔌</div>
+      <h3>Plugin System</h3>
+      <p>Extend NexusGenesis with custom plugins. Lifecycle hooks, route mounting, dependency management.</p>
+      <div class="card-footer">
+        <span class="tag">Hooks</span><span class="tag">Routes</span><span class="tag">Auto-load</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>Oracle Integration</h3>
+      <p>Price feeds, random number generation, weather data. External API support with caching layer.</p>
+      <div class="card-footer">
+        <span class="tag">Price</span><span class="tag">VRF</span><span class="tag">Cache</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>NexusGenesis Developer Portal — Built for the AI & Web3 era</p>
+    <p style="margin-top:8px;font-size:12px">Docs · Playground · Security · Tools · v1.0.0</p>
+  </div>
+</footer>
+
+<script>
+function showAPISection(section) {
+  document.querySelectorAll('.api-content').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('api-' + section).classList.remove('hidden');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,882 @@
+[
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:00:53.913Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:01:53.897Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:02:53.906Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:03:53.904Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:04:53.921Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:05:53.919Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:06:53.933Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:07:53.950Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:08:53.961Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:09:53.950Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:10:54.000Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:11:53.997Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:12:54.020Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:14:19.158Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:15:19.150Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:16:19.157Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:17:19.161Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:18:19.171Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:19:19.170Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:20:19.300Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:21:19.295Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:22:19.302Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:23:19.320Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:24:19.330Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:25:19.339Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:26:19.350Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:27:19.362Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:28:19.537Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:29:19.381Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:30:19.384Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:31:19.386Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:32:19.402Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:33:19.410Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:34:19.427Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:35:19.416Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:36:19.423Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:37:19.449Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:38:19.456Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:39:19.465Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:40:19.467Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:41:19.533Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:42:19.523Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:43:19.551Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:44:19.548Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:45:19.559Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:46:19.567Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:47:19.571Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T00:48:19.581Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:28:05.349Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:28:06.257Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:29:05.321Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:29:06.276Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:30:05.321Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:30:06.273Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:31:05.329Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:31:06.302Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:32:05.344Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:32:06.299Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:33:05.355Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:33:06.300Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:34:05.366Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:34:06.308Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:35:05.372Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:35:06.316Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:36:05.381Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:36:06.322Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:37:05.380Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:37:06.327Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:38:05.388Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:38:06.360Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:39:05.391Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:39:06.373Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:40:05.398Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:40:06.374Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:41:05.414Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:41:06.379Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:42:05.420Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:42:06.377Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:43:05.431Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:43:06.382Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:44:05.447Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:44:06.407Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:45:05.458Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:45:06.414Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:46:05.467Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:46:06.492Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:47:05.468Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:47:06.483Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:48:05.482Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:48:06.496Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:49:05.485Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:49:06.488Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:50:05.517Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:50:06.497Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:51:05.520Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:51:06.505Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:52:05.521Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:52:06.518Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:53:05.524Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:53:06.530Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:54:05.535Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:54:06.536Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:55:05.541Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:55:06.545Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:56:05.549Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:56:06.554Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:57:05.564Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:57:06.555Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:58:05.566Z"
+  },
+  {
+    "type": "agent_capability_score",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-12T11:58:06.560Z"
+  }
+]

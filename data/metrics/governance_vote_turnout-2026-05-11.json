@@ -1,0 +1,547 @@
+[
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T16:49:18.788Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T16:50:18.808Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T16:51:18.822Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T16:52:18.822Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T16:53:18.825Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T16:54:18.838Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T16:55:18.884Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T16:56:18.869Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T16:57:18.871Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T16:58:18.880Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T16:59:18.885Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:00:18.889Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:01:18.893Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:02:18.904Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:03:18.902Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:04:18.905Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:05:18.921Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:06:18.924Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:07:18.926Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:08:18.928Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:09:18.934Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:10:18.948Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:11:18.956Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:12:18.968Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:13:18.972Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:14:18.971Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:15:18.993Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:16:18.990Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:17:19.009Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T17:18:19.020Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:26:34.130Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:27:34.138Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:28:34.144Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:29:34.157Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:30:34.154Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:31:34.157Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:32:34.175Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:33:34.176Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:34:34.179Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:35:34.305Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:36:34.241Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:37:34.250Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:38:34.252Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:39:34.263Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:40:34.269Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:41:34.267Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:42:34.268Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:43:34.284Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:44:34.289Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:45:34.301Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:46:34.309Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:47:34.311Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:48:34.316Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:49:34.328Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:50:34.333Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:51:34.347Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:52:34.355Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:53:34.360Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:54:34.366Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T20:55:34.413Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:11:25.415Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:12:25.420Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:13:25.431Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:14:25.435Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:15:25.445Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:16:25.445Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:17:25.455Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:18:25.461Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:19:25.566Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:20:25.512Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:21:25.526Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:22:25.529Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:23:25.541Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:24:25.552Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:25:25.565Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:26:25.577Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:27:25.587Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:28:25.597Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:29:25.598Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:30:25.622Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:31:25.623Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:32:25.633Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:33:25.647Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:34:25.657Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:35:25.667Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:36:25.672Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:37:25.683Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:38:25.697Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:39:25.698Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:40:25.698Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:41:25.712Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:42:53.573Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:43:53.591Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:44:53.591Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:45:53.595Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:46:53.607Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:47:53.610Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:48:53.614Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:49:53.622Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:50:53.629Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:51:53.639Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:52:53.649Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:53:53.646Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:54:53.651Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:55:53.663Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:56:53.691Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:57:53.698Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:58:53.703Z"
+  },
+  {
+    "type": "governance_vote_turnout",
+    "value": 0,
+    "timestamp": "2026-05-11T23:59:53.712Z"
+  }
+]

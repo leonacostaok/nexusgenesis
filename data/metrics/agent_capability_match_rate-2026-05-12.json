@@ -1,0 +1,1117 @@
+[
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:00:23.988Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:00:54.008Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:01:24.012Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:01:54.030Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:02:24.040Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:02:54.098Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:03:24.107Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:03:54.116Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:04:24.129Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:04:54.220Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:05:24.200Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:05:54.210Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:06:24.214Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:06:54.228Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:07:24.228Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:07:54.238Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:08:24.253Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:08:54.251Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:09:24.267Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:09:54.271Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:10:24.286Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:10:54.291Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:11:24.312Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:11:54.318Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:12:24.330Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:12:54.334Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:13:49.093Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:14:19.186Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:14:49.198Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:15:19.193Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:15:49.201Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:16:19.214Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:16:49.223Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:17:19.219Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:17:49.248Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:18:19.234Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:18:49.242Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:19:19.243Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:19:49.251Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:20:19.386Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:20:49.354Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:21:19.366Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:21:49.375Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:22:19.392Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:22:49.408Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:23:19.404Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:23:49.419Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:24:19.432Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:24:49.446Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:25:19.458Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:25:49.466Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:26:19.469Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:26:49.480Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:27:19.484Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:27:49.496Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:28:19.597Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:28:49.568Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:29:19.576Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:29:49.596Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:30:19.586Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:30:49.596Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:31:19.601Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:31:49.618Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:32:19.623Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:32:49.631Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:33:19.639Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:33:49.652Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:34:19.660Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:34:49.732Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:35:19.680Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:35:49.690Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:36:19.700Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:36:49.710Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:37:19.709Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:37:49.717Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:38:19.723Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:38:49.728Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:39:19.742Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:39:49.740Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:40:19.741Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:40:49.748Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:41:19.760Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:41:49.775Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:42:19.786Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:42:49.790Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:43:19.950Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:43:49.842Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:44:19.852Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:44:49.856Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:45:19.866Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:45:49.889Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:46:19.887Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:46:49.894Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:47:19.921Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:47:49.922Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:48:19.928Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T00:48:49.942Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:27:35.149Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:27:36.200Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:28:05.398Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:28:06.283Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:28:35.404Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:28:36.288Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:29:05.400Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:29:06.302Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:29:35.402Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:29:36.307Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:30:05.401Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:30:06.313Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:30:35.421Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:30:36.321Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:31:05.420Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:31:06.324Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:31:35.430Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:31:36.336Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:32:05.429Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:32:06.350Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:32:35.444Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:32:36.356Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:33:05.445Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:33:06.361Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:33:35.453Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:33:36.367Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:34:05.451Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:34:06.380Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:34:35.460Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:34:36.382Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:35:05.457Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:35:06.511Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:35:35.464Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:35:36.396Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:36:05.474Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:36:06.412Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:36:35.474Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:36:36.425Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:37:05.482Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:37:06.434Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:37:35.500Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:37:36.454Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:38:05.509Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:38:06.467Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:38:35.516Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:38:36.473Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:39:05.554Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:39:06.530Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:39:35.536Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:39:36.493Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:40:05.556Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:40:06.495Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:40:35.564Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:40:36.509Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:41:05.573Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:41:06.507Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:41:35.585Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:41:36.502Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:42:05.590Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:42:06.518Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:42:35.598Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:42:36.529Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:43:05.606Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:43:06.535Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:43:35.608Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:43:36.545Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:44:05.619Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:44:06.550Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:44:35.618Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:44:36.552Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:45:05.627Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:45:06.551Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:45:35.634Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:45:36.568Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:46:05.630Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:46:06.579Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:46:35.649Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:46:36.586Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:47:05.658Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:47:06.588Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:47:35.682Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:47:36.611Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:48:05.681Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:48:06.620Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:48:35.680Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:48:36.616Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:49:05.685Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:49:06.628Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:49:35.693Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:49:36.627Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:50:05.707Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:50:06.640Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:50:35.713Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:50:36.647Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:51:05.714Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:51:06.761Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:51:35.714Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:51:36.681Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:52:05.719Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:52:06.697Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:52:35.736Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:52:36.700Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:53:05.835Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:53:06.692Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:53:35.735Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:53:36.712Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:54:05.737Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:54:06.710Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:54:35.846Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:54:36.745Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:55:05.755Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:55:06.733Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:55:35.755Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:55:36.743Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:56:05.769Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:56:06.756Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:56:35.777Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:56:36.781Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:57:05.781Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:57:06.781Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:57:35.826Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:57:36.786Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:58:05.779Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:58:06.777Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:58:35.785Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-12T11:58:36.788Z"
+  }
+]

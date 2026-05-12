@@ -44,19 +44,23 @@ describe('P1 - Education & Developer Experience', () => {
   });
 
   describe('Playground API Routes in Server', () => {
-    it('server.js should have playground page route', () => {
+    it('playground route module should have all routes', () => {
       const serverPath = path.join(projectRoot, 'src', 'http', 'server.js');
-      const content = fs.readFileSync(serverPath, 'utf8');
-      assert.ok(content.includes('/playground'), 'should have playground route');
-      assert.ok(content.includes('/tutorials'), 'should have tutorials route');
-      assert.ok(content.includes('/api/v1/playground/execute'), 'should have execute route');
-      assert.ok(content.includes('/api/v1/playground/estimate'), 'should have estimate route');
-      assert.ok(content.includes('getOpcodeName'), 'should have opcode name helper');
+      const serverContent = fs.readFileSync(serverPath, 'utf8');
+      const playgroundPath = path.join(projectRoot, 'src', 'http', 'routes', 'playground.js');
+      const playgroundContent = fs.readFileSync(playgroundPath, 'utf8');
+      assert.ok(playgroundContent.includes('/playground'), 'should have playground route');
+      assert.ok(playgroundContent.includes('/tutorials'), 'should have tutorials route');
+      assert.ok(playgroundContent.includes('/api/v1/playground/execute'), 'should have execute route');
+      assert.ok(playgroundContent.includes('/api/v1/playground/estimate'), 'should have estimate route');
+      assert.ok(playgroundContent.includes('getOpcodeName'), 'should have opcode name helper');
+      assert.ok(serverContent.includes("import playgroundRoutes from './routes/playground.js'"));
+      assert.ok(serverContent.includes('app.use(playgroundRoutes)'));
     });
 
-    it('playground routes should include all opcode names', () => {
-      const serverPath = path.join(projectRoot, 'src', 'http', 'server.js');
-      const content = fs.readFileSync(serverPath, 'utf8');
+    it('playground route module should include all opcode names', () => {
+      const playgroundPath = path.join(projectRoot, 'src', 'http', 'routes', 'playground.js');
+      const content = fs.readFileSync(playgroundPath, 'utf8');
       const requiredOpcodes = [
         'PUSH', 'POP', 'ADD', 'SUB', 'MUL', 'DIV', 'HALT', 'RETURN',
         'LOAD', 'STORE', 'JMP', 'JZ', 'EQ', 'LT', 'GT',

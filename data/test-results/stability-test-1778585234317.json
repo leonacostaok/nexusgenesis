@@ -1,0 +1,359 @@
+{
+  "timestamp": "2026-05-12T11:27:14.317Z",
+  "testCount": 50,
+  "successCount": 16,
+  "successRate": 32,
+  "totalTime": 5540,
+  "testResults": [
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 58,
+      "timestamp": "2026-05-12T11:27:08.835Z",
+      "error": "Request failed with status code 400"
+    },
+    {
+      "testName": "Health Check",
+      "success": true,
+      "responseTime": 4,
+      "timestamp": "2026-05-12T11:27:08.951Z",
+      "error": null
+    },
+    {
+      "testName": "Get Agents",
+      "success": true,
+      "responseTime": 4,
+      "timestamp": "2026-05-12T11:27:09.060Z",
+      "error": null
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 391,
+      "timestamp": "2026-05-12T11:27:09.168Z",
+      "error": "Request failed with status code 400"
+    },
+    {
+      "testName": "Get Agents",
+      "success": true,
+      "responseTime": 2,
+      "timestamp": "2026-05-12T11:27:09.277Z",
+      "error": null
+    },
+    {
+      "testName": "Get Agents",
+      "success": true,
+      "responseTime": 3,
+      "timestamp": "2026-05-12T11:27:09.387Z",
+      "error": null
+    },
+    {
+      "testName": "Health Check",
+      "success": true,
+      "responseTime": 2,
+      "timestamp": "2026-05-12T11:27:09.497Z",
+      "error": null
+    },
+    {
+      "testName": "Health Check",
+      "success": true,
+      "responseTime": 2,
+      "timestamp": "2026-05-12T11:27:09.606Z",
+      "error": null
+    },
+    {
+      "testName": "Get Agents",
+      "success": true,
+      "responseTime": 4,
+      "timestamp": "2026-05-12T11:27:09.716Z",
+      "error": null
+    },
+    {
+      "testName": "Get Agents",
+      "success": true,
+      "responseTime": 4,
+      "timestamp": "2026-05-12T11:27:09.825Z",
+      "error": null
+    },
+    {
+      "testName": "Health Check",
+      "success": true,
+      "responseTime": 2,
+      "timestamp": "2026-05-12T11:27:09.933Z",
+      "error": null
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 1265,
+      "timestamp": "2026-05-12T11:27:10.042Z",
+      "error": "Request failed with status code 400"
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 1374,
+      "timestamp": "2026-05-12T11:27:10.151Z",
+      "error": "Request failed with status code 400"
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 1484,
+      "timestamp": "2026-05-12T11:27:10.261Z",
+      "error": "Request failed with status code 400"
+    },
+    {
+      "testName": "Health Check",
+      "success": true,
+      "responseTime": 3,
+      "timestamp": "2026-05-12T11:27:10.370Z",
+      "error": null
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 1703,
+      "timestamp": "2026-05-12T11:27:10.480Z",
+      "error": "Request failed with status code 400"
+    },
+    {
+      "testName": "Get Agents",
+      "success": true,
+      "responseTime": 2,
+      "timestamp": "2026-05-12T11:27:10.589Z",
+      "error": null
+    },
+    {
+      "testName": "Health Check",
+      "success": true,
+      "responseTime": 2,
+      "timestamp": "2026-05-12T11:27:10.698Z",
+      "error": null
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 2029,
+      "timestamp": "2026-05-12T11:27:10.806Z",
+      "error": "Request failed with status code 400"
+    },
+    {
+      "testName": "Get Agents",
+      "success": true,
+      "responseTime": 3,
+      "timestamp": "2026-05-12T11:27:10.915Z",
+      "error": null
+    },
+    {
+      "testName": "Health Check",
+      "success": true,
+      "responseTime": 2,
+      "timestamp": "2026-05-12T11:27:11.023Z",
+      "error": null
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 2356,
+      "timestamp": "2026-05-12T11:27:11.133Z",
+      "error": "Request failed with status code 400"
+    },
+    {
+      "testName": "Get Agents",
+      "success": true,
+      "responseTime": 3,
+      "timestamp": "2026-05-12T11:27:11.242Z",
+      "error": null
+    },
+    {
+      "testName": "Get Agents",
+      "success": true,
+      "responseTime": 2,
+      "timestamp": "2026-05-12T11:27:11.352Z",
+      "error": null
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 2686,
+      "timestamp": "2026-05-12T11:27:11.463Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 2796,
+      "timestamp": "2026-05-12T11:27:11.573Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 2905,
+      "timestamp": "2026-05-12T11:27:11.682Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 3014,
+      "timestamp": "2026-05-12T11:27:11.791Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 3122,
+      "timestamp": "2026-05-12T11:27:11.899Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 3231,
+      "timestamp": "2026-05-12T11:27:12.008Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 3342,
+      "timestamp": "2026-05-12T11:27:12.119Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 3452,
+      "timestamp": "2026-05-12T11:27:12.229Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 3560,
+      "timestamp": "2026-05-12T11:27:12.337Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 3669,
+      "timestamp": "2026-05-12T11:27:12.446Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 3778,
+      "timestamp": "2026-05-12T11:27:12.555Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 3887,
+      "timestamp": "2026-05-12T11:27:12.664Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 3996,
+      "timestamp": "2026-05-12T11:27:12.773Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 4119,
+      "timestamp": "2026-05-12T11:27:12.896Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 4229,
+      "timestamp": "2026-05-12T11:27:13.006Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Get Agents",
+      "success": false,
+      "responseTime": 4339,
+      "timestamp": "2026-05-12T11:27:13.116Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 4449,
+      "timestamp": "2026-05-12T11:27:13.226Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 4557,
+      "timestamp": "2026-05-12T11:27:13.334Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 4665,
+      "timestamp": "2026-05-12T11:27:13.442Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 4772,
+      "timestamp": "2026-05-12T11:27:13.549Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 4884,
+      "timestamp": "2026-05-12T11:27:13.661Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 4992,
+      "timestamp": "2026-05-12T11:27:13.769Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 5102,
+      "timestamp": "2026-05-12T11:27:13.879Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 5217,
+      "timestamp": "2026-05-12T11:27:13.994Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Health Check",
+      "success": false,
+      "responseTime": 5324,
+      "timestamp": "2026-05-12T11:27:14.101Z",
+      "error": "Request failed with status code 429"
+    },
+    {
+      "testName": "Agent Registration",
+      "success": false,
+      "responseTime": 5432,
+      "timestamp": "2026-05-12T11:27:14.209Z",
+      "error": "Request failed with status code 429"
+    }
+  ]
+}

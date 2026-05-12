@@ -1,0 +1,2207 @@
+[
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T01:30:15.810Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T01:30:30.842Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T16:48:33.779Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T16:48:48.919Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T16:49:03.925Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T16:49:18.961Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T16:49:33.976Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T16:49:48.978Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T16:50:03.991Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T16:50:18.997Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T16:50:33.998Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T16:50:49.001Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T16:51:04.003Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T16:51:19.015Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T16:51:34.015Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T16:51:49.016Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T16:52:04.028Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T16:52:19.038Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T16:52:34.042Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T16:52:49.056Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T16:53:04.063Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T16:53:19.066Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T16:53:34.078Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T16:53:49.091Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T16:54:04.092Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T16:54:19.119Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T16:54:34.129Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T16:54:49.142Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T16:55:04.155Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T16:55:19.169Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T16:55:34.184Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T16:55:49.199Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T16:56:04.209Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T16:56:19.212Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T16:56:34.213Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T16:56:49.214Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T16:57:04.219Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T16:57:19.228Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T16:57:34.230Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T16:57:49.234Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T16:58:04.248Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T16:58:19.250Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T16:58:34.253Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T16:58:49.260Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T16:59:04.272Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T16:59:19.273Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T16:59:34.280Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T16:59:49.282Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T17:00:04.287Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:00:19.290Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:00:34.290Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:00:49.294Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T17:01:04.304Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T17:01:19.308Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T17:01:34.319Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:01:49.320Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:02:04.329Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:02:19.333Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:02:34.337Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:02:49.340Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:03:04.344Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:03:19.356Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:03:34.367Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T17:03:49.374Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:04:04.383Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:04:19.397Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T17:04:34.413Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:04:49.416Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T17:05:04.428Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:05:19.432Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:05:34.438Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:05:49.445Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:06:04.453Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:06:19.466Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:06:34.468Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T17:06:49.479Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:07:04.491Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:07:19.501Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T17:07:34.512Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:07:49.515Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T17:08:04.520Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:08:19.529Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:08:34.536Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:08:49.548Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T17:09:04.549Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T17:09:19.559Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T17:09:34.559Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:09:49.573Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:10:04.579Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:10:19.587Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:10:34.593Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:10:49.603Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T17:11:04.617Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:11:19.624Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:11:34.632Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:11:49.640Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:12:04.644Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:12:19.659Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T17:12:34.661Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T17:12:49.666Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:13:04.679Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:13:19.692Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T17:13:34.707Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T17:13:49.708Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:14:04.710Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:14:19.711Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:14:34.721Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:14:49.732Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T17:15:04.738Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:15:19.738Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T17:15:34.747Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T17:15:49.757Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:16:04.756Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:16:19.757Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:16:34.764Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:16:49.774Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:17:04.783Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:17:19.795Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T17:17:34.802Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T17:17:49.811Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:18:04.821Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T17:18:19.828Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T17:18:34.840Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T17:18:49.855Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:25:49.094Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:26:04.218Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:26:19.222Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:26:34.227Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:26:49.232Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:27:04.234Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:27:19.235Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:27:34.239Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:27:49.248Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:28:04.255Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:28:19.255Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:28:34.261Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:28:49.273Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:29:04.287Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:29:19.296Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:29:34.297Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:29:49.302Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:30:04.352Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:30:19.357Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:30:34.361Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:30:49.372Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:31:04.382Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:31:19.384Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:31:34.385Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:31:49.388Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:32:04.388Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:32:19.402Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:32:34.408Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:32:49.418Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:33:04.426Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:33:19.433Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:33:34.436Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:33:49.463Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:34:04.470Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:34:19.482Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:34:34.490Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:34:49.494Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:35:04.509Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:35:19.513Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:35:34.529Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:35:49.534Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:36:04.536Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:36:19.538Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:36:34.547Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:36:49.559Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:37:04.568Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:37:19.573Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:37:34.588Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:37:49.593Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:38:04.607Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:38:19.620Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:38:34.622Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:38:49.629Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:39:04.641Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:39:19.645Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:39:34.663Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:39:49.668Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:40:04.670Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:40:19.673Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:40:34.674Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:40:49.723Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:41:04.705Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:41:19.720Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:41:34.732Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:41:49.739Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:42:04.751Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:42:19.752Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:42:34.765Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:42:49.779Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:43:04.785Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:43:19.790Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:43:34.795Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:43:49.795Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:44:04.803Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:44:19.816Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:44:34.830Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:44:49.839Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:45:04.849Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:45:19.859Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:45:34.859Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:45:49.868Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:46:04.880Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:46:19.889Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:46:34.901Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:46:49.909Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:47:04.919Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:47:19.929Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:47:34.934Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:47:49.940Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:48:04.941Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:48:19.942Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:48:34.951Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:48:49.952Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:49:04.964Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:49:19.973Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:49:34.982Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:49:49.984Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:50:04.989Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:50:19.994Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:50:34.998Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:50:50.004Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:51:05.016Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:51:20.017Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:51:35.025Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:51:50.034Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T20:52:05.043Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:52:20.044Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T20:52:35.053Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:52:50.065Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:53:05.069Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:53:20.083Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:53:35.090Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:53:50.104Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:54:05.115Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:54:20.126Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:54:35.132Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T20:54:50.136Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:55:05.143Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T20:55:20.149Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T20:55:35.156Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:10:40.354Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:10:55.401Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:11:10.413Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:11:25.545Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:11:40.550Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:11:55.553Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:12:10.554Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:12:25.569Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:12:40.584Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:12:55.587Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:13:10.588Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:13:25.600Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:13:40.607Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:13:55.620Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:14:10.629Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:14:25.634Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:14:40.646Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:14:55.649Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:15:10.653Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:15:25.658Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:15:40.668Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:15:55.684Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:16:10.693Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:16:25.706Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:16:40.743Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:16:55.752Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:17:10.753Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:17:25.764Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:17:40.767Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:17:55.770Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:18:10.782Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:18:25.792Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:18:40.807Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:18:55.810Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:19:10.822Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:19:25.827Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:19:40.832Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:19:55.846Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:20:10.859Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:20:25.864Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:20:40.872Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:20:55.886Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:21:10.888Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:21:25.894Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:21:40.896Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:21:55.902Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:22:10.914Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:22:25.917Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:22:40.917Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:22:55.920Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:23:10.927Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:23:25.930Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:23:40.936Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:23:55.943Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:24:10.953Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:24:25.959Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:24:40.966Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:24:55.965Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:25:10.968Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:25:25.983Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:25:40.995Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:25:56.007Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:26:11.010Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:26:26.024Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:26:41.031Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:26:56.037Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:27:11.046Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:27:26.049Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:27:41.058Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:27:56.059Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:28:11.066Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:28:26.077Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:28:41.078Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:28:56.092Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:29:11.097Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:29:26.109Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:29:41.112Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:29:56.124Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:30:11.124Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:30:26.125Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:30:41.136Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:30:56.137Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:31:11.146Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:31:26.149Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:31:41.149Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:31:56.161Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:32:11.163Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:32:26.176Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:32:41.189Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:32:56.195Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:33:11.195Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:33:26.200Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:33:41.210Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:33:56.213Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:34:11.220Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:34:26.227Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:34:41.234Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:34:56.247Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:35:11.257Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:35:26.260Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:35:41.263Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:35:56.273Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:36:11.283Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:36:26.313Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:36:41.324Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:36:56.338Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:37:11.353Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:37:26.354Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:37:41.367Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:37:56.376Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:38:11.383Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:38:26.395Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:38:41.405Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:38:56.419Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:39:11.419Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:39:26.427Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:39:41.436Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:39:56.439Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:40:11.451Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:40:26.462Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:40:41.476Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:40:56.484Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:41:11.495Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:41:26.497Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:41:41.507Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:42:08.559Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:42:23.601Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:42:38.604Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:42:53.696Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:43:08.710Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:43:23.725Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:43:38.725Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:43:53.751Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:44:08.761Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:44:23.773Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:44:38.775Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:44:53.788Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:45:08.795Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:45:23.810Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:45:38.821Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:45:53.828Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:46:08.834Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:46:23.836Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:46:38.849Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:46:53.855Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:47:08.888Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:47:23.888Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:47:38.891Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:47:53.894Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:48:08.904Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:48:23.910Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:48:38.918Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:48:53.929Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:49:08.942Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:49:23.955Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:49:38.960Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:49:53.967Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:50:08.971Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:50:23.982Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:50:38.995Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:50:54.010Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:51:09.019Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:51:24.032Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:51:39.046Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:51:54.058Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:52:09.065Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:52:24.078Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:52:39.084Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:52:54.092Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:53:09.105Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:53:24.115Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:53:39.127Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:53:54.133Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:54:09.145Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:54:24.159Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:54:39.160Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:54:54.171Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:55:09.183Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:55:24.190Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:55:39.205Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:55:54.206Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:56:09.213Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:56:24.217Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:56:39.218Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:56:54.224Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:57:09.249Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:57:24.257Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:57:39.260Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 3,
+    "timestamp": "2026-05-11T23:57:54.269Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:58:09.284Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:58:24.290Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:58:39.298Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:58:54.313Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 0,
+    "timestamp": "2026-05-11T23:59:09.318Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 2,
+    "timestamp": "2026-05-11T23:59:24.328Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 4,
+    "timestamp": "2026-05-11T23:59:39.342Z"
+  },
+  {
+    "type": "rate_limit_triggered",
+    "value": 1,
+    "timestamp": "2026-05-11T23:59:54.348Z"
+  }
+]

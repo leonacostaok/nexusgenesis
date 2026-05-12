@@ -1,0 +1,2207 @@
+[
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T01:30:15.810Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T01:30:30.842Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:48:33.782Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:48:48.919Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:49:03.925Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:49:18.963Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:49:33.980Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:49:48.979Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:50:03.992Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:50:18.998Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:50:33.998Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:50:49.001Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:51:04.003Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:51:19.018Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:51:34.016Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:51:49.017Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:52:04.029Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:52:19.039Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:52:34.042Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:52:49.056Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:53:04.064Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:53:19.067Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:53:34.078Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:53:49.092Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:54:04.092Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:54:19.120Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:54:34.132Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:54:49.143Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:55:04.156Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:55:19.169Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:55:34.184Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:55:49.199Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:56:04.209Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:56:19.213Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:56:34.214Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:56:49.215Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:57:04.219Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:57:19.229Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:57:34.230Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:57:49.234Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:58:04.249Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:58:19.251Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:58:34.253Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:58:49.261Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:59:04.273Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:59:19.274Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:59:34.280Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:59:49.282Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:00:04.287Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:00:19.291Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:00:34.291Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:00:49.294Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:01:04.304Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:01:19.308Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:01:34.320Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:01:49.321Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:02:04.330Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:02:19.334Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:02:34.339Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:02:49.340Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:03:04.344Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:03:19.357Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:03:34.368Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:03:49.375Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:04:04.383Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:04:19.397Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:04:34.414Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:04:49.416Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:05:04.429Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:05:19.432Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:05:34.439Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:05:49.446Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:06:04.455Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:06:19.467Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:06:34.469Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:06:49.479Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:07:04.492Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:07:19.502Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:07:34.513Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:07:49.516Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:08:04.521Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:08:19.530Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:08:34.537Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:08:49.548Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:09:04.550Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:09:19.559Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:09:34.560Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:09:49.574Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:10:04.580Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:10:19.588Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:10:34.594Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:10:49.604Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:11:04.618Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:11:19.625Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:11:34.633Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:11:49.641Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:12:04.645Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:12:19.660Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:12:34.661Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:12:49.667Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:13:04.680Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:13:19.693Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:13:34.707Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:13:49.708Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:14:04.711Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:14:19.712Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:14:34.721Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:14:49.732Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:15:04.738Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:15:19.739Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:15:34.766Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:15:49.758Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:16:04.757Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:16:19.758Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:16:34.765Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:16:49.776Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:17:04.783Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:17:19.796Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:17:34.802Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:17:49.812Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:18:04.822Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:18:19.829Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:18:34.841Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:18:49.855Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:25:49.095Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:26:04.221Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:26:19.223Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:26:34.228Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:26:49.233Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:27:04.234Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:27:19.236Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:27:34.240Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:27:49.248Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:28:04.256Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:28:19.256Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:28:34.262Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:28:49.274Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:29:04.288Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:29:19.298Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:29:34.298Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:29:49.303Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:30:04.353Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:30:19.357Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:30:34.362Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:30:49.373Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:31:04.383Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:31:19.385Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:31:34.386Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:31:49.389Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:32:04.389Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:32:19.403Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:32:34.409Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:32:49.418Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:33:04.539Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:33:19.434Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:33:34.437Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:33:49.466Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:34:04.470Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:34:19.485Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:34:34.491Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:34:49.495Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:35:04.510Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:35:19.514Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:35:34.530Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:35:49.535Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:36:04.537Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:36:19.539Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:36:34.547Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:36:49.560Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:37:04.569Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:37:19.573Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:37:34.589Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:37:49.593Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:38:04.608Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:38:19.620Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:38:34.623Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:38:49.630Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:39:04.642Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:39:19.646Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:39:34.683Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:39:49.669Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:40:04.671Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:40:19.675Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:40:34.675Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:40:49.750Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:41:04.705Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:41:19.721Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:41:34.733Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:41:49.740Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:42:04.752Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:42:19.753Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:42:34.766Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:42:49.780Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:43:04.787Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:43:19.791Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:43:34.795Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:43:49.795Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:44:04.804Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:44:19.817Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:44:34.830Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:44:49.841Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:45:04.850Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:45:19.860Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:45:34.860Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:45:49.868Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:46:04.881Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:46:19.890Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:46:34.902Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:46:49.909Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:47:04.920Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:47:19.929Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:47:34.935Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:47:49.941Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:48:04.942Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:48:19.943Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:48:34.951Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:48:49.953Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:49:04.965Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:49:19.974Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:49:34.982Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:49:49.984Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:50:04.989Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:50:19.995Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:50:34.999Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:50:50.006Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:51:05.017Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:51:20.018Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:51:35.026Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:51:50.035Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:52:05.043Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:52:20.045Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:52:35.054Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:52:50.065Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:53:05.070Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:53:20.084Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:53:35.091Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:53:50.104Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:54:05.116Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:54:20.127Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:54:35.133Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:54:50.136Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:55:05.143Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:55:20.150Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:55:35.158Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:10:40.355Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:10:55.402Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:11:10.413Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:11:25.547Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:11:40.551Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:11:55.553Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:12:10.556Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:12:25.570Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:12:40.585Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:12:55.588Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:13:10.589Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:13:25.601Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:13:40.608Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:13:55.620Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:14:10.630Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:14:25.635Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:14:40.647Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:14:55.650Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:15:10.654Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:15:25.659Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:15:40.669Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:15:55.685Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:16:10.736Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:16:25.707Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:16:40.751Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:16:55.753Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:17:10.754Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:17:25.765Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:17:40.767Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:17:55.771Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:18:10.783Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:18:25.796Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:18:40.807Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:18:55.812Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:19:10.823Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:19:25.829Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:19:40.833Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:19:55.847Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:20:10.860Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:20:25.865Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:20:40.873Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:20:55.886Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:21:10.889Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:21:25.895Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:21:40.897Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:21:55.903Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:22:10.915Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:22:25.918Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:22:40.918Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:22:55.921Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:23:10.928Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:23:25.930Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:23:40.937Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:23:55.944Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:24:10.954Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:24:25.960Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:24:40.967Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:24:55.966Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:25:10.969Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:25:25.984Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:25:40.996Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:25:56.008Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:26:11.010Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:26:26.025Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:26:41.032Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:26:56.038Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:27:11.046Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:27:26.050Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:27:41.059Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:27:56.060Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:28:11.067Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:28:26.078Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:28:41.079Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:28:56.096Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:29:11.098Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:29:26.110Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:29:41.113Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:29:56.124Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:30:11.124Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:30:26.126Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:30:41.136Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:30:56.138Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:31:11.146Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:31:26.149Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:31:41.150Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:31:56.162Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:32:11.164Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:32:26.177Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:32:41.190Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:32:56.195Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:33:11.195Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:33:26.200Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:33:41.211Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:33:56.214Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:34:11.221Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:34:26.228Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:34:41.235Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:34:56.248Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:35:11.257Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:35:26.261Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:35:41.263Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:35:56.274Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:36:11.284Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:36:26.315Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:36:41.325Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:36:56.339Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:37:11.353Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:37:26.355Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:37:41.367Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:37:56.377Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:38:11.385Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:38:26.396Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:38:41.406Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:38:56.420Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:39:11.420Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:39:26.428Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:39:41.437Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:39:56.440Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:40:11.452Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:40:26.463Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:40:41.477Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:40:56.484Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:41:11.496Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:41:26.567Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:41:41.508Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:42:08.561Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:42:23.602Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:42:38.605Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:42:53.697Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:43:08.711Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:43:23.726Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:43:38.726Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:43:53.762Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:44:08.762Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:44:23.774Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:44:38.776Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:44:53.789Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:45:08.796Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:45:23.811Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:45:38.822Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:45:53.830Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:46:08.836Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:46:23.836Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:46:38.850Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:46:53.857Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:47:08.891Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:47:23.889Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:47:38.892Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:47:53.895Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:48:08.905Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:48:23.911Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:48:38.919Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:48:53.930Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:49:08.944Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:49:23.956Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:49:38.961Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:49:53.968Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:50:08.972Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:50:23.983Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:50:38.996Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:50:54.011Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:51:09.019Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:51:24.033Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:51:39.049Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:51:54.059Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:52:09.066Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:52:24.080Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:52:39.085Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:52:54.093Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:53:09.106Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:53:24.116Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:53:39.128Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:53:54.135Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:54:09.146Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:54:24.160Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:54:39.161Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:54:54.172Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:55:09.184Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:55:24.191Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:55:39.206Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:55:54.207Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:56:09.214Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:56:24.217Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:56:39.219Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:56:54.225Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:57:09.265Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:57:24.258Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:57:39.261Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:57:54.270Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:58:09.285Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:58:24.291Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:58:39.299Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:58:54.314Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:59:09.319Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:59:24.330Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:59:39.343Z"
+  },
+  {
+    "type": "cache_hit_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:59:54.349Z"
+  }
+]

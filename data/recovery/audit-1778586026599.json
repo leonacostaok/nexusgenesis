@@ -1,0 +1,16 @@
+{
+  "type": "state_transition",
+  "timestamp": 1778586026599,
+  "nodeState": "degraded",
+  "from": "recovering",
+  "to": "degraded"
+}
+}: 1,
+  "issues": [
+    {
+      "type": "p2p_disconnect",
+      "severity": 2,
+      "detail": "Peers: 0"
+    }
+  ]
+}

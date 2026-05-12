@@ -1,0 +1,7 @@
+{
+  "type": "state_transition",
+  "timestamp": 1778506131862,
+  "nodeState": "healthy",
+  "from": "degraded",
+  "to": "healthy"
+}

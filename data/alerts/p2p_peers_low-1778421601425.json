@@ -1,0 +1,12 @@
+{
+  "id": "p2p_peers_low-1778421601425",
+  "ruleId": "p2p_peers_low",
+  "name": "P2P节点连接数不足",
+  "level": "warning",
+  "metric": "p2p_peer_count",
+  "metricValue": 0,
+  "message": "P2P节点连接数少于2个",
+  "triggeredAt": "2026-05-10T14:00:01.425Z",
+  "resolvedAt": null,
+  "status": "active"
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-10T13:59:30.423Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-10T14:00:00.950Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-10T14:00:30.850Z"
+  },
+  {
+    "type": "agent_capability_match_rate",
+    "value": 0.7,
+    "timestamp": "2026-05-10T14:22:44.224Z"
+  }
+]

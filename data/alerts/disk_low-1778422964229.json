@@ -1,0 +1,12 @@
+{
+  "id": "disk_low-1778422964229",
+  "ruleId": "disk_low",
+  "name": "磁盘空间不足",
+  "level": "warning",
+  "metric": "disk_usage",
+  "metricValue": 20.8,
+  "message": "磁盘可用空间低于25%",
+  "triggeredAt": "2026-05-10T14:22:44.229Z",
+  "resolvedAt": null,
+  "status": "active"
+}

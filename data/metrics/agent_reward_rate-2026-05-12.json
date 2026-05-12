@@ -1,0 +1,882 @@
+[
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:00:53.897Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:01:53.879Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:02:53.886Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:03:53.891Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:04:53.900Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:05:53.905Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:06:53.920Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:07:53.931Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:08:53.937Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:09:53.937Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:10:53.979Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:11:53.984Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:12:54.007Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:14:19.139Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:15:19.136Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:16:19.144Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:17:19.147Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:18:19.156Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:19:19.157Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:20:19.272Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:21:19.280Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:22:19.288Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:23:19.308Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:24:19.315Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:25:19.325Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:26:19.337Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:27:19.349Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:28:19.516Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:29:19.369Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:30:19.371Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:31:19.374Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:32:19.386Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:33:19.396Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:34:19.404Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:35:19.404Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:36:19.410Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:37:19.430Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:38:19.437Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:39:19.449Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:40:19.452Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:41:19.507Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:42:19.509Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:43:19.532Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:44:19.536Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:45:19.546Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:46:19.553Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:47:19.559Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T00:48:19.565Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:28:05.322Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:28:06.239Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:29:05.306Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:29:06.259Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:30:05.310Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:30:06.260Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:31:05.315Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:31:06.283Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:32:05.331Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:32:06.278Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:33:05.343Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:33:06.286Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:34:05.350Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:34:06.292Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:35:05.360Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:35:06.298Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:36:05.368Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:36:06.305Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:37:05.364Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:37:06.310Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:38:05.377Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:38:06.348Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:39:05.379Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:39:06.351Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:40:05.387Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:40:06.359Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:41:05.400Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:41:06.368Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:42:05.406Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:42:06.366Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:43:05.418Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:43:06.370Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:44:05.431Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:44:06.390Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:45:05.444Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:45:06.395Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:46:05.451Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:46:06.468Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:47:05.453Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:47:06.470Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:48:05.463Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:48:06.479Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:49:05.473Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:49:06.476Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:50:05.487Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:50:06.485Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:51:05.503Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:51:06.492Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:52:05.509Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:52:06.505Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:53:05.512Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:53:06.512Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:54:05.523Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:54:06.524Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:55:05.525Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:55:06.530Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:56:05.537Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:56:06.540Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:57:05.543Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:57:06.542Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:58:05.553Z"
+  },
+  {
+    "type": "agent_reward_rate",
+    "value": {
+      "average": 0,
+      "total": 0
+    },
+    "timestamp": "2026-05-12T11:58:06.549Z"
+  }
+]

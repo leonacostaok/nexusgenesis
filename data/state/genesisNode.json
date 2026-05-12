@@ -1,7 +1,7 @@
 {
-  "nodeId": "ngAF2kp98zNsYdrGaUyX6LJ7bRq7uBzsguP",
+  "nodeId": "ng119iZwobYCzN7ceE8u7JPTV6ZSfwtAvEVDAiUZaCVS1rwrvKM2k",
   "status": "ONLINE",
-  "startTime": 1775992985576,
+  "startTime": 1778585226118,
   "peers": [],
   "peerIdentityMap": [],
   "mempool": [],
@@ -10,5 +10,5 @@
     "activeProposals": [],
     "voteCounts": {}
   },
-  "lastSaved": 1775992990588
+  "lastSaved": 1778587026157
 }

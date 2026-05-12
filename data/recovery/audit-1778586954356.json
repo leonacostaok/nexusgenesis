@@ -1,0 +1,14 @@
+{
+  "type": "recovery_start",
+  "timestamp": 1778586954356,
+  "nodeState": "recovering",
+  "failureType": "p2p_disconnect",
+  "attempt": 1,
+  "issues": [
+    {
+      "type": "p2p_disconnect",
+      "severity": 2,
+      "detail": "Peers: 0"
+    }
+  ]
+}

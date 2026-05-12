@@ -1,0 +1,116 @@
+{
+  "timestamp": "2026-05-12T11:27:10.620Z",
+  "testCount": 10,
+  "averageResponseTimes": {
+    "agentRegistration": 0,
+    "getAgents": 3,
+    "healthCheck": 2.7142857142857144
+  },
+  "analysisResults": [
+    {
+      "testName": "Get Agents",
+      "responseTime": 4,
+      "memoryUsage": 166864,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:07.021Z"
+    },
+    {
+      "testName": "Health Check",
+      "responseTime": 4,
+      "memoryUsage": 92800,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:07.026Z"
+    },
+    {
+      "testName": "Get Agents",
+      "responseTime": 2,
+      "memoryUsage": 147864,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:07.535Z"
+    },
+    {
+      "testName": "Health Check",
+      "responseTime": 3,
+      "memoryUsage": 75760,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:07.538Z"
+    },
+    {
+      "testName": "Get Agents",
+      "responseTime": 3,
+      "memoryUsage": 198672,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:08.050Z"
+    },
+    {
+      "testName": "Health Check",
+      "responseTime": 2,
+      "memoryUsage": 488344,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:08.052Z"
+    },
+    {
+      "testName": "Get Agents",
+      "responseTime": 3,
+      "memoryUsage": 198896,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:08.567Z"
+    },
+    {
+      "testName": "Health Check",
+      "responseTime": 2,
+      "memoryUsage": 71344,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:08.569Z"
+    },
+    {
+      "testName": "Get Agents",
+      "responseTime": 4,
+      "memoryUsage": 209496,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:09.080Z"
+    },
+    {
+      "testName": "Health Check",
+      "responseTime": 2,
+      "memoryUsage": 72144,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:09.082Z"
+    },
+    {
+      "testName": "Get Agents",
+      "responseTime": 2,
+      "memoryUsage": 203744,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:09.592Z"
+    },
+    {
+      "testName": "Health Check",
+      "responseTime": 2,
+      "memoryUsage": 71272,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:09.594Z"
+    },
+    {
+      "testName": "Get Agents",
+      "responseTime": 3,
+      "memoryUsage": 259280,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:10.107Z"
+    },
+    {
+      "testName": "Health Check",
+      "responseTime": 4,
+      "memoryUsage": -2009088,
+      "cpuUsage": null,
+      "timestamp": "2026-05-12T11:27:10.111Z"
+    }
+  ],
+  "optimizationSuggestions": [
+    "考虑实现请求速率限制，防止恶意请求导致系统过载",
+    "优化数据库连接池配置，提高数据库操作效率",
+    "实现更细粒度的日志记录，便于性能问题定位",
+    "考虑使用分布式缓存，减轻主服务器负担",
+    "定期清理过期数据，保持系统性能稳定"
+  ]
+}

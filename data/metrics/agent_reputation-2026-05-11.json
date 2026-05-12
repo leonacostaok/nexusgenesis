@@ -1,0 +1,874 @@
+[
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T16:49:18.790Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T16:50:18.811Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T16:51:18.824Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T16:52:18.829Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T16:53:18.834Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T16:54:18.848Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T16:55:18.886Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T16:56:18.900Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T16:57:18.900Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T16:58:18.909Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T16:59:18.914Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:00:18.918Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:01:18.917Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:02:18.926Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:03:18.935Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:04:18.944Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:05:18.951Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:06:18.953Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:07:18.955Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:08:18.965Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:09:18.967Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:10:18.981Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:11:18.991Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:12:19.002Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:13:19.004Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:14:19.007Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:15:19.019Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:16:19.026Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:17:19.033Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T17:18:19.048Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:26:34.143Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:27:34.143Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:28:34.152Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:29:34.166Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:30:34.176Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:31:34.178Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:32:34.182Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:33:34.185Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:34:34.184Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:35:34.356Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:36:34.361Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:37:34.372Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:38:34.373Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:39:34.387Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:40:34.391Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:41:34.407Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:42:34.420Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:43:34.422Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:44:34.426Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:45:34.442Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:46:34.448Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:47:34.449Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:48:34.453Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:49:34.464Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:50:34.469Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:51:34.482Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:52:34.493Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:53:34.497Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:54:34.506Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T20:55:34.520Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:11:25.466Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:12:25.479Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:13:25.492Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:14:25.496Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:15:25.505Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:16:25.519Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:17:25.530Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:18:25.537Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:19:25.673Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:20:25.679Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:21:25.693Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:22:25.700Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:23:25.712Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:24:25.724Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:25:25.734Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:26:25.746Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:27:25.754Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:28:25.765Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:29:25.769Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:30:25.783Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:31:25.794Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:32:25.803Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:33:25.814Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:34:25.825Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:35:25.838Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:36:25.855Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:37:25.871Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:38:25.880Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:39:25.882Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:40:25.899Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:41:25.909Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:42:53.599Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:43:53.615Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:44:53.617Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:45:53.621Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:46:53.630Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:47:53.637Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:48:53.636Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:49:53.649Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:50:53.652Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:51:53.669Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:52:53.672Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:53:53.672Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:54:53.676Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:55:53.689Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:56:53.725Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:57:53.740Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:58:53.757Z"
+  },
+  {
+    "type": "agent_reputation",
+    "value": {
+      "average": 0,
+      "distribution": {}
+    },
+    "timestamp": "2026-05-11T23:59:53.757Z"
+  }
+]

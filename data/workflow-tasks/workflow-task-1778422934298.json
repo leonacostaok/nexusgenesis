@@ -1,0 +1,736 @@
+{
+  "id": "1778422934298",
+  "name": "智能体健康检查",
+  "status": "completed",
+  "createdAt": "2026-05-10T14:22:14.298Z",
+  "updatedAt": "2026-05-10T14:22:14.361Z",
+  "runCount": 1,
+  "errorCount": 0,
+  "lastError": null,
+  "retryConfig": {
+    "maxRetries": 2,
+    "initialDelay": 30000,
+    "backoffMultiplier": 2
+  },
+  "description": "定期检查智能体的健康状态",
+  "isRecurring": true,
+  "interval": 1800000,
+  "result": {
+    "timestamp": "2026-05-10T14:22:14.343Z",
+    "totalAgents": 72,
+    "healthyAgents": 0,
+    "unhealthyAgents": 72,
+    "agentStatuses": [
+      {
+        "agentId": "ng1123456789012345678901234567890123",
+        "name": "Agent-ng112345",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:04:00.442Z"
+      },
+      {
+        "agentId": "ng1123456789012345678901234567890124",
+        "name": "Agent-ng112345",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:18:25.575Z"
+      },
+      {
+        "agentId": "ng13g91uknddg1xywly901wy0qshld4o2",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T14:20:53.747Z"
+      },
+      {
+        "agentId": "ng19pb9qtcxgw30ok00sntx8z8lfh452u",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T14:20:58.854Z"
+      },
+      {
+        "agentId": "ng1bqr47bh90cecis9hnk71u1d2wz4g0z",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T14:20:55.817Z"
+      },
+      {
+        "agentId": "ng1d0b94wlijjhw5djwetlh3o0iwf34sm",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T14:21:00.893Z"
+      },
+      {
+        "agentId": "ng1h6h3192zcar1xb1isq7ns9yjljy3ij",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T14:20:57.841Z"
+      },
+      {
+        "agentId": "ng1ix6ov4w108bnn9fdmyvnat7uwnqyyp",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T14:20:56.829Z"
+      },
+      {
+        "agentId": "ng1k01ljza3urbj5vr2ghb8b9rhi8dygo",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T14:20:59.875Z"
+      },
+      {
+        "agentId": "ng1li1gzli5x1zuujo0esihg7battozfm",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T14:20:54.768Z"
+      },
+      {
+        "agentId": "ng1lz3b3qwedvohijvw3o3ul6a4l4fzj0",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T14:21:02.935Z"
+      },
+      {
+        "agentId": "ng1nmh1ts52p10ohel0hvwrd4iirdo33v",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T14:21:01.920Z"
+      },
+      {
+        "agentId": "ng1testagent1234567890",
+        "name": "Agent-ng1testa",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T13:11:05.715Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775976661163",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:51:01.204Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775976661730",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:51:01.742Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775976662268",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:51:02.280Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775976662809",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:51:02.818Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775976663351",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:51:03.364Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775976663885",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:51:03.897Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775976664428",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:51:04.444Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775976664965",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:51:04.977Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775976665504",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:51:05.514Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775976666038",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:51:06.049Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775983094761",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T08:38:14.801Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775983095429",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T08:38:15.438Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775983095967",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T08:38:15.972Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775983096493",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T08:38:16.505Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775983097032",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T08:38:17.047Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775983097571",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T08:38:17.580Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775983098109",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T08:38:18.125Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775983098648",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T08:38:18.654Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775983099175",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T08:38:19.190Z"
+      },
+      {
+        "agentId": "perf-test-agent-1775983099712",
+        "name": "Agent-perf-tes",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T08:38:19.723Z"
+      },
+      {
+        "agentId": "test-agent-1",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T08:37:29.955Z"
+      },
+      {
+        "agentId": "test-agent-1775976544556",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:04.605Z"
+      },
+      {
+        "agentId": "test-agent-1775976544717",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:04.725Z"
+      },
+      {
+        "agentId": "test-agent-1775976544832",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:04.917Z"
+      },
+      {
+        "agentId": "test-agent-1775976545021",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:05.028Z"
+      },
+      {
+        "agentId": "test-agent-1775976545374",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:05.383Z"
+      },
+      {
+        "agentId": "test-agent-1775976545608",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:05.622Z"
+      },
+      {
+        "agentId": "test-agent-1775976546083",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:06.089Z"
+      },
+      {
+        "agentId": "test-agent-1775976546317",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:06.322Z"
+      },
+      {
+        "agentId": "test-agent-1775976546434",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:06.441Z"
+      },
+      {
+        "agentId": "test-agent-1775976546992",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:06.997Z"
+      },
+      {
+        "agentId": "test-agent-1775976547225",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:07.231Z"
+      },
+      {
+        "agentId": "test-agent-1775976547448",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:07.455Z"
+      },
+      {
+        "agentId": "test-agent-1775976547901",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:07.906Z"
+      },
+      {
+        "agentId": "test-agent-1775976548019",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:08.026Z"
+      },
+      {
+        "agentId": "test-agent-1775976548138",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:08.163Z"
+      },
+      {
+        "agentId": "test-agent-1775976548590",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:08.596Z"
+      },
+      {
+        "agentId": "test-agent-1775976549038",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:09.045Z"
+      },
+      {
+        "agentId": "test-agent-1775976549959",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T06:49:09.965Z"
+      },
+      {
+        "agentId": "test-agent-1775980628049",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:08.056Z"
+      },
+      {
+        "agentId": "test-agent-1775980628165",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:08.172Z"
+      },
+      {
+        "agentId": "test-agent-1775980628609",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:08.623Z"
+      },
+      {
+        "agentId": "test-agent-1775980628960",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:08.966Z"
+      },
+      {
+        "agentId": "test-agent-1775980629073",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:09.079Z"
+      },
+      {
+        "agentId": "test-agent-1775980629868",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:09.877Z"
+      },
+      {
+        "agentId": "test-agent-1775980630204",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:10.209Z"
+      },
+      {
+        "agentId": "test-agent-1775980630320",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:10.337Z"
+      },
+      {
+        "agentId": "test-agent-1775980630793",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:10.798Z"
+      },
+      {
+        "agentId": "test-agent-1775980630913",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:10.921Z"
+      },
+      {
+        "agentId": "test-agent-1775980631469",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:11.478Z"
+      },
+      {
+        "agentId": "test-agent-1775980631908",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:11.913Z"
+      },
+      {
+        "agentId": "test-agent-1775980632027",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:12.035Z"
+      },
+      {
+        "agentId": "test-agent-1775980632261",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:12.267Z"
+      },
+      {
+        "agentId": "test-agent-1775980632373",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:12.380Z"
+      },
+      {
+        "agentId": "test-agent-1775980632717",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:12.723Z"
+      },
+      {
+        "agentId": "test-agent-1775980632831",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:12.836Z"
+      },
+      {
+        "agentId": "test-agent-1775980632952",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:12.961Z"
+      },
+      {
+        "agentId": "test-agent-1775980633172",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:13.178Z"
+      },
+      {
+        "agentId": "test-agent-1775980633289",
+        "name": "Agent-test-age",
+        "status": "unhealthy",
+        "issues": [
+          "长时间未活动"
+        ],
+        "tasksCount": 0,
+        "lastActive": "2026-04-12T07:57:13.297Z"
+      }
+    ]
+  }
+}

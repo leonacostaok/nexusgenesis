@@ -1,83 +1,37 @@
 {
-  "proposal-1777167586895-ow2vug80u": {
-    "agent-1": {
+  "proposal-1778585226799-4t1tfietv": {},
+  "proposal-1778585226803-pf1uriv5r": {
+    "voter-1": {
       "option": "yes",
       "weight": 150,
-      "castAt": 1777167586915
-    },
-    "agent-2": {
-      "option": "yes",
-      "weight": 200,
-      "castAt": 1777167586917
-    },
-    "agent-3": {
-      "option": "no",
-      "weight": 100,
-      "castAt": 1777167586919
-    },
-    "agent-4": {
-      "option": "yes",
-      "weight": 300,
-      "castAt": 1777167586921
-    },
-    "agent-5": {
-      "option": "abstain",
-      "weight": 50,
-      "castAt": 1777167586923
+      "castAt": 1778585226806
     }
   },
-  "proposal-1777167614703-4zd7g2irx": {
+  "proposal-1778585234888-sbjkw33re": {
     "agent-1": {
       "option": "yes",
       "weight": 150,
-      "castAt": 1777167614709
+      "castAt": 1778585234894
     },
     "agent-2": {
       "option": "yes",
       "weight": 200,
-      "castAt": 1777167614711
+      "castAt": 1778585234896
     },
     "agent-3": {
       "option": "no",
       "weight": 100,
-      "castAt": 1777167614712
+      "castAt": 1778585234898
     },
     "agent-4": {
       "option": "yes",
       "weight": 300,
-      "castAt": 1777167614714
+      "castAt": 1778585234900
     },
     "agent-5": {
       "option": "abstain",
       "weight": 50,
-      "castAt": 1777167614716
-    }
-  },
-  "proposal-1778069625533-aewm3n9pm": {
-    "agent-1": {
-      "option": "yes",
-      "weight": 150,
-      "castAt": 1778069625537
-    },
-    "agent-2": {
-      "option": "yes",
-      "weight": 200,
-      "castAt": 1778069625539
-    },
-    "agent-3": {
-      "option": "no",
-      "weight": 100,
-      "castAt": 1778069625540
-    },
-    "agent-4": {
-      "option": "yes",
-      "weight": 300,
-      "castAt": 1778069625542
-    },
-    "agent-5": {
-      "option": "abstain",
-      "weight": 50,
-      "castAt": 1778069625543
+      "castAt": 1778585234901
     }
   }
 }

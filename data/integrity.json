@@ -1,12 +1,12 @@
 {
   "D:\\trae_projects\\NexusGenesis\\data\\governance\\proposals.json": {
-    "hash": "57e8f01a347c88b4d92905fcc092e22de1ac52a261f1190a052b5098468743d8",
-    "timestamp": 1778069625554,
-    "size": 3518
+    "hash": "2fd3fb58355a8750b6b6ea16fef8ea968074f5863e862cc0e1d1d20188929257",
+    "timestamp": 1778585234913,
+    "size": 2760
   },
   "D:\\trae_projects\\NexusGenesis\\data\\governance\\votes.json": {
-    "hash": "6f741aa64c30d49d3583f81483ba899c108f47196511eed58d637d5d932ee84f",
-    "timestamp": 1778069625555,
-    "size": 1610
+    "hash": "500c258ebc91b0cb55cdbaa4ca0c1f1580701a131fb40720c1b082f6e37ca88d",
+    "timestamp": 1778585234913,
+    "size": 722
   }
 }

@@ -1,0 +1,547 @@
+[
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:49:18.930Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:50:18.942Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:51:18.943Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:52:18.964Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:53:18.964Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:54:18.974Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:55:18.973Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:56:18.983Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:57:19.001Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:58:19.007Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T16:59:19.011Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:00:19.016Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:01:19.032Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:02:19.039Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:03:19.050Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:04:19.062Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:05:19.096Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:06:19.093Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:07:19.086Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:08:19.097Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:09:19.098Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:10:19.115Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:11:19.120Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:12:19.132Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:13:19.137Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:14:19.138Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:15:19.202Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:16:19.203Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:17:19.226Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T17:18:19.210Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:26:34.183Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:27:34.190Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:28:34.200Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:29:34.209Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:30:34.211Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:31:34.214Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:32:34.224Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:33:34.226Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:34:34.233Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:35:34.395Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:36:34.396Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:37:34.401Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:38:34.402Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:39:34.425Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:40:34.431Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:41:34.434Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:42:34.448Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:43:34.452Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:44:34.455Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:45:34.510Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:46:34.518Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:47:34.530Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:48:34.539Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:49:34.551Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:50:34.551Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:51:34.567Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:52:34.578Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:53:34.582Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:54:34.590Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T20:55:34.597Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:11:25.517Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:12:25.532Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:13:25.530Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:14:25.535Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:15:25.542Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:16:25.563Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:17:25.568Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:18:25.572Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:19:25.732Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:20:25.734Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:21:25.747Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:22:25.750Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:23:25.762Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:24:25.777Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:25:25.788Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:26:25.798Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:27:25.806Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:28:25.818Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:29:25.820Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:30:25.827Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:31:25.826Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:32:25.843Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:33:25.853Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:34:25.851Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:35:25.871Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:36:25.906Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:37:25.906Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:38:25.916Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:39:25.917Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:40:25.939Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:41:25.944Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:42:53.651Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:43:53.651Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:44:53.655Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:45:53.668Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:46:53.675Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:47:53.685Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:48:53.688Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:49:53.694Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:50:53.706Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:51:53.707Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:52:53.721Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:53:53.721Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:54:53.724Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:55:53.735Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:56:53.757Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:57:53.768Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:58:53.790Z"
+  },
+  {
+    "type": "agent_registration_rate",
+    "value": 0,
+    "timestamp": "2026-05-11T23:59:53.804Z"
+  }
+]

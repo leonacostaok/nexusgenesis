@@ -122,14 +122,18 @@ describe('P2 - Advanced Features', () => {
       assert.ok(bytecode.includes(0x31));
     });
 
-    it('AI contract route definitions exist in server', () => {
+    it('AI contract route definitions exist in route module', () => {
       const serverPath = path.join(projectRoot, 'src', 'http', 'server.js');
-      const content = fs.readFileSync(serverPath, 'utf8');
-      assert.ok(content.includes('/api/v1/ai/contract/generate'));
-      assert.ok(content.includes('/api/v1/ai/contract/recommend'));
-      assert.ok(content.includes('/api/v1/ai/contract/optimize'));
-      assert.ok(content.includes('/api/v1/ai/contract/analyze-complexity'));
-      assert.ok(content.includes('/api/v1/ai/contract/extract-params'));
+      const serverContent = fs.readFileSync(serverPath, 'utf8');
+      const aiContractPath = path.join(projectRoot, 'src', 'http', 'routes', 'aiContract.js');
+      const aiContractContent = fs.readFileSync(aiContractPath, 'utf8');
+      assert.ok(aiContractContent.includes('/api/v1/ai/contract/generate'));
+      assert.ok(aiContractContent.includes('/api/v1/ai/contract/recommend'));
+      assert.ok(aiContractContent.includes('/api/v1/ai/contract/optimize'));
+      assert.ok(aiContractContent.includes('/api/v1/ai/contract/analyze-complexity'));
+      assert.ok(aiContractContent.includes('/api/v1/ai/contract/extract-params'));
+      assert.ok(serverContent.includes("import aiContractRoutes from './routes/aiContract.js'"));
+      assert.ok(serverContent.includes('app.use(aiContractRoutes)'));
     });
   });
 

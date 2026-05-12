@@ -1,0 +1,10 @@
+[
+  {
+    "type": "governance_reward_distribution",
+    "value": {
+      "total": 0,
+      "byProposalType": {}
+    },
+    "timestamp": "2026-05-10T14:00:00.794Z"
+  }
+]

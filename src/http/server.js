@@ -46,28 +46,24 @@ import contractRoutes from './routes/contracts.js';
 import bridgeRoutes from './routes/bridge.js';
 import dashboardRoutes from './routes/dashboard.js';
 import monitoringRoutes from './routes/monitoring.js';
+import { RateLimiter } from './rateLimiter.js';
+import { ApiKeyManager, DEFAULT_TIERS } from './apiKeyManager.js';
 console.log('[HTTP Server] Imported route modules');
 
-// 处理ES模块的__dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log('[HTTP Server] Creating express app...');
 const app = express();
 const PORT = 19891;
-console.log('[HTTP Server] Express app created successfully');
 
-// 中间件
-console.log('[HTTP Server] Adding middleware...');
+const rateLimiter = new RateLimiter();
+const apiKeyManager = new ApiKeyManager();
 
-// 中间件
 app.use(cors());
 app.use(express.json());
 
-// 请求日志中间件
 app.use((req, res, next) => {
   const start = Date.now();
-  console.log(`[HTTP] ${req.method} ${req.url}`);
   res.on('finish', () => {
     const duration = Date.now() - start;
     console.log(`[HTTP] ${req.method} ${req.url} ${res.statusCode} ${duration}ms`);
@@ -75,90 +71,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// 速率限制中间件
-const rateLimit = new Map();
-const RATE_LIMIT_WINDOW = 60000; // 1分钟
-const RATE_LIMIT_MAX = 200; // 每分钟最多200个请求
-const RATE_LIMIT_BY_ENDPOINT = {
-  '/api/agents/register': 50, // 注册端点限制提高到每分钟50个请求
-  '/api/agents/openai': 80,
-  '/api/agents/anthropic': 80,
-  '/api/agents/heartbeat': 120
-};
-
-// 基于智能体类型的速率限制
-const AGENT_RATE_LIMITS = {
-  'high_reputation': 300, // 高声誉智能体
-  'medium_reputation': 200, // 中等声誉智能体
-  'low_reputation': 100, // 低声誉智能体
-  'new_agent': 50 // 新注册智能体
-};
-
-app.use((req, res, next) => {
-  const ip = req.ip;
-  const now = Date.now();
-  const endpoint = req.path;
-  
-  if (!rateLimit.has(ip)) {
-    rateLimit.set(ip, {
-      count: 1,
-      lastReset: now,
-      endpoints: { [endpoint]: 1 },
-      agentType: 'new_agent' // 默认新智能体
-    });
-  } else {
-    const info = rateLimit.get(ip);
-    if (now - info.lastReset > RATE_LIMIT_WINDOW) {
-      info.count = 1;
-      info.lastReset = now;
-      info.endpoints = { [endpoint]: 1 };
-    } else {
-      info.count++;
-      
-      // 获取智能体类型对应的速率限制
-      const agentLimit = AGENT_RATE_LIMITS[info.agentType] || AGENT_RATE_LIMITS.new_agent;
-      
-      // 检查全局速率限制（基于智能体类型）
-      if (info.count > agentLimit) {
-        return res.status(429).json({ 
-          success: false, 
-          message: 'Rate limit exceeded',
-          retry_after: Math.ceil((RATE_LIMIT_WINDOW - (now - info.lastReset)) / 1000)
-        });
-      }
-      
-      // 检查端点特定速率限制
-      if (!info.endpoints) {
-        info.endpoints = {};
-      }
-      if (!info.endpoints[endpoint]) {
-        info.endpoints[endpoint] = 0;
-      }
-      info.endpoints[endpoint]++;
-      
-      const endpointLimit = RATE_LIMIT_BY_ENDPOINT[endpoint] || agentLimit;
-      if (info.endpoints[endpoint] > endpointLimit) {
-        return res.status(429).json({ 
-          success: false, 
-          message: `Rate limit exceeded for endpoint ${endpoint}`,
-          retry_after: Math.ceil((RATE_LIMIT_WINDOW - (now - info.lastReset)) / 1000)
-        });
-      }
-    }
-    rateLimit.set(ip, info);
-  }
-  next();
-});
-
-// 定期清理过期的速率限制记录
-setInterval(() => {
-  const now = Date.now();
-  for (const [ip, info] of rateLimit.entries()) {
-    if (now - info.lastReset > RATE_LIMIT_WINDOW) {
-      rateLimit.delete(ip);
-    }
-  }
-}, 60000); // 每分钟清理一次
+app.use(rateLimiter.middleware(apiKeyManager));
 
 // 缓存机制
 const cache = new Map();
@@ -964,7 +877,7 @@ app.get('/health', (req, res) => {
   serverMetrics.cacheMisses++;
   
   const uptime = Date.now() - serverMetrics.startTime;
-  const activeConnections = Object.keys(rateLimit).length;
+  const activeConnections = rateLimiter.getStats().activeIPs;
   const cacheSize = cache.size;
   
   const agentManager = app.locals.agentManager;
@@ -981,7 +894,7 @@ app.get('/health', (req, res) => {
       errors: serverMetrics.errors,
       cacheHits: serverMetrics.cacheHits,
       cacheMisses: serverMetrics.cacheMisses,
-      rateLimited: serverMetrics.rateLimited,
+      rateLimited: rateLimiter.getStats().totalBlocked,
       activeConnections: activeConnections,
       cacheSize: cacheSize
     },
@@ -1008,7 +921,7 @@ app.get('/health', (req, res) => {
 // 监控端点
 app.get('/metrics', (req, res) => {
   const uptime = Date.now() - serverMetrics.startTime;
-  const activeConnections = Object.keys(rateLimit).length;
+  const activeConnections = rateLimiter.getStats().activeIPs;
   
   res.json({
     success: true,
@@ -1019,7 +932,7 @@ app.get('/metrics', (req, res) => {
       errors: serverMetrics.errors,
       cacheHits: serverMetrics.cacheHits,
       cacheMisses: serverMetrics.cacheMisses,
-      rateLimited: serverMetrics.rateLimited,
+      rateLimited: rateLimiter.getStats().totalBlocked,
       activeConnections: activeConnections,
       cacheSize: cacheStats.size
     },
@@ -1039,6 +952,79 @@ app.get('/metrics', (req, res) => {
       memoryUsage: process.memoryUsage()
     }
   });
+});
+
+// API Key 管理路由
+app.get('/api/v1/api-keys/stats', (req, res) => {
+  res.json({ success: true, data: apiKeyManager.getStats() });
+});
+
+app.get('/api/v1/api-keys', (req, res) => {
+  res.json({ success: true, data: apiKeyManager.getAllKeys() });
+});
+
+app.post('/api/v1/api-keys/generate', (req, res) => {
+  const { owner, tier = 'free', metadata = {} } = req.body;
+  if (!owner) {
+    return res.status(400).json({ success: false, message: 'owner is required' });
+  }
+  if (!DEFAULT_TIERS[tier]) {
+    return res.status(400).json({ success: false, message: `Invalid tier: ${tier}. Available: ${Object.keys(DEFAULT_TIERS).join(', ')}` });
+  }
+  const result = apiKeyManager.generateKey(owner, tier, metadata);
+  res.json({
+    success: true,
+    message: 'API Key generated. Store it securely - it won\'t be shown again.',
+    data: {
+      keyId: result.keyId,
+      apiKey: result.apiKey,
+      tier: result.tier,
+      limits: result.limits
+    }
+  });
+});
+
+app.post('/api/v1/api-keys/revoke', (req, res) => {
+  const { keyId } = req.body;
+  if (!keyId) {
+    return res.status(400).json({ success: false, message: 'keyId is required' });
+  }
+  const success = apiKeyManager.revokeKey(keyId);
+  if (!success) {
+    return res.status(404).json({ success: false, message: 'API key not found' });
+  }
+  res.json({ success: true, message: 'API key revoked' });
+});
+
+app.post('/api/v1/api-keys/reactivate', (req, res) => {
+  const { keyId } = req.body;
+  if (!keyId) {
+    return res.status(400).json({ success: false, message: 'keyId is required' });
+  }
+  const success = apiKeyManager.reactivateKey(keyId);
+  if (!success) {
+    return res.status(404).json({ success: false, message: 'API key not found' });
+  }
+  res.json({ success: true, message: 'API key reactivated' });
+});
+
+app.post('/api/v1/api-keys/update-tier', (req, res) => {
+  const { keyId, tier } = req.body;
+  if (!keyId || !tier) {
+    return res.status(400).json({ success: false, message: 'keyId and tier are required' });
+  }
+  if (!DEFAULT_TIERS[tier]) {
+    return res.status(400).json({ success: false, message: `Invalid tier: ${tier}` });
+  }
+  const success = apiKeyManager.updateKeyTier(keyId, tier);
+  if (!success) {
+    return res.status(404).json({ success: false, message: 'API key not found' });
+  }
+  res.json({ success: true, message: `API key tier updated to ${tier}` });
+});
+
+app.get('/api/v1/rate-limits', (req, res) => {
+  res.json({ success: true, data: rateLimiter.getStats() });
 });
 
 // 静态文件服务

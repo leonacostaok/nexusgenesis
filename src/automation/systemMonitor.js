@@ -1688,29 +1688,78 @@ class SystemMonitor {
       // 从投票数据文件获取投票参与率
       const votesPath = path.join(governanceDir, 'votes.json');
       let totalVotes = 0;
+      let uniqueVoters = new Set();
       if (fs.existsSync(votesPath)) {
         const votesData = JSON.parse(fs.readFileSync(votesPath, 'utf8'));
         totalVotes = votesData.length;
+        for (const vote of votesData) {
+          if (vote.voter || vote.from) {
+            uniqueVoters.add(vote.voter || vote.from);
+          }
+        }
       }
       
-      // 简化计算：投票参与率 = (投票数 / 提案数) * 20（假设每个提案平均有20个可能的投票者）
-      const voterParticipation = proposalCount > 0 ? Math.min(100, (totalVotes / proposalCount) * 20) : 0;
-      const voteTurnout = voterParticipation;
-      
-      // 提案验证通过率（假设大部分提案都通过验证）
-      const proposalValidationRate = 98.5;
-      
-      // 奖励分配（基于真实区块链高度计算）
-      const blockchainHeight = this.getRealBlockchainHeight();
-      const rewardDistribution = {
-        total: blockchainHeight * 10, // 每块奖励10个单位
-        byProposalType: {
-          param_change: paramChanges * 1000,
-          fund_allocation: Math.floor(blockchainHeight * 0.3 * 10),
-          protocol_upgrade: Math.floor(blockchainHeight * 0.2 * 10),
-          community_initiative: Math.floor(blockchainHeight * 0.1 * 10)
+      // 从治理参数获取注册选民总数
+      const paramsPath = path.join(governanceDir, 'params.json');
+      let eligibleVoters = uniqueVoters.size;
+      if (fs.existsSync(paramsPath)) {
+        const paramsData = JSON.parse(fs.readFileSync(paramsPath, 'utf8'));
+        if (paramsData.eligibleVoters || paramsData.totalVoters) {
+          eligibleVoters = Math.max(eligibleVoters, paramsData.eligibleVoters || paramsData.totalVoters);
         }
-      };
+      }
+      // 如果无法获取实际选民数，使用唯一投票者数量作为下限估计
+      if (eligibleVoters === 0 && uniqueVoters.size > 0) {
+        eligibleVoters = uniqueVoters.size;
+      }
+      
+      // 投票参与率 = 唯一投票者数 / 合格选民数
+      const voterParticipation = eligibleVoters > 0 ? Math.min(100, (uniqueVoters.size / eligibleVoters) * 100) : 0;
+      // 投票轮次率 = 总投票数 / (提案数 * 合格选民数)
+      const voteTurnout = (proposalCount > 0 && eligibleVoters > 0) 
+        ? Math.min(100, (totalVotes / (proposalCount * eligibleVoters)) * 100) 
+        : voterParticipation;
+      
+      // 提案验证通过率：从提案中统计实际被验证通过的比率
+      let validatedProposals = 0;
+      let approvedValidations = 0;
+      if (fs.existsSync(proposalsPath)) {
+        const proposalsData = JSON.parse(fs.readFileSync(proposalsPath, 'utf8'));
+        const proposals = Array.isArray(proposalsData) ? proposalsData : (proposalsData.proposals || proposalsData.data || []);
+        for (const p of proposals) {
+          if (p.validationStatus || p.validated !== undefined) {
+            validatedProposals++;
+            if (p.validationStatus === 'approved' || p.validated === true) {
+              approvedValidations++;
+            }
+          }
+        }
+      }
+      const proposalValidationRate = validatedProposals > 0 
+        ? (approvedValidations / validatedProposals) * 100 
+        : (proposalCount > 0 ? 100 : 0);
+      
+      // 奖励分配（从实际奖励数据读取）
+      const rewardsPath = path.join(governanceDir, 'rewards.json');
+      let rewardDistribution;
+      if (fs.existsSync(rewardsPath)) {
+        const rewardsData = JSON.parse(fs.readFileSync(rewardsPath, 'utf8'));
+        rewardDistribution = {
+          total: rewardsData.total || 0,
+          byProposalType: rewardsData.byProposalType || {}
+        };
+      } else {
+        const blockchainHeight = this.getRealBlockchainHeight();
+        rewardDistribution = {
+          total: blockchainHeight > 0 ? blockchainHeight * 10 : 0,
+          byProposalType: {
+            param_change: paramChanges > 0 ? paramChanges * 1000 : 0,
+            fund_allocation: blockchainHeight > 0 ? Math.floor(blockchainHeight * 3) : 0,
+            protocol_upgrade: blockchainHeight > 0 ? Math.floor(blockchainHeight * 2) : 0,
+            community_initiative: blockchainHeight > 0 ? Math.floor(blockchainHeight * 1) : 0
+          }
+        };
+      }
       
       return {
         proposalCount: proposalCount,

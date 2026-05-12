@@ -8,6 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import SystemMonitor from './systemMonitor.js';
 import BackupManager from './backupManager.js';
+import NotificationService from './notificationService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -39,6 +40,7 @@ class WorkflowEngine {
     this.logsDirectory = path.join(__dirname, '../../logs');
     this.systemMonitor = new SystemMonitor();
     this.backupManager = new BackupManager();
+    this.notificationService = new NotificationService();
     this.initDirectories();
     this.loadTasks();
     this.startHeartbeat();
@@ -370,8 +372,13 @@ class WorkflowEngine {
     const alertPath = path.join(this.logsDirectory, 'alerts.log');
     fs.appendFileSync(alertPath, JSON.stringify(alert) + '\n', 'utf8');
 
-    // TODO: 实现更多告警方式（如邮件、短信等）
-    console.error('[ALERT]', alert.type, alert.message || alert.taskName, alert.timestamp);
+    // 通过通知服务发送多渠道告警
+    this.notificationService.send({
+      subject: `[NexusGenesis Alert] ${alert.type}`,
+      message: alert.message || alert.taskName || 'No message',
+      alert: alert,
+      channels: alert.channels || ['console', 'file']
+    });
   }
 
   // 日志记录

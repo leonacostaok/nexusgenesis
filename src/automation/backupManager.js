@@ -321,24 +321,120 @@ class BackupManager {
   // 压缩备份
   async compressBackup(backupId) {
     const backupPath = path.join(this.backupDirectory, backupId);
-    const zipPath = `${backupPath}.zip`;
+    const archivePath = `${backupPath}.tar.gz`;
+
+    if (!fs.existsSync(backupPath)) {
+      throw new Error(`备份目录 ${backupPath} 不存在`);
+    }
+
+    const files = this._collectAllFiles(backupPath);
+    const tarBuffer = this._createTarArchive(backupPath, files);
+    const compressed = zlib.gzipSync(tarBuffer);
+    fs.writeFileSync(archivePath, compressed);
+
+    const archiveSize = fs.statSync(archivePath).size;
+    const uncompressedSize = files.reduce((sum, f) => sum + f.size, 0);
     
-    // TODO: 实现更完整的压缩功能
-    // 目前只是将备份目录压缩为gzip文件
-    const files = fs.readdirSync(backupPath);
-    for (const file of files) {
-      const filePath = path.join(backupPath, file);
-      if (fs.statSync(filePath).isDirectory()) {
-        // 目录已经在复制时压缩了
-        continue;
-      }
+    console.log(`[BackupManager] 压缩完成: ${archivePath} (${archiveSize} bytes, ${(archiveSize / Math.max(1, uncompressedSize) * 100).toFixed(1)}% ratio)`);
+    
+    return {
+      archivePath,
+      compressedSize: archiveSize,
+      uncompressedSize,
+      fileCount: files.length
+    };
+  }
+
+  _collectAllFiles(dirPath, baseDir = null) {
+    if (!baseDir) baseDir = dirPath;
+    const files = [];
+    const entries = fs.readdirSync(dirPath);
+    
+    for (const entry of entries) {
+      const fullPath = path.join(dirPath, entry);
+      const stat = fs.statSync(fullPath);
       
-      // 确保文件已压缩
-      if (!file.endsWith('.gz')) {
-        await this.copyFile(filePath, filePath, true);
-        fs.unlinkSync(filePath);
+      if (stat.isDirectory()) {
+        files.push(...this._collectAllFiles(fullPath, baseDir));
+      } else {
+        const relativePath = path.relative(baseDir, fullPath).replace(/\\/g, '/');
+        files.push({
+          name: relativePath,
+          path: fullPath,
+          size: stat.size,
+          mode: stat.mode,
+          mtime: Math.floor(stat.mtime.getTime() / 1000)
+        });
       }
     }
+    
+    return files;
+  }
+
+  _createTarArchive(baseDir, files) {
+    const chunks = [];
+    
+    for (const file of files) {
+      const header = this._createTarHeader(file);
+      chunks.push(header);
+      
+      const content = fs.readFileSync(path.join(baseDir, file.name));
+      chunks.push(content);
+      
+      const padding = (512 - (content.length % 512)) % 512;
+      if (padding > 0) {
+        chunks.push(Buffer.alloc(padding));
+      }
+    }
+    
+    chunks.push(Buffer.alloc(1024));
+    
+    return Buffer.concat(chunks);
+  }
+
+  _createTarHeader(file) {
+    const header = Buffer.alloc(512);
+    
+    const name = file.name.length > 100 ? file.name.slice(0, 100) : file.name;
+    header.write(name, 0, 100, 'utf8');
+    
+    const mode = (file.mode || 0o644).toString(8).padStart(7, '0');
+    header.write(mode, 100, 8, 'utf8');
+    
+    const uid = '0000000';
+    header.write(uid, 108, 8, 'utf8');
+    
+    const gid = '0000000';
+    header.write(gid, 116, 8, 'utf8');
+    
+    const size = file.size.toString(8).padStart(11, '0');
+    header.write(size, 124, 12, 'utf8');
+    
+    const mtime = (file.mtime || 0).toString(8).padStart(11, '0');
+    header.write(mtime, 136, 12, 'utf8');
+    
+    header.write('        ', 148, 8, 'utf8');
+    
+    header[156] = 0x30;
+    
+    const linkName = '';
+    header.write(linkName, 157, 100, 'utf8');
+    
+    const ustar = 'ustar\0';
+    header.write(ustar, 257, 6, 'utf8');
+    
+    header.write('00', 263, 2, 'utf8');
+    
+    let checksum = 8 * 32;
+    for (let i = 0; i < 512; i++) {
+      if (i < 148 || i >= 156) {
+        checksum += header[i];
+      }
+    }
+    const checksumStr = checksum.toString(8).padStart(6, '0') + '\0 ';
+    header.write(checksumStr, 148, 8, 'utf8');
+    
+    return header;
   }
 
   // 恢复备份

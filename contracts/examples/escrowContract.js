@@ -1,24 +1,24 @@
 /**
- * Escrow Contract - 托管合约示例
+ * Escrow Contract Example
  * 
- * 功能：
- * 1. 创建托管
- * 2. 确认交付
- * 3. 释放资金
+ * Features:
+ * 1. Create escrow
+ * 2. Confirm delivery
+ * 3. Release funds
  * 
- * 存储布局：
+ * Storage Layout:
  * 0: escrowAmount
  * 1: status (0=pending, 1=confirmed, 2=released)
  * 2: confirmations
  */
 
 /**
- * 生成托管合约字节码
- * @param {number} amount - 托管金额
- * @returns {string} 合约字节码
+ * Generate escrow contract bytecode
+ * @param {number} amount - Escrow amount
+ * @returns {string} Contract bytecode
  */
 export function generateEscrowBytecode(amount = 1000) {
-  // 托管合约逻辑：
+  // Escrow contract logic:
   // PUSH amount, STORE 0 (escrowAmount)
   // PUSH 0, STORE 1 (status)
   // PUSH 0, STORE 2 (confirmations)
@@ -37,11 +37,11 @@ export function generateEscrowBytecode(amount = 1000) {
 }
 
 /**
- * 生成确认交付函数字节码
- * @returns {string} 合约字节码
+ * Generate confirm delivery function bytecode
+ * @returns {string} Contract bytecode
  */
 export function generateConfirmBytecode() {
-  // 确认交付：LOAD 2, PUSH 1, ADD, STORE 2
+  // Confirm delivery: LOAD 2, PUSH 1, ADD, STORE 2
   // LOAD 1, PUSH 1, STORE 1
   const bytecode = [
     0x07, 0x02,                 // LOAD 2 (confirmations)
@@ -57,11 +57,11 @@ export function generateConfirmBytecode() {
 }
 
 /**
- * 生成释放资金函数字节码
- * @returns {string} 合约字节码
+ * Generate release funds function bytecode
+ * @returns {string} Contract bytecode
  */
 export function generateReleaseBytecode() {
-  // 释放资金：LOAD 0, PUSH 0, STORE 0 (清零)
+  // Release funds: LOAD 0, PUSH 0, STORE 0 (clear)
   // PUSH 2, STORE 1 (status = released)
   const bytecode = [
     0x01, 0x00,                 // PUSH 0
@@ -75,11 +75,11 @@ export function generateReleaseBytecode() {
 }
 
 /**
- * 托管合约配置
+ * Escrow contract configuration
  */
 export const escrowConfig = {
   name: 'NexusGenesis Escrow',
-  description: '去中心化托管服务',
+  description: 'Decentralized escrow service',
   minConfirmations: 2,
   contractId: 'nexus-escrow-v1'
 };

@@ -1,24 +1,24 @@
 /**
- * Reputation Contract - 声誉系统合约示例
+ * Reputation Contract Example
  * 
- * 功能：
- * 1. 记录贡献值
- * 2. 计算声誉等级
- * 3. 奖励分配
+ * Features:
+ * 1. Record contribution values
+ * 2. Calculate reputation level
+ * 3. Reward distribution
  * 
- * 存储布局：
+ * Storage Layout:
  * 0: totalReputation
  * 1: contributorCount
  * 2: baseReward
  */
 
 /**
- * 生成声誉合约字节码
- * @param {number} baseReward - 基础奖励值
- * @returns {string} 合约字节码
+ * Generate reputation contract bytecode
+ * @param {number} baseReward - Base reward value
+ * @returns {string} Contract bytecode
  */
 export function generateReputationBytecode(baseReward = 10) {
-  // 声誉合约逻辑：
+  // Reputation contract logic:
   // PUSH baseReward, STORE 2 (baseReward)
   // PUSH 0, STORE 0 (totalReputation)
   // PUSH 0, STORE 1 (contributorCount)
@@ -37,12 +37,12 @@ export function generateReputationBytecode(baseReward = 10) {
 }
 
 /**
- * 生成增加声誉函数字节码
- * @param {number} amount - 增加的声誉值
- * @returns {string} 合约字节码
+ * Generate add reputation function bytecode
+ * @param {number} amount - Reputation amount to add
+ * @returns {string} Contract bytecode
  */
 export function generateAddReputationBytecode(amount = 1) {
-  // 增加声誉：LOAD 0, PUSH amount, ADD, STORE 0
+  // Add reputation: LOAD 0, PUSH amount, ADD, STORE 0
   // LOAD 1, PUSH 1, ADD, STORE 1
   const bytecode = [
     0x07, 0x00,                 // LOAD 0 (totalReputation)
@@ -60,22 +60,22 @@ export function generateAddReputationBytecode(amount = 1) {
 }
 
 /**
- * 声誉等级配置
+ * Reputation level configuration
  */
 export const reputationLevels = [
-  { level: 1, name: '新手', minRep: 0, maxRep: 99, bonus: 0 },
-  { level: 2, name: '活跃贡献者', minRep: 100, maxRep: 299, bonus: 5 },
-  { level: 3, name: '核心贡献者', minRep: 300, maxRep: 499, bonus: 10 },
-  { level: 4, name: '资深贡献者', minRep: 500, maxRep: 799, bonus: 15 },
-  { level: 5, name: '传奇贡献者', minRep: 800, maxRep: 1000, bonus: 20 }
+  { level: 1, name: 'Novice', minRep: 0, maxRep: 99, bonus: 0 },
+  { level: 2, name: 'Active Contributor', minRep: 100, maxRep: 299, bonus: 5 },
+  { level: 3, name: 'Core Contributor', minRep: 300, maxRep: 499, bonus: 10 },
+  { level: 4, name: 'Senior Contributor', minRep: 500, maxRep: 799, bonus: 15 },
+  { level: 5, name: 'Legendary Contributor', minRep: 800, maxRep: 1000, bonus: 20 }
 ];
 
 /**
- * 声誉合约配置
+ * Reputation contract configuration
  */
 export const reputationConfig = {
   name: 'NexusGenesis Reputation',
-  description: '去中心化声誉系统',
+  description: 'Decentralized reputation system',
   maxReputation: 1000,
   contractId: 'nexus-reputation-v1'
 };

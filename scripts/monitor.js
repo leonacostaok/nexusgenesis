@@ -33,14 +33,14 @@ async function main() {
   }
 }
 
-// 检查节点状态
+// 检查Node status
 async function checkNodeStatus() {
   try {
     console.log('========================================');
     console.log('NexusGenesis - Node Status Check');
     console.log('========================================');
 
-    // 检查区块链状态
+    // 检查Blockchain state
     const blockchainPath = path.join('data', 'blockchain', 'blocks.json');
     let blocks = [];
     try {
@@ -180,7 +180,7 @@ async function analyzeLogs() {
       console.log(`  Governance Proposals: ${governanceEvents.length}`);
       console.log(`  Observer Events: ${observerEvents.length}`);
 
-      // 分析最近的治理提案
+      // 分析最近的Governance proposal
       if (governanceEvents.length > 0) {
         const latestProposalFile = governanceEvents.sort().reverse()[0];
         const proposalPath = path.join(eventsDir, latestProposalFile);

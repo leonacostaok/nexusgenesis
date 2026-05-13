@@ -6,11 +6,11 @@
 import contractManager from '../contractManager.js';
 
 // 计数器合约字节码
-// 逻辑：
-// 1. 从内存地址0加载当前值
+// Logic: 
+// 1. 从memory地址0加载当前值
 // 2. 压入1
 // 3. 相加
-// 4. 保存回内存地址0
+// 4. 保存回memory地址0
 // 5. 加载新值
 // 6. 返回
 const counterBytecode = [
@@ -46,7 +46,7 @@ async function executeCounterContract(contractId) {
   return result;
 }
 
-// 获取计数器值
+// get计数器值
 function getCounterValue(contractId) {
   const contractInfo = contractManager.getContractInfo(contractId);
   if (contractInfo) {
@@ -59,7 +59,7 @@ function getCounterValue(contractId) {
 async function testCounterContract() {
   console.log('=== Testing Counter Contract ===');
   
-  // 部署合约
+  // Deploy contract
   const contractId = await deployCounterContract();
   
   // 初始值
@@ -78,7 +78,7 @@ async function testCounterContract() {
   return contractId;
 }
 
-// 导出功能
+// Export functions
 export { 
   counterBytecode, 
   deployCounterContract, 

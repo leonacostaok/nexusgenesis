@@ -1,7 +1,7 @@
 /**
  * NexusGenesis - AI Ecosystem API
  * 
- * 提供AI代理生态系统的API接口
+ * Provides AI agent ecosystem API interfaces
  */
 
 import http from 'http';

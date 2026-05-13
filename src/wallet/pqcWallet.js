@@ -98,8 +98,8 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 签名消息
-   * @param {string|object} message 要签名的消息
+   * 签名Message
+   * @param {string|object} message 要签名的Message
    * @returns {Promise<string>} 签名（十六进制）
    */
   async sign(message) {
@@ -115,7 +115,7 @@ export class PQCWallet extends Wallet {
 
   /**
    * 验证签名
-   * @param {string|object} message 原始消息
+   * @param {string|object} message 原始Message
    * @param {string|Buffer} signature 签名
    * @param {Buffer} publicKey 公钥
    * @returns {Promise<boolean>} 验证结果
@@ -134,7 +134,7 @@ export class PQCWallet extends Wallet {
 
   /**
    * 静态签名验证（兼容直接调用）
-   * @param {string|object} message 原始消息
+   * @param {string|object} message 原始Message
    * @param {string|Buffer} signature 签名
    * @param {Buffer} publicKey 公钥
    * @returns {Promise<boolean>} 验证结果

@@ -1,12 +1,12 @@
 /**
- * 消息发送策略接口
+ * Message发送策略接口
  * 定义不同发送策略的统一接口
  */
 class MessageSendingStrategy {
   /**
-   * 发送消息
-   * @param {string} peerId - 对等节点ID
-   * @param {object} message - 消息对象
+   * Send message
+   * @param {string} peerId - Peer nodesID
+   * @param {object} message - Message对象
    * @param {object} connection - 连接对象
    * @returns {Promise<void>} 发送完成的Promise
    */
@@ -15,7 +15,7 @@ class MessageSendingStrategy {
   }
   
   /**
-   * 获取策略名称
+   * get策略名称
    * @returns {string} 策略名称
    */
   getName() {
@@ -24,7 +24,7 @@ class MessageSendingStrategy {
   
   /**
    * 检查是否应该使用该策略
-   * @param {object} message - 消息对象
+   * @param {object} message - Message对象
    * @returns {boolean} 是否应该使用该策略
    */
   shouldUse(message) {

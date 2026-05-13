@@ -1,5 +1,5 @@
 /**
- * 合约部署脚本
+ * Contract deployment脚本
  * 部署5个AINVM合约示例到区块链
  */
 
@@ -15,12 +15,12 @@ const genesisAddress = 'ng11L2sdxT8qdYjtX1z9RrRSEEhPfw9vrwpCT';
 const deployerAddress = 'ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ';
 
 /**
- * 部署合约
+ * Deploy contract
  */
 async function deployContracts() {
-  console.log('=== NexusGenesis 合约部署 ===\n');
+  console.log('=== NexusGenesis Contract deployment ===\n');
   
-  // 创建初始状态
+  // 创建Initial state
   const state = createInitialState(genesisAddress);
   
   // 给部署者一些余额
@@ -86,13 +86,13 @@ async function deployContracts() {
     if (result) {
       console.log(`  ✅ 部署成功\n`);
     } else {
-      console.log(`  ❌ 部署失败\n`);
+      console.log(`  ❌ 部署Failed\n`);
     }
   }
   
   // 验证部署结果
   console.log('=== 部署验证 ===');
-  console.log(`已部署合约数: ${state.contracts.size}`);
+  console.log(`已Deploy contract数: ${state.contracts.size}`);
   
   for (const [contractId, contract] of state.contracts) {
     console.log(`\n合约: ${contractId}`);
@@ -121,7 +121,7 @@ async function deployContracts() {
     JSON.stringify(deployData, null, 2)
   );
   
-  console.log(`\n部署数据已保存到: data/deployments/contracts-deployment.json`);
+  console.log(`\n部署数据Saved到: data/deployments/contracts-deployment.json`);
   console.log('\n=== 部署完成 ===');
 }
 

@@ -1,6 +1,6 @@
 /**
  * NexusGenesis - 跨链桥测试
- * 覆盖：消息格式、链配置、转移请求验证
+ * 覆盖：Message格式、链配置、转移请求验证
  */
 
 import assert from 'assert';

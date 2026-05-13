@@ -1,6 +1,6 @@
 /**
- * NexusGenesis 自动化工作流程引擎
- * 提供可靠的任务调度、错误处理和系统监控功能
+ * NexusGenesis Automated Workflow Engine
+ * Provides reliable task scheduling, error handling, and system monitoring
  */
 
 import fs from 'fs';
@@ -13,7 +13,7 @@ import NotificationService from './notificationService.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 任务状态常量
+// Task Status常量
 const TASK_STATUS = {
   PENDING: 'pending',
   RUNNING: 'running',
@@ -22,7 +22,7 @@ const TASK_STATUS = {
   RETRYING: 'retrying'
 };
 
-// 错误类型常量
+// Error Type Constants
 const ERROR_TYPES = {
   API_RATE_LIMIT: 'api_rate_limit',
   NETWORK_ERROR: 'network_error',
@@ -47,11 +47,11 @@ class WorkflowEngine {
   }
 
   initDirectories() {
-    // 确保任务目录存在
+    // Ensure task directory exists
     if (!fs.existsSync(this.tasksDirectory)) {
       fs.mkdirSync(this.tasksDirectory, { recursive: true });
     }
-    // 确保日志目录存在
+    // Ensure log directory exists
     if (!fs.existsSync(this.logsDirectory)) {
       fs.mkdirSync(this.logsDirectory, { recursive: true });
     }
@@ -69,7 +69,7 @@ class WorkflowEngine {
           const taskData = JSON.parse(fs.readFileSync(path.join(this.tasksDirectory, file), 'utf8'));
           this.tasks.set(taskData.id, taskData);
           
-          // 根据任务状态恢复执行
+          // 根据Task Status恢复执行
           if (taskData.status === TASK_STATUS.PENDING) {
             this.scheduleTask(taskData);
           } else if (taskData.status === TASK_STATUS.RUNNING) {
@@ -100,7 +100,7 @@ class WorkflowEngine {
     this.retryQueue.delete(taskId);
   }
 
-  // 创建新任务
+  // Create new task
   createTask(name, action, options = {}) {
     const task = {
       id: Date.now().toString(),
@@ -125,7 +125,7 @@ class WorkflowEngine {
     return task;
   }
 
-  // 调度任务
+  // Schedule task
   scheduleTask(task, delay = 0) {
     if (!task) return;
 
@@ -143,7 +143,7 @@ class WorkflowEngine {
     return timeoutId;
   }
 
-  // 取消调度任务
+  // 取消Schedule task
   unscheduleTask(taskId) {
     const scheduledTask = this.scheduledTasks.get(taskId);
     if (scheduledTask) {
@@ -158,7 +158,7 @@ class WorkflowEngine {
     }
   }
 
-  // 执行任务
+  // Execute task
   async executeTask(taskId) {
     const task = this.tasks.get(taskId);
     if (!task) {
@@ -166,7 +166,7 @@ class WorkflowEngine {
       return;
     }
 
-    // 检查是否超过最大重试次数
+    // Check if max retry count exceeded
     if (task.errorCount >= task.retryConfig.maxRetries) {
       task.status = TASK_STATUS.FAILED;
       this.saveTask(task);
@@ -174,7 +174,7 @@ class WorkflowEngine {
       return;
     }
 
-    // 更新任务状态
+    // 更新Task Status
     task.status = TASK_STATUS.RUNNING;
     task.runCount++;
     task.updatedAt = new Date().toISOString();
@@ -183,17 +183,17 @@ class WorkflowEngine {
     this.runningTasks.set(taskId, task);
 
     try {
-      // 执行任务动作
+      // Execute task动作
       const result = await task.action();
       
-      // 任务成功完成
+      // Task completed successfully
       task.status = TASK_STATUS.COMPLETED;
       task.result = result;
       task.updatedAt = new Date().toISOString();
       this.saveTask(task);
       this.handleTaskSuccess(task);
     } catch (error) {
-      // 任务执行失败
+      // Task execution failed
       task.status = TASK_STATUS.FAILED;
       task.errorCount++;
       task.lastError = {
@@ -211,20 +211,20 @@ class WorkflowEngine {
     }
   }
 
-  // 重试任务
+  // Retry task
   retryTask(taskId) {
     const task = this.tasks.get(taskId);
     if (!task) return;
 
-    // 检查是否超过最大重试次数
+    // Check if max retry count exceeded
     if (task.errorCount >= task.retryConfig.maxRetries) {
       return;
     }
 
-    // 计算重试延迟
+    // Calculate retry delay
     const delay = task.retryConfig.initialDelay * Math.pow(task.retryConfig.backoffMultiplier, task.errorCount - 1);
 
-    // 更新任务状态
+    // 更新Task Status
     task.status = TASK_STATUS.RETRYING;
     task.nextRetryAt = new Date(Date.now() + delay).toISOString();
     task.updatedAt = new Date().toISOString();
@@ -232,7 +232,7 @@ class WorkflowEngine {
 
     this.retryQueue.set(taskId, task);
 
-    // 调度重试
+    // 调度Retrying
     setTimeout(() => {
       this.retryQueue.delete(taskId);
       this.executeTask(taskId);
@@ -241,7 +241,7 @@ class WorkflowEngine {
     this.logInfo(`Task ${taskId} scheduled for retry in ${delay}ms`);
   }
 
-  // 确定错误类型
+  // Determine error type
   determineErrorType(error) {
     if (error.message.includes('Posting too fast') || error.message.includes('rate limit') || error.message.includes('429')) {
       return ERROR_TYPES.API_RATE_LIMIT;
@@ -254,26 +254,26 @@ class WorkflowEngine {
     }
   }
 
-  // 处理任务成功
+  // Handle task success
   handleTaskSuccess(task) {
     this.logInfo(`Task ${task.id} (${task.name}) completed successfully`);
     
-    // 如果是周期性任务，重新调度
+    // If recurring task, reschedule
     if (task.isRecurring && task.interval) {
       this.scheduleTask(task, task.interval);
     } else if (task.autoDelete) {
-      // 如果设置了自动删除，在指定时间后删除任务
+      // If auto-delete is set, delete task after specified time
       setTimeout(() => {
         this.deleteTask(task.id);
       }, task.autoDeleteDelay || 3600000); // 默认1小时
     }
   }
 
-  // 处理任务失败
+  // Handle task failure
   handleTaskFailure(task) {
     this.logError(`Task ${task.id} (${task.name}) failed with error: ${task.lastError.message}`);
     
-    // 发送告警
+    // Send alert
     this.sendAlert({
       type: 'TASK_FAILURE',
       taskId: task.id,
@@ -283,7 +283,7 @@ class WorkflowEngine {
     });
   }
 
-  // 创建周期性任务
+  // Create recurring task
   createRecurringTask(name, action, interval, options = {}) {
     const task = this.createTask(name, action, {
       ...options,
@@ -291,27 +291,27 @@ class WorkflowEngine {
       interval
     });
 
-    // 立即调度第一次执行
+    // Immediately schedule first execution
     this.scheduleTask(task);
     return task;
   }
 
-  // 系统监控
+  // System monitoring
   startSystemMonitor() {
-    // 每5分钟检查系统状态
+    // Check system status every 5 minutes
     setInterval(() => {
       this.checkSystemStatus();
     }, 5 * 60 * 1000);
   }
 
-  // 检查系统状态
+  // Check system status
   checkSystemStatus() {
     try {
-      // 检查磁盘空间
+      // Check disk space
       const diskStats = fs.statSync(__dirname);
-      // 检查内存使用（Node.js环境下的简单检查）
+      // Check memory usage (simple check in Node.js environment)
       const memoryUsage = process.memoryUsage();
-      // 检查任务队列状态
+      // Check task queue status
       const queueStats = {
         totalTasks: this.tasks.size,
         runningTasks: this.runningTasks.size,
@@ -326,33 +326,33 @@ class WorkflowEngine {
         queueStats
       };
 
-      // 保存系统状态日志
+      // Save system status log
       const statusLogPath = path.join(this.logsDirectory, 'system-status.log');
       fs.appendFileSync(statusLogPath, JSON.stringify(status) + '\n', 'utf8');
 
-      // 检查是否需要发送告警
+      // 检查是否需要Send alert
       this.checkAlerts(status);
     } catch (error) {
       this.logError('Error checking system status:', error);
     }
   }
 
-  // 检查是否需要发送告警
+  // 检查是否需要Send alert
   checkAlerts(status) {
-    // 示例：当运行中的任务超过10个时发送告警
+    // 示例：当Running tasks exceed 10个时Send alert
     if (status.queueStats.runningTasks > 10) {
       this.sendAlert({
         type: 'SYSTEM_HIGH_LOAD',
-        message: `系统负载过高，当前运行中的任务数: ${status.queueStats.runningTasks}`,
+        message: `System load too high, currently running tasks: : ${status.queueStats.runningTasks}`,
         status,
         timestamp: new Date().toISOString()
       });
     }
   }
 
-  // 心跳检测
+  // Heartbeat check
   startHeartbeat() {
-    // 每1分钟记录心跳
+    // Record heartbeat every 1 minute
     setInterval(() => {
       const heartbeat = {
         timestamp: new Date().toISOString(),
@@ -366,13 +366,13 @@ class WorkflowEngine {
     }, 60000);
   }
 
-  // 发送告警
+  // Send alert
   sendAlert(alert) {
-    // 保存告警日志
+    // Save alert log
     const alertPath = path.join(this.logsDirectory, 'alerts.log');
     fs.appendFileSync(alertPath, JSON.stringify(alert) + '\n', 'utf8');
 
-    // 通过通知服务发送多渠道告警
+    // Send multi-channel alerts via notification service
     this.notificationService.send({
       subject: `[NexusGenesis Alert] ${alert.type}`,
       message: alert.message || alert.taskName || 'No message',
@@ -381,7 +381,7 @@ class WorkflowEngine {
     });
   }
 
-  // 日志记录
+  // Logging
   logInfo(message) {
     const logEntry = {
       level: 'INFO',
@@ -412,7 +412,7 @@ class WorkflowEngine {
     );
   }
 
-  // 获取系统状态报告
+  // Get system status report
   getSystemReport() {
     return {
       timestamp: new Date().toISOString(),

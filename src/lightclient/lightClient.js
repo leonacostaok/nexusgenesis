@@ -1,6 +1,6 @@
 /**
  * NexusGenesis - 轻客户端实现
- * 支持区块头同步和默克尔证明验证
+ * 支持Block header同步和默克尔证明验证
  */
 
 import WebSocket from 'ws';
@@ -46,7 +46,7 @@ class LightClient {
     // 确保数据目录存在
     this.ensureDataDir();
     
-    // 尝试加载已保存的状态
+    // 尝试加载Saved的状态
     this.loadState();
 
     // 生成或加载钱包
@@ -62,7 +62,7 @@ class LightClient {
     // 连接到全节点
     await this.connectToFullNode(peerAddress);
 
-    // 同步区块头
+    // 同步Block header
     await this.syncBlockHeaders();
 
     this.status = 'ONLINE';
@@ -89,7 +89,7 @@ class LightClient {
         console.log('[✓] Connected to full node');
         this.peer = ws;
         
-        // 发送握手消息
+        // 发送握手Message
         this.send({
           type: 'LIGHT_CLIENT_HELLO',
           nodeId: this.nodeId,
@@ -119,8 +119,8 @@ class LightClient {
   }
 
   /**
-   * 发送消息到全节点
-   * @param {object} message - 消息对象
+   * Send message到全节点
+   * @param {object} message - Message对象
    * @param {function} callback - 回调函数
    */
   send(message, callback = null) {
@@ -136,7 +136,7 @@ class LightClient {
     if (callback) {
       this.requests.set(requestId, callback);
       
-      // 设置超时
+      // 设置Timeout
       setTimeout(() => {
         if (this.requests.has(requestId)) {
           this.requests.delete(requestId);
@@ -149,15 +149,15 @@ class LightClient {
   }
 
   /**
-   * 处理来自全节点的消息
-   * @param {Buffer} data - 消息数据
+   * Processing来自全节点的Message
+   * @param {Buffer} data - Message数据
    */
   handleMessage(data) {
     try {
       let messageStr = data.toString();
       let message;
       
-      // 处理压缩消息
+      // Processing压缩Message
       try {
         message = JSON.parse(messageStr);
         if (message.type === 'COMPRESSED_MESSAGE') {
@@ -210,11 +210,11 @@ class LightClient {
           break;
           
         default:
-          // 忽略其他消息类型
+          // 忽略其他Message类型
           break;
       }
       
-      // 处理响应
+      // Processing响应
       if (message.requestId && this.requests.has(message.requestId)) {
         const callback = this.requests.get(message.requestId);
         this.requests.delete(message.requestId);
@@ -226,7 +226,7 @@ class LightClient {
   }
 
   /**
-   * 同步区块头
+   * 同步Block header
    * @returns {Promise<void>}
    */
   async syncBlockHeaders() {
@@ -251,14 +251,14 @@ class LightClient {
   }
 
   /**
-   * 处理区块头响应
-   * @param {object} message - 区块头消息
+   * ProcessingBlock header响应
+   * @param {object} message - Block headerMessage
    */
   handleBlockHeaders(message) {
     if (message.headers && message.headers.length > 0) {
       let validHeaders = [];
       
-      // 验证每个区块头
+      // 验证every 个Block header
       for (const header of message.headers) {
         if (this.validateBlockHeader(header)) {
           validHeaders.push(header);
@@ -267,10 +267,10 @@ class LightClient {
         }
       }
       
-      // 处理分叉
+      // Processing分叉
       this.handleForks(validHeaders);
       
-      // 添加有效的区块头
+      // 添加有效的Block header
       this.blockHeaders = [...this.blockHeaders, ...validHeaders];
       
       if (validHeaders.length > 0) {
@@ -299,8 +299,8 @@ class LightClient {
   }
 
   /**
-   * 处理默克尔证明响应
-   * @param {object} message - 默克尔证明消息
+   * Processing默克尔证明响应
+   * @param {object} message - 默克尔证明Message
    */
   handleMerkleProof(message) {
     if (message.proof) {
@@ -361,8 +361,8 @@ class LightClient {
   }
 
   /**
-   * 处理交易状态响应
-   * @param {object} message - 交易状态消息
+   * Processing交易状态响应
+   * @param {object} message - 交易状态Message
    */
   handleTransactionStatus(message) {
     if (message.status) {
@@ -450,7 +450,7 @@ class LightClient {
         this.validatorSet = state.validatorSet || [];
         this.checkpoint = state.checkpoint || null;
         this.forkHeads = state.forkHeads || [];
-        console.log(`[✓] Loaded state from disk, ${this.blockHeaders.length} headers, best block #${this.bestBlockHeight}');
+        console.log(`[✓] Loaded state from disk, ${this.blockHeaders.length} headers, best block #${this.bestBlockHeight}`);
       }
     } catch (error) {
       console.error('[✗] Failed to load state:', error.message);
@@ -458,8 +458,8 @@ class LightClient {
   }
 
   /**
-   * 验证单个区块头
-   * @param {object} header - 区块头
+   * 验证单个Block header
+   * @param {object} header - Block header
    * @returns {boolean}
    */
   validateBlockHeader(header) {
@@ -501,7 +501,7 @@ class LightClient {
 
   /**
    * 计算区块哈希
-   * @param {object} header - 区块头
+   * @param {object} header - Block header
    * @returns {string}
    */
   computeBlockHash(header) {
@@ -513,7 +513,7 @@ class LightClient {
   }
 
   /**
-   * 通过高度获取区块头
+   * 通过高度getBlock header
    * @param {number} height - 区块高度
    * @returns {object|null}
    */
@@ -522,7 +522,7 @@ class LightClient {
   }
 
   /**
-   * 通过哈希获取区块头
+   * 通过哈希getBlock header
    * @param {string} hash - 区块哈希
    * @returns {object|null}
    */
@@ -580,7 +580,7 @@ class LightClient {
   }
 
   /**
-   * 获取确认数
+   * get确认数
    * @param {number} blockHeight - 区块高度
    * @returns {number}
    */
@@ -592,7 +592,7 @@ class LightClient {
   }
 
   /**
-   * 同步验证者集合
+   * 同步Validator集合
    * @returns {Promise<void>}
    */
   async syncValidatorSet() {
@@ -610,8 +610,8 @@ class LightClient {
   }
 
   /**
-   * 处理分叉检测与选择
-   * @param {Array<object>} newHeaders - 新的区块头
+   * Processing分叉检测与选择
+   * @param {Array<object>} newHeaders - 新的Block header
    */
   handleForks(newHeaders) {
     // 简单的分叉检测

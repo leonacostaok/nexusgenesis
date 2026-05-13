@@ -14,7 +14,7 @@ const testAddress = 'ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ';
 const genesisAddress = 'ng11L2sdxT8qdYjtX1z9RrRSEEhPfw9vrwpCT';
 
 // 计数器合约字节码（十六进制）
-// 逻辑：LOAD 0 (counter), PUSH 1, ADD, STORE 0, HALT
+// Logic: LOAD 0 (counter), PUSH 1, ADD, STORE 0, HALT
 const counterBytecode = '0x070001010308000b';
 
 // 测试用例
@@ -24,7 +24,7 @@ test('Test 1: Deploy and call counter contract', () => {
   // 设置测试地址的余额
   state.setBalance(testAddress, '1000000');
   
-  // 步骤 1：部署合约
+  // 步骤 1：Deploy contract
   const deployTx = {
     id: 'test-deploy-1',
     tx_type: 'CONTRACT_DEPLOY',
@@ -99,7 +99,7 @@ test('Test 2: Gas limit test', () => {
   const state = new State(genesisAddress);
   state.setBalance(testAddress, '1000000');
   
-  // 部署合约
+  // Deploy contract
   const deployTx = {
     id: 'test-deploy-2',
     tx_type: 'CONTRACT_DEPLOY',
@@ -128,7 +128,7 @@ test('Test 2: Gas limit test', () => {
     signature: 'test-signature'
   };
   
-  // 应用调用交易（应该失败）
+  // 应用调用交易（应该Failed）
   const callResult = state.applyTransaction(callTx);
   assert.strictEqual(callResult, false, 'Contract call should fail with low gas limit');
   

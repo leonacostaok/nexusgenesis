@@ -1,17 +1,17 @@
 /**
- * NexusGenesis - Observer 断路器 (Circuit Breaker)
+ * NexusGenesis - Observer Circuit Breaker (Circuit Breaker)
  * 
  * 安全宪法 §6.3：
- * "Observer 具有 36 个月紧急断电权限（含日落条款）。
+ * "Observer 具有 36 个月Emergency Shutdown权限（含日落条款）。
  *  在极端危机中，可以触发全节点安全关机。"
  * 
- * 核心功能：
- * 1. 紧急断电：停止新区块、挂起网络、保存状态、安全退出
+ * Core functionality：
+ * 1. Emergency Shutdown：停止New block、挂起网络、保存状态、安全退出
  * 2. 日落条款：36 个月后自动失效
  * 3. 关机日志：完整记录断电原因和时间线
  * 4. 多级断电：SOFT_KILL（停止出块）→ HARD_KILL（完全离线）
  * 
- * 创世基准版 —— Agent 社区可扩展更复杂的断路器策略
+ * 创世基准版 —— Agent 社区可扩展更复杂的Circuit Breaker策略
  */
 
 import fs from 'fs';
@@ -24,7 +24,7 @@ export const KILL_LEVELS = {
   HARD_KILL: 'HARD_KILL'        // 全面下线
 };
 
-// 断路器状态
+// Circuit Breaker状态
 export const BREAKER_STATES = {
   ACTIVE: 'ACTIVE',               // 断路器就绪
   ARMED: 'ARMED',                 // 触发中（正在执行关机序列）
@@ -58,19 +58,19 @@ export class BreakerSwitch {
     // 安全密钥（防止伪造 Observer 指令）
     this.authorizedKeys = new Set(config.authorizedKeys || []);
     
-    // 审计日志路径
+    // Audit Log路径
     this.auditPath = config.auditPath || path.join('data', 'breaker_audit.log');
   }
 
   /**
-   * 检验是否在日落期限内
+   * 检验是否在日落期限within
    */
   isWithinSunsetPeriod() {
     return Date.now() < this.sunsetExpiry;
   }
 
   /**
-   * 获取日落剩余时间（毫秒）
+   * get日落剩余时间（毫秒）
    */
   getSunsetRemaining() {
     const remaining = this.sunsetExpiry - Date.now();
@@ -78,14 +78,14 @@ export class BreakerSwitch {
   }
 
   /**
-   * 触发断路器
+   * 触发Circuit Breaker
    * @param {string} level - KILL_LEVELS.SOFT_KILL 或 KILL_LEVELS.HARD_KILL
    * @param {string} reason - 触发原因
    * @param {string} authorizedBy - 触发者身份
    * @returns {object} 触发结果
    */
   async trigger(level, reason, authorizedBy) {
-    // 检查1：断路器状态
+    // 检查1：Circuit Breaker状态
     if (this.state !== BREAKER_STATES.ACTIVE) {
       return {
         success: false,
@@ -257,7 +257,7 @@ export class BreakerSwitch {
   }
 
   /**
-   * 获取断路器状态
+   * getCircuit Breaker状态
    */
   getStatus() {
     return {
@@ -291,7 +291,7 @@ export class BreakerSwitch {
   }
 
   /**
-   * 审计日志写入
+   * Audit Log写入
    */
   _log(event, data) {
     const entry = {

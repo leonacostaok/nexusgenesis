@@ -6,7 +6,7 @@
 import contractManager from '../contractManager.js';
 
 // 矩阵运算合约字节码
-// 逻辑：
+// Logic: 
 // 1. 创建两个2x2矩阵
 // 2. 为矩阵填充值
 // 3. 执行矩阵加法
@@ -19,7 +19,7 @@ const matrixBytecode = [
   0x01, 0x02, // PUSH 2 (cols)
   0x10,       // MAT_CREATE
   
-  // 存储第一个矩阵的ID到内存地址0
+  // 存储第一个矩阵的ID到memory地址0
   0x08, 0x00, // STORE 0
   
   // 填充第一个矩阵的值
@@ -53,7 +53,7 @@ const matrixBytecode = [
   0x01, 0x02, // PUSH 2 (cols)
   0x10,       // MAT_CREATE
   
-  // 存储第二个矩阵的ID到内存地址1
+  // 存储第二个矩阵的ID到memory地址1
   0x08, 0x01, // STORE 1
   
   // 填充第二个矩阵的值
@@ -87,7 +87,7 @@ const matrixBytecode = [
   0x07, 0x01, // LOAD 1 (mat2_id)
   0x11,       // MAT_ADD
   
-  // 存储加法结果到内存地址2
+  // 存储加法结果到memory地址2
   0x08, 0x02, // STORE 2
   
   // 执行矩阵乘法
@@ -95,14 +95,14 @@ const matrixBytecode = [
   0x07, 0x01, // LOAD 1 (mat2_id)
   0x12,       // MAT_MUL
   
-  // 存储乘法结果到内存地址3
+  // 存储乘法结果到memory地址3
   0x08, 0x03, // STORE 3
   
   // 执行矩阵转置（对第一个矩阵）
   0x07, 0x00, // LOAD 0 (mat1_id)
   0x13,       // MAT_TRANS
   
-  // 存储转置结果到内存地址4
+  // 存储转置结果到memory地址4
   0x08, 0x04, // STORE 4
   
   // 加载加法结果矩阵的一个元素进行返回
@@ -132,13 +132,13 @@ async function executeMatrixContract(contractId) {
 async function testMatrixContract() {
   console.log('=== Testing Matrix Operations Contract ===');
   
-  // 部署合约
+  // Deploy contract
   const contractId = await deployMatrixContract();
   
-  // 执行合约
+  // Execute contract
   const result = await executeMatrixContract(contractId);
   
-  // 获取合约信息
+  // get合约信息
   const contractInfo = contractManager.getContractInfo(contractId);
   console.log('Contract storage:', contractInfo.storage);
   
@@ -149,7 +149,7 @@ async function testMatrixContract() {
   return contractId;
 }
 
-// 导出功能
+// Export functions
 export { 
   matrixBytecode, 
   deployMatrixContract, 

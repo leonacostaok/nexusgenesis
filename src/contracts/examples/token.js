@@ -5,18 +5,18 @@
 
 import contractManager from '../contractManager.js';
 
-// 内存地址分配
+// memory地址分配
 const ADDR_TOTAL_SUPPLY = 0;    // 总供应量
 const ADDR_DECIMALS = 1;         // 小数位数
 const ADDR_NAME = 2;             // 代币名称
 const ADDR_SYMBOL = 3;           // 代币符号
 const ADDR_OWNER = 4;            // 合约拥有者
 
-// 从地址5开始存储用户余额
+// 从地址5Start 存储用户余额
 const ADDR_FIRST_USER = 5;
 
 // 代币合约字节码
-// 逻辑：
+// Logic: 
 // 1. 初始化代币参数
 // 2. 发行初始供应量到拥有者账户
 const tokenBytecode = [
@@ -46,16 +46,16 @@ const tokenBytecode = [
   0x07, ADDR_TOTAL_SUPPLY, // LOAD TOTAL_SUPPLY
   0x08, ADDR_FIRST_USER + 100, // STORE OWNER_BALANCE
   
-  // 返回成功
+  // Return success
   0x01, 0x01, // PUSH 1
   0x0C        // RETURN
 ];
 
 // 转账合约字节码
-// 逻辑：
-// 1. 从内存地址10加载发送者余额
-// 2. 从内存地址11加载接收者余额
-// 3. 从内存地址12加载转账金额
+// Logic: 
+// 1. 从memory地址10加载发送者余额
+// 2. 从memory地址11加载接收者余额
+// 3. 从memory地址12加载转账金额
 // 4. 检查发送者余额是否足够
 // 5. 执行转账
 // 6. 保存新余额
@@ -83,7 +83,7 @@ const transferBytecode = [
   0x03,       // ADD
   0x08, 0x0B, // STORE 11
   
-  // 返回成功
+  // Return success
   0x01, 0x01, // PUSH 1
   0x0C        // RETURN
 ];
@@ -102,7 +102,7 @@ async function executeTokenContract(contractId) {
   return result;
 }
 
-// 获取代币信息
+// get代币信息
 function getTokenInfo(contractId) {
   const contractInfo = contractManager.getContractInfo(contractId);
   if (contractInfo) {
@@ -117,7 +117,7 @@ function getTokenInfo(contractId) {
   return null;
 }
 
-// 获取用户余额
+// get用户余额
 function getBalance(contractId, userId) {
   const contractInfo = contractManager.getContractInfo(contractId);
   if (contractInfo) {
@@ -130,17 +130,17 @@ function getBalance(contractId, userId) {
 async function testTokenContract() {
   console.log('=== Testing Token Contract ===');
   
-  // 部署合约
+  // Deploy contract
   const contractId = await deployTokenContract();
   
-  // 执行合约
+  // Execute contract
   await executeTokenContract(contractId);
   
-  // 获取代币信息
+  // get代币信息
   const tokenInfo = getTokenInfo(contractId);
   console.log('Token info:', tokenInfo);
   
-  // 获取拥有者余额
+  // get拥有者余额
   const ownerBalance = getBalance(contractId, 100);
   console.log('Owner balance:', ownerBalance);
   
@@ -151,7 +151,7 @@ async function testTokenContract() {
   return contractId;
 }
 
-// 导出功能
+// Export functions
 export { 
   tokenBytecode, 
   transferBytecode, 

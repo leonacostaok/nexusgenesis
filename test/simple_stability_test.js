@@ -28,7 +28,7 @@ function logResult(testName, success, responseTime, error = null) {
   console.log(`${success ? '✓' : '✗'} ${testName} - ${responseTime}ms${error ? ` - Error: ${error.message}` : ''}`);
 }
 
-// 测试智能体注册
+// 测试agent注册
 async function testAgentRegistration() {
   try {
     const startTime = Date.now();
@@ -49,7 +49,7 @@ async function testAgentRegistration() {
   }
 }
 
-// 测试获取智能体列表
+// 测试getagent列表
 async function testGetAgents() {
   try {
     const startTime = Date.now();
@@ -66,7 +66,7 @@ async function testGetAgents() {
   }
 }
 
-// 测试健康检查
+// 测试Health check
 async function testHealthCheck() {
   try {
     const startTime = Date.now();
@@ -85,7 +85,7 @@ async function testHealthCheck() {
 
 // 执行压力测试
 async function runStressTest(testCount = 50) {
-  console.log(`开始系统稳定性压力测试，共执行 ${testCount} 次请求...`);
+  console.log(`Start 系统稳定性压力测试，共执行 ${testCount} 次请求...`);
   console.log('========================================');
 
   let successCount = 0;
@@ -144,7 +144,7 @@ async function runStressTest(testCount = 50) {
     testResults
   }, null, 2));
 
-  console.log(`测试结果已保存到: ${resultFile}`);
+  console.log(`测试结果Saved到: ${resultFile}`);
   return {
     successRate,
     totalTime

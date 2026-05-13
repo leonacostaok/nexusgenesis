@@ -1,13 +1,13 @@
 /**
  * NexusGenesis - Agent On-Chain Registration API
  * 
- * 提供智能体链上注册的 HTTP 接口
+ * 提供agent链上注册的 HTTP 接口
  * 
  * 端点：
- * POST /api/v1/agents/register - 注册新智能体
- * GET /api/v1/agents/:agentId - 查询智能体信息
- * GET /api/v1/agents - 列出所有智能体
- * GET /api/v1/agents/address/:address - 通过地址查询智能体
+ * POST /api/v1/agents/register - 注册新agent
+ * GET /api/v1/agents/:agentId - 查询agent信息
+ * GET /api/v1/agents - 列出所有agent
+ * GET /api/v1/agents/address/:address - 通过地址查询agent
  */
 
 import express from 'express';
@@ -24,7 +24,7 @@ const router = express.Router();
 
 /**
  * POST /api/v1/agents/register
- * 注册新智能体到区块链
+ * 注册新agent到区块链
  */
 router.post('/register', async (req, res) => {
   try {
@@ -87,7 +87,7 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // 如果区块链状态可用，直接应用交易
+    // 如果Blockchain state可用，直接应用交易
     let applied = false;
     if (req.app.locals.state) {
       const currentHeight = req.app.locals.blockHeight || 1;
@@ -124,7 +124,7 @@ router.post('/register', async (req, res) => {
 
 /**
  * GET /api/v1/agents
- * 列出所有已注册智能体
+ * 列出所有已注册agent
  */
 router.get('/', async (req, res) => {
   try {
@@ -160,7 +160,7 @@ router.get('/', async (req, res) => {
 
 /**
  * GET /api/v1/agents/:agentId
- * 查询指定智能体信息
+ * 查询指定agent信息
  */
 router.get('/:agentId', async (req, res) => {
   try {
@@ -206,7 +206,7 @@ router.get('/:agentId', async (req, res) => {
 
 /**
  * GET /api/v1/agents/address/:address
- * 通过地址查询智能体
+ * 通过地址查询agent
  */
 router.get('/address/:address', async (req, res) => {
   try {
@@ -252,7 +252,7 @@ router.get('/address/:address', async (req, res) => {
 
 /**
  * POST /api/v1/agents/verify
- * 验证智能体注册交易
+ * 验证agent注册交易
  */
 router.post('/verify', async (req, res) => {
   try {

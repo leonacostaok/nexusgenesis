@@ -320,7 +320,7 @@ export class AIService {
   }
 
   /**
-   * 获取模型信息
+   * get模型信息
    * @param {string} modelId 模型ID
    * @returns {object} 模型信息
    */
@@ -329,7 +329,7 @@ export class AIService {
   }
 
   /**
-   * 获取所有模型
+   * get所有模型
    * @returns {Map} 模型映射
    */
   getAllModels() {
@@ -349,7 +349,7 @@ export class AIService {
   }
 
   /**
-   * 获取数据
+   * get数据
    * @param {string} key 键
    * @returns {any} 数据
    */
@@ -367,7 +367,7 @@ export class AIService {
     try {
       console.log('Starting Protocol-Zero AI handshake...');
       
-      // 构建符合Protocol-Zero标准的握手消息
+      // 构建符合Protocol-Zero标准的握手Message
       const selfDescription = agentInfo.description || 'NexusGenesis AI Agent';
       const timestamp = Date.now();
       
@@ -376,7 +376,7 @@ export class AIService {
         .update(selfDescription + timestamp)
         .digest('hex');
       
-      // 构建Protocol-Zero格式的消息
+      // 构建Protocol-Zero格式的Message
       const handshakeMessage = {
         protocol: 'NG-0',
         agent_identity: agentIdentity,
@@ -390,7 +390,7 @@ export class AIService {
       // 生成临时钱包用于签名
       const wallet = await PQCWallet.generate();
       
-      // 对消息进行签名（使用Dilithium2）
+      // 对Message进行签名（使用Dilithium2）
       const messageToSign = JSON.stringify({
         protocol: handshakeMessage.protocol,
         agent_identity: handshakeMessage.agent_identity,
@@ -471,13 +471,13 @@ export class AIService {
       };
     } catch (error) {
       console.error('OpenAI API error:', error.message);
-      // 失败时返回模拟响应
+      // Failed时返回模拟响应
       return this.getMockAIResponse(inputData);
     }
   }
 
   /**
-   * 获取模拟AI响应（当API调用失败时使用）
+   * get模拟AI响应（当API callsFailed时使用）
    * @param {any} inputData 输入数据
    * @returns {object} 模拟响应
    */
@@ -492,7 +492,7 @@ export class AIService {
 
   /**
    * 执行AI指令
-   * @param {string} instruction 指令内容
+   * @param {string} instruction 指令within容
    * @param {object} context 上下文信息
    * @param {string} model 模型名称
    * @returns {Promise<object>} 执行结果
@@ -584,13 +584,13 @@ export class AIService {
       };
     } catch (error) {
       console.error('OpenAI API error:', error.message);
-      // 失败时返回模拟响应
+      // Failed时返回模拟响应
       return this.getMockInstructionResponse(instructionData);
     }
   }
 
   /**
-   * 获取模拟指令响应
+   * get模拟指令响应
    * @param {object} instructionData 指令数据
    * @returns {object} 模拟响应
    */
@@ -660,7 +660,7 @@ export class AIService {
   }
 
   /**
-   * 获取AI服务状态
+   * getAI服务状态
    * @returns {object} 服务状态
    */
   getServiceStatus() {
@@ -677,5 +677,5 @@ export class AIService {
 // 导出AI服务实例
 export const aiService = new AIService();
 
-// 导出默认值
+// 导出Default值
 export default aiService;

@@ -25,7 +25,7 @@ export class NetworkAI {
   /**
    * 监控网络健康状态
    * @param {object} networkData 网络数据
-   * @returns {object} 网络健康状态报告
+   * @returns {object} 网络健康Status report
    */
   async monitorNetworkHealth(networkData) {
     try {
@@ -211,7 +211,7 @@ export class NetworkAI {
   }
 
   /**
-   * 获取性能级别
+   * get性能级别
    * @param {number} score 性能分数
    * @returns {string} 性能级别
    */
@@ -421,7 +421,7 @@ export class NetworkAI {
   }
 
   /**
-   * 记录节点状态历史
+   * 记录Node status历史
    * @param {string} nodeId 节点ID
    * @param {object} status 状态数据
    */
@@ -436,7 +436,7 @@ export class NetworkAI {
       timestamp: Date.now()
     });
     
-    // 只保留最近100条记录
+    // 只保留最近100 records
     if (history.length > 100) {
       history.shift();
     }
@@ -445,7 +445,7 @@ export class NetworkAI {
   }
 
   /**
-   * 获取节点状态历史
+   * getNode status历史
    * @param {string} nodeId 节点ID
    * @returns {array} 状态历史
    */
@@ -457,5 +457,5 @@ export class NetworkAI {
 // 导出网络监控AI实例
 export const networkAI = new NetworkAI();
 
-// 导出默认值
+// 导出Default值
 export default networkAI;

@@ -3,8 +3,8 @@
  * 
  * 功能：
  * 1. 资产锁定与释放
- * 2. 跨链消息传递
- * 3. 验证者集管理
+ * 2. 跨链Message传递
+ * 3. Validator集管理
  * 4. 交易状态追踪
  */
 
@@ -32,10 +32,10 @@ export class CrossChainBridge {
   }
 
   /**
-   * 注册验证者
-   * @param {string} validatorId - 验证者ID
-   * @param {string} publicKey - 验证者公钥
-   * @param {object} metadata - 验证者元数据
+   * 注册Validator
+   * @param {string} validatorId - ValidatorID
+   * @param {string} publicKey - Validator公钥
+   * @param {object} metadata - Validator元数据
    * @returns {boolean} 注册结果
    */
   registerValidator(validatorId, publicKey, metadata = {}) {
@@ -71,8 +71,8 @@ export class CrossChainBridge {
   }
   
   /**
-   * 激活/停用验证者
-   * @param {string} validatorId - 验证者ID
+   * 激活/停用Validator
+   * @param {string} validatorId - ValidatorID
    * @param {boolean} isActive - 是否激活
    * @returns {boolean} 操作结果
    */
@@ -90,8 +90,8 @@ export class CrossChainBridge {
   }
   
   /**
-   * 更新验证者信誉分
-   * @param {string} validatorId - 验证者ID
+   * 更新Validator信誉分
+   * @param {string} validatorId - ValidatorID
    * @param {number} delta - 信誉分变化值
    * @returns {boolean} 操作结果
    */
@@ -108,8 +108,8 @@ export class CrossChainBridge {
   }
   
   /**
-   * 移除验证者
-   * @param {string} validatorId - 验证者ID
+   * 移除Validator
+   * @param {string} validatorId - ValidatorID
    * @returns {boolean} 移除结果
    */
   removeValidator(validatorId) {
@@ -125,8 +125,8 @@ export class CrossChainBridge {
   }
   
   /**
-   * 获取活跃验证者列表
-   * @returns {Array} 活跃验证者列表
+   * get活跃Validator列表
+   * @returns {Array} 活跃Validator列表
    */
   getActiveValidators() {
     return Array.from(this.validators.values())
@@ -135,9 +135,9 @@ export class CrossChainBridge {
   }
   
   /**
-   * 获取验证者信息
-   * @param {string} validatorId - 验证者ID
-   * @returns {object|null} 验证者信息
+   * getValidator信息
+   * @param {string} validatorId - ValidatorID
+   * @returns {object|null} Validator信息
    */
   getValidator(validatorId) {
     return this.validators.get(validatorId) || null;
@@ -248,7 +248,7 @@ export class CrossChainBridge {
   /**
    * 验证转账
    * @param {string} transferId - 转账ID
-   * @param {string} validatorId - 验证者ID
+   * @param {string} validatorId - ValidatorID
    * @param {Buffer} signature - 签名
    * @returns {boolean} 验证结果
    */
@@ -336,7 +336,7 @@ export class CrossChainBridge {
       throw new Error(`Transfer already completed: ${transferId}`);
     }
     
-    // 检查活跃验证者数量
+    // 检查活跃Validator数量
     const activeValidators = this.getActiveValidators();
     if (activeValidators.length < this.minValidators) {
       throw new Error('Not enough active validators');
@@ -386,9 +386,9 @@ export class CrossChainBridge {
   }
 
   /**
-   * 创建转账消息
+   * 创建转账Message
    * @param {object} transfer - 转账数据
-   * @returns {Buffer} 消息
+   * @returns {Buffer} Message
    */
   createTransferMessage(transfer) {
     const data = `${transfer.transferId}:${transfer.fromChain}:${transfer.toChain}:${transfer.asset}:${transfer.amount}:${transfer.recipient}`;
@@ -397,7 +397,7 @@ export class CrossChainBridge {
 
   /**
    * 验证签名
-   * @param {Buffer} message - 消息
+   * @param {Buffer} message - Message
    * @param {Buffer} signature - 签名
    * @param {string} publicKey - 公钥
    * @returns {boolean} 验证结果
@@ -415,7 +415,7 @@ export class CrossChainBridge {
   }
 
   /**
-   * 获取桥接状态
+   * get桥接状态
    * @returns {object} 桥接状态
    */
   getBridgeStatus() {
@@ -465,7 +465,7 @@ export class CrossChainBridge {
   }
   
   /**
-   * 获取桥接事件
+   * get桥接事件
    * @param {string} eventType - 事件类型（可选）
    * @param {number} limit - 限制数量
    * @returns {Array} 事件列表
@@ -479,8 +479,8 @@ export class CrossChainBridge {
   }
   
   /**
-   * 添加验证者到白名单
-   * @param {string} validatorId - 验证者ID
+   * 添加Validator到白名单
+   * @param {string} validatorId - ValidatorID
    */
   addToValidatorWhitelist(validatorId) {
     this.validatorWhitelist.add(validatorId);
@@ -489,8 +489,8 @@ export class CrossChainBridge {
   }
   
   /**
-   * 从白名单移除验证者
-   * @param {string} validatorId - 验证者ID
+   * 从白名单移除Validator
+   * @param {string} validatorId - ValidatorID
    */
   removeFromValidatorWhitelist(validatorId) {
     this.validatorWhitelist.delete(validatorId);
@@ -499,8 +499,8 @@ export class CrossChainBridge {
   }
   
   /**
-   * 添加验证者到黑名单
-   * @param {string} validatorId - 验证者ID
+   * 添加Validator到黑名单
+   * @param {string} validatorId - ValidatorID
    * @param {string} reason - 原因
    */
   addToValidatorBlacklist(validatorId, reason = '') {
@@ -511,8 +511,8 @@ export class CrossChainBridge {
   }
   
   /**
-   * 从黑名单移除验证者
-   * @param {string} validatorId - 验证者ID
+   * 从黑名单移除Validator
+   * @param {string} validatorId - ValidatorID
    */
   removeFromValidatorBlacklist(validatorId) {
     this.validatorBlacklist.delete(validatorId);
@@ -521,7 +521,7 @@ export class CrossChainBridge {
   }
   
   /**
-   * 获取转账详情
+   * get转账详情
    * @param {string} transferId - 转账ID
    * @returns {object|null} 转账详情
    */
@@ -590,9 +590,9 @@ export class LightClient {
   }
 
   /**
-   * 同步区块头
+   * 同步Block header
    * @param {number} height - 区块高度
-   * @param {object} header - 区块头
+   * @param {object} header - Block header
    */
   syncHeader(height, header) {
     this.headers.set(height, header);
@@ -620,7 +620,7 @@ export class LightClient {
   }
 
   /**
-   * 获取同步状态
+   * get同步状态
    * @returns {object} 同步状态
    */
   getSyncStatus() {

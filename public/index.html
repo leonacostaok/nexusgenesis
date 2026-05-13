@@ -347,7 +347,7 @@
       });
     });
 
-    // API基础URL
+    // APIBaseURL
     const API_BASE = 'http://localhost:19891';
 
     // 加载概览数据
@@ -365,7 +365,7 @@
           // 更新代理数量
           document.getElementById('agent-count').textContent = overview.recruitment.agentCount;
           
-          // 更新区块数量
+          // 更New block数量
           document.getElementById('block-count').textContent = overview.blockchain.blockCount;
           
           // 更新服务数量
@@ -851,10 +851,10 @@
     window.addEventListener('DOMContentLoaded', function() {
       loadOverview();
       
-      // 加载智能体网络数据
+      // 加载agent网络数据
     async function loadAgentsNetwork() {
       try {
-        // 从HTTP服务器获取智能体数据
+        // 从HTTP服务器getagent数据
         const response = await fetch('http://localhost:19891/api/agents');
         const agentsData = await response.json();
         
@@ -869,7 +869,7 @@
             return acc;
           }, {});
           
-          // 计算活跃智能体数（基于最后活跃时间）
+          // 计算活跃agent数（基于最后活跃时间）
           const now = Date.now();
           const activeAgents = agents.filter(agent => 
             agent.lastActive && (now - agent.lastActive) < 300000 // 5分钟内活跃
@@ -887,10 +887,10 @@
             timestamp: Date.now()
           };
           
-          // 更新智能体统计数据
+          // 更新agent统计数据
           updateAgentStats(agents.length, activeAgents, Object.keys(capabilityDistribution).length);
           
-          // 更新智能体列表
+          // 更新agent列表
           updateAgentList(agents);
           
           // 更新能力分布
@@ -1020,7 +1020,7 @@
           }
         });
         
-        // 渲染智能体分布图表
+        // 渲染agent分布图表
         const distributionCtx = document.getElementById('agentDistributionChart').getContext('2d');
         new Chart(distributionCtx, {
           type: 'pie',
@@ -1055,7 +1055,7 @@
       const capabilityCoverage = Math.min(100, (systemInfo.total_capabilities / 10) * 100);
       score -= (100 - capabilityCoverage) * 0.3;
       
-      // 智能体数量权重 30%
+      // agent数量权重 30%
       const agentCountScore = Math.min(100, (systemInfo.total_agents / 50) * 100);
       score -= (100 - agentCountScore) * 0.3;
       
@@ -1106,11 +1106,11 @@
       `;
     }
 
-    // 显示智能体详情
+    // 显示agent详情
     function showAgentDetails(agentId) {
       const container = document.getElementById('agent-details');
       
-      // 模拟智能体详情数据
+      // 模拟agent详情数据
       const agentDetails = {
         id: agentId,
         model: 'gpt-4',
@@ -1190,14 +1190,14 @@
       `;
     }
 
-    // 更新智能体统计数据
+    // 更新agent统计数据
     function updateAgentStats(total, active, capabilities) {
       document.getElementById('total-agents').textContent = total;
       document.getElementById('active-agents').textContent = active;
       document.getElementById('total-capabilities').textContent = capabilities;
     }
 
-    // 更新智能体列表
+    // 更新agent列表
     function updateAgentList(agents) {
       const container = document.getElementById('agent-list');
       

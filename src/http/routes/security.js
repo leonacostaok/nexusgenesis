@@ -58,7 +58,7 @@ router.get('/api/v1/security/audit/template/:type', async (req, res) => {
     const library = new ContractTemplateLibrary();
     const template = library.getTemplate(type.toUpperCase());
     if (!template) {
-      return res.status(404).json({ success: false, message: `模板类型 ${type} 不存在` });
+      return res.status(404).json({ success: false, message: `模板类型 ${type} not found` });
     }
     const auditor = new SecurityAuditor();
     const result = auditor.auditTemplate(template);

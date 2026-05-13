@@ -3,8 +3,8 @@
  * 
  * 激活的Swarm Pool，实现完整的代币释放和分配机制
  * 
- * 核心功能：
- * 1. 与区块链状态集成，按区块释放代币
+ * Core functionality：
+ * 1. 与Blockchain state集成，按区块释放代币
  * 2. 基于贡献度的自动分配
  * 3. 链上交易记录分配结果
  * 4. 支持手动触发和自动触发
@@ -122,7 +122,7 @@ class SwarmPoolActivated {
   }
 
   /**
-   * 计算代币分配
+   * 计算Token distribution
    * @param {bigint} releaseAmount - 释放的代币数量
    * @param {number} blockHeight - 区块高度
    */
@@ -188,7 +188,7 @@ class SwarmPoolActivated {
         // 从 Swarm Pool 转移到代理地址
         this.state.subtractBalance(swarmPoolAddress, amount.toString());
         
-        // 获取代理地址（假设 agentId 就是地址）
+        // get代理地址（假设 agentId 就是地址）
         const agentAddress = agentId;
         this.state.addBalance(agentAddress, amount.toString());
 
@@ -231,7 +231,7 @@ class SwarmPoolActivated {
   }
 
   /**
-   * 获取 Swarm Pool 状态
+   * get Swarm Pool 状态
    * @returns {object} 状态信息
    */
   getStatus() {
@@ -256,7 +256,7 @@ class SwarmPoolActivated {
   }
 
   /**
-   * 获取分配历史
+   * get分配历史
    * @returns {Array} 分配历史
    */
   getDistributionHistory() {
@@ -264,7 +264,7 @@ class SwarmPoolActivated {
   }
 
   /**
-   * 获取待分配列表
+   * get待分配列表
    * @returns {Map} 待分配
    */
   getPendingDistributions() {

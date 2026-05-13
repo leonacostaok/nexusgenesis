@@ -35,7 +35,7 @@ export async function generateKeyPair() {
 
 /**
  * 使用Dilithium2签名
- * @param {string|Buffer} message 要签名的消息
+ * @param {string|Buffer} message 要签名的Message
  * @param {Buffer} privateKey 私钥
  * @returns {Promise<Buffer>} 签名
  */
@@ -58,7 +58,7 @@ export async function sign(message, privateKey) {
 
 /**
  * 使用Dilithium2验证签名
- * @param {string|Buffer} message 原始消息
+ * @param {string|Buffer} message 原始Message
  * @param {Buffer} signature 签名
  * @param {Buffer} publicKey 公钥
  * @returns {Promise<boolean>} 验证结果
@@ -90,7 +90,7 @@ export async function verify(message, signature, publicKey) {
 /**
  * 安全哈希函数
  * @param {string|Buffer} data 要哈希的数据
- * @param {string} algorithm 哈希算法，默认为sha3-256
+ * @param {string} algorithm 哈希算法，Default为sha3-256
  * @returns {string} 哈希值（十六进制）
  */
 export function hash(data, algorithm = 'sha3-256') {
@@ -145,7 +145,7 @@ export function checkNonce(nonce, usedNonces) {
 }
 
 /**
- * 获取PQC算法信息
+ * getPQC算法信息
  * @returns {object} 算法信息
  */
 export function getPQCInfo() {

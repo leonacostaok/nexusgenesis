@@ -44,7 +44,7 @@ class CrossChainBridge {
     // 初始化支持的链配置
     this.initializeChainConfigs();
 
-    // 注册默认中继节点（自己）
+    // 注册Default中继节点（自己）
     this.registerRelayer(this.bridgeId);
 
     this.status = 'ONLINE';
@@ -208,7 +208,7 @@ class CrossChainBridge {
   }
 
   /**
-   * 获取转移状态
+   * get转移状态
    * @param {string} transferId - 转移ID
    * @returns {object}
    */
@@ -223,7 +223,7 @@ class CrossChainBridge {
   }
 
   /**
-   * 获取支持的链列表
+   * get支持的链列表
    * @returns {Array}
    */
   getSupportedChains() {
@@ -231,8 +231,8 @@ class CrossChainBridge {
   }
 
   /**
-   * 处理跨链消息
-   * @param {object} message - 跨链消息
+   * Processing跨链Message
+   * @param {object} message - 跨链Message
    * @returns {Promise<object>}
    */
   async handleCrossChainMessage(message) {

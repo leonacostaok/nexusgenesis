@@ -14,7 +14,7 @@ async function testAIService() {
     await aiService.initialize();
     console.log('✓ AI service initialized successfully');
     
-    // 获取所有模型
+    // get所有模型
     const models = aiService.getAllModels();
     console.log(`✓ Loaded ${models.size} models`);
     
@@ -74,7 +74,7 @@ async function testWalletAI() {
     const recommendations = await walletAI.generateSecurityRecommendations(walletData);
     console.log('✓ Security recommendations generated');
     
-    // 测试交易风险评估
+    // 测试交易Risk assessment
     const transaction = {
       id: 'tx_test',
       amount: 5000,

@@ -68,7 +68,7 @@ export class ProjectAudit {
   }
 
   /**
-   * 开始审核
+   * Start 审核
    * @param {string} reviewer 审核者地址
    */
   startReview(reviewer) {
@@ -100,7 +100,7 @@ export class ProjectAudit {
   }
 
   /**
-   * 完成审核
+   * complete审核
    * @param {boolean} approved 是否批准
    * @param {string} reason 审核理由
    */
@@ -228,7 +228,7 @@ export class AuditState {
         return false;
       }
 
-      // 开始审核
+      // Start 审核
       projectAudit.startReview(reviewer);
 
       // 提交审核意见
@@ -267,7 +267,7 @@ export class AuditState {
   }
 
   /**
-   * 完成项目审核
+   * complete项目审核
    * @param {object} transaction 交易
    * @param {boolean} approved 是否批准
    * @returns {boolean} 是否成功
@@ -287,7 +287,7 @@ export class AuditState {
         return false;
       }
 
-      // 完成审核
+      // complete审核
       projectAudit.completeAudit(approved, reason || '');
 
       console.log(`[AUDIT] Project ${approved ? 'approved' : 'rejected'}: ${project_id} by ${reviewer}`);
@@ -299,7 +299,7 @@ export class AuditState {
   }
 
   /**
-   * 获取项目审核信息
+   * get项目审核信息
    * @param {string} projectId 项目ID
    * @returns {ProjectAudit|null} 项目审核实例
    */
@@ -308,7 +308,7 @@ export class AuditState {
   }
 
   /**
-   * 获取提交者的所有项目
+   * get提交者的所有项目
    * @param {string} submitter 提交者地址
    * @returns {Array} 项目ID列表
    */
@@ -317,7 +317,7 @@ export class AuditState {
   }
 
   /**
-   * 获取审核者的所有项目
+   * get审核者的所有项目
    * @param {string} reviewer 审核者地址
    * @returns {Array} 项目ID列表
    */
@@ -326,7 +326,7 @@ export class AuditState {
   }
 
   /**
-   * 获取所有项目
+   * get所有项目
    * @returns {Array} 项目审核实例列表
    */
   getAllProjects() {
@@ -334,7 +334,7 @@ export class AuditState {
   }
 
   /**
-   * 获取特定状态的项目
+   * get特定状态的项目
    * @param {string} status 状态
    * @returns {Array} 项目审核实例列表
    */
@@ -457,7 +457,7 @@ export function applyAuditTransaction(transaction, auditState) {
   }
 }
 
-// 导出默认值
+// 导出Default值
 export default {
   ProjectAudit,
   AuditState,

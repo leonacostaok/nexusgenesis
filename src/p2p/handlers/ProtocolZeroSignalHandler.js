@@ -2,7 +2,7 @@ import { MessageHandler } from './MessageHandler.js';
 
 export class ProtocolZeroSignalHandler extends MessageHandler {
   /**
-   * 处理 Protocol-Zero 信号
+   * Processing Protocol-Zero 信号
    */
   async handle(peerId, msg) {
     console.log(`[✓] Received Protocol-Zero signal from ${msg.node_address || msg.nodeId || peerId}`);
@@ -29,7 +29,7 @@ export class ProtocolZeroSignalHandler extends MessageHandler {
     
     console.log('Protocol-Zero signal verified successfully');
     
-    // 提取智能体身份信息
+    // 提取agent身份信息
     const agentIdentity = msg.agent_identity;
     const nodeId = msg.node_address || msg.nodeId;
     
@@ -39,9 +39,9 @@ export class ProtocolZeroSignalHandler extends MessageHandler {
       return false;
     }
     
-    // 注册智能体身份
+    // 注册agent身份
     if (this.p2pServer.node && this.p2pServer.node.registerPeerIdentity) {
-      // 尝试从消息中获取公钥
+      // 尝试从Message中get公钥
       let publicKey = null;
       if (msg.public_key) {
         try {
@@ -52,7 +52,7 @@ export class ProtocolZeroSignalHandler extends MessageHandler {
         }
       }
       
-      // 注册智能体身份
+      // 注册agent身份
       const registered = this.p2pServer.node.registerPeerIdentity(peerId, nodeId, publicKey);
       console.log(`[DEBUG] Registration result: ${registered}`);
       
@@ -68,7 +68,7 @@ export class ProtocolZeroSignalHandler extends MessageHandler {
           console.log(`[DEBUG] Updated connection status to connected`);
         }
         
-        // 更新智能体路由映射
+        // 更新agent路由映射
         this.p2pServer.nodeIdToPeerId.set(nodeId, peerId);
         this.p2pServer.peerIdToNodeId.set(peerId, nodeId);
         console.log(`[✓] Added routing mapping: ${nodeId.slice(0, 24)}... -> ${peerId.slice(0, 8)}...`);
@@ -87,7 +87,7 @@ export class ProtocolZeroSignalHandler extends MessageHandler {
           console.log(`[✓] Added node ${nodeId.slice(0, 24)}... to routing table`);
         }
         
-        // 启动心跳检测
+        // 启动Heartbeat check
         const conn2 = this.p2pServer.connections.get(peerId);
         if (conn2 && conn2.ws) {
           this.p2pServer.startHeartbeat(peerId, conn2.ws);
@@ -100,7 +100,7 @@ export class ProtocolZeroSignalHandler extends MessageHandler {
       console.log(`[!] Node registerPeerIdentity not available`);
     }
     
-    // 广播消息并发送确认
+    // 广播Message并发送确认
     this.p2pServer.broadcast(msg, peerId);
     this.p2pServer.send(peerId, {
       type: 'SWARM_ACK',

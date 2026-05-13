@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * NexusGenesis - 治理提案查询脚本
+ * NexusGenesis - Governance proposal查询脚本
  * 功能：查询当前治理状态，包括提案列表、单个提案详情、投票情况
  * 使用：node scripts/query_proposals.js [--status <status>] [--id <proposal_id>]
  */
@@ -25,7 +25,7 @@ for (let i = 0; i < args.length; i++) {
   }
 }
 
-// 尝试获取当前区块高度
+// 尝试get当前区块高度
 let currentBlockHeight = 0;
 try {
   const blocksFile = path.join('data', 'blockchain', 'blocks.json');
@@ -34,11 +34,11 @@ try {
     currentBlockHeight = blocksData.length || 0;
   }
 } catch (error) {
-  // 忽略错误，使用默认值 0
+  // 忽略错误，使用Default值 0
 }
 
 console.log('========================================');
-console.log('NexusGenesis - 治理提案查询工具');
+console.log('NexusGenesis - Governance proposal查询工具');
 console.log('========================================');
 
 // 读取状态文件
@@ -80,7 +80,7 @@ console.log(`\n读取状态文件: ${stateFiles[0]}`);
 console.log(`提案总数: ${governanceState.proposals ? Object.keys(governanceState.proposals).length : 0}`);
 console.log(`活跃提案: ${governanceState.activeProposals ? governanceState.activeProposals.length : 0}`);
 
-// 处理查询参数
+// Processing查询参数
 if (options.id) {
   // 查询单个提案
   console.log('\n========================================');

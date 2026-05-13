@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NexusGenesis - 监控仪表盘</title>
     <style>
-        /* 基础样式 */
+        /* Base样式 */
         * {
             margin: 0;
             padding: 0;
@@ -65,7 +65,7 @@
             100% { opacity: 1; }
         }
 
-        /* 主要内容 */
+        /* 主要within容 */
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -319,7 +319,7 @@
 
         // 初始化图表
         function initCharts() {
-            // 智能体活动趋势图表
+            // agent活动趋势图表
             const agentCtx = document.getElementById('agent-activity-chart').getContext('2d');
             agentActivityChart = new Chart(agentCtx, {
                 type: 'line',
@@ -367,7 +367,7 @@
                 }
             });
 
-            // 内存使用趋势图表
+            // memory使用趋势图表
             const memoryCtx = document.getElementById('memory-chart').getContext('2d');
             memoryChart = new Chart(memoryCtx, {
                 type: 'line',
@@ -418,7 +418,7 @@
 
         // 更新图表数据
         function updateCharts() {
-            // 更新智能体活动图表
+            // 更新agent活动图表
             const agentLabels = agentActivityData.slice(-10).map(item => {
                 const date = new Date(item.timestamp);
                 return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
@@ -430,7 +430,7 @@
             agentActivityChart.data.datasets[0].data = agentValues;
             agentActivityChart.update();
 
-            // 更新内存使用图表
+            // 更新memory使用图表
             const memoryLabels = performanceData.slice(-10).map(item => {
                 const date = new Date(item.timestamp);
                 return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
@@ -447,14 +447,14 @@
 
         // 更新概览卡片
         function updateOverviewCards(data) {
-            // 更新智能体数据
+            // 更新agent数据
             const agentCount = data.agentStats || 0;
             const activeAgents = data.activeAgentCount || 0;
             
             document.getElementById('total-agents').textContent = agentCount;
             document.getElementById('online-agents').textContent = activeAgents;
 
-            // 更新任务数据
+            // 更新Task 数据
             const taskCount = data.taskStats || 0;
             const completedTasks = data.completedTasks || 0;
             const completionRate = taskCount > 0 ? Math.round((completedTasks / taskCount) * 100) : 0;
@@ -462,7 +462,7 @@
             document.getElementById('total-tasks').textContent = taskCount;
             document.getElementById('task-completion').textContent = completionRate;
 
-            // 更新内存数据
+            // 更新memory数据
             if (performanceData.length > 0) {
                 const latestPerformance = performanceData[performanceData.length - 1];
                 const heapTotal = latestPerformance.memoryUsage.heapTotal;
@@ -475,12 +475,12 @@
                 document.getElementById('memory-progress').style.width = `${memoryPercentage}%`;
             }
 
-            // 更新系统负载
+            // 更新System load
             document.getElementById('system-load').textContent = '正常';
             document.getElementById('load-progress').style.width = '45%';
         }
 
-        // 更新任务状态表格
+        // 更新Task Status表格
         function updateTaskStatusTable(taskStats) {
             const tbody = document.getElementById('task-status-table');
             tbody.innerHTML = '';
@@ -545,7 +545,7 @@
             document.getElementById('last-update').textContent = `最后更新: ${timeString}`;
         }
 
-        // 获取监控数据
+        // getMonitoring data
         async function fetchMonitoringData() {
             try {
                 const response = await fetch('http://localhost:9860/dashboard-data');
@@ -562,7 +562,7 @@
                     // 更新概览卡片
                     updateOverviewCards(data.data);
                     
-                    // 更新任务状态表格
+                    // 更新Task Status表格
                     updateTaskStatusTable(data.data.taskStats);
                     
                     // 更新警报
@@ -577,7 +577,7 @@
                     updateLastUpdate();
                 }
             } catch (error) {
-                console.error('获取监控数据失败:', error);
+                console.error('getMonitoring dataFailed:', error);
                 updateServiceStatus(false);
                 document.getElementById('last-update').textContent = '最后更新: 连接失败';
             }

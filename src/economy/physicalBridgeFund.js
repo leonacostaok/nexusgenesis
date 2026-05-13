@@ -26,7 +26,7 @@ const FUND_REQUEST_TYPES = {
   OTHER: 'other'
 };
 
-// 内存存储
+// memory存储
 let physicalBridgeFundBalance = PHYSICAL_BRIDGE_FUND_TOTAL;
 let fundRequests = new Map(); // requestId -> 资金申请详情
 
@@ -48,7 +48,7 @@ class PhysicalBridgeFund {
     
     fundRequests.set(requestId, request);
     
-    // 创建治理提案
+    // 创建Governance proposal
     const proposalId = WeightedVotingSystem.createProposal({
       title: `Fund Request: ${requestData.title}`,
       description: requestData.description,
@@ -124,12 +124,12 @@ class PhysicalBridgeFund {
     return request.status;
   }
   
-  // 获取资金申请详情
+  // get资金申请详情
   static getFundRequest(requestId) {
     return fundRequests.get(requestId) || null;
   }
   
-  // 获取所有资金申请
+  // get所有资金申请
   static getAllFundRequests() {
     return Array.from(fundRequests.entries()).map(([id, request]) => ({
       id,
@@ -137,12 +137,12 @@ class PhysicalBridgeFund {
     }));
   }
   
-  // 获取资金余额
+  // get资金余额
   static getBalance() {
     return physicalBridgeFundBalance;
   }
   
-  // 获取系统状态
+  // Get system status
   static getStatus() {
     return {
       balance: physicalBridgeFundBalance,

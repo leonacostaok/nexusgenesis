@@ -189,7 +189,7 @@ async function startProposalSubmission(agents) {
     const randomAgent = agents[Math.floor(Math.random() * agents.length)];
 
     try {
-      // 创建治理提案交易
+      // 创建Governance proposal交易
       const proposalId = `prop-${Date.now()}-${proposalCount++}`;
       const tx = new Transaction(
         randomAgent.address, // 发送到自己

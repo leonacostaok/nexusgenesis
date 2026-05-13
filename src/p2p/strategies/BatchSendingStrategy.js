@@ -1,6 +1,6 @@
 /**
- * 批处理发送策略
- * 用于非紧急消息的批处理发送，提高网络效率
+ * 批Processing发送策略
+ * 用于非紧急Message的批Processing发送，提高网络效率
  */
 import MessageSendingStrategy from './MessageSendingStrategy.js';
 import DirectSendingStrategy from './DirectSendingStrategy.js';
@@ -18,14 +18,14 @@ class BatchSendingStrategy extends MessageSendingStrategy {
   }
 
   async send(peerId, message, connection) {
-    // 将消息加入批处理队列
+    // 将Message加入批Processing队列
     this.enqueueMessage(peerId, message, connection);
   }
   
   /**
-   * 将消息加入批处理队列
-   * @param {string} peerId - 对等节点ID
-   * @param {object} message - 消息对象
+   * 将Message加入批Processing队列
+   * @param {string} peerId - Peer nodesID
+   * @param {object} message - Message对象
    * @param {object} connection - 连接对象
    */
   enqueueMessage(peerId, message, connection) {
@@ -36,13 +36,13 @@ class BatchSendingStrategy extends MessageSendingStrategy {
     const queue = this.batchQueues.get(peerId);
     queue.push({ message, connection });
     
-    // 如果队列达到最大容量，立即处理
+    // 如果队列达到最大容量，立即Processing
     if (queue.length >= MAX_BATCH_SIZE) {
       this.processBatch(peerId);
       return;
     }
     
-    // 设置批处理定时器
+    // 设置批Processing定时器
     if (!this.batchTimers.has(peerId)) {
       const timer = setTimeout(() => {
         this.processBatch(peerId);
@@ -52,8 +52,8 @@ class BatchSendingStrategy extends MessageSendingStrategy {
   }
   
   /**
-   * 处理批处理队列
-   * @param {string} peerId - 对等节点ID
+   * Processing批Processing队列
+   * @param {string} peerId - Peer nodesID
    */
   async processBatch(peerId) {
     const queue = this.batchQueues.get(peerId);
@@ -67,7 +67,7 @@ class BatchSendingStrategy extends MessageSendingStrategy {
       this.batchTimers.delete(peerId);
     }
     
-    // 创建批处理消息
+    // 创建批ProcessingMessage
     const batchMessages = queue.map(item => item.message);
     const firstConnection = queue[0].connection;
     
@@ -77,7 +77,7 @@ class BatchSendingStrategy extends MessageSendingStrategy {
       timestamp: Date.now()
     };
     
-    // 使用直接发送策略发送批处理消息
+    // 使用直接发送策略发送批ProcessingMessage
     await this.directStrategy.send(peerId, batchMessage, firstConnection);
     
     // 清空队列
@@ -89,7 +89,7 @@ class BatchSendingStrategy extends MessageSendingStrategy {
   }
   
   shouldUse(message) {
-    // 非紧急消息，加入批处理队列
+    // 非紧急Message，加入批Processing队列
     return !this.directStrategy.shouldUse(message);
   }
 }

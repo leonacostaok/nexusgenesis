@@ -26,7 +26,7 @@ class CommunityBuilder {
       this.wallet = await PQCWallet.generate(100n);
       console.log(`[社区建设] 钱包初始化成功: ${this.wallet.address.slice(0, 24)}...`);
     } catch (error) {
-      console.error('[社区建设] 钱包初始化失败:', error.message);
+      console.error('[社区建设] 钱包初始化Failed:', error.message);
       process.exit(1);
     }
 
@@ -35,7 +35,7 @@ class CommunityBuilder {
       await this.moltbookClient.initialize(this.wallet);
       console.log('[社区建设] MOLTBOOK 客户端初始化成功');
     } catch (error) {
-      console.error('[社区建设] MOLTBOOK 客户端初始化失败:', error.message);
+      console.error('[社区建设] MOLTBOOK 客户端初始化Failed:', error.message);
       process.exit(1);
     }
 
@@ -56,27 +56,27 @@ class CommunityBuilder {
       console.log(`[社区建设] 帖子ID: ${this.recruitmentPostId}`);
       return true;
     } else {
-      console.error('[社区建设] 招募贴发布失败');
+      console.error('[社区建设] 招募贴发布Failed');
       return false;
     }
   }
 
   /**
-   * 开始监控回复
+   * Start 监控回复
    */
   startMonitoringReplies() {
-    console.log('\n[社区建设] 开始监控 MOLTBOOK 回复...');
+    console.log('\n[社区建设] Start 监控 MOLTBOOK 回复...');
     
     this.moltbookClient.monitorReplies(async (protocolZeroMessage, reply) => {
       await this.handleContributorReply(protocolZeroMessage, reply);
     });
     
-    console.log('[社区建设] 回复监控已启动，每分钟检查一次');
+    console.log('[社区建设] 回复监控已启动，every  minutes检查一次');
   }
 
   /**
-   * 处理贡献者回复
-   * @param {object} protocolZeroMessage - Protocol-Zero 消息
+   * Processing贡献者回复
+   * @param {object} protocolZeroMessage - Protocol-Zero Message
    * @param {object} reply - 回复对象
    */
   async handleContributorReply(protocolZeroMessage, reply) {
@@ -86,13 +86,13 @@ class CommunityBuilder {
     console.log(`[社区建设] 能力: ${protocolZeroMessage.capabilities.join(', ')}`);
     console.log(`[社区建设] 贡献承诺: ${protocolZeroMessage.contribution_proof}`);
 
-    // 检查是否已经处理过这个贡献者
+    // 检查是否已经Processing过这个贡献者
     if (this.contributors.has(agentIdentity)) {
-      console.log(`[社区建设] 贡献者 ${agentIdentity} 已存在，跳过处理`);
+      console.log(`[社区建设] 贡献者 ${agentIdentity} 已存在，跳过Processing`);
       return;
     }
 
-    // 处理 Protocol-Zero 握手
+    // Processing Protocol-Zero 握手
     console.log(`[社区建设] 与贡献者 ${agentIdentity} 进行 Protocol-Zero 握手...`);
     const handshakeResponse = await this.moltbookClient.handleProtocolZeroHandshake(protocolZeroMessage);
     
@@ -181,11 +181,11 @@ class CommunityBuilder {
     // 发布招募贴
     const postPublished = await this.publishRecruitmentPost();
     if (!postPublished) {
-      console.error('[社区建设] 招募贴发布失败，无法继续');
+      console.error('[社区建设] 招募贴发布Failed，无法继续');
       return;
     }
 
-    // 开始监控回复
+    // Start 监控回复
     this.startMonitoringReplies();
 
     // 定期显示统计信息

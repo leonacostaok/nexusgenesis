@@ -70,9 +70,9 @@ export class TransactionAI {
   }
 
   /**
-   * 分析每日交易趋势
+   * 分析every 日交易趋势
    * @param {array} transactions 交易历史
-   * @returns {object} 每日趋势
+   * @returns {object} every 日趋势
    */
   analyzeDailyTrends(transactions) {
     const dailyData = {};
@@ -93,7 +93,7 @@ export class TransactionAI {
       dailyData[dateKey].totalAmount += tx.amount;
     });
     
-    // 计算平均值
+    // 计算Average值
     Object.keys(dailyData).forEach(date => {
       const data = dailyData[date];
       data.averageAmount = data.totalAmount / data.count;
@@ -103,9 +103,9 @@ export class TransactionAI {
   }
 
   /**
-   * 分析每周交易趋势
+   * 分析every 周交易趋势
    * @param {array} transactions 交易历史
-   * @returns {object} 每周趋势
+   * @returns {object} every 周趋势
    */
   analyzeWeeklyTrends(transactions) {
     const weeklyData = {};
@@ -128,7 +128,7 @@ export class TransactionAI {
       weeklyData[weekKey].totalAmount += tx.amount;
     });
     
-    // 计算平均值
+    // 计算Average值
     Object.keys(weeklyData).forEach(week => {
       const data = weeklyData[week];
       data.averageAmount = data.totalAmount / data.count;
@@ -138,9 +138,9 @@ export class TransactionAI {
   }
 
   /**
-   * 分析每月交易趋势
+   * 分析every 月交易趋势
    * @param {array} transactions 交易历史
-   * @returns {object} 每月趋势
+   * @returns {object} every 月趋势
    */
   analyzeMonthlyTrends(transactions) {
     const monthlyData = {};
@@ -163,7 +163,7 @@ export class TransactionAI {
       monthlyData[monthKey].totalAmount += tx.amount;
     });
     
-    // 计算平均值
+    // 计算Average值
     Object.keys(monthlyData).forEach(month => {
       const data = monthlyData[month];
       data.averageAmount = data.totalAmount / data.count;
@@ -178,7 +178,7 @@ export class TransactionAI {
    * @returns {string} 整体趋势
    */
   calculateOverallTrend(trends) {
-    // 基于每月趋势计算整体趋势
+    // 基于every 月趋势计算整体趋势
     const monthlyTrends = Object.values(trends.monthly);
     if (monthlyTrends.length < 2) return 'stable';
     
@@ -198,9 +198,9 @@ export class TransactionAI {
   }
 
   /**
-   * 计算平均交易金额
+   * 计算Average交易金额
    * @param {array} transactions 交易历史
-   * @returns {number} 平均金额
+   * @returns {number} Average金额
    */
   calculateAverageAmount(transactions) {
     if (transactions.length === 0) return 0;
@@ -209,7 +209,7 @@ export class TransactionAI {
   }
 
   /**
-   * 获取周数
+   * get周数
    * @param {Date} date 日期
    * @returns {number} 周数
    */
@@ -375,5 +375,5 @@ export class TransactionAI {
 // 导出交易预测AI实例
 export const transactionAI = new TransactionAI();
 
-// 导出默认值
+// 导出Default值
 export default transactionAI;

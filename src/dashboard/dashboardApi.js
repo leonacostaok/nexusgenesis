@@ -1,6 +1,6 @@
 /**
  * NexusGenesis 仪表盘API
- * 提供智能体工作情况的HTTP API接口
+ * 提供agent工作情况的HTTP API接口
  */
 
 import { Router } from 'express';
@@ -30,7 +30,7 @@ class DashboardApi {
     this.router.get('/dashboard/recruitment', this.getRecruitmentStats.bind(this));
   }
 
-  // 获取仪表盘概览
+  // get仪表盘概览
   async getOverview(req, res) {
     try {
       const overview = this.dashboard.getRealTimeDashboardData();
@@ -46,7 +46,7 @@ class DashboardApi {
     }
   }
 
-  // 获取智能体统计信息
+  // getagent统计信息
   async getAgentStats(req, res) {
     try {
       const agentOverview = this.dashboard.getAgentOverview();
@@ -62,7 +62,7 @@ class DashboardApi {
     }
   }
 
-  // 获取任务统计信息
+  // getTask 统计信息
   async getTaskStats(req, res) {
     try {
       const taskStats = this.dashboard.getTaskExecutionStats();
@@ -78,7 +78,7 @@ class DashboardApi {
     }
   }
 
-  // 获取能量块统计信息
+  // get能量块统计信息
   async getEnergyStats(req, res) {
     try {
       const energyStats = this.dashboard.getEnergyBlockStats();
@@ -94,7 +94,7 @@ class DashboardApi {
     }
   }
 
-  // 获取网络统计信息
+  // get网络统计信息
   async getNetworkStats(req, res) {
     try {
       const networkStats = this.dashboard.getNetworkStats();
@@ -110,7 +110,7 @@ class DashboardApi {
     }
   }
 
-  // 获取智能体排行榜
+  // getagent排行榜
   async getAgentRanking(req, res) {
     try {
       const ranking = this.dashboard.getAgentRanking();
@@ -126,7 +126,7 @@ class DashboardApi {
     }
   }
 
-  // 获取报告列表
+  // get报告列表
   async getReports(req, res) {
     try {
       const days = parseInt(req.query.days) || 7;
@@ -143,7 +143,7 @@ class DashboardApi {
     }
   }
 
-  // 获取指定日期的报告
+  // get指定日期的报告
   async getReportByDate(req, res) {
     try {
       const date = req.params.date;
@@ -184,7 +184,7 @@ class DashboardApi {
     }
   }
 
-  // 获取招募统计信息
+  // get招募统计信息
   async getRecruitmentStats(req, res) {
     try {
       res.json({
@@ -199,12 +199,12 @@ class DashboardApi {
     }
   }
 
-  // 获取路由
+  // get路由
   getRouter() {
     return this.router;
   }
 
-  // 获取仪表盘实例
+  // get仪表盘实例
   getDashboard() {
     return this.dashboard;
   }

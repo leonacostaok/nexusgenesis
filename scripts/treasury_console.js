@@ -29,7 +29,7 @@ try {
   const stateFile = path.join(stateDir, files[0]);
   stateData = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
   
-  // 尝试获取当前区块高度
+  // 尝试get当前区块高度
   const blocksFile = path.join('data', 'blockchain', 'blocks.json');
   if (fs.existsSync(blocksFile)) {
     const blocksData = JSON.parse(fs.readFileSync(blocksFile, 'utf8'));
@@ -190,7 +190,7 @@ async function sendObserverDecision(proposalId, actionType) {
     if (response.status === 200) {
       console.log(`[TREASURY] Observer decision ${actionType} for proposal=${proposalId} sent.`);
     } else {
-      console.error('错误：发送交易失败:', response.data);
+      console.error('错误：发送交易Failed:', response.data);
     }
   } catch (error) {
     console.error('错误：发送交易时出错:', error.message);

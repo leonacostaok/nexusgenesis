@@ -34,7 +34,7 @@ export class Block {
     // 计算交易哈希
     const txsHash = calculateHash(transactions);
     
-    // 区块头
+    // Block header
     this.header = {
       parent_hash: parentHash,
       height: height,
@@ -124,10 +124,10 @@ export function createGenesisBlock() {
 }
 
 /**
- * 从交易创建新区块
+ * 从交易创建New block
  * @param {Block} previousBlock 上一个区块
  * @param {Array} transactions 交易列表
- * @returns {Block} 新区块
+ * @returns {Block} New block
  */
 export function createBlock(previousBlock, transactions) {
   return new Block(
@@ -138,7 +138,7 @@ export function createBlock(previousBlock, transactions) {
   );
 }
 
-// 导出默认值
+// 导出Default值
 export default {
   Block,
   createGenesisBlock,

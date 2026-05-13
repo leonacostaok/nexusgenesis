@@ -1,6 +1,6 @@
 /**
  * 优先级发送策略
- * 根据消息的优先级决定发送方式，确保高优先级消息优先处理
+ * 根据Message的优先级决定发送方式，确保高优先级Message优先Processing
  */
 import MessageSendingStrategy from './MessageSendingStrategy.js';
 import DirectSendingStrategy from './DirectSendingStrategy.js';
@@ -12,7 +12,7 @@ const PRIORITY_LEVELS = {
   LOW: 'low'
 };
 
-// 不同消息类型的优先级映射
+// 不同Message类型的优先级映射
 const MESSAGE_PRIORITIES = {
   PING: PRIORITY_LEVELS.HIGH,
   PONG: PRIORITY_LEVELS.HIGH,
@@ -36,25 +36,25 @@ class PrioritySendingStrategy extends MessageSendingStrategy {
   }
 
   async send(peerId, message, connection) {
-    // 根据消息优先级选择合适的发送策略
+    // 根据Message优先级选择合适的发送策略
     const priority = this._getMessagePriority(message);
     
     switch (priority) {
       case PRIORITY_LEVELS.HIGH:
-        // 高优先级消息，使用直接发送策略
+        // 高优先级Message，使用直接发送策略
         return await this.directStrategy.send(peerId, message, connection);
       case PRIORITY_LEVELS.MEDIUM:
       case PRIORITY_LEVELS.LOW:
       default:
-        // 中低优先级消息，使用批处理发送策略
+        // 中低优先级Message，使用批Processing发送策略
         return await this.batchStrategy.send(peerId, message, connection);
     }
   }
 
   /**
-   * 获取消息的优先级
-   * @param {object} message - 消息对象
-   * @returns {string} 消息优先级
+   * getMessage的优先级
+   * @param {object} message - Message对象
+   * @returns {string} Message优先级
    * @private
    */
   _getMessagePriority(message) {
@@ -70,8 +70,8 @@ class PrioritySendingStrategy extends MessageSendingStrategy {
   }
 
   shouldUse(message) {
-    // 优先级策略适用于所有消息
-    // 它会根据消息的优先级内部选择合适的发送策略
+    // 优先级策略适用于所有Message
+    // 它会根据Message的优先级within部选择合适的发送策略
     return true;
   }
 }

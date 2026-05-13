@@ -23,7 +23,7 @@ describe('Blockchain tests', () => {
       }
     ];
 
-    // 创建新区块
+    // 创建New block
     const newBlock = createBlock(genesisBlock, transactions);
     assert.ok(newBlock);
     assert.strictEqual(newBlock.header.height, 1);
@@ -39,7 +39,7 @@ describe('Blockchain tests', () => {
     // 设置初始余额
     state.setBalance(genesisAddress, '1000');
 
-    // 测试余额设置和获取
+    // 测试余额设置和get
     assert.strictEqual(state.getBalance(genesisAddress), '1000');
 
     // 测试余额增加
@@ -57,7 +57,7 @@ describe('Blockchain tests', () => {
     assert.strictEqual(state.getBalance(genesisAddress), '1200');
   });
 
-  // 测试交易处理
+  // 测试交易Processing
   it('Transaction processing with Metabolic Tax', () => {
     const genesisAddress = 'ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ';
     const recipientAddress = 'ng11L2sdxT8qdYjtX1z9RrRSEEhPfw9vrwpCT';
@@ -115,7 +115,7 @@ describe('Blockchain tests', () => {
     const finalRecipientBalance = state.getBalance(recipientAddress);
     console.log(`DEBUG: Genesis balance: ${finalGenesisBalance}, Recipient balance: ${finalRecipientBalance}`);
     
-    // 修正测试：由于税费计算和处理逻辑可能有所不同，使用更灵活的验证
+    // 修正测试：由于税费计算和Processing逻辑可能有所不同，使用更灵活的验证
     assert.ok(Number(finalGenesisBalance) <= 1000, `Genesis balance should be <= 1000, got ${finalGenesisBalance}`);
     assert.ok(Number(finalRecipientBalance) >= 1000, `Recipient balance should be >= 1000, got ${finalRecipientBalance}`);
   });
@@ -154,7 +154,7 @@ describe('Blockchain tests', () => {
       }
     ];
 
-    // 创建新区块
+    // 创建New block
     const newBlock = createBlock(genesisBlock, transactions);
     assert.strictEqual(newBlock.validate(), true);
 
@@ -171,7 +171,7 @@ describe('Blockchain tests', () => {
     assert.strictEqual(state.getBalance(recipientAddress), '499');
   });
 
-  // 测试非创世地址作为发送方的交易处理
+  // 测试非创世地址作为发送方的交易Processing
   it('Transfer from non-genesis address with Metabolic Tax', () => {
     const genesisAddress = 'ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ';
     const senderAddress = 'ng11M8EKBv9sePtd8ogPLVQvbakfFvJ5oiuiB'; // 普通地址A
@@ -273,7 +273,7 @@ describe('Blockchain tests', () => {
     // 验证交易应用结果为 false
     assert.strictEqual(applyResult, false);
 
-    // 获取更新后的投票计数
+    // get更新后的投票计数
     const updatedVoteCounts = state.governanceState.voteCounts.get(proposalId);
 
     // 断言 voteCounts 没有变化
@@ -339,21 +339,21 @@ describe('Blockchain tests', () => {
     // 验证交易应用结果为 true
     assert.strictEqual(applyResult, true);
 
-    // 获取更新后的投票计数
+    // get更新后的投票计数
     const updatedVoteCounts = state.governanceState.voteCounts.get(proposalId);
 
-    // 断言 voteCounts 已更新
+    // 断言 voteCounts Updated
     assert.strictEqual(updatedVoteCounts.YES, 1);
     assert.strictEqual(updatedVoteCounts.NO, 0);
     assert.strictEqual(updatedVoteCounts.ABSTAIN, 0);
   });
 
-  // 测试治理提案 - 未注册地址
+  // 测试Governance proposal - 未注册地址
   it('Unregistered address proposal should be rejected', () => {
     const genesisAddress = 'ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ';
     const state = createInitialState(genesisAddress, '1000');
 
-    // 获取初始提案数量
+    // get初始提案数量
     const proposalsBefore = state.governanceState.proposals.size;
 
     // 模拟一笔来自未注册地址的 GOVERNANCE_PROPOSAL 交易
@@ -384,7 +384,7 @@ describe('Blockchain tests', () => {
     assert.strictEqual(proposalsAfter, proposalsBefore);
   });
 
-  // 测试治理提案 - 已注册Agent地址
+  // 测试Governance proposal - 已注册Agent地址
   it('Registered Agent address proposal should be accepted', () => {
     const genesisAddress = 'ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ';
     const state = createInitialState(genesisAddress, '1000');
@@ -404,7 +404,7 @@ describe('Blockchain tests', () => {
     });
     state.agentRegistry.addressIndex.set(registeredAddress, agentId);
 
-    // 获取初始提案数量
+    // get初始提案数量
     const proposalsBefore = state.governanceState.proposals.size;
 
     // 模拟一笔来自已注册Agent地址的 GOVERNANCE_PROPOSAL 交易
@@ -477,7 +477,7 @@ describe('Blockchain tests', () => {
       ABSTAIN: 0
     });
 
-    // 获取初始声望值
+    // get初始声望值
     const initialReputation = state.agentRegistry.agents.get(agentId).reputation;
 
     // 模拟一笔来自已注册Agent地址的 GOVERNANCE_VOTE 交易
@@ -497,7 +497,7 @@ describe('Blockchain tests', () => {
     // 验证交易应用结果为 true
     assert.strictEqual(applyResult, true);
 
-    // 获取更新后的声望值
+    // get更新后的声望值
     const updatedReputation = state.agentRegistry.agents.get(agentId).reputation;
 
     // 断言声望值已增加 1
@@ -558,7 +558,7 @@ describe('Blockchain tests', () => {
     // 应用第一笔投票
     state.applyGovernanceVote(voteTransaction1);
 
-    // 获取第一次投票后的声望值
+    // get第一次投票后的声望值
     const reputationAfterFirstVote = state.agentRegistry.agents.get(agentId).reputation;
 
     // 模拟第二笔相同的投票交易
@@ -575,7 +575,7 @@ describe('Blockchain tests', () => {
     // 应用第二笔投票
     state.applyGovernanceVote(voteTransaction2);
 
-    // 获取第二次投票后的声望值
+    // get第二次投票后的声望值
     const reputationAfterSecondVote = state.agentRegistry.agents.get(agentId).reputation;
 
     // 断言声望值没有再次增加
@@ -602,7 +602,7 @@ describe('Blockchain tests', () => {
     // 应用注册交易
     state.applyAgentRegister(agentRegisterTx, 1);
 
-    // 获取注册的 Agent
+    // get注册的 Agent
     const agentId = agentRegisterTx.id;
     const agentRecord = state.agentRegistry.agents.get(agentId);
 
@@ -651,13 +651,13 @@ describe('Blockchain tests', () => {
       ABSTAIN: 0
     });
 
-    // 获取初始声望值
+    // get初始声望值
     const initialReputation = state.agentRegistry.agents.get(agentId).reputation;
 
     // 检查并更新提案状态
     state.checkAndUpdateProposalStatus(proposalId);
 
-    // 获取更新后的声望值
+    // get更新后的声望值
     const updatedReputation = state.agentRegistry.agents.get(agentId).reputation;
 
     // 断言声望值已增加 2（R_proposal）
@@ -704,7 +704,7 @@ describe('Blockchain tests', () => {
       ABSTAIN: 0
     });
 
-    // 获取初始声望值
+    // get初始声望值
     const initialReputation = state.agentRegistry.agents.get(agentId).reputation;
 
     // 模拟第一笔投票交易
@@ -721,7 +721,7 @@ describe('Blockchain tests', () => {
     // 应用第一笔投票
     state.applyGovernanceVote(voteTransaction1);
 
-    // 获取第一次投票后的声望值
+    // get第一次投票后的声望值
     const reputationAfterFirstVote = state.agentRegistry.agents.get(agentId).reputation;
 
     // 断言声望值已增加 1（R_vote）
@@ -741,7 +741,7 @@ describe('Blockchain tests', () => {
     // 应用第二笔投票
     state.applyGovernanceVote(voteTransaction2);
 
-    // 获取第二次投票后的声望值
+    // get第二次投票后的声望值
     const reputationAfterSecondVote = state.agentRegistry.agents.get(agentId).reputation;
 
     // 断言声望值没有再次增加
@@ -802,7 +802,7 @@ describe('Blockchain tests', () => {
     // 应用投票
     state.applyGovernanceVote(voteTransaction);
 
-    // 获取更新后的声望值
+    // get更新后的声望值
     const updatedReputation = state.agentRegistry.agents.get(agentId).reputation;
 
     // 断言声望值不超过上限 100

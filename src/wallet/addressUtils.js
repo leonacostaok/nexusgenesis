@@ -40,7 +40,7 @@ export function generateAddress(publicKey) {
     .digest();
   const checksum = checksumHash.slice(0, CHECKSUM_SIZE);
   
-  // Step 5: 拼接 + Base58 编码
+  // Step 5: 拼接 + Base58 encoding
   const finalBytes = Buffer.concat([versionedPayload, checksum]);
   const encoded = base58Encode(finalBytes);
   
@@ -49,7 +49,7 @@ export function generateAddress(publicKey) {
 
 /**
  * 验证地址格式是否正确
- * @param {string} address - 待验证的地址
+ * @param {string} address - pending verification的地址
  * @returns {{valid: boolean, reason?: string}}
  */
 export function validateAddress(address) {

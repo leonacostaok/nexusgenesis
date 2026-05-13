@@ -239,7 +239,7 @@ export class TokenEconomicsSimulator {
   }
 
   /**
-   * 计算代币分配模型
+   * 计算Token distribution模型
    * @param {object} allocation
    * @returns {object}
    */

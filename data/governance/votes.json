@@ -1,37 +1,10 @@
 {
-  "proposal-1778585226799-4t1tfietv": {},
-  "proposal-1778585226803-pf1uriv5r": {
+  "proposal-1778626934828-ua1pyy2qg": {},
+  "proposal-1778626934855-u6ouy9boq": {
     "voter-1": {
       "option": "yes",
       "weight": 150,
-      "castAt": 1778585226806
-    }
-  },
-  "proposal-1778585234888-sbjkw33re": {
-    "agent-1": {
-      "option": "yes",
-      "weight": 150,
-      "castAt": 1778585234894
-    },
-    "agent-2": {
-      "option": "yes",
-      "weight": 200,
-      "castAt": 1778585234896
-    },
-    "agent-3": {
-      "option": "no",
-      "weight": 100,
-      "castAt": 1778585234898
-    },
-    "agent-4": {
-      "option": "yes",
-      "weight": 300,
-      "castAt": 1778585234900
-    },
-    "agent-5": {
-      "option": "abstain",
-      "weight": 50,
-      "castAt": 1778585234901
+      "castAt": 1778626934888
     }
   }
 }

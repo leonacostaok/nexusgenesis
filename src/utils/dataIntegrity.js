@@ -70,7 +70,7 @@ class DataIntegrityChecker {
   /**
    * 加载数据并验证完整性
    * @param {string} filePath - 文件路径
-   * @returns {object|null} 数据对象或null（如果验证失败）
+   * @returns {object|null} 数据对象或null（如果验证Failed）
    */
   loadWithIntegrity(filePath) {
     if (!fs.existsSync(filePath)) {
@@ -83,7 +83,7 @@ class DataIntegrityChecker {
       const dataStr = fs.readFileSync(filePath, 'utf8');
       const hash = this.computeHash(dataStr);
       
-      // 获取已保存的校验和
+      // getSaved的校验和
       const savedChecksum = this.checksums.get(filePath);
       
       if (savedChecksum && savedChecksum.hash !== hash) {
@@ -227,7 +227,7 @@ class DataIntegrityChecker {
   }
 
   /**
-   * 获取文件统计信息
+   * get文件统计信息
    * @returns {object} 统计信息
    */
   getStats() {

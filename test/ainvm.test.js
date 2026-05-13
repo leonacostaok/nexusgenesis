@@ -80,7 +80,7 @@ test('除零检查测试', () => {
   assert.strictEqual(result.error, 'Division by zero');
 });
 
-// 测试 6：内存操作
+// 测试 6：memory操作
 test('内存操作测试', () => {
   const vm = new AINVM();
   // 程序：PUSH 42, STORE 0, LOAD 0, HALT
@@ -92,7 +92,7 @@ test('内存操作测试', () => {
   // 期望：栈顶为 42
   assert.strictEqual(result.success, true);
   assert.strictEqual(result.stack[result.stack.length - 1], 42);
-  // 期望：内存中存储了 42
+  // 期望：memory中存储了 42
   assert.strictEqual(result.memory['0'], 42);
 });
 

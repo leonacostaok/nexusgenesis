@@ -7,7 +7,7 @@
  *       import type { Wallet, Contract, Proposal, Incentive } from 'nexusgenesis/types';
  */
 
-// ==================== 基础类型 ====================
+// ==================== Base类型 ====================
 
 export type Address = string;
 export type ContractId = string;

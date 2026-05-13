@@ -10,7 +10,7 @@ console.log('=== 加权投票系统测试 ===\n');
 // 初始化
 console.log('1. 初始化加权投票系统...');
 WeightedVotingSystem.init();
-console.log('✓ 系统初始化完成\n');
+console.log('✓ 系统Initialization complete\n');
 
 // 设置一些测试代理的信誉分
 console.log('2. 设置测试代理的信誉分...');
@@ -33,7 +33,7 @@ try {
       blockReward: 15
     }
   });
-  console.log(`✓ 提案创建成功，ID: ${proposalId}\n`);
+  console.log(`✓ 提案Create successful，ID: ${proposalId}\n`);
   
   // 激活提案
   console.log('4. 激活提案...');
@@ -85,7 +85,7 @@ try {
     
     // 执行者批准
     WeightedVotingSystem.approveExecution(proposalId, 'executor-1');
-    console.log('  ✓ 执行者1已批准');
+    console.log('  ✓ 执行者1approved');
     
     console.log('9. 执行提案（等待时间锁）...');
     // 临时修改执行时间以便测试
@@ -103,19 +103,19 @@ try {
     const execStatus = WeightedVotingSystem.getProposalExecutionStatus(proposalId);
     console.log(execStatus);
     
-    // 显示审计日志
-    console.log('\n11. 审计日志:');
+    // 显示Audit Log
+    console.log('\n11. Audit Log:');
     const auditLog = WeightedVotingSystem.getExecutionAuditLog(5);
     console.log(auditLog);
   }
   
-  // 获取统计信息
+  // get统计信息
   console.log('\n12. 治理统计:');
   const stats = WeightedVotingSystem.getGovernanceStats();
   console.log(stats);
   
 } catch (error) {
-  console.error('✗ 测试失败:', error);
+  console.error('✗ 测试Failed:', error);
   console.error(error.stack);
 }
 

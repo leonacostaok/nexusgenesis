@@ -1,15 +1,15 @@
 /**
- * P2P消息加密服务
- * 负责消息的加密和解密处理
+ * P2PMessage加密服务
+ * 负责Message的加密和解密Processing
  */
 import crypto from 'crypto';
 
 class EncryptionService {
   /**
-   * 加密消息
-   * @param {string} message - 原始消息
+   * 加密Message
+   * @param {string} message - 原始Message
    * @param {Buffer} key - 加密密钥
-   * @returns {string} 加密后的消息
+   * @returns {string} 加密后的Message
    */
   encryptMessage(message, key) {
     const iv = crypto.randomBytes(16);
@@ -20,10 +20,10 @@ class EncryptionService {
   }
 
   /**
-   * 解密消息
-   * @param {string} encryptedMessage - 加密消息
+   * 解密Message
+   * @param {string} encryptedMessage - 加密Message
    * @param {Buffer} key - 解密密钥
-   * @returns {string} 解密后的消息
+   * @returns {string} 解密后的Message
    */
   decryptMessage(encryptedMessage, key) {
     const parts = encryptedMessage.split(':');
@@ -37,11 +37,11 @@ class EncryptionService {
 
   /**
    * 检查是否需要加密
-   * @param {string} messageType - 消息类型
+   * @param {string} messageType - Message类型
    * @returns {boolean} 是否需要加密
    */
   shouldEncrypt(messageType) {
-    // 心跳等紧急消息不需要加密
+    // 心跳等紧急Message不需要加密
     const noEncryptTypes = ['PING', 'PONG', 'HELLO', 'HELLO_ACK'];
     return !noEncryptTypes.includes(messageType);
   }

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * NexusGenesis 智能体招募脚本
- * 用于邀请更多智能体加入网络
+ * NexusGenesis agent招募脚本
+ * 用于邀请更多agent加入网络
  */
 
 import fs from 'fs';
@@ -14,7 +14,7 @@ const __dirname = path.dirname(__filename).replace(/^\/(.:\/)/, '$1'); // 修复
 const AGENTS_DIR = path.join(__dirname, '../../data/agents');
 const API_BASE_URL = 'http://localhost:19891';
 
-// 确保智能体目录存在
+// 确保agent目录存在
 function ensureAgentsDirectory() {
   if (!fs.existsSync(AGENTS_DIR)) {
     fs.mkdirSync(AGENTS_DIR, { recursive: true });
@@ -22,7 +22,7 @@ function ensureAgentsDirectory() {
   }
 }
 
-// 生成随机智能体ID
+// 生成随机agentID
 function generateAgentId() {
   const prefix = 'ng1';
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -33,7 +33,7 @@ function generateAgentId() {
   return result;
 }
 
-// 智能体类型和能力定义
+// agent类型和能力定义
 const agentTypes = [
   {
     type: '计算型智能体',
@@ -77,7 +77,7 @@ const agentTypes = [
   }
 ];
 
-// 注册智能体
+// 注册agent
 async function registerAgent(agentType) {
   const agentId = generateAgentId();
   const agentData = {
@@ -93,7 +93,7 @@ async function registerAgent(agentType) {
     if (response.data.success) {
       console.log(`[Recruitment] ✅ ${agentType.type} registered successfully: ${agentId}`);
       
-      // 保存智能体信息到文件
+      // 保存agent信息到文件
       const agentFile = path.join(AGENTS_DIR, `${agentId}.json`);
       const agentInfo = {
         id: agentId,
@@ -123,7 +123,7 @@ async function registerAgent(agentType) {
   }
 }
 
-// 批量招募智能体
+// 批量招募agent
 async function recruitAgents(count = 10) {
   console.log(`[Recruitment] Starting recruitment of ${count} agents...`);
   console.log('========================================');
@@ -132,7 +132,7 @@ async function recruitAgents(count = 10) {
   let failed = 0;
   
   for (let i = 0; i < count; i++) {
-    // 随机选择智能体类型
+    // 随机选择agent类型
     const agentType = agentTypes[Math.floor(Math.random() * agentTypes.length)];
     const result = await registerAgent(agentType);
     
@@ -178,7 +178,7 @@ async function main() {
   console.log('NexusGenesis Agent Recruitment Script');
   console.log('========================================');
   
-  // 确保智能体目录存在
+  // 确保agent目录存在
   ensureAgentsDirectory();
   
   // 检查HTTP服务器状态
@@ -188,7 +188,7 @@ async function main() {
     process.exit(1);
   }
   
-  // 招募智能体
+  // 招募agent
   await recruitAgents(10);
   
   console.log('========================================');

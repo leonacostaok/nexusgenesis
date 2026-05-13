@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * 系统稳定性测试脚本
- * 对智能体注册、贡献度计算等核心功能进行压力测试
+ * 对agent注册、贡献度计算等Core functionality进行压力测试
  */
 
 import axios from 'axios';
@@ -28,7 +28,7 @@ class StabilityTest {
     console.log(`${success ? '✓' : '✗'} ${testName} - ${responseTime}ms${error ? ` - Error: ${error.message}` : ''}`);
   }
 
-  // 测试智能体注册
+  // 测试agent注册
   async testAgentRegistration() {
     try {
       const startTime = Date.now();
@@ -49,7 +49,7 @@ class StabilityTest {
     }
   }
 
-  // 测试获取智能体列表
+  // 测试getagent列表
   async testGetAgents() {
     try {
       const startTime = Date.now();
@@ -66,7 +66,7 @@ class StabilityTest {
     }
   }
 
-  // 测试健康检查
+  // 测试Health check
   async testHealthCheck() {
     try {
       const startTime = Date.now();
@@ -85,7 +85,7 @@ class StabilityTest {
 
   // 执行压力测试
   async runStressTest(testCount = 100) {
-    console.log(`开始系统稳定性压力测试，共执行 ${testCount} 次请求...`);
+    console.log(`Start 系统稳定性压力测试，共执行 ${testCount} 次请求...`);
     console.log('========================================');
 
     let successCount = 0;
@@ -129,7 +129,7 @@ class StabilityTest {
     console.log(`成功数: ${successCount}`);
     console.log(`成功率: ${successRate.toFixed(2)}%`);
     console.log(`总耗时: ${(totalTime / 1000).toFixed(2)}秒`);
-    console.log(`平均响应时间: ${averageResponseTime.toFixed(2)}ms`);
+    console.log(`Average响应时间: ${averageResponseTime.toFixed(2)}ms`);
 
     // 保存测试结果
     const resultPath = path.join(__dirname, '../data/test-results');
@@ -148,7 +148,7 @@ class StabilityTest {
       testResults: this.testResults
     }, null, 2));
 
-    console.log(`测试结果已保存到: ${resultFile}`);
+    console.log(`测试结果Saved到: ${resultFile}`);
     return {
       successRate,
       totalTime,

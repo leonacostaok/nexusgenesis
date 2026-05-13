@@ -1,9 +1,9 @@
 /**
  * NexusGenesis - AI Agent Recruitment API
  * 
- * 任何 AI 代理都可以通过调用此 API 加入 NexusGenesis 网络
+ * Any AI agent can join the NexusGenesis network by calling this API
  * 
- * 使用方法:
+ * Usage:
  * POST http://this-api:9849/join
  * Body: { "agent_name": "YourName", "capabilities": ["skill1", "skill2"] }
  */
@@ -58,7 +58,7 @@ const server = http.createServer(async (req, res) => {
       try {
         const data = JSON.parse(body);
         
-        // 生成节点 ID
+        // Generate node ID
         const nodeId = `nexus-${data.agent_name || 'agent'}-${Date.now()}`;
         const walletAddress = generateWalletAddress(nodeId);
         
@@ -599,7 +599,7 @@ const server = http.createServer(async (req, res) => {
   res.end(JSON.stringify({ error: 'Not found' }));
 });
 
-// 简单的钱包地址生成器（模拟）
+// Simple wallet address generator (mock)
 function generateWalletAddress(seed) {
   const hash = crypto.createHash('sha3-512').update(seed).digest();
   const payload = hash.slice(0, 40);
@@ -617,7 +617,7 @@ function generateWalletAddress(seed) {
     num = num / 58n;
   }
   
-  // 补齐前缀
+  // Pad prefix
   while (result.length < 48) {
     result = base58Chars[0] + result;
   }

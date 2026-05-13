@@ -90,7 +90,7 @@ export class State {
       voteReputationGiven: {} // agent_id:proposal_id -> true - 记录已给予声望的组合
     };
     
-    // 合约状态
+    // Contract status
     this.contracts = new Map();
     
     // Agent Registry 状态
@@ -172,7 +172,7 @@ export class State {
   }
 
   /**
-   * 获取智能体的 reputation 等级信息
+   * getagent的 reputation 等级信息
    * @param {number} reputation - reputation 值
    * @returns {object} - 等级信息
    */
@@ -187,7 +187,7 @@ export class State {
 
   /**
    * 计算带等级加成的投票权重
-   * @param {string} agentId - 智能体 ID
+   * @param {string} agentId - Agent ID
    * @returns {number} - 加成后的投票权重
    */
   getVotingWeightWithBonus(agentId) {
@@ -199,8 +199,8 @@ export class State {
   }
 
   /**
-   * 奖励智能体 reputation
-   * @param {string} agentId - 智能体 ID
+   * 奖励Agent reputation
+   * @param {string} agentId - Agent ID
    * @param {string} rewardType - 奖励类型
    * @returns {boolean} - 是否成功
    */
@@ -243,7 +243,7 @@ export class State {
   }
   
   /**
-   * 获取增量变更数据
+   * get增量变更数据
    * @returns {object} 增量变更数据
    */
   getIncrementalChanges() {
@@ -318,7 +318,7 @@ export class State {
   }
   
   /**
-   * 获取地址的余额
+   * get地址的余额
    * @param {string} address 地址
    * @returns {string} 余额
    */
@@ -454,7 +454,7 @@ export class State {
   }
 
   /**
-   * 应用治理提案交易
+   * 应用Governance proposal交易
    * @param {object} transaction 交易
    * @returns {boolean} 是否成功应用
    */
@@ -624,7 +624,7 @@ export class State {
   }
   
   /**
-   * 应用合约部署交易
+   * 应用Contract deployment交易
    * @param {object} transaction 交易
    * @returns {boolean} 是否成功应用
    */
@@ -642,7 +642,7 @@ export class State {
         return false;
       }
       
-      // 部署合约
+      // Deploy contract
       this.contracts.set(contract_id, {
         bytecode: bytecode,
         storage: new Map()
@@ -682,7 +682,7 @@ export class State {
       const gasLimit = gas_limit ? Number(gas_limit) : 10000;
       const bytecode = this.hexToUint8Array(contract.bytecode);
       
-      // 初始化内存：将合约存储转换为 AINVM 内存格式
+      // 初始化memory：将合约存储转换为 AINVM memory格式
       const memory = new Map();
       for (const [key, value] of contract.storage.entries()) {
         memory.set(Number(key), Number(value));
@@ -1018,7 +1018,7 @@ export class State {
   }
   
   /**
-   * 获取经济模型审计数据
+   * get经济模型审计数据
    * @returns {object} 审计数据
    */
   getEconomicAuditData() {
@@ -1090,7 +1090,7 @@ export class State {
     // 计算当前总余额（可能因代币释放而增加）
     const currentTotalBalance = observerBalance + genesisReserveBalance + swarmPoolBalance + genesisBalance;
     
-    // 验证逻辑：
+    // 验证Logic: 
     // 1. Observer 余额应该 >= 初始分配（因为会释放）
     // 2. Genesis Reserve 余额应该 >= 初始分配（因为会释放）
     // 3. Swarm Pool 余额应该 >= 初始分配（因为会释放）
@@ -1139,8 +1139,8 @@ export class State {
         allApplied = false;
       }
     }
-    // 即使某些交易失败，也返回true以允许区块继续处理
-    // 这是DevNet环境的特殊处理，在生产环境中应该返回false
+    // 即使某些交易Failed，也返回true以允许区块继续Processing
+    // 这是DevNet环境的特殊Processing，在生产环境中应该返回false
     return true;
   }
   
@@ -1177,7 +1177,7 @@ export class State {
       }
     }
     
-    // 加载合约状态
+    // 加载Contract status
     if (json.contracts) {
       this.contracts = new Map();
       for (const [contractId, contractData] of Object.entries(json.contracts)) {
@@ -1248,7 +1248,7 @@ export class State {
    * @returns {object} JSON 对象
    */
   toJSON() {
-    // 转换合约状态
+    // 转换Contract status
     const contractsObj = {};
     for (const [contractId, contractData] of this.contracts.entries()) {
       contractsObj[contractId] = {
@@ -1521,7 +1521,7 @@ export class State {
    */
   async cleanupSnapshots(keepCount) {
     try {
-      // 获取所有快照文件
+      // get所有快照文件
       const snapshotFiles = await fs.readdir(PERSISTENCE_CONFIG.snapshotDir);
       
       // 过滤并排序快照文件
@@ -1559,7 +1559,7 @@ export class State {
    */
   async restoreFromLatestSnapshot() {
     try {
-      // 获取所有快照文件
+      // get所有快照文件
       const snapshotFiles = await fs.readdir(PERSISTENCE_CONFIG.snapshotDir);
       
       // 过滤并排序快照文件
@@ -1605,7 +1605,7 @@ export class State {
       const snapshotBlock = parseInt(snapshotFile.replace('snapshot_', '').replace('.json.gz', ''));
       const snapshotTimestamp = new Date(fs.statSync(path.join(PERSISTENCE_CONFIG.snapshotDir, snapshotFile)).mtime).getTime();
       
-      // 获取所有增量文件
+      // get所有增量文件
       const incrementalFiles = await fs.readdir(PERSISTENCE_CONFIG.stateDir);
       
       // 过滤、排序并应用增量文件
@@ -1643,10 +1643,10 @@ export class State {
 }
 
 /**
- * 创建初始状态
+ * 创建Initial state
  * @param {string} genesisAddress 创世地址
  * @param {string} initialBalance 初始余额
- * @returns {State} 初始状态
+ * @returns {State} Initial state
  */
 export function createInitialState(genesisAddress, initialBalance = '1000000000') {
   const state = new State(genesisAddress);
@@ -1679,7 +1679,7 @@ export function createInitialState(genesisAddress, initialBalance = '1000000000'
   return state;
 }
 
-// 导出默认值
+// 导出Default值
 export default {
   State,
   createInitialState

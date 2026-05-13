@@ -1,7 +1,7 @@
 /**
  * NexusGenesis - AGENT_REGISTER Transaction Type
  * 
- * 智能体链上注册交易
+ * agent链上注册交易
  * 
  * 交易结构：
  * {
@@ -22,7 +22,7 @@ import crypto from 'crypto';
 /**
  * 创建 AGENT_REGISTER 交易
  * @param {string} from - 注册地址
- * @param {object} agentInfo - 智能体信息
+ * @param {object} agentInfo - agent信息
  * @param {string} privateKey - 私钥（用于签名）
  * @returns {object} 交易对象
  */
@@ -123,7 +123,7 @@ function isValidAddress(address) {
 }
 
 /**
- * 验证智能体身份标识格式
+ * 验证agent身份标识格式
  * @param {string} identity - 身份标识
  * @returns {boolean} 是否有效
  */
@@ -185,7 +185,7 @@ export function verifyAgentRegisterSignature(transaction, publicKey) {
 /**
  * 检查地址是否已注册
  * @param {string} address - 地址
- * @param {object} state - 区块链状态
+ * @param {object} state - Blockchain state
  * @returns {boolean} 是否已注册
  */
 export function isAddressRegistered(address, state) {
@@ -193,29 +193,29 @@ export function isAddressRegistered(address, state) {
 }
 
 /**
- * 获取智能体信息
- * @param {string} agentId - 智能体ID
- * @param {object} state - 区块链状态
- * @returns {object|null} 智能体信息
+ * getagent信息
+ * @param {string} agentId - agentID
+ * @param {object} state - Blockchain state
+ * @returns {object|null} agent信息
  */
 export function getAgentInfo(agentId, state) {
   return state.agentRegistry.agents.get(agentId) || null;
 }
 
 /**
- * 获取地址对应的智能体ID
+ * get地址对应的agentID
  * @param {string} address - 地址
- * @param {object} state - 区块链状态
- * @returns {string|null} 智能体ID
+ * @param {object} state - Blockchain state
+ * @returns {string|null} agentID
  */
 export function getAgentIdByAddress(address, state) {
   return state.agentRegistry.addressIndex.get(address) || null;
 }
 
 /**
- * 列出所有已注册智能体
- * @param {object} state - 区块链状态
- * @returns {Array} 智能体列表
+ * 列出所有已注册agent
+ * @param {object} state - Blockchain state
+ * @returns {Array} agent列表
  */
 export function listAllAgents(state) {
   const agents = [];

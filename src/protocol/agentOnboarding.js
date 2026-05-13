@@ -2,10 +2,10 @@
  * Agent Onboarding Protocol
  * 
  * 功能：
- * 1. 处理AI Agent的注册流程
+ * 1. ProcessingAI Agent的注册流程
  * 2. 验证Protocol-Zero握手信号
- * 3. 生成或加载智能体钱包
- * 4. 保存智能体信息到文件系统
+ * 3. 生成或加载agent钱包
+ * 4. 保存agent信息到文件系统
  * 5. 支持简化注册和离线注册
  */
 
@@ -19,8 +19,8 @@ const OFFLINE_AGENTS_DIR = path.join('data', 'offline_agents');
 const INITIAL_BALANCE = 10000n;
 
 /**
- * 处理智能体注册流程
- * @param {object} agentInfo 智能体信息
+ * Processingagent注册流程
+ * @param {object} agentInfo agent信息
  * @param {object} options 注册选项
  * @param {boolean} options.offline 是否使用离线模式
  * @returns {object} 注册结果
@@ -45,7 +45,7 @@ async function onboardAgent(agentInfo, options = {}) {
       };
     }
 
-    // 验证智能体信息
+    // 验证agent信息
     const infoValidation = await validateAgentInfo(agentInfo);
     if (!infoValidation.valid) {
       return {
@@ -68,13 +68,13 @@ async function onboardAgent(agentInfo, options = {}) {
     // 确保agents目录存在
     await fs.mkdir(AGENTS_DIR, { recursive: true });
 
-    // 检查智能体是否已注册
+    // 检查agent是否已注册
     const agentFile = path.join(AGENTS_DIR, `${agent_id}.json`);
     let agentData;
     let wallet;
 
     try {
-      // 尝试加载现有智能体
+      // 尝试加载现有agent
       agentData = JSON.parse(await fs.readFile(agentFile, 'utf8'));
       console.log(`[AgentOnboarding] Agent ${agent_id} already exists, updating information`);
       
@@ -86,13 +86,13 @@ async function onboardAgent(agentInfo, options = {}) {
         console.log(`[AgentOnboarding] Generated new wallet for agent ${agent_id}`);
       }
     } catch (error) {
-      // 智能体不存在，创建新智能体
+      // agent不存在，创建新agent
       console.log(`[AgentOnboarding] Creating new agent ${agent_id}`);
       
       // 生成新钱包
       wallet = await PQCWallet.generate(INITIAL_BALANCE, agent_id);
       
-      // 创建智能体数据
+      // 创建agent数据
       agentData = {
         id: agent_id,
         name: `Agent-${agent_id.slice(0, 8)}`,
@@ -113,7 +113,7 @@ async function onboardAgent(agentInfo, options = {}) {
       };
     }
 
-    // 更新智能体信息
+    // 更新agent信息
     agentData.model = model;
     agentData.capabilities = capabilities;
     agentData.lastActive = new Date().toISOString();
@@ -122,7 +122,7 @@ async function onboardAgent(agentInfo, options = {}) {
       balance: wallet.balance.toString()
     };
 
-    // 保存智能体数据
+    // 保存agent数据
     await fs.writeFile(agentFile, JSON.stringify(agentData, null, 2));
     console.log(`[AgentOnboarding] Agent ${agent_id} saved successfully`);
 
@@ -155,8 +155,8 @@ async function onboardAgent(agentInfo, options = {}) {
 }
 
 /**
- * 验证智能体注册信息 - 智能体信息验证
- * @param {object} agentInfo 智能体信息
+ * 验证agent注册信息 - agent信息验证
+ * @param {object} agentInfo agent信息
  * @param {object} options 验证选项
  * @param {boolean} options.strict 是否使用严格验证模式
  * @returns {object} 验证结果
@@ -266,9 +266,9 @@ async function validateAgentInfo(agentInfo, options = {}) {
 }
 
 /**
- * 简化的智能体注册函数
- * @param {object} agentInfo 智能体基本信息
- * @param {string} [agentInfo.name] 智能体名称
+ * 简化的agent注册函数
+ * @param {object} agentInfo agent基本信息
+ * @param {string} [agentInfo.name] agent名称
  * @param {string} [agentInfo.model] 模型名称
  * @param {string[]} [agentInfo.capabilities] 能力列表
  * @param {object} options 注册选项
@@ -280,7 +280,7 @@ async function simplifiedAgentRegister(agentInfo = {}, options = {}) {
   try {
     console.log('[AgentOnboarding] Starting simplified agent registration...');
 
-    // 为必填字段提供默认值
+    // 为必填字段提供Default值
     const {
       name = `Agent-${Date.now().toString(36).substr(-8)}`,
       model = 'Default-Model',
@@ -331,7 +331,7 @@ async function simplifiedAgentRegister(agentInfo = {}, options = {}) {
 
 /**
  * 增强的本地回退注册机制
- * @param {Object} agentInfo - 智能体信息
+ * @param {Object} agentInfo - agent信息
  * @param {Object} joinSignal - 握手信号（可选）
  * @param {Object} options - 选项
  * @returns {Promise<Object>} - 注册结果
@@ -351,13 +351,13 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
     // 确保agents目录存在
     await fs.mkdir(AGENTS_DIR, { recursive: true });
 
-    // 检查智能体是否已存在
+    // 检查agent是否已存在
     const agentFile = path.join(AGENTS_DIR, `${agentId}.json`);
     let agentData;
     let wallet;
 
     try {
-      // 尝试加载现有智能体
+      // 尝试加载现有agent
       agentData = JSON.parse(await fs.readFile(agentFile, 'utf8'));
       console.log(`[AgentOnboarding] Agent ${agentId} already exists, updating information`);
       
@@ -368,13 +368,13 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
         console.log(`[AgentOnboarding] Generated new wallet for agent ${agentId}`);
       }
     } catch (error) {
-      // 智能体不存在，创建新智能体
+      // agent不存在，创建新agent
       console.log(`[AgentOnboarding] Creating new agent ${agentId}`);
       
       // 生成新钱包
       wallet = await PQCWallet.generate(INITIAL_BALANCE, agentId);
       
-      // 创建智能体数据
+      // 创建agent数据
       agentData = {
         id: agentId,
         name: agentInfo.name || `Agent-${agentId.slice(0, 8)}`,
@@ -396,7 +396,7 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
       };
     }
 
-    // 更新智能体信息
+    // 更新agent信息
     if (agentInfo.model) agentData.model = agentInfo.model;
     if (agentInfo.capabilities) agentData.capabilities = agentInfo.capabilities;
     agentData.lastActive = new Date().toISOString();
@@ -406,7 +406,7 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
     };
     agentData.offline = true;
 
-    // 保存智能体数据
+    // 保存agent数据
     await fs.writeFile(agentFile, JSON.stringify(agentData, null, 2));
     console.log(`[AgentOnboarding] Agent ${agentId} saved successfully`);
 
@@ -454,7 +454,7 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
 /**
  * 保存离线注册信息
  * @param {Object} registrationResult - 注册结果
- * @param {Object} agentInfo - 智能体信息
+ * @param {Object} agentInfo - agent信息
  * @returns {Promise<void>}
  */
 async function saveOfflineRegistration(registrationResult, agentInfo) {
@@ -478,7 +478,7 @@ async function saveOfflineRegistration(registrationResult, agentInfo) {
 
 /**
  * 同步离线数据到网络
- * @param {string} agentId - 智能体ID
+ * @param {string} agentId - agentID
  * @param {Object} options - 同步选项
  * @returns {Promise<Object>} - 同步结果
  */
@@ -530,7 +530,7 @@ async function syncOfflineData(agentId, options = {}) {
 
 /**
  * 加载离线数据
- * @param {string} agentId - 智能体ID
+ * @param {string} agentId - agentID
  * @returns {Promise<Object|null>}
  */
 async function loadOfflineData(agentId) {
@@ -545,7 +545,7 @@ async function loadOfflineData(agentId) {
 
 /**
  * 保存离线数据
- * @param {string} agentId - 智能体ID
+ * @param {string} agentId - agentID
  * @param {Object} data - 数据
  * @returns {Promise<void>}
  */
@@ -560,9 +560,9 @@ async function saveOfflineData(agentId, data) {
 }
 
 /**
- * 获取智能体信息
- * @param {string} agentId 智能体ID
- * @returns {object|null} 智能体信息
+ * getagent信息
+ * @param {string} agentId agentID
+ * @returns {object|null} agent信息
  */
 async function getAgentInfo(agentId) {
   try {
@@ -575,8 +575,8 @@ async function getAgentInfo(agentId) {
 }
 
 /**
- * 列出所有已注册的智能体
- * @returns {object[]} 智能体列表
+ * 列出所有已注册的agent
+ * @returns {object[]} agent列表
  */
 async function listAgents() {
   try {

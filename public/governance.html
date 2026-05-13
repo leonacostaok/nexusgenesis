@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NexusGenesis - 治理中心</title>
     <style>
-        /* 基础样式 */
+        /* Base样式 */
         * {
             margin: 0;
             padding: 0;
@@ -59,7 +59,7 @@
             font-weight: 600;
         }
 
-        /* 主要内容 */
+        /* 主要within容 */
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -105,7 +105,7 @@
             color: #808080;
         }
 
-        /* 内容区域 */
+        /* within容区域 */
         .content-section {
             display: none;
             background-color: #16213e;
@@ -119,7 +119,7 @@
             display: block;
         }
 
-        /* 内容标题 */
+        /* within容标题 */
         .section-title {
             color: #00ff88;
             font-size: 1.5rem;
@@ -680,7 +680,7 @@
             document.getElementById('proposal-form').addEventListener('submit', handleProposalSubmit);
         }
 
-        // 切换内容区域
+        // 切换within容区域
         function switchSection(section) {
             // 移除所有活跃状态
             document.querySelectorAll('.nav-item').forEach(item => {
@@ -806,11 +806,11 @@
             });
         }
 
-        // 获取治理数据
+        // get治理数据
         async function fetchGovernanceData() {
             try {
-                // 模拟数据获取
-                // 实际项目中应该从API获取
+                // Simulated dataget
+                // 实际项目中应该从APIget
                 proposals = [
                     {
                         id: 1,
@@ -890,7 +890,7 @@
                 updateCharts(proposals);
                 loadProposals();
             } catch (error) {
-                console.error('获取治理数据失败:', error);
+                console.error('get治理数据Failed:', error);
             }
         }
 
@@ -995,7 +995,7 @@
             });
         }
 
-        // 加载投票内容
+        // 加载投票within容
         function loadVotingContent() {
             const votingContent = document.getElementById('voting-content');
             votingContent.innerHTML = '';
@@ -1068,7 +1068,7 @@
             alert(`投票成功！您对提案 ${proposalId} 投了 ${voteOption} 票`);
         }
 
-        // 处理提案表单提交
+        // Processing提案表单提交
         function handleProposalSubmit(e) {
             e.preventDefault();
             
@@ -1148,7 +1148,7 @@
             document.getElementById('avg-pass-time').textContent = avgPassTime;
         }
 
-        // 辅助函数：获取提案类型名称
+        // 辅助函数：get提案类型名称
         function getProposalTypeName(type) {
             const typeNames = {
                 param_change: '参数变更',
@@ -1159,7 +1159,7 @@
             return typeNames[type] || type;
         }
 
-        // 辅助函数：获取提案状态名称
+        // 辅助函数：get提案状态名称
         function getProposalStatusName(status) {
             const statusNames = {
                 pending: '待处理',

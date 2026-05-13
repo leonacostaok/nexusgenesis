@@ -155,7 +155,7 @@ export class WalletAI {
         monthlyPatterns[key].totalAmount += tx.amount;
       });
       
-      // 计算平均值
+      // 计算Average值
       Object.keys(monthlyPatterns).forEach(key => {
         const pattern = monthlyPatterns[key];
         pattern.averageAmount = pattern.totalAmount / pattern.totalTransactions;
@@ -180,11 +180,11 @@ export class WalletAI {
   /**
    * 评估交易风险
    * @param {object} transaction 交易数据
-   * @returns {object} 风险评估结果
+   * @returns {object} Risk assessment结果
    */
   async assessTransactionRisk(transaction) {
     try {
-      // 模拟交易风险评估
+      // 模拟交易Risk assessment
       let riskScore = 0;
       const riskFactors = [];
       
@@ -235,5 +235,5 @@ export class WalletAI {
 // 导出智能钱包AI实例
 export const walletAI = new WalletAI();
 
-// 导出默认值
+// 导出Default值
 export default walletAI;

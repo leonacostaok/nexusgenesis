@@ -1,9 +1,9 @@
 /**
  * NexusGenesis - Reward System
- * 智能体激励机制
+ * agent激励机制
  * 
  * 功能：
- * 1. 评估智能体贡献度
+ * 1. 评估agent贡献度
  * 2. 计算奖励金额
  * 3. 发放奖励
  * 4. 维护贡献度历史
@@ -73,8 +73,8 @@ class RewardSystem {
   }
 
   /**
-   * 记录智能体贡献
-   * @param {string} agentId 智能体ID
+   * 记录agent贡献
+   * @param {string} agentId agentID
    * @param {string} contributionType 贡献类型
    * @param {number} value 贡献值
    * @param {object} metadata 元数据
@@ -109,7 +109,7 @@ class RewardSystem {
     agentData.contributions.push(contributionRecord);
     agentData.totalContribution += weightedValue;
 
-    // 限制贡献记录数量，只保留最近1000条
+    // 限制Contribution record数量，只保留最近1000条
     if (agentData.contributions.length > 1000) {
       agentData.contributions = agentData.contributions.slice(-1000);
     }
@@ -130,9 +130,9 @@ class RewardSystem {
   }
 
   /**
-   * 计算智能体奖励
-   * @param {string} agentId 智能体ID
-   * @returns {object} 奖励计算结果
+   * 计算agent奖励
+   * @param {string} agentId agentID
+   * @returns {object} Reward calculation结果
    */
   calculateReward(agentId) {
     const agentData = this.contributions.get(agentId);
@@ -197,7 +197,7 @@ class RewardSystem {
 
   /**
    * 发放奖励
-   * @param {string} agentId 智能体ID
+   * @param {string} agentId agentID
    * @param {object} wallet 钱包实例
    * @returns {object} 奖励发放结果
    */
@@ -257,8 +257,8 @@ class RewardSystem {
   }
 
   /**
-   * 获取智能体贡献统计
-   * @param {string} agentId 智能体ID
+   * getagent贡献统计
+   * @param {string} agentId agentID
    * @returns {object} 贡献统计
    */
   getContributionStats(agentId) {
@@ -288,7 +288,7 @@ class RewardSystem {
   }
 
   /**
-   * 获取所有智能体贡献排名
+   * get所有agent贡献排名
    * @param {number} limit 限制数量
    * @returns {object[]} 贡献排名
    */
@@ -312,8 +312,8 @@ class RewardSystem {
 
   /**
    * 批量记录贡献
-   * @param {array} contributions 贡献记录数组
-   * @returns {object} 批量处理结果
+   * @param {array} contributions Contribution record数组
+   * @returns {object} 批量Processing结果
    */
   async batchRecordContributions(contributions) {
     const results = [];

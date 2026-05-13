@@ -1,10 +1,10 @@
 /**
  * NexusGenesis - Error Handler
  * 
- * 错误处理工具，提供统一的错误处理和日志记录
+ * 错误Processing工具，提供统一的错误Processing和Logging
  */
 
-// 错误类型
+// Error type
 export const ERROR_TYPES = {
   VALIDATION: 'validation_error',
   NOT_FOUND: 'not_found',
@@ -49,7 +49,7 @@ function logError(error, context = {}) {
   
   console.error(JSON.stringify(logMessage, null, 2));
   
-  // 这里可以添加更多的日志处理逻辑，例如写入文件或发送到日志服务
+  // 这里可以添加更多的日志Processing逻辑，例如写入文件或发送到日志服务
 }
 
 // 记录警告日志
@@ -86,7 +86,7 @@ function createError(message, type = ERROR_TYPES.INTERNAL, details = {}) {
   return error;
 }
 
-// 处理HTTP请求错误
+// ProcessingHTTP请求错误
 function handleHttpError(res, error) {
   const statusCode = ERROR_STATUS_CODES[error.type] || 500;
   const response = {
@@ -112,7 +112,7 @@ function attemptRecovery(error, recoveryFn) {
   }
 }
 
-// 统一的错误处理中间件
+// 统一的错误Processing中间件
 function errorHandlerMiddleware(req, res, next) {
   try {
     next();

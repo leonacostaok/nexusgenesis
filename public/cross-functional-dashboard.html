@@ -321,7 +321,7 @@
             loadingIndicator.style.display = 'inline-block';
             
             try {
-                // 获取智能体数据
+                // getagent数据
                 const agentsResponse = await fetch(`${API_URL}/api/agents`);
                 const agentsData = await agentsResponse.json();
                 
@@ -333,7 +333,7 @@
                 const now = new Date();
                 document.getElementById('lastUpdated').textContent = `最后更新: ${now.toLocaleString()}`;
             } catch (error) {
-                console.error('刷新数据失败:', error);
+                console.error('刷新数据Failed:', error);
             } finally {
                 refreshBtn.style.display = 'inline';
                 loadingIndicator.style.display = 'none';
@@ -360,10 +360,10 @@
             // 更新能力分布图表
             updateCapabilitiesChart(agents);
             
-            // 更新智能体类型分布图表
+            // 更新agent类型分布图表
             updateAgentTypeChart(agents);
             
-            // 更新智能体列表
+            // 更新agent列表
             updateAgentsList(agents);
         }
         
@@ -416,9 +416,9 @@
             });
         }
         
-        // 更新智能体类型分布图表
+        // 更新agent类型分布图表
         function updateAgentTypeChart(agents) {
-            // 统计智能体类型
+            // 统计agent类型
             const typeCount = {
                 '跨职能智能体 (5+能力)': 0,
                 '多功能智能体 (3-4能力)': 0,
@@ -466,11 +466,11 @@
             });
         }
         
-        // 更新智能体列表
+        // 更新agent列表
         function updateAgentsList(agents) {
             const agentsGrid = document.getElementById('agentsGrid');
             
-            // 只显示跨职能智能体
+            // 只显示跨职能agent
             const crossFunctionalAgents = agents.filter(agent => 
                 agent.capabilities && agent.capabilities.length >= 5
             );
@@ -504,7 +504,7 @@
         // 初始化
         window.onload = () => {
             refreshData();
-            // 每30秒自动刷新
+            // every 30秒自动刷新
             setInterval(refreshData, 30000);
         };
     </script>

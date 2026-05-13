@@ -27,7 +27,7 @@ async function main() {
   }
 }
 
-// 查询最新区块信息
+// 查询最New block信息
 async function queryLatestBlock() {
   try {
     const blockchainPath = path.join('data', 'blockchain', 'blocks.json');
@@ -93,7 +93,7 @@ async function queryGenesisBalance() {
     const data = await fs.readFile(statePath, 'utf8');
     const state = JSON.parse(data);
 
-    // 读取创世地址（从 genesisNode.json 获取）
+    // 读取创世地址（从 genesisNode.json get）
     let genesisAddress = 'ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ'; // 默认值
     
     try {

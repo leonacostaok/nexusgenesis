@@ -1,7 +1,7 @@
 {
   "contracts": [
     {
-      "id": "contract_1778585224146_0",
+      "id": "contract_1778626937417_0",
       "name": "AI Contract",
       "bytecode": [
         1,
@@ -47,7 +47,7 @@
         1,
         12
       ],
-      "deployedAt": 1778585224146,
+      "deployedAt": 1778626937417,
       "owner": null,
       "version": 1,
       "upgradeHistory": [],
@@ -56,14 +56,14 @@
         "1": "ai_result_1",
         "ai_model_0": {
           "path": 1,
-          "loadedAt": 1778585224147,
+          "loadedAt": 1778626937424,
           "status": "loaded",
           "savedPath": 3,
-          "savedAt": 1778585224147
+          "savedAt": 1778626937425
         },
-        "ai_result_1": "inference_result_1778585224147"
+        "ai_result_1": "inference_result_1778626937425"
       }
     }
   ],
-  "savedAt": 1778585224149
+  "savedAt": 1778626937434
 }

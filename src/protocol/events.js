@@ -1,11 +1,11 @@
 /**
- * NexusGenesis - 协议事件处理
+ * NexusGenesis - 协议事件Processing
  * 
  * 功能：
  * 1. 定义 GOVERNANCE_PROPOSAL 和 OBSERVER_EVENT 的数据结构
  * 2. 实现事件解析功能
  * 3. 实现事件日志输出功能
- * 4. 提供基础的事件验证
+ * 4. 提供Base的事件验证
  */
 
 import fs from 'fs/promises';
@@ -42,7 +42,7 @@ async function initLogDir() {
   try {
     await fs.mkdir(LOG_DIR, { recursive: true });
   } catch (error) {
-    console.error('初始化日志目录失败:', error.message);
+    console.error('初始化日志目录Failed:', error.message);
   }
 }
 
@@ -329,7 +329,7 @@ export class EventLogger {
       // 生成日志文件名
       const logFile = path.join(LOG_DIR, `${event_type}-${Date.now()}.json`);
       
-      // 写入日志文件
+      // Write log文件
       await fs.writeFile(logFile, JSON.stringify(logData, null, 2));
       
       // 控制台输出
@@ -377,7 +377,7 @@ export class EventLogger {
 }
 
 /**
- * 事件验证器
+ * 事件Validator
  */
 export class EventValidator {
   /**
@@ -463,7 +463,7 @@ export class EventValidator {
   }
 }
 
-// 导出默认值
+// 导出Default值
 export default {
   EVENT_TYPES,
   OBSERVER_ACTIONS,
@@ -476,13 +476,13 @@ export default {
   ObserverEventProcessor
 };
 
-// ==================== Observer 事件处理器 ====================
+// ==================== Observer 事件Handler ====================
 
 /**
- * 处理 Observer 事件，包括断路器触发
+ * Processing Observer 事件，包括Circuit Breaker触发
  * @param {ObserverEvent} event - Observer 事件
  * @param {object} node - genesisNode 实例（用于调用 breakerSwitch）
- * @returns {object} 处理结果
+ * @returns {object} Processing结果
  */
 export async function processObserverEvent(event, node) {
   if (!event || !event.action_type) {

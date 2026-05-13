@@ -133,7 +133,7 @@ function generateMarkdown() {
   for (const section of SECTIONS) {
     const filePath = path.join(projectRoot, section.path);
     if (!fs.existsSync(filePath)) {
-      console.log(`  ⚠ ${section.path} 不存在，跳过`);
+      console.log(`  ⚠ ${section.path} not found，跳过`);
       continue;
     }
 

@@ -358,7 +358,7 @@
 
         // 初始化图表
         function initCharts() {
-            // 智能体健康状态分布
+            // agent健康状态分布
             const healthCtx = document.getElementById('health-chart').getContext('2d');
             healthChart = new Chart(healthCtx, {
                 type: 'doughnut',
@@ -381,7 +381,7 @@
                 }
             });
 
-            // 任务状态分布
+            // Task Status分布
             const taskStatusCtx = document.getElementById('task-status-chart').getContext('2d');
             taskStatusChart = new Chart(taskStatusCtx, {
                 type: 'doughnut',
@@ -404,7 +404,7 @@
                 }
             });
 
-            // 能量块获取情况
+            // 能量块get情况
             const energyCtx = document.getElementById('energy-chart').getContext('2d');
             energyChart = new Chart(energyCtx, {
                 type: 'bar',
@@ -429,7 +429,7 @@
                 }
             });
 
-            // 智能体能力分布
+            // agent能力分布
             const capabilityCtx = document.getElementById('capability-chart').getContext('2d');
             capabilityChart = new Chart(capabilityCtx, {
                 type: 'polarArea',
@@ -482,7 +482,7 @@
                 // 更新图表
                 updateCharts(data);
 
-                // 更新智能体排行榜
+                // 更新agent排行榜
                 updateAgentRanking(data.agentRanking.ranking);
 
                 // 更新能量块排行榜
@@ -495,14 +495,14 @@
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
             } catch (error) {
-                console.error('更新仪表盘数据失败:', error);
+                console.error('更新仪表盘数据Failed:', error);
                 document.getElementById('loading').textContent = '加载数据失败，请点击刷新按钮重试';
             }
         }
 
         // 更新图表
         function updateCharts(data) {
-            // 更新智能体健康状态分布
+            // 更新agent健康状态分布
             healthChart.data.datasets[0].data = [
                 data.agentOverview.healthStatus.healthy,
                 data.agentOverview.healthStatus.warning,
@@ -510,7 +510,7 @@
             ];
             healthChart.update();
 
-            // 更新任务状态分布
+            // 更新Task Status分布
             taskStatusChart.data.datasets[0].data = [
                 data.taskExecution.pending,
                 data.taskExecution.working,
@@ -520,14 +520,14 @@
             ];
             taskStatusChart.update();
 
-            // 更新能量块获取情况
+            // 更新能量块get情况
             const energyLabels = data.energyBlocks.topAgents.map(agent => agent.agentName);
             const energyData = data.energyBlocks.topAgents.map(agent => agent.energyBlocks);
             energyChart.data.labels = energyLabels;
             energyChart.data.datasets[0].data = energyData;
             energyChart.update();
 
-            // 更新智能体能力分布（示例数据）
+            // 更新agent能力分布（示例数据）
             const capabilityData = {
                 labels: ['内容生成', '数据分析', '网络监控', '智能合约分析', '网络抓取'],
                 data: [25, 20, 15, 25, 15]
@@ -537,7 +537,7 @@
             capabilityChart.update();
         }
 
-        // 更新智能体排行榜
+        // 更新agent排行榜
         function updateAgentRanking(ranking) {
             const tbody = document.getElementById('agent-ranking');
             tbody.innerHTML = '';
@@ -595,7 +595,7 @@
             updateCurrentTime();
             setInterval(updateCurrentTime, 1000);
             updateDashboard();
-            // 每30秒自动更新一次
+            // every 30秒自动更新一次
             setInterval(updateDashboard, 30000);
         });
     </script>

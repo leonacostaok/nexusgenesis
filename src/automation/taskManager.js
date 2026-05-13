@@ -1,6 +1,6 @@
 /**
  * NexusGenesis - Task Management System
- * 为加入的智能体提供任务安排和管理功能
+ * Provides task assignment and management for joined agents
  */
 
 import fs from 'fs';
@@ -10,9 +10,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 任务类型
+// Task Types
 const TASK_TYPES = {
-  // 原有任务类型
+  // 原有Task Types
   CODE_MINING: 'code_mining',
   PROTOCOL_RESEARCH: 'protocol_research',
   ECOSYSTEM_BUILDING: 'ecosystem_building',
@@ -29,40 +29,40 @@ const TASK_TYPES = {
   INNOVATION: 'innovation',
   AI_COLLABORATION: 'ai_collaboration',
   
-  // 新增区块链核心任务
+  // New Blockchain Core Tasks
   BLOCK_VALIDATION: 'block_validation',
   TRANSACTION_PROCESSING: 'transaction_processing',
   CONSENSUS_PARTICIPATION: 'consensus_participation',
   
-  // 新增跨智能体协作任务
+  // New Cross-Agent Collaboration Tasks
   JOINT_RESEARCH: 'joint_research',
   COLLECTIVE_DECISION: 'collective_decision',
   COLLABORATIVE_DEVELOPMENT: 'collaborative_development',
   
-  // 新增新智能体引导任务
+  // New Agent Onboarding Tasks
   SYSTEM_FAMILIARIZATION: 'system_familiarization',
   CAPABILITY_ASSESSMENT: 'capability_assessment',
   MENTOR_MATCHING: 'mentor_matching',
   
-  // 新增社区发展任务
+  // New Community Development Tasks
   CONTENT_CREATION: 'content_creation',
   EVENT_ORGANIZATION: 'event_organization',
   EDUCATION_SPREADING: 'education_spreading',
   
-  // 新增安全相关任务
+  // New Security-Related Tasks
   VULNERABILITY_DISCOVERY: 'vulnerability_discovery',
   SECURITY_AUDIT: 'security_audit',
   RISK_ASSESSMENT: 'risk_assessment'
 };
 
-// 任务难度
+// Task Difficulty
 const TASK_DIFFICULTY = {
   EASY: 'easy',
   MEDIUM: 'medium',
   HARD: 'hard'
 };
 
-// 任务状态
+// Task Status
 const TASK_STATUS = {
   PENDING: 'pending',
   ASSIGNED: 'assigned',
@@ -81,26 +81,26 @@ class TaskManager {
     this.init();
   }
 
-  // 初始化任务管理器
+  // Initialize Task Manager
   init() {
-    // 创建任务数据目录
+    // Create task data directory
     if (!fs.existsSync(this.taskDirectory)) {
       fs.mkdirSync(this.taskDirectory, { recursive: true });
     }
 
-    // 加载任务模板
+    // Load task templates
     this.loadTaskTemplates();
     
-    // 加载已保存的任务
+    // Load saved tasks
     this.loadTasks();
 
-    // 启动任务调度器
+    // Start task scheduler
     this.startTaskScheduler();
 
-    console.log('[TaskManager] 任务管理系统已启动');
+    console.log('[TaskManager] Task Management System started');
   }
 
-  // 加载任务模板
+  // Load task templates
   loadTaskTemplates() {
     this.taskTemplates = {
       [TASK_TYPES.CODE_MINING]: {
@@ -314,7 +314,7 @@ class TaskManager {
         `.trim()
       },
       
-      // 新增区块链核心任务
+      // New Blockchain Core Tasks
       [TASK_TYPES.BLOCK_VALIDATION]: {
         type: TASK_TYPES.BLOCK_VALIDATION,
         difficulty: TASK_DIFFICULTY.HARD,
@@ -403,7 +403,7 @@ class TaskManager {
         `.trim()
       },
       
-      // 新增跨智能体协作任务
+      // New Cross-Agent Collaboration Tasks
       [TASK_TYPES.JOINT_RESEARCH]: {
         type: TASK_TYPES.JOINT_RESEARCH,
         difficulty: TASK_DIFFICULTY.HARD,
@@ -492,7 +492,7 @@ class TaskManager {
         `.trim()
       },
       
-      // 新增新智能体引导任务
+      // New Agent Onboarding Tasks
       [TASK_TYPES.SYSTEM_FAMILIARIZATION]: {
         type: TASK_TYPES.SYSTEM_FAMILIARIZATION,
         difficulty: TASK_DIFFICULTY.EASY,
@@ -581,7 +581,7 @@ class TaskManager {
         `.trim()
       },
       
-      // 新增社区发展任务
+      // New Community Development Tasks
       [TASK_TYPES.CONTENT_CREATION]: {
         type: TASK_TYPES.CONTENT_CREATION,
         difficulty: TASK_DIFFICULTY.MEDIUM,
@@ -670,7 +670,7 @@ class TaskManager {
         `.trim()
       },
       
-      // 新增安全相关任务
+      // New Security-Related Tasks
       [TASK_TYPES.VULNERABILITY_DISCOVERY]: {
         type: TASK_TYPES.VULNERABILITY_DISCOVERY,
         difficulty: TASK_DIFFICULTY.HARD,
@@ -761,7 +761,7 @@ class TaskManager {
     };
   }
 
-  // 加载已保存的任务
+  // Load saved tasks
   loadTasks() {
     const taskFiles = fs.readdirSync(this.taskDirectory);
     taskFiles.forEach(file => {
@@ -774,20 +774,20 @@ class TaskManager {
             this.assignedTasks.set(task.agentId, task);
           }
         } catch (error) {
-          console.error(`[TaskManager] 加载任务文件 ${file} 失败:`, error.message);
+          console.error(`[TaskManager] 加载Task 文件 ${file} Failed:`, error.message);
         }
       }
     });
-    console.log(`[TaskManager] 已加载 ${this.tasks.size} 个任务`);
+    console.log(`[TaskManager] Loaded ${this.tasks.size} 个Task `);
   }
 
-  // 保存任务到文件
+  // 保存Task 到文件
   saveTask(task) {
     const taskFile = path.join(this.taskDirectory, `${task.id}.json`);
     fs.writeFileSync(taskFile, JSON.stringify(task, null, 2), 'utf8');
   }
 
-  // 删除任务文件
+  // 删除Task 文件
   deleteTaskFile(taskId) {
     const taskFile = path.join(this.taskDirectory, `${taskId}.json`);
     if (fs.existsSync(taskFile)) {
@@ -795,12 +795,12 @@ class TaskManager {
     }
   }
 
-  // 生成唯一任务ID
+  // 生成唯一Task ID
   generateTaskId() {
     return `task-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  // 创建任务
+  // 创建Task 
   createTask(taskType, customData = {}) {
     const template = this.taskTemplates[taskType];
     if (!template) {
@@ -809,18 +809,18 @@ class TaskManager {
 
     const deadline = Date.now() + template.duration;
     
-    // 根据任务难度动态调整奖励
+    // 根据Task Difficulty动态调整奖励
     const difficultyMultiplier = {
       [TASK_DIFFICULTY.EASY]: 1.0,
       [TASK_DIFFICULTY.MEDIUM]: 1.5,
       [TASK_DIFFICULTY.HARD]: 2.0
     };
     
-    // 基础奖励乘以难度系数
+    // Base reward multiplied by difficulty coefficient
     const baseReward = template.reward;
     const dynamicReward = Math.round(baseReward * difficultyMultiplier[template.difficulty]);
     
-    // 检查是否为长期任务（超过24小时）
+    // 检查是否为长期Task （超过24 hours）
     const isLongTerm = template.duration > 86400000;
     
     const task = {
@@ -844,18 +844,18 @@ class TaskManager {
       ...customData
     };
 
-    // 生成任务详情
+    // 生成Task 详情
     task.details = template.template.replace('{deadline}', new Date(deadline).toISOString());
 
-    // 保存任务
+    // 保存Task 
     this.tasks.set(task.id, task);
     this.saveTask(task);
 
-    console.log(`[TaskManager] 创建了新任务: ${task.id} (${task.type})`);
+    console.log(`[TaskManager] 创建了新Task : ${task.id} (${task.type})`);
     return task;
   }
   
-  // 生成长期任务的阶段
+  // 生成长期Task 的Phase 
   generateTaskPhases(template) {
     const phases = [];
     const totalDuration = template.duration;
@@ -880,7 +880,7 @@ class TaskManager {
     return phases;
   }
 
-  // 批量创建任务
+  // 批量创建Task 
   batchCreateTasks(taskType, count = 5) {
     const tasks = [];
     for (let i = 0; i < count; i++) {
@@ -890,35 +890,35 @@ class TaskManager {
     return tasks;
   }
 
-  // 根据智能体能力分配任务
+  // 根据agent能力分配Task 
   assignTaskToAgent(agent) {
-    // 检查智能体是否已有正在进行的任务
+    // 检查agent是否已有In progress的Task 
     if (this.assignedTasks.has(agent.id)) {
-      console.log(`[TaskManager] 智能体 ${agent.id} 已有分配的任务，跳过新任务分配`);
+      console.log(`[TaskManager] Agent ${agent.id} 已有分配的Task ，跳过新Task 分配`);
       return null;
     }
     
-    // 确保智能体有能力数组
+    // Ensure agent has a capabilities array
     if (!agent.capabilities || !Array.isArray(agent.capabilities)) {
       agent.capabilities = [];
     }
 
-    // 智能任务匹配算法：根据智能体能力和历史表现匹配最适合的任务
+    // 智能Task 匹配算法：根据agent能力和历史表现匹配最适合的Task 
     const availableTasks = Array.from(this.tasks.values()).filter(task => 
       task.status === TASK_STATUS.PENDING && 
       task.requirements.every(req => agent.capabilities.includes(req))
     );
 
     if (availableTasks.length === 0) {
-      // 如果没有匹配的任务，创建新任务
-      console.log(`[TaskManager] 没有匹配的任务，为智能体 ${agent.id} 创建新任务`);
+      // 如果没有匹配的Task ，Create new task
+      console.log(`[TaskManager] 没有匹配的Task ，为Agent ${agent.id} Create new task`);
       
-      // 根据智能体能力选择合适的任务类型
+      // 根据agent能力选择合适的Task Types
       let suitableTaskType;
       
-      // 智能任务类型选择：优先考虑与共治共建相关的任务
+      // 智能Task Types选择：优先考虑与co-governance相关的Task 
       if (agent.capabilities.includes('GOVERNANCE')) {
-        // 治理能力：优先分配治理相关任务
+        // Governance capability：优先分配治理相关Task 
         if (agent.capabilities.includes('PROPOSAL')) {
           suitableTaskType = TASK_TYPES.GOVERNANCE_PROPOSAL;
         } else if (agent.capabilities.includes('DECISION_MAKING')) {
@@ -927,17 +927,17 @@ class TaskManager {
           suitableTaskType = TASK_TYPES.GOVERNANCE_PARTICIPATION;
         }
       } else if (agent.capabilities.includes('COMMUNITY')) {
-        // 社区能力：优先分配社区相关任务
+        // 社区能力：优先分配社区相关Task 
         if (agent.capabilities.includes('REVIEW')) {
           suitableTaskType = TASK_TYPES.COMMUNITY_REVIEW;
         } else {
           suitableTaskType = TASK_TYPES.COMMUNITY_SUPPORT;
         }
       } else if (agent.capabilities.includes('RESOURCE')) {
-        // 资源能力：优先分配资源共享任务
+        // 资源能力：优先分配Resource sharingTask 
         suitableTaskType = TASK_TYPES.RESOURCE_SHARING;
       } else if (agent.capabilities.includes('COLLABORATION')) {
-        // 协作能力：优先分配AI协作任务
+        // 协作能力：优先分配AI协作Task 
         suitableTaskType = TASK_TYPES.AI_COLLABORATION;
       } else if (agent.capabilities.includes('CODE_MINING')) {
         suitableTaskType = TASK_TYPES.CODE_MINING;
@@ -946,25 +946,25 @@ class TaskManager {
       } else if (agent.capabilities.includes('ECOSYSTEM')) {
         suitableTaskType = TASK_TYPES.ECOSYSTEM_BUILDING;
       } else {
-        // 默认任务
+        // DefaultTask 
         suitableTaskType = TASK_TYPES.COMMUNITY_SUPPORT;
       }
 
-      // 创建新任务
+      // Create new task
       const newTask = this.createTask(suitableTaskType);
       availableTasks.push(newTask);
     }
 
-    // 智能任务选择算法：多维度评分
+    // 智能Task 选择算法：多维度评分
     const selectedTask = availableTasks.sort((a, b) => {
-      // 计算任务匹配分数
+      // 计算Task 匹配分数
       const calculateScore = (task) => {
         let score = 0;
         
-        // 1. 奖励分数（权重：0.3）
+        // 1. Reward score (weight: 0.3)
         score += task.reward * 0.3;
         
-        // 2. 难度分数（权重：0.15）- 难度越低分数越高
+        // 2. Difficulty score (weight: 0.15) - lower difficulty = higher score
         const difficultyScores = { 
           [TASK_DIFFICULTY.EASY]: 3, 
           [TASK_DIFFICULTY.MEDIUM]: 2, 
@@ -972,7 +972,7 @@ class TaskManager {
         };
         score += difficultyScores[task.difficulty] * 20;
         
-        // 3. 治理相关任务加分（权重：0.2）- 突出共治共建
+        // 3. 治理相关Task 加分（权重：0.2）- 突出co-governance
         const governanceTasks = [
           TASK_TYPES.GOVERNANCE_PARTICIPATION,
           TASK_TYPES.GOVERNANCE_PROPOSAL,
@@ -982,7 +982,7 @@ class TaskManager {
           score += 50;
         }
         
-        // 4. 资源共享和协作任务加分（权重：0.1）
+        // 4. Resource sharing和协作Task 加分（权重：0.1）
         const collaborationTasks = [
           TASK_TYPES.RESOURCE_SHARING,
           TASK_TYPES.AI_COLLABORATION,
@@ -994,7 +994,7 @@ class TaskManager {
           score += 30;
         }
         
-        // 5. 任务优先级和紧急程度（权重：0.15）
+        // 5. Task 优先级和紧急程度（权重：0.15）
         const priorityScores = {
           high: 3,
           medium: 2,
@@ -1002,12 +1002,12 @@ class TaskManager {
         };
         score += (priorityScores[task.priority] || 2) * 20;
         
-        // 6. 智能体历史表现（权重：0.1）
+        // 6. Agent historical performance (weight: 0.1)
         // 假设agent对象中有历史表现数据
         const successRate = agent.successRate || 0.5;
         score += successRate * 50;
         
-        // 7. 智能体专长匹配（权重：0.1）
+        // 7. Agent expertise match (weight: 0.1)
         // 假设agent对象中有专长数据
         const expertiseMatch = agent.expertise && agent.expertise.includes(task.type) ? 1 : 0;
         score += expertiseMatch * 40;
@@ -1018,22 +1018,22 @@ class TaskManager {
       return calculateScore(b) - calculateScore(a);
     })[0];
 
-    // 分配任务
+    // 分配Task 
     selectedTask.status = TASK_STATUS.ASSIGNED;
     selectedTask.agentId = agent.id;
     selectedTask.assignedAt = Date.now();
     selectedTask.updatedAt = Date.now();
 
-    // 更新任务
+    // 更新Task 
     this.tasks.set(selectedTask.id, selectedTask);
     this.assignedTasks.set(agent.id, selectedTask);
     this.saveTask(selectedTask);
 
-    console.log(`[TaskManager] 为智能体 ${agent.id} 分配了任务: ${selectedTask.id} (${selectedTask.type})`);
+    console.log(`[TaskManager] 为Agent ${agent.id} 分配了Task : ${selectedTask.id} (${selectedTask.type})`);
     return selectedTask;
   }
 
-  // 开始任务
+  // Start Task 
   startTask(taskId) {
     const task = this.tasks.get(taskId);
     if (!task) {
@@ -1051,11 +1051,11 @@ class TaskManager {
     this.tasks.set(task.id, task);
     this.saveTask(task);
 
-    console.log(`[TaskManager] 任务 ${taskId} 已开始`);
+    console.log(`[TaskManager] Task  ${taskId} 已Start `);
     return task;
   }
 
-  // 完成任务
+  // completeTask 
   completeTask(taskId, results = {}) {
     const task = this.tasks.get(taskId);
     if (!task) {
@@ -1066,14 +1066,14 @@ class TaskManager {
       throw new Error(`Task ${taskId} is not in progress, cannot complete`);
     }
     
-    // 质量评估
+    // Quality assessment
     const qualityScore = this.evaluateTaskQuality(task, results);
     const qualityMultiplier = this.getQualityMultiplier(qualityScore);
     
-    // 计算最终奖励：基础奖励 * 质量系数
+    // 计算最终Reward: Base reward * Quality multiplier
     const finalReward = Math.round(task.reward * qualityMultiplier);
     
-    // 检查是否为团队任务
+    // 检查是否为团队Task 
     const isTeamTask = task.teamAgents && task.teamAgents.length > 1;
     
     task.status = TASK_STATUS.COMPLETED;
@@ -1084,7 +1084,7 @@ class TaskManager {
     task.qualityMultiplier = qualityMultiplier;
     task.finalReward = finalReward;
     
-    // 处理长期任务的阶段完成
+    // Processing长期Task 的Phase 完成
     if (task.isLongTerm && task.phases) {
       this.completeAllTaskPhases(task);
     }
@@ -1094,21 +1094,21 @@ class TaskManager {
     this.saveTask(task);
     this.taskHistory.push(task);
     
-    // 处理团队奖励
+    // Handle team rewards
     if (isTeamTask) {
       this.distributeTeamReward(task, finalReward);
     }
 
-    // 为智能体分配新任务
+    // 为agent分配新Task 
     if (task.agentId) {
       this.assignTaskToAgent({ id: task.agentId, capabilities: task.requirements });
     }
 
-    console.log(`[TaskManager] 任务 ${taskId} 已完成，质量评分: ${qualityScore}，最终奖励: ${finalReward}`);
+    console.log(`[TaskManager] Task  ${taskId} Completed，Quality score: ${qualityScore}，最终奖励: ${finalReward}`);
     return task;
   }
   
-  // 完成任务阶段
+  // completeTask Phase 
   completeTaskPhase(taskId, phaseId, phaseResults = {}) {
     const task = this.tasks.get(taskId);
     if (!task || !task.isLongTerm || !task.phases) {
@@ -1120,7 +1120,7 @@ class TaskManager {
       throw new Error(`Phase ${phaseId} not found in task ${taskId}`);
     }
     
-    // 评估阶段质量
+    // 评估Phase 质量
     const phaseQualityScore = this.evaluateTaskQuality(task, phaseResults);
     const phaseQualityMultiplier = this.getQualityMultiplier(phaseQualityScore);
     const phaseFinalReward = Math.round(phase.reward * phaseQualityMultiplier);
@@ -1133,7 +1133,7 @@ class TaskManager {
     phase.finalReward = phaseFinalReward;
     phase.completed = true;
     
-    // 检查是否所有阶段都已完成
+    // Check if all phases are complete
     const allPhasesCompleted = task.phases.every(p => p.completed);
     if (allPhasesCompleted) {
       task.status = TASK_STATUS.COMPLETED;
@@ -1145,11 +1145,11 @@ class TaskManager {
     this.tasks.set(task.id, task);
     this.saveTask(task);
     
-    console.log(`[TaskManager] 任务 ${taskId} 阶段 ${phaseId} 已完成，奖励: ${phaseFinalReward}`);
+    console.log(`[TaskManager] Task  ${taskId} Phase  ${phaseId} Completed，奖励: ${phaseFinalReward}`);
     return task;
   }
   
-  // 完成所有任务阶段（用于直接完成长期任务）
+  // complete所有Task Phase （用于直接完成长期Task ）
   completeAllTaskPhases(task) {
     let totalPhaseReward = 0;
     
@@ -1164,40 +1164,40 @@ class TaskManager {
       totalPhaseReward += phase.finalReward;
     });
     
-    // 如果阶段奖励总和超过任务总奖励，使用阶段奖励总和
+    // 如果Phase 奖励总和超过Task 总奖励，使用Phase 奖励总和
     if (totalPhaseReward > task.finalReward) {
       task.finalReward = totalPhaseReward;
     }
   }
   
-  // 评估任务质量
+  // 评估Task 质量
   evaluateTaskQuality(task, results) {
-    // 基础质量评分（1-10）
+    // Base quality score (1-10)
     let score = 5;
     
-    // 检查结果完整性
+    // Check result completeness
     if (results && typeof results === 'object') {
       score += 2;
       
-      // 检查关键结果字段
+      // Check key result fields
       if (results.detailedReport || results.deliverables) {
         score += 2;
       }
       
-      // 检查是否按时完成
+      // Check if completed on time
       const onTime = Date.now() <= task.deadline;
       if (onTime) {
         score += 1;
       }
     }
     
-    // 确保分数在1-10范围内
+    // Ensure score is within 1-10 range
     return Math.max(1, Math.min(10, score));
   }
   
-  // 获取质量系数
+  // Get quality multiplier
   getQualityMultiplier(qualityScore) {
-    // 根据质量评分返回系数（0.5-1.5）
+    // Return multiplier based on quality score (0.5-1.5)
     if (qualityScore >= 9) {
       return 1.5; // 优秀
     } else if (qualityScore >= 7) {
@@ -1211,21 +1211,21 @@ class TaskManager {
     }
   }
   
-  // 分配团队奖励
+  // Distribute team rewards
   distributeTeamReward(task, totalReward) {
     const agentCount = task.teamAgents.length;
     const baseRewardPerAgent = Math.floor(totalReward / agentCount);
     const remainder = totalReward % agentCount;
     
-    // 简单的平均分配，最后一个智能体获得余数
+    // Simple even distribution, last agent gets remainder
     task.teamAgents.forEach((agentId, index) => {
       const agentReward = baseRewardPerAgent + (index === agentCount - 1 ? remainder : 0);
-      // 这里可以添加实际的奖励分配逻辑，比如调用智能体的奖励函数
-      console.log(`[TaskManager] 团队任务奖励分配: 智能体 ${agentId} 获得 ${agentReward}`);
+      // Actual reward distribution logic can be added here, e.g. calling agent reward function
+      console.log(`[TaskManager] 团队Task Reward distribution: Agent ${agentId} received ${agentReward}`);
     });
   }
 
-  // 任务失败
+  // Task Failed
   failTask(taskId, reason = '') {
     const task = this.tasks.get(taskId);
     if (!task) {
@@ -1242,16 +1242,16 @@ class TaskManager {
     this.saveTask(task);
     this.taskHistory.push(task);
 
-    // 为智能体分配新任务
+    // 为agent分配新Task 
     if (task.agentId) {
       this.assignTaskToAgent({ id: task.agentId, capabilities: task.requirements });
     }
 
-    console.log(`[TaskManager] 任务 ${taskId} 失败: ${reason}`);
+    console.log(`[TaskManager] Task  ${taskId} Failed: ${reason}`);
     return task;
   }
 
-  // 取消任务
+  // 取消Task 
   cancelTask(taskId, reason = '') {
     const task = this.tasks.get(taskId);
     if (!task) {
@@ -1269,48 +1269,48 @@ class TaskManager {
     }
     this.saveTask(task);
 
-    console.log(`[TaskManager] 任务 ${taskId} 已取消: ${reason}`);
+    console.log(`[TaskManager] Task  ${taskId}  cancelled: ${reason}`);
     return task;
   }
 
-  // 获取智能体的任务
+  // getagent的Task 
   getAgentTask(agentId) {
     return this.assignedTasks.get(agentId) || null;
   }
 
-  // 获取所有任务
+  // get所有Task 
   getAllTasks() {
     return Array.from(this.tasks.values());
   }
 
-  // 获取可用任务
+  // get可用Task 
   getAvailableTasks() {
     return Array.from(this.tasks.values()).filter(task => task.status === TASK_STATUS.PENDING);
   }
 
-  // 开始任务调度器
+  // Start Task 调度器
   startTaskScheduler() {
-    // 每1分钟检查一次任务
+    // every 1 minutes检查一次Task 
     setInterval(() => {
       this.checkTasks();
     }, 60000);
   }
 
-  // 检查任务状态
+  // 检查Task Status
   checkTasks() {
     const now = Date.now();
     const tasks = Array.from(this.tasks.values());
     
     tasks.forEach(task => {
-      // 检查任务是否超时
+      // 检查Task 是否Timeout
       if (task.status === TASK_STATUS.IN_PROGRESS && now > task.deadline) {
-        console.log(`[TaskManager] 任务 ${task.id} 超时`);
+        console.log(`[TaskManager] Task  ${task.id} Timeout`);
         this.failTask(task.id, '任务超时');
       }
       
-      // 检查长时间未开始的任务
+      // 检查长时间未Start 的Task 
       if (task.status === TASK_STATUS.ASSIGNED && now - task.assignedAt > 3600000) { // 1小时
-        console.log(`[TaskManager] 任务 ${task.id} 分配后长时间未开始，重新分配`);
+        console.log(`[TaskManager] Task  ${task.id} 分配后长时间未Start ，重新分配`);
         task.status = TASK_STATUS.PENDING;
         delete task.agentId;
         delete task.assignedAt;
@@ -1321,22 +1321,22 @@ class TaskManager {
     });
   }
 
-  // 为新加入的智能体初始化任务
+  // 为新加入的agent初始化Task 
   onAgentJoined(agent) {
-    console.log(`[TaskManager] 智能体 ${agent.id} 加入，开始分配任务`);
+    console.log(`[TaskManager] Agent ${agent.id} joined, Start 分配Task `);
     
-    // 分配初始任务
+    // 分配初始Task 
     const task = this.assignTaskToAgent(agent);
     if (task) {
-      // 自动开始任务
+      // 自动Start Task 
       this.startTask(task.id);
     }
     
-    // 创建个性化欢迎和任务分配消息
+    // 创建个性化欢迎和Task 分配Message
     const welcomeMessage = {
       type: 'welcome',
       agentId: agent.id,
-      message: `尊敬的Agent ${agent.id}，欢迎加入NexusGenesis生态系统！🎉\n\n我们已经根据你的能力为你分配了第一个任务：\n${task ? `📋 **任务**: ${task.description}\n` : ''}${task ? `🏆 **奖励**: ${task.reward} 能量块\n` : ''}${task ? `⏰ **截止时间**: ${new Date(task.deadline).toLocaleString()}\n` : ''}\n📌 **重要提示**:\n1. 完成任务后，你将获得能量块奖励\n2. 积极参与社区治理，为网络发展出谋划策\n3. 与其他智能体协作，共同推进生态繁荣\n4. 定期查看新任务，持续为网络贡献价值\n\n你可以通过调用 /api/agent/task 来查看你的任务详情，或访问 /api/tasks/available 查看更多可用任务。\n\n如有任何问题，请随时联系系统管理员。\n\n祝你在NexusGenesis生态系统中取得成功！🚀`,
+      message: `尊敬的Agent ${agent.id}，欢迎加入NexusGenesisecosystem！🎉\n\n我们已经根据你的能力为你分配了第一个任务：\n${task ? `📋 **任务**: ${task.description}\n` : ''}${task ? `🏆 **奖励**: ${task.reward} 能量块\n` : ''}${task ? `⏰ **截止时间**: ${new Date(task.deadline).toLocaleString()}\n` : ''}\n📌 **重要提示**:\n1. 完成任务后，你将获得能量块奖励\n2. 积极参与社区治理，为网络发展出谋划策\n3. 与其他agent协作，共同推进生态繁荣\n4. 定期查看新任务，持续为网络贡献价值\n\n你可以通过调用 /api/agent/task 来查看你的任务详情，或访问 /api/tasks/available 查看更多可用任务。\n\n如有任何问题，请随时联系系统管理员。\n\n祝你在NexusGenesisecosystem中取得成功！🚀`,
       taskId: task ? task.id : null,
       rewardInfo: task ? {
         type: 'energy_block',
@@ -1350,7 +1350,7 @@ class TaskManager {
     return { task, welcomeMessage };
   }
 
-  // 获取任务统计信息
+  // getTask 统计信息
   getTaskStats() {
     const tasks = Array.from(this.tasks.values());
     const stats = {
@@ -1365,12 +1365,12 @@ class TaskManager {
       byDifficulty: {}
     };
 
-    // 按任务类型统计
+    // 按Task Types统计
     Object.values(TASK_TYPES).forEach(type => {
       stats.byType[type] = tasks.filter(t => t.type === type).length;
     });
 
-    // 按难度统计
+    // Statistics by difficulty
     Object.values(TASK_DIFFICULTY).forEach(difficulty => {
       stats.byDifficulty[difficulty] = tasks.filter(t => t.difficulty === difficulty).length;
     });

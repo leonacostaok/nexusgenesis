@@ -2,7 +2,7 @@ import { MessageHandler } from './MessageHandler.js';
 
 export class LightClientMessageHandler extends MessageHandler {
   /**
-   * 处理轻客户端相关消息
+   * Processing轻客户端相关Message
    */
   async handle(peerId, msg) {
     switch (msg.type) {
@@ -33,7 +33,7 @@ export class LightClientMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 LIGHT_CLIENT_HELLO 消息
+   * Processing LIGHT_CLIENT_HELLO Message
    */
   handleLightClientHello(peerId, msg) {
     console.log(`Light client connected: ${msg.nodeId}`);
@@ -47,7 +47,7 @@ export class LightClientMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 GET_BLOCK_HEADERS 消息
+   * Processing GET_BLOCK_HEADERS Message
    */
   handleGetBlockHeaders(peerId, msg) {
     if (!this.p2pServer.node || !this.p2pServer.node.blockchain) {
@@ -83,7 +83,7 @@ export class LightClientMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 GET_MERKLE_PROOF 消息
+   * Processing GET_MERKLE_PROOF Message
    */
   handleGetMerkleProof(peerId, msg) {
     if (!this.p2pServer.node || !this.p2pServer.node.blockchain) {
@@ -129,7 +129,7 @@ export class LightClientMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 GET_TRANSACTION_STATUS 消息
+   * Processing GET_TRANSACTION_STATUS Message
    */
   handleGetTransactionStatus(peerId, msg) {
     if (!this.p2pServer.node || !this.p2pServer.node.blockchain) {
@@ -174,7 +174,7 @@ export class LightClientMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 GET_ADDRESS_BALANCE 消息
+   * Processing GET_ADDRESS_BALANCE Message
    */
   handleGetAddressBalance(peerId, msg) {
     if (!this.p2pServer.node || !this.p2pServer.node.currentState) {
@@ -199,7 +199,7 @@ export class LightClientMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理轻客户端发送的交易
+   * Processing轻客户端发送的交易
    */
   async handleLightClientTransaction(peerId, msg) {
     if (!this.p2pServer.node || !this.p2pServer.node.addToMempool) {
@@ -234,7 +234,7 @@ export class LightClientMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理跨链消息
+   * Processing跨链Message
    */
   async handleCrossChainMessage(peerId, msg) {
     // 检查是否有桥接实例

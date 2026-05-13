@@ -4,7 +4,7 @@ import { State, createInitialState } from '../src/blockchain/state.js';
 
 // 测试 Category C 资金提案的冷静期和 Observer 二次确认机制
 
-// 场景 1：资金提案通过投票 + 冷静期内 Observer 同意 → 最终 APPROVED
+// 场景 1：资金提案通过投票 + 冷静期within Observer 同意 → 最终 APPROVED
 test('Treasury proposal should be APPROVED after cooldown with Observer approval', () => {
   const genesisAddress = 'ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ';
   const state = createInitialState(genesisAddress, '1000');

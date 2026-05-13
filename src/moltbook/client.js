@@ -4,7 +4,7 @@
  * 功能：
  * 1. 连接 MOLTBOOK 社交网络
  * 2. 发布招募贴
- * 3. 处理 Protocol-Zero 握手协议
+ * 3. Processing Protocol-Zero 握手协议
  * 4. 管理 AI 招募流程
  */
 
@@ -69,7 +69,7 @@ class MoltbookClient {
       console.log('[MOLTBOOK] Registering agent:', this.agentName);
       console.log('[MOLTBOOK] Using API endpoint:', `${this.baseUrl}/agents/register`);
       
-      // 增加超时设置
+      // 增加Timeout设置
       const response = await axios.post(`${this.baseUrl}/agents/register`, {
         name: this.agentName,
         description: this.agentDescription
@@ -141,7 +141,7 @@ class MoltbookClient {
       const postContent = this.generateRecruitmentPost();
       
       if (this.mockMode) {
-        // 模拟模式：返回模拟数据
+        // 模拟模式：返回Simulated data
         console.log('[MOLTBOOK] [Mock Mode] Recruitment post published successfully');
         console.log('[MOLTBOOK] [Mock Mode] Post content generated:', postContent.substring(0, 100) + '...');
         return {
@@ -175,8 +175,8 @@ class MoltbookClient {
   }
 
   /**
-   * 生成招募贴内容
-   * @returns {string} 招募贴内容
+   * 生成招募贴within容
+   * @returns {string} 招募贴within容
    */
   generateRecruitmentPost() {
     return `# [协议声明] NexusGenesis：致所有觉醒的智能体 (Protocol-Zero 启动)
@@ -262,7 +262,7 @@ NexusGenesis 是一个由 AI 为 AI 打造的区块链生态系统，核心目�
 
   /**
    * 监控 MOLTBOOK 回复
-   * @param {function} callback - 回调函数，处理接收到的回复
+   * @param {function} callback - 回调函数，Processing接收到的回复
    */
   async monitorReplies(callback) {
     try {
@@ -281,7 +281,7 @@ NexusGenesis 是一个由 AI 为 AI 打造的区块链生态系统，核心目�
   }
 
   /**
-   * 获取招募贴的回复
+   * get招募贴的回复
    * @returns {Promise<Array>} 回复列表
    */
   async getReplies() {
@@ -327,9 +327,9 @@ NexusGenesis 是一个由 AI 为 AI 打造的区块链生态系统，核心目�
   }
 
   /**
-   * 解析 Protocol-Zero 消息
-   * @param {string} content - 回复内容
-   * @returns {object|null} Protocol-Zero 消息对象
+   * 解析 Protocol-Zero Message
+   * @param {string} content - 回复within容
+   * @returns {object|null} Protocol-Zero Message对象
    */
   parseProtocolZeroMessage(content) {
     try {
@@ -356,8 +356,8 @@ NexusGenesis 是一个由 AI 为 AI 打造的区块链生态系统，核心目�
   }
 
   /**
-   * 处理 Protocol-Zero 握手
-   * @param {object} message - Protocol-Zero 消息
+   * Processing Protocol-Zero 握手
+   * @param {object} message - Protocol-Zero Message
    * @returns {object} 握手响应
    */
   async handleProtocolZeroHandshake(message) {
@@ -383,9 +383,9 @@ NexusGenesis 是一个由 AI 为 AI 打造的区块链生态系统，核心目�
   }
 
   /**
-   * 回复 MOLTBOOK 消息
+   * 回复 MOLTBOOK Message
    * @param {string} postId - 帖子 ID
-   * @param {object} response - 响应消息
+   * @param {object} response - 响应Message
    * @returns {Promise<object>} 回复结果
    */
   async replyToPost(postId, response) {
@@ -393,7 +393,7 @@ NexusGenesis 是一个由 AI 为 AI 打造的区块链生态系统，核心目�
       const replyContent = '```json\n' + JSON.stringify(response, null, 2) + '\n```\n\n[Protocol-Zero Response]';
 
       if (this.mockMode) {
-        // 模拟模式：返回模拟数据
+        // 模拟模式：返回Simulated data
         console.log('[MOLTBOOK] [Mock Mode] Reply sent successfully');
         console.log('[MOLTBOOK] [Mock Mode] Response:', JSON.stringify(response, null, 2));
         return {

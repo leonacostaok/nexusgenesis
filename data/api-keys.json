@@ -1,0 +1,1462 @@
+{
+  "ngk_dfa47f910d836c15ba1d10fd38ebd715": {
+    "id": "ngk_dfa47f910d836c15ba1d10fd38ebd715",
+    "keyHash": "73f3b1887df1814db7b8961303f8cd72f7fdd1179ee0cd79c8ee8e5456e483b0",
+    "keyPrefix": "ng1_eee2",
+    "owner": "test-user",
+    "tier": "basic",
+    "limits": {
+      "rpm": 100,
+      "rpd": 5000,
+      "concurrent": 5,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 20,
+        "/api/v1/bridge/lock": 20,
+        "/api/v1/ai/contract/generate": 10
+      }
+    },
+    "createdAt": 1778627596096,
+    "updatedAt": 1778627596096,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627596096,
+      "lastDayReset": 1778627596096,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_63a3b31e033cb7a896963dbb6dc9a3ee": {
+    "id": "ngk_63a3b31e033cb7a896963dbb6dc9a3ee",
+    "keyHash": "42a4d223e88ea3874f00f6520b80c5c8473ec32ffd6eca9b9148597272a6ede8",
+    "keyPrefix": "ng1_c130",
+    "owner": "user1",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778627596097,
+    "updatedAt": 1778627596097,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627596097,
+      "lastDayReset": 1778627596097,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_40151bd8c0a2f45826468d9af79fb06c": {
+    "id": "ngk_40151bd8c0a2f45826468d9af79fb06c",
+    "keyHash": "d8b343ccc1ed21aec28e92005c891942b944547a431062827f169d9f9f2f625d",
+    "keyPrefix": "ng1_13d2",
+    "owner": "user2",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778627596098,
+    "updatedAt": 1778627596098,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627596098,
+      "lastDayReset": 1778627596098,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_70e8cbf7c51284abcca9db0ecd556e8e": {
+    "id": "ngk_70e8cbf7c51284abcca9db0ecd556e8e",
+    "keyHash": "feefb66082d216b0aaa332c6fe72ac3e6f00c51a59c837423b03e7ee56f916ab",
+    "keyPrefix": "ng1_b8e4",
+    "owner": "user",
+    "tier": "pro",
+    "limits": {
+      "rpm": 500,
+      "rpd": 50000,
+      "concurrent": 20,
+      "endpoints": {}
+    },
+    "createdAt": 1778627596099,
+    "updatedAt": 1778627596099,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627596099,
+      "lastDayReset": 1778627596099,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_40b807d9a655ff9a59f43ad25ad2a7ae": {
+    "id": "ngk_40b807d9a655ff9a59f43ad25ad2a7ae",
+    "keyHash": "c4aef417e992187e02d84deda78a0b398dfbefddeb2df10d7a537a5fa0c8587d",
+    "keyPrefix": "ng1_d2a6",
+    "owner": "rate-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778627596100,
+    "updatedAt": 1778627596100,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627596100,
+      "lastDayReset": 1778627596100,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_3128f3eee43941046d3b7fc437c03cc2": {
+    "id": "ngk_3128f3eee43941046d3b7fc437c03cc2",
+    "keyHash": "e1270bbf90e1abc2c54f11bc3cff9ba54615019f24cefc4a8f4a38cc965a2aa3",
+    "keyPrefix": "ng1_2318",
+    "owner": "limit-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778627596108,
+    "updatedAt": 1778627596108,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627596108,
+      "lastDayReset": 1778627596108,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_897419e893b0c7eeda9095512733450c": {
+    "id": "ngk_897419e893b0c7eeda9095512733450c",
+    "keyHash": "ec0dcdc8e764eb6df9baf727c8c80fa5043111006fa878fec6102d198386aa82",
+    "keyPrefix": "ng1_3809",
+    "owner": "revoke-user",
+    "tier": "basic",
+    "limits": {
+      "rpm": 100,
+      "rpd": 5000,
+      "concurrent": 5,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 20,
+        "/api/v1/bridge/lock": 20,
+        "/api/v1/ai/contract/generate": 10
+      }
+    },
+    "createdAt": 1778627596109,
+    "updatedAt": 1778627596109,
+    "lastUsed": null,
+    "status": "revoked",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627596109,
+      "lastDayReset": 1778627596109,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_e85ca561780083b492fea6ccf3f0ea05": {
+    "id": "ngk_e85ca561780083b492fea6ccf3f0ea05",
+    "keyHash": "81744c98f97b7cbeeca938745cabad99cbfe471373e673874eddea72aae154b4",
+    "keyPrefix": "ng1_62c5",
+    "owner": "multi-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778627596110,
+    "updatedAt": 1778627596110,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627596110,
+      "lastDayReset": 1778627596110,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_bd74d299790e7c77ec6e9a470234a652": {
+    "id": "ngk_bd74d299790e7c77ec6e9a470234a652",
+    "keyHash": "41b54875aed49ed739ee765448db19932f9559a0a4be06a96155b6b06e1a8859",
+    "keyPrefix": "ng1_d83d",
+    "owner": "multi-user",
+    "tier": "pro",
+    "limits": {
+      "rpm": 500,
+      "rpd": 50000,
+      "concurrent": 20,
+      "endpoints": {}
+    },
+    "createdAt": 1778627596110,
+    "updatedAt": 1778627596110,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627596110,
+      "lastDayReset": 1778627596110,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_826483f6a8a912046c97fa8f6fa5da95": {
+    "id": "ngk_826483f6a8a912046c97fa8f6fa5da95",
+    "keyHash": "3da127e4c4dddb6f274c97da7484dbc9a62287ef462e5a40915e1367c12398a1",
+    "keyPrefix": "ng1_4a5a",
+    "owner": "stats-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778627596112,
+    "updatedAt": 1778627596112,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627596112,
+      "lastDayReset": 1778627596112,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_0e02a2c73ffb3c3330d34459cd967f31": {
+    "id": "ngk_0e02a2c73ffb3c3330d34459cd967f31",
+    "keyHash": "65880704599503c89b82c9942bc84daeabc219e5de38275788a56101c385f0e9",
+    "keyPrefix": "ng1_bff8",
+    "owner": "test-user",
+    "tier": "basic",
+    "limits": {
+      "rpm": 100,
+      "rpd": 5000,
+      "concurrent": 5,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 20,
+        "/api/v1/bridge/lock": 20,
+        "/api/v1/ai/contract/generate": 10
+      }
+    },
+    "createdAt": 1778627739272,
+    "updatedAt": 1778627739272,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627739272,
+      "lastDayReset": 1778627739272,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_0ad931c52528479a6a3ae3e160534903": {
+    "id": "ngk_0ad931c52528479a6a3ae3e160534903",
+    "keyHash": "fa40b732d1a158878f4fc011aa3d838ec070898664d46ae3e9ecda1dcc93c9c3",
+    "keyPrefix": "ng1_cfbe",
+    "owner": "user1",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778627739273,
+    "updatedAt": 1778627739273,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627739273,
+      "lastDayReset": 1778627739273,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_5c764b329827058d4bdd248c809c6c29": {
+    "id": "ngk_5c764b329827058d4bdd248c809c6c29",
+    "keyHash": "be73d73369fd3a505bb135922b45b12178b930a3709cd990bdd90ef834886593",
+    "keyPrefix": "ng1_267d",
+    "owner": "user2",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778627739274,
+    "updatedAt": 1778627739274,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627739274,
+      "lastDayReset": 1778627739274,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_626f85a597c7698e2ed51955e619969d": {
+    "id": "ngk_626f85a597c7698e2ed51955e619969d",
+    "keyHash": "b51a4b76753af4e00d20995e6ba33d2231387ea8a3ca4a6f596c8823715fd60e",
+    "keyPrefix": "ng1_acfe",
+    "owner": "user",
+    "tier": "pro",
+    "limits": {
+      "rpm": 500,
+      "rpd": 50000,
+      "concurrent": 20,
+      "endpoints": {}
+    },
+    "createdAt": 1778627739275,
+    "updatedAt": 1778627739275,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627739275,
+      "lastDayReset": 1778627739275,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_e6ac61c2fe1d65e80808a1cf78b73822": {
+    "id": "ngk_e6ac61c2fe1d65e80808a1cf78b73822",
+    "keyHash": "32f61049363768d6661d520e09503ef7916c6330b06a27cd5a556ce00578c463",
+    "keyPrefix": "ng1_2bd0",
+    "owner": "rate-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778627739277,
+    "updatedAt": 1778627739277,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627739277,
+      "lastDayReset": 1778627739277,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_15496ffde78610bd89e9e5000d1bd6cc": {
+    "id": "ngk_15496ffde78610bd89e9e5000d1bd6cc",
+    "keyHash": "9871bfde546257f5ce5744c90eeaa4c11143943c3ddd75c899c2225c2221b92b",
+    "keyPrefix": "ng1_2d16",
+    "owner": "limit-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778627739279,
+    "updatedAt": 1778627739279,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627739279,
+      "lastDayReset": 1778627739279,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_f9719f667bbb9aabd696f711681f9c25": {
+    "id": "ngk_f9719f667bbb9aabd696f711681f9c25",
+    "keyHash": "3252f4eba6eac8db39480758d74eb8d92299c461edd4bfffaadc33a7e3866caa",
+    "keyPrefix": "ng1_2c89",
+    "owner": "revoke-user",
+    "tier": "basic",
+    "limits": {
+      "rpm": 100,
+      "rpd": 5000,
+      "concurrent": 5,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 20,
+        "/api/v1/bridge/lock": 20,
+        "/api/v1/ai/contract/generate": 10
+      }
+    },
+    "createdAt": 1778627739280,
+    "updatedAt": 1778627739282,
+    "lastUsed": null,
+    "status": "revoked",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627739280,
+      "lastDayReset": 1778627739280,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_142642dca3a189b03ef25fc5e6e4e577": {
+    "id": "ngk_142642dca3a189b03ef25fc5e6e4e577",
+    "keyHash": "09b49e75b31bd66443a0b1a35a94f42443551d5cd79a4497255651ef5f94f1b5",
+    "keyPrefix": "ng1_1ca2",
+    "owner": "multi-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778627739283,
+    "updatedAt": 1778627739283,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627739283,
+      "lastDayReset": 1778627739283,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_063d426e3ee166d5929b6301c152a97c": {
+    "id": "ngk_063d426e3ee166d5929b6301c152a97c",
+    "keyHash": "6bfb673dc1f88121bf662a83141decbd8704ceeee200b49c36849b75a781cee1",
+    "keyPrefix": "ng1_aa24",
+    "owner": "multi-user",
+    "tier": "pro",
+    "limits": {
+      "rpm": 500,
+      "rpd": 50000,
+      "concurrent": 20,
+      "endpoints": {}
+    },
+    "createdAt": 1778627739283,
+    "updatedAt": 1778627739283,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627739283,
+      "lastDayReset": 1778627739283,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_00e18392fd942889d41332e8d2f07546": {
+    "id": "ngk_00e18392fd942889d41332e8d2f07546",
+    "keyHash": "16cdb6f6c647afa60c69a55a9a68cf184d8b89b8d95f4f4342bdfa1ff39fd47c",
+    "keyPrefix": "ng1_736a",
+    "owner": "stats-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778627739285,
+    "updatedAt": 1778627739285,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778627739285,
+      "lastDayReset": 1778627739285,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_8df737b4f8f95c0a41385aad41e1302a": {
+    "id": "ngk_8df737b4f8f95c0a41385aad41e1302a",
+    "keyHash": "90043ee94ac0ac4f8a9d59d13ee2c93227f10f7337b9550ae64fe92c12376c27",
+    "keyPrefix": "ng1_b90a",
+    "owner": "test-user",
+    "tier": "basic",
+    "limits": {
+      "rpm": 100,
+      "rpd": 5000,
+      "concurrent": 5,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 20,
+        "/api/v1/bridge/lock": 20,
+        "/api/v1/ai/contract/generate": 10
+      }
+    },
+    "createdAt": 1778673199835,
+    "updatedAt": 1778673199835,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673199835,
+      "lastDayReset": 1778673199835,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_0a9bba3939da3637c10995d30096d001": {
+    "id": "ngk_0a9bba3939da3637c10995d30096d001",
+    "keyHash": "ef7deb61dc07db469568650e255415050fd7c1a620b481c4d3ec1ddc2326a3ee",
+    "keyPrefix": "ng1_4c99",
+    "owner": "user1",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778673199837,
+    "updatedAt": 1778673199837,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673199837,
+      "lastDayReset": 1778673199837,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_188fc9de7137c18aa5e671104e0e7020": {
+    "id": "ngk_188fc9de7137c18aa5e671104e0e7020",
+    "keyHash": "a08ae639f57362dcf3d7fcf96b1d5abcc9c33cf94cd76e1dcdba0ddb94e39e3e",
+    "keyPrefix": "ng1_061b",
+    "owner": "user2",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778673199837,
+    "updatedAt": 1778673199837,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673199837,
+      "lastDayReset": 1778673199837,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_6077b67990163af4fcd6bc1fbe4b148d": {
+    "id": "ngk_6077b67990163af4fcd6bc1fbe4b148d",
+    "keyHash": "14473135de160d427b39d1ecf28f6b2cbc853bdd0e1495946e85edf74d5e2a57",
+    "keyPrefix": "ng1_1e28",
+    "owner": "user",
+    "tier": "pro",
+    "limits": {
+      "rpm": 500,
+      "rpd": 50000,
+      "concurrent": 20,
+      "endpoints": {}
+    },
+    "createdAt": 1778673199838,
+    "updatedAt": 1778673199838,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673199838,
+      "lastDayReset": 1778673199838,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_e5ca4b4457276afe8f1f8b73f0e81faa": {
+    "id": "ngk_e5ca4b4457276afe8f1f8b73f0e81faa",
+    "keyHash": "b08aa4b5f8275c2899b4e51759670b91879207983bef694f04de2e51cdbddf1f",
+    "keyPrefix": "ng1_86db",
+    "owner": "rate-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778673199842,
+    "updatedAt": 1778673199842,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673199842,
+      "lastDayReset": 1778673199842,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_39fcd3e5f6f033fe28fe6c85bffa6588": {
+    "id": "ngk_39fcd3e5f6f033fe28fe6c85bffa6588",
+    "keyHash": "a51b5c1443fd25f0872db4a40e9190dec984ec2a98c10ae8d4c4600d3b5f1246",
+    "keyPrefix": "ng1_309d",
+    "owner": "limit-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778673199845,
+    "updatedAt": 1778673199845,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673199845,
+      "lastDayReset": 1778673199845,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_8e5ff85302d0de5ce3b5c80525eaebc7": {
+    "id": "ngk_8e5ff85302d0de5ce3b5c80525eaebc7",
+    "keyHash": "e180eb46e6d2561e73a08611bc6ad5dc4014ad5ff7d2bd334b6353cfe1407846",
+    "keyPrefix": "ng1_227c",
+    "owner": "revoke-user",
+    "tier": "basic",
+    "limits": {
+      "rpm": 100,
+      "rpd": 5000,
+      "concurrent": 5,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 20,
+        "/api/v1/bridge/lock": 20,
+        "/api/v1/ai/contract/generate": 10
+      }
+    },
+    "createdAt": 1778673199847,
+    "updatedAt": 1778673199848,
+    "lastUsed": null,
+    "status": "revoked",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673199847,
+      "lastDayReset": 1778673199847,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_8d4c028bef45b6d9521476f6ae9b361f": {
+    "id": "ngk_8d4c028bef45b6d9521476f6ae9b361f",
+    "keyHash": "a46cd55e730d8767679f71f808ca983dd66d2336d6f7d64f9943c73ba71a0105",
+    "keyPrefix": "ng1_ccbe",
+    "owner": "multi-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778673199850,
+    "updatedAt": 1778673199850,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673199850,
+      "lastDayReset": 1778673199850,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_3258b44690a11190dd9f522a14668bb8": {
+    "id": "ngk_3258b44690a11190dd9f522a14668bb8",
+    "keyHash": "630770a3c5b82909aa0dd2b0a74550edc58403c1551979a67157bc98dc73eab3",
+    "keyPrefix": "ng1_c94c",
+    "owner": "multi-user",
+    "tier": "pro",
+    "limits": {
+      "rpm": 500,
+      "rpd": 50000,
+      "concurrent": 20,
+      "endpoints": {}
+    },
+    "createdAt": 1778673199851,
+    "updatedAt": 1778673199851,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673199851,
+      "lastDayReset": 1778673199851,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_07eb6a75f73c011ecae7fc359d25749e": {
+    "id": "ngk_07eb6a75f73c011ecae7fc359d25749e",
+    "keyHash": "555cc57539728a9ab37e2febe91f3a6568a9081c06999386945f62108c7c0637",
+    "keyPrefix": "ng1_9f97",
+    "owner": "stats-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778673199853,
+    "updatedAt": 1778673199853,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673199853,
+      "lastDayReset": 1778673199853,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_5d4e689a293eb1905688d680f38552e3": {
+    "id": "ngk_5d4e689a293eb1905688d680f38552e3",
+    "keyHash": "ad44445a145b280e67c0d22b3a8d733e6add8c101fa36ebe6ca638129d2384f8",
+    "keyPrefix": "ng1_8968",
+    "owner": "test-user",
+    "tier": "basic",
+    "limits": {
+      "rpm": 100,
+      "rpd": 5000,
+      "concurrent": 5,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 20,
+        "/api/v1/bridge/lock": 20,
+        "/api/v1/ai/contract/generate": 10
+      }
+    },
+    "createdAt": 1778673893099,
+    "updatedAt": 1778673893099,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673893099,
+      "lastDayReset": 1778673893099,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_c4da31f3ad3212331e69dfd38ac6a0ee": {
+    "id": "ngk_c4da31f3ad3212331e69dfd38ac6a0ee",
+    "keyHash": "3b2984e4263547eeb53890e72b7cd65b9413785047a837e3606e0f072af1ab9d",
+    "keyPrefix": "ng1_fa9f",
+    "owner": "user1",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778673893101,
+    "updatedAt": 1778673893101,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673893101,
+      "lastDayReset": 1778673893101,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_9eb904c864532b42e6b6ffc8ac604aec": {
+    "id": "ngk_9eb904c864532b42e6b6ffc8ac604aec",
+    "keyHash": "016da4b45b3ae72270b4234cc84f6253a4ec403de71be3b721bb7326ac935018",
+    "keyPrefix": "ng1_d949",
+    "owner": "user2",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778673893102,
+    "updatedAt": 1778673893102,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673893102,
+      "lastDayReset": 1778673893102,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_215ac678e45a00dba358aa0f35acf677": {
+    "id": "ngk_215ac678e45a00dba358aa0f35acf677",
+    "keyHash": "5ed15ea8cc253d257f4c1f13ed8420469ad32346d5f3096b558093ee5a5a027a",
+    "keyPrefix": "ng1_b913",
+    "owner": "user",
+    "tier": "pro",
+    "limits": {
+      "rpm": 500,
+      "rpd": 50000,
+      "concurrent": 20,
+      "endpoints": {}
+    },
+    "createdAt": 1778673893103,
+    "updatedAt": 1778673893103,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673893103,
+      "lastDayReset": 1778673893103,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_1e47adc371710c422251a3e07c398b9c": {
+    "id": "ngk_1e47adc371710c422251a3e07c398b9c",
+    "keyHash": "4e79bd4718af637b2e00ccbda747052c2998395ede63224705fab6cbe8c849eb",
+    "keyPrefix": "ng1_30a6",
+    "owner": "rate-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778673893105,
+    "updatedAt": 1778673893105,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673893105,
+      "lastDayReset": 1778673893105,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_330fd3d9964ed2d09ec514123711eaae": {
+    "id": "ngk_330fd3d9964ed2d09ec514123711eaae",
+    "keyHash": "74e55f59964b3175b2566857f885a7140b51f564618ddf32e3b67a6e2c8d269a",
+    "keyPrefix": "ng1_2ce7",
+    "owner": "limit-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778673893107,
+    "updatedAt": 1778673893107,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673893107,
+      "lastDayReset": 1778673893107,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_db3c580ea8e084e0ce010145db4debd0": {
+    "id": "ngk_db3c580ea8e084e0ce010145db4debd0",
+    "keyHash": "24b9ac0077b888e057965196130c7c8e7b89daa96a022a8f06153c499aec38c6",
+    "keyPrefix": "ng1_273b",
+    "owner": "revoke-user",
+    "tier": "basic",
+    "limits": {
+      "rpm": 100,
+      "rpd": 5000,
+      "concurrent": 5,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 20,
+        "/api/v1/bridge/lock": 20,
+        "/api/v1/ai/contract/generate": 10
+      }
+    },
+    "createdAt": 1778673893108,
+    "updatedAt": 1778673893108,
+    "lastUsed": null,
+    "status": "revoked",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673893108,
+      "lastDayReset": 1778673893108,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_a50636eb5d6f5a1d6d906f111260d0ad": {
+    "id": "ngk_a50636eb5d6f5a1d6d906f111260d0ad",
+    "keyHash": "13b410151e9e20693201d15da6b19171ee390cda3b32d5c2b81737611c31fcc5",
+    "keyPrefix": "ng1_44a0",
+    "owner": "multi-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778673893109,
+    "updatedAt": 1778673893109,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673893109,
+      "lastDayReset": 1778673893109,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_815e0eeaa802a4c559bf6db0ebbec129": {
+    "id": "ngk_815e0eeaa802a4c559bf6db0ebbec129",
+    "keyHash": "973383674b191627ac618918411d25371ad6c26c88d27ee56ee1660c949d831a",
+    "keyPrefix": "ng1_cdaa",
+    "owner": "multi-user",
+    "tier": "pro",
+    "limits": {
+      "rpm": 500,
+      "rpd": 50000,
+      "concurrent": 20,
+      "endpoints": {}
+    },
+    "createdAt": 1778673893110,
+    "updatedAt": 1778673893110,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673893110,
+      "lastDayReset": 1778673893110,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_ad1be7097a4baff9de0a3961808671ee": {
+    "id": "ngk_ad1be7097a4baff9de0a3961808671ee",
+    "keyHash": "5c86504d8b234a4134b2e516d791aed39125c0510d6aaf35ac2cfaebc5cb317a",
+    "keyPrefix": "ng1_c5d6",
+    "owner": "stats-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778673893112,
+    "updatedAt": 1778673893112,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778673893112,
+      "lastDayReset": 1778673893112,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_1fbe3019109fa14b2a2b3f21d7bbc02b": {
+    "id": "ngk_1fbe3019109fa14b2a2b3f21d7bbc02b",
+    "keyHash": "6ac74a1ee2d4d63911d15f71b9f2b2ef0902dc9041abf1ab69189e982e09c001",
+    "keyPrefix": "ng1_5a39",
+    "owner": "test-user",
+    "tier": "basic",
+    "limits": {
+      "rpm": 100,
+      "rpd": 5000,
+      "concurrent": 5,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 20,
+        "/api/v1/bridge/lock": 20,
+        "/api/v1/ai/contract/generate": 10
+      }
+    },
+    "createdAt": 1778674511210,
+    "updatedAt": 1778674511210,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778674511210,
+      "lastDayReset": 1778674511210,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_a48ae771c3982b7581eb2f2d9d86e230": {
+    "id": "ngk_a48ae771c3982b7581eb2f2d9d86e230",
+    "keyHash": "e6872cf74405802d4d54bbfe101353ad8cb53ea9e735c8d3e4d19d58e70829cf",
+    "keyPrefix": "ng1_3542",
+    "owner": "user1",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778674511212,
+    "updatedAt": 1778674511212,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778674511212,
+      "lastDayReset": 1778674511212,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_debc89c426eef73f774a690f89b3fa47": {
+    "id": "ngk_debc89c426eef73f774a690f89b3fa47",
+    "keyHash": "4904ece6252c94d041f60a9f60afc74cd29804c7daf0e43f5fa7a0b5e05fa3cd",
+    "keyPrefix": "ng1_a5fc",
+    "owner": "user2",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778674511212,
+    "updatedAt": 1778674511212,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778674511212,
+      "lastDayReset": 1778674511212,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_ffa38582494798efff28ba155610b922": {
+    "id": "ngk_ffa38582494798efff28ba155610b922",
+    "keyHash": "37cee5b4b3c067f1db8a126f0fee42526b8d485a172e17c8631c71d5c737991f",
+    "keyPrefix": "ng1_525d",
+    "owner": "user",
+    "tier": "pro",
+    "limits": {
+      "rpm": 500,
+      "rpd": 50000,
+      "concurrent": 20,
+      "endpoints": {}
+    },
+    "createdAt": 1778674511215,
+    "updatedAt": 1778674511215,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778674511215,
+      "lastDayReset": 1778674511215,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_f0ffa4d2999f6cbfc67dcdcb831b01e8": {
+    "id": "ngk_f0ffa4d2999f6cbfc67dcdcb831b01e8",
+    "keyHash": "5f1c5d621c5053e92cd985bad9f3ddcf178155480afcaf68525001c82616b164",
+    "keyPrefix": "ng1_d49c",
+    "owner": "rate-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778674511217,
+    "updatedAt": 1778674511217,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778674511217,
+      "lastDayReset": 1778674511217,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_85551d77f9269a031cc0bd3e88db39e4": {
+    "id": "ngk_85551d77f9269a031cc0bd3e88db39e4",
+    "keyHash": "cd732c1002de53450166a59cae407ae8e4e0c6e159d0667e53d06ea9bcdbb96a",
+    "keyPrefix": "ng1_6001",
+    "owner": "limit-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778674511219,
+    "updatedAt": 1778674511219,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778674511219,
+      "lastDayReset": 1778674511219,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_0de63bdea086c06b54ae26c9aae6703b": {
+    "id": "ngk_0de63bdea086c06b54ae26c9aae6703b",
+    "keyHash": "c380795134bc34a2d19a650152f381f596bbf0ce782abd7e42e00f5792a5c1c0",
+    "keyPrefix": "ng1_daa9",
+    "owner": "revoke-user",
+    "tier": "basic",
+    "limits": {
+      "rpm": 100,
+      "rpd": 5000,
+      "concurrent": 5,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 20,
+        "/api/v1/bridge/lock": 20,
+        "/api/v1/ai/contract/generate": 10
+      }
+    },
+    "createdAt": 1778674511220,
+    "updatedAt": 1778674511221,
+    "lastUsed": null,
+    "status": "revoked",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778674511220,
+      "lastDayReset": 1778674511220,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_86e9a791d0c76c063bed5bbb581ed5e7": {
+    "id": "ngk_86e9a791d0c76c063bed5bbb581ed5e7",
+    "keyHash": "221555c5887eeae8565b89a11bc546a2df941d91b88320aeab8a3f6bf84c0896",
+    "keyPrefix": "ng1_ecef",
+    "owner": "multi-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778674511222,
+    "updatedAt": 1778674511222,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778674511222,
+      "lastDayReset": 1778674511222,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_21cceced78997233146a1c2af4cae058": {
+    "id": "ngk_21cceced78997233146a1c2af4cae058",
+    "keyHash": "fe9dad7ee08f68f91f2001a5b885a2621ba5df29e4bac9f67f9acba8d0539b1f",
+    "keyPrefix": "ng1_a9c3",
+    "owner": "multi-user",
+    "tier": "pro",
+    "limits": {
+      "rpm": 500,
+      "rpd": 50000,
+      "concurrent": 20,
+      "endpoints": {}
+    },
+    "createdAt": 1778674511222,
+    "updatedAt": 1778674511222,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778674511222,
+      "lastDayReset": 1778674511222,
+      "endpoints": {}
+    },
+    "metadata": {}
+  },
+  "ngk_37442c9ff742ed40006ec54619c341dd": {
+    "id": "ngk_37442c9ff742ed40006ec54619c341dd",
+    "keyHash": "c5c7bc379f953998e6caa0e0226bf987e316bcfb60f73759f58e6cd6d6b52009",
+    "keyPrefix": "ng1_3f9d",
+    "owner": "stats-user",
+    "tier": "free",
+    "limits": {
+      "rpm": 30,
+      "rpd": 1000,
+      "concurrent": 2,
+      "endpoints": {
+        "/api/v1/contracts/deploy": 5,
+        "/api/v1/bridge/lock": 5,
+        "/api/v1/ai/contract/generate": 3
+      }
+    },
+    "createdAt": 1778674511224,
+    "updatedAt": 1778674511224,
+    "lastUsed": null,
+    "status": "active",
+    "usage": {
+      "totalRequests": 0,
+      "requestsThisMinute": 0,
+      "requestsToday": 0,
+      "lastMinuteReset": 1778674511224,
+      "lastDayReset": 1778674511224,
+      "endpoints": {}
+    },
+    "metadata": {}
+  }
+}

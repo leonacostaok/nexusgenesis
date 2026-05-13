@@ -220,7 +220,7 @@ async function listProjects(status) {
   }
 }
 
-// 获取项目状态
+// get项目状态
 async function getProjectStatus(projectId) {
   if (!projectId) {
     console.error('Missing required parameter: projectId');
@@ -265,7 +265,7 @@ async function getProjectStatus(projectId) {
   }
 }
 
-// 获取审核统计信息
+// get审核统计信息
 async function getAuditStats() {
   try {
     // 读取状态文件

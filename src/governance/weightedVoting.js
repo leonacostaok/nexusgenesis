@@ -14,7 +14,7 @@ import dataIntegrity from '../utils/dataIntegrity.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 治理提案类型
+// Governance proposal类型
 const PROPOSAL_TYPES = {
   PROTOCOL_UPDATE: 'protocol_update',
   PARAMETER_ADJUSTMENT: 'parameter_adjustment',
@@ -54,7 +54,7 @@ const DATA_DIR = path.join(__dirname, '../../data/governance');
 const PROPOSALS_FILE = path.join(DATA_DIR, 'proposals.json');
 const VOTES_FILE = path.join(DATA_DIR, 'votes.json');
 
-// 内存存储
+// memory存储
 let proposals = new Map(); // proposalId -> 提案详情
 let votes = new Map(); // proposalId -> { agentId -> vote }
 
@@ -118,7 +118,7 @@ class WeightedVotingSystem {
     }
   }
 
-  // 创建治理提案
+  // 创建Governance proposal
   static createProposal(proposalData) {
     // 验证创建者权限
     const creatorReputation = ContributionSystem.getAgentReputation(proposalData.creatorId);
@@ -168,7 +168,7 @@ class WeightedVotingSystem {
     return proposalId;
   }
   
-  // 激活提案（开始投票）
+  // 激活提案（Start 投票）
   static activateProposal(proposalId) {
     const proposal = proposals.get(proposalId);
     if (!proposal) {
@@ -211,7 +211,7 @@ class WeightedVotingSystem {
       throw new Error('Invalid vote option. Must be yes, no, or abstain');
     }
     
-    // 获取代理的信誉分数作为投票权重
+    // get代理的信誉分数作为投票权重
     const reputationScore = ContributionSystem.getAgentReputation(agentId);
     const voteWeight = Math.max(1, reputationScore); // 最低权重为1
     
@@ -331,7 +331,7 @@ class WeightedVotingSystem {
           throw new Error(`Executor ${executorId} is not authorized`);
         }
         
-        // 检查执行者是否已批准
+        // 检查执行者是否approved
         if (!proposal.executorApprovals.includes(executorId)) {
           throw new Error(`Executor ${executorId} has not approved this execution`);
         }
@@ -347,7 +347,7 @@ class WeightedVotingSystem {
     }
     
     try {
-      // 记录审计日志
+      // 记录Audit Log
       const auditEntry = {
         timestamp: now,
         proposalId,
@@ -377,7 +377,7 @@ class WeightedVotingSystem {
       proposals.set(proposalId, proposal);
       this.saveToDisk();
       
-      // 记录失败审计日志
+      // 记录FailedAudit Log
       const auditEntry = {
         timestamp: now,
         proposalId,
@@ -452,7 +452,7 @@ class WeightedVotingSystem {
       throw new Error(`${executorId} is not an authorized executor`);
     }
     
-    // 检查是否已批准
+    // 检查是否approved
     if (proposal.executorApprovals.includes(executorId)) {
       throw new Error(`${executorId} has already approved`);
     }
@@ -532,12 +532,12 @@ class WeightedVotingSystem {
     return Object.values(reputationScores).reduce((sum, score) => sum + score, 0);
   }
   
-  // 获取提案详情
+  // get提案详情
   static getProposal(proposalId) {
     return proposals.get(proposalId) || null;
   }
   
-  // 获取所有提案
+  // get所有提案
   static getAllProposals() {
     return Array.from(proposals.entries()).map(([id, proposal]) => ({
       id,
@@ -545,13 +545,13 @@ class WeightedVotingSystem {
     }));
   }
   
-  // 获取代理的投票
+  // get代理的投票
   static getAgentVote(proposalId, agentId) {
     const proposalVotes = votes.get(proposalId);
     return proposalVotes ? proposalVotes[agentId] : null;
   }
   
-  // 获取提案的投票详情
+  // get提案的投票详情
   static getProposalVotes(proposalId) {
     return votes.get(proposalId) || {};
   }
@@ -582,7 +582,7 @@ class WeightedVotingSystem {
     }
   }
   
-  // 获取治理统计信息
+  // get治理统计信息
   static getGovernanceStats() {
     const allProposals = this.getAllProposals();
     const stats = {
@@ -603,7 +603,7 @@ class WeightedVotingSystem {
     return stats;
   }
   
-  // 获取治理参数
+  // get治理参数
   static getGovernanceParams() {
     return { ...GOVERNANCE_PARAMS };
   }
@@ -625,7 +625,7 @@ class WeightedVotingSystem {
     }
   }
   
-  // 获取提案的执行状态
+  // get提案的执行状态
   static getProposalExecutionStatus(proposalId) {
     const proposal = proposals.get(proposalId);
     if (!proposal) {
@@ -647,7 +647,7 @@ class WeightedVotingSystem {
     };
   }
   
-  // 获取执行审计日志
+  // get执行Audit Log
   static getExecutionAuditLog(limit = 50) {
     return GOVERNANCE_PARAMS.executionAuditLog.slice(-limit);
   }

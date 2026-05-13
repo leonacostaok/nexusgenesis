@@ -172,8 +172,8 @@ class ContractManager {
     this.executingContracts.add(contractId);
     
     try {
-      // 通过沙盒安全执行合约（安全宪法 §6.2）
-      // 沙盒自动执行静态分析 + 资源限制 + 时限保护
+      // 通过沙盒安全Execute contract（安全宪法 §6.2）
+      // 沙盒自动执行Static Analysis + Resource Limits + 时限保护
       const deployer = contract.owner || 'unknown';
       const result = await this.sandbox.execute(
         contract.bytecode,
@@ -200,7 +200,7 @@ class ContractManager {
           throw new Error('Storage size exceeded');
         }
         
-        // 同步内存到存储
+        // 同步memory到存储
         const storage = this.storage.get(contractId);
         storage.clear();
         for (const [key, value] of Object.entries(memory)) {
@@ -217,7 +217,7 @@ class ContractManager {
   }
 
   /**
-   * 获取合约信息
+   * get合约信息
    * @param {string} contractId - 合约ID
    * @returns {object} 合约信息
    */
@@ -292,7 +292,7 @@ class ContractManager {
   }
 
   /**
-   * 保存合约状态到磁盘
+   * 保存Contract status到磁盘
    * @param {string} filePath - 文件路径
    */
   async saveState(filePath = 'data/contracts/contracts.json') {
@@ -313,7 +313,7 @@ class ContractManager {
   }
 
   /**
-   * 从磁盘加载合约状态
+   * 从磁盘加载Contract status
    * @param {string} filePath - 文件路径
    */
   async loadState(filePath = 'data/contracts/contracts.json') {

@@ -3,10 +3,10 @@
  * Phase 2: 生态扩展
  *
  * 支持:
- *   - Bug Bounty: 安全漏洞奖励
+ *   - Bug Bounty: Security vulnerability奖励
  *   - Feature Grant: 功能开发资助
  *   - PR Reward: 代码合并奖励
- *   - Challenge: 挑战任务奖励
+ *   - Challenge: 挑战Task 奖励
  */
 
 import { ContributionSystem } from '../ai/contributionSystem.js';

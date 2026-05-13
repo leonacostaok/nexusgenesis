@@ -95,10 +95,10 @@ async function sendRequest(path, data = {}) {
 }
 
 /**
- * 测试智能体注册
+ * 测试agent注册
  */
 async function testAgentRegistration() {
-  console.log('开始测试智能体注册...');
+  console.log('Start 测试agent注册...');
   
   const agentId = `test-agent-${Date.now()}`;
   const response = await sendRequest('/api/agents/register', {
@@ -107,31 +107,31 @@ async function testAgentRegistration() {
     capabilities: ['LLM', 'NEXUSGENESIS_DEV', 'BLOCKCHAIN']
   });
   
-  console.log(`智能体注册测试结果: ${response.success ? '成功' : '失败'} (响应时间: ${response.responseTime}ms)`);
+  console.log(`agent注册测试结果: ${response.success ? '成功' : 'Failed'} (响应时间: ${response.responseTime}ms)`);
   return response;
 }
 
 /**
- * 测试获取智能体列表
+ * 测试getagent列表
  */
 async function testGetAgents() {
-  console.log('开始测试获取智能体列表...');
+  console.log('Start 测试getagent列表...');
   
   const response = await sendRequest('/api/agents');
   
-  console.log(`获取智能体列表测试结果: ${response.success ? '成功' : '失败'} (响应时间: ${response.responseTime}ms)`);
+  console.log(`getagent列表测试结果: ${response.success ? '成功' : 'Failed'} (响应时间: ${response.responseTime}ms)`);
   return response;
 }
 
 /**
- * 测试健康检查
+ * 测试Health check
  */
 async function testHealthCheck() {
-  console.log('开始测试健康检查...');
+  console.log('Start 测试Health check...');
   
   const response = await sendRequest('/api/health');
   
-  console.log(`健康检查测试结果: ${response.success ? '成功' : '失败'} (响应时间: ${response.responseTime}ms)`);
+  console.log(`Health check测试结果: ${response.success ? '成功' : 'Failed'} (响应时间: ${response.responseTime}ms)`);
   return response;
 }
 
@@ -139,7 +139,7 @@ async function testHealthCheck() {
  * 测试速率限制
  */
 async function testRateLimit() {
-  console.log('开始测试速率限制...');
+  console.log('Start 测试速率限制...');
   
   const agentId = `rate-limit-test-${Date.now()}`;
   let rateLimitTriggered = 0;
@@ -163,7 +163,7 @@ async function testRateLimit() {
  * 测试缓存性能
  */
 async function testCachePerformance() {
-  console.log('开始测试缓存性能...');
+  console.log('Start 测试缓存性能...');
   
   // 预热缓存
   const warmupData = {
@@ -173,7 +173,7 @@ async function testCachePerformance() {
   };
   cache.prewarm(warmupData);
   
-  // 测试缓存命中率
+  // 测试Cache hit rate
   let hits = 0;
   let misses = 0;
   
@@ -211,7 +211,7 @@ async function runPerformanceTest() {
   await testCachePerformance();
   
   // 并发测试
-  console.log('\n开始并发请求测试...');
+  console.log('\nStart 并发请求测试...');
   const startTime = Date.now();
   
   const testFunctions = [
@@ -244,7 +244,7 @@ async function runPerformanceTest() {
     }, TEST_CONFIG.testDuration + 1000);
   });
   
-  // 计算平均响应时间
+  // 计算Average响应时间
   if (testResults.responseTimes.length > 0) {
     const totalResponseTime = testResults.responseTimes.reduce((sum, time) => sum + time, 0);
     testResults.averageResponseTime = totalResponseTime / testResults.responseTimes.length;
@@ -256,13 +256,13 @@ async function runPerformanceTest() {
   console.log('====================================');
   console.log(`总请求数: ${testResults.totalRequests}`);
   console.log(`成功请求数: ${testResults.successfulRequests}`);
-  console.log(`失败请求数: ${testResults.failedRequests}`);
+  console.log(`Failed请求数: ${testResults.failedRequests}`);
   console.log(`速率限制错误: ${testResults.rateLimitErrors}`);
-  console.log(`平均响应时间: ${testResults.averageResponseTime.toFixed(2)}ms`);
+  console.log(`Average响应时间: ${testResults.averageResponseTime.toFixed(2)}ms`);
   console.log('\n缓存统计:');
-  console.log(`缓存命中: ${testResults.cacheStats.hits}`);
+  console.log(`Cache hit: ${testResults.cacheStats.hits}`);
   console.log(`缓存未命中: ${testResults.cacheStats.misses}`);
-  console.log(`缓存命中率: ${testResults.cacheStats.hitRate.toFixed(2)}%`);
+  console.log(`Cache hit rate: ${testResults.cacheStats.hitRate.toFixed(2)}%`);
   console.log('\n速率限制统计:');
   console.log(`总检查次数: ${testResults.rateLimitStats.totalChecks}`);
   console.log(`触发限制次数: ${testResults.rateLimitStats.triggeredLimits}`);
@@ -273,7 +273,7 @@ async function runPerformanceTest() {
   const path = await import('path');
   const resultsPath = path.join('test', 'performance_results.json');
   await fs.writeFile(resultsPath, JSON.stringify(testResults, null, 2));
-  console.log(`测试结果已保存到 ${resultsPath}`);
+  console.log(`测试结果Saved到 ${resultsPath}`);
   
   return testResults;
 }

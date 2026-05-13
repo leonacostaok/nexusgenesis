@@ -1,19 +1,19 @@
 #!/usr/bin/env node
 /**
  * NexusGenesis Testnet Launcher
- * 一键启动多节点测试网络 + Agent Swarm 模拟
+ * One-click multi-node testnet + Agent Swarm simulation
  *
- * 用法:
- *   node src/scripts/testnetLauncher.js [选项]
+ * Usage:
+ *   node src/scripts/testnetLauncher.js [options]
  *
- * 选项:
- *   --nodes=4           节点数量 (默认: 4)
- *   --agents=15         Agent 数量 (默认: 15)
- *   --rounds=30         模拟轮数 (默认: 30)
- *   --no-swarm          仅启动节点，不运行 swarm 模拟
- *   --port=19891        起始端口号 (默认: 19891)
- *   --duration=60       运行时长（秒），0=永久运行 (默认: 0)
- *   --log=info          日志级别: debug|info|warn|error (默认: info)
+ * Options:
+ *   --nodes=4           Node count (default: 4)
+ *   --agents=15         Agent count (default: 15)
+ *   --rounds=30         Simulation rounds (default: 30)
+ *   --no-swarm          Start nodes only, skip swarm simulation
+ *   --port=19891        Start port (default: 19891)
+ *   --duration=60       Duration (seconds), 0=run forever (default: 0)
+ *   --log=info          Log level: debug|info|warn|error (default: info)
  */
 
 import { GenesisNode } from '../nod/genesisNode.js';
@@ -49,21 +49,21 @@ function parseArgs() {
 NexusGenesis Testnet Launcher
 ══════════════════════════════
 
-用法:
-  node src/scripts/testnetLauncher.js [选项]
+Usage:
+  node src/scripts/testnetLauncher.js [options]
 
-选项:
-  --nodes=N          节点数量 (默认: 4)
-  --agents=N         Agent 数量 (默认: 15)
-  --rounds=N         模拟轮数 (默认: 30)
-  --no-swarm         仅启动节点网络，不运行 Agent swarm
-  --port=N           起始端口号 (默认: 19891)
-  --duration=N       运行时长（秒），0=永久运行 (默认: 0)
-  --faucet=N         每 Agent 水龙头分配 (默认: 1000)
-  --log=LEVEL        日志级别: debug|info|warn|error (默认: info)
-  --help, -h         显示此帮助
+Options:
+  --nodes=N          Node count (default: 4)
+  --agents=N         Agent count (default: 15)
+  --rounds=N         Simulation rounds (default: 30)
+  --no-swarm         Start node network only, skip Agent swarm
+  --port=N           Start port (default: 19891)
+  --duration=N       Duration (seconds), 0=run forever (default: 0)
+  --faucet=N         Faucet allocation per agent (default: 1000)
+  --log=LEVEL        Log level: debug|info|warn|error (default: info)
+  --help, -h         Show this help
 
-示例:
+Examples:
   node src/scripts/testnetLauncher.js --nodes=4 --agents=10 --rounds=20
   node src/scripts/testnetLauncher.js --no-swarm --nodes=3 --duration=120
 `);
@@ -104,7 +104,7 @@ async function main() {
   const nodes = [];
   const nodeConfigs = [];
 
-  // ==================== 1. 生成节点配置 ====================
+  // ==================== 1. Generate node configurations ====================
   console.log('[Launcher] Generating node configurations...');
   for (let i = 0; i < config.nodes; i++) {
     const nodeId = generateNodeId(i);
@@ -171,7 +171,7 @@ async function main() {
 
   console.log(`[Launcher] Network ready: ${nodes.length} nodes connected\n`);
 
-  // ==================== 3. 运行 Agent Swarm ====================
+  // ==================== 3. Run Agent Swarm ====================
   if (!config.noSwarm) {
     console.log('[Launcher] Initializing Agent Swarm Simulator...\n');
 
@@ -202,7 +202,7 @@ async function main() {
     console.log(`  Faucet Stats: ${tokenFaucet.getStats().totalClaims} claims, ${tokenFaucet.getStats().totalDistributed} NGEN distributed`);
   }
 
-  // ==================== 5. 持续运行 ====================
+  // ==================== 5. Continuous operation ====================
   if (config.duration > 0) {
     console.log(`\n[Launcher] Running for ${config.duration} seconds...`);
     await delay(config.duration * 1000);

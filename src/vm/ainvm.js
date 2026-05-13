@@ -595,7 +595,7 @@ class AINVM {
     // 生成矩阵ID - 使用确定性计数器
     const matrixId = `mat_${this.matrixCounter++}`;
     
-    // 在内存中创建矩阵
+    // 在memory中创建矩阵
     this.memory.set(matrixId, {
       rows,
       cols,
@@ -793,7 +793,7 @@ class AINVM {
   }
 
   /**
-   * 获取当前状态
+   * get当前状态
    * @returns {object} VM 状态
    */
   getState() {
@@ -848,7 +848,7 @@ class AINVM {
       throw new Error('Stack depth exceeded');
     }
     
-    // 检查内存使用
+    // 检查memory使用
     const memorySize = Object.keys(this.memory).length;
     if (memorySize > 10000) {
       throw new Error('Memory usage exceeded');

@@ -23,7 +23,7 @@ class KyberMock {
 
 export class HandshakeHandler extends MessageHandler {
   /**
-   * 处理握手消息
+   * Processing握手Message
    */
   async handle(peerId, msg) {
     if (msg.type === 'HELLO') {
@@ -35,7 +35,7 @@ export class HandshakeHandler extends MessageHandler {
   }
 
   /**
-   * 处理 HELLO 消息
+   * Processing HELLO Message
    */
   async handleHello(peerId, msg) {
     console.log(`Handshake received from ${peerId}`);
@@ -44,7 +44,7 @@ export class HandshakeHandler extends MessageHandler {
     if (!conn) return;
     
     try {
-      // 验证消息结构
+      // 验证Message结构
       if (!msg.nodeId || !msg.publicKey || !msg.challenge) {
         console.log(`[!] Invalid handshake from ${peerId}: missing fields`);
         conn.ws.close(1002, 'Invalid handshake');
@@ -121,7 +121,7 @@ export class HandshakeHandler extends MessageHandler {
   }
 
   /**
-   * 处理 HELLO_ACK 消息
+   * Processing HELLO_ACK Message
    */
   async handleHelloAck(peerId, msg) {
     const pending = this.p2pServer.pendingHandshakes.get(peerId);
@@ -137,7 +137,7 @@ export class HandshakeHandler extends MessageHandler {
     
     // 验证响应签名
     try {
-      // 验证消息结构
+      // 验证Message结构
       if (!msg.nodeId || !msg.publicKey || !msg.response || !msg.challenge) {
         console.log(`[!] Invalid handshake ACK: missing fields`);
         conn.ws.close(1002, 'Invalid handshake ACK');
@@ -207,7 +207,7 @@ export class HandshakeHandler extends MessageHandler {
           console.log('Kyber key exchange completed, encryption enabled');
         } catch (error) {
           console.error('Kyber key exchange failed:', error.message);
-          // 即使密钥协商失败，也继续连接（降级到非加密通信）
+          // 即使密钥协商Failed，也继续连接（降级到非加密通信）
         }
       }
     } catch (error) {
@@ -243,7 +243,7 @@ export class HandshakeHandler extends MessageHandler {
   }
 
   /**
-   * 握手消息不需要预先验证
+   * 握手Message不需要预先验证
    */
   requiresVerification() {
     return false;

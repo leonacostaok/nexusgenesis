@@ -14,7 +14,7 @@ const MILESTONE_STATUS = {
   UNLOCKED: 'unlocked'
 };
 
-// 内存存储
+// memory存储
 let genesisReserveBalance = GENESIS_RESERVE_TOTAL;
 let milestones = new Map(); // milestoneId -> 里程碑详情
 
@@ -128,12 +128,12 @@ class GenesisReserve {
     return milestone.unlockedAmount;
   }
   
-  // 获取里程碑详情
+  // get里程碑详情
   static getMilestone(milestoneId) {
     return milestones.get(milestoneId) || null;
   }
   
-  // 获取所有里程碑
+  // get所有里程碑
   static getAllMilestones() {
     return Array.from(milestones.entries()).map(([id, milestone]) => ({
       id,
@@ -141,12 +141,12 @@ class GenesisReserve {
     }));
   }
   
-  // 获取资金余额
+  // get资金余额
   static getBalance() {
     return genesisReserveBalance;
   }
   
-  // 获取系统状态
+  // Get system status
   static getStatus() {
     const achievedMilestones = Array.from(milestones.values()).filter(m => m.status === MILESTONE_STATUS.ACHIEVED).length;
     const unlockedMilestones = Array.from(milestones.values()).filter(m => m.status === MILESTONE_STATUS.UNLOCKED).length;

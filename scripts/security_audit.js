@@ -4,7 +4,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { execSync } from 'child_process';
 
-// 安全审计配置
+// Security audit配置
 const CONFIG = {
   // 要检查的文件类型
   fileTypes: ['.js', '.json', '.env'],

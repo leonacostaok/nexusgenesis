@@ -1,6 +1,6 @@
 /**
- * NexusGenesis - 自动故障恢复管理器
- * 提供节点健康检测、自动恢复、状态修复和降级管理
+ * NexusGenesis - Automated Failure Recovery Manager
+ * Provides node health detection, auto-recovery, state repair, and degradation management
  */
 
 import fs from 'fs/promises';
@@ -102,7 +102,7 @@ class RecoveryManager {
       }
       await this._persistSnapshot(snapshot);
     } catch (e) {
-      // 快照失败不阻塞
+      // 快照Failed不阻塞
     }
   }
 
@@ -113,7 +113,7 @@ class RecoveryManager {
       const file = path.join(dir, `snapshot-${snapshot.timestamp}.json`);
       await fs.writeFile(file, JSON.stringify(snapshot, null, 2));
     } catch (e) {
-      // 静默失败
+      // 静默Failed
     }
   }
 
@@ -274,7 +274,7 @@ class RecoveryManager {
       await node.loadBlockchain();
       console.log('[RecoveryManager] Blockchain loaded, height:', node.blockchain?.length);
 
-      // 重新初始化共识
+      // Reinitializing共识
       if (node.initializeConsensus) {
         node.initializeConsensus();
         console.log('[RecoveryManager] Consensus reinitialized');
@@ -294,7 +294,7 @@ class RecoveryManager {
 
     console.log('[RecoveryManager] Attempting consensus recovery...');
 
-    // 回滚到上一个已确认的区块
+    // Rollback to last confirmed block
     const lastConfirmed = this.failureHistory
       .filter(h => h.type === 'block_confirmed')
       .slice(-1)[0];
@@ -305,7 +305,7 @@ class RecoveryManager {
       console.log(`[RecoveryManager] Rolled back blockchain to height ${rollbackHeight}`);
     }
 
-    // 重置共识状态
+    // Reset consensus state
     if (node.initializeConsensus) {
       node.initializeConsensus();
     }
@@ -321,12 +321,12 @@ class RecoveryManager {
 
     const entries = Array.from(node.mempool?.entries() || []);
     for (const [txId, tx] of entries) {
-      // 移除过期交易
+      // Remove expired transactions
       if (tx.timestamp && (now - tx.timestamp) > this.config.mempoolMaxAge) {
         node.mempool.delete(txId);
         removed++;
       }
-      // 移除零手续费的交易（可能是垃圾）
+      // Remove zero-fee transactions (potential spam)
       if (tx.fee === '0' || tx.fee === 0n) {
         node.mempool.delete(txId);
         removed++;
@@ -345,7 +345,7 @@ class RecoveryManager {
     const lastGoodSnapshot = this.snapshots[this.snapshots.length - 2];
     console.log(`[RecoveryManager] Rolling back state to snapshot at ${new Date(lastGoodSnapshot.timestamp).toISOString()}`);
 
-    // 回滚区块链到快照高度
+    // Rollback blockchain to snapshot height
     if (node.blockchain && lastGoodSnapshot.blockHeight > 0) {
       node.blockchain = node.blockchain.slice(0, lastGoodSnapshot.blockHeight);
     }
@@ -357,7 +357,7 @@ class RecoveryManager {
 
     console.log('[RecoveryManager] Attempting peer reconnection...');
 
-    // 尝试连接已知的对等节点
+    // Attempt connecting to known peers
     const backoff = Math.min(
       this.config.recoveryBackoffBase * Math.pow(2, (this.recoveryAttempts.get(FAILURE_TYPES.P2P_DISCONNECT) || 1) - 1),
       this.config.maxRecoveryBackoff
@@ -386,7 +386,7 @@ class RecoveryManager {
       }
     }
 
-    // 请求对等节点同步缺失的区块
+    // Request peers to sync missing blocks
     if (node.peers) {
       for (const [peerId, peer] of node.peers) {
         try {
@@ -401,7 +401,7 @@ class RecoveryManager {
             p2pServer.broadcast(msg);
           }
         } catch (e) {
-          // 单个对等节点失败容错
+          // 单个Peer nodesFailed容错
         }
       }
     }
@@ -440,7 +440,7 @@ class RecoveryManager {
     console.error(`[RecoveryManager] ESCALATION: ${failureType}`, issues);
     this._logEvent('escalation', { failureType, issues });
 
-    // 写入紧急日志
+    // Write emergency log
     try {
       const dir = path.join(__dirname, '../../data/recovery');
       await fs.mkdir(dir, { recursive: true });
@@ -461,11 +461,11 @@ class RecoveryManager {
     const node = this.nodeRef;
     if (!node) return;
 
-    // 通用的恢复策略：先尝试轻量修复
+    // 通用的Recovery strategy：先尝试轻量修复
     await this._repairMempool();
     await this._reconnectPeers();
 
-    // 如果节点状态不对，重新设置
+    // If node status is wrong, reset
     if (node.status === 'ERROR' && node.initialize) {
       try {
         await node.initialize();
@@ -487,7 +487,7 @@ class RecoveryManager {
         ...data
       }, null, 2)).catch(() => {});
     } catch (e) {
-      // 日志失败不影响恢复
+      // 日志Failed不影响恢复
     }
   }
 

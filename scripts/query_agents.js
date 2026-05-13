@@ -42,7 +42,7 @@ function readStateFile() {
 }
 
 /**
- * 获取 Agent Registry 数据
+ * get Agent Registry 数据
  * @param {object} state 状态对象
  * @returns {object} Agent Registry 数据
  */
@@ -110,10 +110,10 @@ function queryAgentByAddress(agentRegistry, address) {
   // 查找 agent_id
   let agentId;
   if (typeof addressIndex === 'object') {
-    // 处理对象形式的 addressIndex
+    // Processing对象形式的 addressIndex
     agentId = addressIndex[address];
   } else if (addressIndex instanceof Map) {
-    // 处理 Map 形式的 addressIndex
+    // Processing Map 形式的 addressIndex
     agentId = addressIndex.get(address);
   }
   
@@ -181,7 +181,7 @@ function main() {
     // 读取状态文件
     const state = readStateFile();
     
-    // 获取 Agent Registry 数据
+    // get Agent Registry 数据
     const agentRegistry = getAgentRegistry(state);
     
     // 解析命令行参数

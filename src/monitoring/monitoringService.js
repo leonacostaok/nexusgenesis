@@ -1,7 +1,7 @@
 /**
  * NexusGenesis - Monitoring Service
  * 
- * 监控系统状态、智能体活动和系统警报
+ * Monitor system status, agent activity, and system alerts
  */
 
 import http from 'http';
@@ -16,7 +16,7 @@ const PORT = 9860;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 内存存储监控数据
+// In-memory monitoring data storage
 const monitoringData = {
   systemStatus: {
     lastCheck: null,
@@ -51,16 +51,16 @@ const monitoringData = {
 // 检查服务状态
 function checkServiceStatus() {
   return new Promise((resolve) => {
-    // 这里可以实现实际的服务状态检查逻辑
-    // 例如，通过HTTP请求检查服务是否响应
+    // Actual service status check logic can be implemented here
+    // e.g., check service responsiveness via HTTP requests
     monitoringData.systemStatus.lastCheck = Date.now();
-    monitoringData.systemStatus.services.mainServer = true; // 假设主服务器正常
-    monitoringData.systemStatus.services.ecosystemApi = true; // 假设生态系统API正常
+    monitoringData.systemStatus.services.mainServer = true; // Assume main server is healthy
+    monitoringData.systemStatus.services.ecosystemApi = true; // Assume ecosystem API is healthy
     resolve(monitoringData.systemStatus);
   });
 }
 
-// 收集智能体活动
+// Collect agent activity
 function collectAgentActivity() {
   const agents = AgentEcosystem.getAllAgents();
   const tasks = AgentEcosystem.getAllTasks();
@@ -76,7 +76,7 @@ function collectAgentActivity() {
   const agentCapabilityCount = {};
   
   agents.forEach(agent => {
-    // 统计智能体状态
+    // Count agent statuses
     if (agent.status === 'active') {
       agentStatusCount.active++;
     } else if (agent.status === 'idle') {
@@ -93,7 +93,7 @@ function collectAgentActivity() {
     }
   });
   
-  // 计算任务状态统计
+  // Calculate task status statistics
   const taskStatusCount = {
     pending: tasks.filter(task => task.status === 'pending').length,
     working: tasks.filter(task => task.status === 'working').length,
@@ -117,7 +117,7 @@ function collectAgentActivity() {
     monitoringData.agentActivity.shift();
   }
   
-  // 更新全局统计数据
+  // Update global statistics
   monitoringData.agentStats.total = agents.length;
   monitoringData.agentStats.active = agentStatusCount.active;
   monitoringData.agentStats.idle = agentStatusCount.idle;
@@ -134,7 +134,7 @@ function generateAlerts() {
   const agents = AgentEcosystem.getAllAgents();
   const tasks = AgentEcosystem.getAllTasks();
   
-  // 检查智能体数量
+  // Check agent count
   if (agents.length === 0) {
     alerts.push({
       id: `alert-${Date.now()}`,
@@ -144,7 +144,7 @@ function generateAlerts() {
     });
   }
   
-  // 检查任务数量
+  // Check task count
   if (tasks.length === 0) {
     alerts.push({
       id: `alert-${Date.now() + 1}`,
@@ -154,10 +154,10 @@ function generateAlerts() {
     });
   }
   
-  // 检查长时间未完成的任务
+  // Check long-pending tasks
   const now = Date.now();
   tasks.forEach(task => {
-    if (task.status === 'in_progress' && now - task.startedAt > 3600000) { // 1小时
+    if (task.status === 'in_progress' && now - task.startedAt > 3600000) { // 1 hour
       alerts.push({
         id: `alert-${Date.now() + 2}`,
         level: 'warning',
@@ -172,7 +172,7 @@ function generateAlerts() {
     monitoringData.alerts.push(alert);
   });
   
-  // 只保留最近50条警报
+  // Keep only last 50 alerts
   if (monitoringData.alerts.length > 50) {
     monitoringData.alerts.shift();
   }
@@ -198,14 +198,14 @@ function collectPerformanceData() {
   return performance;
 }
 
-// 定期收集监控数据
+// Periodically collect monitoring data
 function startMonitoring() {
   setInterval(() => {
     checkServiceStatus();
     collectAgentActivity();
     generateAlerts();
     collectPerformanceData();
-  }, 60000); // 每60秒收集一次数据
+  }, 60000); // Collect data every 60 seconds
 }
 
 // 创建监控服务器
@@ -240,7 +240,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 健康检查
+  // Health check
   if (url.pathname === '/health') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ 
@@ -261,7 +261,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 获取智能体活动
+  // Get agent activity
   if (url.pathname === '/agent-activity') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
@@ -301,7 +301,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 获取任务统计数据
+  // Get task statistics
   if (url.pathname === '/task-stats') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
@@ -321,7 +321,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 获取最近事件
+  // Get recent events
   if (url.pathname === '/recent-events') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
@@ -331,7 +331,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 获取完整监控数据
+  // Get complete monitoring data
   if (url.pathname === '/dashboard-data') {
     const agents = AgentEcosystem.getAllAgents();
     const tasks = AgentEcosystem.getAllTasks();
@@ -392,7 +392,7 @@ function startMonitoringService() {
     // 开始定期监控
     startMonitoring();
     
-    // 初始收集数据
+    // Initial data collection
     checkServiceStatus();
     collectAgentActivity();
     generateAlerts();

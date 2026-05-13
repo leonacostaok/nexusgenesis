@@ -617,7 +617,7 @@ class NexusGenesisSDK {
     }
   }
 
-  // ==================== 健康检查 ====================
+  // ==================== Health check ====================
 
   async checkHealth() {
     try {

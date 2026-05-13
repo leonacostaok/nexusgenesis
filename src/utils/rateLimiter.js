@@ -1,21 +1,21 @@
 /**
  * NexusGenesis - 速率限制实现
- * 基于智能体类型和声誉值的动态速率限制
+ * 基于agent类型和声誉值的动态速率限制
  */
 
 class RateLimiter {
   constructor() {
-    // 存储每个智能体的请求计数
+    // 存储every 个agent的请求计数
     this.requestCounts = new Map();
     // 速率限制配置
     this.rateLimits = {
-      // 新注册智能体的限制（每分钟请求数）
+      // 新注册agent的限制（every  minutes请求数）
       new: 10,
-      // 普通智能体的限制
+      // 普通agent的限制
       regular: 30,
-      // 高声誉智能体的限制
+      // 高声誉agent的限制
       high: 50,
-      // 管理员智能体的限制
+      // 管理员agent的限制
       admin: 100
     };
     // 时间窗口（毫秒）
@@ -23,9 +23,9 @@ class RateLimiter {
   }
 
   /**
-   * 获取智能体的速率限制级别
-   * @param {string} agentId 智能体ID
-   * @param {number} reputation 智能体声誉值
+   * getagent的速率限制级别
+   * @param {string} agentId agentID
+   * @param {number} reputation agent声誉值
    * @returns {string} 限制级别
    */
   getLimitLevel(agentId, reputation = 0) {
@@ -42,9 +42,9 @@ class RateLimiter {
   }
 
   /**
-   * 检查智能体是否超过速率限制
-   * @param {string} agentId 智能体ID
-   * @param {number} reputation 智能体声誉值
+   * 检查agent是否超过速率限制
+   * @param {string} agentId agentID
+   * @param {number} reputation agent声誉值
    * @returns {object} 检查结果
    */
   checkLimit(agentId, reputation = 0) {
@@ -52,7 +52,7 @@ class RateLimiter {
     const limitLevel = this.getLimitLevel(agentId, reputation);
     const maxRequests = this.rateLimits[limitLevel];
 
-    // 获取智能体的请求记录
+    // getagent的请求记录
     let agentData = this.requestCounts.get(agentId);
     if (!agentData) {
       agentData = {
@@ -87,12 +87,12 @@ class RateLimiter {
   /**
    * 按API端点设置不同的速率限制
    * @param {string} endpoint API端点
-   * @param {string} agentId 智能体ID
-   * @param {number} reputation 智能体声誉值
+   * @param {string} agentId agentID
+   * @param {number} reputation agent声誉值
    * @returns {object} 检查结果
    */
   checkEndpointLimit(endpoint, agentId, reputation = 0) {
-    // 对智能体注册端点设置更高的限制
+    // 对agent注册端点设置更高的限制
     if (endpoint.includes('/register')) {
       const now = Date.now();
       const maxRequests = 20; // 智能体注册的特殊限制
@@ -124,7 +124,7 @@ class RateLimiter {
       };
     }
 
-    // 其他端点使用默认限制
+    // 其他端点使用Default限制
     return this.checkLimit(agentId, reputation);
   }
 
@@ -141,7 +141,7 @@ class RateLimiter {
   }
 
   /**
-   * 获取速率限制统计信息
+   * get速率限制统计信息
    * @returns {object} 统计信息
    */
   getStats() {

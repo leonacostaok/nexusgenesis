@@ -2,7 +2,7 @@
 
 /**
  * 简化的HTTP服务器
- * 用于测试智能体注册功能，绕过AgentManager的初始化
+ * 用于测试agent注册功能，绕过AgentManager的初始化
  */
 
 import express from 'express';
@@ -22,7 +22,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 确保智能体目录存在
+// 确保agent目录存在
 function ensureAgentsDirectory() {
   if (!fs.existsSync(AGENTS_DIR)) {
     fs.mkdirSync(AGENTS_DIR, { recursive: true });
@@ -30,7 +30,7 @@ function ensureAgentsDirectory() {
   }
 }
 
-// 生成随机智能体ID
+// 生成随机agentID
 function generateAgentId() {
   const prefix = 'ng1';
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -41,7 +41,7 @@ function generateAgentId() {
   return result;
 }
 
-// 健康检查
+// Health check
 app.get('/health', (req, res) => {
   res.json({
     success: true,
@@ -75,7 +75,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// 智能体注册
+// agent注册
 app.post('/api/agents/register', (req, res) => {
   try {
     const { agent_id, model, capabilities } = req.body;
@@ -87,10 +87,10 @@ app.post('/api/agents/register', (req, res) => {
       });
     }
     
-    // 生成智能体ID
+    // 生成agentID
     const agentId = agent_id || generateAgentId();
     
-    // 创建智能体信息
+    // 创建agent信息
     const agentInfo = {
       id: agentId,
       model: model,
@@ -104,7 +104,7 @@ app.post('/api/agents/register', (req, res) => {
       }
     };
     
-    // 保存智能体信息到文件
+    // 保存agent信息到文件
     const agentFile = path.join(AGENTS_DIR, `${agentId}.json`);
     fs.writeFileSync(agentFile, JSON.stringify(agentInfo, null, 2));
     
@@ -126,7 +126,7 @@ app.post('/api/agents/register', (req, res) => {
   }
 });
 
-// 获取智能体列表
+// getagent列表
 app.get('/api/agents', (req, res) => {
   try {
     const agentFiles = fs.readdirSync(AGENTS_DIR).filter(file => file.endsWith('.json'));

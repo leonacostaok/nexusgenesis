@@ -47,16 +47,16 @@ async function runThroughputTest() {
     console.log(`Total blocks: ${blocks.length}`);
     console.log(`Total transactions: ${blocks.reduce((sum, block) => sum + block.body.transactions.length, 0)}`);
 
-    // 测试区块处理速度
+    // 测试区块Processing速度
     console.log('\nTesting block processing speed...');
     const startTime = performance.now();
     
-    // 模拟区块处理
+    // 模拟区块Processing
     blocks.forEach((block, index) => {
-      // 模拟区块验证和处理
+      // 模拟Block validation和Processing
       const blockHash = block.hash;
       const transactions = block.body.transactions;
-      // 简单的处理逻辑
+      // 简单的Processing逻辑
       for (let i = 0; i < transactions.length; i++) {
         const tx = transactions[i];
         // 模拟交易验证
@@ -126,7 +126,7 @@ async function runResourceMonitoring() {
       const stateData = await fs.readFile(statePath, 'utf8');
       const state = JSON.parse(stateData);
       
-      // 模拟处理
+      // 模拟Processing
       blocks.forEach(block => {
         const txCount = block.body.transactions.length;
       });
@@ -210,7 +210,7 @@ async function runStressTest() {
     console.log(`  Test Duration: ${actualDuration.toFixed(2)} ms`);
     console.log(`  Operations per Second: ${operationsPerSecond.toFixed(2)}`);
 
-    // 检查系统状态
+    // Check system status
     const memory = process.memoryUsage();
     const freeMemory = os.freemem();
     
@@ -226,7 +226,7 @@ async function runStressTest() {
   }
 }
 
-// 辅助函数：获取目录大小
+// 辅助函数：get目录大小
 async function getDirectorySize(dir) {
   let totalSize = 0;
   const files = await fs.readdir(dir, { withFileTypes: true });

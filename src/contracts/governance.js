@@ -6,12 +6,12 @@
  * 2. 创建增强版提案
  * 3. 修改提案
  * 4. 撤回提案
- * 5. 开始投票
+ * 5. Start 投票
  * 6. 增强版投票
  * 7. 结束投票
- * 8. 获取提案信息
- * 9. 获取所有提案
- * 10. 获取治理参数
+ * 8. get提案信息
+ * 9. get所有提案
+ * 10. get治理参数
  * 11. 更新治理参数
  */
 
@@ -39,7 +39,7 @@ export const PROPOSAL_STATUS = {
   COOLDOWN: 'COOLDOWN'
 };
 
-// 治理参数默认值
+// 治理参数Default值
 const DEFAULT_GOVERNANCE_PARAMS = {
   minVotes: 1,
   votingPeriod: 7 * 24 * 60 * 60 * 1000, // 7天
@@ -164,7 +164,7 @@ export async function withdrawProposal(contractId, proposalId) {
 }
 
 /**
- * 开始投票
+ * Start 投票
  * @param {string} contractId 合约ID
  * @param {string} proposalId 提案ID
  * @returns {Promise<boolean>} 是否成功
@@ -261,7 +261,7 @@ export async function endVoting(contractId, proposalId) {
 }
 
 /**
- * 获取提案信息
+ * get提案信息
  * @param {string} contractId 合约ID
  * @param {string} proposalId 提案ID
  * @returns {Promise<object>} 提案信息
@@ -281,7 +281,7 @@ export async function getProposalInfo(contractId, proposalId) {
 }
 
 /**
- * 获取所有提案
+ * get所有提案
  * @param {string} contractId 合约ID
  * @returns {Promise<object[]>} 提案列表
  */
@@ -295,7 +295,7 @@ export async function getAllProposals(contractId) {
 }
 
 /**
- * 获取治理参数
+ * get治理参数
  * @param {string} contractId 合约ID
  * @returns {Promise<object>} 治理参数
  */

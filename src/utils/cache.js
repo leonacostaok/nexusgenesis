@@ -49,7 +49,7 @@ class Cache {
   }
 
   /**
-   * 获取缓存
+   * get缓存
    * @param {string} key 缓存键
    * @returns {any} 缓存值或undefined
    */
@@ -100,15 +100,15 @@ class Cache {
   }
 
   /**
-   * 获取缓存大小
-   * @returns {number} 缓存大小
+   * getCache size
+   * @returns {number} Cache size
    */
   size() {
     return this.cache.size;
   }
 
   /**
-   * 获取缓存统计信息
+   * get缓存统计信息
    * @returns {object} 统计信息
    */
   getStats() {
@@ -192,7 +192,7 @@ class Cache {
   }
 
   /**
-   * 获取缓存配置
+   * get缓存配置
    * @returns {object} 配置对象
    */
   getConfig() {

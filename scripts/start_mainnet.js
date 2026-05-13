@@ -18,7 +18,7 @@ async function startMainnet() {
     console.log(`Version: ${config.testnet.version}`);
     console.log('========================================');
 
-    // 确保日志目录存在
+    // Ensure log directory exists
     const logDir = path.dirname(config.logging.file);
     await fs.mkdir(logDir, { recursive: true });
 
@@ -28,7 +28,7 @@ async function startMainnet() {
       stdio: 'inherit'
     });
 
-    // 处理进程信号
+    // Processing进程信号
     process.on('SIGINT', async () => {
       console.log('\nShutting down mainnet...');
       nodeProcess.kill('SIGINT');

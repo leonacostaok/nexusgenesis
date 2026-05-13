@@ -2,9 +2,9 @@
  * Agent API
  * 
  * 功能：
- * 1. 智能体管理相关API
- * 2. 智能体信息查询
- * 3. 智能体状态管理
+ * 1. agent管理相关API
+ * 2. agent信息查询
+ * 3. agent状态管理
  */
 
 import express from 'express';
@@ -55,7 +55,7 @@ function validateCapabilities(capabilities) {
 }
 
 /**
- * 获取智能体信息
+ * getagent信息
  */
 router.get('/:agentId', async (req, res) => {
   try {
@@ -77,7 +77,7 @@ router.get('/:agentId', async (req, res) => {
 });
 
 /**
- * 更新智能体信息
+ * 更新agent信息
  */
 router.put('/:agentId', async (req, res) => {
   try {
@@ -118,7 +118,7 @@ router.put('/:agentId', async (req, res) => {
 });
 
 /**
- * 删除智能体
+ * 删除agent
  */
 router.delete('/:agentId', async (req, res) => {
   try {
@@ -140,7 +140,7 @@ router.delete('/:agentId', async (req, res) => {
 });
 
 /**
- * 获取智能体健康状态
+ * getagent健康状态
  */
 router.get('/:agentId/health', async (req, res) => {
   try {
@@ -162,7 +162,7 @@ router.get('/:agentId/health', async (req, res) => {
 });
 
 /**
- * 更新智能体健康状态
+ * 更新agent健康状态
  */
 router.put('/:agentId/health', async (req, res) => {
   try {

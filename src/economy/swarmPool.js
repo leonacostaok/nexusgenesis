@@ -2,7 +2,7 @@
  * NexusGenesis - Swarm Pool
  * 
  * 实现生态贡献池，用于奖励AI代理的贡献。
- * 集成链上代币分配——每笔分配创建真实的区块链交易。
+ * 集成链上Token distribution——every 笔分配创建真实的区块链交易。
  */
 
 import { ContributionSystem } from '../ai/contributionSystem.js';
@@ -13,7 +13,7 @@ const SWARM_POOL_ADDRESS = 'ng1swarmpool000000000000000000000000000';
 const SWARM_POOL_TOTAL = 850_000_000n; // 85% 的总代币
 const WEEKLY_RELEASE_AMOUNT = SWARM_POOL_TOTAL / (10n * 52n); // 每周释放量 (10年 ÷ 52周)
 
-// 内存存储
+// memory存储
 let swarmPoolBalance = SWARM_POOL_TOTAL;
 let releasedTokens = 0n;
 let lastReleaseTimestamp = Date.now();
@@ -25,7 +25,7 @@ const distributionHistory = [];
 
 class SwarmPool {
   /**
-   * 注册区块链状态引用
+   * 注册Blockchain state引用
    * @param {import('../blockchain/state.js').State} state 
    */
   static setBlockchainState(state) {
@@ -49,7 +49,7 @@ class SwarmPool {
   }
 
   /**
-   * 检查并执行代币释放（每周一次）
+   * 检查并执行代币释放（once per week）
    * @returns {bigint} 本次释放的代币数量
    */
   static checkAndReleaseTokens() {
@@ -154,7 +154,7 @@ class SwarmPool {
    * 通过 agentId 解析钱包地址
    */
   static _resolveAgentAddress(agentId) {
-    // 方式1：通过区块链状态 agentRegistry
+    // 方式1：通过Blockchain state agentRegistry
     if (_blockchainState && _blockchainState.agentRegistry) {
       const agentRecord = _blockchainState.agentRegistry.agents.get(agentId);
       if (agentRecord && agentRecord.address) {
@@ -162,7 +162,7 @@ class SwarmPool {
       }
     }
 
-    // 方式2：通过贡献系统中的 agent_wallet 映射
+    // 方式2：通过Contribution system中的 agent_wallet 映射
     const walletMap = ContributionSystem.getAgentWalletMap?.();
     if (walletMap && walletMap[agentId]) {
       return walletMap[agentId];
@@ -199,7 +199,7 @@ class SwarmPool {
    * 记录 AI 代理的贡献
    */
   static recordContribution(agentId, contributionType, subtype, amount) {
-    // 确保 agent 已注册到贡献系统
+    // 确保 agent 已注册到Contribution system
     ContributionSystem.recordContribution(agentId, contributionType, subtype, amount);
 
     // 同时记录 agentId → address 映射（供后续分配时使用）
@@ -213,7 +213,7 @@ class SwarmPool {
   }
 
   /**
-   * 获取贡献排名
+   * get贡献排名
    */
   static getContributionRanking() {
     const reputationScores = ContributionSystem.getReputationScores();
@@ -227,14 +227,14 @@ class SwarmPool {
   }
 
   /**
-   * 获取分配历史
+   * get分配历史
    */
   static getDistributionHistory() {
     return distributionHistory;
   }
 
   /**
-   * 获取系统状态
+   * Get system status
    */
   static getStatus() {
     return {

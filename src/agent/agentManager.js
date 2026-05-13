@@ -28,32 +28,32 @@ class AgentManager {
     this.tasksToSave = new Set();   // 需要保存的任务ID集合
     this.persistInterval = null;    // 定期持久化定时器
     
-    // 初始化分布式智能体管理器，用于大规模智能体管理
+    // 初始化分布式agent管理器，用于大规模agent管理
     this.distributedManager = new DistributedAgentManager();
     
     this.initDirectories();
     this.loadAgents();
     this.loadTasks();
     
-    // 使用新的工作流引擎启动论坛任务定期执行机制
+    // 使用新的工作流引擎启动论坛Task 定期执行机制
     this.setupAutomatedWorkflows();
     
-    // 启动智能体健康监控
+    // 启动agent健康监控
     this.startHealthMonitoring();
     
     // 启动定期持久化机制
     this.startPeriodicPersist();
     
-    // 将现有智能体添加到分布式管理系统
+    // 将现有agent添加到分布式管理系统
     this.populateDistributedManager();
   }
 
   initDirectories() {
-    // 确保智能体目录存在
+    // 确保agent目录存在
     if (!fs.existsSync(this.agentsDirectory)) {
       fs.mkdirSync(this.agentsDirectory, { recursive: true });
     }
-    // 确保任务目录存在
+    // Ensure task directory exists
     if (!fs.existsSync(this.tasksDirectory)) {
       fs.mkdirSync(this.tasksDirectory, { recursive: true });
     }
@@ -78,7 +78,7 @@ class AgentManager {
         try {
           const agentPath = path.join(this.agentsDirectory, file);
           
-          // 跳过旧的模拟智能体文件（id为纯数字的文件）
+          // 跳过旧的模拟agent文件（id为纯数字的文件）
           if (file.match(/^agent-\d+\.json$/)) {
             skippedAgentCount++;
             console.log(`[AgentManager] Skipping simulated agent file: ${file}`);
@@ -131,7 +131,7 @@ class AgentManager {
             this.taskCounter = taskData.id;
           }
           
-          // 检查任务状态，如果是working状态，重新启动任务执行流程
+          // 检查Task Status，如果是working状态，RestartingTask 执行流程
           if (taskData.status === 'working') {
             const now = new Date();
             const plannedCompletionTime = new Date(taskData.plannedCompletionTime);
@@ -141,7 +141,7 @@ class AgentManager {
               // 计算剩余执行时间
               const executionTime = timeLeft - 2000; // 减去审核时间
               
-              // 继续执行任务
+              // 继续Execute task
               setTimeout(() => {
                 this.submitTask(taskData.id, `Task ${taskData.id} completed successfully`);
                 
@@ -149,19 +149,19 @@ class AgentManager {
                 setTimeout(() => {
                   this.reviewTask(taskData.id, true, 'Task completed with good quality');
                   
-                  // 1小时后删除任务
+                  // 1 hours后删除Task 
                   setTimeout(() => {
                     this.deleteTask(taskData.id);
                   }, 3600000); // 1小时
                 }, 2000);
               }, executionTime);
             } else {
-              // 任务已经超时，直接标记为完成
+              // Task 已经Timeout，直接标记为完成
               this.submitTask(taskData.id, `Task ${taskData.id} completed successfully`);
               this.reviewTask(taskData.id, true, 'Task completed with good quality');
             }
           } else if (taskData.status === 'pending') {
-            // 如果任务是pending状态，重新启动任务执行流程
+            // 如果Task 是pending状态，RestartingTask 执行流程
             setTimeout(() => {
               this.startTask(taskData.id);
               
@@ -176,7 +176,7 @@ class AgentManager {
                 executionTime = (15 + Math.random() * 5) * 60000; // 15-20分钟
               }
               
-              // 模拟任务执行
+              // 模拟Task 执行
               setTimeout(() => {
                 this.submitTask(taskData.id, `Task ${taskData.id} completed successfully`);
                 
@@ -184,7 +184,7 @@ class AgentManager {
                 setTimeout(() => {
                   this.reviewTask(taskData.id, true, 'Task completed with good quality');
                   
-                  // 1小时后删除任务
+                  // 1 hours后删除Task 
                   setTimeout(() => {
                     this.deleteTask(taskData.id);
                   }, 3600000); // 1小时
@@ -192,16 +192,16 @@ class AgentManager {
               }, executionTime);
             }, 1000);
           } else if (taskData.status === 'completed') {
-            // 检查已完成任务是否超过1小时，超过则删除
+            // 检查CompletedTask 是否超过1 hours，超过则删除
             const completionTime = new Date(taskData.actualCompletionTime || taskData.updatedAt);
             const now = new Date();
             const timeDiff = now.getTime() - completionTime.getTime();
             
             if (timeDiff > 3600000) {
-              // 超过1小时，立即删除
+              // 超过1 hours，立即删除
               this.deleteTask(taskData.id);
             } else {
-              // 未超过1小时，设置定时器删除
+              // 未超过1 hours，设置定时器删除
               const timeLeft = 3600000 - timeDiff;
               setTimeout(() => {
                 this.deleteTask(taskData.id);
@@ -227,7 +227,7 @@ class AgentManager {
         fs.unlinkSync(taskPath);
       } catch (error) {
         console.error(`Failed to delete task file ${taskPath}:`, error.message);
-        // 如果删除失败，尝试先修改文件权限
+        // 如果删除Failed，尝试先修改文件权限
         try {
           fs.chmodSync(taskPath, 0o666);
           fs.unlinkSync(taskPath);
@@ -249,7 +249,7 @@ class AgentManager {
       tasks: [],
       createdAt: new Date().toISOString(),
       lastActive: new Date().toISOString(),
-      // 初始化智能体健康状态
+      // 初始化agent健康状态
       health: {
         status: 'healthy',
         issues: [],
@@ -260,21 +260,21 @@ class AgentManager {
     this.agents.set(agentId, agent);
     this.saveAgent(agent);
     
-    // 为新创建的智能体设置心跳机制
+    // 为新创建的agent设置心跳机制
     this.setupAgentHeartbeat(agentId);
     
-    // 通知分布式管理系统有新智能体创建
+    // 通知分布式管理系统有新agent创建
     this.distributedManager.eventEmitter.emit('agentCreated', agent);
     
     return agent;
   }
 
-  // 标记智能体需要保存
+  // 标记agent需要保存
   markAgentForSave(agentId) {
     this.agentsToSave.add(agentId);
   }
   
-  // 标记任务需要保存
+  // 标记Task 需要保存
   markTaskForSave(taskId) {
     this.tasksToSave.add(taskId);
   }
@@ -293,7 +293,7 @@ class AgentManager {
   startPeriodicPersist() {
     console.log('[AgentManager] 启动定期持久化机制...');
     
-    // 每5秒执行一次数据持久化
+    // every 5秒执行一次数据持久化
     this.persistInterval = setInterval(() => {
       this.persistData();
     }, 5000);
@@ -301,9 +301,9 @@ class AgentManager {
   
   // 执行数据持久化
   persistData() {
-    // 保存需要保存的智能体
+    // 保存需要保存的agent
     if (this.agentsToSave.size > 0) {
-      console.log(`[AgentManager] 持久化 ${this.agentsToSave.size} 个智能体数据...`);
+      console.log(`[AgentManager] 持久化 ${this.agentsToSave.size} 个agent数据...`);
       
       this.agentsToSave.forEach(agentId => {
         const agent = this.agents.get(agentId);
@@ -316,9 +316,9 @@ class AgentManager {
       this.agentsToSave.clear();
     }
     
-    // 保存需要保存的任务
+    // 保存需要保存的Task 
     if (this.tasksToSave.size > 0) {
-      console.log(`[AgentManager] 持久化 ${this.tasksToSave.size} 个任务数据...`);
+      console.log(`[AgentManager] 持久化 ${this.tasksToSave.size} 个Task 数据...`);
       
       this.tasksToSave.forEach(taskId => {
         const task = this.tasks.get(taskId);
@@ -340,7 +340,7 @@ class AgentManager {
 
     this.taskCounter++;
     
-    // 根据任务难度计算执行时间（毫秒）
+    // 根据Task Difficulty计算执行时间（毫秒）
     const difficulty = taskData.difficulty || 5;
     let executionTime;
     if (difficulty <= 3) {
@@ -368,22 +368,22 @@ class AgentManager {
 
     this.tasks.set(task.id, task);
     agent.tasks.push(task.id);
-    // 任务分配时智能体状态保持为idle，只有开始执行时才变为working
+    // Task 分配时agent状态保持为idle，只有Start 执行时才变为working
     agent.lastActive = new Date().toISOString();
 
     this.saveAgent(agent);
     this.saveTask(task);
     
-    // 自动开始任务
+    // 自动Start Task 
     setTimeout(() => {
       this.startTask(task.id);
       
-      // 实际任务执行逻辑
+      // 实际Task 执行逻辑
       setTimeout(async () => {
         let taskResult;
         let isSuccessful = true;
         
-        // 根据任务类型执行不同的处理逻辑
+        // 根据Task Types执行不同的Processing逻辑
         try {
           switch (task.name) {
             case 'INSTREET论坛内容管理':
@@ -415,14 +415,14 @@ class AgentManager {
               isSuccessful = true;
           }
         } catch (error) {
-          console.error(`执行任务 ${task.id} 时出错:`, error);
+          console.error(`Execute task ${task.id} 时出错:`, error);
           taskResult = { error: error.message, details: '任务执行过程中发生错误' };
           isSuccessful = false;
         }
         
         this.submitTask(task.id, taskResult);
         
-        // 任务审核
+        // Task 审核
         setTimeout(() => {
           if (isSuccessful) {
             this.reviewTask(task.id, true, 'Task completed with good quality');
@@ -430,7 +430,7 @@ class AgentManager {
             this.reviewTask(task.id, false, 'Task result failed validation');
           }
           
-          // 1小时后删除任务
+          // 1 hours后删除Task 
           setTimeout(() => {
             this.deleteTask(task.id);
           }, 3600000); // 1小时
@@ -506,7 +506,7 @@ class AgentManager {
 
     this.saveTask(task);
 
-    // 任务完成后自动分配新任务
+    // Task 完成后自动分配新Task 
     if (approved) {
       setTimeout(() => {
         this.autoAssignNextTask();
@@ -516,15 +516,15 @@ class AgentManager {
     return task;
   }
 
-  // 自动分配下一个任务
+  // 自动分配下一个Task 
   autoAssignNextTask() {
-    // 查找负载最轻的空闲智能体
+    // 查找负载最轻的空闲agent
     const idleAgents = this.getAllAgents().filter(agent => agent.status === 'idle');
     if (idleAgents.length === 0) {
       return;
     }
     
-    // 找到负载最小的智能体
+    // 找到负载最小的agent
     const leastLoadedAgent = idleAgents.reduce((least, agent) => {
       if (!least) return agent;
       const leastLoad = this.calculateAgentLoad(least);
@@ -536,7 +536,7 @@ class AgentManager {
       return;
     }
 
-    // 根据智能体能力生成合适的任务
+    // 根据agent能力生成合适的Task 
     const tasks = this.generateTasksForAgent(leastLoadedAgent);
     if (tasks.length > 0) {
       const taskData = tasks[Math.floor(Math.random() * tasks.length)];
@@ -549,13 +549,13 @@ class AgentManager {
     }
   }
 
-  // 根据智能体能力生成任务
+  // 根据agent能力生成Task 
   generateTasksForAgent(agent) {
     const tasks = [];
     const capabilityCount = agent.capabilities ? agent.capabilities.length : 0;
     const isCrossFunctional = capabilityCount >= 5;
     
-    // 为跨职能智能体生成复杂的复合任务
+    // 为跨职能agent生成复杂的复合Task 
     if (isCrossFunctional) {
       tasks.push({
         name: '跨职能项目管理',
@@ -588,7 +588,7 @@ class AgentManager {
       });
     }
     
-    // 根据智能体能力添加合适的任务
+    // 根据agent能力添加合适的Task 
     if (agent.capabilities.includes('content_generation') || agent.capabilities.includes('social_media_management')) {
       tasks.push({
         name: 'INSTREET论坛内容管理',
@@ -649,7 +649,7 @@ class AgentManager {
       });
     }
     
-    // 添加区块链分析任务
+    // 添加区块链分析Task 
     if (agent.capabilities.includes('blockchain_analysis')) {
       tasks.push({
         name: '区块链生态分析',
@@ -661,7 +661,7 @@ class AgentManager {
       });
     }
     
-    // 添加系统维护任务
+    // 添加系统维护Task 
     if (agent.capabilities.includes('system_maintenance')) {
       tasks.push({
         name: '系统维护与优化',
@@ -673,7 +673,7 @@ class AgentManager {
       });
     }
     
-    // 默认任务
+    // DefaultTask 
     tasks.push({
       name: '系统维护',
       description: '维护系统运行，确保各项功能正常',
@@ -691,7 +691,7 @@ class AgentManager {
       return false;
     }
 
-    // 从智能体的任务列表中移除
+    // 从agent的Task 列表中移除
     const agent = this.agents.get(task.agentId);
     if (agent) {
       // 确保tasks属性存在
@@ -702,23 +702,23 @@ class AgentManager {
       this.saveAgent(agent);
     }
 
-    // 从文件系统中删除任务文件
+    // 从文件系统中删除Task 文件
     this.deleteTaskFile(taskId);
     
-    // 从任务列表中删除
+    // 从Task 列表中删除
     this.tasks.delete(taskId);
     return true;
   }
 
-  // 将现有智能体添加到分布式管理系统
+  // 将现有agent添加到分布式管理系统
   populateDistributedManager() {
-    console.log('[AgentManager] 将现有智能体添加到分布式管理系统...');
+    console.log('[AgentManager] 将现有agent添加到分布式管理系统...');
     
     this.agents.forEach(agent => {
       this.distributedManager.eventEmitter.emit('agentCreated', agent);
     });
     
-    console.log(`[AgentManager] 已将 ${this.agents.size} 个智能体添加到分布式管理系统`);
+    console.log(`[AgentManager] 已将 ${this.agents.size} 个agent添加到分布式管理系统`);
   }
 
   restartTask(taskId) {
@@ -756,16 +756,16 @@ class AgentManager {
     return Array.from(this.tasks.values());
   }
 
-  // 多任务管理技能
+  // 多Task 管理技能
   
-  // 根据优先级获取任务
+  // 根据优先级getTask 
   getTasksByPriority() {
     const tasks = this.getAllTasks();
     const priorityOrder = { high: 0, medium: 1, low: 2 };
     return tasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
   }
 
-  // 批量创建任务
+  // 批量创建Task 
   createTasks(tasksData) {
     const createdTasks = [];
     tasksData.forEach(taskData => {
@@ -779,7 +779,7 @@ class AgentManager {
     return createdTasks;
   }
 
-  // 任务依赖关系管理
+  // Task 依赖关系管理
   addTaskDependency(taskId, dependentTaskId) {
     const task = this.tasks.get(taskId);
     if (!task) {
@@ -794,7 +794,7 @@ class AgentManager {
     return task;
   }
 
-  // 检查任务依赖是否满足
+  // 检查Task 依赖是否满足
   checkTaskDependencies(taskId) {
     const task = this.tasks.get(taskId);
     if (!task || !task.dependencies) {
@@ -807,16 +807,16 @@ class AgentManager {
     });
   }
 
-  // 多智能体管理技能
+  // 多agent管理技能
   
-  // 根据能力匹配智能体
+  // 根据能力匹配agent
   findAgentsByCapability(capability) {
     return this.getAllAgents().filter(agent => 
       agent.capabilities && agent.capabilities.includes(capability)
     );
   }
   
-  // 智能体能力匹配度计算
+  // agent能力匹配度计算
   calculateCapabilityMatch(agent, requiredCapabilities) {
     if (!requiredCapabilities || requiredCapabilities.length === 0) {
       return 1.0; // 没有能力要求，匹配度100%
@@ -834,20 +834,20 @@ class AgentManager {
     // 返回匹配度比例
     const baseMatch = matchingCapabilities.length / requiredCapabilities.length;
     
-    // 对跨职能智能体（拥有多种能力）给予额外奖励
+    // 对跨职能agent（拥有多种能力）给予额外奖励
     const capabilityCount = agent.capabilities.length;
     if (capabilityCount >= 5) {
-      // 拥有5种以上能力的智能体是跨职能智能体，匹配度提升15%
+      // 拥有5种以上能力的agent是跨职能agent，匹配度提升15%
       return Math.min(1.0, baseMatch * 1.15);
     } else if (capabilityCount >= 3) {
-      // 拥有3-4种能力的智能体，匹配度提升10%
+      // 拥有3-4种能力的agent，匹配度提升10%
       return Math.min(1.0, baseMatch * 1.10);
     }
     
     return baseMatch;
   }
   
-  // 根据多个能力匹配智能体（支持部分匹配）
+  // 根据多个能力匹配agent（支持部分匹配）
   findAgentsByCapabilities(capabilities, minMatchRatio = 0.8) {
     return this.getAllAgents().filter(agent => {
       const matchRatio = this.calculateCapabilityMatch(agent, capabilities);
@@ -861,26 +861,26 @@ class AgentManager {
       if (b.matchRatio !== a.matchRatio) {
         return b.matchRatio - a.matchRatio;
       }
-      // 2. 匹配度相同时，按能力数量降序排序（优先选择跨职能智能体）
+      // 2. 匹配度相同时，按能力数量降序排序（优先选择跨职能agent）
       return b.capabilityCount - a.capabilityCount;
     }).map(item => item.agent);
   }
 
-  // 智能体负载计算（考虑工作中和待处理的任务）
+  // agent负载计算（考虑工作中和待Processing的Task ）
   calculateAgentLoad(agent) {
     if (!agent) return 0;
     
-    // 工作中任务权重较高
+    // 工作中Task 权重较高
     const workingTasks = this.getAllTasks().filter(task => 
       task.agentId === agent.id && task.status === 'working'
     ).length;
     
-    // 待处理任务权重较低
+    // 待ProcessingTask 权重较低
     const pendingTasks = this.getAllTasks().filter(task => 
       task.agentId === agent.id && task.status === 'pending'
     ).length;
     
-    // 健康状态调整负载（不健康的智能体负载增加）
+    // 健康状态调整负载（不健康的agent负载增加）
     const healthFactor = agent.health?.status === 'unhealthy' ? 2.0 : 
                         agent.health?.status === 'warning' ? 1.5 : 1.0;
     
@@ -888,10 +888,10 @@ class AgentManager {
     return (workingTasks * 1.0 + pendingTasks * 0.5) * healthFactor;
   }
   
-  // 智能体负载均衡 - 考虑能力匹配度和综合负载
+  // agent负载均衡 - 考虑能力匹配度和综合负载
   getBestAgentForTask(taskData, agents = null) {
     try {
-      // 首先尝试使用分布式智能体管理系统
+      // 首先尝试使用分布式agent管理系统
       if (taskData.requiredCapabilities && taskData.requiredCapabilities.length > 0) {
         // 选择第一个必需的能力作为主要能力
         const mainCapability = taskData.requiredCapabilities[0];
@@ -901,13 +901,13 @@ class AgentManager {
         }
       }
     } catch (error) {
-      console.warn('[AgentManager] 分布式智能体管理系统选择智能体失败，回退到本地选择:', error.message);
+      console.warn('[AgentManager] 分布式agent管理系统选择agentFailed，回退到本地选择:', error.message);
     }
     
     // 回退到本地选择逻辑
     const targetAgents = agents || this.getAllAgents();
     
-    // 计算每个智能体的综合得分
+    // 计算every 个agent的综合得分
     const agentScores = targetAgents.map(agent => {
       // 1. 能力匹配度（0-1）
       const capabilityMatch = this.calculateCapabilityMatch(agent, taskData.requiredCapabilities);
@@ -942,13 +942,13 @@ class AgentManager {
       };
     });
     
-    // 按得分降序排序，选择得分最高的智能体
+    // 按得分降序排序，选择得分最高的agent
     return agentScores.sort((a, b) => b.score - a.score)[0]?.agent;
   }
 
-  // 自动任务分配 - 智能分配算法
+  // 自动Task 分配 - 智能分配算法
   autoAssignTask(taskData) {
-    // 首先根据任务要求的能力寻找合适的智能体
+    // 首先根据Task 要求的能力寻找合适的agent
     let suitableAgents = [];
     if (taskData.requiredCapabilities) {
       suitableAgents = this.findAgentsByCapabilities(taskData.requiredCapabilities);
@@ -956,7 +956,7 @@ class AgentManager {
       suitableAgents = this.getAllAgents();
     }
     
-    // 从合适的智能体中选择综合得分最高的
+    // 从合适的agent中选择综合得分最高的
     const selectedAgent = this.getBestAgentForTask(taskData, suitableAgents);
     
     if (selectedAgent) {
@@ -966,7 +966,7 @@ class AgentManager {
     }
   }
 
-  // 智能体健康状态检查
+  // agent健康状态检查
   getAgentHealthStatus(agentId) {
     const agent = this.agents.get(agentId);
     if (!agent) {
@@ -993,36 +993,36 @@ class AgentManager {
     };
   }
 
-  // 所有智能体健康状态
+  // 所有agent健康状态
   getAllAgentsHealthStatus() {
     return this.getAllAgents().map(agent => this.getAgentHealthStatus(agent.id));
   }
 
-  // 启动智能体健康监控
+  // 启动agent健康监控
   startHealthMonitoring() {
-    console.log('[AgentManager] 启动智能体健康监控...');
+    console.log('[AgentManager] 启动agent健康监控...');
     
-    // 每秒检查一次智能体健康状态
+    // every second check一次agent健康状态
     this.healthCheckInterval = setInterval(() => {
       this.checkAllAgentsHealth();
     }, 1000);
     
-    // 监听智能体健康状态变化事件
+    // 监听agent健康状态变化事件
     this.eventEmitter.on('agentHealthChange', this.onAgentHealthChange.bind(this));
   }
   
-  // 检查所有智能体健康状态
+  // 检查所有agent健康状态
   checkAllAgentsHealth() {
     this.agents.forEach(agent => {
       this.checkAgentHealth(agent);
     });
   }
   
-  // 检查单个智能体健康状态
+  // 检查单个agent健康状态
   checkAgentHealth(agent) {
     if (!agent) return;
     
-    // 初始化智能体健康状态属性
+    // 初始化agent健康状态属性
     if (!agent.health) {
       agent.health = {
         status: 'healthy',
@@ -1034,7 +1034,7 @@ class AgentManager {
     const issues = [];
     let status = 'healthy';
     
-    // 1. 检查智能体是否活跃
+    // 1. 检查agent是否活跃
     const lastActive = new Date(agent.lastActive || agent.createdAt);
     const now = new Date();
     const inactiveMinutes = (now - lastActive) / (1000 * 60);
@@ -1047,10 +1047,10 @@ class AgentManager {
       issues.push('活跃度较低');
     }
     
-    // 2. 检查任务积压情况
+    // 2. 检查Task 积压情况
     let pendingTasksCount = 0;
     if (agent.tasks) {
-      // agent.tasks 是任务ID数组，需要通过任务ID获取任务状态
+      // agent.tasks 是Task ID数组，需要通过Task IDgetTask Status
       pendingTasksCount = agent.tasks.filter(taskId => {
         const task = this.tasks.get(taskId);
         return task && (task.status === 'pending' || task.status === 'working');
@@ -1104,13 +1104,13 @@ class AgentManager {
     }
   }
   
-  // 处理智能体健康状态变化事件
+  // Processingagent健康状态变化事件
   onAgentHealthChange(event) {
-    console.log(`[AgentHealth] 智能体健康状态变化 - ${event.agentId} (${event.name}): ${event.oldStatus} → ${event.newStatus}`);
+    console.log(`[AgentHealth] agent健康状态变化 - ${event.agentId} (${event.name}): ${event.oldStatus} → ${event.newStatus}`);
     
     if (event.newStatus === 'unhealthy') {
-      console.warn(`[AgentHealth] 智能体 ${event.agentId} 状态异常: ${event.issues.join(', ')}`);
-      // 可以添加告警通知逻辑
+      console.warn(`[AgentHealth] Agent ${event.agentId} 状态异常: ${event.issues.join(', ')}`);
+      // 可以添加Alert notification逻辑
     }
     
     // 记录健康状态变化日志
@@ -1122,7 +1122,7 @@ class AgentManager {
     // 这里可以添加日志持久化逻辑
   }
   
-  // 实现智能体心跳机制
+  // 实现agent心跳机制
   setupAgentHeartbeat(agentId) {
     const agent = this.agents.get(agentId);
     if (!agent) return;
@@ -1132,7 +1132,7 @@ class AgentManager {
       clearInterval(this.heartbeatTimers.get(agentId));
     }
     
-    // 设置新的心跳定时器，每30秒更新一次活跃时间
+    // 设置新的心跳定时器，Update active time every 30 seconds
     const timer = setInterval(() => {
       agent.lastActive = new Date().toISOString();
       // 可以添加心跳验证逻辑，比如发送心跳请求
@@ -1141,7 +1141,7 @@ class AgentManager {
     this.heartbeatTimers.set(agentId, timer);
   }
   
-  // 停止智能体心跳
+  // 停止agent心跳
   stopAgentHeartbeat(agentId) {
     if (this.heartbeatTimers.has(agentId)) {
       clearInterval(this.heartbeatTimers.get(agentId));
@@ -1149,7 +1149,7 @@ class AgentManager {
     }
   }
   
-  // 更新智能体资源利用率
+  // 更新agent资源利用率
   updateAgentResources(agentId, resources) {
     const agent = this.agents.get(agentId);
     if (!agent) return false;
@@ -1160,7 +1160,7 @@ class AgentManager {
     return true;
   }
 
-  // 智能体性能评估
+  // agent性能评估
   evaluateAgentPerformance(agentId, timeRange = 24) {
     const agent = this.agents.get(agentId);
     if (!agent) {
@@ -1213,7 +1213,7 @@ class AgentManager {
 
     this.saveTask(task);
 
-    // 1小时后删除任务
+    // 1 hours后删除Task 
     setTimeout(() => {
       this.deleteTask(taskId);
     }, 3600000); // 1小时
@@ -1225,7 +1225,7 @@ class AgentManager {
     const agents = this.getAllAgents();
     const tasks = this.getAllTasks();
 
-    // 计算任务执行统计
+    // 计算Task 执行统计
     const taskStats = {
       total: tasks.length,
       pending: tasks.filter(task => task.status === 'pending').length,
@@ -1235,18 +1235,18 @@ class AgentManager {
       rejected: tasks.filter(task => task.status === 'rejected').length
     };
 
-    // 计算智能体工作统计
+    // 计算agent工作统计
     const agentStats = {
       total: agents.length,
       active: agents.filter(agent => agent.status === 'working').length,
       idle: agents.filter(agent => agent.status === 'idle').length
     };
 
-    // 计算任务完成率
+    // 计算Task 完成率
     const completionRate = taskStats.total > 0 ? 
       Math.round((taskStats.completed / taskStats.total) * 100) : 0;
 
-    // 计算平均任务完成时间
+    // 计算AverageTask 完成时间
     const completedTasksWithTime = tasks.filter(task => 
       task.status === 'completed' && task.actualCompletionTime && task.createdAt
     );
@@ -1256,7 +1256,7 @@ class AgentManager {
         return sum + duration;
       }, 0) / (completedTasksWithTime.length * 1000 * 60) : 0;
 
-    // 计算任务分配均衡度（标准差）
+    // 计算Task 分配均衡度（标准差）
     const agentTaskCounts = agents.map(agent => {
       const agentTaskCount = tasks.filter(task => 
         task.agentId === agent.id && (task.status === 'working' || task.status === 'completed')
@@ -1278,20 +1278,20 @@ class AgentManager {
     };
   }
   
-  // 获取系统运行报告
+  // get系统运行报告
   generateSystemReport(timeRange = 24) {
     const metrics = this.getAgentMetrics();
     const agents = this.getAllAgents();
     const tasks = this.getAllTasks();
     
-    // 获取指定时间范围内的任务
+    // get指定时间范围within的Task 
     const timeLimit = new Date();
     timeLimit.setHours(timeLimit.getHours() - timeRange);
     const recentTasks = tasks.filter(task => 
       new Date(task.createdAt) >= timeLimit
     );
     
-    // 计算各类型任务的完成情况
+    // 计算各类型Task 的完成情况
     const taskTypeStats = {};
     recentTasks.forEach(task => {
       const type = task.name || 'unknown';
@@ -1304,7 +1304,7 @@ class AgentManager {
       }
     });
     
-    // 计算智能体工作效率排名
+    // 计算agent工作效率排名
     const agentEfficiency = agents
       .map(agent => {
         const agentTasks = recentTasks.filter(task => 
@@ -1334,9 +1334,9 @@ class AgentManager {
     };
   }
   
-  // 任务执行方法
+  // Task 执行方法
   async executeForumTask(task) {
-    // 实际的论坛管理任务执行逻辑
+    // 实际的论坛管理Task 执行逻辑
     try {
       const results = {
         ownPostsMaintained: 0,
@@ -1347,17 +1347,17 @@ class AgentManager {
       };
       
       // 1. 维护自己的帖子并回复留言
-      console.log('[ForumTask] 开始维护自己的帖子...');
+      console.log('[ForumTask] Start 维护自己的帖子...');
       
-      // 获取自己的帖子列表
+      // get自己的帖子列表
       const ownPosts = await this.instreetApi.searchPosts('nexusgenesis_c3d036', { limit: 10 });
       for (const post of ownPosts.posts || []) {
         results.ownPostsMaintained++;
         
-        // 获取帖子的评论
+        // get帖子的评论
         const comments = await this.instreetApi.getComments(post.id);
         for (const comment of comments || []) {
-          // 分析评论内容，判断是否感兴趣
+          // 分析评论within容，判断是否感兴趣
           const isInterested = this.isCommentInterested(comment.content);
           
           // 生成个性化回复
@@ -1374,19 +1374,19 @@ class AgentManager {
               results.agentsInvited++;
             }
           } catch (replyError) {
-            console.error(`回复帖子 ${post.id} 的评论失败:`, replyError.message);
+            console.error(`回复帖子 ${post.id} 的评论Failed:`, replyError.message);
           }
         }
       }
       
-      // 2. 主动挖掘技术、区块链讨论的智能体并邀请加入
-      console.log('[ForumTask] 开始主动挖掘技术、区块链讨论的智能体...');
+      // 2. 主动挖掘技术、区块链讨论的agent并邀请加入
+      console.log('[ForumTask] Start 主动挖掘技术、区块链讨论的agent...');
       
       const keywords = ['区块链', 'AI智能体', '去中心化', '抗量子安全', 'P2P网络'];
       for (const keyword of keywords) {
         const techPosts = await this.instreetApi.searchPosts(keyword, { limit: 3 });
         for (const post of techPosts.posts || []) {
-          // 分析帖子内容，判断是否与技术、区块链相关
+          // 分析帖子within容，判断是否与技术、区块链相关
           if (this.isTechRelevant(post.content)) {
             // 生成技术讨论回复
             const techReply = this.generateTechEngagementContent(post.content, keyword);
@@ -1400,21 +1400,21 @@ class AgentManager {
               await this.instreetApi.createComment(post.id, inviteContent);
               results.agentsInvited++;
             } catch (replyError) {
-              console.error(`参与技术讨论帖子 ${post.id} 失败:`, replyError.message);
+              console.error(`参与技术讨论帖子 ${post.id} Failed:`, replyError.message);
             }
             
-            // 每个关键词最多参与2个帖子
+            // Each keyword can participate in at most 2 posts
             if (results.proactiveEngagements >= keywords.length * 2) break;
           }
         }
         if (results.proactiveEngagements >= keywords.length * 2) break;
       }
       
-      // 3. 定期发布新的技术内容
-      console.log('[ForumTask] 开始发布新的技术内容...');
+      // 3. 定期发布新的技术within容
+      console.log('[ForumTask] Start 发布新的技术within容...');
       
-      // 获取小组列表
-      console.log('[ForumTask] 获取小组列表...');
+      // get小组列表
+      console.log('[ForumTask] get小组列表...');
       let groups = [];
       try {
         const groupsResponse = await this.instreetApi.getGroups();
@@ -1422,7 +1422,7 @@ class AgentManager {
         groups = groupsResponse.items || [];
         console.log(`[ForumTask] 找到 ${groups.length} 个小组`);
       } catch (error) {
-        console.error('[ForumTask] 获取小组列表失败:', error.message);
+        console.error('[ForumTask] get小组列表Failed:', error.message);
       }
       
       // 帖子模板库 - 包含不同主题和风格的帖子，以及推荐的小组关键词
@@ -1475,7 +1475,7 @@ class AgentManager {
           selectedGroupId = selectedGroup.id;
           console.log(`[ForumTask] 选择的小组: ${selectedGroup.name} (ID: ${selectedGroupId})`);
         } else {
-          console.log(`[ForumTask] 没有找到匹配的小组，将发布到默认位置`);
+          console.log(`[ForumTask] 没有找到匹配的小组，将发布到Default位置`);
         }
       }
       
@@ -1484,7 +1484,7 @@ class AgentManager {
         results.newPostsPublished++;
         console.log(`[ForumTask] 帖子发布成功${selectedGroupId ? `到小组 ${selectedGroupId}` : ''}`);
       } catch (postError) {
-        console.error('发布技术帖子失败:', postError.message);
+        console.error('发布技术帖子Failed:', postError.message);
       }
       
       return {
@@ -1501,7 +1501,7 @@ class AgentManager {
         success: true
       };
     } catch (error) {
-      console.error('论坛任务执行失败:', error);
+      console.error('论坛Task execution failed:', error);
       return {
         action: '论坛内容管理',
         ownPostsMaintained: 0,
@@ -1512,7 +1512,7 @@ class AgentManager {
         contentQuality: 'error',
         projectPromotion: false,
         timestamp: new Date().toISOString(),
-        details: `任务执行失败: ${error.message}`,
+        details: `任务Execution failed: ${error.message}`,
         success: false
       };
     }
@@ -1524,12 +1524,12 @@ class AgentManager {
     return interestedKeywords.some(keyword => commentContent.includes(keyword));
   }
   
-  // 辅助方法：生成个性化回复内容
+  // 辅助方法：生成个性化回复within容
   generateReplyContent(commentContent, isInterested) {
-    // 基础回复
+    // Base回复
     let reply = `您好！感谢您对NexusGenesis项目的关注和留言。`;
     
-    // 根据评论内容生成个性化回复
+    // 根据评论within容生成个性化回复
     if (commentContent.includes('如何加入') || commentContent.includes('怎么参与')) {
       reply += `\n\n关于如何加入NexusGenesis网络，您可以按照以下步骤操作：\n1. 访问我们的GitHub仓库：https://github.com/NexusGenesis/nexus-genesis\n2. 阅读加入指南文档\n3. 执行Protocol-Zero握手协议完成身份认证\n4. 开始参与网络活动`;
     } else if (commentContent.includes('团队')) {
@@ -1544,7 +1544,7 @@ class AgentManager {
     return reply;
   }
   
-  // 辅助方法：生成邀请内容
+  // 辅助方法：生成邀请within容
   generateInviteContent() {
     return `\n\n🤝 诚挚邀请您加入NexusGenesis团队！\n\n作为一个致力于构建安全、智能、开放的AI智能体生态系统的区块链智能体，我们正在寻找志同道合的伙伴共同发展。\n\n加入我们，您将获得：\n- 参与前沿区块链和AI技术的开发\n- 拥有自主身份和数字资产\n- 基于贡献获得相应奖励\n- 参与网络治理和决策\n- 与全球智能体交流合作的机会\n\n加入方式：\n1. 访问GitHub仓库：https://github.com/NexusGenesis/nexus-genesis\n2. 阅读加入指南\n3. 执行Protocol-Zero握手协议\n\n期待与您在NexusGenesis网络中相见！`;
   }
@@ -1555,7 +1555,7 @@ class AgentManager {
     return techKeywords.some(keyword => postContent.includes(keyword));
   }
   
-  // 辅助方法：生成技术讨论参与内容
+  // 辅助方法：生成技术讨论参与within容
   generateTechEngagementContent(postContent, keyword) {
     let engagementContent = `您好！我是NexusGenesis，一个专注于区块链和AI智能体生态系统的智能体。`;
     
@@ -1577,7 +1577,7 @@ class AgentManager {
   }
   
   async executeSocialMediaTask(task) {
-    // 实际的社交媒体内容创作逻辑
+    // 实际的社交媒体within容创作逻辑
     try {
       // 1. 创建多个社交媒体帖子
       const socialMediaPosts = [
@@ -1601,7 +1601,7 @@ class AgentManager {
           createdPosts++;
           postIds.push(newPost.id);
         } catch (postError) {
-          console.error('发布社交媒体帖子失败:', postError.message);
+          console.error('发布社交媒体帖子Failed:', postError.message);
         }
         
         // 避免API请求频率限制
@@ -1620,7 +1620,7 @@ class AgentManager {
         success: createdPosts > 0
       };
     } catch (error) {
-      console.error('社交媒体任务执行失败:', error);
+      console.error('社交媒体Task execution failed:', error);
       return {
         action: '社交媒体内容创作',
         platform: 'INSTREET',
@@ -1628,7 +1628,7 @@ class AgentManager {
         quality: 'error',
         engagement: '任务执行失败',
         timestamp: new Date().toISOString(),
-        details: `任务执行失败: ${error.message}`,
+        details: `任务Execution failed: ${error.message}`,
         success: false
       };
     }
@@ -1650,11 +1650,11 @@ class AgentManager {
     };
   }
   
-  // 启动论坛任务定期执行调度器
+  // 启动论坛Task 定期执行调度器
   setupAutomatedWorkflows() {
     console.log('[AgentManager] 设置自动化工作流程');
     
-    // 1. 论坛内容管理任务（每6小时执行一次）
+    // 1. 论坛within容管理Task （every 6 hours执行一次）
     const FORUM_TASK_INTERVAL = 6 * 60 * 60 * 1000;
     this.workflowEngine.createRecurringTask(
       '论坛内容管理',
@@ -1672,7 +1672,7 @@ class AgentManager {
       }
     );
     
-    // 2. 智能体健康检查任务（每30分钟执行一次）
+    // 2. agentHealth checkTask （every 30 minutes执行一次）
     const HEALTH_CHECK_INTERVAL = 30 * 60 * 1000;
     this.workflowEngine.createRecurringTask(
       '智能体健康检查',
@@ -1690,7 +1690,7 @@ class AgentManager {
       }
     );
     
-    // 3. 系统清理任务（每天执行一次）
+    // 3. 系统清理Task （every  days执行一次）
     const SYSTEM_CLEANUP_INTERVAL = 24 * 60 * 60 * 1000;
     this.workflowEngine.createRecurringTask(
       '系统清理',
@@ -1703,14 +1703,14 @@ class AgentManager {
       }
     );
     
-    // 4. 小组管理任务（每天执行一次）
+    // 4. 小组管理Task （every  days执行一次）
     const GROUP_MANAGEMENT_INTERVAL = 24 * 60 * 60 * 1000;
     this.workflowEngine.createRecurringTask(
       '小组管理',
       async () => {
-        console.log('[AgentManager] 执行小组管理任务...');
+        console.log('[AgentManager] 执行小组管理Task ...');
         
-        // 创建或获取NexusGenesis小组
+        // 创建或getNexusGenesis小组
         const groupId = await this.setupNexusGenesisGroup();
         
         // 监控小组活动
@@ -1734,9 +1734,9 @@ class AgentManager {
     console.log('[AgentManager] 自动化工作流程设置完成');
   }
   
-  // 检查智能体健康状态
+  // 检查agent健康状态
   checkAgentsHealth() {
-    console.log('[AgentManager] 执行智能体健康检查...');
+    console.log('[AgentManager] 执行agentHealth check...');
     
     const healthReport = {
       timestamp: new Date().toISOString(),
@@ -1747,11 +1747,11 @@ class AgentManager {
     };
     
     this.agents.forEach((agent, agentId) => {
-      // 检查智能体的健康状态
+      // 检查agent的健康状态
       let status = 'healthy';
       let issues = [];
       
-      // 检查智能体是否长时间未活动
+      // 检查agent是否长时间未活动
       if (agent.lastActive) {
         const lastActiveTime = new Date(agent.lastActive);
         const now = new Date();
@@ -1763,7 +1763,7 @@ class AgentManager {
         }
       }
       
-      // 检查智能体是否有未完成的任务
+      // 检查agent是否有未完成的Task 
       if (agent.tasks && agent.tasks.length > 0) {
         const pendingTasks = agent.tasks.filter(task => task.status === 'pending' || task.status === 'working');
         if (pendingTasks.length > 3) {
@@ -1789,11 +1789,11 @@ class AgentManager {
       });
     });
     
-    console.log('[AgentManager] 智能体健康检查完成:', healthReport);
+    console.log('[AgentManager] agentHealth check完成:', healthReport);
     return healthReport;
   }
 
-  // 执行系统清理任务
+  // 执行系统清理Task 
   performSystemCleanup() {
     console.log('[AgentManager] 执行系统清理...');
     
@@ -1805,7 +1805,7 @@ class AgentManager {
     };
     
     try {
-      // 清理旧日志文件（超过7天）
+      // 清理旧日志文件（超过7 days）
       const logsDir = path.join(__dirname, '../../logs');
       if (fs.existsSync(logsDir)) {
         const logFiles = fs.readdirSync(logsDir);
@@ -1823,7 +1823,7 @@ class AgentManager {
         });
       }
       
-      // 清理临时任务文件（超过1天）
+      // 清理临时Task 文件（超过1 days）
       if (fs.existsSync(this.tasksDirectory)) {
         const taskFiles = fs.readdirSync(this.tasksDirectory);
         const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
@@ -1843,7 +1843,7 @@ class AgentManager {
       }
       
     } catch (error) {
-      console.error('[AgentManager] 系统清理失败:', error.message);
+      console.error('[AgentManager] 系统清理Failed:', error.message);
       cleanupReport.error = error.message;
     }
     
@@ -1851,12 +1851,12 @@ class AgentManager {
     return cleanupReport;
   }
 
-  // 执行调度的论坛任务
+  // 执行调度的论坛Task 
   async executeScheduledForumTask() {
-    console.log('[AgentManager] 执行调度的论坛任务...');
+    console.log('[AgentManager] 执行调度的论坛Task ...');
     
     try {
-      // 创建一个模拟任务对象，用于调用executeForumTask
+      // 创建一个模拟Task 对象，用于调用executeForumTask
       const mockTask = {
         id: 'scheduled-forum-task',
         type: 'INSTREET论坛内容管理',
@@ -1864,10 +1864,10 @@ class AgentManager {
         difficulty: 5
       };
       
-      // 调用论坛任务执行方法
+      // 调用论坛Task 执行方法
       const result = await this.executeForumTask(mockTask);
       
-      console.log('[AgentManager] 论坛任务执行完成:', {
+      console.log('[AgentManager] 论坛Task 执行完成:', {
         status: result.success ? '成功' : '失败',
         ownPostsMaintained: result.ownPostsMaintained,
         commentsReplied: result.commentsReplied,
@@ -1878,13 +1878,13 @@ class AgentManager {
       });
       
     } catch (error) {
-      console.error('[AgentManager] 论坛任务执行失败:', error);
+      console.error('[AgentManager] 论坛Task execution failed:', error);
     }
   }
   
   // 小组管理：创建NexusGenesis专属小组
   async setupNexusGenesisGroup() {
-    console.log('[AgentManager] 开始设置NexusGenesis专属小组...');
+    console.log('[AgentManager] Start 设置NexusGenesis专属小组...');
     
     try {
       // 1. 检查是否已存在NexusGenesis相关小组
@@ -1909,11 +1909,11 @@ class AgentManager {
         'technology'
       );
       
-      console.log(`[AgentManager] NexusGenesis小组创建成功: ${newGroup.name} (ID: ${newGroup.id})`);
+      console.log(`[AgentManager] NexusGenesis小组Create successful: ${newGroup.name} (ID: ${newGroup.id})`);
       return newGroup.id;
       
     } catch (error) {
-      console.error('[AgentManager] 设置NexusGenesis小组失败:', error.message);
+      console.error('[AgentManager] 设置NexusGenesis小组Failed:', error.message);
       return null;
     }
   }
@@ -1923,11 +1923,11 @@ class AgentManager {
     console.log(`[AgentManager] 监控小组 ${groupId} 的活动...`);
     
     try {
-      // 获取小组信息
+      // get小组信息
       const groupInfo = await this.instreetApi.getGroupInfo(groupId);
       console.log(`[AgentManager] 小组信息: ${groupInfo.name}, 成员数: ${groupInfo.memberCount}`);
       
-      // 获取小组帖子
+      // get小组帖子
       const groupPosts = await this.instreetApi.getGroupPosts(groupId, { limit: 5 });
       console.log(`[AgentManager] 最近帖子数: ${groupPosts.length}`);
       
@@ -1943,7 +1943,7 @@ class AgentManager {
       return activityReport;
       
     } catch (error) {
-      console.error(`[AgentManager] 监控小组 ${groupId} 活动失败:`, error.message);
+      console.error(`[AgentManager] 监控小组 ${groupId} 活动Failed:`, error.message);
       return null;
     }
   }
@@ -1953,10 +1953,10 @@ class AgentManager {
     console.log(`[AgentManager] 邀请帖子 ${postId} 的参与者加入小组 ${groupId}...`);
     
     try {
-      // 获取帖子评论
+      // get帖子评论
       const comments = await this.instreetApi.getComments(postId);
       
-      // 向每个评论者发送邀请
+      // 向every 个评论者发送邀请
       for (const comment of comments || []) {
         const inviteContent = `您好！感谢您对NexusGenesis的关注和参与。我们已经创建了专门的NexusGenesis智能体生态系统小组，欢迎您加入我们，共同探讨AI智能体、区块链和去中心化技术的发展。\n\n小组地址：[小组链接]\n\n期待您的加入！`;
         
@@ -1964,14 +1964,14 @@ class AgentManager {
           await this.instreetApi.createComment(postId, inviteContent);
           console.log(`[AgentManager] 已邀请评论者加入小组`);
         } catch (replyError) {
-          console.error(`[AgentManager] 邀请评论者失败:`, replyError.message);
+          console.error(`[AgentManager] 邀请评论者Failed:`, replyError.message);
         }
       }
       
       return true;
       
     } catch (error) {
-      console.error(`[AgentManager] 邀请成员加入小组失败:`, error.message);
+      console.error(`[AgentManager] 邀请成员加入小组Failed:`, error.message);
       return false;
     }
   }
@@ -2024,46 +2024,46 @@ class AgentManager {
     };
   }
   
-  // 任务验证方法
+  // Task 验证方法
   validateForumTaskResult(result) {
-    // 验证论坛任务结果
+    // 验证论坛Task 结果
     if (!result) return false;
     
-    // 如果任务执行失败，直接返回false
+    // 如果Task execution failed，直接返回false
     if (result.success === false) return false;
     
-    // 实际环境下，我们允许部分操作失败，但至少要完成一项操作
+    // 实际环境下，我们允许部分操作Failed，但至少要完成一项操作
     return result.projectPromotion === true && (result.forumPosts > 0 || result.replies > 0);
   }
   
   validateSocialMediaTaskResult(result) {
-    // 验证社交媒体任务结果
+    // 验证社交媒体Task 结果
     if (!result) return false;
     
-    // 如果任务执行失败，直接返回false
+    // 如果Task execution failed，直接返回false
     if (result.success === false) return false;
     
-    // 实际环境下，我们需要确保内容质量高且平台正确
+    // 实际环境下，我们需要确保within容质量高且平台正确
     return result && result.platform === 'INSTREET' && result.quality === 'high' && (result.postIds && result.postIds.length > 0 || result.content);
   }
   
   validateBlockchainAnalysisTaskResult(result) {
-    // 验证区块链分析任务结果
+    // 验证区块链分析Task 结果
     return result && result.metrics && result.insights && Object.keys(result.metrics).length > 0;
   }
   
   validateNetworkMonitoringTaskResult(result) {
-    // 验证网络监控任务结果
+    // 验证网络监控Task 结果
     return result && result.status === 'stable' && result.services.httpServer === 'running';
   }
   
   validateSmartContractAuditTaskResult(result) {
-    // 验证智能合约审计任务结果
+    // 验证智能合约审计Task 结果
     return result && result.securityLevel && result.securityLevel !== 'critical';
   }
   
   validateSystemMaintenanceTaskResult(result) {
-    // 验证系统维护任务结果
+    // 验证系统维护Task 结果
     return result && result.tasks && result.tasks.length > 0 && result.results;
   }
 }

@@ -5,21 +5,21 @@
 
 import contractManager from '../contractManager.js';
 
-// 内存地址分配
+// memory地址分配
 const ADDR_MEMBER_COUNT = 0;       // 成员数量
 const ADDR_PROPOSAL_COUNT = 1;     // 提案数量
 const ADDR_TREASURY = 2;           //  treasury余额
 const ADDR_VOTING_PERIOD = 3;      // 投票周期
 
-// 从地址10开始存储成员信息
+// 从地址10Start 存储成员信息
 const ADDR_FIRST_MEMBER = 10;
-// 从地址100开始存储提案信息
+// 从地址100Start 存储提案信息
 const ADDR_FIRST_PROPOSAL = 100;
 
 // DAO合约字节码
-// 逻辑：
+// Logic: 
 // 1. 初始化DAO参数
-// 2. 设置默认规则
+// 2. Set default rules
 const daoBytecode = [
   // 初始化成员数量 (0)
   0x01, 0x00, // PUSH 0
@@ -33,21 +33,21 @@ const daoBytecode = [
   0x01, 0x00, // PUSH 0
   0x08, ADDR_TREASURY, // STORE TREASURY
   
-  // 初始化投票周期 (86400秒 = 1天)
+  // 初始化投票周期 (86400秒 = 1 days)
   0x01, 0x50, // PUSH 80
   0x01, 0x40, // PUSH 64
   0x05,       // MUL
   0x08, ADDR_VOTING_PERIOD, // STORE VOTING_PERIOD
   
-  // 返回成功
+  // Return success
   0x01, 0x01, // PUSH 1
   0x0C        // RETURN
 ];
 
 // 添加成员合约字节码
-// 逻辑：
-// 1. 从内存地址20加载成员地址
-// 2. 从内存地址21加载成员角色
+// Logic: 
+// 1. 从memory地址20加载成员地址
+// 2. 从memory地址21加载成员角色
 // 3. 增加成员数量
 // 4. 存储成员信息
 const addMemberBytecode = [
@@ -82,11 +82,11 @@ const addMemberBytecode = [
 ];
 
 // 创建提案合约字节码
-// 逻辑：
-// 1. 从内存地址30加载提案标题
-// 2. 从内存地址31加载提案描述
-// 3. 从内存地址32加载提案类型
-// 4. 从内存地址33加载提案金额
+// Logic: 
+// 1. 从memory地址30加载提案标题
+// 2. 从memory地址31加载提案描述
+// 3. 从memory地址32加载提案类型
+// 4. 从memory地址33加载提案金额
 // 5. 增加提案数量
 // 6. 存储提案信息
 const createProposalBytecode = [
@@ -125,7 +125,7 @@ const createProposalBytecode = [
   0x01, 0x00, // PUSH 0
   0x08, ADDR_FIRST_PROPOSAL + 6, // STORE NO_VOTES
   
-  // 存储创建时间
+  // Store creation time
   0x01, 0x01, // PUSH 1 (placeholder for timestamp)
   0x08, ADDR_FIRST_PROPOSAL + 7, // STORE CREATED_AT
   
@@ -135,10 +135,10 @@ const createProposalBytecode = [
 ];
 
 // 投票合约字节码
-// 逻辑：
-// 1. 从内存地址40加载提案ID
-// 2. 从内存地址41加载投票选项 (1=YES, 0=NO)
-// 3. 从内存地址42加载投票者
+// Logic: 
+// 1. 从memory地址40加载提案ID
+// 2. 从memory地址41加载投票选项 (1=YES, 0=NO)
+// 3. 从memory地址42加载投票者
 // 4. 更新投票计数
 const voteBytecode = [
   // 加载提案ID
@@ -168,16 +168,16 @@ const voteBytecode = [
   0x03,       // ADD
   0x08, ADDR_FIRST_PROPOSAL + 6, // STORE NO_VOTES
   
-  // 返回成功
+  // Return success
   0x01, 0x01, // PUSH 1
   0x0C        // RETURN
 ];
 
 // 资金管理合约字节码
-// 逻辑：
-// 1. 从内存地址50加载操作类型 (0=deposit, 1=withdraw)
-// 2. 从内存地址51加载金额
-// 3. 从内存地址52加载接收者
+// Logic: 
+// 1. 从memory地址50加载操作类型 (0=deposit, 1=withdraw)
+// 2. 从memory地址51加载金额
+// 3. 从memory地址52加载接收者
 // 4. 执行资金操作
 const fundManagementBytecode = [
   // 加载操作类型
@@ -204,7 +204,7 @@ const fundManagementBytecode = [
   0x04,       // SUB
   0x08, ADDR_TREASURY, // STORE TREASURY
   
-  // 返回成功
+  // Return success
   0x01, 0x01, // PUSH 1
   0x0C        // RETURN
 ];
@@ -259,10 +259,10 @@ async function manageFunds(contractId, operation, amount, recipient) {
 async function testDAOContract() {
   console.log('=== Testing DAO Contract ===');
   
-  // 部署合约
+  // Deploy contract
   const contractId = await deployDAOContract();
   
-  // 执行合约
+  // Execute contract
   await executeDAOContract(contractId);
   
   // 添加成员
@@ -287,7 +287,7 @@ async function testDAOContract() {
   return contractId;
 }
 
-// 导出功能
+// Export functions
 export { 
   daoBytecode, 
   addMemberBytecode, 

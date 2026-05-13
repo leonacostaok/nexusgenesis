@@ -4,8 +4,8 @@
  * 功能：
  * 1. 领导者选举（基于声誉和随机性）
  * 2. 轮值出块
- * 3. 区块验证和确认
- * 4. 容错处理
+ * 3. Block validation和确认
+ * 4. 容错Processing
  */
 
 import crypto from 'crypto';
@@ -115,7 +115,7 @@ export class MultiLeaderConsensus {
   }
 
   /**
-   * 获取当前领导者
+   * get当前领导者
    */
   getCurrentLeader() {
     if (!this.roundLeader || this.shouldRotateLeader()) {
@@ -160,7 +160,7 @@ export class MultiLeaderConsensus {
   /**
    * 确认区块
    * @param {string} blockHash - 区块哈希
-   * @param {string} validatorId - 验证者ID
+   * @param {string} validatorId - ValidatorID
    */
   confirmBlock(blockHash, validatorId) {
     const blockInfo = this.blockConfirmations.get(blockHash);
@@ -190,7 +190,7 @@ export class MultiLeaderConsensus {
   }
 
   /**
-   * 获取区块状态
+   * get区块状态
    * @param {string} blockHash - 区块哈希
    */
   getBlockStatus(blockHash) {
@@ -207,7 +207,7 @@ export class MultiLeaderConsensus {
   }
 
   /**
-   * 获取共识统计
+   * get共识统计
    */
   getStats() {
     const activeLeaders = Array.from(this.leaders.values()).filter(l => l.isActive);

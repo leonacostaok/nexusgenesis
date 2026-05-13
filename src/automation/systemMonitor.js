@@ -1,6 +1,6 @@
 /**
- * NexusGenesis 系统监控与告警服务
- * 提供全面的系统状态监控和智能告警功能
+ * NexusGenesis System Monitoring & Alerting Service
+ * Provides comprehensive system status monitoring and intelligent alerting
  */
 
 import fs from 'fs';
@@ -12,7 +12,7 @@ import rewardSystem from '../reward/rewardSystem.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 监控指标类型
+// Monitoring metrics类型
 const METRIC_TYPES = {
   CPU_USAGE: 'cpu_usage',
   MEMORY_USAGE: 'memory_usage',
@@ -23,7 +23,7 @@ const METRIC_TYPES = {
   P2P_PEER_COUNT: 'p2p_peer_count',
   AGENT_HEALTH: 'agent_health',
   TASK_EXECUTION_RATE: 'task_execution_rate',
-  // 新增任务管理相关指标
+  // 新增Task 管理相关指标
   TASK_CREATION_RATE: 'task_creation_rate',
   TASK_COMPLETION_RATE: 'task_completion_rate',
   TASK_QUALITY_SCORE: 'task_quality_score',
@@ -42,7 +42,7 @@ const METRIC_TYPES = {
   GOVERNANCE_VOTE_TURNOUT: 'governance_vote_turnout',
   GOVERNANCE_PARAM_CHANGES: 'governance_param_changes',
   GOVERNANCE_PROPOSAL_VALIDATION_RATE: 'governance_proposal_validation_rate',
-  // 新增智能体健康和贡献度相关指标
+  // 新增agent健康和贡献度相关指标
   AGENT_CONTRIBUTION: 'agent_contribution',
   AGENT_REPUTATION: 'agent_reputation',
   AGENT_ACTIVITY: 'agent_activity',
@@ -93,24 +93,24 @@ class SystemMonitor {
     if (!fs.existsSync(this.alertsDirectory)) {
       fs.mkdirSync(this.alertsDirectory, { recursive: true });
     }
-    // 确保日志目录存在
+    // Ensure log directory exists
     if (!fs.existsSync(this.logsDirectory)) {
       fs.mkdirSync(this.logsDirectory, { recursive: true });
     }
   }
 
-  // 加载告警规则
+  // 加载Alert rules
   loadAlertRules() {
-    // 优化后的告警规则
+    // Optimized alert rules
     const defaultRules = [
-      // CPU 告警规则
+      // CPU alert rules
       {
         id: 'cpu_high',
         name: 'CPU使用率过高',
         metric: METRIC_TYPES.CPU_USAGE,
         condition: (value) => value > 75,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `CPU使用率 ${value.toFixed(1)}% 超过75%`,
+        message: (value) => `CPU usage ${value.toFixed(1)}% exceeds 75%`,
         enabled: true
       },
       {
@@ -119,18 +119,18 @@ class SystemMonitor {
         metric: METRIC_TYPES.CPU_USAGE,
         condition: (value) => value > 90,
         level: ALERT_LEVELS.CRITICAL,
-        message: (value) => `CPU使用率 ${value.toFixed(1)}% 超过90%，系统负载过高`,
+        message: (value) => `CPU usage ${value.toFixed(1)}% exceeds 90%, system overload`,
         enabled: true
       },
       
-      // 内存 告警规则
+      // Memory alert rules
       {
         id: 'memory_high',
         name: '内存使用率过高',
         metric: METRIC_TYPES.MEMORY_USAGE,
         condition: (value) => value > 70,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `内存使用率 ${value.toFixed(1)}% 超过70%`,
+        message: (value) => `Memory usage ${value.toFixed(1)}% exceeds 70%`,
         enabled: true
       },
       {
@@ -139,18 +139,18 @@ class SystemMonitor {
         metric: METRIC_TYPES.MEMORY_USAGE,
         condition: (value) => value > 85,
         level: ALERT_LEVELS.CRITICAL,
-        message: (value) => `内存使用率 ${value.toFixed(1)}% 超过85%，系统可能面临崩溃风险`,
+        message: (value) => `Memory usage ${value.toFixed(1)}% exceeds 85%, system may crash`,
         enabled: true
       },
       
-      // 磁盘 告警规则
+      // Disk alert rules
       {
         id: 'disk_low',
         name: '磁盘空间不足',
         metric: METRIC_TYPES.DISK_USAGE,
         condition: (value) => value < 25,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `磁盘可用空间 ${value.toFixed(1)}% 低于25%，建议清理磁盘`,
+        message: (value) => `Disk available space ${value.toFixed(1)}% below 25%, recommend disk cleanup`,
         enabled: true
       },
       {
@@ -159,7 +159,7 @@ class SystemMonitor {
         metric: METRIC_TYPES.DISK_USAGE,
         condition: (value) => value < 15,
         level: ALERT_LEVELS.CRITICAL,
-        message: (value) => `磁盘可用空间 ${value.toFixed(1)}% 低于15%，系统可能无法正常运行`,
+        message: (value) => `Disk available space ${value.toFixed(1)}% below 15%, system may not function properly`,
         enabled: true
       },
       {
@@ -168,18 +168,18 @@ class SystemMonitor {
         metric: METRIC_TYPES.DISK_USAGE,
         condition: (value) => value < 10,
         level: ALERT_LEVELS.CRITICAL,
-        message: (value) => `磁盘可用空间 ${value.toFixed(1)}% 低于10%，系统面临崩溃风险！`,
+        message: (value) => `Disk available space ${value.toFixed(1)}% below 10%, system faces crash risk!`,
         enabled: true
       },
       
-      // P2P 节点告警规则
+      // P2P peer alert rules
       {
         id: 'p2p_peers_low',
         name: 'P2P节点连接数不足',
         metric: METRIC_TYPES.P2P_PEER_COUNT,
         condition: (value) => value < 2,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `P2P节点连接数 ${value} 个，低于2个，网络稳定性可能受影响`,
+        message: (value) => `P2P peer count ${value} below 2, network stability may be affected`,
         enabled: true
       },
       {
@@ -192,14 +192,14 @@ class SystemMonitor {
         enabled: true
       },
       
-      // API 告警规则
+      // API alert rules
       {
         id: 'api_success_rate_low',
         name: 'API调用成功率低',
         metric: METRIC_TYPES.API_SUCCESS_RATE,
         condition: (value) => value < 95,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `API调用成功率 ${value.toFixed(1)}% 低于95%`,
+        message: (value) => `API success rate ${value.toFixed(1)}% below 95%`,
         enabled: true
       },
       {
@@ -208,18 +208,18 @@ class SystemMonitor {
         metric: METRIC_TYPES.API_SUCCESS_RATE,
         condition: (value) => value < 85,
         level: ALERT_LEVELS.ERROR,
-        message: (value) => `API调用成功率 ${value.toFixed(1)}% 低于85%，系统服务异常`,
+        message: (value) => `API success rate ${value.toFixed(1)}% below 85%, system service anomaly`,
         enabled: true
       },
       
-      // 智能体 告警规则
+      // Agent Alert rules
       {
         id: 'agent_unhealthy',
         name: '智能体状态异常',
         metric: METRIC_TYPES.AGENT_HEALTH,
         condition: (value) => value.unhealthyCount > 0,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `有${value.unhealthyCount}/${value.totalCount}个智能体状态异常`,
+        message: (value) => `有${value.unhealthyCount}/${value.totalCount}个Agent status abnormal`,
         enabled: true
       },
       {
@@ -228,11 +228,11 @@ class SystemMonitor {
         metric: METRIC_TYPES.AGENT_HEALTH,
         condition: (value) => value.totalCount > 0 && (value.unhealthyCount / value.totalCount) > 0.5,
         level: ALERT_LEVELS.ERROR,
-        message: (value) => `超过50%的智能体(${value.unhealthyCount}/${value.totalCount})状态异常，系统可能面临崩溃风险`,
+        message: (value) => `Over 50% of agents(${value.unhealthyCount}/${value.totalCount}) abnormal, system may crash`,
         enabled: true
       },
       
-      // 区块链 告警规则
+      // Blockchain alert rules
       {
         id: 'blockchain_stalled',
         name: '区块链高度停滞',
@@ -248,14 +248,14 @@ class SystemMonitor {
         enabled: true
       },
       
-      // 任务执行 告警规则
+      // Task 执行 Alert rules
       {
         id: 'task_rate_low',
         name: '任务执行速率过低',
         metric: METRIC_TYPES.TASK_EXECUTION_RATE,
         condition: (value) => value < 5 && value > 0,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `任务执行速率 ${value.toFixed(1)} 个/分钟，低于正常水平`,
+        message: (value) => `Task execution rate ${value.toFixed(1)} per minute, below normal level`,
         enabled: true
       },
       {
@@ -268,14 +268,14 @@ class SystemMonitor {
         enabled: true
       },
       
-      // 新增任务管理告警规则
+      // 新增Task 管理Alert rules
       {
         id: 'task_quality_low',
         name: '任务质量评分过低',
         metric: METRIC_TYPES.TASK_QUALITY_SCORE,
         condition: (value) => value < 5,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `任务质量评分 ${value.toFixed(1)} 低于5分，需要改进`,
+        message: (value) => `Task quality score ${value.toFixed(1)} below 5, needs improvement`,
         enabled: true
       },
       {
@@ -284,7 +284,7 @@ class SystemMonitor {
         metric: METRIC_TYPES.CROSS_FUNCTIONAL_AGENT_COUNT,
         condition: (value) => value < 10,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `跨职能智能体数量 ${value} 个，低于10个，影响系统协作能力`,
+        message: (value) => `Cross-functional agent count ${value} below 10, affecting system collaboration`,
         enabled: true
       },
       {
@@ -293,7 +293,7 @@ class SystemMonitor {
         metric: METRIC_TYPES.AGENT_CAPABILITY_MATCH_RATE,
         condition: (value) => value < 0.7,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `智能体能力匹配率 ${(value * 100).toFixed(1)}% 低于70%，需要优化任务匹配算法`,
+        message: (value) => `Agent capability match rate ${(value * 100).toFixed(1)}% below 70%, need to optimize task matching algorithm`,
         enabled: true
       },
       {
@@ -302,7 +302,7 @@ class SystemMonitor {
         metric: METRIC_TYPES.TEAM_COLLABORATION_RATE,
         condition: (value) => value < 0.3,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `团队协作率 ${(value * 100).toFixed(1)}% 低于30%，需要促进智能体间协作`,
+        message: (value) => `Team collaboration rate ${(value * 100).toFixed(1)}% below 30%, need to promote agent collaboration`,
         enabled: true
       },
       {
@@ -319,14 +319,14 @@ class SystemMonitor {
         enabled: true
       },
       
-      // 新增智能体健康和贡献度告警规则
+      // New agent health and contribution alert rules
       {
         id: 'agent_contribution_low',
         name: '智能体贡献度过低',
         metric: METRIC_TYPES.AGENT_CONTRIBUTION,
         condition: (value) => value.average < 100,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `智能体平均贡献度 ${value.average.toFixed(2)} 低于100，系统活跃度不足`,
+        message: (value) => `Average agent contribution ${value.average.toFixed(2)} below 100, system activity insufficient`,
         enabled: true
       },
       {
@@ -335,7 +335,7 @@ class SystemMonitor {
         metric: METRIC_TYPES.AGENT_REPUTATION,
         condition: (value) => value.average < 1.5,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `智能体平均声誉值 ${value.average.toFixed(2)} 低于1.5，需要提高服务质量`,
+        message: (value) => `Average agent reputation ${value.average.toFixed(2)} below 1.5, need to improve service quality`,
         enabled: true
       },
       {
@@ -344,7 +344,7 @@ class SystemMonitor {
         metric: METRIC_TYPES.AGENT_ACTIVITY,
         condition: (value) => value.activeRatio < 0.5,
         level: ALERT_LEVELS.ERROR,
-        message: (value) => `智能体活跃率 ${(value.activeRatio * 100).toFixed(1)}% 低于50%，系统可能面临崩溃风险`,
+        message: (value) => `Agent activity rate ${(value.activeRatio * 100).toFixed(1)}% below 50%, system may crash`,
         enabled: true
       },
       {
@@ -353,7 +353,7 @@ class SystemMonitor {
         metric: METRIC_TYPES.AGENT_REWARD_RATE,
         condition: (value) => value.average < 50,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `智能体平均奖励率 ${value.average.toFixed(2)} NGEN/小时 低于50，激励不足`,
+        message: (value) => `Average agent reward rate ${value.average.toFixed(2)} NGEN/hour below 50, insufficient incentives`,
         enabled: true
       },
       {
@@ -362,17 +362,17 @@ class SystemMonitor {
         metric: METRIC_TYPES.AGENT_CAPABILITY_SCORE,
         condition: (value) => value.average < 0.6,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `智能体平均能力评分 ${(value.average * 100).toFixed(1)}% 低于60%，需要提升智能体能力`,
+        message: (value) => `Average agent capability score ${(value.average * 100).toFixed(1)}% below 60%, need to improve agent capabilities`,
         enabled: true
       },
-      // 新增速率限制和缓存相关告警规则
+      // New rate limit and cache alert rules
       {
         id: 'rate_limit_triggered',
         name: '速率限制触发频繁',
         metric: METRIC_TYPES.RATE_LIMIT_TRIGGERED,
         condition: (value) => value > 10,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `速率限制在过去分钟内触发 ${value} 次，可能影响用户体验`,
+        message: (value) => `Rate limit triggered  ${value} times in the past minute, may affect user experience`,
         enabled: true
       },
       {
@@ -381,7 +381,7 @@ class SystemMonitor {
         metric: METRIC_TYPES.CACHE_HIT_RATE,
         condition: (value) => value < 50,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `缓存命中率 ${value.toFixed(1)}% 低于50%，需要优化缓存策略`,
+        message: (value) => `Cache hit rate ${value.toFixed(1)}% below 50%, need to optimize cache strategy`,
         enabled: true
       },
       {
@@ -390,7 +390,7 @@ class SystemMonitor {
         metric: METRIC_TYPES.CACHE_SIZE,
         condition: (value) => value > 1000,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `缓存大小 ${value} 个条目，可能占用过多内存`,
+        message: (value) => `Cache size ${value} entries, may consume too much memory`,
         enabled: true
       },
       {
@@ -399,7 +399,7 @@ class SystemMonitor {
         metric: METRIC_TYPES.API_RESPONSE_TIME,
         condition: (value) => value > 1000,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `API平均响应时间 ${value.toFixed(1)}ms 超过1000ms，需要优化性能`,
+        message: (value) => `Average API response time ${value.toFixed(1)}ms exceeds 1000ms, need to optimize performance`,
         enabled: true
       },
       {
@@ -408,12 +408,12 @@ class SystemMonitor {
         metric: METRIC_TYPES.AGENT_REGISTRATION_RATE,
         condition: (value) => value < 1,
         level: ALERT_LEVELS.WARNING,
-        message: (value) => `智能体注册率 ${value.toFixed(1)} 个/小时 低于1，需要优化招募策略`,
+        message: (value) => `Agent registration rate ${value.toFixed(1)} per hour below 1, need to optimize recruitment strategy`,
         enabled: true
       }
     ];
 
-    // 加载自定义告警规则
+    // 加载自定义Alert rules
     const rulesPath = path.join(this.alertsDirectory, 'alert-rules.json');
     if (fs.existsSync(rulesPath)) {
       try {
@@ -424,21 +424,21 @@ class SystemMonitor {
             try {
               rule.condition = eval(rule.condition);
             } catch (error) {
-              console.error(`解析告警规则 ${rule.id} 的condition失败:`, error);
+              console.error(`Parse alert rule ${rule.id} 的conditionFailed:`, error);
               rule.condition = () => false;
             }
           }
           this.alertRules.set(rule.id, rule);
         });
       } catch (error) {
-        console.error('加载自定义告警规则失败:', error);
-        // 加载默认规则作为备选
+        console.error('加载自定义Alert rulesFailed:', error);
+        // Load default rules as fallback
         defaultRules.forEach(rule => {
           this.alertRules.set(rule.id, rule);
         });
       }
     } else {
-      // 保存默认告警规则
+      // Save default alert rules
       fs.writeFileSync(rulesPath, JSON.stringify(defaultRules, null, 2), 'utf8');
       defaultRules.forEach(rule => {
         this.alertRules.set(rule.id, rule);
@@ -446,60 +446,60 @@ class SystemMonitor {
     }
   }
 
-  // 开始监控
+  // Start 监控
   startMonitoring() {
-    console.log('[SystemMonitor] 启动系统监控服务');
+    console.log('[SystemMonitor] 启动System monitoring服务');
 
-    // 1. 系统资源监控（每5秒）
+    // 1. System resources监控（every 5秒）
     setInterval(() => {
       this.collectSystemResourcesMetrics();
     }, 5000);
 
-    // 2. 应用组件监控（每30秒）
+    // 2. 应用组件监控（every 30秒）
     setInterval(async () => {
       await this.collectApplicationMetrics();
     }, 30000);
 
-    // 3. 区块链和P2P网络监控（每60秒）
+    // 3. 区块链和P2P network监控（every 60秒）
     setInterval(async () => {
       await this.collectBlockchainMetrics();
       this.collectP2PMetrics();
     }, 60000);
 
-    // 4. API调用统计（每10秒）
+    // 4. API calls统计（every 10秒）
     setInterval(() => {
       this.collectAPIMetrics();
     }, 10000);
 
-    // 5. 治理指标监控（每60秒）
+    // 5. 治理指标监控（every 60秒）
     setInterval(() => {
       this.collectGovernanceMetrics();
     }, 60000);
 
-    // 6. 智能体健康和贡献度监控（每60秒）
+    // 6. agent健康和贡献度监控（every 60秒）
     setInterval(() => {
       this.collectAgentHealthMetrics();
       this.collectAgentContributionMetrics();
     }, 60000);
 
-    // 7. 速率限制和缓存监控（每15秒）
+    // 7. 速率限制和缓存监控（every 15秒）
     setInterval(() => {
       this.collectRateLimitMetrics();
       this.collectCacheMetrics();
     }, 15000);
 
-    // 8. 智能体注册率监控（每60秒）
+    // 8. Agent registration rate监控（every 60秒）
     setInterval(async () => {
       await this.collectAgentRegistrationMetrics();
     }, 60000);
 
-    console.log('[SystemMonitor] 系统监控服务启动完成');
+    console.log('[SystemMonitor] System monitoringService started完成');
   }
 
-  // 收集系统资源指标
+  // Collect system resource metrics
   collectSystemResourcesMetrics() {
     try {
-      // 获取真实CPU使用率
+      // get真实CPU usage
       const currentCpuUsage = process.cpuUsage();
       const currentTimestamp = Date.now();
       
@@ -510,7 +510,7 @@ class SystemMonitor {
       const cpuElapsedSystem = currentCpuUsage.system - this.lastCpuUsage.system;
       const cpuElapsedTotal = cpuElapsedUser + cpuElapsedSystem;
       
-      // 计算CPU使用率百分比：(CPU使用时间差 / 时间差) * 100%
+      // 计算CPU usage百分比：(CPU使用时间差 / 时间差) * 100%
       // 注意：process.cpuUsage()返回的是微秒，需要转换为毫秒
       const cpuPercent = (cpuElapsedTotal / (elapsedMs * 1000)) * 100;
       
@@ -520,17 +520,17 @@ class SystemMonitor {
       
       this.recordMetric(METRIC_TYPES.CPU_USAGE, parseFloat(cpuPercent.toFixed(2)));
 
-      // 获取真实内存使用率
+      // get真实Memory usage
       const memUsage = process.memoryUsage();
       const totalMem = os.totalmem();
       const memPercent = ((memUsage.rss / totalMem) * 100).toFixed(2);
       this.recordMetric(METRIC_TYPES.MEMORY_USAGE, parseFloat(memPercent));
 
-      // 获取真实磁盘使用率
+      // get真实磁盘使用率
       const diskInfo = (os.freemem() / os.totalmem() * 100).toFixed(2);
       this.recordMetric(METRIC_TYPES.DISK_USAGE, parseFloat(diskInfo));
 
-      // 获取真实网络连接数（简化：通过监听的网络接口数）
+      // get真实网络连接数（简化：通过监听的网络接口数）
       const networkInterfaces = os.networkInterfaces();
       let connections = 0;
       for (const interfaceName in networkInterfaces) {
@@ -539,8 +539,8 @@ class SystemMonitor {
       this.recordMetric(METRIC_TYPES.NETWORK_CONNECTIONS, connections);
 
     } catch (error) {
-      console.error('[SystemMonitor] 收集系统资源指标失败:', error);
-      // 降级到模拟数据，确保监控服务正常运行
+      console.error('[SystemMonitor] Collect system resource metricsFailed:', error);
+      // Fall back to simulated data to ensure monitoring service continues
       this.recordMetric(METRIC_TYPES.CPU_USAGE, Math.random() * 40 + 20);
       this.recordMetric(METRIC_TYPES.MEMORY_USAGE, Math.random() * 30 + 30);
       this.recordMetric(METRIC_TYPES.DISK_USAGE, Math.random() * 20 + 70);
@@ -548,18 +548,18 @@ class SystemMonitor {
     }
   }
 
-  // 收集应用组件指标
+  // Collect application component metrics
   async collectApplicationMetrics() {
     try {
-      // 获取真实智能体健康状态（从招聘API获取）
+      // Get real agent health status（从招聘APIget）
       const agentHealth = await this.getRealAgentHealth();
       this.recordMetric(METRIC_TYPES.AGENT_HEALTH, agentHealth);
 
-      // 获取真实任务执行速率（简化：通过已处理的请求数）
+      // get真实Task 执行速率（简化：通过已Processing的请求数）
       const taskExecutionRate = this.getRealTaskExecutionRate();
       this.recordMetric(METRIC_TYPES.TASK_EXECUTION_RATE, taskExecutionRate);
       
-      // 收集新增的任务管理指标
+      // 收集新增的Task 管理指标
       const taskCreationRate = await this.getRealTaskCreationRate();
       this.recordMetric(METRIC_TYPES.TASK_CREATION_RATE, taskCreationRate);
       
@@ -585,8 +585,8 @@ class SystemMonitor {
       this.recordMetric(METRIC_TYPES.TASK_DEPENDENCY_FULFILLMENT, taskDependencyFulfillment);
 
     } catch (error) {
-      console.error('[SystemMonitor] 收集应用组件指标失败:', error);
-      // 降级到模拟数据，确保监控服务正常运行
+      console.error('[SystemMonitor] Collect application component metricsFailed:', error);
+      // Fall back to simulated data to ensure monitoring service continues
       this.recordMetric(METRIC_TYPES.AGENT_HEALTH, {
         totalCount: 0,
         healthyCount: 0,
@@ -594,7 +594,7 @@ class SystemMonitor {
       });
       this.recordMetric(METRIC_TYPES.TASK_EXECUTION_RATE, 0);
       
-      // 新增指标的降级处理
+      // 新增指标的fallback handling
       this.recordMetric(METRIC_TYPES.TASK_CREATION_RATE, 0);
       this.recordMetric(METRIC_TYPES.TASK_COMPLETION_RATE, 0);
       this.recordMetric(METRIC_TYPES.TASK_QUALITY_SCORE, 5);
@@ -606,11 +606,11 @@ class SystemMonitor {
     }
   }
 
-  // 获取真实智能体健康状态
+  // Get real agent health status
   async getRealAgentHealth() {
     try {
-      // 尝试从AgentManager获取真实智能体健康状态
-      // 由于SystemMonitor是独立模块，这里通过读取智能体数据文件获取
+      // 尝试从AgentManagerGet real agent health status
+      // 由于SystemMonitor是独立模块，这里通过读取agent数据文件get
       const fs = await import('fs');
       const path = await import('path');
       const agentsDir = path.default.join(__dirname, '../../data/agents');
@@ -647,7 +647,7 @@ class SystemMonitor {
                 cluster: agentData.cluster || 'default'
               });
             } catch (error) {
-              console.error(`读取智能体文件 ${file} 失败:`, error);
+              console.error(`Reading agent file ${file} Failed:`, error);
             }
           }
         });
@@ -673,7 +673,7 @@ class SystemMonitor {
       
       return agentHealth;
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实智能体健康状态失败:', error);
+      console.error('[SystemMonitor] Get real agent health statusFailed:', error);
       return {
         totalCount: 0,
         healthyCount: 0,
@@ -690,49 +690,49 @@ class SystemMonitor {
     }
   }
 
-  // 获取真实任务执行速率
+  // get真实Task 执行速率
   getRealTaskExecutionRate() {
     try {
-      // 在实际环境中，这里应该从日志或计数器中获取
+      // In production, this should从日志或计数器中get
       return 0; // 初始状态，无任务执行
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实任务执行速率失败:', error);
+      console.error('[SystemMonitor] get真实Task 执行速率Failed:', error);
       return 0;
     }
   }
 
-  // 收集区块链指标
+  // Collect blockchain metrics
   async collectBlockchainMetrics() {
     try {
-      // 获取真实区块链高度（从区块链模块获取）
+      // Get real blockchain height（从区块链模块get）
       const blockchainHeight = await this.getRealBlockchainHeight();
       this.recordMetric(METRIC_TYPES.BLOCKCHAIN_HEIGHT, blockchainHeight);
 
     } catch (error) {
-      console.error('[SystemMonitor] 收集区块链指标失败:', error);
-      // 降级到真实初始状态
+      console.error('[SystemMonitor] Collect blockchain metricsFailed:', error);
+      // Fall back to real initial state
       this.recordMetric(METRIC_TYPES.BLOCKCHAIN_HEIGHT, 0);
     }
   }
 
-  // 收集P2P网络指标
+  // Collect P2P network metrics
   collectP2PMetrics() {
     try {
-      // 获取真实P2P节点连接数（从P2P模块获取）
+      // Get real P2P peer count（从P2P模块get）
       const peerCount = this.getRealPeerCount();
       this.recordMetric(METRIC_TYPES.P2P_PEER_COUNT, peerCount);
 
     } catch (error) {
-      console.error('[SystemMonitor] 收集P2P网络指标失败:', error);
-      // 降级到真实初始状态
+      console.error('[SystemMonitor] Collect P2P network metricsFailed:', error);
+      // Fall back to real initial state
       this.recordMetric(METRIC_TYPES.P2P_PEER_COUNT, 0);
     }
   }
 
-  // 获取真实区块链高度
+  // Get real blockchain height
   async getRealBlockchainHeight() {
     try {
-      // 从真实区块链数据文件获取高度
+      // from real区块链数据文件get高度
       const fs = await import('fs');
       const path = await import('path');
       const blocksPath = path.default.join(__dirname, '../../data/blockchain/blocks.json');
@@ -743,53 +743,53 @@ class SystemMonitor {
       }
       return 0;
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实区块链高度失败:', error);
+      console.error('[SystemMonitor] Get real blockchain heightFailed:', error);
       return 0;
     }
   }
 
-  // 获取真实P2P节点连接数
+  // Get real P2P peer count
   getRealPeerCount() {
     try {
-      // 在实际环境中，这里应该从P2P模块获取当前连接数
-      // 由于是初始状态，返回0
+      // In production, this should从P2P模块get当前连接数
+      // since it isInitial state，return 0
       return 0; // 初始状态，无P2P连接
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实P2P节点连接数失败:', error);
+      console.error('[SystemMonitor] Get real P2P peer countFailed:', error);
       return 0;
     }
   }
 
-  // 收集API调用指标
+  // Collect API call metrics
   collectAPIMetrics() {
     try {
-      // 获取真实API调用成功率（从HTTP服务器获取）
+      // Get real API success rate（从HTTP服务器get）
       const successRate = this.getRealApiSuccessRate();
       this.recordMetric(METRIC_TYPES.API_SUCCESS_RATE, successRate);
 
     } catch (error) {
-      console.error('[SystemMonitor] 收集API调用指标失败:', error);
-      // 降级到真实初始状态
+      console.error('[SystemMonitor] Collect API call metricsFailed:', error);
+      // Fall back to real initial state
       this.recordMetric(METRIC_TYPES.API_SUCCESS_RATE, 100); // 初始状态，无失败请求
     }
   }
 
-  // 获取真实API调用成功率
+  // Get real API success rate
   getRealApiSuccessRate() {
     try {
-      // 在实际环境中，这里应该从HTTP服务器获取请求统计
-      // 由于是初始状态，返回100%成功率
+      // In production, this should从HTTP服务器get请求统计
+      // since it isInitial state，返回100%成功率
       return 100; // 初始状态，无API请求或全部成功
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实API调用成功率失败:', error);
+      console.error('[SystemMonitor] Get real API success rateFailed:', error);
       return 100;
     }
   }
   
-  // 新增任务管理相关指标的获取方法
+  // 新增Task 管理相关指标的get方法
   async getRealTaskCreationRate() {
     try {
-      // 从任务数据文件获取真实任务创建速率
+      // 从Task 数据文件get真实Task 创建速率
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -797,7 +797,7 @@ class SystemMonitor {
       let taskCreationRate = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算过去24小时内创建的任务数
+        // 计算过去24 hoursTask 数
         const now = Date.now();
         const past24h = now - 24 * 60 * 60 * 1000;
         const recentTasks = tasksData.filter(task => task.createdAt && task.createdAt > past24h);
@@ -805,14 +805,14 @@ class SystemMonitor {
       }
       return taskCreationRate;
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实任务创建速率失败:', error);
+      console.error('[SystemMonitor] get真实Task 创建速率Failed:', error);
       return 0;
     }
   }
   
   async getRealTaskCompletionRate() {
     try {
-      // 从任务数据文件获取真实任务完成速率
+      // 从Task 数据文件get真实Task 完成速率
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -820,7 +820,7 @@ class SystemMonitor {
       let taskCompletionRate = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算过去24小时内完成的任务数
+        // 计算过去24 hourswithin完成的Task 数
         const now = Date.now();
         const past24h = now - 24 * 60 * 60 * 1000;
         const completedTasks = tasksData.filter(task => task.completedAt && task.completedAt > past24h);
@@ -828,14 +828,14 @@ class SystemMonitor {
       }
       return taskCompletionRate;
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实任务完成速率失败:', error);
+      console.error('[SystemMonitor] get真实Task 完成速率Failed:', error);
       return 0;
     }
   }
   
   async getRealTaskQualityScore() {
     try {
-      // 从任务数据文件获取真实任务质量评分
+      // 从Task 数据文件get真实Task Quality score
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -844,7 +844,7 @@ class SystemMonitor {
       let scoredTasks = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算已完成任务的平均质量评分
+        // 计算CompletedTask 的AverageQuality score
         const completedTasks = tasksData.filter(task => task.status === 'completed' && typeof task.qualityScore === 'number');
         scoredTasks = completedTasks.length;
         if (scoredTasks > 0) {
@@ -854,14 +854,14 @@ class SystemMonitor {
       }
       return 5; // 默认中等质量分数
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实任务质量评分失败:', error);
+      console.error('[SystemMonitor] get真实Task Quality scoreFailed:', error);
       return 5;
     }
   }
   
   async getRealCrossFunctionalAgentCount() {
     try {
-      // 从智能体数据文件获取跨职能智能体数量
+      // 从agent数据文件getCross-functional agent count
       const fs = await import('fs');
       const path = await import('path');
       const agentsDir = path.default.join(__dirname, '../../data/agents');
@@ -873,26 +873,26 @@ class SystemMonitor {
           if (file.endsWith('.json') && !file.match(/^agent-\d+\.json$/) && file !== 'agents_summary.json' && file !== 'agent-undefined.json') {
             try {
               const agentData = JSON.parse(fs.readFileSync(path.join(agentsDir, file), 'utf8'));
-              // 跨职能智能体定义为具有3个或更多能力的智能体
+              // 跨职能agent定义为具有3个或更多能力的agent
               if (agentData.capabilities && agentData.capabilities.length >= 3) {
                 crossFunctionalCount++;
               }
             } catch (error) {
-              console.error(`读取智能体文件 ${file} 失败:`, error);
+              console.error(`Reading agent file ${file} Failed:`, error);
             }
           }
         });
       }
       return crossFunctionalCount;
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实跨职能智能体数量失败:', error);
+      console.error('[SystemMonitor] Get real cross-functional agent countFailed:', error);
       return 0;
     }
   }
   
   async getRealAgentCapabilityMatchRate() {
     try {
-      // 从任务数据文件获取智能体能力匹配率
+      // 从Task 数据文件getAgent capability match rate
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -901,12 +901,12 @@ class SystemMonitor {
       let totalTasks = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算能力匹配的任务比例
+        // 计算能力匹配的Task 比例
         const assignedTasks = tasksData.filter(task => task.agentId && task.agentCapabilities);
         totalTasks = assignedTasks.length;
         if (totalTasks > 0) {
           matchedTasks = assignedTasks.filter(task => {
-            // 简化匹配逻辑：如果任务需要的能力与智能体具备的能力有重叠，则认为匹配
+            // 简化匹配Logic: 如果Task 需要的能力与agent具备的能力有重叠，则认为匹配
             return task.requiredCapabilities && task.agentCapabilities && 
                    task.requiredCapabilities.some(cap => task.agentCapabilities.includes(cap));
           }).length;
@@ -915,14 +915,14 @@ class SystemMonitor {
       }
       return 0.7; // 默认70%匹配率
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实智能体能力匹配率失败:', error);
+      console.error('[SystemMonitor] Get real agent capability match rateFailed:', error);
       return 0.7;
     }
   }
   
   async getRealTeamCollaborationRate() {
     try {
-      // 从任务数据文件获取团队协作率
+      // 从Task 数据文件getTeam collaboration rate
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -931,7 +931,7 @@ class SystemMonitor {
       let totalTasks = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算协作任务比例
+        // 计算协作Task 比例
         totalTasks = tasksData.length;
         if (totalTasks > 0) {
           collaborativeTasks = tasksData.filter(task => task.agentIds && task.agentIds.length > 1).length;
@@ -940,14 +940,14 @@ class SystemMonitor {
       }
       return 0.3; // 默认30%协作率
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实团队协作率失败:', error);
+      console.error('[SystemMonitor] Get real team collaboration rateFailed:', error);
       return 0.3;
     }
   }
   
   async getRealLongTermTaskProgress() {
     try {
-      // 从任务数据文件获取长期任务进度
+      // 从Task 数据文件get长期Task 进度
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -956,7 +956,7 @@ class SystemMonitor {
       let longTermTasks = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算长期任务的平均进度
+        // 计算长期Task 的Average进度
         const longTerm = tasksData.filter(task => task.type === 'long_term' && typeof task.progress === 'number');
         longTermTasks = longTerm.length;
         if (longTermTasks > 0) {
@@ -966,14 +966,14 @@ class SystemMonitor {
       }
       return 0; // 默认0%进度
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实长期任务进度失败:', error);
+      console.error('[SystemMonitor] get真实长期Task 进度Failed:', error);
       return 0;
     }
   }
   
   async getRealTaskDependencyFulfillment() {
     try {
-      // 从任务数据文件获取任务依赖满足率
+      // 从Task 数据文件getTask 依赖满足率
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -982,12 +982,12 @@ class SystemMonitor {
       let totalDependencies = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算依赖满足的任务比例
+        // 计算依赖满足的Task 比例
         const dependentTasks = tasksData.filter(task => task.dependencies && task.dependencies.length > 0);
         dependentTasks.forEach(task => {
           const dependencies = task.dependencies;
           totalDependencies += dependencies.length;
-          // 检查每个依赖的任务是否已完成
+          // 检查every 个依赖的Task 是否Completed
           dependencies.forEach(depTaskId => {
             const depTask = tasksData.find(t => t.id === depTaskId);
             if (depTask && depTask.status === 'completed') {
@@ -1001,7 +1001,7 @@ class SystemMonitor {
       }
       return 0.7; // 默认70%满足率
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实任务依赖满足率失败:', error);
+      console.error('[SystemMonitor] get真实Task 依赖满足率Failed:', error);
       return 0.7;
     }
   }
@@ -1021,7 +1021,7 @@ class SystemMonitor {
     // 更新当前指标值
     this.metrics.set(type, metric);
 
-    // 保存指标到文件（每小时一个文件）
+    // Save metrics to file (every hour)
     const metricFile = path.join(this.metricsDirectory, `${type}-${new Date().toISOString().split('T')[0]}.json`);
     let metricsHistory = [];
 
@@ -1032,7 +1032,7 @@ class SystemMonitor {
           metricsHistory = JSON.parse(fileContent);
         }
       } catch (error) {
-        console.error('读取指标历史记录失败:', error);
+        console.error('读取指标历史记录Failed:', error);
         // 如果文件损坏，重新创建一个空数组
         metricsHistory = [];
       }
@@ -1044,24 +1044,24 @@ class SystemMonitor {
     return metric;
   }
 
-  // 开始告警检查
+  // Start Alert check
   startAlertCheck() {
-    console.log('[SystemMonitor] 启动告警检查服务');
+    console.log('[SystemMonitor] Starting alert checking service');
 
-    // 每30秒检查一次告警规则
+    // every 30second check一次Alert rules
     setInterval(() => {
       this.checkAlerts();
     }, 30000);
   }
 
-  // 检查告警规则
+  // 检查Alert rules
   checkAlerts() {
     this.alertRules.forEach((rule, ruleId) => {
       if (!rule.enabled) return;
       
       // 确保规则条件是一个函数
       if (typeof rule.condition !== 'function') {
-        console.error(`告警规则 ${ruleId} 的 condition 不是函数，跳过检查`);
+        console.error(`Alert rules ${ruleId} condition is not a function, skipping check`);
         return;
       }
 
@@ -1069,7 +1069,7 @@ class SystemMonitor {
       if (!metric) return;
 
       try {
-        // 获取该指标的历史数据
+        // get该指标的历史数据
         const metricHistory = this.getMetricHistory(rule.metric, 1); // 获取最近1小时的数据
         
         // 根据规则条件判断是否触发告警
@@ -1083,7 +1083,7 @@ class SystemMonitor {
           this.clearAlert(ruleId);
         }
       } catch (error) {
-        console.error(`检查告警规则 ${ruleId} 失败:`, error);
+        console.error(`Check alert rule ${ruleId} Failed:`, error);
       }
     });
   }
@@ -1125,14 +1125,14 @@ class SystemMonitor {
         alert.resolvedAt = new Date().toISOString();
         this.alerts.set(alert.id, alert);
         this.saveAlert(alert);
-        console.log(`[SystemMonitor] 告警已解决: ${alert.name} - ${alert.message}`);
+        console.log(`[SystemMonitor] Alert resolved: ${alert.name} - ${alert.message}`);
       }
     });
   }
 
-  // 发送告警
+  // Send alert
   sendAlert(alert) {
-    // 保存告警日志
+    // Save alert log
     const alertLogPath = path.join(this.logsDirectory, 'alerts.log');
     fs.appendFileSync(alertLogPath, JSON.stringify(alert) + '\n', 'utf8');
 
@@ -1144,7 +1144,7 @@ class SystemMonitor {
     this.handleAlertEscalation(alert);
   }
 
-  // 告警升级处理
+  // 告警升级Processing
   handleAlertEscalation(alert) {
     if (!this.alertCounts) {
       this.alertCounts = new Map();
@@ -1166,7 +1166,7 @@ class SystemMonitor {
       this.triggerAutoRemediation(alert);
     }
 
-    // 重置计数器（每 5 分钟后清除）
+    // 重置计数器（every  5  minutes后清除）
     if (!this._alertResetTimer) {
       this._alertResetTimer = setInterval(() => {
         this.alertCounts.clear();
@@ -1181,7 +1181,7 @@ class SystemMonitor {
       const { default: recoveryManager } = await import('./recoveryManager.js');
       
       const report = recoveryManager.getHealthReport();
-      console.log(`\x1b[33m[AUTO-RECOVERY] 触发自动恢复: ${alert.name}, 当前状态: ${report.state}\x1b[0m`);
+      console.log(`\x1b[33m[AUTO-RECOVERY] 触发Auto-recovery: ${alert.name}, 当前状态: ${report.state}\x1b[0m`);
 
       // 根据告警类型映射到对应的恢复操作
       const remediationMap = {
@@ -1199,18 +1199,18 @@ class SystemMonitor {
       
       // 如果恢复管理器已在恢复中，记录但不重复触发
       if (report.recoveryInProgress) {
-        console.log('[AUTO-RECOVERY] 恢复已在进行中，跳过重复触发');
+        console.log('[AUTO-RECOVERY] 恢复已在进行中，Skipping duplicate trigger');
         return;
       }
 
       // 触发恢复（通过 health check 的自然循环）
       recoveryManager._checkHealth();
     } catch (e) {
-      console.error('[AUTO-RECOVERY] 触发失败:', e.message);
+      console.error('[AUTO-RECOVERY] 触发Failed:', e.message);
     }
   }
 
-  // 获取告警颜色
+  // get告警颜色
   getAlertColor(level) {
     switch (level) {
       case ALERT_LEVELS.CRITICAL:
@@ -1231,11 +1231,11 @@ class SystemMonitor {
     fs.writeFileSync(alertPath, JSON.stringify(alert, null, 2), 'utf8');
   }
 
-  // 获取系统状态报告
+  // Get system status report
   getSystemStatus() {
     const metrics = {};
     
-    // 初始化所有指标类型，确保每个类型都有值
+    // 初始化所有指标类型，确保every 个类型都有值
     Object.values(METRIC_TYPES).forEach(type => {
       metrics[type] = this.metrics.get(type)?.value || this.getDefaultMetricValue(type);
     });
@@ -1257,10 +1257,10 @@ class SystemMonitor {
     };
   }
 
-  // 收集治理指标
+  // Collect governance metrics
   collectGovernanceMetrics() {
     try {
-      // 获取真实治理指标（从治理合约获取）
+      // Get real governance metrics（从治理合约get）
       const governanceMetrics = this.getRealGovernanceMetrics();
       
       // 记录各个治理指标
@@ -1273,8 +1273,8 @@ class SystemMonitor {
       this.recordMetric(METRIC_TYPES.GOVERNANCE_PARAM_CHANGES, governanceMetrics.paramChanges);
       this.recordMetric(METRIC_TYPES.GOVERNANCE_PROPOSAL_VALIDATION_RATE, governanceMetrics.proposalValidationRate);
     } catch (error) {
-      console.error('[SystemMonitor] 收集治理指标失败:', error);
-      // 降级到模拟数据，确保监控服务正常运行
+      console.error('[SystemMonitor] Collect governance metricsFailed:', error);
+      // Fall back to simulated data to ensure monitoring service continues
       this.recordMetric(METRIC_TYPES.GOVERNANCE_PROPOSAL_COUNT, Math.floor(Math.random() * 50) + 10);
       this.recordMetric(METRIC_TYPES.GOVERNANCE_VOTER_PARTICIPATION, Math.random() * 60 + 20);
       this.recordMetric(METRIC_TYPES.GOVERNANCE_PASS_RATE, Math.random() * 30 + 60);
@@ -1294,24 +1294,24 @@ class SystemMonitor {
     }
   }
   
-  // 收集智能体健康指标
+  // Collect agent health metrics
   async collectAgentHealthMetrics() {
     try {
-      // 计算智能体活跃度
+      // 计算agent活跃度
       const agentActivity = await this.getRealAgentActivity();
       this.recordMetric(METRIC_TYPES.AGENT_ACTIVITY, agentActivity);
       
-      // 计算智能体分类分布
+      // 计算agent分类分布
       const categoryDistribution = await this.getRealAgentCategoryDistribution();
       this.recordMetric(METRIC_TYPES.AGENT_CATEGORY_DISTRIBUTION, categoryDistribution);
       
-      // 计算智能体能力评分
+      // 计算agent能力评分
       const capabilityScore = await this.getRealAgentCapabilityScore();
       this.recordMetric(METRIC_TYPES.AGENT_CAPABILITY_SCORE, capabilityScore);
       
     } catch (error) {
-      console.error('[SystemMonitor] 收集智能体健康指标失败:', error);
-      // 降级到默认数据
+      console.error('[SystemMonitor] Collect agent health metricsFailed:', error);
+      // Fall back to default data
       this.recordMetric(METRIC_TYPES.AGENT_ACTIVITY, {
         activeCount: 0,
         totalCount: 0,
@@ -1325,24 +1325,24 @@ class SystemMonitor {
     }
   }
 
-  // 收集智能体贡献度指标
+  // Collect agent contribution metrics
   async collectAgentContributionMetrics() {
     try {
-      // 计算智能体贡献度
+      // 计算agent贡献度
       const contribution = await this.getRealAgentContribution();
       this.recordMetric(METRIC_TYPES.AGENT_CONTRIBUTION, contribution);
       
-      // 计算智能体声誉值
+      // 计算agent声誉值
       const reputation = await this.getRealAgentReputation();
       this.recordMetric(METRIC_TYPES.AGENT_REPUTATION, reputation);
       
-      // 计算智能体奖励率
+      // 计算agent奖励率
       const rewardRate = await this.getRealAgentRewardRate();
       this.recordMetric(METRIC_TYPES.AGENT_REWARD_RATE, rewardRate);
       
     } catch (error) {
-      console.error('[SystemMonitor] 收集智能体贡献度指标失败:', error);
-      // 降级到默认数据
+      console.error('[SystemMonitor] Collect agent contribution metricsFailed:', error);
+      // Fall back to default data
       this.recordMetric(METRIC_TYPES.AGENT_CONTRIBUTION, {
         average: 0,
         total: 0,
@@ -1359,7 +1359,7 @@ class SystemMonitor {
     }
   }
 
-  // 获取真实智能体活跃度
+  // Get real agent activity
   async getRealAgentActivity() {
     try {
       const fs = await import('fs');
@@ -1379,12 +1379,12 @@ class SystemMonitor {
               const agentData = JSON.parse(fs.default.readFileSync(path.default.join(agentsDir, file), 'utf8'));
               const lastActive = agentData.lastActive ? new Date(agentData.lastActive).getTime() : 0;
               const now = Date.now();
-              // 最近1小时内活跃的智能体
+              // 最近1 hourswithin活跃的agent
               if (now - lastActive < 3600000) {
                 activeCount++;
               }
             } catch (error) {
-              console.error(`读取智能体文件 ${file} 失败:`, error);
+              console.error(`Reading agent file ${file} Failed:`, error);
             }
           }
         });
@@ -1396,7 +1396,7 @@ class SystemMonitor {
         activeRatio: totalCount > 0 ? activeCount / totalCount : 0
       };
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实智能体活跃度失败:', error);
+      console.error('[SystemMonitor] Get real agent activityFailed:', error);
       return {
         activeCount: 0,
         totalCount: 0,
@@ -1405,7 +1405,7 @@ class SystemMonitor {
     }
   }
 
-  // 获取真实智能体分类分布
+  // Get real agent category distribution
   async getRealAgentCategoryDistribution() {
     try {
       const fs = await import('fs');
@@ -1423,7 +1423,7 @@ class SystemMonitor {
               const category = agentData.category || 'unknown';
               distribution[category] = (distribution[category] || 0) + 1;
             } catch (error) {
-              console.error(`读取智能体文件 ${file} 失败:`, error);
+              console.error(`Reading agent file ${file} Failed:`, error);
             }
           }
         });
@@ -1431,12 +1431,12 @@ class SystemMonitor {
       
       return distribution;
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实智能体分类分布失败:', error);
+      console.error('[SystemMonitor] Get real agent category distributionFailed:', error);
       return {};
     }
   }
 
-  // 获取真实智能体能力评分
+  // Get real agent capability score
   async getRealAgentCapabilityScore() {
     try {
       const fs = await import('fs');
@@ -1462,7 +1462,7 @@ class SystemMonitor {
                 distribution[scoreRange] = (distribution[scoreRange] || 0) + 1;
               }
             } catch (error) {
-              console.error(`读取智能体文件 ${file} 失败:`, error);
+              console.error(`Reading agent file ${file} Failed:`, error);
             }
           }
         });
@@ -1473,7 +1473,7 @@ class SystemMonitor {
         distribution
       };
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实智能体能力评分失败:', error);
+      console.error('[SystemMonitor] Get real agent capability scoreFailed:', error);
       return {
         average: 0.5,
         distribution: {}
@@ -1481,10 +1481,10 @@ class SystemMonitor {
     }
   }
 
-  // 获取真实智能体贡献度
+  // Get real agent contribution
   async getRealAgentContribution() {
     try {
-      // 使用奖励系统获取贡献度数据
+      // 使用奖励系统get贡献度数据
       const ranking = rewardSystem.getContributionRanking(10);
       
       if (ranking.success) {
@@ -1504,7 +1504,7 @@ class SystemMonitor {
         topAgents: []
       };
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实智能体贡献度失败:', error);
+      console.error('[SystemMonitor] Get real agent contributionFailed:', error);
       return {
         average: 0,
         total: 0,
@@ -1513,10 +1513,10 @@ class SystemMonitor {
     }
   }
 
-  // 获取真实智能体声誉值
+  // Get real agent reputation
   async getRealAgentReputation() {
     try {
-      // 使用奖励系统获取声誉值数据
+      // 使用奖励系统get声誉值数据
       const ranking = rewardSystem.getContributionRanking();
       
       if (ranking.success) {
@@ -1541,7 +1541,7 @@ class SystemMonitor {
         distribution: {}
       };
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实智能体声誉值失败:', error);
+      console.error('[SystemMonitor] Get real agent reputationFailed:', error);
       return {
         average: 1,
         distribution: {}
@@ -1549,10 +1549,10 @@ class SystemMonitor {
     }
   }
 
-  // 获取真实智能体奖励率
+  // Get real agent reward rate
   async getRealAgentRewardRate() {
     try {
-      // 从奖励数据文件获取奖励率
+      // 从奖励数据文件get奖励率
       const fs = await import('fs');
       const path = await import('path');
       const rewardsDir = path.default.join(__dirname, '../../data/rewards');
@@ -1570,7 +1570,7 @@ class SystemMonitor {
               totalReward += agentReward;
               agentCount++;
             } catch (error) {
-              console.error(`读取奖励文件 ${file} 失败:`, error);
+              console.error(`Reading reward file ${file} Failed:`, error);
             }
           }
         });
@@ -1581,7 +1581,7 @@ class SystemMonitor {
         total: totalReward
       };
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实智能体奖励率失败:', error);
+      console.error('[SystemMonitor] Get real agent reward rateFailed:', error);
       return {
         average: 0,
         total: 0
@@ -1589,45 +1589,45 @@ class SystemMonitor {
     }
   }
 
-  // 收集速率限制指标
+  // Collect rate limit metrics
   async collectRateLimitMetrics() {
     try {
-      // 从速率限制器获取真实统计数据
+      // 从速率限制器get真实统计数据
       const rateLimiter = (await import('../utils/rateLimiter.js')).default;
       const stats = rateLimiter.getStats();
       // 计算触发次数（简化计算）
       const rateLimitTriggered = Math.floor(Math.random() * 5); // 临时使用模拟数据，待集成真实触发计数
       this.recordMetric(METRIC_TYPES.RATE_LIMIT_TRIGGERED, rateLimitTriggered);
     } catch (error) {
-      console.error('[SystemMonitor] 收集速率限制指标失败:', error);
+      console.error('[SystemMonitor] Collect rate limit metricsFailed:', error);
       this.recordMetric(METRIC_TYPES.RATE_LIMIT_TRIGGERED, 0);
     }
   }
 
-  // 收集缓存指标
+  // Collect cache metrics
   async collectCacheMetrics() {
     try {
-      // 从缓存获取真实统计数据
+      // 从缓存get真实统计数据
       const cache = (await import('../utils/cache.js')).default;
       const stats = cache.getStats();
       this.recordMetric(METRIC_TYPES.CACHE_HIT_RATE, stats.hitRate);
       this.recordMetric(METRIC_TYPES.CACHE_SIZE, stats.size);
       
-      // 收集API响应时间（模拟数据）
+      // 收集API response时间（Simulated data）
       const apiResponseTime = Math.random() * 500 + 100; // 100-600ms
       this.recordMetric(METRIC_TYPES.API_RESPONSE_TIME, apiResponseTime);
     } catch (error) {
-      console.error('[SystemMonitor] 收集缓存指标失败:', error);
+      console.error('[SystemMonitor] Collect cache metricsFailed:', error);
       this.recordMetric(METRIC_TYPES.CACHE_HIT_RATE, 0);
       this.recordMetric(METRIC_TYPES.CACHE_SIZE, 0);
       this.recordMetric(METRIC_TYPES.API_RESPONSE_TIME, 0);
     }
   }
 
-  // 收集智能体注册率指标
+  // Collect agent registration rate metrics
   async collectAgentRegistrationMetrics() {
     try {
-      // 从智能体数据目录获取注册率
+      // 从agent数据目录get注册率
       const fs = await import('fs');
       const path = await import('path');
       const agentsDir = path.default.join(__dirname, '../../data/agents');
@@ -1647,7 +1647,7 @@ class SystemMonitor {
                 registrationCount++;
               }
             } catch (error) {
-              console.error(`读取智能体文件 ${file} 失败:`, error);
+              console.error(`Reading agent file ${file} Failed:`, error);
             }
           }
         });
@@ -1655,12 +1655,12 @@ class SystemMonitor {
       
       this.recordMetric(METRIC_TYPES.AGENT_REGISTRATION_RATE, registrationCount);
     } catch (error) {
-      console.error('[SystemMonitor] 收集智能体注册率指标失败:', error);
+      console.error('[SystemMonitor] Collect agent registration rate metricsFailed:', error);
       this.recordMetric(METRIC_TYPES.AGENT_REGISTRATION_RATE, 0);
     }
   }
 
-  // 获取真实治理指标
+  // Get real governance metrics
   getRealGovernanceMetrics() {
     try {
       const governanceDir = path.join(__dirname, '../../data/governance');
@@ -1685,7 +1685,7 @@ class SystemMonitor {
       // 计算提案通过率
       const passRate = completedProposals > 0 ? (passedProposals / completedProposals) * 100 : 0;
       
-      // 从投票数据文件获取投票参与率
+      // 从投票数据文件get投票参与率
       const votesPath = path.join(governanceDir, 'votes.json');
       let totalVotes = 0;
       let uniqueVoters = new Set();
@@ -1699,7 +1699,7 @@ class SystemMonitor {
         }
       }
       
-      // 从治理参数获取注册选民总数
+      // 从治理参数get注册选民总数
       const paramsPath = path.join(governanceDir, 'params.json');
       let eligibleVoters = uniqueVoters.size;
       if (fs.existsSync(paramsPath)) {
@@ -1708,7 +1708,7 @@ class SystemMonitor {
           eligibleVoters = Math.max(eligibleVoters, paramsData.eligibleVoters || paramsData.totalVoters);
         }
       }
-      // 如果无法获取实际选民数，使用唯一投票者数量作为下限估计
+      // 如果无法get实际选民数，使用唯一投票者数量作为下限估计
       if (eligibleVoters === 0 && uniqueVoters.size > 0) {
         eligibleVoters = uniqueVoters.size;
       }
@@ -1739,7 +1739,7 @@ class SystemMonitor {
         ? (approvedValidations / validatedProposals) * 100 
         : (proposalCount > 0 ? 100 : 0);
       
-      // 奖励分配（从实际奖励数据读取）
+      // Reward distribution（从实际奖励数据读取）
       const rewardsPath = path.join(governanceDir, 'rewards.json');
       let rewardDistribution;
       if (fs.existsSync(rewardsPath)) {
@@ -1772,7 +1772,7 @@ class SystemMonitor {
         proposalValidationRate: proposalValidationRate
       };
     } catch (error) {
-      console.error('[SystemMonitor] 获取真实治理指标失败:', error);
+      console.error('[SystemMonitor] Get real governance metricsFailed:', error);
       return {
         proposalCount: 0,
         voterParticipation: 0,
@@ -1789,7 +1789,7 @@ class SystemMonitor {
     }
   }
   
-  // 获取指标的默认值
+  // Get default metric value
   getDefaultMetricValue(type) {
     switch (type) {
       case METRIC_TYPES.AGENT_HEALTH:
@@ -1836,7 +1836,7 @@ class SystemMonitor {
     }
   }
 
-  // 获取历史告警
+  // Get historical alerts
   getHistoricalAlerts(days = 7) {
     const alerts = [];
     const cutoffDate = new Date();
@@ -1852,7 +1852,7 @@ class SystemMonitor {
               alerts.push(alert);
             }
           } catch (error) {
-            console.error(`读取告警文件 ${file} 失败:`, error);
+            console.error(`Reading alert file ${file} Failed:`, error);
           }
         }
       });
@@ -1862,7 +1862,7 @@ class SystemMonitor {
     return alerts.sort((a, b) => new Date(b.triggeredAt) - new Date(a.triggeredAt));
   }
 
-  // 获取指标历史数据
+  // Get metric history data
   getMetricHistory(metricType, hours = 24) {
     const metricFile = path.join(this.metricsDirectory, `${metricType}-${new Date().toISOString().split('T')[0]}.json`);
     const metrics = [];
@@ -1876,7 +1876,7 @@ class SystemMonitor {
           new Date(metric.timestamp).getTime() >= cutoffTime
         ));
       } catch (error) {
-        console.error(`读取指标历史 ${metricType} 失败:`, error);
+        console.error(`Reading metric history ${metricType} Failed:`, error);
       }
     }
 

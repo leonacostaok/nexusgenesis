@@ -18,7 +18,7 @@ const CONTRACT_TYPES = {
   MARKETPLACE: 'marketplace'
 };
 
-// 合约状态
+// Contract status
 const CONTRACT_STATUS = {
   DRAFT: 'draft',
   DEPLOYED: 'deployed',
@@ -35,7 +35,7 @@ class ContractTemplateLibrary {
   }
 
   /**
-   * 初始化默认模板
+   * 初始化Default模板
    */
   initDefaultTemplates() {
     this.registerTemplate(CONTRACT_TYPES.DID, this.createDIDTemplate());
@@ -62,14 +62,14 @@ class ContractTemplateLibrary {
   }
 
   /**
-   * 获取合约模板
+   * get合约模板
    */
   getTemplate(type) {
     return this.templates.get(type) || null;
   }
 
   /**
-   * 获取所有可用模板
+   * get所有可用模板
    */
   getAllTemplates() {
     const result = [];
@@ -105,7 +105,7 @@ class ContractTemplateLibrary {
         ]
       },
       
-      // 默认配置
+      // Default配置
       defaultConfig: {
         maxAttributesPerDID: 50,
         attributeExpirationDays: 365,
@@ -1000,14 +1000,14 @@ class ContractTemplateLibrary {
   }
 
   /**
-   * 获取已部署的合约
+   * get已部署的合约
    */
   getDeployedContract(contractId) {
     return this.deployedContracts.get(contractId) || null;
   }
 
   /**
-   * 获取所有已部署的合约
+   * get所有已部署的合约
    */
   getAllDeployedContracts() {
     return Array.from(this.deployedContracts.entries()).map(([id, contract]) => ({
@@ -1044,7 +1044,7 @@ class ContractTemplateLibrary {
   }
 
   /**
-   * 获取统计信息
+   * get统计信息
    */
   getStats() {
     return {

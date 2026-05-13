@@ -1,5 +1,5 @@
 /**
- * Base58 编码/解码工具
+ * Base58 encoding/解码工具
  * 用于 NexusGenesis 地址生成
  */
 
@@ -11,7 +11,7 @@ for (let i = 0; i < ALPHABET.length; i++) {
 }
 
 /**
- * Base58 编码
+ * Base58 encoding
  * @param {Buffer} buffer - 待编码的缓冲区
  * @returns {string} - Base58 字符串
  */
@@ -80,7 +80,7 @@ export function base58Decode(string) {
 
 /**
  * 验证 Base58 字符串是否有效
- * @param {string} string - 待验证的字符串
+ * @param {string} string - pending verification的字符串
  * @returns {boolean}
  */
 export function isValidBase58(string) {

@@ -34,7 +34,7 @@ async function applyAuditTransactions() {
 
     console.log(`Found ${transactionFiles.length} transactions to process.`);
 
-    // 3. 处理每个交易
+    // 3. Processingevery 个交易
     let processedCount = 0;
     for (const file of transactionFiles) {
       if (file.endsWith('.json')) {

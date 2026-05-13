@@ -6,7 +6,7 @@
 import contractManager from '../contractManager.js';
 
 // AI合约字节码
-// 逻辑：
+// Logic: 
 // 1. 加载AI模型
 // 2. 执行AI推理
 // 3. 保存推理结果
@@ -15,7 +15,7 @@ const aiBytecode = [
   0x01, 0x01, // PUSH 1 (model path placeholder)
   0x21,       // AI_MODEL_LOAD
   
-  // 存储模型ID到内存地址0
+  // 存储模型ID到memory地址0
   0x08, 0x00, // STORE 0
   
   // 加载模型ID
@@ -27,7 +27,7 @@ const aiBytecode = [
   // 执行AI推理
   0x20,       // AI_INFERENCE
   
-  // 存储推理结果ID到内存地址1
+  // 存储推理结果ID到memory地址1
   0x08, 0x01, // STORE 1
   
   // 加载模型ID
@@ -58,7 +58,7 @@ async function executeAIContract(contractId) {
   return result;
 }
 
-// 获取AI合约信息
+// getAI合约信息
 function getAIInfo(contractId) {
   const contractInfo = contractManager.getContractInfo(contractId);
   if (contractInfo) {
@@ -75,13 +75,13 @@ function getAIInfo(contractId) {
 async function testAIContract() {
   console.log('=== Testing AI Contract ===');
   
-  // 部署合约
+  // Deploy contract
   const contractId = await deployAIContract();
   
-  // 执行合约
+  // Execute contract
   const result = await executeAIContract(contractId);
   
-  // 获取合约信息
+  // get合约信息
   const aiInfo = getAIInfo(contractId);
   console.log('AI contract info:', aiInfo);
   
@@ -92,7 +92,7 @@ async function testAIContract() {
   return contractId;
 }
 
-// 导出功能
+// Export functions
 export { 
   aiBytecode, 
   deployAIContract, 

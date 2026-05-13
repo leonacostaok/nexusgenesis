@@ -1,7 +1,7 @@
 /**
  * NexusGenesis - Swarm Pool 激活脚本
  * 
- * 使用方法：
+ * Usage：
  * node scripts/activate_swarm_pool.js
  */
 

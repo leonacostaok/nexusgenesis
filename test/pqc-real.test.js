@@ -61,7 +61,7 @@ test('Test 4: Reject tampered message', async () => {
   
   const signature = await sign(message, keyPair.privateKey);
   
-  // 使用篡改的消息验证应该失败
+  // 使用篡改的Message验证应该Failed
   const isValid = await verify(tamperedMessage, signature, keyPair.publicKey);
   assert.strictEqual(isValid, false, 'Tampered message should not verify');
   
@@ -75,7 +75,7 @@ test('Test 5: Reject wrong public key', async () => {
   
   const signature = await sign(message, keyPair1.privateKey);
   
-  // 使用错误的公钥验证应该失败
+  // 使用错误的公钥验证应该Failed
   const isValid = await verify(message, signature, keyPair2.publicKey);
   assert.strictEqual(isValid, false, 'Wrong public key should not verify');
   

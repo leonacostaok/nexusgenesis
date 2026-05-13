@@ -4,7 +4,7 @@
  * NexusGenesis CLI REPL (Phase 2)
  * 交互式命令行环境，类似 truffle console
  *
- * 用法: node scripts/repl.js
+ * Usage: node scripts/repl.js
  */
 
 import * as readline from 'readline';

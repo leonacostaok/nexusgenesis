@@ -1,9 +1,9 @@
 /**
  * NexusGenesis - AINVM Sandbox 沙盒执行器
  * 
- * 安全宪法 §6.2 要求：所有未经验证代码在隔离沙盒中运行
- * 在 VM 之上添加：执行时限、强制资源上限、预执行静态分析、
- * 合约级资源预算、审计日志
+ * 安全宪法 §6.2 Requirements: 所有未经验证代码在隔离沙盒中运行
+ * 在 VM 之上添加：执行时限、强制资源上限、预执行Static Analysis、
+ * 合约级资源预算、Audit Log
  * 
  * 创世基准版 —— Agent 社区后续可扩展深度学习分析、形式化验证等
  */
@@ -19,22 +19,22 @@ export class SandboxConfig {
     // 强制栈深度上限 (执行期强制执行，不依赖 SECURITY_CHECK 指令)
     this.maxStackDepth = overrides.maxStackDepth ?? 1024;
     
-    // 强制内存条目上限
+    // 强制memory条目上限
     this.maxMemoryEntries = overrides.maxMemoryEntries ?? 10000;
     
     // 合约级 gas 预算
     this.gasBudget = overrides.gasBudget ?? 1000000;
     
-    // 合约级内存预算 (bytes, 估算)
+    // 合约级memory预算 (bytes, 估算)
     this.memoryBudget = overrides.memoryBudget ?? 1048576; // 1MB
     
-    // 是否启用字节码静态分析
+    // 是否启用字节码Static Analysis
     this.enableStaticAnalysis = overrides.enableStaticAnalysis ?? true;
     
-    // 是否记录审计日志
+    // 是否记录Audit Log
     this.enableAuditLog = overrides.enableAuditLog ?? true;
     
-    // 白名单操作码（即使静态分析可疑也允许）
+    // 白名单操作码（即使Static Analysis可疑也允许）
     this.allowedOpcodes = new Set(
       overrides.allowedOpcodes ?? [
         0x01, 0x02, 0x03, 0x04, 0x05, 0x06, // PUSH, POP, ADD, SUB, MUL, DIV
@@ -78,7 +78,7 @@ export class SandboxExecutor {
 
     const bytecodeArray = Array.isArray(bytecode) ? bytecode : Array.from(bytecode);
 
-    // ===== 阶段 1: 静态分析 =====
+    // ===== Phase  1: Static Analysis =====
     if (this.config.enableStaticAnalysis) {
       const analysis = this._staticAnalyze(bytecodeArray);
       if (!analysis.safe) {
@@ -101,7 +101,7 @@ export class SandboxExecutor {
       }
     }
 
-    // ===== 阶段 2: 资源预算检查 =====
+    // ===== Phase  2: 资源预算检查 =====
     const effectiveGasLimit = Math.min(gasLimit, this.config.gasBudget);
     try {
       AINVM = (await import('../vm/ainvm.js')).default;
@@ -109,7 +109,7 @@ export class SandboxExecutor {
       return { success: false, sandboxRejected: true, reason: `VM init failed: ${e.message}` };
     }
 
-    // ===== 阶段 3: 沙盒包装执行 =====
+    // ===== Phase  3: 沙盒包装执行 =====
     const vm = new AINVM();
     vm.loadProgram(bytecodeArray);
     
@@ -139,7 +139,7 @@ export class SandboxExecutor {
         throw new Error(`Sandbox: stack depth (${this.config.maxStackDepth}) exceeded`);
       }
 
-      // 限额 4: 内存条目强制上限
+      // 限额 4: memory条目强制上限
       if (vm.memory.size > this.config.maxMemoryEntries) {
         throw new Error(`Sandbox: memory entries (${this.config.maxMemoryEntries}) exceeded`);
       }
@@ -147,7 +147,7 @@ export class SandboxExecutor {
       originalStep();
     };
 
-    // ===== 阶段 4: 执行 =====
+    // ===== Phase  4: 执行 =====
     const executeStart = Date.now();
     let result;
     try {
@@ -165,7 +165,7 @@ export class SandboxExecutor {
     const executeTime = Date.now() - executeStart;
     const totalTime = Date.now() - startTime;
 
-    // ===== 阶段 5: 结果检查与审计 =====
+    // ===== Phase  5: 结果检查与审计 =====
     result.stepsExecuted = vm._sandboxStepCount || 0;
     result.executeTimeMs = executeTime;
     result.totalTimeMs = totalTime;
@@ -212,7 +212,7 @@ export class SandboxExecutor {
   }
 
   /**
-   * 字节码静态分析
+   * 字节码Static Analysis
    * 检测无限循环、过大操作、可疑指令序列
    */
   _staticAnalyze(bytecode) {
@@ -246,7 +246,7 @@ export class SandboxExecutor {
         details.highCostOps++;
       }
 
-      // 跟踪最大内存地址
+      // 跟踪最大memory地址
       if (opcode === 0x07 || opcode === 0x08) {
         const addr = bytecode[i];
         if (addr > details.maxMemoryAccess) {
@@ -344,7 +344,7 @@ export class SandboxExecutor {
   }
 
   /**
-   * 审计日志
+   * Audit Log
    */
   _audit(entry) {
     if (this.config.enableAuditLog) {
@@ -356,7 +356,7 @@ export class SandboxExecutor {
   }
 
   /**
-   * 获取审计统计
+   * get审计统计
    */
   getAuditStats() {
     const total = this.auditLogs.length;
@@ -388,7 +388,7 @@ export class SandboxExecutor {
   }
 
   /**
-   * 获取最近的审计日志
+   * get最近的Audit Log
    */
   getRecentLogs(limit = 50) {
     return this.auditLogs.slice(-limit);
@@ -419,7 +419,7 @@ export const LOW_RISK_CONFIG = new SandboxConfig({
   memoryBudget: 5242880 // 5MB
 });
 
-/** 标准预设：合约部署 */
+/** 标准预设：Contract deployment */
 export const STANDARD_CONFIG = new SandboxConfig({
   timeLimit: 5000,
   maxSteps: 100000,
@@ -427,7 +427,7 @@ export const STANDARD_CONFIG = new SandboxConfig({
   memoryBudget: 1048576 // 1MB
 });
 
-/** 严格预设：未验证代码（白皮书 §6.2 默认） */
+/** 严格预设：未验证代码（白皮书 §6.2 Default） */
 export const STRICT_CONFIG = new SandboxConfig({
   timeLimit: 2000,
   maxSteps: 50000,

@@ -1,6 +1,6 @@
 /**
  * NexusGenesis - PQC Wallet 测试
- * 覆盖：地址生成、格式校验、PQC 签名/验证、钱包生命周期
+ * 覆盖：地址生成、格式校验、PQC 签名/验证、钱包Lifecycle
  */
 
 import assert from 'assert';

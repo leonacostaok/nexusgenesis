@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * 系统安全审计脚本
- * 对系统进行全面的安全审计，防范潜在漏洞
+ * 系统Security audit脚本
+ * 对系统进行全面的Security audit，防范潜在漏洞
  */
 
 import fs from 'fs';
@@ -195,9 +195,9 @@ function checkCryptography() {
   });
 }
 
-// 执行安全审计
+// 执行Security audit
 function runSecurityAudit() {
-  console.log('开始系统安全审计...');
+  console.log('Start 系统Security audit...');
   console.log('========================================');
 
   // 执行各项安全检查
@@ -216,10 +216,10 @@ function runSecurityAudit() {
   const lowSeverityIssues = auditResults.filter(r => r.severity === 'low' && !r.status).length;
 
   console.log('========================================');
-  console.log('安全审计结果:');
+  console.log('Security audit结果:');
   console.log(`总检查项: ${totalChecks}`);
   console.log(`通过: ${passedChecks}`);
-  console.log(`失败: ${failedChecks}`);
+  console.log(`Failed: ${failedChecks}`);
   console.log(`高风险问题: ${highSeverityIssues}`);
   console.log(`中风险问题: ${mediumSeverityIssues}`);
   console.log(`低风险问题: ${lowSeverityIssues}`);
@@ -253,7 +253,7 @@ function runSecurityAudit() {
     securitySuggestions
   }, null, 2));
 
-  console.log(`\n审计结果已保存到: ${resultFile}`);
+  console.log(`\n审计结果Saved到: ${resultFile}`);
   return {
     totalChecks,
     passedChecks,
@@ -305,7 +305,7 @@ function generateSecuritySuggestions(auditResults) {
   return suggestions;
 }
 
-// 执行安全审计
+// 执行Security audit
 try {
   runSecurityAudit();
 } catch (error) {

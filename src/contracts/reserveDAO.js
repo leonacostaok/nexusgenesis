@@ -6,7 +6,7 @@
  * 1. Reserve 资金存入 DAO 金库
  * 2. 里程碑解锁需要 DAO 提案 + 投票通过
  * 3. Observer 拥有一票否决权
- * 4. 每个里程碑释放 10M NGEN
+ * 4. every 个里程碑释放 10M NGEN
  */
 
 import fs from 'fs/promises';

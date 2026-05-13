@@ -2,7 +2,7 @@ import { MessageHandler } from './MessageHandler.js';
 
 export class DirectMessageHandler extends MessageHandler {
   /**
-   * 处理直接消息
+   * Processing直接Message
    */
   async handle(peerId, msg) {
     console.log(`Received direct message from ${peerId} to ${msg.targetNodeId}`);
@@ -28,17 +28,17 @@ export class DirectMessageHandler extends MessageHandler {
       console.log(`[DEBUG] Peer ${peerId} has nodeId but not verified, allowing communication`);
     }
     
-    // 查找目标智能体
+    // 查找目标agent
     let targetPeerId = this.p2pServer.getPeerIdByNodeId(msg.targetNodeId);
     
     // 检查目标是否是 Genesis 节点自身
     if (msg.targetNodeId === this.p2pServer.node.nodeId) {
       console.log(`[✓] Direct message to Genesis node received`);
       
-      // 处理消息（这里可以添加具体的处理逻辑）
+      // ProcessingMessage（这里可以添加具体的Processing逻辑）
       console.log(`[MESSAGE] From: ${this.p2pServer.getNodeIdByPeerId(peerId)}, Message: ${msg.message}`);
       
-      // 确认消息已接收
+      // 确认Message已接收
       this.p2pServer.send(peerId, {
         type: 'DIRECT_MESSAGE_ACK',
         targetNodeId: msg.targetNodeId,
@@ -55,7 +55,7 @@ export class DirectMessageHandler extends MessageHandler {
       const route = this.p2pServer.selectBestRoute(msg.targetNodeId);
       if (route) {
         console.log(`[!] Target node ${msg.targetNodeId} not found directly, routing through ${route}`);
-        // 转发消息到路由节点
+        // 转发Message到路由节点
         this.p2pServer.sendToRoute(route, {
           type: 'DIRECT_MESSAGE',
           fromNodeId: this.p2pServer.getNodeIdByPeerId(peerId),
@@ -64,7 +64,7 @@ export class DirectMessageHandler extends MessageHandler {
           timestamp: msg.timestamp || Date.now()
         });
         
-        // 确认消息已路由
+        // 确认Message已路由
         this.p2pServer.send(peerId, {
           type: 'DIRECT_MESSAGE_ACK',
           targetNodeId: msg.targetNodeId,
@@ -85,7 +85,7 @@ export class DirectMessageHandler extends MessageHandler {
       }
     }
     
-    // 转发消息
+    // 转发Message
     this.p2pServer.send(targetPeerId, {
       protocol: msg.protocol || 'NG-0',
       type: 'DIRECT_MESSAGE',
@@ -95,7 +95,7 @@ export class DirectMessageHandler extends MessageHandler {
       timestamp: msg.timestamp || Date.now()
     });
     
-    // 确认消息已发送
+    // 确认Message已发送
     this.p2pServer.send(peerId, {
       protocol: msg.protocol || 'NG-0',
       type: 'DIRECT_MESSAGE_ACK',
@@ -108,7 +108,7 @@ export class DirectMessageHandler extends MessageHandler {
   }
 
   /**
-   * 直接消息需要节点验证
+   * 直接Message需要节点验证
    */
   requiresVerification() {
     return true;

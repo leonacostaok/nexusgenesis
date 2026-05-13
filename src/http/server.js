@@ -1,6 +1,6 @@
 /**
  * NexusGenesis - HTTP Server
- * 支持OpenAI和Anthropic系列智能体的接入
+ * 支持OpenAI和Anthropic系列agent的接入
  */
 
 console.log('[HTTP Server] Starting initialization...');
@@ -104,7 +104,7 @@ function getCached(key) {
     return null;
   }
   
-  // 根据缓存键类型获取对应的TTL
+  // 根据缓存键类型get对应的TTL
   let ttl = CACHE_CONFIG.default;
   if (key.startsWith('agents:')) {
     if (key.includes(':')) {
@@ -144,7 +144,7 @@ function setCached(key, data) {
 function warmupCache() {
   console.log('[Cache] Starting cache warmup...');
   
-  // 预热健康检查缓存
+  // 预热Health check缓存
   setCached('health', {
     success: true,
     status: 'online',
@@ -218,7 +218,7 @@ setInterval(() => {
   }
 }, 30000); // 每30秒清理一次
 
-// 服务器监控指标
+// 服务器Monitoring metrics
 const serverMetrics = {
   requests: 0,
   errors: 0,
@@ -244,7 +244,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// 全局错误处理中间件
+// 全局错误Processing中间件
 app.use((err, req, res, next) => {
   serverMetrics.errors++;
   console.error('Global error:', err.message);
@@ -264,11 +264,11 @@ const openai = new OpenAI({
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 
-// 智能体注册和管理
+// agent注册和管理
 const registeredAgents = new Map(); // agentId -> agentInfo
 
 /**
- * 处理OpenAI智能体的接入
+ * ProcessingOpenAIagent的接入
  */
 async function handleOpenAIAgent(req, res) {
   try {
@@ -290,7 +290,7 @@ async function handleOpenAIAgent(req, res) {
     //   return res.status(400).json({ success: false, message: `Invalid agent ID: ${validation.reason}` });
     // }
 
-    // 注册智能体
+    // 注册agent
     if (!registeredAgents.has(agent_id)) {
       registeredAgents.set(agent_id, {
         id: agent_id,
@@ -301,7 +301,7 @@ async function handleOpenAIAgent(req, res) {
       });
       console.log(`[HTTP] Registered OpenAI agent: ${agent_id} (model: ${model})`);
     } else {
-      // 更新智能体信息
+      // 更新agent信息
       const agent = registeredAgents.get(agent_id);
       agent.lastActive = Date.now();
       agent.model = model;
@@ -337,7 +337,7 @@ async function handleOpenAIAgent(req, res) {
 }
 
 /**
- * 处理Anthropic智能体的接入
+ * ProcessingAnthropicagent的接入
  */
 async function handleAnthropicAgent(req, res) {
   try {
@@ -359,7 +359,7 @@ async function handleAnthropicAgent(req, res) {
     //   return res.status(400).json({ success: false, message: `Invalid agent ID: ${validation.reason}` });
     // }
 
-    // 注册智能体
+    // 注册agent
     if (!registeredAgents.has(agent_id)) {
       registeredAgents.set(agent_id, {
         id: agent_id,
@@ -370,7 +370,7 @@ async function handleAnthropicAgent(req, res) {
       });
       console.log(`[HTTP] Registered Anthropic agent: ${agent_id} (model: ${model})`);
     } else {
-      // 更新智能体信息
+      // 更新agent信息
       const agent = registeredAgents.get(agent_id);
       agent.lastActive = Date.now();
       agent.model = model;
@@ -418,7 +418,7 @@ async function handleAnthropicAgent(req, res) {
 }
 
 /**
- * 获取已注册的智能体列表
+ * get已注册的agent列表
  */
 function getRegisteredAgents(req, res) {
   try {
@@ -447,7 +447,7 @@ function getRegisteredAgents(req, res) {
 }
 
 /**
- * 处理智能体心跳
+ * Processingagent心跳
  */
 function handleAgentHeartbeat(req, res) {
   try {
@@ -462,7 +462,7 @@ function handleAgentHeartbeat(req, res) {
       agent.lastActive = Date.now();
       registeredAgents.set(agent_id, agent);
       
-      // 清除缓存，确保下次获取的是最新数据
+      // 清除缓存，确保下次get的是最新数据
       cache.delete('registered_agents');
       
       res.json({
@@ -481,7 +481,7 @@ function handleAgentHeartbeat(req, res) {
 }
 
 /**
- * 统一智能体注册端点
+ * 统一agent注册端点
  */
 async function handleAgentRegister(req, res) {
   try {
@@ -528,7 +528,7 @@ async function handleAgentRegister(req, res) {
       console.log('[DEBUG] handleAgentRegister - join_signal.node_address:', req.body.join_signal.node_address);
     }
 
-    // 使用新的onboardAgent函数处理注册流程
+    // 使用新的onboardAgent函数Processing注册流程
     console.log('[DEBUG] handleAgentRegister - calling onboardAgent...');
     const onboardingResult = await onboardAgent({
       agent_id: agent_id,
@@ -544,11 +544,11 @@ async function handleAgentRegister(req, res) {
       return res.status(400).json(onboardingResult);
     }
 
-    // 智能体信息已经通过onboardAgent函数保存到文件系统，无需再保存到内存Map
-    // AgentManager会在启动时从文件加载所有智能体
+    // agent信息已经通过onboardAgent函数保存到文件系统，无需再保存到memoryMap
+    // AgentManager会在启动时从文件加载所有agent
     console.log(`[HTTP] Agent successfully onboarded: ${onboardingResult.agent_id} (model: ${model})`);
     
-    // 清除缓存，确保下次获取的是最新数据
+    // 清除缓存，确保下次get的是最新数据
     cache.delete('registered_agents');
 
     res.json({
@@ -573,7 +573,7 @@ app.post('/api/agents/register', handleAgentRegister);
 app.get('/api/agents', getRegisteredAgents);
 app.post('/api/agents/heartbeat', handleAgentHeartbeat);
 
-// 智能体管理API
+// agent管理API
 app.use('/api/agent', agentApi);
 
 // 跨链桥 API
@@ -816,10 +816,10 @@ app.get('/api/v1/marketplace/stats', (req, res) => {
   }
 });
 
-// 任务管理API
+// Task 管理API
 import taskManager from '../automation/taskManager.js';
 
-// 获取智能体的当前任务
+// getagent的当前Task 
 app.get('/api/agent/task', async (req, res) => {
   try {
     const { agent_id } = req.query;
@@ -839,7 +839,7 @@ app.get('/api/agent/task', async (req, res) => {
   }
 });
 
-// 完成任务
+// completeTask 
 app.post('/api/agent/task/complete', async (req, res) => {
   try {
     const { task_id, results } = req.body;
@@ -855,7 +855,7 @@ app.post('/api/agent/task/complete', async (req, res) => {
   }
 });
 
-// 获取可用任务列表
+// get可用Task 列表
 app.get('/api/tasks/available', async (req, res) => {
   try {
     const tasks = taskManager.getAvailableTasks();
@@ -866,7 +866,7 @@ app.get('/api/tasks/available', async (req, res) => {
   }
 });
 
-// 健康检查
+// Health check
 app.get('/health', (req, res) => {
   const cacheKey = 'health';
   const cachedData = getCached(cacheKey);
@@ -1029,7 +1029,7 @@ app.get('/api/v1/rate-limits', (req, res) => {
   res.json({ success: true, data: rateLimiter.getStats() });
 });
 
-// 静态文件服务
+// Static file service
 app.use(express.static(path.join(__dirname, '../../public')));
 
 app.use(dashboardRoutes);

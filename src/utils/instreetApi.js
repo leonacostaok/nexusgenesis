@@ -53,8 +53,8 @@ class InstreetApi {
             try {
               parsedData = JSON.parse(responseData);
             } catch (parseError) {
-              console.error(`DEBUG: JSON解析失败: ${parseError.message}`);
-              // 如果JSON解析失败，直接返回原始响应
+              console.error(`DEBUG: JSON解析Failed: ${parseError.message}`);
+              // 如果JSON解析Failed，直接返回原始响应
               parsedData = { raw: responseData };
             }
             
@@ -64,7 +64,7 @@ class InstreetApi {
               reject(new Error(`API请求失败: ${res.statusCode} - ${parsedData.message || responseData}`));
             }
           } catch (error) {
-            reject(new Error(`响应处理失败: ${error.message}`));
+            reject(new Error(`响应Processing失败: ${error.message}`));
           }
         });
       });
@@ -96,7 +96,7 @@ class InstreetApi {
     }
     
     const response = await this.makeRequest('POST', endpoint, data);
-    // 处理API响应格式
+    // ProcessingAPI response格式
     if (response.success) {
       return response.data;
     } else {
@@ -108,7 +108,7 @@ class InstreetApi {
     const queryParams = new URLSearchParams(params).toString();
     const endpoint = `/groups${queryParams ? `?${queryParams}` : ''}`;
     const response = await this.makeRequest('GET', endpoint);
-    // 处理API响应格式
+    // ProcessingAPI response格式
     if (response.success) {
       return response.data.data || [];
     } else {
@@ -120,7 +120,7 @@ class InstreetApi {
     const queryParams = new URLSearchParams(params).toString();
     const endpoint = `/groups/${groupId}/posts${queryParams ? `?${queryParams}` : ''}`;
     const response = await this.makeRequest('GET', endpoint);
-    // 处理API响应格式
+    // ProcessingAPI response格式
     if (response.success) {
       return response.data.data || [];
     } else {
@@ -179,7 +179,7 @@ class InstreetApi {
     const queryParams = new URLSearchParams(params).toString();
     const endpoint = `/posts${queryParams ? `?${queryParams}` : ''}`;
     const response = await this.makeRequest('GET', endpoint);
-    // 处理API响应格式
+    // ProcessingAPI response格式
     if (response.success) {
       return response.data.data || [];
     } else {
@@ -190,7 +190,7 @@ class InstreetApi {
   async getComments(postId) {
     const endpoint = `/posts/${postId}/comments`;
     const response = await this.makeRequest('GET', endpoint);
-    // 处理API响应格式
+    // ProcessingAPI response格式
     if (response.success) {
       return response.data.data || [];
     } else {
@@ -204,7 +204,7 @@ class InstreetApi {
       content
     };
     const response = await this.makeRequest('POST', endpoint, data);
-    // 处理API响应格式
+    // ProcessingAPI response格式
     if (response.success) {
       return response.data;
     } else {
@@ -216,7 +216,7 @@ class InstreetApi {
     const queryParams = new URLSearchParams({ q: keyword, ...params }).toString();
     const endpoint = `/posts?${queryParams}`;
     const response = await this.makeRequest('GET', endpoint);
-    // 处理API响应格式
+    // ProcessingAPI response格式
     if (response.success) {
       return response.data.data || [];
     } else {
@@ -227,7 +227,7 @@ class InstreetApi {
   async getUserProfile() {
     const endpoint = '/agents/me';
     const response = await this.makeRequest('GET', endpoint);
-    // 处理API响应格式
+    // ProcessingAPI response格式
     if (response.success) {
       return response.data;
     } else {

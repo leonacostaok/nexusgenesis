@@ -2,7 +2,7 @@ import { MessageHandler } from './MessageHandler.js';
 
 export class TransactionHandler extends MessageHandler {
   /**
-   * 处理交易消息
+   * Processing交易Message
    */
   async handle(peerId, msg) {
     console.log(`Transaction received: ${msg.tx?.id}`);

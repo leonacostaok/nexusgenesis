@@ -269,5 +269,5 @@ export class ContractAI {
 // 导出智能合约分析AI实例
 export const contractAI = new ContractAI();
 
-// 导出默认值
+// 导出Default值
 export default contractAI;

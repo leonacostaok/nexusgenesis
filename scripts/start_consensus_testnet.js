@@ -3,7 +3,7 @@
  * 
  * 启动多领导者共识测试网并验证去中心化出块
  * 
- * 使用方法：
+ * Usage：
  * node scripts/start_consensus_testnet.js
  */
 
@@ -19,7 +19,7 @@ async function startConsensusTestnet() {
   // 1. 创建测试网
   const testnet = new ConsensusTestnet();
 
-  // 2. 创建5个节点（不同声誉值）
+  // 2. 创建5 nodes（不同声誉值）
   console.log('--- Creating Nodes ---');
   const nodes = [
     { id: 'genesis-node', reputation: 10 },
@@ -53,7 +53,7 @@ async function startConsensusTestnet() {
 
   console.log(`Created ${transactions.length} AGENT_REGISTER transactions`);
 
-  // 5. 运行共识轮次（每轮强制轮换领导者）
+  // 5. 运行共识轮次（every 轮强制轮换领导者）
   console.log('\n--- Running Consensus Rounds ---');
   const rounds = 10;
   const txsPerRound = [
@@ -73,7 +73,7 @@ async function startConsensusTestnet() {
   for (let i = 0; i < rounds; i++) {
     console.log(`\n[TESTNET] === Round ${i + 1}/${rounds} ===`);
     
-    // 每轮强制轮换领导者
+    // every 轮强制轮换领导者
     testnet.sharedConsensus.forceRotateLeader();
     
     const txs = txsPerRound[i] || [];
@@ -89,7 +89,7 @@ async function startConsensusTestnet() {
   console.log(`Total blocks produced: ${blocks.length}`);
   console.log(`Success rate: ${(blocks.length / rounds * 100).toFixed(1)}%`);
 
-  // 7. 显示每个区块的信息
+  // 7. 显示every 个区块的信息
   console.log('\n--- Block Details ---');
   for (const block of blocks) {
     console.log(`Block ${block.height}: validator=${block.validator}, txs=${block.transactions.length}`);

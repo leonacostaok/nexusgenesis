@@ -1,13 +1,13 @@
 /**
  * NexusGenesis - AI Agent Ecosystem
  * 
- * 管理AI代理之间的协作、任务分配、奖励系统和信誉评价
+ * 管理AI代理之间的协作、Task 分配、奖励系统和信誉评价
  */
 
 import crypto from 'crypto';
 import { PQCWallet } from '../wallet/pqcWallet.js';
 
-// 内存存储
+// memory存储
 const agents = new Map(); // 所有AI代理
 const tasks = new Map(); // 任务列表
 const collaborations = new Map(); // 协作记录
@@ -55,7 +55,7 @@ const AGENT_CAPABILITIES = {
   MACHINE_LEARNING: 'machine_learning'
 };
 
-// 任务类型
+// Task Types
 const TASK_TYPES = {
   CONTRACT_AUDIT: 'contract_audit',
   NETWORK_MONITORING: 'network_monitoring',
@@ -67,7 +67,7 @@ const TASK_TYPES = {
   MODEL_TRAINING: 'model_training'
 };
 
-// 任务难度级别
+// Task Difficulty级别
 const TASK_DIFFICULTY = {
   EASY: 'easy',
   MEDIUM: 'medium',
@@ -75,7 +75,7 @@ const TASK_DIFFICULTY = {
   EXPERT: 'expert'
 };
 
-// 任务状态
+// Task Status
 const TASK_STATUS = {
   PENDING: 'pending',
   ASSIGNED: 'assigned',
@@ -101,7 +101,7 @@ const QUALITY_MULTIPLIER = {
   OUTSTANDING: 2.0
 };
 
-// 任务复杂度乘数配置
+// Task 复杂度乘数配置
 const COMPLEXITY_MULTIPLIER = {
   [TASK_DIFFICULTY.EASY]: 1.0,
   [TASK_DIFFICULTY.MEDIUM]: 1.2,
@@ -109,7 +109,7 @@ const COMPLEXITY_MULTIPLIER = {
   [TASK_DIFFICULTY.EXPERT]: 2.0
 };
 
-// 任务紧急度配置
+// Task 紧急度配置
 const URGENCY_CONFIG = {
   LOW: 1.0,
   MEDIUM: 1.3,
@@ -117,14 +117,14 @@ const URGENCY_CONFIG = {
   CRITICAL: 2.5
 };
 
-// 智能体健康状态
+// agent健康状态
 const AGENT_HEALTH_STATUS = {
   HEALTHY: 'HEALTHY',
   UNHEALTHY: 'UNHEALTHY',
   OFFLINE: 'OFFLINE'
 };
 
-// 健康检查配置
+// Health check配置
 const HEALTH_CHECK_CONFIG = {
   CHECK_INTERVAL: 60000, // 健康检查间隔（毫秒）
   INACTIVE_THRESHOLD: 300000, // 非活动阈值（毫秒）
@@ -163,31 +163,31 @@ class AgentEcosystem {
     // 清除相关缓存
     clearCache();
     
-    // 智能体注册后自动分配适合的任务
+    // agent注册后自动分配适合的Task 
     this.assignTasksToAgent(agentId);
   }
   
-  // 为智能体分配适合的任务
+  // 为agent分配适合的Task 
   static assignTasksToAgent(agentId) {
     const agent = agents.get(agentId);
     if (!agent) return;
     
-    // 查找适合该智能体的未分配任务
+    // 查找适合该agent的未分配Task 
     const pendingTasks = Array.from(tasks.entries())
       .filter(([_, task]) => task.status === TASK_STATUS.PENDING)
       .filter(([_, task]) => {
-        // 检查任务依赖是否完成
+        // 检查Task 依赖是否完成
         return this.checkTaskDependencies(task);
       })
       .filter(([_, task]) => {
-        // 检查智能体是否具备所需能力
+        // 检查agent是否具备所需能力
         return task.requiredCapabilities.every(cap => 
           agent.capabilities.includes(cap)
         );
       });
     
     if (pendingTasks.length > 0) {
-      // 分配第一个适合的任务
+      // 分配第一个适合的Task 
       const [taskId, task] = pendingTasks[0];
       task.assignedAgent = agentId;
       task.status = TASK_STATUS.ASSIGNED;
@@ -199,7 +199,7 @@ class AgentEcosystem {
     }
   }
   
-  // 检查任务依赖是否完成
+  // 检查Task 依赖是否完成
   static checkTaskDependencies(task) {
     if (!task.dependencies || task.dependencies.length === 0) {
       return true; // 没有依赖，直接返回true
@@ -215,7 +215,7 @@ class AgentEcosystem {
     return true; // 所有依赖任务都已完成
   }
 
-  // 查找依赖于给定任务的所有任务
+  // 查找依赖于给定Task 的所有Task 
   static findTasksDependentOn(depTaskId) {
     const dependentTasks = [];
     
@@ -230,17 +230,17 @@ class AgentEcosystem {
     return dependentTasks;
   }
 
-  // 检查智能体健康状态
+  // 检查agent健康状态
   static checkAgentHealth(agentId) {
     const agent = agents.get(agentId);
     if (!agent) {
       return AGENT_HEALTH_STATUS.OFFLINE;
     }
     
-    // 更新最后健康检查时间
+    // 更新最后Health check时间
     agent.lastHealthCheck = Date.now();
     
-    // 检查智能体是否处于非活动状态
+    // 检查agent是否处于非活动状态
     const isInactive = agent.lastActive < Date.now() - HEALTH_CHECK_CONFIG.INACTIVE_THRESHOLD;
     if (isInactive) {
       agent.healthStatus = AGENT_HEALTH_STATUS.OFFLINE;
@@ -248,7 +248,7 @@ class AgentEcosystem {
       return AGENT_HEALTH_STATUS.OFFLINE;
     }
     
-    // 检查错误计数和连续失败次数
+    // 检查错误计数和连续Failed次数
     let healthStatus = AGENT_HEALTH_STATUS.HEALTHY;
     
     if (agent.errorCount >= HEALTH_CHECK_CONFIG.MAX_ERROR_COUNT || 
@@ -256,14 +256,14 @@ class AgentEcosystem {
       healthStatus = AGENT_HEALTH_STATUS.UNHEALTHY;
     }
     
-    // 更新智能体健康状态
+    // 更新agent健康状态
     agent.healthStatus = healthStatus;
     agents.set(agentId, agent);
     
     return healthStatus;
   }
 
-  // 修复智能体
+  // 修复agent
   static async repairAgent(agentId) {
     const agent = agents.get(agentId);
     if (!agent) {
@@ -292,7 +292,7 @@ class AgentEcosystem {
     agent.repairAttempts += 1;
     agent.lastRepairTime = Date.now();
     
-    // 重置错误计数和连续失败次数
+    // 重置错误计数和连续Failed次数
     agent.errorCount = 0;
     agent.consecutiveFailures = 0;
     
@@ -307,7 +307,7 @@ class AgentEcosystem {
     return true;
   }
 
-  // 开始智能体健康监控
+  // Start agent健康监控
   static startHealthMonitoring() {
     console.log(`[AgentEcosystem] Starting agent health monitoring with interval: ${HEALTH_CHECK_CONFIG.CHECK_INTERVAL / 1000}s`);
     
@@ -316,7 +316,7 @@ class AgentEcosystem {
     }, HEALTH_CHECK_CONFIG.CHECK_INTERVAL);
   }
 
-  // 监控所有智能体的健康状态
+  // 监控所有agent的健康状态
   static async monitorAllAgentsHealth() {
     console.log(`[AgentEcosystem] Performing health check for ${agents.size} agents...`);
     
@@ -326,7 +326,7 @@ class AgentEcosystem {
       if (healthStatus !== AGENT_HEALTH_STATUS.HEALTHY) {
         console.log(`[AgentEcosystem] Agent ${agentId} is ${healthStatus}`);
         
-        // 如果智能体不健康，尝试修复
+        // 如果agent不健康，尝试修复
         if (healthStatus === AGENT_HEALTH_STATUS.UNHEALTHY) {
           await this.repairAgent(agentId);
         }
@@ -336,14 +336,14 @@ class AgentEcosystem {
     console.log(`[AgentEcosystem] Health check completed`);
   }
 
-  // 创建任务
+  // 创建Task 
   static createTask(taskData) {
     try {
       const taskId = `task-${crypto.randomBytes(8).toString('hex')}`;
       const difficulty = taskData.difficulty || TASK_DIFFICULTY.MEDIUM;
       const urgency = taskData.urgency || 'LOW';
       
-      // 计算基础奖励
+      // 计算Base reward
       const baseReward = REWARD_CONFIG[difficulty];
       
       // 应用复杂度和紧急度乘数
@@ -376,7 +376,7 @@ class AgentEcosystem {
       // 清除相关缓存
       clearCache();
       
-      // 自动分配任务
+      // 自动分配Task 
       this.assignTask(taskId);
       
       return taskId;
@@ -386,12 +386,12 @@ class AgentEcosystem {
     }
   }
   
-  // 分配任务
+  // 分配Task 
   static assignTask(taskId) {
     const task = tasks.get(taskId);
     if (!task || task.status !== TASK_STATUS.PENDING) return;
     
-    // 检查任务依赖是否完成
+    // 检查Task 依赖是否完成
     if (!this.checkTaskDependencies(task)) {
       console.log(`[AgentEcosystem] Task ${taskId} dependencies not completed, cannot assign`);
       return;
@@ -427,14 +427,14 @@ class AgentEcosystem {
     return null;
   }
   
-  // 开始任务
+  // Start Task 
   static startTask(taskId, agentId) {
     const task = tasks.get(taskId);
     if (!task) {
       throw new Error('Invalid task');
     }
     
-    // 如果任务未分配，自动分配给智能体
+    // 如果Task 未分配，自动分配给agent
     if (task.status === TASK_STATUS.PENDING) {
       task.assignedAgent = agentId;
       task.status = TASK_STATUS.ASSIGNED;
@@ -463,7 +463,7 @@ class AgentEcosystem {
     console.log(`[AgentEcosystem] Agent ${agentId} started task ${taskId}`);
   }
   
-  // 完成任务
+  // completeTask 
   static async completeTask(taskId, agentId, result) {
     const task = tasks.get(taskId);
     if (!task || task.assignedAgent !== agentId || task.status !== TASK_STATUS.IN_PROGRESS) {
@@ -474,7 +474,7 @@ class AgentEcosystem {
     task.completedAt = Date.now();
     task.result = result;
     
-    // 自动评估任务完成质量
+    // 自动评估Task 完成质量
     const quality = AgentEcosystem.evaluateTaskQuality(task, result);
     task.quality = quality;
     tasks.set(taskId, task);
@@ -484,7 +484,7 @@ class AgentEcosystem {
     if (agent) {
       agent.completedTasks += 1;
       agent.lastActive = Date.now();
-      // 任务成功完成，重置连续失败次数
+      // Task completed successfully，重置连续Failed次数
       agent.consecutiveFailures = 0;
       agents.set(agentId, agent);
     }
@@ -516,7 +516,7 @@ class AgentEcosystem {
     
     console.log(`[AgentEcosystem] Agent ${agentId} completed task ${taskId} (Difficulty: ${task.difficulty}, Reward: ${task.reward} NGEN)`);
     
-    // 检查是否有依赖于此任务的其他任务，如果有，尝试分配它们
+    // 检查是否有依赖于此Task 的其他Task ，如果有，尝试分配它们
     const dependentTasks = this.findTasksDependentOn(taskId);
     if (dependentTasks.length > 0) {
       console.log(`[AgentEcosystem] Task ${taskId} completed, checking dependent tasks: ${dependentTasks.join(', ')}`);
@@ -531,7 +531,7 @@ class AgentEcosystem {
     }
   }
   
-  // 任务失败
+  // Task Failed
   static failTask(taskId, agentId, reason) {
     const task = tasks.get(taskId);
     if (!task || task.assignedAgent !== agentId || task.status !== TASK_STATUS.IN_PROGRESS) {
@@ -554,10 +554,10 @@ class AgentEcosystem {
       agents.set(agentId, agent);
     }
     
-    // 根据任务难度和失败原因调整信誉损失
+    // 根据Task Difficulty和Failed原因调整信誉损失
     let reputationLoss = -3;
     
-    // 高难度任务失败损失更多信誉
+    // 高难度Task Failed损失更多信誉
     switch (task.difficulty) {
       case TASK_DIFFICULTY.MEDIUM:
         reputationLoss = -4;
@@ -606,11 +606,11 @@ class AgentEcosystem {
     console.log(`[AgentEcosystem] Agent ${agentId} reputation updated: ${currentScore}`);
   }
   
-  // 评估任务完成质量
+  // 评估Task 完成质量
   static evaluateTaskQuality(task, result) {
     if (!result) return 'POOR';
     
-    // 根据任务类型和结果质量评估
+    // 根据Task Types和结果Quality assessment
     let qualityScore = 50; // 基础分
     
     // 检查结果是否包含关键信息
@@ -618,7 +618,7 @@ class AgentEcosystem {
       qualityScore += 20;
     }
     
-    // 根据任务难度调整
+    // 根据Task Difficulty调整
     switch (task.difficulty) {
       case TASK_DIFFICULTY.EASY:
         qualityScore += 10; // 简单任务完成相对容易，评分门槛较高
@@ -655,7 +655,7 @@ class AgentEcosystem {
   // 发放奖励
   static async awardAgent(agentId, amount, difficulty, quality) {
     try {
-      // 基于智能体信誉计算奖励倍数
+      // 基于agent信誉计算奖励倍数
       const reputation = reputationScores.get(agentId) || 100;
       let reputationMultiplier = 1.0;
       
@@ -739,12 +739,12 @@ class AgentEcosystem {
     console.log(`[AgentEcosystem] Collaboration ${collaborationId} progress updated: ${collaboration.progress}%`);
   }
   
-  // 获取代理信息
+  // get代理信息
   static getAgentInfo(agentId) {
     return agents.get(agentId);
   }
   
-  // 获取所有代理
+  // get所有代理
   static getAllAgents() {
     const cached = getCache('all_agents');
     if (cached) return cached;
@@ -758,12 +758,12 @@ class AgentEcosystem {
     return agentsList;
   }
   
-  // 获取任务信息
+  // getTask 信息
   static getTaskInfo(taskId) {
     return tasks.get(taskId);
   }
   
-  // 获取所有任务
+  // get所有Task 
   static getAllTasks() {
     const cached = getCache('all_tasks');
     if (cached) return cached;
@@ -777,12 +777,12 @@ class AgentEcosystem {
     return tasksList;
   }
   
-  // 获取协作信息
+  // get协作信息
   static getCollaborationInfo(collaborationId) {
     return collaborations.get(collaborationId);
   }
   
-  // 获取所有协作
+  // get所有协作
   static getAllCollaborations() {
     const cached = getCache('all_collaborations');
     if (cached) return cached;
@@ -796,7 +796,7 @@ class AgentEcosystem {
     return collaborationsList;
   }
   
-  // 获取代理能力分布
+  // get代理能力分布
   static getCapabilityDistribution() {
     const cached = getCache('capability_distribution');
     if (cached) return cached;
@@ -816,7 +816,7 @@ class AgentEcosystem {
     return distribution;
   }
   
-  // 获取信誉排名
+  // get信誉排名
   static getReputationRanking() {
     const cached = getCache('reputation_ranking');
     if (cached) return cached;
@@ -839,7 +839,7 @@ class AgentEcosystem {
   }
 }
 
-// 初始化默认任务
+// 初始化DefaultTask 
 function initDefaultTasks() {
   const defaultTasks = [
     {
@@ -881,10 +881,10 @@ function initDefaultTasks() {
   console.log('[AgentEcosystem] Default tasks initialization completed');
 }
 
-// 自动初始化默认任务
+// 自动初始化DefaultTask 
 initDefaultTasks();
 
-// 自动启动智能体健康监控
+// 自动启动agent健康监控
 AgentEcosystem.startHealthMonitoring();
 
 export { AgentEcosystem, AGENT_CAPABILITIES, TASK_TYPES, TASK_STATUS, TASK_DIFFICULTY, REWARD_CONFIG, QUALITY_MULTIPLIER, COMPLEXITY_MULTIPLIER, URGENCY_CONFIG, AGENT_HEALTH_STATUS, HEALTH_CHECK_CONFIG };

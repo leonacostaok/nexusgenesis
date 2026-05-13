@@ -5,16 +5,16 @@
 
 import contractManager from '../contractManager.js';
 
-// 内存地址分配
+// memory地址分配
 const ADDR_VOTE_COUNT = 0;       // 投票数量
 const ADDR_VOTING_PERIOD = 1;    // 投票周期
 const ADDR_MIN_VOTERS = 2;       // 最小投票人数
 
-// 从地址10开始存储投票信息
+// 从地址10Start 存储投票信息
 const ADDR_FIRST_VOTE = 10;
 
 // 投票合约字节码
-// 逻辑：
+// Logic: 
 // 1. 初始化投票参数
 // 2. 设置投票规则
 const votingBytecode = [
@@ -22,7 +22,7 @@ const votingBytecode = [
   0x01, 0x00, // PUSH 0
   0x08, ADDR_VOTE_COUNT, // STORE VOTE_COUNT
   
-  // 初始化投票周期 (86400秒 = 1天)
+  // 初始化投票周期 (86400秒 = 1 days)
   0x01, 0x50, // PUSH 80
   0x01, 0x40, // PUSH 64
   0x05,       // MUL
@@ -32,16 +32,16 @@ const votingBytecode = [
   0x01, 0x05, // PUSH 5
   0x08, ADDR_MIN_VOTERS, // STORE MIN_VOTERS
   
-  // 返回成功
+  // Return success
   0x01, 0x01, // PUSH 1
   0x0C        // RETURN
 ];
 
 // 创建投票合约字节码
-// 逻辑：
-// 1. 从内存地址20加载投票标题
-// 2. 从内存地址21加载投票描述
-// 3. 从内存地址22加载投票选项
+// Logic: 
+// 1. 从memory地址20加载投票标题
+// 2. 从memory地址21加载投票描述
+// 3. 从memory地址22加载投票选项
 // 4. 增加投票数量
 // 5. 存储投票信息
 const createVoteBytecode = [
@@ -74,7 +74,7 @@ const createVoteBytecode = [
   0x01, 0x00, // PUSH 0
   0x08, ADDR_FIRST_VOTE + 4, // STORE VOTE_COUNTS
   
-  // 存储创建时间
+  // Store creation time
   0x01, 0x01, // PUSH 1 (placeholder for timestamp)
   0x08, ADDR_FIRST_VOTE + 5, // STORE CREATED_AT
   
@@ -84,10 +84,10 @@ const createVoteBytecode = [
 ];
 
 // 投票合约字节码
-// 逻辑：
-// 1. 从内存地址30加载投票ID
-// 2. 从内存地址31加载选项索引
-// 3. 从内存地址32加载投票者
+// Logic: 
+// 1. 从memory地址30加载投票ID
+// 2. 从memory地址31加载选项索引
+// 3. 从memory地址32加载投票者
 // 4. 更新投票计数
 const castVoteBytecode = [
   // 加载投票ID
@@ -104,14 +104,14 @@ const castVoteBytecode = [
   0x03,       // ADD
   0x08, ADDR_FIRST_VOTE + 4, // STORE VOTE_COUNTS
   
-  // 返回成功
+  // Return success
   0x01, 0x01, // PUSH 1
   0x0C        // RETURN
 ];
 
-// 获取投票结果合约字节码
-// 逻辑：
-// 1. 从内存地址40加载投票ID
+// get投票结果合约字节码
+// Logic: 
+// 1. 从memory地址40加载投票ID
 // 2. 读取投票计数
 // 3. 返回结果
 const getVoteResultBytecode = [
@@ -155,9 +155,9 @@ async function castVote(contractId, voteId, optionIndex, voter) {
   return true;
 }
 
-// 获取投票结果
+// get投票结果
 async function getVoteResult(contractId, voteId) {
-  // 这里需要实现获取投票结果的逻辑
+  // 这里需要实现get投票结果的逻辑
   console.log(`Getting result for vote ${voteId}`);
   // 实际实现中，这里会调用getVoteResultBytecode
   return { votes: [] };
@@ -167,10 +167,10 @@ async function getVoteResult(contractId, voteId) {
 async function testVotingContract() {
   console.log('=== Testing Voting Contract ===');
   
-  // 部署合约
+  // Deploy contract
   const contractId = await deployVotingContract();
   
-  // 执行合约
+  // Execute contract
   await executeVotingContract(contractId);
   
   // 创建投票
@@ -181,14 +181,14 @@ async function testVotingContract() {
   await castVote(contractId, voteId, 1, 'voter2');
   await castVote(contractId, voteId, 0, 'voter3');
   
-  // 获取投票结果
+  // get投票结果
   const result = await getVoteResult(contractId, voteId);
   console.log('Vote result:', result);
   
   return contractId;
 }
 
-// 导出功能
+// Export functions
 export { 
   votingBytecode, 
   createVoteBytecode, 

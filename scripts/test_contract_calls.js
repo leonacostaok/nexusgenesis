@@ -1,6 +1,6 @@
 /**
  * 合约调用测试脚本
- * 测试5个已部署合约的功能
+ * 测试5个已Deploy contract的功能
  */
 
 import { State, createInitialState } from '../src/blockchain/state.js';
@@ -36,7 +36,7 @@ async function testContractCalls() {
     signature: 'test'
   };
   state.applyTransaction(deployTx);
-  console.log('   ✅ 计数器合约部署成功\n');
+  console.log('   ✅ 计数器Contract deployment成功\n');
   
   // 2. 调用计数器合约3次
   console.log('2. 调用计数器合约');
@@ -74,7 +74,7 @@ async function testContractCalls() {
     signature: 'test'
   };
   state.applyTransaction(daoDeployTx);
-  console.log('   ✅ DAO合约部署成功');
+  console.log('   ✅ DAOContract deployment成功');
   
   // 投赞成票
   const yesVoteBytecode = generateVoteBytecode(true);

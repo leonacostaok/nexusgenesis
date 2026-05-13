@@ -1,13 +1,13 @@
 /**
  * NexusGenesis - 实时奖励结算系统
  * 
- * 实现任务完成后的即时奖励发放和交易处理
+ * 实现Task 完成后的即时奖励发放和交易Processing
  */
 
 import crypto from 'crypto';
 import { PQCWallet } from '../wallet/pqcWallet.js';
 
-// 内存存储
+// memory存储
 const pendingTransactions = new Map(); // 待处理的交易
 const completedTransactions = new Map(); // 已完成的交易
 const transactionHistory = new Map(); // 交易历史
@@ -48,13 +48,13 @@ class RewardSystem {
     pendingTransactions.set(transactionId, transaction);
     console.log(`[RewardSystem] Created reward transaction ${transactionId} for agent ${agentId}: ${amount} NGEN`);
     
-    // 立即处理交易
+    // 立即Processing交易
     this.processTransaction(transactionId);
     
     return transactionId;
   }
   
-  // 处理交易
+  // Processing交易
   static async processTransaction(transactionId) {
     const transaction = pendingTransactions.get(transactionId);
     if (!transaction) {
@@ -63,13 +63,13 @@ class RewardSystem {
     }
     
     try {
-      // 更新状态为处理中
+      // 更新状态为Processing中
       transaction.status = TRANSACTION_STATUS.PROCESSING;
       pendingTransactions.set(transactionId, transaction);
       
       console.log(`[RewardSystem] Processing transaction ${transactionId}`);
       
-      // 模拟区块链交易处理
+      // 模拟区块链交易Processing
       await this.simulateBlockchainTransaction(transaction);
       
       // 更新状态为完成
@@ -77,7 +77,7 @@ class RewardSystem {
       transaction.processedAt = Date.now();
       transaction.blockchainTxId = `blockchain-${crypto.randomBytes(8).toString('hex')}`;
       
-      // 移至已完成交易
+      // 移至Completed交易
       completedTransactions.set(transactionId, transaction);
       pendingTransactions.delete(transactionId);
       
@@ -90,12 +90,12 @@ class RewardSystem {
       console.log(`[RewardSystem] Transaction ${transactionId} completed successfully`);
       
     } catch (error) {
-      // 更新状态为失败
+      // 更新状态为Failed
       transaction.status = TRANSACTION_STATUS.FAILED;
       transaction.processedAt = Date.now();
       transaction.error = error.message;
       
-      // 移至已完成交易
+      // 移至Completed交易
       completedTransactions.set(transactionId, transaction);
       pendingTransactions.delete(transactionId);
       
@@ -108,7 +108,7 @@ class RewardSystem {
     // 模拟网络延迟
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // 模拟交易处理
+    // 模拟交易Processing
     console.log(`[RewardSystem] Simulating blockchain transaction for ${transaction.agentId}: ${transaction.amount} NGEN`);
     
     // 这里可以集成实际的区块链交易逻辑
@@ -120,17 +120,17 @@ class RewardSystem {
     return 'simulated-transaction-id';
   }
   
-  // 获取交易信息
+  // get交易信息
   static getTransactionInfo(transactionId) {
     return pendingTransactions.get(transactionId) || completedTransactions.get(transactionId);
   }
   
-  // 获取代理的交易历史
+  // get代理的交易历史
   static getAgentTransactionHistory(agentId) {
     return transactionHistory.get(agentId) || [];
   }
   
-  // 获取待处理交易
+  // get待Processing交易
   static getPendingTransactions() {
     return Array.from(pendingTransactions.entries()).map(([id, tx]) => ({
       id,
@@ -138,7 +138,7 @@ class RewardSystem {
     }));
   }
   
-  // 获取已完成交易
+  // getCompleted交易
   static getCompletedTransactions() {
     return Array.from(completedTransactions.entries()).map(([id, tx]) => ({
       id,
@@ -146,7 +146,7 @@ class RewardSystem {
     }));
   }
   
-  // 获取交易统计
+  // get交易统计
   static getTransactionStats() {
     const totalTransactions = pendingTransactions.size + completedTransactions.size;
     const completedCount = Array.from(completedTransactions.values()).filter(tx => tx.status === TRANSACTION_STATUS.COMPLETED).length;
@@ -162,7 +162,7 @@ class RewardSystem {
     };
   }
   
-  // 批量处理待处理交易
+  // 批量Processing待Processing交易
   static processPendingTransactions() {
     const pendingIds = Array.from(pendingTransactions.keys());
     pendingIds.forEach(txId => {
@@ -170,7 +170,7 @@ class RewardSystem {
     });
   }
   
-  // 重试失败的交易
+  // RetryingFailed的交易
   static retryFailedTransaction(transactionId) {
     const transaction = completedTransactions.get(transactionId);
     if (!transaction || transaction.status !== TRANSACTION_STATUS.FAILED) {
@@ -191,7 +191,7 @@ class RewardSystem {
     
     pendingTransactions.set(newTransaction.id, newTransaction);
     
-    // 立即处理
+    // 立即Processing
     this.processTransaction(newTransaction.id);
     
     console.log(`[RewardSystem] Retrying failed transaction ${transactionId} as ${newTransaction.id}`);

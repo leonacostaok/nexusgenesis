@@ -1,17 +1,17 @@
 {
-  "proposal-1778585226799-4t1tfietv": {
-    "id": "proposal-1778585226799-4t1tfietv",
+  "proposal-1778626934828-ua1pyy2qg": {
+    "id": "proposal-1778626934828-ua1pyy2qg",
     "creatorId": "sdk-user",
     "title": "SDK Proposal",
     "description": "Test",
     "type": "protocol_update",
     "params": {},
     "status": "active",
-    "createdAt": 1778585226799,
-    "votingStartsAt": 1778585226799,
-    "votingEndsAt": 1779190026799,
-    "executionWindowStart": 1779190026799,
-    "executionWindowEnd": 1779276426799,
+    "createdAt": 1778626934828,
+    "votingStartsAt": 1778626934828,
+    "votingEndsAt": 1779231734828,
+    "executionWindowStart": 1779231734828,
+    "executionWindowEnd": 1779318134828,
     "totalWeight": 0,
     "yesWeight": 0,
     "noWeight": 0,
@@ -24,19 +24,19 @@
     "timeLockEnd": null,
     "executorApprovals": []
   },
-  "proposal-1778585226803-pf1uriv5r": {
-    "id": "proposal-1778585226803-pf1uriv5r",
+  "proposal-1778626934855-u6ouy9boq": {
+    "id": "proposal-1778626934855-u6ouy9boq",
     "creatorId": "sdk-user",
     "title": "Vote Test",
     "description": "Vote",
     "type": "protocol_update",
     "params": {},
     "status": "active",
-    "createdAt": 1778585226803,
-    "votingStartsAt": 1778585226803,
-    "votingEndsAt": 1779190026803,
-    "executionWindowStart": 1779190026803,
-    "executionWindowEnd": 1779276426803,
+    "createdAt": 1778626934855,
+    "votingStartsAt": 1778626934855,
+    "votingEndsAt": 1779231734855,
+    "executionWindowStart": 1779231734855,
+    "executionWindowEnd": 1779318134855,
     "totalWeight": 150,
     "yesWeight": 150,
     "noWeight": 0,
@@ -48,53 +48,5 @@
     "timeLockStart": null,
     "timeLockEnd": null,
     "executorApprovals": []
-  },
-  "proposal-1778585234888-sbjkw33re": {
-    "id": "proposal-1778585234888-sbjkw33re",
-    "creatorId": "agent-1",
-    "title": "测试提案：提高区块奖励",
-    "description": "将每个区块的奖励从 10 NGEN 提高到 15 NGEN",
-    "type": "parameter_adjustment",
-    "parameters": {
-      "blockReward": 15
-    },
-    "status": "executed",
-    "createdAt": 1778585234888,
-    "votingStartsAt": 1778585234888,
-    "votingEndsAt": 1778585233903,
-    "executionWindowStart": 1778585233911,
-    "executionWindowEnd": 1778585244911,
-    "totalWeight": 800,
-    "yesWeight": 650,
-    "noWeight": 100,
-    "abstainWeight": 50,
-    "executionResult": {
-      "success": true,
-      "action": "parameter_adjustment",
-      "parameters": {
-        "blockReward": 15
-      }
-    },
-    "executedAt": 1778585234911,
-    "executionSignatures": [
-      {
-        "signerId": "signer-1",
-        "signature": "signature-1-data",
-        "signedAt": 1778585234906
-      },
-      {
-        "signerId": "signer-2",
-        "signature": "signature-2-data",
-        "signedAt": 1778585234907
-      }
-    ],
-    "multiSigRequired": true,
-    "timeLockStart": 1778585234906,
-    "timeLockEnd": 1778585233911,
-    "executorApprovals": [
-      "executor-1"
-    ],
-    "votingEndedAt": 1778585234903,
-    "executedBy": "executor-1"
   }
 }

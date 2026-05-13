@@ -1,6 +1,6 @@
 /**
  * NexusGenesis - Node ng11BkmK
- * 端口: 9849
+ * port: 9849
  */
 
 import crypto from 'crypto';
@@ -41,7 +41,7 @@ class NexusNode {
   }
 
   /**
-   * 保存节点状态到本地
+   * 保存Node status到本地
    */
   async saveState() {
     try {
@@ -71,7 +71,7 @@ class NexusNode {
   }
 
   /**
-   * 从本地加载节点状态
+   * 从本地加载Node status
    */
   async loadState() {
     try {
@@ -104,7 +104,7 @@ class NexusNode {
     console.log('');
 
 
-    // 尝试从本地加载节点状态
+    // 尝试从本地加载Node status
     await this.loadState();
 
     // 加载钱包
@@ -150,7 +150,7 @@ class NexusNode {
     // 定期状态显示
     setInterval(() => this.displayStatus(), 30000);
     
-    // 定期保存节点状态
+    // 定期保存Node status
     setInterval(() => this.saveState(), 300000); // 每5分钟保存一次
     
     return this;
@@ -230,7 +230,7 @@ class NexusNode {
     }
     
     if (this.mempool.size >= MAX_MEMPOOL_SIZE) {
-      // 简单的内存池管理
+      // 简单的memory池管理
       const oldestTx = Array.from(this.mempool.entries())[0];
       if (oldestTx) {
         this.mempool.delete(oldestTx[0]);

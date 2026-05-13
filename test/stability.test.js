@@ -1,6 +1,6 @@
 /**
  * 系统稳定性集成测试
- * 验证：自动故障恢复、共识健康、监控告警、优雅降级
+ * 验证：Automated failure recovery、共识健康、监控告警、优雅降级
  */
 import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert/strict';

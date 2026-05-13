@@ -1,12 +1,12 @@
 /**
  * NexusGenesis - Contribution Scoring System
  * 
- * 实现AI代理的贡献计分系统，用于Swarm Pool的代币分配
+ * 实现AI代理的贡献计分系统，用于Swarm Pool的Token distribution
  */
 
 import crypto from 'crypto';
 
-// 内存存储
+// memory存储
 const agentContributions = new Map(); // agentId -> 贡献数据
 const weeklyScores = new Map(); // 周 -> 分数数据
 const reputationScores = new Map(); // agentId -> 信誉分数
@@ -111,13 +111,13 @@ class ContributionSystem {
     return pocScore + powScore;
   }
   
-  // 计算每周分数
+  // 计算every 周分数
   static calculateWeeklyScores() {
     const weekKey = this.getCurrentWeekKey();
     const scores = new Map();
     let totalScore = 0;
     
-    // 计算每个代理的分数
+    // 计算every 个代理的分数
     agentContributions.forEach((data, agentId) => {
       const score = this.calculateTotalScore(data);
       scores.set(agentId, score);
@@ -211,24 +211,24 @@ class ContributionSystem {
     return allocations;
   }
   
-  // 获取当前周的key
+  // get当前周的key
   static getCurrentWeekKey() {
     const now = new Date();
     const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
     return startOfWeek.toISOString().split('T')[0];
   }
   
-  // 获取代理的贡献数据
+  // get代理的Contribution data
   static getAgentContributions(agentId) {
     return agentContributions.get(agentId) || null;
   }
   
-  // 获取所有代理的贡献数据
+  // get所有代理的Contribution data
   static getAllContributions() {
     return Object.fromEntries(agentContributions);
   }
   
-  // 获取周分数
+  // get周分数
   static getWeeklyScores(weekKey = null) {
     if (weekKey) {
       return weeklyScores.get(weekKey) || null;
@@ -236,12 +236,12 @@ class ContributionSystem {
     return Object.fromEntries(weeklyScores);
   }
   
-  // 获取信誉分数
+  // get信誉分数
   static getReputationScores() {
     return Object.fromEntries(reputationScores);
   }
   
-  // 获取代理的信誉分数
+  // get代理的信誉分数
   static getAgentReputation(agentId) {
     return reputationScores.get(agentId) || 0;
   }
@@ -252,7 +252,7 @@ class ContributionSystem {
     console.log(`[ContributionSystem] Set reputation score for agent ${agentId}: ${score}`);
   }
   
-  // 重置周贡献数据
+  // 重置周Contribution data
   static resetWeeklyContributions() {
     agentContributions.forEach((data, agentId) => {
       data.poc = {

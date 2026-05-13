@@ -43,7 +43,7 @@ export class Wallet {
       num = num / 58n;
     }
     
-    // 处理前导零
+    // Processing前导零
     for (let i = 0; i < buffer.length; i++) {
       if (buffer[i] !== 0) break;
       result = base58Chars[0] + result;
@@ -76,7 +76,7 @@ export class Wallet {
     
     const buffer = Buffer.from(hex, 'hex');
     
-    // 处理前导零
+    // Processing前导零
     for (let i = 0; i < str.length && str[i] === base58Chars[0]; i++) {
       buffer.unshift(0);
     }
@@ -145,7 +145,7 @@ export class Wallet {
   }
 
   /**
-   * 获取钱包信息
+   * get钱包信息
    * @returns {object} 钱包信息
    */
   getInfo() {

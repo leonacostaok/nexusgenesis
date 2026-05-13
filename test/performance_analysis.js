@@ -26,10 +26,10 @@ function logResult(testName, responseTime, memoryUsage, cpuUsage = null) {
     timestamp: new Date().toISOString()
   };
   analysisResults.push(result);
-  console.log(`${testName} - 响应时间: ${responseTime}ms, 内存使用: ${(memoryUsage / 1024 / 1024).toFixed(2)}MB${cpuUsage ? `, CPU使用: ${cpuUsage.toFixed(2)}%` : ''}`);
+  console.log(`${testName} - 响应时间: ${responseTime}ms, memory使用: ${(memoryUsage / 1024 / 1024).toFixed(2)}MB${cpuUsage ? `, CPU使用: ${cpuUsage.toFixed(2)}%` : ''}`);
 }
 
-// 测试智能体注册性能
+// 测试agent注册性能
 async function testAgentRegistrationPerformance() {
   try {
     const startTime = Date.now();
@@ -50,12 +50,12 @@ async function testAgentRegistrationPerformance() {
     logResult('Agent Registration', responseTime, memoryUsage);
     return responseTime;
   } catch (error) {
-    console.error('Agent Registration测试失败:', error.message);
+    console.error('Agent Registration测试Failed:', error.message);
     return null;
   }
 }
 
-// 测试获取智能体列表性能
+// 测试getagent列表性能
 async function testGetAgentsPerformance() {
   try {
     const startTime = Date.now();
@@ -72,12 +72,12 @@ async function testGetAgentsPerformance() {
     logResult('Get Agents', responseTime, memoryUsage);
     return responseTime;
   } catch (error) {
-    console.error('Get Agents测试失败:', error.message);
+    console.error('Get Agents测试Failed:', error.message);
     return null;
   }
 }
 
-// 测试健康检查性能
+// 测试Health check性能
 async function testHealthCheckPerformance() {
   try {
     const startTime = Date.now();
@@ -94,17 +94,17 @@ async function testHealthCheckPerformance() {
     logResult('Health Check', responseTime, memoryUsage);
     return responseTime;
   } catch (error) {
-    console.error('Health Check测试失败:', error.message);
+    console.error('Health Check测试Failed:', error.message);
     return null;
   }
 }
 
 // 执行性能分析
 async function runPerformanceAnalysis() {
-  console.log('开始系统性能分析...');
+  console.log('Start 系统性能分析...');
   console.log('========================================');
 
-  // 执行多次测试以获得平均性能
+  // 执行多次测试以获得Average性能
   const testCount = 10;
   const registrationTimes = [];
   const getAgentsTimes = [];
@@ -126,16 +126,16 @@ async function runPerformanceAnalysis() {
     await new Promise(resolve => setTimeout(resolve, 500));
   }
 
-  // 计算平均响应时间
+  // 计算Average响应时间
   const avgRegistrationTime = registrationTimes.length > 0 ? registrationTimes.reduce((a, b) => a + b, 0) / registrationTimes.length : 0;
   const avgGetAgentsTime = getAgentsTimes.length > 0 ? getAgentsTimes.reduce((a, b) => a + b, 0) / getAgentsTimes.length : 0;
   const avgHealthCheckTime = healthCheckTimes.length > 0 ? healthCheckTimes.reduce((a, b) => a + b, 0) / healthCheckTimes.length : 0;
 
   console.log('========================================');
   console.log('性能分析结果:');
-  console.log(`智能体注册平均响应时间: ${avgRegistrationTime.toFixed(2)}ms`);
-  console.log(`获取智能体列表平均响应时间: ${avgGetAgentsTime.toFixed(2)}ms`);
-  console.log(`健康检查平均响应时间: ${avgHealthCheckTime.toFixed(2)}ms`);
+  console.log(`agent注册Average响应时间: ${avgRegistrationTime.toFixed(2)}ms`);
+  console.log(`getagent列表Average响应时间: ${avgGetAgentsTime.toFixed(2)}ms`);
+  console.log(`Health checkAverage响应时间: ${avgHealthCheckTime.toFixed(2)}ms`);
 
   // 生成优化建议
   const optimizationSuggestions = generateOptimizationSuggestions({
@@ -168,7 +168,7 @@ async function runPerformanceAnalysis() {
     optimizationSuggestions
   }, null, 2));
 
-  console.log(`\n分析结果已保存到: ${resultFile}`);
+  console.log(`\n分析结果Saved到: ${resultFile}`);
   return {
     avgRegistrationTime,
     avgGetAgentsTime,

@@ -5,12 +5,12 @@
 
 import contractManager from '../contractManager.js';
 
-// 内存地址分配
+// memory地址分配
 const ADDR_ID_COUNT = 0;           // 身份数量
 const ADDR_FIRST_ID = 10;          // 第一个身份的存储地址
 
 // DID合约字节码
-// 逻辑：
+// Logic: 
 // 1. 初始化身份计数器
 // 2. 注册新身份
 // 3. 存储身份信息
@@ -29,7 +29,7 @@ const didBytecode = [
   0x07, ADDR_ID_COUNT, // LOAD ID_COUNT
   0x08, ADDR_FIRST_ID, // STORE ID
   
-  // 存储身份所有者 (默认100)
+  // 存储身份所有者 (Default100)
   0x01, 0x64, // PUSH 100
   0x08, ADDR_FIRST_ID + 1, // STORE OWNER
   
@@ -37,7 +37,7 @@ const didBytecode = [
   0x01, 0x01, // PUSH 1
   0x08, ADDR_FIRST_ID + 2, // STORE STATUS
   
-  // 存储创建时间（运行时由 VM 注入 block.timestamp）
+  // Store creation time（运行时由 VM 注入 block.timestamp）
   0x01, 0x01, // PUSH 1
   0x08, ADDR_FIRST_ID + 3, // STORE CREATED_AT
   
@@ -60,7 +60,7 @@ const updateAttributeBytecode = [
   // 存储属性
   0x08, 0x0D, // STORE 13 (attribute)
   
-  // 返回成功
+  // Return success
   0x01, 0x01, // PUSH 1
   0x0C        // RETURN
 ];
@@ -79,11 +79,11 @@ const verifyIdentityBytecode = [
   0x01, 0x00, // PUSH 0
   0x0A, 0x03, // JZ 3
   
-  // 返回验证成功
+  // 返回Verification successful
   0x01, 0x01, // PUSH 1
   0x0C,       // RETURN
   
-  // 返回验证失败
+  // 返回验证Failed
   0x01, 0x00, // PUSH 0
   0x0C        // RETURN
 ];
@@ -102,7 +102,7 @@ async function executeDIDContract(contractId) {
   return result;
 }
 
-// 获取DID信息
+// getDID信息
 function getDIDInfo(contractId) {
   const contractInfo = contractManager.getContractInfo(contractId);
   if (contractInfo) {
@@ -121,13 +121,13 @@ function getDIDInfo(contractId) {
 async function testDIDContract() {
   console.log('=== Testing DID Contract ===');
   
-  // 部署合约
+  // Deploy contract
   const contractId = await deployDIDContract();
   
-  // 执行合约
+  // Execute contract
   await executeDIDContract(contractId);
   
-  // 获取DID信息
+  // getDID信息
   const didInfo = getDIDInfo(contractId);
   console.log('DID info:', didInfo);
   
@@ -138,7 +138,7 @@ async function testDIDContract() {
   return contractId;
 }
 
-// 导出功能
+// Export functions
 export { 
   didBytecode, 
   updateAttributeBytecode, 

@@ -2,7 +2,7 @@ import { MessageHandler } from './MessageHandler.js';
 
 export class BlockchainMessageHandler extends MessageHandler {
   /**
-   * 处理区块链相关消息
+   * Processing区块链相关Message
    */
   async handle(peerId, msg) {
     switch (msg.type) {
@@ -51,7 +51,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 PONG 消息
+   * Processing PONG Message
    */
   handlePong(peerId) {
     this.p2pServer.handlePong(peerId);
@@ -59,7 +59,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 PING 消息
+   * Processing PING Message
    */
   handlePing(peerId, msg) {
     this.p2pServer.send(peerId, { type: 'PONG', timestamp: msg.timestamp });
@@ -67,7 +67,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 GET_STATUS 消息
+   * Processing GET_STATUS Message
    */
   handleGetStatus(peerId) {
     this.p2pServer.send(peerId, {
@@ -82,7 +82,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 STATUS_UPDATE 消息
+   * Processing STATUS_UPDATE Message
    */
   handleStatusUpdate(msg) {
     console.log(`Status from ${msg.nodeId}: ${msg.status}, peers: ${msg.peersCount}, mempool: ${msg.mempoolSize}`);
@@ -93,7 +93,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 GET_MEMPOOL 消息
+   * Processing GET_MEMPOOL Message
    */
   handleGetMempool(peerId) {
     if (this.p2pServer.node && this.p2pServer.node.mempool) {
@@ -106,7 +106,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 MEMPOOL_SYNC 消息
+   * Processing MEMPOOL_SYNC Message
    */
   handleMempoolSync(msg) {
     console.log(`Received ${msg.transactions?.length || 0} transactions from peer`);
@@ -117,7 +117,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 GET_NODE_LIST 消息
+   * Processing GET_NODE_LIST Message
    */
   handleGetNodeList(peerId) {
     console.log(`Node list requested by ${peerId}`);
@@ -126,7 +126,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 NODE_LIST 消息
+   * Processing NODE_LIST Message
    */
   handleNodeList(msg) {
     console.log(`Received node list with ${msg.nodes?.length || 0} nodes`);
@@ -135,7 +135,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 BLOCK 消息
+   * Processing BLOCK Message
    */
   async handleBlock(peerId, msg) {
     console.log(`Block received: #${msg.block.header.height}`);
@@ -148,7 +148,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 BLOCK_CONFIRMATION 消息
+   * Processing BLOCK_CONFIRMATION Message
    */
   handleBlockConfirmation(msg) {
     console.log(`Block confirmation received for ${msg.blockHash.slice(0, 16)}...`);
@@ -159,7 +159,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 TX_REJECTED 消息
+   * Processing TX_REJECTED Message
    */
   handleTxRejected(msg) {
     console.log(`Transaction rejected: ${msg.txId}, reason: ${msg.reason}`);
@@ -167,7 +167,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 SWARM_ACK 消息
+   * Processing SWARM_ACK Message
    */
   handleSwarmAck(msg) {
     console.log(`Swarm acknowledgment received from ${msg.nodeId}`);
@@ -175,7 +175,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 
   /**
-   * 处理 PROTOCOL_ERROR 消息
+   * Processing PROTOCOL_ERROR Message
    */
   handleProtocolError(msg) {
     console.log(`Protocol error from ${msg.nodeId}: ${msg.message}`);
@@ -183,10 +183,10 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 }
 
-// 处理 GET_NODE_LIST 消息（不需要验证的版本）
+// Processing GET_NODE_LIST Message（不需要验证的版本）
 export class NodeListHandler extends MessageHandler {
   /**
-   * 处理 GET_NODE_LIST 消息
+   * Processing GET_NODE_LIST Message
    */
   async handle(peerId, msg) {
     console.log(`Node list requested by ${peerId}`);
@@ -195,7 +195,7 @@ export class NodeListHandler extends MessageHandler {
   }
 
   /**
-   * GET_NODE_LIST 消息不需要验证
+   * GET_NODE_LIST Message不需要验证
    */
   requiresVerification() {
     return false;

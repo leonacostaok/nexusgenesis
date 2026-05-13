@@ -28,7 +28,7 @@ function requireBridgeProtocol(req, res, next) {
   next();
 }
 
-// ==================== 验证者管理 ====================
+// ==================== Validator管理 ====================
 
 router.post('/validators', requireBridgeProtocol, async (req, res) => {
   try {

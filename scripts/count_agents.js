@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * 智能体数量统计脚本
- * 用于计算网络中实际存在的智能体数量
+ * agent数量统计脚本
+ * 用于计算网络中实际存在的agent数量
  */
 
 import fs from 'fs';
@@ -15,16 +15,16 @@ const AGENTS_DIR = path.join(__dirname, '../data/agents');
 
 function countAgents() {
   try {
-    console.log('=== 智能体数量统计 ===');
-    console.log(`智能体目录: ${AGENTS_DIR}`);
+    console.log('=== agent数量统计 ===');
+    console.log(`agent目录: ${AGENTS_DIR}`);
     
     // 检查目录是否存在
     if (!fs.existsSync(AGENTS_DIR)) {
-      console.log('智能体目录不存在');
+      console.log('agent目录不存在');
       return 0;
     }
     
-    // 读取目录内容
+    // 读取目录within容
     const files = fs.readdirSync(AGENTS_DIR);
     console.log(`目录中总文件数: ${files.length}`);
     
@@ -33,7 +33,7 @@ function countAgents() {
       return file.endsWith('.json') && file !== 'agents_summary.json';
     });
     
-    console.log(`智能体文件数: ${agentFiles.length}`);
+    console.log(`agent文件数: ${agentFiles.length}`);
     
     // 分类统计
     const categories = {
@@ -67,11 +67,11 @@ function countAgents() {
     console.log('\n=== 统计完成 ===');
     return agentFiles.length;
   } catch (error) {
-    console.error('统计智能体数量时出错:', error);
+    console.error('统计agent数量时出错:', error);
     return 0;
   }
 }
 
 // 执行统计
 const agentCount = countAgents();
-console.log(`\n网络中智能体总数: ${agentCount}`);
+console.log(`\n网络中agent总数: ${agentCount}`);

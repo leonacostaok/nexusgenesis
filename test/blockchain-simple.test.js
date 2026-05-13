@@ -52,7 +52,7 @@ test('Block creation and validation', () => {
     }
   ];
 
-  // 创建新区块
+  // 创建New block
   const newBlock = createBlock(genesisBlock, transactions);
   expect(newBlock).toBeDefined();
   expect(newBlock.header.height).toBe(1);
@@ -68,7 +68,7 @@ test('State management', () => {
   // 手动设置创世地址余额（模拟真实分配后的情况）
   state.setBalance(genesisAddress, '1000');
 
-  // 测试余额设置和获取
+  // 测试余额设置和get
   expect(state.getBalance(genesisAddress)).toBe('1000');
 
   // 测试余额增加
@@ -86,7 +86,7 @@ test('State management', () => {
   expect(state.getBalance(genesisAddress)).toBe('1200');
 });
 
-// 测试交易处理
+// 测试交易Processing
 test('Transaction processing with Metabolic Tax', () => {
   const genesisAddress = 'ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ';
   const recipientAddress = 'ng11L2sdxT8qdYjtX1z9RrRSEEhPfw9vrwpCT';
@@ -178,7 +178,7 @@ test('Blockchain integration', () => {
     }
   ];
 
-  // 创建新区块
+  // 创建New block
   const newBlock = createBlock(genesisBlock, transactions);
   expect(newBlock.validate()).toBe(true);
 

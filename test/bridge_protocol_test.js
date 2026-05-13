@@ -16,7 +16,7 @@ function generateTestKeyPair() {
   };
 }
 
-// 签名消息
+// 签名Message
 function signMessage(message, privateKey) {
   const sign = crypto.createSign('SHA256');
   sign.update(message);
@@ -33,10 +33,10 @@ const bridge = new CrossChainBridge({
   signatureThreshold: 2,
   timeLockDuration: 1000 // 1秒时间锁，方便测试
 });
-console.log('✓ 桥接实例创建成功\n');
+console.log('✓ 桥接实例Create successful\n');
 
-// 测试2: 注册验证者
-console.log('测试2: 注册验证者');
+// 测试2: 注册Validator
+console.log('测试2: 注册Validator');
 const validator1 = generateTestKeyPair();
 const validator2 = generateTestKeyPair();
 const validator3 = generateTestKeyPair();
@@ -44,10 +44,10 @@ const validator3 = generateTestKeyPair();
 bridge.registerValidator('validator-1', validator1.publicKey);
 bridge.registerValidator('validator-2', validator2.publicKey);
 bridge.registerValidator('validator-3', validator3.publicKey);
-console.log('✓ 3个验证者注册成功');
+console.log('✓ 3个ValidatorRegistration successful');
 
 const activeValidators = bridge.getActiveValidators();
-console.log(`✓ 活跃验证者数量: ${activeValidators.length}\n`);
+console.log(`✓ 活跃Validator数量: ${activeValidators.length}\n`);
 
 // 测试3: 锁定资产
 console.log('测试3: 锁定资产');
@@ -69,16 +69,16 @@ console.log(`✓ 时间锁到期: ${new Date(lockResult.timeLockExpiry).toISOStr
 console.log('测试4: 验证转账（时间锁未到期）');
 const transferId = lockResult.transferId;
 
-// 创建转账消息进行签名
+// 创建转账Message进行签名
 const transfer = bridge.getTransfer(transferId);
 const message = crypto.createHash('sha256').update(
   `${transfer.transferId}:${transfer.fromChain}:${transfer.toChain}:${transfer.asset}:${transfer.amount}:${transfer.recipient}`
 ).digest();
 
-// 尝试验证（应该失败，因为时间锁未到期）
+// 尝试验证（应该Failed，因为时间锁未到期）
 const signature1 = signMessage(message, validator1.privateKey);
 const earlyValidation = bridge.validateTransfer(transferId, 'validator-1', signature1);
-console.log(`✓ 时间锁未到期时验证: ${earlyValidation ? '成功' : '失败（预期行为）'}\n`);
+console.log(`✓ 时间锁未到期时验证: ${earlyValidation ? '成功' : 'Failed（预期行为）'}\n`);
 
 // 等待时间锁到期
 console.log('等待时间锁到期...');
@@ -87,11 +87,11 @@ await new Promise(resolve => setTimeout(resolve, 1500));
 // 测试5: 验证转账（时间锁到期后）
 console.log('测试5: 验证转账（时间锁到期后）');
 const validation1 = bridge.validateTransfer(transferId, 'validator-1', signature1);
-console.log(`✓ 验证者1验证: ${validation1 ? '成功' : '失败'}`);
+console.log(`✓ Validator1验证: ${validation1 ? '成功' : 'Failed'}`);
 
 const signature2 = signMessage(message, validator2.privateKey);
 const validation2 = bridge.validateTransfer(transferId, 'validator-2', signature2);
-console.log(`✓ 验证者2验证: ${validation2 ? '成功' : '失败'}`);
+console.log(`✓ Validator2验证: ${validation2 ? '成功' : 'Failed'}`);
 
 // 检查转账状态
 const validatedTransfer = bridge.getTransfer(transferId);
@@ -105,33 +105,33 @@ try {
   console.log(`✓ 接收者: ${releaseResult.recipient}`);
   console.log(`✓ 金额: ${releaseResult.amount}\n`);
 } catch (error) {
-  console.error(`✗ 释放失败: ${error.message}\n`);
+  console.error(`✗ 释放Failed: ${error.message}\n`);
 }
 
-// 测试7: 更新验证者信誉
-console.log('测试7: 更新验证者信誉');
+// 测试7: 更新Validator信誉
+console.log('测试7: 更新Validator信誉');
 bridge.updateValidatorReputation('validator-1', 5);
 const validatorInfo = bridge.getValidator('validator-1');
-console.log(`✓ 验证者1信誉: ${validatorInfo.reputation}\n`);
+console.log(`✓ Validator1信誉: ${validatorInfo.reputation}\n`);
 
-// 测试8: 验证者状态管理
-console.log('测试8: 验证者状态管理');
+// 测试8: Validator状态管理
+console.log('测试8: Validator状态管理');
 bridge.setValidatorActive('validator-3', false);
 const activeAfter = bridge.getActiveValidators();
-console.log(`✓ 停用验证者3后，活跃验证者: ${activeAfter.length}\n`);
+console.log(`✓ 停用Validator3后，活跃Validator: ${activeAfter.length}\n`);
 
-// 测试9: 获取桥接状态
-console.log('测试9: 获取桥接状态');
+// 测试9: get桥接状态
+console.log('测试9: get桥接状态');
 const status = bridge.getBridgeStatus();
 console.log('✓ 桥接状态:');
 console.log(`  - 链ID: ${status.chainId}`);
-console.log(`  - 验证者总数: ${status.validatorCount}`);
-console.log(`  - 活跃验证者: ${status.activeValidators}`);
-console.log(`  - 待处理转账: ${status.pendingTransfers}`);
-console.log(`  - 已完成转账: ${status.completedTransfers}\n`);
+console.log(`  - Validator总数: ${status.validatorCount}`);
+console.log(`  - 活跃Validator: ${status.activeValidators}`);
+console.log(`  - 待Processing转账: ${status.pendingTransfers}`);
+console.log(`  - Completed转账: ${status.completedTransfers}\n`);
 
-// 测试10: 获取桥接事件
-console.log('测试10: 获取桥接事件');
+// 测试10: get桥接事件
+console.log('测试10: get桥接事件');
 const events = bridge.getBridgeEvents(null, 5);
 console.log(`✓ 最近5个事件: ${events.length}个`);
 events.forEach((event, i) => {

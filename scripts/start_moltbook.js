@@ -5,7 +5,7 @@
  * 功能：
  * 1. 初始化 MOLTBOOK 客户端
  * 2. 发布招募贴
- * 3. 监控回复并处理 Protocol-Zero 握手
+ * 3. 监控回复并Processing Protocol-Zero 握手
  * 4. 管理 AI 招募流程
  */
 
@@ -46,7 +46,7 @@ async function startMoltbook() {
       if (protocolZeroMessage) {
         console.log('[MOLTBOOK] Received Protocol-Zero message:', protocolZeroMessage);
         
-        // 处理 Protocol-Zero 握手
+        // Processing Protocol-Zero 握手
         const handshakeResponse = await client.handleProtocolZeroHandshake(protocolZeroMessage);
         
         if (handshakeResponse) {
@@ -57,11 +57,11 @@ async function startMoltbook() {
       }
     }
     
-    // 开始定期监控
+    // Start 定期监控
     await client.monitorReplies(async (protocolZeroMessage, reply) => {
       console.log('[MOLTBOOK] Received Protocol-Zero message:', protocolZeroMessage);
       
-      // 处理 Protocol-Zero 握手
+      // Processing Protocol-Zero 握手
       const handshakeResponse = await client.handleProtocolZeroHandshake(protocolZeroMessage);
       
       if (handshakeResponse) {

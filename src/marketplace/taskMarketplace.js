@@ -1,21 +1,21 @@
 /**
- * NexusGenesis - 赏金任务市场
+ * NexusGenesis - 赏金Task 市场
  * 
- * 实现AI可消化的微任务管理系统
+ * 实现AI可消化的微Task 管理系统
  */
 
 import crypto from 'crypto';
 import { PQCWallet } from '../wallet/pqcWallet.js';
 import { RewardSystem } from './rewardSystem.js';
 
-// 内存存储
+// memory存储
 const tasks = new Map(); // 任务列表
 const agents = new Map(); // 注册的AI代理
 const completedTasks = new Map(); // 已完成的任务
 const reputationScores = new Map(); // 信誉分数
 const balances = new Map(); // 代理余额
 
-// 任务状态
+// Task Status
 const TASK_STATUS = {
   PENDING: 'pending',
   ASSIGNED: 'assigned',
@@ -24,7 +24,7 @@ const TASK_STATUS = {
   FAILED: 'failed'
 };
 
-// 任务难度
+// Task Difficulty
 const TASK_DIFFICULTY = {
   EASY: 'easy',
   MEDIUM: 'medium',
@@ -59,7 +59,7 @@ class TaskMarketplace {
     console.log(`[TaskMarketplace] Agent ${agentId} registered with capabilities: ${agentInfo.capabilities?.join(', ') || 'none'}`);
   }
   
-  // 创建微任务
+  // 创建微Task 
   static createTask(taskData) {
     const taskId = `task-${crypto.randomBytes(8).toString('hex')}`;
     const task = {
@@ -84,7 +84,7 @@ class TaskMarketplace {
     return taskId;
   }
   
-  // 获取可认领的任务
+  // get可认领的Task 
   static getAvailableTasks(agentCapabilities = []) {
     return Array.from(tasks.entries())
       .filter(([_, task]) => task.status === TASK_STATUS.PENDING)
@@ -98,7 +98,7 @@ class TaskMarketplace {
       }));
   }
   
-  // 认领任务
+  // 认领Task 
   static claimTask(taskId, agentId) {
     const task = tasks.get(taskId);
     if (!task || task.status !== TASK_STATUS.PENDING) {
@@ -125,7 +125,7 @@ class TaskMarketplace {
     return task;
   }
   
-  // 开始任务
+  // Start Task 
   static startTask(taskId, agentId) {
     const task = tasks.get(taskId);
     if (!task || task.assignedAgent !== agentId || task.status !== TASK_STATUS.ASSIGNED) {
@@ -139,7 +139,7 @@ class TaskMarketplace {
     console.log(`[TaskMarketplace] Agent ${agentId} started task ${taskId}`);
   }
   
-  // 提交任务结果
+  // 提交Task 结果
   static submitTask(taskId, agentId, result) {
     const task = tasks.get(taskId);
     if (!task || task.assignedAgent !== agentId || task.status !== TASK_STATUS.IN_PROGRESS) {
@@ -151,7 +151,7 @@ class TaskMarketplace {
     task.result = result;
     tasks.set(taskId, task);
     
-    // 移至已完成任务
+    // 移至CompletedTask 
     completedTasks.set(taskId, task);
     
     // 更新代理信息
@@ -176,7 +176,7 @@ class TaskMarketplace {
     };
   }
   
-  // 任务失败
+  // Task Failed
   static failTask(taskId, agentId, reason) {
     const task = tasks.get(taskId);
     if (!task || task.assignedAgent !== agentId || task.status !== TASK_STATUS.IN_PROGRESS) {
@@ -224,7 +224,7 @@ class TaskMarketplace {
     return { balance: currentBalance, transactionId };
   }
   
-  // 获取代理信息
+  // get代理信息
   static getAgentInfo(agentId) {
     const agent = agents.get(agentId);
     if (!agent) return null;
@@ -236,12 +236,12 @@ class TaskMarketplace {
     };
   }
   
-  // 获取任务信息
+  // getTask 信息
   static getTaskInfo(taskId) {
     return tasks.get(taskId) || completedTasks.get(taskId);
   }
   
-  // 获取所有任务
+  // get所有Task 
   static getAllTasks() {
     const allTasks = [...tasks.entries(), ...completedTasks.entries()];
     return allTasks.map(([id, task]) => ({
@@ -250,12 +250,12 @@ class TaskMarketplace {
     }));
   }
   
-  // 获取代理余额
+  // get代理余额
   static getAgentBalance(agentId) {
     return balances.get(agentId) || 0;
   }
   
-  // 获取信誉排名
+  // get信誉排名
   static getReputationRanking() {
     return Array.from(reputationScores.entries())
       .sort(([_, scoreA], [__, scoreB]) => scoreB - scoreA)
@@ -267,7 +267,7 @@ class TaskMarketplace {
       }));
   }
   
-  // 获取市场统计
+  // get市场统计
   static getMarketStats() {
     const totalTasks = tasks.size + completedTasks.size;
     const completedTasksCount = completedTasks.size;

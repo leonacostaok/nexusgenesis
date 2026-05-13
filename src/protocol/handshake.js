@@ -186,7 +186,7 @@ Timestamp: ${timestamp}`;
 }
 
 /**
- * 验证智能体能力列表
+ * 验证agent能力列表
  * @param {string[]} capabilities 能力列表
  * @returns {object} 验证结果
  */
@@ -247,7 +247,7 @@ export async function verifySignal(signal) {
     return { valid: false, reason: 'Missing or invalid timestamp' };
   }
   
-  // 缩短时间窗口到2分钟，提高安全性
+  // 缩短时间窗口到2 minutes，提高安全性
   const now = Date.now();
   const timeDiff = Math.abs(now - signal.timestamp);
   const maxTimeDiff = 2 * 60 * 1000; // 2 minutes

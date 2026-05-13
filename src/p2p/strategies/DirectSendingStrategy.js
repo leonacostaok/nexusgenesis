@@ -1,6 +1,6 @@
 /**
  * 直接发送策略
- * 用于发送紧急消息或小消息，直接发送，不进行批处理
+ * 用于发送紧急Message或小Message，直接发送，不进行批Processing
  */
 import MessageSendingStrategy from './MessageSendingStrategy.js';
 import EncryptionService from '../services/EncryptionService.js';
@@ -23,7 +23,7 @@ class DirectSendingStrategy extends MessageSendingStrategy {
       let messageStr = JSON.stringify(message);
       const bytesSent = messageStr.length;
       
-      // 加密消息（如果有共享密钥）
+      // 加密Message（如果有共享密钥）
       const sharedSecret = this.encryptionKeys.get(peerId);
       if (sharedSecret && this.encryptionService.shouldEncrypt(message.type)) {
         const encryptedData = this.encryptionService.encryptMessage(messageStr, sharedSecret);
@@ -31,10 +31,10 @@ class DirectSendingStrategy extends MessageSendingStrategy {
         messageStr = JSON.stringify(message);
       }
       
-      // 压缩消息
+      // 压缩Message
       const compressedMessage = await this.compressionService.compressMessage(messageStr);
       
-      // 发送消息
+      // Send message
       if (compressedMessage) {
         connection.ws.send(JSON.stringify(compressedMessage));
       } else {
@@ -52,13 +52,13 @@ class DirectSendingStrategy extends MessageSendingStrategy {
   }
   
   shouldUse(message) {
-    // 心跳等紧急消息，直接发送
+    // 心跳等紧急Message，直接发送
     return message.type === 'PING' || message.type === 'PONG' || message.type === 'HELLO' || message.type === 'HELLO_ACK';
   }
   
   /**
    * 更新流量统计
-   * @param {string} peerId - 对等节点ID
+   * @param {string} peerId - Peer nodesID
    * @param {number} bytesSent - 发送的字节数
    */
   updateTrafficStats(peerId, bytesSent) {

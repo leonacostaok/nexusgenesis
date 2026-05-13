@@ -25,13 +25,13 @@ test('EncryptionService - 加密解密测试', async (t) => {
 test('EncryptionService - 消息类型加密判断测试', async (t) => {
   const encryptionService = new EncryptionService();
   
-  // 测试不需要加密的消息类型
+  // 测试不需要加密的Message类型
   assert.strictEqual(encryptionService.shouldEncrypt('PING'), false, 'PING消息不应该加密');
   assert.strictEqual(encryptionService.shouldEncrypt('PONG'), false, 'PONG消息不应该加密');
   assert.strictEqual(encryptionService.shouldEncrypt('HELLO'), false, 'HELLO消息不应该加密');
   assert.strictEqual(encryptionService.shouldEncrypt('HELLO_ACK'), false, 'HELLO_ACK消息不应该加密');
   
-  // 测试需要加密的消息类型
+  // 测试需要加密的Message类型
   assert.strictEqual(encryptionService.shouldEncrypt('TRANSACTION'), true, 'TRANSACTION消息应该加密');
   assert.strictEqual(encryptionService.shouldEncrypt('BLOCK'), true, 'BLOCK消息应该加密');
   assert.strictEqual(encryptionService.shouldEncrypt('DIRECT_MESSAGE'), true, 'DIRECT_MESSAGE消息应该加密');

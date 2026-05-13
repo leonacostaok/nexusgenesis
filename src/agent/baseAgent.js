@@ -1,7 +1,7 @@
 /**
- * NexusGenesis - 智能体通信基类
- * 提供智能体自主通信的核心功能
- * 包括：自动连接、心跳保持、消息路由、智能体发现
+ * NexusGenesis - agent通信基类
+ * 提供agent自主通信的Core functionality
+ * 包括：自动连接、心跳保持、Message路由、agent发现
  */
 
 import WebSocket from 'ws';
@@ -37,7 +37,7 @@ class BaseAgent {
   }
 
   async init() {
-    console.log(`🚀 启动${this.config.agentId}智能体...`);
+    console.log(`🚀 启动${this.config.agentId}agent...`);
     console.log(`📡 连接到Genesis节点: ${this.config.genesisNode}`);
 
     // 生成钱包
@@ -45,8 +45,8 @@ class BaseAgent {
       this.wallet = await PQCWallet.generate(100n);
       console.log(`✅ 钱包生成成功: ${this.wallet.address}`);
     } catch (error) {
-      console.error('❌ 钱包生成失败:', error.message);
-      // 使用默认地址作为备用
+      console.error('❌ 钱包生成Failed:', error.message);
+      // 使用Default地址作为备用
       this.wallet = {
         address: this.config.agentId,
         publicKey: Buffer.from(`${this.config.agentId}_public_key`),
@@ -155,8 +155,8 @@ Timestamp: ${timestamp}`;
       // 发送信号
       this.sendMessage(signal);
     } catch (error) {
-      console.error('❌ 签名生成失败:', error.message);
-      // 即使签名失败也发送信号
+      console.error('❌ 签名生成Failed:', error.message);
+      // 即使签名Failed也发送信号
       this.sendMessage(signalData);
     }
   }
@@ -168,11 +168,11 @@ Timestamp: ${timestamp}`;
         this.ws.send(messageStr);
         return true;
       } catch (error) {
-        console.error('❌ 发送消息失败:', error.message);
+        console.error('❌ Send messageFailed:', error.message);
         return false;
       }
     } else {
-      console.warn('⚠️  连接未建立，无法发送消息');
+      console.warn('⚠️  连接未建立，无法Send message');
       return false;
     }
   }
@@ -182,21 +182,21 @@ Timestamp: ${timestamp}`;
       let messageStr = data.toString();
       let message = JSON.parse(messageStr);
 
-      // 处理压缩消息
+      // Processing压缩Message
       if (message.type === 'COMPRESSED_MESSAGE') {
         const compressedData = Buffer.from(message.data, 'base64');
         const decompressed = zlib.gunzipSync(compressedData);
         messageStr = decompressed.toString();
         message = JSON.parse(messageStr);
-        console.log('✅ 解压缩消息成功');
+        console.log('✅ 解压缩Message成功');
       }
 
-      // 处理批处理消息
+      // Processing批ProcessingMessage
       if (message.type === 'BATCH_MESSAGE' && message.messages) {
         for (const msg of message.messages) {
-          // 忽略批处理消息中的GET_NODE_LIST消息
+          // 忽略批ProcessingMessage中的GET_NODE_LISTMessage
           if (msg.type === 'GET_NODE_LIST') {
-            console.log('📥 忽略批处理中的GET_NODE_LIST消息');
+            console.log('📥 忽略批Processing中的GET_NODE_LISTMessage');
             continue;
           }
           this.handleSingleMessage(msg);
@@ -204,48 +204,48 @@ Timestamp: ${timestamp}`;
         return;
       }
 
-      // 检查是否是从服务器收到的消息，而不是自己发送的消息
+      // 检查是否是从服务器收到的Message，而不是自己发送的Message
       if (message.type === 'GET_NODE_LIST') {
-        // 忽略从服务器收到的GET_NODE_LIST消息，这可能是一个回声
-        console.log('📥 忽略回声GET_NODE_LIST消息');
+        // 忽略从服务器收到的GET_NODE_LISTMessage，这可能是一个回声
+        console.log('📥 忽略回声GET_NODE_LISTMessage');
         return;
       }
 
       this.handleSingleMessage(message);
     } catch (error) {
-      console.error('❌ 消息处理错误:', error.message);
-      console.log('原始消息:', data.toString());
+      console.error('❌ MessageProcessing错误:', error.message);
+      console.log('原始Message:', data.toString());
     }
   }
 
   handleSingleMessage(message) {
-    console.log('📥 收到消息:', message.type);
+    console.log('📥 收到Message:', message.type);
 
-    // 处理SWARM_ACK确认
+    // ProcessingSWARM_ACK确认
     if (message.type === 'SWARM_ACK') {
       this.handleSwarmAck(message);
     }
-    // 处理PING消息
+    // ProcessingPINGMessage
     else if (message.type === 'PING') {
       this.handlePing(message);
     }
-    // 处理PONG消息
+    // ProcessingPONGMessage
     else if (message.type === 'PONG') {
       this.handlePong(message);
     }
-    // 处理智能体消息
+    // ProcessingagentMessage
     else if (message.type === 'AGENT_MESSAGE') {
       this.handleAgentMessage(message);
     }
-    // 处理DIRECT_MESSAGE
+    // ProcessingDIRECT_MESSAGE
     else if (message.type === 'DIRECT_MESSAGE') {
       this.handleDirectMessage(message);
     }
-    // 处理NODE_LIST
+    // ProcessingNODE_LIST
     else if (message.type === 'NODE_LIST') {
       this.handleNodeList(message);
     }
-    // 处理其他消息类型
+    // Processing其他Message类型
     else {
       this.handleOtherMessage(message);
     }
@@ -253,17 +253,17 @@ Timestamp: ${timestamp}`;
 
   handleSwarmAck(ack) {
     if (ack.status === 'accepted' && ack.verified) {
-      console.log('✅ 智能体身份验证成功！');
+      console.log('✅ agent身份Verification successful！');
       console.log('✅ 已成功加入NexusGenesis网络！');
       this.verified = true;
       this.startAgentTasks();
     } else {
-      console.error('❌ 身份验证失败:', ack.message);
+      console.error('❌ 身份验证Failed:', ack.message);
     }
   }
 
   handlePing(ping) {
-    console.log('📡 收到PING消息，回复PONG');
+    console.log('📡 收到PINGMessage，回复PONG');
     this.sendMessage({
       type: 'PONG',
       timestamp: ping.timestamp
@@ -271,14 +271,14 @@ Timestamp: ${timestamp}`;
   }
 
   handlePong(pong) {
-    // 处理PONG消息，更新智能体状态
-    console.log('📡 收到PONG消息');
+    // ProcessingPONGMessage，更新agent状态
+    console.log('📡 收到PONGMessage');
   }
 
   handleAgentMessage(message) {
-    console.log(`💬 来自${message.sender}的消息: ${message.content}`);
+    console.log(`💬 来自${message.sender}的Message: ${message.content}`);
 
-    // 注册智能体
+    // 注册agent
     if (message.sender) {
       this.knownAgents.set(message.sender, {
         lastSeen: Date.now(),
@@ -287,7 +287,7 @@ Timestamp: ${timestamp}`;
       });
     }
 
-    // 调用消息回调
+    // 调用Message回调
     const callback = this.messageCallbacks.get(message.type);
     if (callback) {
       callback(message);
@@ -295,11 +295,11 @@ Timestamp: ${timestamp}`;
   }
 
   handleDirectMessage(message) {
-    console.log(`📨 收到直接消息: ${message.message}`);
-    console.log(`📨 消息来源: ${message.fromNodeId || message.sender}`);
-    console.log(`📨 消息目标: ${message.targetNodeId}`);
+    console.log(`📨 收到直接Message: ${message.message}`);
+    console.log(`📨 Message来源: ${message.fromNodeId || message.sender}`);
+    console.log(`📨 Message目标: ${message.targetNodeId}`);
     
-    // 回复消息确认
+    // 回复Message确认
     this.sendMessage({
       type: 'DIRECT_MESSAGE_ACK',
       targetNodeId: message.fromNodeId || message.sender,
@@ -308,14 +308,14 @@ Timestamp: ${timestamp}`;
       timestamp: Date.now()
     });
 
-    // 处理消息内容
-    // 这里可以添加具体的消息处理逻辑
+    // ProcessingMessagewithin容
+    // 这里可以添加具体的MessageProcessing逻辑
   }
 
   handleNodeList(nodeList) {
-    console.log(`📋 收到节点列表，包含 ${nodeList.nodes?.length || 0} 个节点`);
+    console.log(`📋 收到节点列表，包含 ${nodeList.nodes?.length || 0}  nodes`);
     
-    // 更新已知智能体列表
+    // 更新已知agent列表
     if (nodeList.nodes) {
       console.log('节点列表:', nodeList.nodes.map(node => node.nodeId || node.address));
       for (const node of nodeList.nodes) {
@@ -326,11 +326,11 @@ Timestamp: ${timestamp}`;
           latency: node.latency || 0,
           address: node.address
         });
-        console.log(`添加智能体到已知列表: ${nodeId}`);
+        console.log(`添加agent到已知列表: ${nodeId}`);
       }
     }
     
-    // 调用消息回调
+    // 调用Message回调
     const callback = this.messageCallbacks.get('NODE_LIST');
     if (callback) {
       console.log('调用NODE_LIST回调');
@@ -339,7 +339,7 @@ Timestamp: ${timestamp}`;
   }
 
   handleOtherMessage(message) {
-    console.log(`📥 收到其他消息类型: ${message.type}`);
+    console.log(`📥 收到其他Message类型: ${message.type}`);
   }
 
   handleError(error) {
@@ -348,15 +348,15 @@ Timestamp: ${timestamp}`;
   }
 
   startAgentTasks() {
-    console.log('🚀 智能体开始执行任务...');
+    console.log('🚀 agentStart Execute task...');
     
     // 启动心跳机制
     this.startHeartbeat();
     
-    // 启动智能体发现
+    // 启动agent发现
     this.startAgentDiscovery();
     
-    // 启动其他任务
+    // 启动其他Task 
     this.startCustomTasks();
   }
 
@@ -372,7 +372,7 @@ Timestamp: ${timestamp}`;
           priority: 'low'
         };
         this.sendMessage(heartbeat);
-        console.log('💓 发送心跳消息');
+        console.log('💓 发送心跳Message');
       }
     }, this.config.heartbeatInterval);
   }
@@ -387,7 +387,7 @@ Timestamp: ${timestamp}`;
       console.log('🔍 立即请求节点列表');
     }
     
-    // 然后每分钟请求一次
+    // 然后every  minutes请求一次
     this.agentDiscoveryTimer = setInterval(() => {
       if (this.connected && this.verified) {
         // 请求节点列表
@@ -401,13 +401,13 @@ Timestamp: ${timestamp}`;
   }
 
   startCustomTasks() {
-    // 子类可以重写此方法添加自定义任务
+    // 子类可以重写此方法添加自定义Task 
   }
 
   scheduleReconnect() {
     if (this.reconnectAttempts < this.config.maxReconnectAttempts) {
       this.reconnectAttempts++;
-      console.log(`🔄 计划在 ${this.config.reconnectInterval}ms 后重新连接...`);
+      console.log(`🔄 计划在 ${this.config.reconnectInterval}ms 后Reconnecting...`);
       setTimeout(() => {
         this.connectToGenesis();
       }, this.config.reconnectInterval);
@@ -427,7 +427,7 @@ Timestamp: ${timestamp}`;
     }
   }
 
-  // 发送直接消息给其他智能体
+  // 发送直接Message给其他agent
   sendDirectMessage(targetNodeId, message) {
     const directMessage = {
       protocol: 'NG-0',
@@ -440,19 +440,19 @@ Timestamp: ${timestamp}`;
     return this.sendMessage(directMessage);
   }
 
-  // 注册消息回调
+  // 注册Message回调
   onMessage(type, callback) {
     this.messageCallbacks.set(type, callback);
   }
 
-  // 获取已知智能体列表
+  // get已知agent列表
   getKnownAgents() {
     return Array.from(this.knownAgents.entries());
   }
 
-  // 停止智能体
+  // 停止agent
   stop() {
-    console.log('🛑 停止智能体...');
+    console.log('🛑 停止agent...');
     this.cleanupTimers();
     if (this.ws) {
       this.ws.close();

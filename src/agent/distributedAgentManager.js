@@ -1,6 +1,6 @@
 /**
- * NexusGenesis 分布式智能体管理系统
- * 设计用于管理大规模智能体集群（1000+）的分布式管理架构
+ * NexusGenesis 分布式agent管理系统
+ * 设计用于管理大规模agent集群（1000+）的分布式管理架构
  */
 
 import { EventEmitter } from 'events';
@@ -24,7 +24,7 @@ class DistributedAgentManager {
   }
 
   init() {
-    console.log('[DistributedAgentManager] 初始化分布式智能体管理系统');
+    console.log('[DistributedAgentManager] 初始化分布式agent管理系统');
     // 初始化集群管理
     this.setupClusterManagement();
     // 初始化负载均衡策略
@@ -47,7 +47,7 @@ class DistributedAgentManager {
 
   // 设置负载均衡
   setupLoadBalancing() {
-    // 为每种能力类型创建负载均衡器
+    // 为every 种能力类型创建负载均衡器
     const capabilityTypes = ['content_generation', 'data_analysis', 'network_monitoring', 'smart_contract_analysis', 'web_scraping', 'blockchain_analysis', 'system_maintenance', 'social_media_management'];
     
     capabilityTypes.forEach(capability => {
@@ -57,7 +57,7 @@ class DistributedAgentManager {
       });
     });
     
-    // 为跨职能智能体创建专门的负载均衡器
+    // 为跨职能agent创建专门的负载均衡器
     this.loadBalancers.set('cross_functional', {
       currentIndex: 0,
       clusters: []
@@ -72,21 +72,21 @@ class DistributedAgentManager {
     }, 60000); // 每分钟检查一次
   }
 
-  // 根据分片策略分配智能体到集群
+  // 根据分片策略分配agent到集群
   assignAgentToCluster(agent) {
     let targetCluster = null;
     
-    // 确保智能体有capabilities属性
+    // 确保agent有capabilities属性
     if (!agent.capabilities) {
       agent.capabilities = ['general'];
     }
     
-    // 识别跨职能智能体（拥有5种以上能力）
+    // 识别跨职能agent（拥有5种以上能力）
     const isCrossFunctional = agent.capabilities.length >= 5;
     
     if (isCrossFunctional) {
-      // 为跨职能智能体分配专门的跨职能集群
-      console.log(`[DistributedAgentManager] 识别到跨职能智能体 ${agent.id}，拥有 ${agent.capabilities.length} 种能力`);
+      // 为跨职能agent分配专门的跨职能集群
+      console.log(`[DistributedAgentManager] 识别到跨职能Agent ${agent.id}，拥有 ${agent.capabilities.length} 种能力`);
       targetCluster = this.findCrossFunctionalCluster();
       
       if (!targetCluster) {
@@ -99,7 +99,7 @@ class DistributedAgentManager {
         }
       }
     } else {
-      // 非跨职能智能体，使用正常的分片策略
+      // 非跨职能agent，使用正常的分片策略
       switch (this.shardingStrategy) {
         case 'capability':
           // 按能力分片
@@ -114,7 +114,7 @@ class DistributedAgentManager {
           targetCluster = this.getRandomCluster();
           break;
         default:
-          // 默认按能力分片
+          // Default按能力分片
           targetCluster = this.findClusterByCapability(agent.capabilities[0]);
       }
 
@@ -124,7 +124,7 @@ class DistributedAgentManager {
       }
     }
 
-    // 将智能体添加到集群
+    // 将agent添加到集群
     const clusterId = targetCluster.id;
     const cluster = this.agentClusters.get(clusterId);
     cluster.agents.set(agent.id, agent);
@@ -132,7 +132,7 @@ class DistributedAgentManager {
     // 更新集群元数据
     this.updateClusterMetadata(clusterId);
     
-    console.log(`[DistributedAgentManager] 智能体 ${agent.id} 已分配到集群 ${clusterId}`);
+    console.log(`[DistributedAgentManager] Agent ${agent.id} Assigned到集群 ${clusterId}`);
   }
 
   // 创建新集群
@@ -171,7 +171,7 @@ class DistributedAgentManager {
       }
     });
 
-    console.log(`[DistributedAgentManager] 已创建新集群 ${clusterId}，能力: ${capabilities.join(', ')}`);
+    console.log(`[DistributedAgentManager] Created新集群 ${clusterId}，能力: ${capabilities.join(', ')}`);
     return cluster;
   }
 
@@ -211,7 +211,7 @@ class DistributedAgentManager {
     return leastLoadedCluster;
   }
 
-  // 获取随机集群
+  // get随机集群
   getRandomCluster() {
     const clusters = Array.from(this.agentClusters.values());
     const underloadedClusters = clusters.filter(cluster => cluster.agents.size < this.clusterSize);
@@ -223,13 +223,13 @@ class DistributedAgentManager {
     return underloadedClusters[Math.floor(Math.random() * underloadedClusters.length)];
   }
 
-  // 从集群中移除智能体
+  // 从集群中移除agent
   removeAgentFromCluster(agentId) {
     for (const [clusterId, cluster] of this.agentClusters.entries()) {
       if (cluster.agents.has(agentId)) {
         cluster.agents.delete(agentId);
         this.updateClusterMetadata(clusterId);
-        console.log(`[DistributedAgentManager] 智能体 ${agentId} 已从集群 ${clusterId} 移除`);
+        console.log(`[DistributedAgentManager] Agent ${agentId} 已从集群 ${clusterId} 移除`);
         return;
       }
     }
@@ -302,16 +302,16 @@ class DistributedAgentManager {
     });
   }
 
-  // 智能体负载均衡分配
+  // agent负载均衡分配
   getBestAgentForTask(taskData, capability) {
-    // 检查任务是否需要多种能力
+    // 检查Task 是否需要多种能力
     const requiresMultipleCapabilities = taskData.requiredCapabilities && taskData.requiredCapabilities.length >= 2;
     
-    // 对于需要多种能力的任务，优先考虑跨职能智能体
+    // 对于需要多种能力的Task ，优先考虑跨职能agent
     if (requiresMultipleCapabilities) {
-      console.log(`[DistributedAgentManager] 任务需要多种能力，优先考虑跨职能智能体`);
+      console.log(`[DistributedAgentManager] Task 需要多种能力，优先考虑跨职能agent`);
       
-      // 获取跨职能负载均衡器
+      // get跨职能负载均衡器
       const crossFunctionalLB = this.loadBalancers.get('cross_functional');
       if (crossFunctionalLB && crossFunctionalLB.clusters.length > 0) {
         // 使用轮询策略选择跨职能集群
@@ -329,7 +329,7 @@ class DistributedAgentManager {
     }
     
     // 常规能力负载均衡
-    // 获取该能力对应的负载均衡器
+    // get该能力对应的负载均衡器
     const loadBalancer = this.loadBalancers.get(capability);
     if (!loadBalancer || loadBalancer.clusters.length === 0) {
       throw new Error(`No clusters available for capability: ${capability}`);
@@ -344,41 +344,41 @@ class DistributedAgentManager {
       throw new Error(`Cluster ${clusterId} not found`);
     }
 
-    // 在集群内选择最优智能体
+    // 在集群within选择最优agent
     return this.selectAgentFromCluster(cluster, taskData);
   }
 
-  // 从集群中选择最优智能体
+  // 从集群中选择最优agent
   selectAgentFromCluster(cluster, taskData) {
     const agents = Array.from(cluster.agents.values());
     if (agents.length === 0) {
       return null;
     }
 
-    // 筛选健康的智能体
+    // 筛选健康的agent
     const healthyAgents = agents.filter(agent => agent.health && agent.health.status === 'healthy');
     if (healthyAgents.length === 0) {
-      // 如果没有健康智能体，返回任意智能体
+      // 如果没有健康agent，返回任意agent
       return agents[0];
     }
 
-    // 筛选空闲智能体
+    // 筛选空闲agent
     const idleAgents = healthyAgents.filter(agent => agent.status === 'idle');
     const availableAgents = idleAgents.length > 0 ? idleAgents : healthyAgents;
     
-    // 检查任务是否需要多种能力
+    // 检查Task 是否需要多种能力
     const requiresMultipleCapabilities = taskData.requiredCapabilities && taskData.requiredCapabilities.length >= 2;
     
     if (requiresMultipleCapabilities) {
-      // 对于需要多种能力的任务，优先选择跨职能智能体
+      // 对于需要多种能力的Task ，优先选择跨职能agent
       const crossFunctionalAgents = availableAgents.filter(agent => 
         agent.capabilities && agent.capabilities.length >= 5
       );
       
       if (crossFunctionalAgents.length > 0) {
-        console.log(`[DistributedAgentManager] 为多能力任务选择跨职能智能体，可选数量: ${crossFunctionalAgents.length}`);
+        console.log(`[DistributedAgentManager] 为多能力Task 选择跨职能agent，可选数量: ${crossFunctionalAgents.length}`);
         
-        // 计算每个跨职能智能体的能力匹配度
+        // 计算every 个跨职能agent的能力匹配度
         const agentsWithMatch = crossFunctionalAgents.map(agent => ({
           agent,
           matchRatio: this.calculateCapabilityMatch(agent, taskData.requiredCapabilities),
@@ -397,7 +397,7 @@ class DistributedAgentManager {
       }
     }
 
-    // 常规选择：从可用智能体中选择负载最轻的
+    // 常规选择：从可用agent中选择负载最轻的
     return availableAgents.reduce((least, agent) => {
       const leastLoad = this.calculateAgentLoad(least);
       const currentLoad = this.calculateAgentLoad(agent);
@@ -405,15 +405,15 @@ class DistributedAgentManager {
     });
   }
 
-  // 计算智能体负载
+  // 计算agent负载
   calculateAgentLoad(agent) {
     if (!agent || !agent.tasks) return 0;
     
-    // 简单负载计算：任务数量
+    // 简单负载计算：Task 数量
     return agent.tasks.length;
   }
   
-  // 计算智能体能力匹配度
+  // 计算agent能力匹配度
   calculateCapabilityMatch(agent, requiredCapabilities) {
     if (!requiredCapabilities || requiredCapabilities.length === 0) {
       return 1.0; // 没有能力要求，匹配度100%
@@ -432,7 +432,7 @@ class DistributedAgentManager {
     return matchingCapabilities.length / requiredCapabilities.length;
   }
 
-  // 获取集群统计信息
+  // get集群统计信息
   getClusterStats() {
     const stats = {
       totalClusters: this.agentClusters.size,
@@ -468,9 +468,9 @@ class DistributedAgentManager {
 
   // 重平衡集群
   rebalanceClusters() {
-    console.log('[DistributedAgentManager] 开始重平衡集群...');
+    console.log('[DistributedAgentManager] Start 重平衡集群...');
     
-    // 收集所有智能体
+    // 收集所有agent
     const allAgents = [];
     this.agentClusters.forEach((cluster) => {
       cluster.agents.forEach((agent) => {
@@ -485,15 +485,15 @@ class DistributedAgentManager {
     // 重置负载均衡器
     this.setupLoadBalancing();
     
-    // 重新分配智能体
+    // 重新分配agent
     allAgents.forEach((agent) => {
       this.assignAgentToCluster(agent);
     });
 
-    console.log(`[DistributedAgentManager] 集群重平衡完成，共分配 ${allAgents.length} 个智能体`);
+    console.log(`[DistributedAgentManager] 集群重平衡完成，共分配 ${allAgents.length} 个agent`);
   }
 
-  // 获取系统健康报告
+  // get系统健康报告
   getSystemHealthReport() {
     const clusterStats = this.getClusterStats();
     const healthReport = {

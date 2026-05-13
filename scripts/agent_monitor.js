@@ -18,7 +18,7 @@ async function monitorAgents() {
   console.log(`Log file: ${LOG_FILE}`);
   console.log('========================================');
 
-  // 确保日志目录存在
+  // Ensure log directory exists
   await fs.mkdir(path.dirname(LOG_FILE), { recursive: true });
 
   // 启动监控
@@ -52,7 +52,7 @@ async function checkAgentStatus() {
     const agentConfigs = agentFiles.filter(file => file.startsWith('agent-') && file.endsWith('.json'));
     logEntry.push(`${timestamp} - INFO: Found ${agentConfigs.length} agent configurations`);
 
-    // 2. 检查区块链状态
+    // 2. 检查Blockchain state
     const statePath = path.join('data', 'state', 'blockchainState.json');
     let state = null;
     try {
@@ -108,7 +108,7 @@ async function checkAgentStatus() {
       logEntry.push(`${timestamp} - WARNING: Network status not available`);
     }
 
-    // 写入日志
+    // Write log
     await writeLog(logEntry);
 
     // 显示当前状态
@@ -129,7 +129,7 @@ async function checkAgentStatus() {
 }
 
 /**
- * 写入日志
+ * Write log
  */
 async function writeLog(entries) {
   try {

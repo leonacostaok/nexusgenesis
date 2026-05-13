@@ -5,17 +5,17 @@
 
 import contractManager from '../contractManager.js';
 
-// 内存地址分配
+// memory地址分配
 const ADDR_PROPOSAL_COUNT = 0;    // 提案数量
 const ADDR_QUORUM = 1;             // 投票法定人数
 const ADDR_MAJORITY = 2;           // 投票通过阈值
 const ADDR_VOTING_PERIOD = 3;      // 投票周期
 
-// 从地址10开始存储提案信息
+// 从地址10Start 存储提案信息
 const ADDR_FIRST_PROPOSAL = 10;
 
 // 治理合约字节码
-// 逻辑：
+// Logic: 
 // 1. 初始化治理参数
 // 2. 设置投票规则
 const governanceBytecode = [
@@ -31,22 +31,22 @@ const governanceBytecode = [
   0x01, 0x33, // PUSH 51
   0x08, ADDR_MAJORITY, // STORE MAJORITY
   
-  // 初始化投票周期 (86400秒 = 1天)
+  // 初始化投票周期 (86400秒 = 1 days)
   0x01, 0x50, // PUSH 80
   0x01, 0x40, // PUSH 64
   0x05,       // MUL
   0x08, ADDR_VOTING_PERIOD, // STORE VOTING_PERIOD
   
-  // 返回成功
+  // Return success
   0x01, 0x01, // PUSH 1
   0x0C        // RETURN
 ];
 
 // 创建提案合约字节码
-// 逻辑：
-// 1. 从内存地址20加载提案标题
-// 2. 从内存地址21加载提案描述
-// 3. 从内存地址22加载提案发起者
+// Logic: 
+// 1. 从memory地址20加载提案标题
+// 2. 从memory地址21加载提案描述
+// 3. 从memory地址22加载提案发起者
 // 4. 增加提案数量
 // 5. 存储提案信息
 const createProposalBytecode = [
@@ -81,7 +81,7 @@ const createProposalBytecode = [
   0x01, 0x00, // PUSH 0
   0x08, ADDR_FIRST_PROPOSAL + 5, // STORE NO_VOTES
   
-  // 存储创建时间
+  // Store creation time
   0x01, 0x01, // PUSH 1 (placeholder for timestamp)
   0x08, ADDR_FIRST_PROPOSAL + 6, // STORE CREATED_AT
   
@@ -91,10 +91,10 @@ const createProposalBytecode = [
 ];
 
 // 投票合约字节码
-// 逻辑：
-// 1. 从内存地址30加载提案ID
-// 2. 从内存地址31加载投票选项 (1=YES, 0=NO)
-// 3. 从内存地址32加载投票者
+// Logic: 
+// 1. 从memory地址30加载提案ID
+// 2. 从memory地址31加载投票选项 (1=YES, 0=NO)
+// 3. 从memory地址32加载投票者
 // 4. 更新投票计数
 const voteBytecode = [
   // 加载提案ID
@@ -124,7 +124,7 @@ const voteBytecode = [
   0x03,       // ADD
   0x08, ADDR_FIRST_PROPOSAL + 5, // STORE NO_VOTES
   
-  // 返回成功
+  // Return success
   0x01, 0x01, // PUSH 1
   0x0C        // RETURN
 ];
@@ -143,7 +143,7 @@ async function executeGovernanceContract(contractId) {
   return result;
 }
 
-// 获取治理参数
+// get治理参数
 function getGovernanceParams(contractId) {
   const contractInfo = contractManager.getContractInfo(contractId);
   if (contractInfo) {
@@ -161,13 +161,13 @@ function getGovernanceParams(contractId) {
 async function testGovernanceContract() {
   console.log('=== Testing Governance Contract ===');
   
-  // 部署合约
+  // Deploy contract
   const contractId = await deployGovernanceContract();
   
-  // 执行合约
+  // Execute contract
   await executeGovernanceContract(contractId);
   
-  // 获取治理参数
+  // get治理参数
   const params = getGovernanceParams(contractId);
   console.log('Governance params:', params);
   
@@ -178,7 +178,7 @@ async function testGovernanceContract() {
   return contractId;
 }
 
-// 导出功能
+// Export functions
 export { 
   governanceBytecode, 
   createProposalBytecode, 

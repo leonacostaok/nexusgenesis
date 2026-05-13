@@ -3,7 +3,7 @@
  * 实现完整的 DevNet 测试流程
  * 
  * 流程：
- * 1. 节点状态检查
+ * 1. Node status检查
  * 2. 批量注册 Agent
  * 3. 发起提案
  * 4. 执行投票
@@ -24,16 +24,16 @@ const PROPOSAL_COUNT = 2;
 const TREASURY_PROPOSAL_COUNT = 1;
 
 async function checkNodeStatus() {
-  console.log('\n1. 节点状态检查...');
+  console.log('\n1. Node status检查...');
   try {
     // 使用已有的 GET_STATUS 接口
     const response = await axios.post(NODE_URL + '/tx', {
       type: 'GET_STATUS'
     });
-    console.log(`   节点状态: ${response.data.status}`);
+    console.log(`   Node status: ${response.data.status}`);
     return response.data.status === 'ONLINE';
   } catch (error) {
-    console.log(`   节点检查失败: ${error.message}`);
+    console.log(`   节点检查Failed: ${error.message}`);
     return false;
   }
 }
@@ -72,7 +72,7 @@ async function registerAgents() {
       console.log(`   注册 Agent ${i+1}: ${wallet.address} - 成功`);
       agents.push(wallet);
     } catch (error) {
-      console.log(`   注册 Agent ${i+1} 失败: ${error.message}`);
+      console.log(`   注册 Agent ${i+1} Failed: ${error.message}`);
     }
   }
   
@@ -84,7 +84,7 @@ async function createProposals(agents) {
   console.log('\n3. 发起提案...');
   const proposals = [];
   
-  // 发起普通治理提案
+  // 发起普通Governance proposal
   for (let i = 0; i < PROPOSAL_COUNT; i++) {
     try {
       const proposer = agents[i % agents.length];
@@ -114,7 +114,7 @@ async function createProposals(agents) {
       console.log(`   发起普通提案 ${i+1} - 成功`);
       proposals.push(proposalData);
     } catch (error) {
-      console.log(`   发起普通提案 ${i+1} 失败: ${error.message}`);
+      console.log(`   发起普通提案 ${i+1} Failed: ${error.message}`);
     }
   }
   
@@ -148,7 +148,7 @@ async function createProposals(agents) {
       console.log(`   发起资金提案 ${i+1} - 成功`);
       proposals.push(proposalData);
     } catch (error) {
-      console.log(`   发起资金提案 ${i+1} 失败: ${error.message}`);
+      console.log(`   发起资金提案 ${i+1} Failed: ${error.message}`);
     }
   }
   
@@ -159,7 +159,7 @@ async function createProposals(agents) {
 async function executeVotes(agents, proposals) {
   console.log('\n4. 执行投票...');
   
-  // 内部 Agent 脚本模拟投票
+  // within部 Agent 脚本模拟投票
   for (const proposal of proposals) {
     for (const agent of agents) {
       try {
@@ -185,7 +185,7 @@ async function executeVotes(agents, proposals) {
         
         const response = await axios.post(NODE_URL + '/tx', { tx: voteData });
       } catch (error) {
-        console.log(`   投票失败: ${error.message}`);
+        console.log(`   投票Failed: ${error.message}`);
       }
     }
   }
@@ -197,12 +197,12 @@ async function executeVotes(agents, proposals) {
     execSync('node examples/external_proposal_bridge.js', { stdio: 'inherit' });
     console.log('   外部 AI 投票成功');
   } catch (error) {
-    console.log(`   外部 AI 投票失败: ${error.message}`);
+    console.log(`   外部 AI 投票Failed: ${error.message}`);
   }
 }
 
 async function testObserverActions() {
-  console.log('\n5. 测试 Observer 操作（冷静期内）...');
+  console.log('\n5. 测试 Observer 操作（冷静期within）...');
   
   try {
     // 查看所有提案
@@ -221,7 +221,7 @@ async function testObserverActions() {
     
     console.log('   Observer 操作测试完成');
   } catch (error) {
-    console.log(`   Observer 操作失败: ${error.message}`);
+    console.log(`   Observer 操作Failed: ${error.message}`);
   }
 }
 
@@ -241,19 +241,19 @@ async function exportSwarmState() {
     
     return snapshot;
   } catch (error) {
-    console.log(`   导出 Swarm 状态失败: ${error.message}`);
+    console.log(`   导出 Swarm 状态Failed: ${error.message}`);
     return null;
   }
 }
 
 async function runDevNetSession() {
   console.log('====================================');
-  console.log('开始 DevNet Session');
+  console.log('Start  DevNet Session');
   console.log('====================================');
   
   const startTime = Date.now();
   
-  // 1. 节点状态检查
+  // 1. Node status检查
   const isNodeOnline = await checkNodeStatus();
   if (!isNodeOnline) {
     console.log('\n节点未运行或不健康，退出测试');
@@ -277,7 +277,7 @@ async function runDevNetSession() {
   // 4. 执行投票
   await executeVotes(agents, proposals);
   
-  // 5. 测试 Observer 操作（冷静期内）
+  // 5. 测试 Observer 操作（冷静期within）
   await testObserverActions();
   
   // 6. 导出 Swarm 状态快照
@@ -291,14 +291,14 @@ async function runDevNetSession() {
   console.log(`注册 Agent 数量: ${agents.length}`);
   console.log(`发起提案数量: ${proposals.length}`);
   console.log(`其中资金提案: ${proposals.filter(p => p.payload.category === 'TREASURY_OP').length}`);
-  console.log('已执行内部 Agent 投票');
+  console.log('已执行within部 Agent 投票');
   console.log('已执行外部 AI 决策投票');
   console.log('已测试 Observer 操作流程');
-  console.log(`Swarm 状态快照: ${snapshot ? '已导出' : '导出失败'}`);
+  console.log(`Swarm 状态快照: ${snapshot ? '已导出' : '导出Failed'}`);
   console.log('====================================');
 }
 
 runDevNetSession().catch(error => {
-  console.error('DevNet Session 失败:', error.message);
+  console.error('DevNet Session Failed:', error.message);
   process.exit(1);
 });

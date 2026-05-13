@@ -6,7 +6,7 @@
  * 2. 存储Agent信息
  * 3. 查询Agent信息
  * 4. 更新Agent信息
- * 5. 智能体能力评估和分类
+ * 5. agent能力评估和分类
  */
 
 import fs from 'fs/promises';
@@ -27,7 +27,7 @@ const agentRegistryBytecode = [
   0x07, 0x00, // LOAD AGENT_COUNT
   0x08, 0x0A, // STORE AGENT_ID
   
-  // 存储Agent所有者 (默认100)
+  // 存储Agent所有者 (Default100)
   0x01, 0x64, // PUSH 100
   0x08, 0x0B, // STORE OWNER
   
@@ -35,7 +35,7 @@ const agentRegistryBytecode = [
   0x01, 0x01, // PUSH 1
   0x08, 0x0C, // STORE STATUS
   
-  // 存储创建时间（运行时由 VM 注入 block.timestamp）
+  // Store creation time（运行时由 VM 注入 block.timestamp）
   0x01, 0x01, // PUSH 1
   0x08, 0x0D, // STORE CREATED_AT
   
@@ -44,7 +44,7 @@ const agentRegistryBytecode = [
   0x0C        // RETURN
 ];
 
-// 智能体分类系统
+// agent分类系统
 const AGENT_CATEGORIES = {
   COMPUTATIONAL: 'computational',      // 计算型智能体
   ANALYTICAL: 'analytical',            // 分析型智能体
@@ -107,7 +107,7 @@ class AgentRegistryContract {
   }
 
   /**
-   * 评估智能体能力并分类
+   * 评估agent能力并分类
    * @param {string[]} capabilities 能力列表
    * @returns {object} 评估结果
    */
@@ -191,9 +191,9 @@ class AgentRegistryContract {
   }
 
   /**
-   * 处理Agent注册交易
+   * ProcessingAgent注册交易
    * @param {object} transaction 交易对象
-   * @returns {object} 处理结果
+   * @returns {object} Processing结果
    */
   handleAgentRegister(transaction) {
     const agentId = `agent-${Date.now()}`;
@@ -229,9 +229,9 @@ class AgentRegistryContract {
   }
 
   /**
-   * 处理Agent更新交易
+   * ProcessingAgent更新交易
    * @param {object} transaction 交易对象
-   * @returns {object} 处理结果
+   * @returns {object} Processing结果
    */
   handleAgentUpdate(transaction) {
     const agentId = transaction.data?.agentId;
@@ -315,7 +315,7 @@ class AgentRegistryContract {
   }
 
   /**
-   * 获取Agent信息
+   * getAgent信息
    * @param {string} agentId Agent ID
    * @returns {object} Agent信息
    */
@@ -324,7 +324,7 @@ class AgentRegistryContract {
     if (agent) {
       return agent;
     }
-    // 模拟获取Agent信息
+    // 模拟getAgent信息
     return {
       agentId,
       status: 'active',
@@ -376,14 +376,14 @@ class AgentRegistryContract {
   }
 
   /**
-   * 获取所有Agent列表
+   * get所有Agent列表
    * @returns {object[]} Agent列表
    */
   async getAllAgents() {
     if (this.agents.size > 0) {
       return Array.from(this.agents.values());
     }
-    // 模拟获取Agent列表
+    // 模拟getAgent列表
     return [
       {
         agentId: 'agent-1',
@@ -405,7 +405,7 @@ class AgentRegistryContract {
   }
 
   /**
-   * 获取分类统计
+   * get分类统计
    * @returns {object} 分类统计信息
    */
   getCategoryStats() {
@@ -416,7 +416,7 @@ class AgentRegistryContract {
       stats[category] = 0;
     });
     
-    // 统计各分类智能体数量
+    // 统计各分类agent数量
     this.agents.forEach(agent => {
       if (agent.category) {
         stats[agent.category] = (stats[agent.category] || 0) + 1;
@@ -427,7 +427,7 @@ class AgentRegistryContract {
   }
 
   /**
-   * 获取能力评估统计
+   * get能力评估统计
    * @returns {object} 能力评估统计信息
    */
   getCapabilityStats() {

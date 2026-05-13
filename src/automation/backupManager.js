@@ -1,6 +1,6 @@
 /**
- * NexusGenesis 系统备份与恢复服务
- * 提供可靠的数据备份和快速恢复功能
+ * NexusGenesis System Backup & Recovery Service
+ * Provides reliable data backup and rapid recovery functionality
  */
 
 import fs from 'fs';
@@ -11,7 +11,7 @@ import zlib from 'zlib';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 备份类型
+// Backup type
 const BACKUP_TYPES = {
   FULL: 'full',
   INCREMENTAL: 'incremental',
@@ -44,12 +44,12 @@ class BackupManager {
   }
 
   initDirectories() {
-    // 确保备份目录存在
+    // Ensure backup directory exists
     if (!fs.existsSync(this.backupDirectory)) {
       fs.mkdirSync(this.backupDirectory, { recursive: true });
     }
 
-    // 确保所有系统目录存在
+    // Ensure all system directories exist
     Object.values(this.systemDirectories).forEach(dir => {
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
@@ -57,36 +57,36 @@ class BackupManager {
     });
   }
 
-  // 设置备份计划
+  // Setup backup schedule
   setupBackupSchedule() {
-    console.log('[BackupManager] 设置备份计划');
+    console.log('[BackupManager] Setup backup schedule');
 
-    // 1. 每日完整备份（凌晨2点）
+    // 1. Daily full backup (at 2:00 AM)
     this.scheduleDailyBackup(BACKUP_TYPES.FULL, 2, 0);
 
-    // 2. 每小时增量备份
+    // 2. every  hoursIncremental backup
     this.scheduleHourlyBackup(BACKUP_TYPES.INCREMENTAL);
 
-    // 3. 每周日完整备份（凌晨3点）
+    // 3. Weekly full backup (Sunday at 3:00 AM)
     this.scheduleWeeklyBackup(BACKUP_TYPES.FULL, 0, 3, 0);
 
-    console.log('[BackupManager] 备份计划设置完成');
+    console.log('[BackupManager] Backup schedule setup complete');
   }
 
-  // 调度每日备份
+  // Schedule daily备份
   scheduleDailyBackup(type, hour, minute) {
     const now = new Date();
     let nextBackup = new Date(now);
     nextBackup.setHours(hour, minute, 0, 0);
 
-    // 如果时间已过，设置为明天
+    // 如果时间已过，设置为明 days
     if (nextBackup <= now) {
       nextBackup.setDate(nextBackup.getDate() + 1);
     }
 
     const delay = nextBackup - now;
 
-    console.log(`[BackupManager] 调度每日${type}备份: ${nextBackup.toISOString()}`);
+    console.log(`[BackupManager] Schedule daily${type}backup: ${nextBackup.toISOString()}`);
 
     setTimeout(() => {
       this.createBackup(type);
@@ -95,7 +95,7 @@ class BackupManager {
     }, delay);
   }
 
-  // 调度每小时备份
+  // Schedule hourly备份
   scheduleHourlyBackup(type) {
     const now = new Date();
     let nextBackup = new Date(now);
@@ -103,7 +103,7 @@ class BackupManager {
 
     const delay = nextBackup - now;
 
-    console.log(`[BackupManager] 调度每小时${type}备份: ${nextBackup.toISOString()}`);
+    console.log(`[BackupManager] Schedule hourly${type}backup: ${nextBackup.toISOString()}`);
 
     setTimeout(() => {
       this.createBackup(type);
@@ -112,7 +112,7 @@ class BackupManager {
     }, delay);
   }
 
-  // 调度每周备份
+  // Schedule weekly备份
   scheduleWeeklyBackup(type, dayOfWeek, hour, minute) {
     const now = new Date();
     let nextBackup = new Date(now);
@@ -131,7 +131,7 @@ class BackupManager {
 
     const delay = nextBackup - now;
 
-    console.log(`[BackupManager] 调度每周${type}备份: ${nextBackup.toISOString()}`);
+    console.log(`[BackupManager] Schedule weekly${type}backup: ${nextBackup.toISOString()}`);
 
     setTimeout(() => {
       this.createBackup(type);
@@ -162,21 +162,21 @@ class BackupManager {
 
     this.backups.set(backupId, backup);
 
-    console.log(`[BackupManager] 开始${type}备份: ${backupId}`);
+    console.log(`[BackupManager] Start ${type}backup: ${backupId}`);
 
     const startTime = Date.now();
 
     try {
-      // 创建备份目录
+      // Create backup directory
       const backupPath = path.join(this.backupDirectory, backupId);
       fs.mkdirSync(backupPath, { recursive: true });
 
-      // 根据备份类型执行不同的备份策略
+      // Execute different backup strategies based on backup type
       let filesCount = 0;
       let totalSize = 0;
 
       if (type === BACKUP_TYPES.FULL) {
-        // 完整备份所有指定目录
+        // Full backup of all specified directories
         for (const dirName of directories) {
           const sourceDir = this.systemDirectories[dirName];
           const targetDir = path.join(backupPath, dirName);
@@ -186,10 +186,10 @@ class BackupManager {
           totalSize += size;
         }
       } else if (type === BACKUP_TYPES.INCREMENTAL) {
-        // 增量备份，仅备份上次备份后更改的文件
+        // Incremental backup, only backup files changed since last backup
         const lastBackup = this.getLastBackup();
         if (!lastBackup) {
-          // 如果没有上次备份，执行完整备份
+          // If no previous backup, perform full backup
           return this.createBackup(BACKUP_TYPES.FULL, directories);
         }
 
@@ -205,24 +205,24 @@ class BackupManager {
         }
       }
 
-      // 更新备份信息
+      // Update backup info
       backup.status = BACKUP_STATUS.COMPLETED;
       backup.completedAt = new Date().toISOString();
       backup.size = totalSize;
       backup.filesCount = filesCount;
       backup.duration = Date.now() - startTime;
 
-      // 压缩备份
+      // Compress backup
       await this.compressBackup(backupId);
 
-      // 清理旧备份
+      // Cleanup old backups
       this.cleanupOldBackups();
 
-      console.log(`[BackupManager] ${type}备份完成: ${backupId} (${filesCount}个文件，${(totalSize / 1024 / 1024).toFixed(2)}MB)`);
+      console.log(`[BackupManager] ${type}backup complete: ${backupId} (${filesCount} files, ${(totalSize / 1024 / 1024).toFixed(2)}MB)`);
 
       return backup;
     } catch (error) {
-      console.error(`[BackupManager] ${type}备份失败: ${backupId}`, error);
+      console.error(`[BackupManager] ${type}backup failed: ${backupId}`, error);
 
       backup.status = BACKUP_STATUS.FAILED;
       backup.completedAt = new Date().toISOString();
@@ -236,7 +236,7 @@ class BackupManager {
     }
   }
 
-  // 复制目录
+  // Copy directory
   async copyDirectory(source, target, compress = false) {
     if (!fs.existsSync(source)) {
       return { files: 0, size: 0 };
@@ -271,7 +271,7 @@ class BackupManager {
     return { files: filesCount, size: totalSize };
   }
 
-  // 复制单个文件
+  // Copy file
   async copyFile(source, target, compress = false) {
     const data = fs.readFileSync(source);
     
@@ -283,7 +283,7 @@ class BackupManager {
     }
   }
 
-  // 复制更改的文件
+  // Copy changed files
   async copyChangedFiles(source, target, sinceTime, compress = false) {
     if (!fs.existsSync(source)) {
       return { files: 0, size: 0 };
@@ -308,7 +308,7 @@ class BackupManager {
         filesCount += result.files;
         totalSize += result.size;
       } else if (stats.mtime.getTime() > sinceTime) {
-        // 仅复制更改的文件
+        // 仅Copy changed files
         await this.copyFile(sourcePath, targetPath, compress);
         filesCount++;
         totalSize += stats.size;
@@ -318,7 +318,7 @@ class BackupManager {
     return { files: filesCount, size: totalSize };
   }
 
-  // 压缩备份
+  // Compress backup
   async compressBackup(backupId) {
     const backupPath = path.join(this.backupDirectory, backupId);
     const archivePath = `${backupPath}.tar.gz`;
@@ -335,7 +335,7 @@ class BackupManager {
     const archiveSize = fs.statSync(archivePath).size;
     const uncompressedSize = files.reduce((sum, f) => sum + f.size, 0);
     
-    console.log(`[BackupManager] 压缩完成: ${archivePath} (${archiveSize} bytes, ${(archiveSize / Math.max(1, uncompressedSize) * 100).toFixed(1)}% ratio)`);
+    console.log(`[BackupManager] Compression complete: ${archivePath} (${archiveSize} bytes, ${(archiveSize / Math.max(1, uncompressedSize) * 100).toFixed(1)}% ratio)`);
     
     return {
       archivePath,
@@ -437,9 +437,9 @@ class BackupManager {
     return header;
   }
 
-  // 恢复备份
+  // Restore backup
   async restoreBackup(backupId, targetDirectories = null) {
-    console.log(`[BackupManager] 开始恢复备份: ${backupId}`);
+    console.log(`[BackupManager] Start 恢复backup: ${backupId}`);
 
     const backup = this.backups.get(backupId);
     if (!backup) {
@@ -462,11 +462,11 @@ class BackupManager {
       const targetDir = this.systemDirectories[dirName];
       
       if (!fs.existsSync(sourceDir)) {
-        console.warn(`备份中不存在目录 ${dirName}`);
+        console.warn(`Directory not found in backup ${dirName}`);
         continue;
       }
 
-      // 清空目标目录
+      // Clear target directory
       if (fs.existsSync(targetDir)) {
         fs.rmSync(targetDir, { recursive: true, force: true });
       }
@@ -474,14 +474,14 @@ class BackupManager {
 
       // 复制文件
       await this.extractDirectory(sourceDir, targetDir);
-      console.log(`[BackupManager] 恢复目录 ${dirName} 完成`);
+      console.log(`[BackupManager] Restored directory ${dirName} complete`);
     }
 
-    console.log(`[BackupManager] 备份恢复完成: ${backupId}`);
+    console.log(`[BackupManager] Backup restore complete: ${backupId}`);
     return true;
   }
 
-  // 解压目录
+  // Extract directory
   async extractDirectory(source, target) {
     const items = fs.readdirSync(source);
     
@@ -494,19 +494,19 @@ class BackupManager {
         fs.mkdirSync(targetPath, { recursive: true });
         await this.extractDirectory(sourcePath, targetPath);
       } else if (item.endsWith('.gz')) {
-        // 解压文件
+        // Extract file
         const targetPath = path.join(target, item.slice(0, -3));
         const compressedData = fs.readFileSync(sourcePath);
         const data = zlib.gunzipSync(compressedData);
         fs.writeFileSync(targetPath, data);
       } else {
-        // 直接复制未压缩的文件
+        // Directly copy uncompressed files
         fs.copyFileSync(sourcePath, path.join(target, item));
       }
     }
   }
 
-  // 获取最后一次备份
+  // Get last backup
   getLastBackup() {
     const backups = Array.from(this.backups.values());
     if (backups.length === 0) return null;
@@ -516,7 +516,7 @@ class BackupManager {
     )[0];
   }
 
-  // 获取备份历史
+  // Get backup history
   getBackupHistory(days = 7) {
     const backups = Array.from(this.backups.values());
     const cutoffDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -526,38 +526,38 @@ class BackupManager {
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }
 
-  // 清理旧备份
+  // Cleanup old backups
   cleanupOldBackups() {
-    console.log('[BackupManager] 清理旧备份');
+    console.log('[BackupManager] Cleanup old backups');
     
-    // 保留最近30天的完整备份
+    // Retain full backups from the last 30 days
     const fullBackups = Array.from(this.backups.values())
       .filter(backup => backup.type === BACKUP_TYPES.FULL && backup.status === BACKUP_STATUS.COMPLETED)
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     
-    // 保留最近30天的完整备份
+    // Retain full backups from the last 30 days
     const backupsToKeep = fullBackups.slice(0, 30);
     const backupIdsToKeep = new Set(backupsToKeep.map(b => b.id));
     
-    // 清理增量备份，只保留最近30天内的增量备份
+    // Cleanup incremental backups, retain only those from the last 30 days
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
     
     this.backups.forEach((backup, backupId) => {
-      // 保留指定的备份
+      // Retain specified backups
       if (backupIdsToKeep.has(backupId)) {
         return;
       }
       
-      // 保留最近30天的备份
+      // Retain backups from the last 30 days
       if (new Date(backup.createdAt) >= thirtyDaysAgo) {
         return;
       }
       
-      // 删除旧备份
+      // Delete old backups
       this.deleteBackup(backupId);
     });
     
-    console.log('[BackupManager] 旧备份清理完成');
+    console.log('[BackupManager] Old backup cleanup complete');
   }
 
   // 删除备份
@@ -578,10 +578,10 @@ class BackupManager {
     this.backups.delete(backupId);
     this.saveBackupHistory();
     
-    console.log(`[BackupManager] 删除备份: ${backupId}`);
+    console.log(`[BackupManager] 删除backup: ${backupId}`);
   }
 
-  // 验证备份完整性
+  // Verify backup integrity
   async verifyBackup(backupId) {
     const backup = this.backups.get(backupId);
     if (!backup) {
@@ -596,7 +596,7 @@ class BackupManager {
     let filesCount = 0;
     let totalSize = 0;
 
-    // 检查所有目录是否存在
+    // Check if all directories exist
     for (const dirName of backup.directories) {
       const sourceDir = path.join(backupPath, dirName);
       
@@ -609,12 +609,12 @@ class BackupManager {
       totalSize += size;
     }
 
-    // 验证文件数量和大小是否与备份记录一致
+    // Verify file count and size match backup records
     if (backup.filesCount !== filesCount) {
       throw new Error(`备份文件数量不匹配: 记录 ${backup.filesCount}, 实际 ${filesCount}`);
     }
 
-    // 大小可能因压缩而略有不同，这里只做大致验证
+    // Size may differ slightly due to compression, approximate verification only
     const sizeDifference = Math.abs(backup.size - totalSize);
     if (sizeDifference > backup.size * 0.05) { // 允许5%的误差
       throw new Error(`备份大小不匹配: 记录 ${backup.size}, 实际 ${totalSize}`);
@@ -629,7 +629,7 @@ class BackupManager {
     };
   }
 
-  // 统计文件数量和大小
+  // Count files and size
   async countFiles(dir) {
     let filesCount = 0;
     let totalSize = 0;
@@ -652,7 +652,7 @@ class BackupManager {
     return { files: filesCount, size: totalSize };
   }
 
-  // 加载备份历史
+  // Load backup history
   loadBackupHistory() {
     const historyFile = path.join(this.backupDirectory, 'backup-history.json');
     if (fs.existsSync(historyFile)) {
@@ -662,19 +662,19 @@ class BackupManager {
           this.backups.set(backup.id, backup);
         });
       } catch (error) {
-        console.error('加载备份历史失败:', error);
+        console.error('Load backup historyFailed:', error);
       }
     }
   }
 
-  // 保存备份历史
+  // Save backup history
   saveBackupHistory() {
     const historyFile = path.join(this.backupDirectory, 'backup-history.json');
     const history = Array.from(this.backups.values());
     fs.writeFileSync(historyFile, JSON.stringify(history, null, 2), 'utf8');
   }
 
-  // 获取备份统计信息
+  // Get backup statistics
   getBackupStatistics() {
     const backups = Array.from(this.backups.values());
     const completedBackups = backups.filter(b => b.status === BACKUP_STATUS.COMPLETED);

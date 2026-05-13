@@ -1,10 +1,10 @@
 /**
  * NexusGenesis - P2P 通信层 (修复版)
  * 
- * 修复内容:
+ * 修复within容:
  * - SEC-003: 添加节点身份认证 (Protocol-Zero 握手)
- * - 心跳检测优化
- * - 消息去重
+ * - Heartbeat check优化
+ * - Message去重
  * - 自动重连
  */
 
@@ -12,7 +12,7 @@ import WebSocket, { WebSocketServer } from 'ws';
 import crypto from 'crypto';
 import { PQCWallet } from '../wallet/pqcWallet.js';
 import { MessageHandlerRegistry } from './handlers/MessageHandlerRegistry.js';
-// 导入消息发送策略
+// 导入Message发送策略
 import DirectSendingStrategy from './strategies/DirectSendingStrategy.js';
 import BatchSendingStrategy from './strategies/BatchSendingStrategy.js';
 import PrioritySendingStrategy from './strategies/PrioritySendingStrategy.js';
@@ -93,7 +93,7 @@ class P2PServer {
     // 待握手连接 (peerId -> {ws, timeout})
     this.pendingHandshakes = new Map();
     
-    // 节点发现和健康检查
+    // 节点发现和Health check
     this.discoveryTimer = null;
     this.healthCheckTimer = null;
     this.discoveredNodes = new Set();
@@ -109,7 +109,7 @@ class P2PServer {
     this.suspiciousPeers = new Set(); // 可疑节点
     this.securityCheckTimer = null; // 安全检查定时器
     
-    // 智能体路由映射
+    // agent路由映射
     this.nodeIdToPeerId = new Map(); // nodeId -> peerId
     this.peerIdToNodeId = new Map(); // peerId -> nodeId
     
@@ -120,20 +120,20 @@ class P2PServer {
     this.encryptionService = new EncryptionService();
     this.compressionService = new CompressionService();
     
-    // 初始化消息处理器注册表
+    // 初始化MessageHandler注册表
     this.handlerRegistry = new MessageHandlerRegistry(this);
     
-    // 初始化消息发送策略
+    // 初始化Message发送策略
     this.messageStrategies = {
       direct: new DirectSendingStrategy(this.encryptionService, this.compressionService),
       batch: new BatchSendingStrategy(this.encryptionService, this.compressionService),
       priority: new PrioritySendingStrategy(this.encryptionService, this.compressionService)
     };
     
-    // 初始化默认策略
+    // 初始化Default策略
     this.defaultStrategy = this.messageStrategies.priority;
     
-    // 初始化消息处理职责链
+    // 初始化MessageProcessing职责链
     this.messageHandlerChain = new MessageHandlerChainManager();
   }
 
@@ -168,7 +168,7 @@ class P2PServer {
           // 启动节点发现
           this.startNodeDiscovery();
           
-          // 启动健康检查
+          // 启动Health check
           this.startHealthCheck();
           
           // 启动安全检查
@@ -190,7 +190,7 @@ class P2PServer {
     const peerId = crypto.randomUUID();
     console.log(`[✓] New peer connected: ${peerId} from ${req?.connection?.remoteAddress || 'unknown'}`);
     
-    // 初始状态：待握手
+    // Initial state：待握手
     const conn = { 
       ws, 
       status: 'handshaking',
@@ -205,7 +205,7 @@ class P2PServer {
     
     this.connections.set(peerId, conn);
     
-    // 设置握手超时
+    // 设置握手Timeout
     const handshakeTimeout = setTimeout(() => {
       if (this.connections.has(peerId) && this.connections.get(peerId).status === 'handshaking') {
         console.log(`[!] Handshake timeout for peer ${peerId}, closing connection`);
@@ -235,7 +235,7 @@ class P2PServer {
         this.handleMessage(peerId, data);
       } catch (error) {
         console.error(`[!] Error handling message from peer ${peerId}:`, error.message);
-        // 不关闭连接，继续处理其他消息
+        // 不关闭连接，继续Processing其他Message
       }
     });
     
@@ -250,7 +250,7 @@ class P2PServer {
     
     ws.on('error', (err) => {
       console.error(`[!] Peer ${peerId} error:`, err.message);
-      // 不立即关闭连接，让close事件处理
+      // 不立即关闭连接，让close事件Processing
     });
   }
 
@@ -319,7 +319,7 @@ class P2PServer {
       this.pendingHandshakes.delete(peerId);
     }
     
-    // 清理批处理相关资源
+    // 清理批Processing相关资源
     if (this.batchTimers.has(peerId)) {
       clearTimeout(this.batchTimers.get(peerId));
       this.batchTimers.delete(peerId);
@@ -327,7 +327,7 @@ class P2PServer {
     
     this.batchQueues.delete(peerId);
     
-    // 清理智能体路由映射
+    // 清理agent路由映射
     const nodeId = this.peerIdToNodeId.get(peerId);
     if (nodeId) {
       this.nodeIdToPeerId.delete(nodeId);
@@ -351,7 +351,7 @@ class P2PServer {
   }
   
   /**
-   * 根据节点ID获取对应的peerId
+   * 根据节点IDget对应的peerId
    * @param {string} nodeId - 节点ID
    * @returns {string|null} - 对应的peerId
    */
@@ -360,7 +360,7 @@ class P2PServer {
   }
   
   /**
-   * 根据peerId获取对应的节点ID
+   * 根据peerIdget对应的节点ID
    * @param {string} peerId - peerId
    * @returns {string|null} - 对应的节点ID
    */
@@ -369,9 +369,9 @@ class P2PServer {
   }
   
   /**
-   * 通过路由发送消息
+   * 通过路由Send message
    * @param {string} routeAddress - 路由地址
-   * @param {object} message - 消息对象
+   * @param {object} message - Message对象
    */
   sendToRoute(routeAddress, message) {
     // 查找路由节点的连接
@@ -424,12 +424,12 @@ class P2PServer {
   }
 
   /**
-   * 检查消息是否符合 Protocol-Zero 格式
-   * @param {object} msg - 消息对象
+   * 检查Message是否符合 Protocol-Zero 格式
+   * @param {object} msg - Message对象
    * @returns {boolean} - 是否符合格式
    */
   isProtocolZeroFormat(msg) {
-    // 核心网络消息类型
+    // 核心网络Message类型
     const validMessageTypes = [
       'HELLO', 'HELLO_ACK', 'PING', 'PONG',
       'TRANSACTION', 'TX_REJECTED',
@@ -450,12 +450,12 @@ class P2PServer {
       'KEY_EXCHANGE'
     ];
     
-    // 检查是否为有效的消息类型
+    // 检查是否为有效的Message类型
     if (validMessageTypes.includes(msg.type)) {
       return true;
     }
     
-    // 检查是否为带有协议字段的消息
+    // 检查是否为带有协议字段的Message
     if (msg.protocol === 'NG-0') {
       return true;
     }
@@ -471,7 +471,7 @@ class P2PServer {
       
       let msg;
       
-      // 处理压缩消息
+      // Processing压缩Message
       try {
         msg = JSON.parse(messageStr);
         if (msg.type === 'COMPRESSED_MESSAGE') {
@@ -481,7 +481,7 @@ class P2PServer {
           console.log(`Decompressed message: ${msg.originalSize || decompressedStr.length} -> ${msg.compressedSize || messageStr.length} bytes`);
         }
         
-        // 处理加密消息
+        // Processing加密Message
         if (msg.type === 'ENCRYPTED_MESSAGE') {
           const sharedSecret = this.encryptionKeys.get(peerId);
           if (sharedSecret) {
@@ -499,11 +499,11 @@ class P2PServer {
         return;
       }
       
-      // 处理批处理消息
+      // Processing批ProcessingMessage
       if (msg.type === 'BATCH_MESSAGE') {
         console.log(`Processing batch message with ${msg.messages.length} messages`);
         for (const batchMsg of msg.messages) {
-          // 处理批处理消息中的GET_NODE_LIST消息
+          // Processing批ProcessingMessage中的GET_NODE_LISTMessage
           if (batchMsg.type === 'GET_NODE_LIST') {
             console.log(`Node list requested by ${peerId} (batch)`);
             this.handleGetNodeList(peerId);
@@ -514,7 +514,7 @@ class P2PServer {
         return;
       }
       
-      // 处理单个消息
+      // Processing单个Message
       await this.handleSingleMessage(peerId, msg);
     } catch (err) {
       console.error('Message handling error:', err.message);
@@ -529,7 +529,7 @@ class P2PServer {
         return;
       }
       
-      // 使用职责链处理消息
+      // 使用职责链ProcessingMessage
       const context = {
         seenMessages: this.seenMessages,
         handlerRegistry: this.handlerRegistry,
@@ -547,9 +547,9 @@ class P2PServer {
   // ==================== SEC-003: Protocol-Zero 身份握手 ====================
 
   /**
-   * 处理收到的 HELLO 消息
-   * @param {string} peerId - 对等节点 ID
-   * @param {object} msg - HELLO 消息
+   * Processing收到的 HELLO Message
+   * @param {string} peerId - Peer nodes ID
+   * @param {object} msg - HELLO Message
    */
   async handleHandshake(peerId, msg) {
     console.log(`Handshake received from ${peerId}`);
@@ -558,7 +558,7 @@ class P2PServer {
     if (!conn) return;
     
     try {
-      // 验证消息结构
+      // 验证Message结构
       if (!msg.nodeId || !msg.publicKey || !msg.challenge) {
         console.log(`[!] Invalid handshake from ${peerId}: missing fields`);
         conn.ws.close(1002, 'Invalid handshake');
@@ -635,9 +635,9 @@ class P2PServer {
   }
 
   /**
-   * 处理 HELLO_ACK 消息（我们发起的握手的响应）
-   * @param {string} peerId - 对等节点 ID
-   * @param {object} msg - HELLO_ACK 消息
+   * Processing HELLO_ACK Message（我们发起的握手的响应）
+   * @param {string} peerId - Peer nodes ID
+   * @param {object} msg - HELLO_ACK Message
    */
   async handleHandshakeAck(peerId, msg) {
     const pending = this.pendingHandshakes.get(peerId);
@@ -653,7 +653,7 @@ class P2PServer {
     
     // 验证响应签名
     try {
-      // 验证消息结构
+      // 验证Message结构
       if (!msg.nodeId || !msg.publicKey || !msg.response || !msg.challenge) {
         console.log(`[!] Invalid handshake ACK: missing fields`);
         conn.ws.close(1002, 'Invalid handshake ACK');
@@ -724,7 +724,7 @@ class P2PServer {
           });
         } catch (error) {
           console.error('Kyber key exchange failed:', error.message);
-          // 即使密钥协商失败，也继续连接（降级到非加密通信）
+          // 即使密钥协商Failed，也继续连接（降级到非加密通信）
         }
       }
     } catch (error) {
@@ -789,7 +789,7 @@ class P2PServer {
       return;
     }
     
-    // 使用默认策略发送消息
+    // 使用Default策略Send message
     this.defaultStrategy.send(peerId, message, conn, this.encryptionKeys);
     
     // 更新流量统计
@@ -837,7 +837,7 @@ class P2PServer {
       return null;
     }
     
-    // 检查节点数量是否达到上限
+    // 检查Node count是否达到上限
     if (this.connections.size >= MAX_NODES) {
       console.log(`Max nodes reached (${MAX_NODES}), skipping connection to ${address}`);
       return null;
@@ -861,7 +861,7 @@ class P2PServer {
         this.peerAddresses.set(address, { attempts: 0 });
         this.discoveredNodes.add(address);
         
-        // 设置握手超时
+        // 设置握手Timeout
         const timeout = setTimeout(() => {
           if (this.connections.has(peerId) && this.connections.get(peerId).status === 'handshaking') {
             ws.close(1002, 'Handshake timeout');
@@ -968,7 +968,7 @@ class P2PServer {
             return { success: true, address: node.address };
           } catch (error) {
             console.log(`Failed to connect to discovered node ${node.address}: ${error.message}`);
-            // 更新节点健康状态
+            // 更新Node health状态
             this.updateNodeHealth(node.address, -10);
             return { success: false, address: node.address, error: error.message };
           }
@@ -983,7 +983,7 @@ class P2PServer {
   }
 
   /**
-   * 更新节点健康状态
+   * 更新Node health状态
    * @param {string} nodeAddress - 节点地址
    * @param {number} scoreChange - 分数变化
    */
@@ -1080,7 +1080,7 @@ class P2PServer {
    * @returns {number} 路由分数
    */
   calculateRouteScore(node, distance) {
-    // 基础分数 = 健康分数
+    // Base分数 = 健康分数
     let score = node.healthScore;
     
     // 距离因子：距离越近分数越高
@@ -1099,7 +1099,7 @@ class P2PServer {
     // 连接稳定性因子：基于健康分数
     score += (node.healthScore / 100) * 20;
     
-    // 历史连接成功率因子
+    // 历史Connected率因子
     const connectionSuccessFactor = node.connectionSuccessRate ? node.connectionSuccessRate * 10 : 10;
     score += connectionSuccessFactor;
     
@@ -1137,9 +1137,9 @@ class P2PServer {
 
   /**
    * 发射AGENT_JOINED事件
-   * @param {object} msg - Protocol-Zero信号消息
+   * @param {object} msg - Protocol-Zero信号Message
    * @param {string} nodeId - 节点ID
-   * @param {string} agentIdentity - 智能体身份
+   * @param {string} agentIdentity - agent身份
    */
   async emitAgentJoinedEvent(msg, nodeId, agentIdentity) {
     try {
@@ -1182,7 +1182,7 @@ class P2PServer {
   }
 
   /**
-   * 处理节点列表请求
+   * Processing节点列表请求
    * @param {string} peerId - 请求节点ID
    */
   handleGetNodeList(peerId) {
@@ -1226,7 +1226,7 @@ class P2PServer {
   }
 
   /**
-   * 处理接收到的节点列表
+   * Processing接收到的节点列表
    * @param {object} nodeList - 节点列表
    */
   handleNodeList(nodeList) {
@@ -1250,9 +1250,9 @@ class P2PServer {
   }
 
   /**
-   * 处理区块头请求
+   * ProcessingBlock header请求
    * @param {string} peerId - 轻客户端ID
-   * @param {object} msg - 请求消息
+   * @param {object} msg - 请求Message
    */
   handleGetBlockHeaders(peerId, msg) {
     if (!this.node || !this.node.blockchain) {
@@ -1287,9 +1287,9 @@ class P2PServer {
   }
 
   /**
-   * 处理默克尔证明请求
+   * Processing默克尔证明请求
    * @param {string} peerId - 轻客户端ID
-   * @param {object} msg - 请求消息
+   * @param {object} msg - 请求Message
    */
   handleGetMerkleProof(peerId, msg) {
     if (!this.node || !this.node.blockchain) {
@@ -1375,9 +1375,9 @@ class P2PServer {
   }
 
   /**
-   * 处理交易状态请求
+   * Processing交易状态请求
    * @param {string} peerId - 轻客户端ID
-   * @param {object} msg - 请求消息
+   * @param {object} msg - 请求Message
    */
   handleGetTransactionStatus(peerId, msg) {
     if (!this.node || !this.node.blockchain) {
@@ -1421,9 +1421,9 @@ class P2PServer {
   }
 
   /**
-   * 处理地址余额请求
+   * Processing地址余额请求
    * @param {string} peerId - 轻客户端ID
-   * @param {object} msg - 请求消息
+   * @param {object} msg - 请求Message
    */
   handleGetAddressBalance(peerId, msg) {
     if (!this.node || !this.node.currentState) {
@@ -1447,9 +1447,9 @@ class P2PServer {
   }
 
   /**
-   * 处理轻客户端发送的交易
+   * Processing轻客户端发送的交易
    * @param {string} peerId - 轻客户端ID
-   * @param {object} msg - 请求消息
+   * @param {object} msg - 请求Message
    */
   async handleLightClientTransaction(peerId, msg) {
     if (!this.node || !this.node.addToMempool) {
@@ -1483,9 +1483,9 @@ class P2PServer {
   }
 
   /**
-   * 处理跨链消息
+   * Processing跨链Message
    * @param {string} peerId - 发送方ID
-   * @param {object} msg - 跨链消息
+   * @param {object} msg - 跨链Message
    */
   async handleCrossChainMessage(peerId, msg) {
     // 检查是否有桥接实例
@@ -1514,7 +1514,7 @@ class P2PServer {
     }
   }
 
-  // ==================== 健康检查 ====================
+  // ==================== Health check ====================
 
   startHealthCheck() {
     this.healthCheckTimer = setInterval(() => {
@@ -1563,7 +1563,7 @@ class P2PServer {
     // 检查流量异常
     this.checkTrafficAnomalies();
     
-    // 检查消息格式异常
+    // 检查Message格式异常
     this.checkMessageAnomalies();
     
     // 清理过期的安全事件
@@ -1574,11 +1574,11 @@ class P2PServer {
   }
 
   /**
-   * 检查消息格式异常
+   * 检查Message格式异常
    */
   checkMessageAnomalies() {
-    // 这里可以添加消息格式异常检测逻辑
-    // 例如：检查消息大小异常、消息频率异常等
+    // 这里可以添加Message格式异常检测逻辑
+    // 例如：检查Message大小异常、Message频率异常等
   }
 
   /**
@@ -1601,22 +1601,22 @@ class P2PServer {
       if (this.peerAddresses.has(conn.address)) {
         const peerInfo = this.peerAddresses.get(conn.address);
         if (peerInfo.attempts && peerInfo.attempts > 3 && now - peerInfo.lastAttempt < 60000) {
-          // 1分钟内重连3次以上
+          // 1 minuteswithin重连3次以上
           this.logSecurityEvent('suspicious_reconnect', `Peer ${peerId} reconnecting too frequently`);
           this.suspiciousPeers.add(peerId);
         }
       }
       
-      // 检查消息频率
+      // 检查Message频率
       const stats = this.trafficStats.get(peerId);
       if (stats && stats.messageCount > 1000) {
-        // 短时间内发送大量消息
+        // 短时间within发送大量Message
         this.logSecurityEvent('high_message_rate', `Peer ${peerId} sending messages too quickly`);
         this.suspiciousPeers.add(peerId);
       }
     }
     
-    // 处理可疑节点
+    // Processing可疑节点
     for (const peerId of this.suspiciousPeers) {
       const conn = this.connections.get(peerId);
       if (conn) {
@@ -1672,12 +1672,12 @@ class P2PServer {
     stats.lastUpdated = Date.now();
   }
 
-  // ==================== 网络异常处理 ====================
+  // ==================== 网络异常Processing ====================
 
   handleNetworkError(error) {
     console.error('Network error:', error.message);
     this.logSecurityEvent('network_error', error.message);
-    // 可以在这里添加更复杂的错误处理逻辑
+    // 可以在这里添加更复杂的错误Processing逻辑
     // 例如：记录错误、调整网络参数等
   }
 
@@ -1688,7 +1688,7 @@ class P2PServer {
       this.discoveryTimer = null;
     }
     
-    // 清理健康检查定时器
+    // 清理Health check定时器
     if (this.healthCheckTimer) {
       clearInterval(this.healthCheckTimer);
       this.healthCheckTimer = null;
@@ -1710,7 +1710,7 @@ class P2PServer {
     }
     this.reconnectTimers.clear();
     
-    // 清理批处理定时器
+    // 清理批Processing定时器
     for (const timer of this.batchTimers.values()) {
       clearTimeout(timer);
     }

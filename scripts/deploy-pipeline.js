@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
 /**
- * NexusGenesis 合约部署流水线 (Phase 2)
- * 编译 → 测试 → 部署 → 验证 自动化流程
+ * NexusGenesis Contract Deployment Pipeline (Phase 2)
+ * Build -> Test -> Deploy -> Verify automated workflow
+ * 
+ * Contract Deployment Pipeline v1.0
  *
- * 用法: node scripts/deploy-pipeline.js <contract-file> [options]
+ * Usage: node scripts/deploy-pipeline.js <contract-file> [options]
  */
 
 import fs from 'fs/promises';
@@ -153,10 +155,7 @@ class DeployPipeline {
 
   async run(contractPaths) {
     const startTime = Date.now();
-    console.log(`\n╔══════════════════════════════════════════════╗`);
-    console.log(`║   NexusGenesis 合约部署流水线 v1.0          ║`);
-    console.log(`║   Network: ${this.config.network.padEnd(32)}║`);
-    console.log(`╚══════════════════════════════════════════════╝\n`);
+    console.log('\n===== NexusGenesis Contract Deployment Pipeline =====\n');
 
     for (const contractPath of contractPaths) {
       const { name, code } = await this.loadContract(contractPath);
@@ -222,22 +221,22 @@ const [,, ...args] = process.argv;
 
 if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log(`
-NexusGenesis 合约部署流水线
+NexusGenesis Contract Deployment Pipeline
 
-用法: node scripts/deploy-pipeline.js <file...> [options]
+Usage: node scripts/deploy-pipeline.js <file...> [options]
 
-选项:
-  --deployer <addr>    部署者地址 (默认: ng1deployer...)
-  --network <name>     目标网络 (默认: testnet)
-  --gas-limit <n>      Gas 限制 (默认: 10000)
-  --fee <n>            部署费用 (默认: 1000)
-  --skip-tests         跳过测试
-  --skip-verify        跳过部署验证
-  --no-incentive       不记录开发者激励
-  --verbose            详细输出
-  --quiet              安静模式
+Options:
+  --deployer <addr>    Deployer address (default: ng1deployer...)
+  --network <name>     Target network (default: testnet)
+  --gas-limit <n>     Gas limit (default: 10000)
+  --fee <n>            Deployment fee (default: 1000)
+  --skip-tests         Skip tests
+  --skip-verify        Skip deployment verification
+  --no-incentive       Do not record developer incentive
+  --verbose            Verbose output
+  --quiet              Quiet mode
 
-示例:
+Examples:
   node scripts/deploy-pipeline.js src/contracts/examples/counter.js
   node scripts/deploy-pipeline.js contracts/*.js --network mainnet
 `);

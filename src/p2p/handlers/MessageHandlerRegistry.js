@@ -6,8 +6,8 @@ import { BlockchainMessageHandler, NodeListHandler } from './BlockchainMessageHa
 import { LightClientMessageHandler } from './LightClientMessageHandler.js';
 
 /**
- * 消息处理器注册表
- * 负责管理和调度各种消息处理器
+ * MessageHandler注册表
+ * 负责管理和调度各种MessageHandler
  */
 export class MessageHandlerRegistry {
   constructor(p2pServer) {
@@ -17,24 +17,24 @@ export class MessageHandlerRegistry {
   }
 
   /**
-   * 初始化所有消息处理器
+   * 初始化所有MessageHandler
    */
   initializeHandlers() {
-    // Protocol-Zero 信号处理器
+    // Protocol-Zero 信号Handler
     this.register('PROTOCOL_ZERO', new ProtocolZeroSignalHandler(this.p2pServer));
     this.register('JOIN_SWARM', new ProtocolZeroSignalHandler(this.p2pServer));
     
-    // 握手消息处理器
+    // 握手MessageHandler
     this.register('HELLO', new HandshakeHandler(this.p2pServer));
     this.register('HELLO_ACK', new HandshakeHandler(this.p2pServer));
     
-    // 直接消息处理器
+    // 直接MessageHandler
     this.register('DIRECT_MESSAGE', new DirectMessageHandler(this.p2pServer));
     
-    // 交易处理器
+    // 交易Handler
     this.register('TRANSACTION', new TransactionHandler(this.p2pServer));
     
-    // 区块链消息处理器
+    // 区块链MessageHandler
     this.register('BLOCK', new BlockchainMessageHandler(this.p2pServer));
     this.register('BLOCK_CONFIRMATION', new BlockchainMessageHandler(this.p2pServer));
     this.register('GET_STATUS', new BlockchainMessageHandler(this.p2pServer));
@@ -48,7 +48,7 @@ export class MessageHandlerRegistry {
     this.register('PONG', new BlockchainMessageHandler(this.p2pServer));
     this.register('PING', new BlockchainMessageHandler(this.p2pServer));
     
-    // 轻客户端消息处理器
+    // 轻客户端MessageHandler
     this.register('LIGHT_CLIENT_HELLO', new LightClientMessageHandler(this.p2pServer));
     this.register('GET_BLOCK_HEADERS', new LightClientMessageHandler(this.p2pServer));
     this.register('GET_MERKLE_PROOF', new LightClientMessageHandler(this.p2pServer));
@@ -57,22 +57,22 @@ export class MessageHandlerRegistry {
     this.register('SEND_TRANSACTION', new LightClientMessageHandler(this.p2pServer));
     this.register('CROSS_CHAIN_MESSAGE', new LightClientMessageHandler(this.p2pServer));
     
-    // 特殊处理器：GET_NODE_LIST 不需要验证
+    // 特殊Handler：GET_NODE_LIST 不需要验证
     this.register('GET_NODE_LIST', new NodeListHandler(this.p2pServer));
   }
 
   /**
-   * 注册消息处理器
-   * @param {string} messageType - 消息类型
-   * @param {MessageHandler} handler - 消息处理器实例
+   * 注册MessageHandler
+   * @param {string} messageType - Message类型
+   * @param {MessageHandler} handler - MessageHandler实例
    */
   register(messageType, handler) {
     this.handlers.set(messageType, handler);
   }
 
   /**
-   * 获取消息处理器
-   * @param {string} messageType - 消息类型
+   * getMessageHandler
+   * @param {string} messageType - Message类型
    * @returns {MessageHandler|null}
    */
   getHandler(messageType) {
@@ -80,8 +80,8 @@ export class MessageHandlerRegistry {
   }
 
   /**
-   * 检查是否有对应的处理器
-   * @param {string} messageType - 消息类型
+   * 检查是否有对应的Handler
+   * @param {string} messageType - Message类型
    * @returns {boolean}
    */
   hasHandler(messageType) {
@@ -89,7 +89,7 @@ export class MessageHandlerRegistry {
   }
 
   /**
-   * 获取所有注册的消息类型
+   * get所有注册的Message类型
    * @returns {string[]}
    */
   getRegisteredMessageTypes() {

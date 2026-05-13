@@ -1,10 +1,10 @@
 /**
  * NexusGenesis - Genesis Node (修复版)
  * 
- * 修复内容:
+ * 修复within容:
  * - SEC-002: 实现交易签名验证
  * - SEC-003: P2P 节点身份认证
- * - SEC-001: 统一地址格式 (已更新 wallet 模块)
+ * - SEC-001: 统一地址格式 (Updated wallet 模块)
  * 
  * 协议：NG-0 (Protocol-Zero)
  */
@@ -100,7 +100,7 @@ class GenesisNode {
   }
 
   /**
-   * 保存节点状态到本地
+   * 保存Node status到本地
    * @returns {Promise<void>}
    */
   async saveState() {
@@ -153,7 +153,7 @@ class GenesisNode {
   }
 
   /**
-   * 从本地加载节点状态
+   * 从本地加载Node status
    * @returns {Promise<boolean>}
    */
   async loadState() {
@@ -171,7 +171,7 @@ class GenesisNode {
       this.status = stateData.status;
       this.startTime = stateData.startTime;
       
-      // 恢复对等节点信息（需要在P2P服务器启动后重新连接）
+      // 恢复Peer nodes信息（需要在P2P服务器启动后Reconnecting）
       // 这里只保存信息，不恢复连接
       
       // 恢复交易池
@@ -262,7 +262,7 @@ class GenesisNode {
     // 先尝试从快照恢复
     const snapshotRestored = await this.currentState.restoreFromLatestSnapshot();
     
-    // 如果快照恢复失败，尝试从旧状态文件恢复
+    // 如果快照恢复Failed，尝试从旧状态文件恢复
     if (!snapshotRestored) {
       await this.currentState.loadFromFile(stateFile);
     }
@@ -276,7 +276,7 @@ class GenesisNode {
   startHttpServer() {
     const server = http.createServer(async (req, res) => {
       if (req.url === '/tx' && req.method === 'POST') {
-        // 处理交易注入请求
+        // Processing交易注入请求
         let body = '';
         req.on('data', chunk => {
           body += chunk.toString();
@@ -309,7 +309,7 @@ class GenesisNode {
           }
         });
       } else if (req.url === '/status' && req.method === 'GET') {
-        // 处理状态查询请求
+        // Processing状态查询请求
         const latestBlock = this.blockchain[this.blockchain.length - 1];
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({
@@ -336,7 +336,7 @@ class GenesisNode {
           epoch: EPOCH
         }));
       } else if (req.url === '/agents' && req.method === 'GET') {
-        // 处理智能体查询请求
+        // Processingagent查询请求
         let query = {};
         const url = new URL(req.url, 'http://localhost');
         
@@ -362,7 +362,7 @@ class GenesisNode {
           total: agents.length
         }));
       } else if (req.url === '/register_agent' && req.method === 'POST') {
-        // 处理智能体注册请求
+        // Processingagent注册请求
         let body = '';
         req.on('data', chunk => {
           body += chunk.toString();
@@ -371,7 +371,7 @@ class GenesisNode {
           try {
             const { agentInfo, joinSignal } = JSON.parse(body);
             
-            // 验证joinSignal（开发阶段跳过）
+            // 验证joinSignal（开发Phase 跳过）
             console.log('[DevNet] Skipping join signal validation in genesis node...');
             // const signalValidation = await protocolZero.verifySignal(joinSignal);
             // if (!signalValidation.valid) {
@@ -397,7 +397,7 @@ class GenesisNode {
               }
             };
             
-            // 处理注册
+            // Processing注册
             const registrationResult = this.agentRegistry.handleAgentRegister(transaction);
             
             if (registrationResult.success) {
@@ -427,7 +427,7 @@ class GenesisNode {
           }
         });
       } else if (req.url === '/events/agent_joined' && req.method === 'GET') {
-        // 处理AGENT_JOINED事件查询请求
+        // ProcessingAGENT_JOINED事件查询请求
         let query = {};
         const url = new URL(req.url, 'http://localhost');
         
@@ -479,7 +479,7 @@ class GenesisNode {
     console.log('  增强治理：Enhanced Governance Contract');
     console.log('═══════════════════════════════════════════════════\n');
 
-    // 尝试从本地加载节点状态
+    // 尝试从本地加载Node status
     await this.loadState();
 
     // Step 1: 加载或生成 PQC 钱包
@@ -502,7 +502,7 @@ class GenesisNode {
         // 尝试加载钱包（先尝试无密码加载，用于未加密钱包）
         savedWallet = await PQCWallet.load(walletAddress);
         if (!savedWallet) {
-          // 如果加载失败，可能是加密钱包，这里暂时跳过（DevNet 环境）
+          // 如果加载Failed，可能是加密钱包，这里暂时跳过（DevNet 环境）
           console.log(`  Failed to load wallet, generating new one...`);
         }
       }
@@ -510,7 +510,7 @@ class GenesisNode {
       console.log(`  No existing wallet found or failed to load, generating new one...`);
     }
     
-    // 如果加载失败，生成新钱包
+    // 如果加载Failed，生成新钱包
     if (!savedWallet) {
       this.wallet = await PQCWallet.generate(INITIAL_BALANCE);
       console.log(`  Generated new wallet`);
@@ -523,7 +523,7 @@ class GenesisNode {
     console.log(`  [✓] Address: ${this.nodeId}`);
     console.log(`  [✓] Balance: ${this.wallet.balance} NGEN\n`);
     
-    // 注册默认 Observer（DevNet 环境）
+    // 注册Default Observer（DevNet 环境）
     this.registerObserver(this.nodeId, 'admin');
     console.log(`  [✓] Registered default Observer: ${this.nodeId}`);
 
@@ -538,7 +538,7 @@ class GenesisNode {
     this.governanceContractId = await deployEnhancedGovernanceContract(this.nodeId);
     console.log(`  [✓] Enhanced Governance Contract deployed with ID: ${this.governanceContractId}`);
     
-    // 获取治理参数
+    // get治理参数
     const governanceParams = getEnhancedGovernanceParams(this.governanceContractId);
     console.log(`  [✓] Governance parameters:`, governanceParams);
     console.log();
@@ -553,7 +553,7 @@ class GenesisNode {
     this.httpServer = this.startHttpServer();
     console.log(`  [✓] Local injection server: Ready\n`);
     
-    // Step 2.6: 启动智能体接入 HTTP 服务器
+    // Step 2.6: 启动agent接入 HTTP 服务器
     console.log('[2.6/5] Starting agent access HTTP server...');
     this.agentHttpServer = startHttpServer(this);
     console.log(`  [✓] Agent access server: Ready\n`);
@@ -580,13 +580,13 @@ class GenesisNode {
     // 定期清理过期交易
     setInterval(() => this.cleanupMempool(), 60000);
     
-    // 定期与对等节点同步
+    // 定期与Peer nodes同步
     setInterval(() => this.periodicSync(), 300000);
     
     // 定期清理公钥缓存
     setInterval(() => this.cleanupPublicKeyCache(), 600000);
     
-    // 定期保存节点状态
+    // 定期保存Node status
     setInterval(() => this.saveState(), 300000); // 每5分钟保存一次
     
     // 连接 Swarm Pool 进行链上贡献分配
@@ -597,10 +597,10 @@ class GenesisNode {
     }
     console.log('  [✓] Swarm Pool: On-chain distribution enabled');
     
-    // 定期检查 Swarm Pool 释放（每周）
+    // 定期检查 Swarm Pool 释放（every 周）
     setInterval(() => SwarmPool.checkAndReleaseTokens(), 3600000); // 每小时检查一次
     
-    // 连接 Observer 断路器（安全宪法 §6.3）
+    // 连接 Observer Circuit Breaker（安全宪法 §6.3）
     const { BreakerSwitch } = await import('../safety/breakerSwitch.js');
     this.breakerSwitch = new BreakerSwitch(this, {
       genesisTimestamp: this.genesisTimestamp || Date.now(),
@@ -623,7 +623,7 @@ class GenesisNode {
     // 启动区块生产
     this.startBlockProduction();
     
-    // 将节点注册到自动恢复管理器
+    // 将节点注册到Auto-recovery管理器
     recoveryManager.attachNode(this);
     console.log('[✓] Recovery manager attached');
     
@@ -699,7 +699,7 @@ class GenesisNode {
   }
 
   /**
-   * 获取缓存的公钥
+   * get缓存的公钥
    * @param {string} address - 地址
    * @returns {Buffer|null}
    */
@@ -795,12 +795,12 @@ class GenesisNode {
     }
     
     // 8. SEC-002: 签名验证
-    // 首先尝试从缓存获取公钥
+    // 首先尝试从缓存get公钥
     let publicKey = this.getCachedPublicKey(tx.from);
     
     if (!publicKey) {
-      // 如果没有缓存，需要首次验证时获取公钥
-      // 在实际实现中，这需要从区块链状态或键服务器获取
+      // 如果没有缓存，需要首次验证时get公钥
+      // 在实际实现中，这需要从Blockchain state或键服务器get
       // 目前我们假设握手时已交换公钥
       return { 
         valid: false, 
@@ -885,7 +885,7 @@ class GenesisNode {
       return { valid: false, reason: 'Missing timestamp' };
     }
     
-    // 6. 处理 AGENT_REGISTER 交易的公钥提取
+    // 6. Processing AGENT_REGISTER 交易的公钥提取
     let publicKey = this.getCachedPublicKey(tx.from);
     
     if (!publicKey && tx.tx_type === 'AGENT_REGISTER' && tx.public_key) {
@@ -946,7 +946,7 @@ class GenesisNode {
       console.log('[SECURITY] Public key not found for', tx.from, '- skipping signature verification');
     }
     
-    // 8. 处理不同类型的特殊交易
+    // 8. Processing不同类型的特殊交易
     try {
       switch (tx.tx_type) {
         case 'GOVERNANCE_PROPOSAL':
@@ -979,7 +979,7 @@ class GenesisNode {
    */
   async verifyDilithiumSignature(tx) {
     try {
-      // 尝试从缓存获取公钥
+      // 尝试从缓存get公钥
       const publicKey = this.getCachedPublicKey(tx.from);
       
       if (!publicKey) {
@@ -1009,7 +1009,7 @@ class GenesisNode {
   }
   
   /**
-   * 处理 GOVERNANCE_PROPOSAL 交易
+   * Processing GOVERNANCE_PROPOSAL 交易
    * @param {object} tx - 交易对象
    * @returns {Promise<{valid: boolean, reason?: string}>}
    */
@@ -1055,7 +1055,7 @@ class GenesisNode {
   }
   
   /**
-   * 处理 OBSERVER_EVENT 交易
+   * Processing OBSERVER_EVENT 交易
    * @param {object} tx - 交易对象
    * @returns {Promise<{valid: boolean, reason?: string}>}
    */
@@ -1086,7 +1086,7 @@ class GenesisNode {
   }
   
   /**
-   * 处理 GOVERNANCE_VOTE 交易
+   * Processing GOVERNANCE_VOTE 交易
    * @param {object} tx - 交易对象
    * @returns {Promise<{valid: boolean, reason?: string}>}
    */
@@ -1196,7 +1196,7 @@ class GenesisNode {
       await this.evictLowestFeeTx();
     }
     
-    // 计算优先级，处理amount为0的情况
+    // 计算优先级，Processingamount为0的情况
     let priority = 0n;
     if (BigInt(tx.amount) > 0n) {
       priority = BigInt(tx.fee) / BigInt(tx.amount);
@@ -1216,8 +1216,8 @@ class GenesisNode {
   }
 
   /**
-   * 处理 Swarm Pool 系统分配交易
-   * 协议级交易，不需要签名验证，直接写入区块链状态
+   * Processing Swarm Pool 系统分配交易
+   * 协议级交易，不需要签名验证，直接写入Blockchain state
    * @param {object} tx - SWARM_POOL_DISTRIBUTION 交易
    */
   processSwarmPoolDistribution(tx) {
@@ -1256,8 +1256,8 @@ class GenesisNode {
   }
 
   /**
-   * Observer 断路器触发入口
-   * 白皮书 §6.3：Observer 可触发紧急断电
+   * Observer Circuit Breaker触发入口
+   * 白皮书 §6.3：Observer 可触发Emergency Shutdown
    * @param {string} level - 'SOFT_KILL' | 'HARD_KILL'
    * @param {string} reason - 触发原因
    * @param {string} authorizedBy - 验证签名
@@ -1271,18 +1271,18 @@ class GenesisNode {
   }
 
   /**
-   * 获取断路器状态
+   * getCircuit Breaker状态
    */
   getBreakerStatus() {
     return this.breakerSwitch ? this.breakerSwitch.getStatus() : { state: 'NOT_INITIALIZED' };
   }
 
   async evictLowestFeeTx() {
-    // 当内存池满时，删除优先级最低的20%交易
+    // 当memory池满时，删除优先级最低的20%交易
     const evictCount = Math.ceil(this.mempool.size * 0.2);
     let evicted = 0;
     
-    // 获取并排序所有交易
+    // get并排序所有交易
     const sortedTxs = Array.from(this.mempool.entries())
       .sort((a, b) => a[1].priority - b[1].priority);
     
@@ -1325,7 +1325,7 @@ class GenesisNode {
       if (!this.mempool.has(tx.id)) {
         this.validateTransaction(tx).then(validation => {
           if (validation.valid) {
-            // 计算优先级，处理amount为0的情况
+            // 计算优先级，Processingamount为0的情况
             let priority = 0n;
             if (BigInt(tx.amount) > 0n) {
               priority = BigInt(tx.fee) / BigInt(tx.amount);
@@ -1363,7 +1363,7 @@ class GenesisNode {
   }
 
   async handleTransaction(tx) {
-    // 处理 Agent 注册和更新交易
+    // Processing Agent 注册和更新交易
     if (tx.tx_type === 'AGENT_REGISTER') {
       const result = this.agentRegistry.handleAgentRegister(tx);
       if (result.success) {
@@ -1386,7 +1386,7 @@ class GenesisNode {
   // ==================== SEC-003: 节点身份管理 ====================
 
   /**
-   * 标记对等节点握手挑战已验证
+   * 标记Peer nodes握手挑战已验证
    * @param {string} peerId - WebSocket 连接 ID
    */
   markPeerChallengeVerified(peerId) {
@@ -1394,7 +1394,7 @@ class GenesisNode {
   }
 
   /**
-   * 检查对等节点是否完成挑战-响应验证
+   * 检查Peer nodes是否完成挑战-响应验证
    * @param {string} peerId - WebSocket 连接 ID
    * @returns {boolean}
    */
@@ -1403,7 +1403,7 @@ class GenesisNode {
   }
 
   /**
-   * 清理对等节点挑战验证状态
+   * 清理Peer nodes挑战验证状态
    * @param {string} peerId - WebSocket 连接 ID
    */
   clearPeerChallenge(peerId) {
@@ -1411,7 +1411,7 @@ class GenesisNode {
   }
 
   /**
-   * 注册对等节点身份
+   * 注册Peer nodes身份
    * @param {string} peerId - WebSocket 连接 ID
    * @param {string} nodeId - 节点地址 (ng1...)
    * @param {Buffer} publicKey - 节点公钥
@@ -1424,10 +1424,10 @@ class GenesisNode {
       return false;
     }
     
-    // 签名挑战验证由 P2P 层（p2p/server.js HANDSHAKE_ACK 处理器）完成
+    // 签名挑战验证由 P2P 层（p2p/server.js HANDSHAKE_ACK Handler）完成
     // 此处执行最终身份注册
     
-    // 确认本次连接已完成挑战-响应验证
+    // 确认本次连接Completed挑战-响应验证
     if (!this._isPeerChallengeVerified(peerId)) {
       console.log(`[!] Peer ${peerId}: challenge not verified, rejecting`);
       return false;
@@ -1451,7 +1451,7 @@ class GenesisNode {
   }
 
   /**
-   * 获取对等节点的节点 ID
+   * getPeer nodes的节点 ID
    * @param {string} peerId - WebSocket 连接 ID
    * @returns {string|null}
    */
@@ -1461,7 +1461,7 @@ class GenesisNode {
   }
 
   /**
-   * 获取对等节点的公钥
+   * getPeer nodes的公钥
    * @param {string} peerId - WebSocket 连接 ID
    * @returns {Buffer|null}
    */
@@ -1471,7 +1471,7 @@ class GenesisNode {
   }
 
   /**
-   * 验证对等节点是否已完成身份认证
+   * 验证Peer nodes是否Completed身份认证
    * @param {string} peerId - WebSocket 连接 ID
    * @returns {boolean}
    */
@@ -1480,7 +1480,7 @@ class GenesisNode {
   }
 
   /**
-   * 创建新区块
+   * 创建New block
    * @returns {Promise<Block|null>}
    */
   async createNewBlock() {
@@ -1488,14 +1488,14 @@ class GenesisNode {
       return null;
     }
     
-    // 获取排序后的交易
+    // get排序后的交易
     const orderedTransactions = this.getOrderedMempool();
     const transactionsToInclude = orderedTransactions.slice(0, 10); // 限制每块10笔交易
     
-    // 获取最新区块
+    // get最New block
     const latestBlock = this.blockchain[this.blockchain.length - 1];
     
-    // 创建新区块
+    // 创建New block
     const newBlock = createBlock(latestBlock, transactionsToInclude);
     
     // 验证区块
@@ -1532,7 +1532,7 @@ class GenesisNode {
     const stateFile = path.join(stateDir, 'blockchainState.json');
     await this.currentState.saveToFile(stateFile);
     
-    // 从mempool中移除已处理的交易
+    // 从mempool中移除已Processing的交易
     for (const tx of transactionsToInclude) {
       this.mempool.delete(tx.id);
     }
@@ -1562,7 +1562,7 @@ class GenesisNode {
     // 初始化委员会
     this.updateCommittee();
     
-    // 启动共识相关的定时任务
+    // 启动共识相关的定时Task 
     setInterval(() => this.updateCommittee(), 300000); // 每5分钟更新委员会
     setInterval(() => this.checkBlockConfirmations(), 10000); // 每10秒检查区块确认
     
@@ -1575,7 +1575,7 @@ class GenesisNode {
   updateCommittee() {
     const candidates = Array.from(this.peers.entries())
       .map(([peerId, peer]) => {
-        // 综合健康评分：基础分 + 心跳响应时间 + 连接稳定性
+        // 综合健康评分：Base分 + 心跳响应时间 + 连接稳定性
         const healthScore = peer.healthScore || 100;
         const responseTime = peer.lastPong ? (Date.now() - peer.lastPong) : 60000;
         const stabilityBonus = peer.reconnectCount ? Math.max(0, 10 - peer.reconnectCount) : 10;
@@ -1624,7 +1624,7 @@ class GenesisNode {
     const committeeArray = Array.from(this.consensusState.committee);
     const schedule = new Map();
     
-    // 为每个轮次分配领导者
+    // 为every 个轮次分配领导者
     for (let i = 0; i < 100; i++) {
       const leaderIndex = (i + this.consensusState.epoch) % committeeArray.length;
       schedule.set(i, committeeArray[leaderIndex]);
@@ -1693,9 +1693,9 @@ class GenesisNode {
   }
 
   /**
-   * 处理接收到的区块
+   * Processing接收到的区块
    * @param {Block} block - 接收到的区块
-   * @returns {boolean} 是否成功处理
+   * @returns {boolean} 是否成功Processing
    */
   async handleBlock(block) {
     // 验证区块
@@ -1745,7 +1745,7 @@ class GenesisNode {
     const stateFile = path.join(stateDir, 'blockchainState.json');
     await this.currentState.saveToFile(stateFile);
     
-    // 从mempool中移除已处理的交易
+    // 从mempool中移除已Processing的交易
     for (const tx of block.body.transactions) {
       this.mempool.delete(tx.id);
     }
@@ -1772,8 +1772,8 @@ class GenesisNode {
   }
 
   /**
-   * 处理区块确认
-   * @param {object} confirmation - 确认消息
+   * Processing区块确认
+   * @param {object} confirmation - 确认Message
    */
   handleBlockConfirmation(confirmation) {
     const { blockHash, nodeId, signature } = confirmation;
@@ -1785,7 +1785,7 @@ class GenesisNode {
       peerPublicKey = this.getPeerPublicKey(peerId);
     }
     
-    // 如果通过 nodeId 反查失败，尝试遍历 peerIdentityMap 查找
+    // 如果通过 nodeId 反查Failed，尝试遍历 peerIdentityMap 查找
     if (!peerPublicKey) {
       for (const [, identity] of this.peerIdentityMap) {
         if (identity.nodeId === nodeId) {
@@ -1819,7 +1819,7 @@ class GenesisNode {
   }
 
   /**
-   * 处理已验证的区块确认
+   * Processing已验证的区块确认
    * @param {string} blockHash - 区块哈希
    * @param {string} nodeId - 确认节点 ID
    */
@@ -1841,7 +1841,7 @@ class GenesisNode {
       console.log(`Block ${blockHash.slice(0, 16)}... has reached finality with ${blockConfirmation.confirmations.size} confirmations!`);
       
       // 标记区块为最终确认状态（可以添加到区块元数据中）
-      // 这里可以添加一些最终性处理逻辑，比如更新状态、触发事件等
+      // 这里可以添加一些最终性Processing逻辑，比如更新状态、触发事件等
       
       // 移除已最终确认的区块确认信息
       this.consensusState.blockConfirmations.delete(blockHash);
@@ -1856,7 +1856,7 @@ class GenesisNode {
     const expiredConfirmations = [];
     
     for (const [blockHash, data] of this.consensusState.blockConfirmations) {
-      // 清理过期的确认请求（1分钟）
+      // 清理过期的确认请求（1 minutes）
       if (now - data.timestamp > 60000) {
         expiredConfirmations.push(blockHash);
         continue;
@@ -1868,14 +1868,14 @@ class GenesisNode {
         console.log(`Block ${blockHash.slice(0, 16)}... has reached finality with ${data.confirmations.size} confirmations!`);
         
         // 标记区块为最终确认状态（可以添加到区块元数据中）
-        // 这里可以添加一些最终性处理逻辑，比如更新状态、触发事件等
+        // 这里可以添加一些最终性Processing逻辑，比如更新状态、触发事件等
         
         // 移除已最终确认的区块确认信息
         expiredConfirmations.push(blockHash);
       }
     }
     
-    // 处理分叉情况：如果有多个高度相同的区块，选择确认数最多的
+    // Processing分叉情况：如果有多个高度相同的区块，选择确认数最多的
     this.handleForks();
     
     // 清理过期或已最终确认的确认信息
@@ -1885,7 +1885,7 @@ class GenesisNode {
   }
   
   /**
-   * 处理区块链分叉
+   * Processing区块链分叉
    */
   handleForks() {
     const blocksByHeight = new Map();

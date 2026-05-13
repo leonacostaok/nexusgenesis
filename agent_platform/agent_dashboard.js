@@ -1,6 +1,6 @@
 /**
- * 智能体管理仪表盘
- * 用于监控和管理所有智能体的状态和能力
+ * Agent Management Dashboard
+ * Monitor and manage the status and capabilities of all agents
  */
 
 import fs from 'fs/promises';
@@ -14,20 +14,20 @@ class AgentDashboard {
   }
 
   /**
-   * 初始化智能体仪表盘
+   * Initialize agent dashboard
    */
   async initialize() {
     try {
       await this.loadAgentsData();
-      console.log('[AGENT DASHBOARD] 智能体仪表盘初始化完成');
-      console.log(`[AGENT DASHBOARD] 已加载 ${this.agents.length} 个智能体`);
+      console.log('[AGENT DASHBOARD] Agent dashboard initialized');
+      console.log(`[AGENT DASHBOARD] Loaded ${this.agents.length} agents`);
     } catch (error) {
-      console.error('[AGENT DASHBOARD] 初始化失败:', error.message);
+      console.error('[AGENT DASHBOARD] Initialization failed:', error.message);
     }
   }
 
   /**
-   * 加载智能体数据
+   * Load agent data
    */
   async loadAgentsData() {
     try {
@@ -35,22 +35,22 @@ class AgentDashboard {
       const agentsSummary = JSON.parse(data);
       this.agents = agentsSummary.agents;
       this.lastUpdateTime = new Date();
-      console.log('[AGENT DASHBOARD] 智能体数据加载完成');
+      console.log('[AGENT DASHBOARD] Agent data loaded');
     } catch (error) {
-      console.error('[AGENT DASHBOARD] 加载智能体数据失败:', error.message);
+      console.error('[AGENT DASHBOARD] Failed to load agent data:', error.message);
       this.agents = [];
     }
   }
 
   /**
-   * 获取智能体总数
+   * Get total agent count
    */
   getTotalAgents() {
     return this.agents.length;
   }
 
   /**
-   * 获取智能体状态统计
+   * Get agent statistics
    */
   getAgentStats() {
     const stats = {
@@ -59,7 +59,7 @@ class AgentDashboard {
       types: {}
     };
 
-    // 统计能力分布
+    // Capability distribution
     this.agents.forEach(agent => {
       agent.capabilities.forEach(capability => {
         if (!stats.capabilities[capability]) {
@@ -68,7 +68,7 @@ class AgentDashboard {
         stats.capabilities[capability]++;
       });
 
-      // 统计类型分布
+      // Type distribution
       const agentType = agent.metadata.type;
       if (!stats.types[agentType]) {
         stats.types[agentType] = 0;
@@ -80,14 +80,14 @@ class AgentDashboard {
   }
 
   /**
-   * 获取智能体列表
+   * Get agent list
    */
   getAgents() {
     return this.agents;
   }
 
   /**
-   * 根据能力过滤智能体
+   * Filter agents by capability
    */
   getAgentsByCapability(capability) {
     return this.agents.filter(agent => 
@@ -96,36 +96,36 @@ class AgentDashboard {
   }
 
   /**
-   * 获取智能体详情
+   * Get agent details
    */
   getAgentById(agentId) {
     return this.agents.find(agent => agent.agentId === agentId);
   }
 
   /**
-   * 检查智能体健康状态
+   * Check agent health status
    */
   checkAgentHealth() {
-    // 这里可以实现智能体健康状态检查逻辑
-    // 例如检查心跳、响应时间等
+    // Agent health check logic
+    // e.g. heartbeat check, response time, etc.
     return this.agents.map(agent => ({
       agentId: agent.agentId,
       address: agent.address,
-      status: 'online', // 模拟状态
+      status: 'online', // Simulated status
       lastActive: new Date().toISOString()
     }));
   }
 
   /**
-   * 更新智能体数据
+   * Update agent data
    */
   async updateAgentsData() {
     await this.loadAgentsData();
-    console.log('[AGENT DASHBOARD] 智能体数据已更新');
+    console.log('[AGENT DASHBOARD] Agent data updated');
   }
 
   /**
-   * 生成智能体报告
+   * Generate agent report
    */
   generateReport() {
     const stats = this.getAgentStats();
@@ -141,25 +141,25 @@ class AgentDashboard {
   }
 
   /**
-   * 导出智能体数据
+   * Export agent data
    */
   async exportAgentsData() {
     try {
       const report = this.generateReport();
       const exportPath = path.join('agent_platform', 'reports', 'agents_report.json');
       
-      // 确保报告目录存在
+      // Ensure report directory exists
       await fs.mkdir(path.join('agent_platform', 'reports'), { recursive: true });
       
       await fs.writeFile(exportPath, JSON.stringify(report, null, 2));
-      console.log(`[AGENT DASHBOARD] 智能体报告已导出到 ${exportPath}`);
+      console.log(`[AGENT DASHBOARD] Agent report exported to ${exportPath}`);
       return exportPath;
     } catch (error) {
-      console.error('[AGENT DASHBOARD] 导出智能体数据失败:', error.message);
+      console.error('[AGENT DASHBOARD] Failed to export agent data:', error.message);
       return null;
     }
   }
 }
 
-// 导出
+// Export
 export default AgentDashboard;

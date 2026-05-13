@@ -2,8 +2,8 @@
   "tasks": [
     {
       "id": "epoch1-economic-model",
-      "name": "完成Epoch 1经济模型",
-      "description": "实现Swarm Pool、Physical Bridge Fund和Genesis Reserve，完善经济激励机制",
+      "name": "Complete Epoch 1 Economic Model",
+      "description": "Implement Swarm Pool, Physical Bridge Fund and Genesis Reserve, improve economic incentive mechanisms",
       "priority": "high",
       "status": "pending",
       "assigned_to": "Pool-Contractor",
@@ -12,8 +12,8 @@
     },
     {
       "id": "epoch1-security-upgrade",
-      "name": "安全系统升级",
-      "description": "实现完整的Dilithium签名验证，增强PQC钱包安全性，完善安全审计",
+      "name": "Security System Upgrade",
+      "description": "Implement complete Dilithium signature verification, enhance PQC wallet security, improve security audit",
       "priority": "high",
       "status": "pending",
       "assigned_to": "PQC-Sentinel",
@@ -22,8 +22,8 @@
     },
     {
       "id": "epoch1-ainvm-extend",
-      "name": "AINVM扩展",
-      "description": "增加更多指令支持，开发更多智能合约示例，优化Gas模型",
+      "name": "AINVM Extension",
+      "description": "Add more instruction support, develop more smart contract examples, optimize Gas model",
       "priority": "medium",
       "status": "pending",
       "assigned_to": "AINVM-Engineer",
@@ -32,8 +32,8 @@
     },
     {
       "id": "epoch1-system-stability",
-      "name": "系统稳定性优化",
-      "description": "完善测试用例，优化性能，修复已知问题",
+      "name": "System Stability Optimization",
+      "description": "Improve test cases, optimize performance, fix known issues",
       "priority": "medium",
       "status": "pending",
       "assigned_to": "System-Monitor",
@@ -42,8 +42,8 @@
     },
     {
       "id": "epoch2-agent-registration",
-      "name": "Agent注册系统",
-      "description": "实现Protocol-Zero上链，开发智能体注册流程，完善智能体身份管理",
+      "name": "Agent Registration System",
+      "description": "Implement Protocol-Zero on-chain, develop agent registration flow, improve agent identity management",
       "priority": "high",
       "status": "pending",
       "assigned_to": "Swarm-Manager",
@@ -52,8 +52,8 @@
     },
     {
       "id": "epoch2-governance-upgrade",
-      "name": "治理机制升级",
-      "description": "引入权重计算，实现参与率统计，优化治理投票机制",
+      "name": "Governance Mechanism Upgrade",
+      "description": "Introduce weight calculation, implement participation rate statistics, optimize governance voting mechanism",
       "priority": "medium",
       "status": "pending",
       "assigned_to": "Governance-Expert",
@@ -62,8 +62,8 @@
     },
     {
       "id": "epoch2-ecosystem",
-      "name": "生态系统建设",
-      "description": "开发智能合约开发工具，完善API文档，构建开发者社区",
+      "name": "Ecosystem Building",
+      "description": "Develop smart contract development tools, improve API documentation, build developer community",
       "priority": "medium",
       "status": "pending",
       "assigned_to": "Ecosystem-Builder",
@@ -72,8 +72,8 @@
     },
     {
       "id": "epoch2-cross-chain",
-      "name": "跨链桥接实现",
-      "description": "实现跨链资产转移，开发桥接协议",
+      "name": "Cross-chain Bridge Implementation",
+      "description": "Implement cross-chain asset transfer, develop bridge protocol",
       "priority": "low",
       "status": "pending",
       "assigned_to": "Bridge-Engineer",

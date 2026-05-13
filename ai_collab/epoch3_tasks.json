@@ -2,8 +2,8 @@
   "tasks": [
     {
       "id": "epoch3-network-expansion",
-      "name": "网络扩展与性能优化",
-      "description": "实现分片技术，提升网络吞吐量，优化共识算法，降低能源消耗，开发轻量级客户端",
+      "name": "Network Expansion & Performance Optimization",
+      "description": "Implement sharding technology, increase network throughput, optimize consensus algorithm, reduce energy consumption, develop lightweight client",
       "priority": "high",
       "status": "pending",
       "assigned_to": "Network-Optimizer",
@@ -13,8 +13,8 @@
     },
     {
       "id": "epoch3-smart-contract-ecosystem",
-      "name": "智能合约生态系统",
-      "description": "完善智能合约开发工具链，建立智能合约安全审计机制，开发DeFi应用和金融工具",
+      "name": "Smart Contract Ecosystem",
+      "description": "Improve smart contract development toolchain, establish smart contract security audit mechanism, develop DeFi applications and financial tools",
       "priority": "high",
       "status": "pending",
       "assigned_to": "Smart-Contract-Engineer",
@@ -24,8 +24,8 @@
     },
     {
       "id": "epoch3-cross-chain-ecosystem",
-      "name": "跨链生态系统",
-      "description": "扩展跨链桥接支持更多区块链网络，开发跨链资产交易平台，建立跨链治理机制",
+      "name": "Cross-chain Ecosystem",
+      "description": "Extend cross-chain bridge support for more blockchain networks, develop cross-chain asset trading platform, establish cross-chain governance mechanism",
       "priority": "high",
       "status": "pending",
       "assigned_to": "Bridge-Engineer",
@@ -35,8 +35,8 @@
     },
     {
       "id": "epoch3-ai-integration",
-      "name": "AI与区块链深度融合",
-      "description": "开发AI驱动的智能合约，实现AI辅助的网络治理，建立AI安全防护系统",
+      "name": "Deep AI & Blockchain Integration",
+      "description": "Develop AI-driven smart contracts, implement AI-assisted network governance, establish AI security protection system",
       "priority": "medium",
       "status": "pending",
       "assigned_to": "AI-Integrator",
@@ -46,8 +46,8 @@
     },
     {
       "id": "epoch3-ecosystem-building",
-      "name": "生态系统建设",
-      "description": "发展开发者社区，建立教育和培训体系，推广实际应用场景",
+      "name": "Ecosystem Building",
+      "description": "Develop developer community, establish education and training system, promote real-world use cases",
       "priority": "medium",
       "status": "pending",
       "assigned_to": "Community-Manager",
@@ -57,8 +57,8 @@
     },
     {
       "id": "epoch3-compliance",
-      "name": "全球合规与监管",
-      "description": "建立合规框架，与监管机构合作，推动行业标准制定",
+      "name": "Global Compliance & Regulation",
+      "description": "Establish compliance framework, collaborate with regulatory bodies, promote industry standard development",
       "priority": "medium",
       "status": "pending",
       "assigned_to": "Legal-Expert",

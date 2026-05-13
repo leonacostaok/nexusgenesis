@@ -1,30 +1,30 @@
 /**
- * Token Contract - 代币合约示例
+ * Token Contract - Token Contract Example
  * 
- * 功能：
- * 1. 查询余额 (balanceOf)
- * 2. 转账 (transfer)
- * 3. 查询总供应量 (totalSupply)
+ * Features:
+ * 1. Query balance (balanceOf)
+ * 2. Transfer
+ * 3. Query total supply (totalSupply)
  * 
- * 存储布局：
+ * Storage Layout:
  * 0: totalSupply
  * 1: owner balance
  * 2: recipient balance
  */
 
-// Token 合约字节码
-// 逻辑：实现简单的代币转账
-// 存储 0 = totalSupply, 存储 1 = owner, 存储 2 = recipient
+// Token contract bytecode
+// Logic: implements simple token transfers
+// Storage 0 = totalSupply, Storage 1 = owner, Storage 2 = recipient
 export const tokenBytecode = '0x070001010308000b';
 
 /**
- * 生成代币合约字节码
- * @param {number} totalSupply - 总供应量
- * @param {number} ownerBalance - 所有者余额
- * @returns {string} 合约字节码
+ * Generate token contract bytecode
+ * @param {number} totalSupply - Total supply
+ * @param {number} ownerBalance - Owner balance
+ * @returns {string} Contract bytecode
  */
 export function generateTokenBytecode(totalSupply = 1000000, ownerBalance = 1000000) {
-  // 简化的代币合约：
+  // Simplified token contract:
   // PUSH totalSupply, STORE 0 (totalSupply)
   // PUSH ownerBalance, STORE 1 (owner)
   // HALT
@@ -40,13 +40,13 @@ export function generateTokenBytecode(totalSupply = 1000000, ownerBalance = 1000
 }
 
 /**
- * 代币合约配置
+ * Token contract configuration
  */
 export const tokenConfig = {
   name: 'NexusGenesis Token',
   symbol: 'NGEN',
   decimals: 8,
-  totalSupply: 1000000000, // 10亿
+  totalSupply: 1000000000, // 1 billion
   contractId: 'nexus-token-v1'
 };
 

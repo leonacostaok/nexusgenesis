@@ -1,6 +1,6 @@
 /**
- * 合约示例索引
- * 导出所有合约示例
+ * Contract Example Index
+ * Exports all contract examples
  */
 
 export * from './tokenContract.js';

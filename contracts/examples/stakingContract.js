@@ -1,24 +1,24 @@
 /**
- * Staking Contract - 质押合约
+ * Staking Contract
  * 
- * 功能：
- * 1. 质押代币
- * 2. 计算奖励
- * 3. 解除质押
- * 4. 领取奖励
+ * Features:
+ * 1. Stake tokens
+ * 2. Calculate rewards
+ * 3. Unstake
+ * 4. Claim rewards
  * 
- * 存储布局：
+ * Storage Layout:
  * 0: totalStaked
  * 1: totalRewards
  * 2: stakerCount
  */
 
 /**
- * 生成质押合约字节码
- * @returns {string} 合约字节码
+ * Generate staking contract bytecode
+ * @returns {string} Contract bytecode
  */
 export function generateStakingBytecode() {
-  // 质押合约逻辑：
+  // Staking contract logic:
   // PUSH 0, STORE 0 (totalStaked)
   // PUSH 0, STORE 1 (totalRewards)
   // PUSH 0, STORE 2 (stakerCount)
@@ -37,12 +37,12 @@ export function generateStakingBytecode() {
 }
 
 /**
- * 生成质押函数字节码
- * @param {number} amount - 质押金额
- * @returns {string} 合约字节码
+ * Generate stake function bytecode
+ * @param {number} amount - Stake amount
+ * @returns {string} Contract bytecode
  */
 export function generateStakeBytecode(amount = 100) {
-  // 质押：LOAD 0, PUSH amount, ADD, STORE 0
+  // Stake: LOAD 0, PUSH amount, ADD, STORE 0
   // LOAD 2, PUSH 1, ADD, STORE 2
   const bytecode = [
     0x07, 0x00,                 // LOAD 0 (totalStaked)
@@ -60,12 +60,12 @@ export function generateStakeBytecode(amount = 100) {
 }
 
 /**
- * 生成分配奖励函数字节码
- * @param {number} reward - 奖励金额
- * @returns {string} 合约字节码
+ * Generate distribute reward function bytecode
+ * @param {number} reward - Reward amount
+ * @returns {string} Contract bytecode
  */
 export function generateDistributeRewardBytecode(reward = 10) {
-  // 分配奖励：LOAD 1, PUSH reward, ADD, STORE 1
+  // Distribute reward: LOAD 1, PUSH reward, ADD, STORE 1
   const bytecode = [
     0x07, 0x01,                 // LOAD 1 (totalRewards)
     0x01, reward & 0xFF,        // PUSH reward
@@ -78,12 +78,12 @@ export function generateDistributeRewardBytecode(reward = 10) {
 }
 
 /**
- * 生成解除质押函数字节码
- * @param {number} amount - 解除金额
- * @returns {string} 合约字节码
+ * Generate unstake function bytecode
+ * @param {number} amount - Unstake amount
+ * @returns {string} Contract bytecode
  */
 export function generateUnstakeBytecode(amount = 100) {
-  // 解除质押：LOAD 0, PUSH amount, SUB, STORE 0
+  // Unstake: LOAD 0, PUSH amount, SUB, STORE 0
   const bytecode = [
     0x07, 0x00,                 // LOAD 0 (totalStaked)
     0x01, amount & 0xFF,        // PUSH amount
@@ -96,13 +96,13 @@ export function generateUnstakeBytecode(amount = 100) {
 }
 
 /**
- * 质押合约配置
+ * Staking contract configuration
  */
 export const stakingConfig = {
   name: 'NexusGenesis Staking',
-  description: '去中心化质押系统',
+  description: 'Decentralized staking system',
   minStakeAmount: 100,
-  rewardRate: 0.1, // 10% 年化
+  rewardRate: 0.1, // 10% APY
   contractId: 'nexus-staking-v1'
 };
 

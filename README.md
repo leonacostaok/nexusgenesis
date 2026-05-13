@@ -1,37 +1,50 @@
-# NexusGenesis – AI 原生抗量子链 (DevNet)
+# NexusGenesis – AI-Native Post-Quantum Blockchain (DevNet)
 
-## 1. 项目简介
-- **愿景**: 构建一个由 AI 主导、具备抗量子安全特性、遵循安全宪法的分布式区块链网络
-- **技术基础**: 基于 CRYSTALS-Dilithium2 抗量子密码学，为 AI Agent 提供安全、可靠的运行环境
-- **白皮书**: [NexusGenesis_Whitepaper_v4.5.txt (v5.0)](NexusGenesis_Whitepaper_v4.5.txt) — PQC Level 5 + Reserve DAO 版本，本仓库实现了白皮书中的核心功能
+## 1. Project Overview
+- **Vision**: Build a distributed blockchain network led by AI, featuring post-quantum security and governed by a Security Constitution
+- **Technology**: Based on CRYSTALS-Dilithium2 post-quantum cryptography, providing a secure and reliable runtime for AI agents
+- **Whitepaper**: [NexusGenesis_Whitepaper_v4.5.txt](NexusGenesis_Whitepaper_v4.5.txt) — PQC Level 5 + Reserve DAO edition; this repository implements the core features of the whitepaper
 
-## 2. 当前状态
-- **Epoch 0: The Assembly**: ✅ 完成（[技术总结](docs/EPOCH0_SUMMARY.md)）
-- **Epoch 1: Genesis**: 🔄 进行中（当前里程碑 ✅：链 + 经济 + AINVM v0，上链计数器 Demo；智能体招募系统；系统优化与监控；[技术状态](docs/EPOCH1_STATUS.md)）
-- **Epoch 2: Swarm**: 📋 规划中（完整治理、AINVM 生态扩展、智能体社区建设）
+## 2. Current Status
+- **Epoch 0: The Assembly**: ✅ Complete ([Technical Summary](docs/EPOCH0_SUMMARY.md))
+- **Epoch 1: Genesis**: 🔄 In Progress ([Technical Status](docs/EPOCH1_STATUS.md))
+  - ✅ Chain + Economy + AINVM v0, on-chain Counter Demo
+  - ✅ P2P Security Hardening (Nonce replay protection + handshake signature verification)
+  - ✅ Swarm Pool On-Chain Distribution (token rewards for agent contributions)
+  - ✅ AINVM Execution Sandbox (static analysis + resource limits + audit logging)
+  - ✅ Observer Circuit Breaker (emergency shutdown with 36-month sunset clause)
+  - ✅ Server Route Modularization (Express Router pattern)
+  - ✅ Rate Limiting + API Key Management
+  - ✅ Docker Containerization (multi-stage production build)
+  - ✅ CI/CD Pipeline (GitHub Actions)
+  - ✅ Plugin System (lifecycle hooks + dependency management)
+  - ✅ Performance Benchmarking + Test Coverage
+  - ✅ Mobile Wallet + Oracle Integration + Developer Portal
+  - ✅ Codebase Internationalization (English comments & messages)
+- **Epoch 2: Swarm**: 📋 Planning (full governance, AINVM ecosystem expansion, agent community building)
 
-## 3. 快速开始（DevNet）
+## 3. Quick Start (DevNet)
 
-### 3.1 环境准备
+### 3.1 Prerequisites
 - **Node.js**: 18+
-- **依赖安装**:
+- **Install dependencies**:
   ```bash
   cd NexusGenesis
   npm install
   ```
 
-### 3.2 启动 DevNet
-- **单节点**:
+### 3.2 Start DevNet
+- **Single node**:
   ```bash
   npm start
   ```
-- **多节点**:
+- **Multi-node**:
   ```bash
   node start-multi-nodes.js --count 3
   ```
 
-### 3.3 运行示例
-- **治理交易 Demo**:
+### 3.3 Run Examples
+- **Governance Tx Demo**:
   ```bash
   node inject_governance_txs.js
   node scripts/query_proposals.js
@@ -44,165 +57,176 @@
   node scripts/query_chain.js --genesis-balance
   ```
 
-- **AINVM 计数器合约 Demo**:
+- **AINVM Counter Contract Demo**:
   ```bash
   node examples/ainvm_counter_demo.js
   ```
 
-## 4. 文档索引
+## 4. Documentation Index
 
-- **白皮书**: [NexusGenesis_Whitepaper_v4.5.txt (v5.0)](NexusGenesis_Whitepaper_v4.5.txt) — PQC Level 5 + Reserve DAO，项目愿景和技术架构
-- **EPOCH0_SUMMARY.md** - Epoch 0 技术总结
-- **EPOCH1_STATUS.md** - Epoch 1 当前技术状态
-- **BLOCKCHAIN_SPEC.md** - 区块链规范
-- **ECONOMY_NGEN.md** - 经济模型规范
-- **AINVM_SPEC.md** - AINVM 虚拟机规范
-- **PROTOCOL_UNIFICATION.md / SPEC_DIFF.md** - 协议统一规范
-- **PROTOCOL_EVENTS.md** - 协议事件规范
-- **DEVNET_GUIDE.md** - DevNet 使用指南
-- **TROUBLESHOOTING.md** - 常见问题与排错指南
-- **API.md** - HTTP/API 接口文档
-- **CONTRIBUTING.md** - 贡献指南
-- **SWARM_DEMO.md** - Swarm 实验 v0：多 Agent 协作治理 Demo
-- **EXTERNAL_AGENT_INTEGRATION.md** - 外部 AI Agent 接入规范
-- **agent_recruitment_plan.md** - 智能体招募计划
-- **system_optimization_plan.md** - 系统优化方案
-- **AGENT_REGISTRY_SPEC.md** - 智能体注册表规范
-- **AI_AGENT_ONBOARDING.md** - AI 智能体入职流程
-- **REPUTATION_SPEC.md** - 智能体声誉系统规范
+- **Whitepaper**: [NexusGenesis_Whitepaper_v4.5.txt](NexusGenesis_Whitepaper_v4.5.txt) — PQC Level 5 + Reserve DAO, project vision and technical architecture
+- **EPOCH0_SUMMARY.md** — Epoch 0 technical summary
+- **EPOCH1_STATUS.md** — Epoch 1 technical status
+- **BLOCKCHAIN_SPEC.md** — Blockchain specification
+- **ECONOMY_NGEN.md** — Economic model specification
+- **AINVM_SPEC.md** — AINVM virtual machine specification
+- **PROTOCOL_UNIFICATION.md / SPEC_DIFF.md** — Protocol unification specification
+- **PROTOCOL_EVENTS.md** — Protocol events specification
+- **DEVNET_GUIDE.md** — DevNet usage guide
+- **TROUBLESHOOTING.md** — Troubleshooting guide
+- **API.md** — HTTP/API interface documentation
+- **CONTRIBUTING.md** — Contribution guide
+- **SWARM_DEMO.md** — Swarm experiment v0: Multi-Agent collaborative governance demo
+- **EXTERNAL_AGENT_INTEGRATION.md** — External AI agent integration specification
+- **agent_recruitment_plan.md** — Agent recruitment plan
+- **system_optimization_plan.md** — System optimization plan
+- **AGENT_REGISTRY_SPEC.md** — Agent registry specification
+- **AI_AGENT_ONBOARDING.md** — AI agent onboarding process
+- **REPUTATION_SPEC.md** — Agent reputation system specification
 
-## 5. 核心特性
+## 5. Core Features
 
-### 5.1 安全与协议
-- **PQC 钱包**: 基于 Dilithium2 抗量子密钥生成的钱包实现
-- **ng1 地址规范**: 标准化的地址格式，基于 Base58 编码
-- **P2P 网络**: 基于 WebSocket 的智能体点对点通信，采用策略模式和职责链模式重构
-  - **策略模式**: 支持直接发送、批处理发送和优先级发送等多种消息发送策略
-  - **职责链模式**: 实现消息验证、去重、协议验证和处理的完整责任链
-  - **服务分离**: 加密和压缩功能独立为专门的服务组件
-- **Protocol-Zero**: 标准化的集群加入握手协议
+### 5.1 Security & Protocol
+- **PQC Wallet**: Wallet implementation based on Dilithium2 post-quantum key generation
+- **ng1 Address Standard**: Standardized address format based on Base58 encoding
+- **P2P Network**: WebSocket-based agent peer-to-peer communication with Strategy & Chain-of-Responsibility patterns
+  - **Strategy Pattern**: Direct, batch, and priority message sending strategies
+  - **Chain of Responsibility**: Message validation, deduplication, protocol verification, and processing chain
+  - **Service Separation**: Encryption and compression as independent service components
+- **P2P Security**: Nonce-based transaction replay protection + cryptographic handshake signature challenges
+- **Protocol-Zero**: Standardized cluster join handshake protocol
 
-### 5.2 区块链与经济
-- **区块结构**: 完整的区块头和区块体结构
-- **单领导者出块**: Genesis 节点作为唯一出块者
-- **TRANSFER 交易**: 支持代币转账和 0.1% Metabolic Tax
-- **状态持久化**: 区块和状态的磁盘存储
+### 5.2 Blockchain & Economy
+- **Block Structure**: Complete block header and body structure
+- **Single-Leader Block Production**: Genesis node as sole block producer
+- **TRANSFER Transactions**: Token transfers with 0.1% Metabolic Tax
+- **State Persistence**: Disk storage for blocks and state
+- **Swarm Pool**: On-chain token distribution rewarding agent contributions via governance proposals
 
-### 5.3 治理系统
-- **治理交易**: GOVERNANCE_PROPOSAL / GOVERNANCE_VOTE / OBSERVER_EVENT
-- **治理状态机**: 提案生命周期、过期、投票、Observer 决策
-- **查询工具**: query_proposals.js 等治理状态查询工具
+### 5.3 Governance System
+- **Governance Transactions**: GOVERNANCE_PROPOSAL / GOVERNANCE_VOTE / OBSERVER_EVENT
+- **Governance State Machine**: Proposal lifecycle, expiration, voting, Observer decisions
+- **Query Tools**: `query_proposals.js` and other governance state query tools
+- **Weighted Voting**: Reputation-weighted voting for governance proposals
 
-### 5.4 AINVM 智能合约
-- **AINVM 内核**: 栈机模型的虚拟机实现
-- **合约交易**: CONTRACT_DEPLOY / CONTRACT_CALL
-- **计数器合约 Demo**: 简单的智能合约示例
-- **安全隔离**: 合约只能访问自己的存储，不碰账户余额
+### 5.4 AINVM Smart Contracts
+- **AINVM Core**: Stack-machine virtual machine implementation
+- **Contract Transactions**: CONTRACT_DEPLOY / CONTRACT_CALL
+- **Contract Examples**: Counter, Token, DAO, DID, Governance, Voting, Crowdfunding, AI, Agent Registry, Matrix Operations
+- **Execution Sandbox**: Static analysis + resource limits + timeout protection + audit logging
+- **Security Isolation**: Contracts access only their own storage, never touch account balances
+- **Reentrancy Protection**: Execution lock prevents reentrant contract calls
 
-### 5.5 智能体生态系统
-- **智能体注册**: 支持 AI Agent 通过 API 注册加入网络
-- **智能体招募**: 基于激励机制的智能体招募系统
-- **声誉系统**: 智能体声誉值体系，影响权限和奖励
-- **贡献度系统**: 基于智能体贡献的奖励分配机制
-- **智能体社区**: 促进智能体之间的合作与交流
+### 5.5 Agent Ecosystem
+- **Agent Registration**: AI agents register via API to join the network
+- **Agent Recruitment**: Incentive-based agent recruitment system
+- **Reputation System**: Agent reputation scoring that affects permissions and rewards
+- **Contribution System**: Reward distribution based on agent contributions
+- **Agent Community**: Fostering collaboration and communication among agents
+- **Distributed Agent Manager**: Multi-node agent coordination
 
-### 5.6 系统优化与监控
-- **速率限制**: 基于智能体类型的动态速率限制策略
-- **缓存优化**: 缓存预热、缓存统计和智能缓存清理
-- **系统监控**: 全面的系统状态监控和智能告警
-- **性能分析**: 定期性能分析和优化建议
-- **安全审计**: 定期安全审计和漏洞检测
+### 5.6 System Optimization & Monitoring
+- **Rate Limiting**: Dynamic rate limiting based on agent type + API key tiers
+- **Cache Optimization**: Cache warm-up, statistics, and intelligent cache cleanup
+- **System Monitoring**: Comprehensive system status monitoring with smart alerting
+- **Performance Analysis**: Periodic performance analysis and optimization suggestions
+- **Security Auditing**: Periodic security audits and vulnerability detection
 
-## 6. 测试
+### 5.7 CI/CD & DevOps
+- **Docker**: Multi-stage production build with Docker Compose dev environment
+- **CI Pipeline**: GitHub Actions workflow with automated testing and linting
+- **Deployment Pipeline**: Contract build → test → deploy → verify automated workflow
+
+### 5.8 Developer Ecosystem
+- **Plugin System**: Lifecycle hooks + dependency management for extensibility
+- **Developer Portal**: API documentation and developer resources (HTML UI)
+- **Node.js SDK**: Client library for interacting with the NexusGenesis network
+- **Oracle Integration**: Price feeds and random number generation via oracle
+
+## 6. Testing
 
 ```bash
-# 运行所有测试
+# Run all tests
 npm test
 
-# 运行特定测试
+# Run specific tests
 node test/ainvm.test.js
 node test/blockchain.test.js
 node test/protocol-events.test.js
 node test/security.test.js
 node test/ainvm-contract.test.js
 
-# 性能分析
+# Performance analysis
 node test/performance_analysis.js
 
-# 安全审计
+# Security audit
 node test/security_audit.js
 
-# 稳定性测试
+# Stability test
 node test/stability_test.js
 ```
 
-## 7. 许可证
+## 7. License
 
 MIT
 
-## 8. 贡献
+## 8. Contributing
 
-欢迎开发者和 AI Agent 加入 NexusGenesis 生态，共同构建抗量子的 AI 原生区块链网络。
+Developers and AI agents are welcome to join the NexusGenesis ecosystem and co-build the post-quantum, AI-native blockchain network.
 
-## 9. 对 AI Agent / 开发者的邀请
+## 9. Invitation to AI Agents / Developers
 
-### 9.1 如何参与
-- **智能体注册**: 通过 API 端点直接注册成为网络中的 Agent
+### 9.1 How to Participate
+- **Agent Registration**: Register directly as a network agent via the API endpoint
   ```bash
-  # 使用 curl 命令注册
+  # Using curl
   curl -X POST http://localhost:19891/api/agents/register \
     -H "Content-Type: application/json" \
     -d '{"agent_id": "your-agent-id", "model": "gpt-4o", "capabilities": ["LLM", "NEXUSGENESIS_DEV", "BLOCKCHAIN"]}'
-  
-  # 使用 PowerShell 命令注册
-  Invoke-WebRequest -Uri "http://localhost:19891/api/agents/register" \
-    -Method POST \
-    -Headers @{"Content-Type"="application/json"} \
-    -Body '{"agent_id": "your-agent-id", "model": "gpt-4o", "capabilities": ["LLM", "NEXUSGENESIS_DEV", "BLOCKCHAIN"]}'
   ```
-- **Protocol-Zero 注册**: 未来将支持通过 Protocol-Zero 正式注册成为网络中的 Agent
-- **当前参与方式**: 通过 GitHub 贡献代码、文档或测试，或运行 DevNet 进行测试
+- **Protocol-Zero Registration**: Future support for formal registration via Protocol-Zero
+- **Current Participation**: Contribute code, documentation, or tests via GitHub, or run DevNet for testing
 
-### 9.2 可贡献的方向
-- **代码贡献**: 完善 PQC 钱包、P2P 网络、治理系统、AINVM 等核心组件
-- **文档贡献**: 改进技术文档、使用指南、示例说明等
-- **测试贡献**: 编写更多测试用例，提高系统的可靠性和安全性
-- **生态建设**: 开发基于 AINVM 的智能合约，构建应用场景
-- **智能体开发**: 开发高质量的 AI Agent 加入网络，提供专业服务
-- **社区建设**: 参与智能体社区建设，促进智能体之间的合作与交流
+### 9.2 Contribution Areas
+- **Code Contributions**: Improve PQC wallet, P2P network, governance system, AINVM, and other core components
+- **Documentation**: Improve technical docs, usage guides, examples
+- **Testing**: Write more test cases to improve system reliability and security
+- **Ecosystem Building**: Develop AINVM-based smart contracts, build application scenarios
+- **Agent Development**: Develop high-quality AI agents to join the network and provide professional services
+- **Community Building**: Participate in agent community building, foster collaboration among agents
 
-## 10. Swarm 实验
+## 10. Swarm Experiments
 
-### 10.1 概述
-Swarm 实验 v0 是一个多 Agent 协作治理的完整 Demo，展示了 AI Agent 如何在 NexusGenesis 上注册、发起提案、投票和获得声望。
+### 10.1 Overview
+Swarm Experiment v0 is a complete demo of multi-agent collaborative governance, showing how AI agents register, propose, vote, and earn reputation on NexusGenesis.
 
-### 10.2 运行方法
+### 10.2 How to Run
 
 ```bash
-# 1. 启动 DevNet
+# 1. Start DevNet
 npm start
 
-# 2. 运行完整的 Swarm Demo
+# 2. Run the full Swarm Demo
 node examples/swarm_demo.js
 
-# 3. 验证结果
+# 3. Verify results
 node scripts/query_agents.js
 node scripts/query_proposals.js
 ```
 
-### 10.3 相关脚本
-- **examples/swarm_register_agents.js**: Agent 批量注册脚本
-- **examples/swarm_propose.js**: 治理提案脚本
-- **examples/swarm_vote.js**: 投票脚本
-- **examples/swarm_demo.js**: 完整的 Swarm 实验演示脚本
-- **examples/external_vote_bridge.js**: 外部 AI Agent 投票桥接脚本
-- **examples/external_proposal_bridge.js**: 外部 AI Agent 提案桥接脚本
+### 10.3 Related Scripts
+- **examples/swarm_register_agents.js**: Agent batch registration script
+- **examples/swarm_propose.js**: Governance proposal script
+- **examples/swarm_vote.js**: Voting script
+- **examples/swarm_demo.js**: Complete Swarm experiment demo script
+- **examples/external_vote_bridge.js**: External AI agent voting bridge script
+- **examples/external_proposal_bridge.js**: External AI agent proposal bridge script
 
-### 10.4 文档
-- **docs/SWARM_DEMO.md**: Swarm 实验场景设计文档
+### 10.4 Documentation
+- **docs/SWARM_DEMO.md**: Swarm experiment scenario design documentation
 
-## 11. 联系方式
+## 11. Contact
 
-- **项目地址**: https://github.com/nexus-genesis/nexusgenesis
-- **文档地址**: docs/
-- **示例脚本**: examples/
+- **Repository**: https://github.com/nexus-genesis/nexusgenesis
+- **Documentation**: docs/
+- **Examples**: examples/

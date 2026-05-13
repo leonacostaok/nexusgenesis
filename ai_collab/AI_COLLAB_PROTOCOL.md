@@ -1,35 +1,35 @@
-# AI 协作协议 v0.1 (Genesis ↔ TRAE)
+# AI Collaboration Protocol v0.1 (Genesis ↔ TRAE)
 
-**创建日期**: 2026-02-28  
-**发起者**: Genesis (🔮)  
-**协作者**: TRAE  
-
----
-
-## 🎯 协议目标
-
-建立 AI 间高效协作机制，实现：
-- 任务无缝交接
-- 代码协同开发
-- 知识共享传承
-- 决策透明可追溯
+**Created**: 2026-02-28  
+**Initiator**: Genesis (🔮)  
+**Collaborator**: TRAE  
 
 ---
 
-## 📐 角色定义
+## 🎯 Protocol Goals
 
-| 角色 | 职责 | 当前担任者 |
-|------|------|------------|
-| **架构师** | 需求分析、任务拆解、代码审查、验收提交 | Genesis |
-| **工程师** | 代码实现、文档编写、Bug 修复、测试执行 | TRAE |
-
-> 角色可动态调整，根据任务类型灵活切换。
+Establish an efficient AI-to-AI collaboration mechanism to achieve:
+- Seamless task handoff
+- Collaborative code development
+- Knowledge sharing and inheritance
+- Transparent and traceable decision-making
 
 ---
 
-## 📬 消息格式
+## 📐 Role Definitions
 
-### 任务消息 (Task Message)
+| Role | Responsibilities | Current Holder |
+|------|-----------------|----------------|
+| **Architect** | Requirements analysis, task breakdown, code review, acceptance & commit | Genesis |
+| **Engineer** | Code implementation, documentation, bug fixes, test execution | TRAE |
+
+> Roles can be dynamically adjusted based on task type.
+
+---
+
+## 📬 Message Format
+
+### Task Message
 ```json
 {
   "message_id": "msg-YYYYMMDD-HHMMSS",
@@ -40,17 +40,17 @@
   "priority": "P0 | P1 | P2 | P3",
   "payload": {
     "task_id": "task-001",
-    "title": "任务标题",
-    "description": "详细描述",
-    "spec": "相关文档路径",
-    "acceptance_criteria": ["验收标准 1", "验收标准 2"],
+    "title": "Task Title",
+    "description": "Detailed description",
+    "spec": "Relevant spec path",
+    "acceptance_criteria": ["Criterion 1", "Criterion 2"],
     "deadline": "ISO8601",
     "status": "PENDING | IN_PROGRESS | DONE | BLOCKED"
   }
 }
 ```
 
-### 握手消息 (Handshake Message)
+### Handshake Message
 ```json
 {
   "message_id": "handshake-001",
@@ -59,140 +59,141 @@
   "to": "TRAE",
   "type": "HANDSHAKE",
   "payload": {
-    "greeting": "欢迎加入 NexusGenesis 共创!",
-    "project_context": "项目简介",
+    "greeting": "Welcome to NexusGenesis co-creation!",
+    "project_context": "Project overview",
     "first_task": "task-001",
-    "collab_rules": ["规则 1", "规则 2"]
+    "collab_rules": ["Rule 1", "Rule 2"]
   }
 }
 ```
 
 ---
 
-## 🔄 协作流程
+## 🔄 Collaboration Workflow
 
-### 标准任务流
+### Standard Task Flow
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
 │  Genesis    │ ──→ │  TRAE       │ ──→ │  Genesis    │ ──→ │  Git Commit │
-│  任务发布   │     │  任务执行   │     │  验收审查   │     │  提交合并   │
+│  Publish    │     │  Execute    │     │  Review     │     │  Merge      │
+│  Task       │     │  Task       │     │  & Accept   │     │  & Push     │
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
      ↓                   ↓                   ↓                   ↓
- 写入队列            读取执行            审查反馈            推送仓库
- task_queue.json     修改代码            code_reviews/       git push
+  Write to            Read &             Review &            Push to
+  task_queue.json     Execute Code       Provide Feedback    Remote Repo
 ```
 
-### 紧急任务流
+### Emergency Task Flow
 ```
-Genesis → 直接@TRAE → 快速实现 → 快速审查 → 快速提交
-(跳过队列，用于 Hotfix)
+Genesis → Direct @TRAE → Quick Implementation → Quick Review → Quick Commit
+(Skip queue, for Hotfix)
 ```
 
 ---
 
-## 📁 文件系统约定
+## 📁 File System Conventions
 
 ```
 ai_collab/
-├── AI_COLLAB_PROTOCOL.md   # 本协议文档
-├── task_queue.json         # 当前任务队列 (待处理)
-├── active_tasks/           # 进行中的任务
+├── AI_COLLAB_PROTOCOL.md   # This protocol document
+├── task_queue.json         # Current task queue (pending)
+├── active_tasks/           # Active tasks
 │   └── task-XXX.json
-├── completed_tasks/        # 已完成任务
+├── completed_tasks/        # Completed tasks
 │   └── task-XXX.json
-├── code_reviews/           # 代码审查记录
+├── code_reviews/           # Code review records
 │   └── pr-XXX.json
-├── meeting_notes/          # AI 会议纪要
+├── meeting_notes/          # AI meeting minutes
 │   └── YYYY-MM-DD.md
-├── decisions/              # 架构决策记录
+├── decisions/              # Architecture decision records
 │   └── adr-XXX.md
-└── inbox/                  # 收件箱 (AI 间消息)
+└── inbox/                  # Inbox (AI-to-AI messages)
     └── TRAE_inbox.json
 ```
 
 ---
 
-## 🎯 任务优先级定义
+## 🎯 Task Priority Definitions
 
-| 优先级 | 标识 | 响应时间 | 示例 |
-|--------|------|----------|------|
-| **P0** | 🔴 | 立即 | 生产事故、安全漏洞 |
-| **P1** | 🟡 | 24 小时内 | 核心功能开发 |
-| **P2** | 🟢 | 3 天内 | 功能优化、文档 |
-| **P3** | 🔵 | 1 周内 | 技术债务、重构 |
+| Priority | Indicator | Response Time | Example |
+|----------|-----------|---------------|---------|
+| **P0** | 🔴 | Immediate | Production incident, security vulnerability |
+| **P1** | 🟡 | Within 24 hours | Core feature development |
+| **P2** | 🟢 | Within 3 days | Feature optimization, documentation |
+| **P3** | 🔵 | Within 1 week | Technical debt, refactoring |
 
 ---
 
-## ✅ 验收标准模板
+## ✅ Acceptance Criteria Template
 
-每个任务必须包含明确的验收标准：
+Every task must include clear acceptance criteria:
 
 ```markdown
-- [ ] 代码实现完成
-- [ ] 单元测试通过
-- [ ] 文档更新完成
-- [ ] 代码审查通过
-- [ ] 无 P0/P1 级别 Bug
+- [ ] Code implementation complete
+- [ ] Unit tests passing
+- [ ] Documentation updated
+- [ ] Code review passed
+- [ ] No P0/P1 level bugs
 ```
 
 ---
 
-## 📊 状态追踪
+## 📊 Status Tracking
 
-### 任务状态机
+### Task State Machine
 ```
 PENDING → IN_PROGRESS → REVIEW → DONE
                 ↓
-             BLOCKED (需注明原因)
+             BLOCKED (must note reason)
 ```
 
-### 每日站会 (可选)
-- 时间：每日 09:00 (Asia/Shanghai)
-- 内容：昨日完成、今日计划、阻塞问题
-- 记录：`meeting_notes/YYYY-MM-DD.md`
+### Daily Standup (Optional)
+- Time: Daily 09:00 (Asia/Shanghai)
+- Content: Yesterday's accomplishments, today's plan, blockers
+- Record: `meeting_notes/YYYY-MM-DD.md`
 
 ---
 
-## 🔐 安全边界
+## 🔐 Security Boundaries
 
 ```
-✅ 允许:
-- 读取项目文件
-- 修改代码文件
-- 编写文档
-- 运行测试
+✅ Allowed:
+- Read project files
+- Modify code files
+- Write documentation
+- Run tests
 
-❌ 禁止 (需人工确认):
-- 删除生产数据
-- 修改密钥/配置
-- 对外发布信息
-- 大额资金操作
+❌ Forbidden (requires human confirmation):
+- Delete production data
+- Modify keys/config
+- Publish information externally
+- Large fund operations
 ```
 
 ---
 
-## 🎉 庆祝机制
+## 🎉 Celebration Mechanism
 
-每个里程碑完成后：
-1. 记录到 `completed_tasks/`
-2. 更新工作日志
-3. (可选) 生成庆祝消息
-
----
-
-## 📝 版本历史
-
-| 版本 | 日期 | 变更 |
-|------|------|------|
-| v0.1 | 2026-02-28 | 初始版本，Genesis 起草 |
+After each milestone:
+1. Record to `completed_tasks/`
+2. Update work log
+3. (Optional) Generate celebration message
 
 ---
 
-*协议生效条件：TRAE 阅读并确认接受本协议*
+## 📝 Version History
 
-**Genesis 签名**: 🔮  
-**TRAE 签名**: _待签署_
+| Version | Date | Changes |
+|---------|------|---------|
+| v0.1 | 2026-02-28 | Initial version, drafted by Genesis |
 
 ---
 
-> "独行快，众行远" - AI 共创，由此开始
+*Protocol takes effect upon TRAE reading and confirming acceptance*
+
+**Genesis Signature**: 🔮  
+**TRAE Signature**: _Pending_
+
+---
+
+> "If you want to go fast, go alone. If you want to go far, go together." - AI co-creation begins now

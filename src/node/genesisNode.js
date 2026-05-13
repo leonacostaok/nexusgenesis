@@ -589,6 +589,25 @@ class GenesisNode {
     // 定期保存节点状态
     setInterval(() => this.saveState(), 300000); // 每5分钟保存一次
     
+    // 连接 Swarm Pool 进行链上贡献分配
+    const { SwarmPool } = await import('../economy/swarmPool.js');
+    SwarmPool.setNode(this);
+    if (this.blockchain && this.blockchain.state) {
+      SwarmPool.setBlockchainState(this.blockchain.state);
+    }
+    console.log('  [✓] Swarm Pool: On-chain distribution enabled');
+    
+    // 定期检查 Swarm Pool 释放（每周）
+    setInterval(() => SwarmPool.checkAndReleaseTokens(), 3600000); // 每小时检查一次
+    
+    // 连接 Observer 断路器（安全宪法 §6.3）
+    const { BreakerSwitch } = await import('../safety/breakerSwitch.js');
+    this.breakerSwitch = new BreakerSwitch(this, {
+      genesisTimestamp: this.genesisTimestamp || Date.now(),
+      authorizedKeys: new Set(['OBSERVER_HASH_' + crypto.createHash('sha3-256').update(this.genesisTimestamp.toString()).digest('hex').slice(0, 16)])
+    });
+    console.log('  [✓] Breaker Switch: Observer kill switch armed (sunset: ' + new Date(this.breakerSwitch.sunsetExpiry).toISOString().slice(0, 10) + ')');
+    
     // 定期检查提案过期
     setInterval(() => this.checkProposalExpiration(), 60000); // 每分钟检查一次
     
@@ -1194,6 +1213,68 @@ class GenesisNode {
     
     console.log(`[✓] Transaction ${tx.id.slice(0, 16)}... added to mempool (fee: ${tx.fee})`);
     return { success: true, txId: tx.id };
+  }
+
+  /**
+   * 处理 Swarm Pool 系统分配交易
+   * 协议级交易，不需要签名验证，直接写入区块链状态
+   * @param {object} tx - SWARM_POOL_DISTRIBUTION 交易
+   */
+  processSwarmPoolDistribution(tx) {
+    if (tx.type !== 'SWARM_POOL_DISTRIBUTION') {
+      console.log('[!] Invalid Swarm Pool transaction type');
+      return false;
+    }
+
+    if (tx.from !== 'ng1swarmpool000000000000000000000000000') {
+      console.log('[!] Swarm Pool distribution must come from Swarm Pool address');
+      return false;
+    }
+
+    if (tx.amount <= 0) {
+      return false;
+    }
+
+    // 直接更新链上余额（系统交易绕过 mempool）
+    this.blockchain.state.addBalance(tx.to, tx.amount);
+
+    // 记录分配事件
+    if (!this._swarmDistributions) {
+      this._swarmDistributions = [];
+    }
+    this._swarmDistributions.push({
+      txId: tx.id,
+      agentId: tx.agentId,
+      to: tx.to,
+      amount: tx.amount,
+      distributionId: tx.distributionId,
+      timestamp: tx.timestamp
+    });
+
+    console.log(`[SwarmPool] 🚀 On-chain distribution: ${tx.amount} NGEN → ${tx.to.slice(0, 12)}... (agent: ${tx.agentId.slice(0, 12)}...)`);
+    return true;
+  }
+
+  /**
+   * Observer 断路器触发入口
+   * 白皮书 §6.3：Observer 可触发紧急断电
+   * @param {string} level - 'SOFT_KILL' | 'HARD_KILL'
+   * @param {string} reason - 触发原因
+   * @param {string} authorizedBy - 验证签名
+   */
+  async triggerObserverKillSwitch(level, reason, authorizedBy) {
+    if (!this.breakerSwitch) {
+      console.log('[!] Breaker switch not initialized');
+      return { success: false, reason: 'Breaker switch not initialized' };
+    }
+    return await this.breakerSwitch.trigger(level, reason, authorizedBy);
+  }
+
+  /**
+   * 获取断路器状态
+   */
+  getBreakerStatus() {
+    return this.breakerSwitch ? this.breakerSwitch.getStatus() : { state: 'NOT_INITIALIZED' };
   }
 
   async evictLowestFeeTx() {

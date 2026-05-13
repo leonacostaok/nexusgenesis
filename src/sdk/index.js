@@ -35,8 +35,8 @@ class NexusGenesisSDK {
     return this.contractManager.deployContract(bytecode, name);
   }
 
-  executeContract(contractId, gasLimit = 10000) {
-    return this.contractManager.executeContract(contractId, gasLimit);
+  async executeContract(contractId, gasLimit = 10000) {
+    return await this.contractManager.executeContract(contractId, gasLimit);
   }
 
   getContractInfo(contractId) {
@@ -95,11 +95,11 @@ class NexusGenesisSDK {
     return await fs.readFile(filePath, 'utf8');
   }
 
-  testContract(contractId, testCases) {
+  async testContract(contractId, testCases) {
     const results = [];
     for (const testCase of testCases) {
       try {
-        const result = this.executeContract(contractId);
+        const result = await this.executeContract(contractId);
         results.push({ test: testCase, success: true, result });
       } catch (error) {
         results.push({ test: testCase, success: false, error: error.message });

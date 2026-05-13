@@ -4,6 +4,7 @@
  */
 
 import AINVM from '../vm/ainvm.js';
+import { SandboxExecutor, STANDARD_CONFIG, STRICT_CONFIG } from '../vm/sandbox.js';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -13,6 +14,8 @@ class ContractManager {
     this.storage = new Map();   // 合约ID -> 存储状态
     this.contractCounter = 0;   // 合约ID计数器（确定性）
     this.executingContracts = new Set(); // 正在执行的合约（重入保护）
+    this.sandbox = new SandboxExecutor(STANDARD_CONFIG);
+    this.verifiedContracts = new Set(); // 已验证的合约ID集合
   }
 
   /**
@@ -142,7 +145,7 @@ class ContractManager {
    * @param {string} caller - 调用者地址（可选）
    * @returns {object} 执行结果
    */
-  executeContract(contractId, gasLimit = 1000, caller = null) {
+  async executeContract(contractId, gasLimit = 1000, caller = null) {
     // 验证参数
     if (!contractId) {
       throw new Error('Contract ID is required');
@@ -169,26 +172,22 @@ class ContractManager {
     this.executingContracts.add(contractId);
     
     try {
-      // 创建VM实例
-      const vm = new AINVM();
+      // 通过沙盒安全执行合约（安全宪法 §6.2）
+      // 沙盒自动执行静态分析 + 资源限制 + 时限保护
+      const deployer = contract.owner || 'unknown';
+      const result = await this.sandbox.execute(
+        contract.bytecode,
+        gasLimit,
+        deployer
+      );
       
-      // 加载字节码
-      vm.loadProgram(contract.bytecode);
-      
-      // 加载存储的值到VM内存
-      const storage = this.storage.get(contractId);
-      // 复制存储内容到VM内存，确保键类型一致
-      for (const [key, value] of storage.entries()) {
-        // 尝试将键转换为数字（如果是数字字符串）
-        const parsedKey = isNaN(key) ? key : parseInt(key);
-        vm.memory.set(parsedKey, value);
+      // 沙盒拒绝 → 直接返回拒绝信息
+      if (result.sandboxRejected) {
+        return result;
       }
       
-      // 执行合约
-      const result = vm.execute(gasLimit);
-      
       // 更新合约存储
-      if (result.success) {
+      if (result.success && result.memory && !result.memoryTruncated) {
         const memory = result.memory;
         
         // 存储大小限制（1MB）
@@ -202,9 +201,10 @@ class ContractManager {
         }
         
         // 同步内存到存储
+        const storage = this.storage.get(contractId);
         storage.clear();
         for (const [key, value] of Object.entries(memory)) {
-          // 尝试将键转换为数字（如果是数字字符串）
+          if (key.startsWith('_')) continue; // 跳过内部键
           const parsedKey = isNaN(key) ? key : parseInt(key);
           storage.set(parsedKey, value);
         }

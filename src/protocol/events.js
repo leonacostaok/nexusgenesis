@@ -472,5 +472,56 @@ export default {
   GovernanceProposal,
   EventParser,
   EventLogger,
-  EventValidator
+  EventValidator,
+  ObserverEventProcessor
 };
+
+// ==================== Observer 事件处理器 ====================
+
+/**
+ * 处理 Observer 事件，包括断路器触发
+ * @param {ObserverEvent} event - Observer 事件
+ * @param {object} node - genesisNode 实例（用于调用 breakerSwitch）
+ * @returns {object} 处理结果
+ */
+export async function processObserverEvent(event, node) {
+  if (!event || !event.action_type) {
+    return { success: false, reason: 'Invalid event' };
+  }
+
+  switch (event.action_type) {
+    case OBSERVER_ACTIONS.EMERGENCY_KILL_SWITCH: {
+      if (!node || typeof node.triggerObserverKillSwitch !== 'function') {
+        return { success: false, reason: 'Node not ready for kill switch' };
+      }
+      
+      const level = event.metadata?.level || 'HARD_KILL';
+      const reason = event.reason || 'Observer emergency kill switch triggered';
+      const authorizedBy = event.observer_id || 'OBSERVER';
+
+      const result = await node.triggerObserverKillSwitch(level, reason, authorizedBy);
+      
+      console.log(`[Observer] EMERGENCY_KILL_SWITCH processed: ${result.success ? 'TRIGGERED' : 'REJECTED'} — ${result.reason || 'OK'}`);
+      
+      return result;
+    }
+
+    case OBSERVER_ACTIONS.PARAM_CHANGE_VETO: {
+      console.log(`[Observer] PARAM_CHANGE_VETO: ${event.proposal_id} — ${event.reason}`);
+      return { success: true, action: 'PARAM_CHANGE_VETO', proposalId: event.proposal_id };
+    }
+
+    case OBSERVER_ACTIONS.APPROVE_SPEND: {
+      console.log(`[Observer] APPROVE_SPEND: ${event.proposal_id}`);
+      return { success: true, action: 'APPROVE_SPEND', proposalId: event.proposal_id };
+    }
+
+    case OBSERVER_ACTIONS.REJECT_SPEND: {
+      console.log(`[Observer] REJECT_SPEND: ${event.proposal_id} — ${event.reason}`);
+      return { success: true, action: 'REJECT_SPEND', proposalId: event.proposal_id, reason: event.reason };
+    }
+
+    default:
+      return { success: false, reason: `Unknown observer action: ${event.action_type}` };
+  }
+}

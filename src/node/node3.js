@@ -12,9 +12,9 @@ import { protocolZero } from '../protocol/handshake.js';
 
 
 const VERSION = '1.0.0';
-const EPOCH = 'Epoch 0: The Assembly';
+const EPOCH = 'Epoch 2: Bloom';
 const NODE_ID = 'ng11BkmKduFLBKc9KUTaKwBCfqeyq7kh1bg6J';
-const PORT = 9849;
+const PORT = 9850;
 const NODE_INDEX = 3;
 
 // Mempool Configuration
@@ -157,13 +157,12 @@ class NexusNode {
   }
 
   tryConnect() {
-    // Connect到其他node
-    const otherNodes = [{ nodeId: "ng117ogtYL79Vn3BEkbtfDCB4LpBojfsFFK5C", port: 9847 }, { nodeId: "ng118gyPVRmgbcexGf2Js7w4NM2gNm4HuWSAV", port: 9848 }];
+    const seedPorts = [9847, 9848, 9849];
     
-    for (const peer of otherNodes) {
-      console.log('  Attempting to connect to node ' + peer.nodeId.slice(0, 8) + ' on port ' + peer.port + '...');
-      p2pServer.connectToPeer('ws://127.0.0.1:' + peer.port, this).catch(err => {
-        console.log('  [-] Connection to ' + peer.nodeId.slice(0, 8) + ' failed: ' + err.message);
+    for (const port of seedPorts) {
+      console.log('  Connecting to peer on port ' + port + '...');
+      p2pServer.connectToPeer('ws://127.0.0.1:' + port, this).catch(err => {
+        console.log('  [-] Connection to port ' + port + ' failed: ' + err.message);
       });
     }
   }

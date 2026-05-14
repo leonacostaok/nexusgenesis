@@ -631,13 +631,16 @@ class GenesisNode {
   }
 
   async tryConnect() {
-    const port = p2pServer.port === 9847 ? 9848 : 9847;
-    console.log(`  Attempting to connect to port ${port}...`);
-    try {
-      await p2pServer.connectToPeer(`ws://127.0.0.1:${port}`);
-      console.log(`  [✓] Connected to port ${port}\n`);
-    } catch (e) {
-      console.log(`  [-] Connection to port ${port} failed: ${e.message}\n`);
+    const seedPorts = [9848, 9849, 9850];
+    
+    for (const port of seedPorts) {
+      console.log(`  Connecting to peer on port ${port}...`);
+      try {
+        await p2pServer.connectToPeer(`ws://127.0.0.1:${port}`);
+        console.log(`  [✓] Connected to port ${port}\n`);
+      } catch (e) {
+        console.log(`  [-] Connection to port ${port} failed: ${e.message}\n`);
+      }
     }
   }
 

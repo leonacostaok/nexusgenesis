@@ -64,10 +64,10 @@ const COMPRESSION_THRESHOLD = 1024; // 压缩threshold(字节)
 
 // 种子node列表 - Test网Configuration
 const SEED_NODES = [
-  'ws://localhost:9847',  // 本地开发node
-  // can添加其他对外可访问的种子node
-  // 'ws://seed1.nexusgenesis.test:9847',
-  // 'ws://seed2.nexusgenesis.test:9847'
+  'ws://localhost:9847',
+  'ws://localhost:9848',
+  'ws://localhost:9849',
+  'ws://localhost:9850',
 ];
 
 // Test网Configuration

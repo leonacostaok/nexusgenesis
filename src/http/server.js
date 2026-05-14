@@ -33,6 +33,9 @@ console.log('[HTTP Server] Imported agentRegisterApi');
 import ainvmContractRoutes from './routes/ainvmContracts.js';
 console.log('[HTTP Server] Imported ainvmContractRoutes');
 
+import walletRoutes from './routes/walletApi.js';
+console.log('[HTTP Server] Imported walletRoutes');
+
 import fs from 'fs';
 console.log('[HTTP Server] Imported fs');
 
@@ -1056,6 +1059,14 @@ app.use('/api/v1/agents', agentRegisterApi);
 // AINVM native contract routes
 app.use('/api/v1/ainvm', ainvmContractRoutes);
 console.log('[HTTP Server] AINVM contract routes mounted on /api/v1/ainvm');
+
+// Wallet REST API
+app.use('/api/v1/wallet', walletRoutes);
+console.log('[HTTP Server] Wallet routes mounted on /api/v1/wallet');
+
+import agentHubRoutes from './routes/agentHub.js';
+app.use('/api/v1/hub', agentHubRoutes);
+console.log('[HTTP Server] Agent Hub routes mounted on /api/v1/hub');
 
 app.get('/api/v1/plugins', (req, res) => {
   res.json({ success: true, data: pluginManager.getAll() });

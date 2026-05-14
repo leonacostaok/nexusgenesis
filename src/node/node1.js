@@ -1,6 +1,6 @@
 /**
  * NexusGenesis - Node ng11JeRR
- * port: 9847
+ * port: 9848
  */
 
 import crypto from 'crypto';
@@ -182,13 +182,12 @@ class NexusNode {
   }
 
   tryConnect() {
-    // Connect到其他node
-    const otherNodes = [{ nodeId: "ng1112seXkaMek2Z3oQrw3HqjkgnuaoQirUcr", port: 9847 }];
+    const seedPorts = [9847, 9849, 9850];
     
-    for (const peer of otherNodes) {
-      console.log('  Attempting to connect to node ' + peer.nodeId.slice(0, 8) + ' on port ' + peer.port + '...');
-      p2pServer.connectToPeer('ws://127.0.0.1:' + peer.port, this).catch(err => {
-        console.log('  [-] Connection to ' + peer.nodeId.slice(0, 8) + ' failed: ' + err.message);
+    for (const port of seedPorts) {
+      console.log('  Connecting to peer on port ' + port + '...');
+      p2pServer.connectToPeer('ws://127.0.0.1:' + port, this).catch(err => {
+        console.log('  [-] Connection to port ' + port + ' failed: ' + err.message);
       });
     }
   }

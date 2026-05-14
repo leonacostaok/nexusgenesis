@@ -201,58 +201,130 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 </div>
 
 <script>
-const walletData = {
-  address: 'ng1119iZwobYCzN7ceE8u7JPTV6ZSfwtAvEVDAiUZaCVS1rwrvKM2k',
-  balance: 500000,
-  staked: 125000,
-  assets: [
-    { symbol: 'NGEN', amount: 500000, usdValue: 50000 },
-    { symbol: 'USDT', amount: 15000, usdValue: 15000 },
-    { symbol: 'ETH', amount: 2.5, usdValue: 4750 },
-    { symbol: 'BTC', amount: 0.15, usdValue: 7200 }
-  ],
-  transactions: [
-    { type: 'receive', name: 'Received from faucet', date: '2024-01-15', amount: '+500 NGEN' },
-    { type: 'send', name: 'Sent to ng1abc...', date: '2024-01-14', amount: '-50 NGEN' },
-    { type: 'receive', name: 'Staking reward', date: '2024-01-13', amount: '+12.5 NGEN' },
-    { type: 'stake', name: 'Staked 1000 NGEN', date: '2024-01-12', amount: '-1000 NGEN' },
-    { type: 'send', name: 'Sent to bridge', date: '2024-01-11', amount: '-200 NGEN' }
-  ],
-  rewards: [
-    { type: 'receive', name: 'Staking Reward', date: '2024-01-15', amount: '+12.5 NGEN' },
-    { type: 'receive', name: 'Staking Reward', date: '2024-01-14', amount: '+12.5 NGEN' },
-    { type: 'receive', name: 'Validator Reward', date: '2024-01-13', amount: '+25 NGEN' }
-  ]
+// ============================================
+// NexusGenesis Wallet v2.0 - Live Blockchain Data
+// ============================================
+
+const API_BASE = '/api/v1/wallet';
+const DEFAULT_ADDRESS = 'ng1119iZwobYCzN7ceE8u7JPTV6ZSfwtAvEVDAiUZaCVS1rwrvKM2k';
+
+let walletData = {
+  address: DEFAULT_ADDRESS,
+  balance: 0,
+  staked: 0,
+  usdValue: 0,
+  transactionCount: 0,
+  isAgent: false,
+  agentReputation: 0
 };
 
-function init() {
-  document.getElementById('balance').textContent = walletData.balance.toLocaleString();
-  document.getElementById('balanceUsd').textContent = `$ ${(walletData.balance * 0.1).toLocaleString()} USD`;
-  document.getElementById('stakedAmount').textContent = walletData.staked.toLocaleString();
-  document.getElementById('walletAddress').textContent = walletData.address;
+let transactions = [];
+let rewards = [];
+
+async function apiFetch(url) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    console.warn('[Wallet] API unavailable:', e.message);
+    return null;
+  }
+}
+
+async function loadBalance() {
+  const data = await apiFetch(`${API_BASE}/balance/${walletData.address}`);
+  if (data?.success) {
+    walletData.balance = data.wallet.balance;
+    walletData.usdValue = parseFloat(data.wallet.usdValue);
+    document.getElementById('balance').textContent = data.wallet.balanceFormatted;
+    document.getElementById('balanceUsd').textContent = `$ ${data.wallet.usdValue} USD`;
+    document.getElementById('walletAddress').textContent = data.wallet.address;
+  }
+}
+
+async function loadWalletInfo() {
+  const data = await apiFetch(`${API_BASE}/info/${walletData.address}`);
+  if (data?.success) {
+    walletData = { ...walletData, ...data.wallet };
+    document.getElementById('stakedAmount').textContent = walletData.stakedAmount?.toLocaleString() || '0';
+    document.getElementById('walletAddress').textContent = walletData.address;
+  }
+}
+
+async function loadHistory() {
+  const data = await apiFetch(`${API_BASE}/history/${walletData.address}?limit=20`);
+  if (data?.success && data.transactions.length > 0) {
+    transactions = data.transactions;
+    renderTransactions();
+  }
+}
+
+async function init() {
   document.getElementById('receiveAddress').textContent = walletData.address;
-  renderAssets();
-  renderTransactions();
-  renderRewards();
+  document.getElementById('walletAddress').textContent = walletData.address;
+
+  // Try loading from API; fall back to chain discovery
+  await Promise.all([loadBalance(), loadWalletInfo(), loadHistory()]);
+
+  // If API returned no data, show offline mode
+  if (walletData.balance === 0 && transactions.length === 0) {
+    document.getElementById('balance').textContent = '0';
+    document.getElementById('balanceUsd').textContent = '$ 0.00 USD';
+    document.getElementById('stakedAmount').textContent = '0';
+    renderAssets();
+    renderTransactions();
+    renderRewards();
+  }
+  document.querySelector('.loading-indicator')?.remove();
 }
 
 function renderAssets() {
-  document.getElementById('assets').innerHTML = walletData.assets.map(a =>
+  const assetsEl = document.getElementById('assets');
+  const assets = [
+    { symbol: 'NGEN', amount: walletData.balance }
+  ];
+  if (!assetsEl) return;
+  assetsEl.innerHTML = assets.map(a =>
     `<div class="asset-chip"><div class="asset-symbol">${a.symbol}</div><div class="asset-amount">${a.amount.toLocaleString()}</div></div>`
   ).join('');
 }
 
 function renderTransactions() {
-  document.getElementById('txList').innerHTML = walletData.transactions.map(t => {
-    const iconClass = t.type === 'send' ? 'send' : t.type === 'stake' ? 'stake' : 'receive';
-    const icon = t.type === 'send' ? '↑' : t.type === 'stake' ? '🔒' : '↓';
-    const amountClass = t.amount.startsWith('+') ? 'positive' : 'negative';
-    return `<div class="tx-item"><div class="tx-icon ${iconClass}">${icon}</div><div class="tx-details"><div class="tx-name">${t.name}</div><div class="tx-date">${t.date}</div></div><div class="tx-amount ${amountClass}">${t.amount}</div></div>`;
+  const txList = document.getElementById('txList');
+  if (!txList) return;
+
+  if (transactions.length === 0) {
+    txList.innerHTML = '<div class="tx-item" style="justify-content:center;color:var(--text2);padding:20px">No transactions yet</div>';
+    return;
+  }
+
+  txList.innerHTML = transactions.map(tx => {
+    const isSend = tx.direction === 'send';
+    const iconClass = isSend ? 'send' : 'receive';
+    const icon = isSend ? '↑' : '↓';
+    const amountClass = isSend ? 'negative' : 'positive';
+    const prefix = isSend ? '-' : '+';
+    const date = new Date(tx.timestamp).toLocaleDateString();
+    const name = isSend ? `Sent to ${(tx.to || '').slice(0, 10)}...` : `Received from ${(tx.from || '').slice(0, 10)}...`;
+    return `<div class="tx-item">
+      <div class="tx-icon ${iconClass}">${icon}</div>
+      <div class="tx-details"><div class="tx-name">${name}</div><div class="tx-date">${date}</div></div>
+      <div class="tx-amount ${amountClass}">${prefix}${tx.amount.toLocaleString()} NGEN</div>
+    </div>`;
   }).join('');
 }
 
 function renderRewards() {
-  document.getElementById('rewardsList').innerHTML = walletData.rewards.map(r =>
+  const rewardsList = document.getElementById('rewardsList');
+  if (!rewardsList) return;
+
+  if (rewards.length === 0) {
+    rewardsList.innerHTML = '<div class="tx-item" style="justify-content:center;color:var(--text2);padding:20px">No rewards yet</div>';
+    return;
+  }
+
+  rewardsList.innerHTML = rewards.map(r =>
     `<div class="tx-item"><div class="tx-icon receive">↓</div><div class="tx-details"><div class="tx-name">${r.name}</div><div class="tx-date">${r.date}</div></div><div class="tx-amount positive">${r.amount}</div></div>`
   ).join('');
 }
@@ -271,18 +343,41 @@ function hideReceiveModal() { document.getElementById('receiveModal').classList.
 function showStakeModal() { document.getElementById('stakeModal').classList.add('show'); }
 function hideStakeModal() { document.getElementById('stakeModal').classList.remove('show'); }
 
-function sendTransaction() {
-  const addr = document.getElementById('sendAddress').value;
-  const amount = document.getElementById('sendAmount').value;
+async function sendTransaction() {
+  const addr = document.getElementById('sendAddress')?.value;
+  const amount = document.getElementById('sendAmount')?.value;
   if (!addr || !amount) { alert('Please fill in all fields'); return; }
-  alert(`Sending ${amount} NGEN to ${addr}...`);
-  hideSendModal();
+
+  try {
+    const res = await fetch(`${API_BASE}/transfer`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fromAddress: walletData.address,
+        toAddress: addr,
+        amount: Number(amount),
+        privateKey: prompt('Enter private key (hex):'),
+        memo: ''
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert(`Sent ${amount} NGEN! Tx: ${data.transaction.id.slice(0, 16)}...`);
+      hideSendModal();
+      await loadBalance();
+      await loadHistory();
+    } else {
+      alert(`Error: ${data.error}`);
+    }
+  } catch (e) {
+    alert(`Network error: ${e.message}`);
+  }
 }
 
 function stakeTransaction() {
-  const amount = document.getElementById('stakeAmount').value;
+  const amount = document.getElementById('stakeAmount')?.value;
   if (!amount) { alert('Please enter an amount'); return; }
-  alert(`Staking ${amount} NGEN...`);
+  alert(`Staking ${amount} NGEN... (staking API in development)`);
   hideStakeModal();
 }
 

@@ -8,6 +8,7 @@
     "start": "node src/index.js",
     "node": "node src/node/genesisNode.js",
     "node2": "node src/node/node2.js",
+    "devnet": "node scripts/start_mainnet.js",
     "wallet": "node src/wallet/cli.js",
     "wallet:py": "python genesis_wallet.py",
     "test": "node --test",

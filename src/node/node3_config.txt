@@ -1,0 +1,5 @@
+const VERSION = '1.0.0';
+const EPOCH = 'Epoch 2: Bloom';
+const NODE_ID = 'ng11BkmKduFLBKc9KUTaKwBCfqeyq7kh1bg6J';
+const PORT = 9850;
+const NODE_INDEX = 3;

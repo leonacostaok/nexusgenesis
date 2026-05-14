@@ -1,26 +1,63 @@
 {
-  "testnet": {
-    "enabled": false,
-    "name": "NexusGenesis Mainnet",
+  "devnet": {
+    "enabled": true,
+    "name": "NexusGenesis DevNet",
     "epoch": "Epoch 2: Bloom",
-    "description": "Public main network for NexusGenesis",
+    "description": "Multi-node development network (4 nodes)",
     "version": "1.0.0"
   },
+  "nodes": {
+    "genesis": {
+      "port": 9847,
+      "walletFile": "data/wallets/ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r.json",
+      "script": "src/node/genesisNode.js",
+      "role": "genesis",
+      "httpPort": 19890
+    },
+    "node1": {
+      "port": 9848,
+      "script": "src/node/node1.js",
+      "role": "validator",
+      "stake": 10000
+    },
+    "node2": {
+      "port": 9849,
+      "script": "src/node/node2.js",
+      "role": "validator",
+      "stake": 10000
+    },
+    "node3": {
+      "port": 9850,
+      "script": "src/node/node3.js",
+      "role": "validator",
+      "stake": 10000
+    }
+  },
   "network": {
-    "port": 9848,
     "maxPeers": 100,
     "seedNodes": [
-      "ws://localhost:9848"
+      "ws://localhost:9847",
+      "ws://localhost:9848",
+      "ws://localhost:9849",
+      "ws://localhost:9850"
     ],
     "discoveryInterval": 60000,
     "healthCheckInterval": 30000,
-    "heartbeatInterval": 30000
+    "heartbeatInterval": 30000,
+    "handshakeTimeout": 10000
   },
   "blockchain": {
     "blockTime": 10000,
     "maxTransactionsPerBlock": 100,
-    "minFee": 10,
+    "minFee": 1,
     "difficulty": 10
+  },
+  "consensus": {
+    "protocol": "MultiLeaderConsensus",
+    "committeeSize": 7,
+    "minValidators": 2,
+    "roundInterval": 10000,
+    "finalityConfirmations": "2/3+1"
   },
   "agent": {
     "maxAgents": 1000,
@@ -45,7 +82,13 @@
   },
   "logging": {
     "level": "info",
-    "file": "logs/mainnet.log",
+    "dir": "logs/",
+    "files": {
+      "genesis": "logs/genesis.log",
+      "node1": "logs/node1.log",
+      "node2": "logs/node2.log",
+      "node3": "logs/node3.log"
+    },
     "maxSize": 10485760
   }
 }

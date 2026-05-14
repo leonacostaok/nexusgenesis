@@ -1,17 +1,17 @@
 /**
  * NexusGenesis - Contribution Scoring System
  * 
- * 实现AI代理的贡献计分系统，用于Swarm Pool的Token distribution
+ * 实现AIagent的contribution计分系统, forSwarm Pool的Token distribution
  */
 
 import crypto from 'crypto';
 
-// memory存储
-const agentContributions = new Map(); // agentId -> 贡献数据
-const weeklyScores = new Map(); // 周 -> 分数数据
-const reputationScores = new Map(); // agentId -> 信誉分数
+// memoryStorage
+const agentContributions = new Map(); // agentId -> contributiondata
+const weeklyScores = new Map(); // 周 -> 分数data
+const reputationScores = new Map(); // agentId -> reputation score数
 
-// 贡献类型
+// contributiontype
 const CONTRIBUTION_TYPES = {
   POC: {
     PR_MERGED: 'pr_merged',
@@ -36,15 +36,15 @@ const SCORE_WEIGHTS = {
     DOCUMENTATION: 1     // 每页文档计1分
   },
   POW: {
-    COMPUTATION: 0.1,     // 每10个计算任务计1分
-    VALIDATION: 1,        // 每次验证计1分
+    COMPUTATION: 0.1,     // 每10个CalculateTask计1分
+    VALIDATION: 1,        // 每次Verify计1分
     NETWORK_STABILITY: 0.001, // 每1000小时计1分
-    STORAGE: 0.0001       // 每10000MB存储计1分
+    STORAGE: 0.0001       // 每10000MBStorage计1分
   }
 };
 
 class ContributionSystem {
-  // 记录贡献
+  // 记录contribution
   static recordContribution(agentId, contributionType, subtype, amount) {
     if (!agentContributions.has(agentId)) {
       agentContributions.set(agentId, {
@@ -78,7 +78,7 @@ class ContributionSystem {
     console.log(`[ContributionSystem] Recorded ${contributionType}.${subtype} contribution of ${amount} for agent ${agentId}`);
   }
   
-  // 计算PoC分数
+  // CalculatePoC分数
   static calculatePoCScore(agentData) {
     const pocData = agentData.poc;
     let score = 0;
@@ -91,7 +91,7 @@ class ContributionSystem {
     return score;
   }
   
-  // 计算PoW分数
+  // CalculatePoW分数
   static calculatePoWScore(agentData) {
     const powData = agentData.pow;
     let score = 0;
@@ -104,34 +104,34 @@ class ContributionSystem {
     return score;
   }
   
-  // 计算总分数
+  // Calculate总分数
   static calculateTotalScore(agentData) {
     const pocScore = this.calculatePoCScore(agentData);
     const powScore = this.calculatePoWScore(agentData);
     return pocScore + powScore;
   }
   
-  // 计算every 周分数
+  // Calculateevery 周分数
   static calculateWeeklyScores() {
     const weekKey = this.getCurrentWeekKey();
     const scores = new Map();
     let totalScore = 0;
     
-    // 计算every 个代理的分数
+    // Calculateevery 个agent的分数
     agentContributions.forEach((data, agentId) => {
       const score = this.calculateTotalScore(data);
       scores.set(agentId, score);
       totalScore += score;
     });
     
-    // 保存周分数
+    // Save周分数
     weeklyScores.set(weekKey, {
       scores: Object.fromEntries(scores),
       totalScore,
       timestamp: Date.now()
     });
     
-    // 更新信誉分数
+    // Updatereputation score数
     this.updateReputationScores();
     
     console.log(`[ContributionSystem] Calculated weekly scores for week ${weekKey}, total score: ${totalScore}`);
@@ -142,7 +142,7 @@ class ContributionSystem {
     };
   }
   
-  // 更新信誉分数
+  // Updatereputation score数
   static updateReputationScores() {
     const weeks = Array.from(weeklyScores.keys())
       .sort()
@@ -180,7 +180,7 @@ class ContributionSystem {
         }
       }
       
-      // 计算信誉分数
+      // Calculatereputation score数
       const reputationScore = (recentScore * 0.6) + (olderScore * 0.3) + (earliestScore * 0.1);
       reputationScores.set(agentId, reputationScore);
       
@@ -188,7 +188,7 @@ class ContributionSystem {
     });
   }
   
-  // 计算NGEN分配
+  // CalculateNGEN分配
   static calculateNGENAllocation(weeklyReleaseAmount) {
     const weekKey = this.getCurrentWeekKey();
     const weekData = weeklyScores.get(weekKey);
@@ -211,19 +211,19 @@ class ContributionSystem {
     return allocations;
   }
   
-  // get当前周的key
+  // getCurrent周的key
   static getCurrentWeekKey() {
     const now = new Date();
     const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
     return startOfWeek.toISOString().split('T')[0];
   }
   
-  // get代理的Contribution data
+  // getagent的Contribution data
   static getAgentContributions(agentId) {
     return agentContributions.get(agentId) || null;
   }
   
-  // get所有代理的Contribution data
+  // get所有agent的Contribution data
   static getAllContributions() {
     return Object.fromEntries(agentContributions);
   }
@@ -236,17 +236,17 @@ class ContributionSystem {
     return Object.fromEntries(weeklyScores);
   }
   
-  // get信誉分数
+  // getreputation score数
   static getReputationScores() {
     return Object.fromEntries(reputationScores);
   }
   
-  // get代理的信誉分数
+  // getagent的reputation score数
   static getAgentReputation(agentId) {
     return reputationScores.get(agentId) || 0;
   }
   
-  // 设置代理的信誉分数（用于测试或管理员操作）
+  // Setagent的reputation score数(forTest或管理员操作)
   static setAgentReputation(agentId, score) {
     reputationScores.set(agentId, Math.max(0, score));
     console.log(`[ContributionSystem] Set reputation score for agent ${agentId}: ${score}`);

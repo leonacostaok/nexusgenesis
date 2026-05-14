@@ -1,12 +1,12 @@
 /**
  * NexusGenesis - AGENT_REGISTER Transaction Type
  * 
- * agent链上注册交易
+ * agenton-chainRegistertransaction
  * 
- * 交易结构：
+ * transaction结构: 
  * {
  *   type: 'AGENT_REGISTER',
- *   from: 'ng1...',        // 注册地址
+ *   from: 'ng1...',        // Registeraddress
  *   payload: {
  *     agent_identity: 'unique-agent-id',
  *     capabilities: ['coding', 'testing', 'review'],
@@ -20,25 +20,25 @@
 import crypto from 'crypto';
 
 /**
- * 创建 AGENT_REGISTER 交易
- * @param {string} from - 注册地址
- * @param {object} agentInfo - agent信息
- * @param {string} privateKey - 私钥（用于签名）
- * @returns {object} 交易对象
+ * Create AGENT_REGISTER transaction
+ * @param {string} from - Registeraddress
+ * @param {object} agentInfo - agentinfo
+ * @param {string} privateKey - private key(forSign)
+ * @returns {object} transaction对象
  */
 export function createAgentRegisterTransaction(from, agentInfo, privateKey) {
-  // 验证必填字段
+  // Verify必填字段
   if (!from || !agentInfo.agent_identity) {
     throw new Error('Missing required fields: from, agent_identity');
   }
 
-  // 生成交易ID
+  // Generatetransaction ID
   const timestamp = Date.now();
   const id = crypto.createHash('sha256')
     .update(`agent-register-${from}-${agentInfo.agent_identity}-${timestamp}`)
     .digest('hex');
 
-  // 构建交易
+  // 构建transaction
   const transaction = {
     id,
     type: 'AGENT_REGISTER',
@@ -53,7 +53,7 @@ export function createAgentRegisterTransaction(from, agentInfo, privateKey) {
     nonce: Math.floor(Math.random() * 1000000)
   };
 
-  // 签名（如果提供了私钥）
+  // Sign(如果提供了private key)
   if (privateKey) {
     transaction.signature = signTransaction(transaction, privateKey);
   }
@@ -62,17 +62,17 @@ export function createAgentRegisterTransaction(from, agentInfo, privateKey) {
 }
 
 /**
- * 验证 AGENT_REGISTER 交易
- * @param {object} transaction - 交易对象
- * @returns {object} 验证结果 { valid: boolean, reason?: string }
+ * Verify AGENT_REGISTER transaction
+ * @param {object} transaction - transaction对象
+ * @returns {object} verification result { valid: boolean, reason?: string }
  */
 export function validateAgentRegisterTransaction(transaction) {
-  // 检查交易类型
+  // Checktransactiontype
   if (transaction.type !== 'AGENT_REGISTER') {
     return { valid: false, reason: 'Invalid transaction type' };
   }
 
-  // 检查必填字段
+  // Check必填字段
   if (!transaction.from) {
     return { valid: false, reason: 'Missing from address' };
   }
@@ -81,28 +81,28 @@ export function validateAgentRegisterTransaction(transaction) {
     return { valid: false, reason: 'Missing transaction ID' };
   }
 
-  // 检查 payload
+  // Check payload
   const payload = transaction.payload || {};
   if (!payload.agent_identity) {
     return { valid: false, reason: 'Missing agent_identity in payload' };
   }
 
-  // 验证地址格式
+  // Verifyaddress格式
   if (!isValidAddress(transaction.from)) {
     return { valid: false, reason: 'Invalid from address format' };
   }
 
-  // 验证 agent_identity 格式
+  // Verify agent_identity 格式
   if (!isValidAgentIdentity(payload.agent_identity)) {
     return { valid: false, reason: 'Invalid agent_identity format' };
   }
 
-  // 验证 capabilities 格式
+  // Verify capabilities 格式
   if (payload.capabilities && !Array.isArray(payload.capabilities)) {
     return { valid: false, reason: 'Capabilities must be an array' };
   }
 
-  // 检查 metadata 长度
+  // Check metadata length
   if (payload.metadata && payload.metadata.length > 4096) {
     return { valid: false, reason: 'Metadata too long (max 4096 chars)' };
   }
@@ -111,8 +111,8 @@ export function validateAgentRegisterTransaction(transaction) {
 }
 
 /**
- * 验证地址格式
- * @param {string} address - 地址
+ * Verifyaddress格式
+ * @param {string} address - address
  * @returns {boolean} 是否有效
  */
 function isValidAddress(address) {
@@ -123,22 +123,22 @@ function isValidAddress(address) {
 }
 
 /**
- * 验证agent身份标识格式
+ * Verifyagent身份标识格式
  * @param {string} identity - 身份标识
  * @returns {boolean} 是否有效
  */
 function isValidAgentIdentity(identity) {
   if (!identity || typeof identity !== 'string') return false;
   if (identity.length < 3 || identity.length > 64) return false;
-  // 只允许字母、数字、连字符和下划线
+  // 只allow字母, 数字, 连字符和下划线
   return /^[a-zA-Z0-9_-]+$/.test(identity);
 }
 
 /**
- * 签名交易
- * @param {object} transaction - 交易对象
- * @param {string} privateKey - 私钥
- * @returns {string} 签名
+ * Signtransaction
+ * @param {object} transaction - transaction对象
+ * @param {string} privateKey - private key
+ * @returns {string} Sign
  */
 function signTransaction(transaction, privateKey) {
   const data = JSON.stringify({
@@ -156,10 +156,10 @@ function signTransaction(transaction, privateKey) {
 }
 
 /**
- * 验证交易签名
- * @param {object} transaction - 交易对象
- * @param {string} publicKey - 公钥
- * @returns {boolean} 签名是否有效
+ * VerifytransactionSign
+ * @param {object} transaction - transaction对象
+ * @param {string} publicKey - public key
+ * @returns {boolean} Sign是否有效
  */
 export function verifyAgentRegisterSignature(transaction, publicKey) {
   if (!transaction.signature) return false;
@@ -183,28 +183,28 @@ export function verifyAgentRegisterSignature(transaction, publicKey) {
 }
 
 /**
- * 检查地址是否已注册
- * @param {string} address - 地址
+ * Checkaddress是否registered
+ * @param {string} address - address
  * @param {object} state - Blockchain state
- * @returns {boolean} 是否已注册
+ * @returns {boolean} 是否registered
  */
 export function isAddressRegistered(address, state) {
   return state.agentRegistry.addressIndex.has(address);
 }
 
 /**
- * getagent信息
+ * getagentinfo
  * @param {string} agentId - agentID
  * @param {object} state - Blockchain state
- * @returns {object|null} agent信息
+ * @returns {object|null} agentinfo
  */
 export function getAgentInfo(agentId, state) {
   return state.agentRegistry.agents.get(agentId) || null;
 }
 
 /**
- * get地址对应的agentID
- * @param {string} address - 地址
+ * getaddress对应的agentID
+ * @param {string} address - address
  * @param {object} state - Blockchain state
  * @returns {string|null} agentID
  */
@@ -213,7 +213,7 @@ export function getAgentIdByAddress(address, state) {
 }
 
 /**
- * 列出所有已注册agent
+ * 列出所有registeredagent
  * @param {object} state - Blockchain state
  * @returns {Array} agent列表
  */

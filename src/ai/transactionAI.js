@@ -1,12 +1,12 @@
 /**
- * 交易预测AI模块
- * 提供AI预测交易模式和市场趋势的功能
+ * transaction预测AIModule
+ * 提供AI预测transactionmode和marketplace趋势的Features
  */
 
 import { aiService } from './aiService.js';
 
 /**
- * 交易预测AI类
+ * transaction预测AIclass
  */
 export class TransactionAI {
   constructor() {
@@ -14,7 +14,7 @@ export class TransactionAI {
   }
 
   /**
-   * 初始化交易预测AI
+   * Initializetransaction预测AI
    */
   async initialize() {
     await this.aiService.initialize();
@@ -22,9 +22,9 @@ export class TransactionAI {
   }
 
   /**
-   * 预测交易模式
-   * @param {array} transactionHistory 交易历史
-   * @returns {object} 交易模式预测结果
+   * 预测transactionmode
+   * @param {array} transactionHistory transaction历史
+   * @returns {object} transactionmode预测结果
    */
   async predictTransactionPatterns(transactionHistory) {
     try {
@@ -40,20 +40,20 @@ export class TransactionAI {
   }
 
   /**
-   * 分析交易趋势
-   * @param {array} transactionHistory 交易历史
-   * @returns {object} 交易趋势分析结果
+   * 分析transaction趋势
+   * @param {array} transactionHistory transaction历史
+   * @returns {object} transaction趋势分析结果
    */
   async analyzeTransactionTrends(transactionHistory) {
     try {
-      // 模拟交易趋势分析
+      // Simulationtransaction趋势分析
       const trends = {
         daily: this.analyzeDailyTrends(transactionHistory),
         weekly: this.analyzeWeeklyTrends(transactionHistory),
         monthly: this.analyzeMonthlyTrends(transactionHistory)
       };
       
-      // 计算整体趋势
+      // Calculate整体趋势
       const overallTrend = this.calculateOverallTrend(trends);
       
       return {
@@ -70,8 +70,8 @@ export class TransactionAI {
   }
 
   /**
-   * 分析every 日交易趋势
-   * @param {array} transactions 交易历史
+   * 分析every 日transaction趋势
+   * @param {array} transactions transaction历史
    * @returns {object} every 日趋势
    */
   analyzeDailyTrends(transactions) {
@@ -93,7 +93,7 @@ export class TransactionAI {
       dailyData[dateKey].totalAmount += tx.amount;
     });
     
-    // 计算Average值
+    // CalculateAverage值
     Object.keys(dailyData).forEach(date => {
       const data = dailyData[date];
       data.averageAmount = data.totalAmount / data.count;
@@ -103,8 +103,8 @@ export class TransactionAI {
   }
 
   /**
-   * 分析every 周交易趋势
-   * @param {array} transactions 交易历史
+   * 分析every 周transaction趋势
+   * @param {array} transactions transaction历史
    * @returns {object} every 周趋势
    */
   analyzeWeeklyTrends(transactions) {
@@ -128,7 +128,7 @@ export class TransactionAI {
       weeklyData[weekKey].totalAmount += tx.amount;
     });
     
-    // 计算Average值
+    // CalculateAverage值
     Object.keys(weeklyData).forEach(week => {
       const data = weeklyData[week];
       data.averageAmount = data.totalAmount / data.count;
@@ -138,8 +138,8 @@ export class TransactionAI {
   }
 
   /**
-   * 分析every 月交易趋势
-   * @param {array} transactions 交易历史
+   * 分析every 月transaction趋势
+   * @param {array} transactions transaction历史
    * @returns {object} every 月趋势
    */
   analyzeMonthlyTrends(transactions) {
@@ -163,7 +163,7 @@ export class TransactionAI {
       monthlyData[monthKey].totalAmount += tx.amount;
     });
     
-    // 计算Average值
+    // CalculateAverage值
     Object.keys(monthlyData).forEach(month => {
       const data = monthlyData[month];
       data.averageAmount = data.totalAmount / data.count;
@@ -173,12 +173,12 @@ export class TransactionAI {
   }
 
   /**
-   * 计算整体趋势
+   * Calculate整体趋势
    * @param {object} trends 各时间维度的趋势
    * @returns {string} 整体趋势
    */
   calculateOverallTrend(trends) {
-    // 基于every 月趋势计算整体趋势
+    // based onevery 月趋势Calculate整体趋势
     const monthlyTrends = Object.values(trends.monthly);
     if (monthlyTrends.length < 2) return 'stable';
     
@@ -198,9 +198,9 @@ export class TransactionAI {
   }
 
   /**
-   * 计算Average交易金额
-   * @param {array} transactions 交易历史
-   * @returns {number} Average金额
+   * CalculateAveragetransactionamount
+   * @param {array} transactions transaction历史
+   * @returns {number} Averageamount
    */
   calculateAverageAmount(transactions) {
     if (transactions.length === 0) return 0;
@@ -220,13 +220,13 @@ export class TransactionAI {
   }
 
   /**
-   * 预测市场趋势
-   * @param {object} marketData 市场数据
-   * @returns {object} 市场趋势预测
+   * 预测marketplace趋势
+   * @param {object} marketData marketplacedata
+   * @returns {object} marketplace趋势预测
    */
   async predictMarketTrends(marketData) {
     try {
-      // 模拟市场趋势预测
+      // Simulationmarketplace趋势预测
       return {
         pricePrediction: {
           next24h: (Math.random() * 10 - 5).toFixed(2),
@@ -248,9 +248,9 @@ export class TransactionAI {
   }
 
   /**
-   * 计算市场情绪
-   * @param {object} marketData 市场数据
-   * @returns {string} 市场情绪
+   * Calculatemarketplace情绪
+   * @param {object} marketData marketplacedata
+   * @returns {string} marketplace情绪
    */
   calculateMarketSentiment(marketData) {
     const sentimentScores = [
@@ -261,15 +261,15 @@ export class TransactionAI {
   }
 
   /**
-   * 识别异常交易模式
-   * @param {array} transactions 交易历史
-   * @returns {object} 异常模式识别结果
+   * 识别exceptiontransactionmode
+   * @param {array} transactions transaction历史
+   * @returns {object} exceptionmode识别结果
    */
   async identifyAnomalousPatterns(transactions) {
     try {
       const anomalies = [];
       
-      // 检测异常交易频率
+      // 检测exceptiontransaction频率
       const timeIntervals = [];
       for (let i = 1; i < transactions.length; i++) {
         const interval = transactions[i].timestamp - transactions[i - 1].timestamp;
@@ -280,13 +280,13 @@ export class TransactionAI {
         const avgInterval = timeIntervals.reduce((sum, interval) => sum + interval, 0) / timeIntervals.length;
         const stdDev = Math.sqrt(timeIntervals.reduce((sum, interval) => sum + Math.pow(interval - avgInterval, 2), 0) / timeIntervals.length);
         
-        // 检测异常时间间隔
+        // 检测exception时间间隔
         timeIntervals.forEach((interval, index) => {
           if (Math.abs(interval - avgInterval) > 2 * stdDev) {
             anomalies.push({
               type: 'unusual_frequency',
               severity: 'medium',
-              description: '检测到异常交易频率',
+              description: '检测到exceptiontransaction频率',
               transactionIndex: index + 1,
               interval: interval,
               averageInterval: avgInterval,
@@ -296,7 +296,7 @@ export class TransactionAI {
         });
       }
       
-      // 检测异常交易金额
+      // 检测exceptiontransactionamount
       const amounts = transactions.map(tx => tx.amount);
       if (amounts.length > 0) {
         const avgAmount = amounts.reduce((sum, amount) => sum + amount, 0) / amounts.length;
@@ -307,7 +307,7 @@ export class TransactionAI {
             anomalies.push({
               type: 'unusual_amount',
               severity: 'high',
-              description: '检测到异常交易金额',
+              description: '检测到exceptiontransactionamount',
               transaction: tx,
               averageAmount: avgAmount,
               confidence: Math.random() * 20 + 80
@@ -329,32 +329,32 @@ export class TransactionAI {
   }
 
   /**
-   * 生成交易建议
-   * @param {array} transactionHistory 交易历史
-   * @param {object} marketData 市场数据
-   * @returns {object} 交易建议
+   * Generatetransaction建议
+   * @param {array} transactionHistory transaction历史
+   * @param {object} marketData marketplacedata
+   * @returns {object} transaction建议
    */
   async generateTransactionRecommendations(transactionHistory, marketData) {
     try {
       const trends = await this.analyzeTransactionTrends(transactionHistory);
       const marketPrediction = await this.predictMarketTrends(marketData);
       
-      // 基于趋势和预测生成建议
+      // based on趋势和预测Generate建议
       const recommendations = [];
       
       if (trends.overallTrend === 'up' && marketPrediction.trend === 'up') {
-        recommendations.push('考虑增加投资金额');
-        recommendations.push('设置止损以保护收益');
+        recommendations.push('考虑增加投fund额');
+        recommendations.push('Set止损以保护收益');
       } else if (trends.overallTrend === 'down' && marketPrediction.trend === 'down') {
-        recommendations.push('减少交易频率');
-        recommendations.push('考虑暂时退出市场');
+        recommendations.push('减少transaction频率');
+        recommendations.push('考虑暂时退出marketplace');
       } else {
-        recommendations.push('保持当前交易策略');
-        recommendations.push('关注市场变化');
+        recommendations.push('保持Currenttransaction策略');
+        recommendations.push('关注marketplace变化');
       }
       
       // 添加通用建议
-      recommendations.push('定期审查交易策略');
+      recommendations.push('定期审查transaction策略');
       recommendations.push('分散投资以降低风险');
       recommendations.push('保持充足的流动性');
       
@@ -372,8 +372,8 @@ export class TransactionAI {
   }
 }
 
-// 导出交易预测AI实例
+// Exporttransaction预测AIinstance
 export const transactionAI = new TransactionAI();
 
-// 导出Default值
+// ExportDefault值
 export default transactionAI;

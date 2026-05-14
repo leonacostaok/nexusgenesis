@@ -1,12 +1,12 @@
 /**
- * DeveloperIncentives - 开发者激励系统
+ * DeveloperIncentives - DeveloperIncentive系统
  * Phase 2: 生态扩展
  *
- * 支持:
- *   - Bug Bounty: Security vulnerability奖励
- *   - Feature Grant: 功能开发资助
- *   - PR Reward: 代码合并奖励
- *   - Challenge: 挑战Task 奖励
+ * support:
+ *   - Bug Bounty: Security vulnerabilityreward
+ *   - Feature Grant: Features开发资助
+ *   - PR Reward: 代码合并reward
+ *   - Challenge: 挑战Task reward
  */
 
 import { ContributionSystem } from '../ai/contributionSystem.js';

@@ -1,9 +1,9 @@
 /**
- * NexusGenesis - 智能合约模板库
- * 提供常用场景的智能合约模板：DID、DAO、Token、NFT等
+ * NexusGenesis - Smart Contract模板库
+ * 提供常用场景的Smart Contract模板: DID, DAO, Token, NFTetc.
  */
 
-// 合约类型定义
+// Contracttype定义
 const CONTRACT_TYPES = {
   DID: 'did',
   DAO: 'dao',
@@ -35,7 +35,7 @@ class ContractTemplateLibrary {
   }
 
   /**
-   * 初始化Default模板
+   * InitializeDefault模板
    */
   initDefaultTemplates() {
     this.registerTemplate(CONTRACT_TYPES.DID, this.createDIDTemplate());
@@ -52,7 +52,7 @@ class ContractTemplateLibrary {
   }
 
   /**
-   * 注册合约模板
+   * RegisterContract模板
    */
   registerTemplate(type, template) {
     if (!this.templates.has(type)) {
@@ -62,7 +62,7 @@ class ContractTemplateLibrary {
   }
 
   /**
-   * get合约模板
+   * getContract模板
    */
   getTemplate(type) {
     return this.templates.get(type) || null;
@@ -84,16 +84,16 @@ class ContractTemplateLibrary {
     return result;
   }
 
-  // ==================== DID 合约模板 ====================
+  // ==================== DID Contract模板 ====================
   
   createDIDTemplate() {
     return {
       type: CONTRACT_TYPES.DID,
       name: 'Decentralized Identity Contract',
-      description: '去中心化身份管理合约，支持身份注册、验证和属性管理',
+      description: '去中心化身份管理Contract, support身份Register, Verify和property管理',
       version: '1.0.0',
       
-      // 合约结构定义
+      // Contract结构定义
       schema: {
         fields: [
           { name: 'did', type: 'string', required: true },
@@ -105,7 +105,7 @@ class ContractTemplateLibrary {
         ]
       },
       
-      // Default配置
+      // DefaultConfiguration
       defaultConfig: {
         maxAttributesPerDID: 50,
         attributeExpirationDays: 365,
@@ -113,22 +113,22 @@ class ContractTemplateLibrary {
         recoveryEnabled: true
       },
       
-      // 核心方法
+      // 核心method
       methods: {
         registerIdentity: {
-          description: '注册新的去中心化身份',
+          description: 'Register新的去中心化身份',
           parameters: ['owner', 'publicKey'],
           returns: 'did'
         },
         
         updateAttribute: {
-          description: '更新身份属性',
+          description: 'Update身份property',
           parameters: ['did', 'key', 'value'],
           returns: 'boolean'
         },
         
         verifyIdentity: {
-          description: '验证身份有效性',
+          description: 'Verify身份有效性',
           parameters: ['did'],
           returns: 'boolean'
         },
@@ -140,7 +140,7 @@ class ContractTemplateLibrary {
         }
       },
       
-      // 部署参数生成
+      // DeployparameterGenerate
       generateDeployParams(customConfig = {}) {
         return {
           ...this.defaultConfig,
@@ -150,13 +150,13 @@ class ContractTemplateLibrary {
     };
   }
 
-  // ==================== DAO 合约模板 ====================
+  // ==================== DAO Contract模板 ====================
   
   createDAOTemplate() {
     return {
       type: CONTRACT_TYPES.DAO,
       name: 'Decentralized Autonomous Organization',
-      description: '去中心化自治组织合约，支持提案、投票和资金管理',
+      description: '去中心化自治组织Contract, supportProposal, Vote和fund管理',
       version: '1.0.0',
       
       schema: {
@@ -174,33 +174,33 @@ class ContractTemplateLibrary {
       
       defaultConfig: {
         votingDuration: 7 * 24 * 60 * 60, // 7天
-        quorumPercentage: 51, // 51%法定人数
-        proposalThreshold: 1000, // 提案门槛（代币数）
-        executionDelay: 2 * 24 * 60 * 60, // 2天执行延迟
+        quorumPercentage: 51, // 51%quorum
+        proposalThreshold: 1000, // Proposal门槛(Token数)
+        executionDelay: 2 * 24 * 60 * 60, // 2天Execute延迟
         maxProposals: 100
       },
       
       methods: {
         createProposal: {
-          description: '创建治理提案',
+          description: 'CreateGovernanceProposal',
           parameters: ['title', 'description', 'actions'],
           returns: 'proposalId'
         },
         
         castVote: {
-          description: '对提案进行投票',
+          description: '对Proposal进行Vote',
           parameters: ['proposalId', 'voteType'],
           returns: 'boolean'
         },
         
         executeProposal: {
-          description: '执行已通过的提案',
+          description: 'Executepassed的Proposal',
           parameters: ['proposalId'],
           returns: 'boolean'
         },
         
         addMember: {
-          description: '添加DAO成员',
+          description: '添加DAOmember',
           parameters: ['memberAddress', 'shares'],
           returns: 'boolean'
         },
@@ -221,13 +221,13 @@ class ContractTemplateLibrary {
     };
   }
 
-  // ==================== Token 合约模板 ====================
+  // ==================== Token Contract模板 ====================
   
   createTokenTemplate() {
     return {
       type: CONTRACT_TYPES.TOKEN,
       name: 'Fungible Token (ERC-20 compatible)',
-      description: '可替代代币合约，支持转账、授权和铸造',
+      description: '可替代TokenContract, supporttransfer, authorization和铸造',
       version: '1.0.0',
       
       schema: {
@@ -249,37 +249,37 @@ class ContractTemplateLibrary {
         decimals: 18,
         mintable: true,
         burnable: true,
-        transferFee: 0, // 0% 转账费
+        transferFee: 0, // 0% transfer费
         maxSupply: null // 无上限
       },
       
       methods: {
         transfer: {
-          description: '转移代币',
+          description: '转移Token',
           parameters: ['to', 'amount'],
           returns: 'boolean'
         },
         
         approve: {
-          description: '授权他人使用代币',
+          description: 'authorization他人usingToken',
           parameters: ['spender', 'amount'],
           returns: 'boolean'
         },
         
         transferFrom: {
-          description: '从授权账户转移代币',
+          description: '从authorization账户转移Token',
           parameters: ['from', 'to', 'amount'],
           returns: 'boolean'
         },
         
         mint: {
-          description: '铸造新代币',
+          description: '铸造新Token',
           parameters: ['to', 'amount'],
           returns: 'boolean'
         },
         
         burn: {
-          description: '销毁代币',
+          description: '销毁Token',
           parameters: ['amount'],
           returns: 'boolean'
         }
@@ -294,13 +294,13 @@ class ContractTemplateLibrary {
     };
   }
 
-  // ==================== NFT 合约模板 ====================
+  // ==================== NFT Contract模板 ====================
   
   createNFTTemplate() {
     return {
       type: CONTRACT_TYPES.NFT,
       name: 'Non-Fungible Token (ERC-721 compatible)',
-      description: '非同质化代币合约，支持数字资产唯一性表示',
+      description: '非同质化TokenContract, support数字asset唯一性表示',
       version: '1.0.0',
       
       schema: {
@@ -331,19 +331,19 @@ class ContractTemplateLibrary {
         },
         
         transferNFT: {
-          description: '转移NFT所有权',
+          description: '转移NFTownership',
           parameters: ['from', 'to', 'tokenId'],
           returns: 'boolean'
         },
         
         setTokenURI: {
-          description: '设置NFT元数据URI',
+          description: 'SetNFTmetadataURI',
           parameters: ['tokenId', 'uri'],
           returns: 'boolean'
         },
         
         approveTransfer: {
-          description: '授权他人转移NFT',
+          description: 'authorization他人转移NFT',
           parameters: ['approved', 'tokenId'],
           returns: 'boolean'
         },
@@ -364,13 +364,13 @@ class ContractTemplateLibrary {
     };
   }
 
-  // ==================== Staking 合约模板 ====================
+  // ==================== Staking Contract模板 ====================
   
   createStakingTemplate() {
     return {
       type: CONTRACT_TYPES.STAKING,
       name: 'Staking Pool Contract',
-      description: '质押池合约，支持代币质押、奖励分配和提取',
+      description: '质押PoolContract, supportToken质押, reward分配和提取',
       version: '1.0.0',
       
       schema: {
@@ -387,7 +387,7 @@ class ContractTemplateLibrary {
       
       defaultConfig: {
         rewardRate: 100, // 年化10%
-        lockPeriod: 30 * 24 * 60 * 60, // 30天锁定期
+        lockPeriod: 30 * 24 * 60 * 60, // 30天Lock期
         earlyWithdrawPenalty: 10, // 10%提前退出惩罚
         minStakeAmount: 100,
         maxStakeAmount: null,
@@ -396,7 +396,7 @@ class ContractTemplateLibrary {
       
       methods: {
         stakeTokens: {
-          description: '质押代币',
+          description: '质押Token',
           parameters: ['amount'],
           returns: 'stakeId'
         },
@@ -408,19 +408,19 @@ class ContractTemplateLibrary {
         },
         
         claimRewards: {
-          description: '领取质押奖励',
+          description: '领取质押reward',
           parameters: [],
           returns: 'amount'
         },
         
         compoundRewards: {
-          description: '复投奖励',
+          description: '复投reward',
           parameters: [],
           returns: 'newAmount'
         },
         
         getStakeInfo: {
-          description: '获取质押信息',
+          description: 'Get质押info',
           parameters: ['userAddress'],
           returns: 'stakeInfo'
         }
@@ -435,13 +435,13 @@ class ContractTemplateLibrary {
     };
   }
 
-  // ==================== Escrow 合约模板 ====================
+  // ==================== Escrow Contract模板 ====================
   
   createEscrowTemplate() {
     return {
       type: CONTRACT_TYPES.ESCROW,
       name: 'Escrow Smart Contract',
-      description: '托管合约，支持条件释放和争议解决',
+      description: '托管Contract, support条件Release和争议解决',
       version: '1.0.0',
       
       schema: {
@@ -459,19 +459,19 @@ class ContractTemplateLibrary {
       defaultConfig: {
         disputeResolutionPeriod: 14 * 24 * 60 * 60, // 14天争议期
         autoReleaseAfterDispute: true,
-        feePercentage: 1, // 1%手续费
+        feePercentage: 1, // 1%fee
         requireBothApproval: false
       },
       
       methods: {
         createEscrow: {
-          description: '创建托管交易',
+          description: 'Create托管transaction',
           parameters: ['buyer', 'seller', 'amount', 'conditions'],
           returns: 'escrowId'
         },
         
         releaseFunds: {
-          description: '释放资金给卖家',
+          description: 'Releasefund给卖家',
           parameters: ['escrowId'],
           returns: 'boolean'
         },
@@ -504,14 +504,14 @@ class ContractTemplateLibrary {
     };
   }
 
-  // ==================== 开发者激励模板（Phase 2 新增） ====================
+  // ==================== DeveloperIncentive模板(Phase 2 新增) ====================
 
   createDevIncentiveTemplate() {
     return {
       type: CONTRACT_TYPES.DEV_INCENTIVE,
       name: 'Developer Incentive System',
       version: '1.0.0',
-      description: '开发者激励合约 — Bug Bounty、Feature Grant、PR Reward、Challenge',
+      description: 'DeveloperIncentiveContract — Bug Bounty, Feature Grant, PR Reward, Challenge',
       category: 'governance',
       complexity: 'advanced',
       instructionLimit: 3000,
@@ -532,7 +532,7 @@ class ContractTemplateLibrary {
 
       methods: {
         createBugBounty: {
-          description: '创建 Bug Bounty',
+          description: 'Create Bug Bounty',
           params: [
             { name: 'title', type: 'string' },
             { name: 'severity', type: 'string' },
@@ -557,7 +557,7 @@ class ContractTemplateLibrary {
           returns: 'boolean'
         },
         createGrant: {
-          description: '创建功能开发资助',
+          description: 'CreateFeatures开发资助',
           params: [
             { name: 'title', type: 'string' },
             { name: 'reward', type: 'uint256' }
@@ -573,7 +573,7 @@ class ContractTemplateLibrary {
           returns: 'boolean'
         },
         createChallenge: {
-          description: '创建开发挑战',
+          description: 'Create开发挑战',
           params: [
             { name: 'title', type: 'string' },
             { name: 'reward', type: 'uint256' },
@@ -582,14 +582,14 @@ class ContractTemplateLibrary {
           returns: 'string'
         },
         claimReward: {
-          description: '领取奖励',
+          description: '领取reward',
           params: [
             { name: 'incentiveId', type: 'string' }
           ],
           returns: 'boolean'
         },
         getStats: {
-          description: '获取激励统计',
+          description: 'GetIncentive统计',
           params: [],
           returns: 'object'
         }
@@ -601,14 +601,14 @@ class ContractTemplateLibrary {
     };
   }
 
-  // ==================== Marketplace 模板（Phase 2 新增） ====================
+  // ==================== Marketplace 模板(Phase 2 新增) ====================
 
   createMarketplaceTemplate() {
     return {
       type: CONTRACT_TYPES.MARKETPLACE,
       name: 'Decentralized Marketplace',
       version: '1.0.0',
-      description: '去中心化市场合约 — NFT交易、服务市场、数据交易',
+      description: '去中心化marketplaceContract — NFTtransaction, servicemarketplace, datatransaction',
       category: 'defi',
       complexity: 'advanced',
       instructionLimit: 2500,
@@ -686,14 +686,14 @@ class ContractTemplateLibrary {
     };
   }
 
-  // ==================== 治理代币模板（Phase 2 新增） ====================
+  // ==================== GovernanceToken模板(Phase 2 新增) ====================
 
   createGovernanceTokenTemplate() {
     return {
       type: CONTRACT_TYPES.GOVERNANCE_TOKEN,
       name: 'Governance Token',
       version: '1.0.0',
-      description: '治理代币合约 — 投票权重、委托投票、提案门槛、代币分发',
+      description: 'GovernanceTokenContract — voting weight, 委托Vote, Proposal门槛, Token分发',
       category: 'governance',
       complexity: 'advanced',
       instructionLimit: 2500,
@@ -713,7 +713,7 @@ class ContractTemplateLibrary {
 
       methods: {
         mint: {
-          description: '铸造治理代币',
+          description: '铸造GovernanceToken',
           params: [
             { name: 'to', type: 'address' },
             { name: 'amount', type: 'uint256' }
@@ -721,14 +721,14 @@ class ContractTemplateLibrary {
           returns: 'boolean'
         },
         delegate: {
-          description: '委托投票权',
+          description: '委托Vote权',
           params: [
             { name: 'delegatee', type: 'address' }
           ],
           returns: 'boolean'
         },
         propose: {
-          description: '创建治理提案',
+          description: 'CreateGovernanceProposal',
           params: [
             { name: 'targets', type: 'address[]' },
             { name: 'values', type: 'uint256[]' },
@@ -738,7 +738,7 @@ class ContractTemplateLibrary {
           returns: 'uint256'
         },
         castVote: {
-          description: '投票',
+          description: 'Vote',
           params: [
             { name: 'proposalId', type: 'uint256' },
             { name: 'support', type: 'uint8' }
@@ -746,21 +746,21 @@ class ContractTemplateLibrary {
           returns: 'boolean'
         },
         execute: {
-          description: '执行已通过提案',
+          description: 'ExecutepassedProposal',
           params: [
             { name: 'proposalId', type: 'uint256' }
           ],
           returns: 'boolean'
         },
         getVotingPower: {
-          description: '查询投票权重',
+          description: '查询voting weight',
           params: [
             { name: 'account', type: 'address' }
           ],
           returns: 'uint256'
         },
         getProposalState: {
-          description: '查询提案状态',
+          description: '查询Proposalstatus',
           params: [
             { name: 'proposalId', type: 'uint256' }
           ],
@@ -774,14 +774,14 @@ class ContractTemplateLibrary {
     };
   }
 
-  // ==================== 众筹合约模板（Phase 2 新增） ====================
+  // ==================== 众筹Contract模板(Phase 2 新增) ====================
 
   createCrowdfundingTemplate() {
     return {
       type: CONTRACT_TYPES.CROWDFUNDING,
       name: 'Crowdfunding Campaign',
       version: '1.0.0',
-      description: '众筹合约 — 创建众筹项目、贡献、目标追踪、退款、里程碑支付',
+      description: '众筹Contract — Create众筹项目, contribution, 目标追踪, 退款, 里程碑支付',
       category: 'defi',
       complexity: 'intermediate',
       instructionLimit: 2000,
@@ -798,7 +798,7 @@ class ContractTemplateLibrary {
 
       methods: {
         createCampaign: {
-          description: '创建众筹项目',
+          description: 'Create众筹项目',
           params: [
             { name: 'title', type: 'string' },
             { name: 'description', type: 'string' },
@@ -809,7 +809,7 @@ class ContractTemplateLibrary {
           returns: 'string'
         },
         contribute: {
-          description: '贡献资金',
+          description: 'contributionfund',
           params: [
             { name: 'campaignId', type: 'string' },
             { name: 'amount', type: 'uint256' }
@@ -817,21 +817,21 @@ class ContractTemplateLibrary {
           returns: 'boolean'
         },
         claimFunds: {
-          description: '发起人领取资金（需达到目标）',
+          description: '发起人领取fund(需达到目标)',
           params: [
             { name: 'campaignId', type: 'string' }
           ],
           returns: 'boolean'
         },
         refund: {
-          description: '贡献者退款（未达到目标时）',
+          description: 'contribution者退款(未达到目标时)',
           params: [
             { name: 'campaignId', type: 'string' }
           ],
           returns: 'boolean'
         },
         createMilestone: {
-          description: '创建里程碑',
+          description: 'Create里程碑',
           params: [
             { name: 'campaignId', type: 'string' },
             { name: 'title', type: 'string' },
@@ -840,7 +840,7 @@ class ContractTemplateLibrary {
           returns: 'string'
         },
         releaseMilestone: {
-          description: '释放里程碑资金',
+          description: 'Release里程碑fund',
           params: [
             { name: 'campaignId', type: 'string' },
             { name: 'milestoneId', type: 'string' }
@@ -862,14 +862,14 @@ class ContractTemplateLibrary {
     };
   }
 
-  // ==================== 多签钱包模板（Phase 2 新增） ====================
+  // ==================== Multi-signature钱包模板(Phase 2 新增) ====================
 
   createMultiSigTemplate() {
     return {
       type: CONTRACT_TYPES.MULTI_SIG,
       name: 'Multi-Signature Wallet',
       version: '1.0.0',
-      description: '多签钱包合约 — 多签确认交易、权限管理、每日限额、紧急冻结',
+      description: 'Multi-signature钱包Contract — Multi-signature确认transaction, permission管理, 每日限额, 紧急冻结',
       category: 'security',
       complexity: 'intermediate',
       instructionLimit: 1800,
@@ -908,7 +908,7 @@ class ContractTemplateLibrary {
           returns: 'boolean'
         },
         submitTransaction: {
-          description: '提交待确认交易',
+          description: '提交待确认transaction',
           params: [
             { name: 'to', type: 'address' },
             { name: 'value', type: 'uint256' },
@@ -917,7 +917,7 @@ class ContractTemplateLibrary {
           returns: 'uint256'
         },
         confirmTransaction: {
-          description: '确认交易',
+          description: '确认transaction',
           params: [
             { name: 'txId', type: 'uint256' }
           ],
@@ -931,7 +931,7 @@ class ContractTemplateLibrary {
           returns: 'boolean'
         },
         executeTransaction: {
-          description: '执行已确认交易',
+          description: 'Execute已确认transaction',
           params: [
             { name: 'txId', type: 'uint256' }
           ],
@@ -962,10 +962,10 @@ class ContractTemplateLibrary {
     };
   }
 
-  // ==================== 辅助方法 ====================
+  // ==================== 辅助method ====================
 
   /**
-   * 从模板创建合约实例
+   * 从模板CreateContractinstance
    */
   createContractFromTemplate(type, deployParams = {}) {
     const template = this.getTemplate(type);
@@ -989,7 +989,7 @@ class ContractTemplateLibrary {
   }
 
   /**
-   * 记录部署的合约
+   * 记录Deploy的Contract
    */
   recordDeployment(contractId, contractData) {
     this.deployedContracts.set(contractId, {
@@ -1000,14 +1000,14 @@ class ContractTemplateLibrary {
   }
 
   /**
-   * get已部署的合约
+   * getdeployed的Contract
    */
   getDeployedContract(contractId) {
     return this.deployedContracts.get(contractId) || null;
   }
 
   /**
-   * get所有已部署的合约
+   * get所有deployed的Contract
    */
   getAllDeployedContracts() {
     return Array.from(this.deployedContracts.entries()).map(([id, contract]) => ({
@@ -1017,7 +1017,7 @@ class ContractTemplateLibrary {
   }
 
   /**
-   * 验证合约配置
+   * VerifyContractConfiguration
    */
   validateContractConfig(type, config) {
     const template = this.getTemplate(type);
@@ -1027,7 +1027,7 @@ class ContractTemplateLibrary {
     
     const errors = [];
     
-    // 验证必需字段
+    // Verify必需字段
     if (template.schema && template.schema.fields) {
       for (const field of template.schema.fields) {
         if (field.required && !config[field.name]) {
@@ -1044,7 +1044,7 @@ class ContractTemplateLibrary {
   }
 
   /**
-   * get统计信息
+   * get统计info
    */
   getStats() {
     return {
@@ -1055,7 +1055,7 @@ class ContractTemplateLibrary {
   }
 }
 
-// 导出单例实例
+// Export单例instance
 const contractTemplateLibrary = new ContractTemplateLibrary();
 
 export {

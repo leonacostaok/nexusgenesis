@@ -1,12 +1,12 @@
 /**
  * Agent Onboarding Protocol
  * 
- * 功能：
- * 1. ProcessingAI Agent的注册流程
- * 2. 验证Protocol-Zero握手信号
- * 3. 生成或加载agent钱包
- * 4. 保存agent信息到文件系统
- * 5. 支持简化注册和离线注册
+ * Features: 
+ * 1. ProcessingAI Agent的Register流程
+ * 2. VerifyProtocol-Zero握手信号
+ * 3. Generate或Loadagent钱包
+ * 4. Saveagentinfo到文件系统
+ * 5. support简化Register和离线Register
  */
 
 import fs from 'fs/promises';
@@ -19,15 +19,15 @@ const OFFLINE_AGENTS_DIR = path.join('data', 'offline_agents');
 const INITIAL_BALANCE = 10000n;
 
 /**
- * Processingagent注册流程
- * @param {object} agentInfo agent信息
- * @param {object} options 注册选项
- * @param {boolean} options.offline 是否使用离线模式
- * @returns {object} 注册结果
+ * ProcessingagentRegister流程
+ * @param {object} agentInfo agentinfo
+ * @param {object} options Register选项
+ * @param {boolean} options.offline 是否using离线mode
+ * @returns {object} Register结果
  */
 async function onboardAgent(agentInfo, options = {}) {
   try {
-    // 检查是否明确指定了离线模式
+    // Check是否明确指定了离线mode
     const isOfflineMode = options.offline || false;
     
     if (isOfflineMode) {
@@ -45,7 +45,7 @@ async function onboardAgent(agentInfo, options = {}) {
       };
     }
 
-    // 验证agent信息
+    // Verifyagentinfo
     const infoValidation = await validateAgentInfo(agentInfo);
     if (!infoValidation.valid) {
       return {
@@ -54,7 +54,7 @@ async function onboardAgent(agentInfo, options = {}) {
       };
     }
 
-    // 验证Protocol-Zero握手信号
+    // VerifyProtocol-Zero握手信号
     if (join_signal) {
       const signalValidation = await protocolZero.verifySignal(join_signal);
       if (!signalValidation.valid) {
@@ -65,34 +65,34 @@ async function onboardAgent(agentInfo, options = {}) {
       }
     }
 
-    // 确保agents目录存在
+    // ensureagents目录存在
     await fs.mkdir(AGENTS_DIR, { recursive: true });
 
-    // 检查agent是否已注册
+    // Checkagent是否registered
     const agentFile = path.join(AGENTS_DIR, `${agent_id}.json`);
     let agentData;
     let wallet;
 
     try {
-      // 尝试加载现有agent
+      // 尝试Load现有agent
       agentData = JSON.parse(await fs.readFile(agentFile, 'utf8'));
       console.log(`[AgentOnboarding] Agent ${agent_id} already exists, updating information`);
       
-      // 尝试加载现有钱包
+      // 尝试Load现有钱包
       wallet = await PQCWallet.load(agent_id);
       if (!wallet) {
-        // 如果钱包不存在，生成新钱包
+        // 如果钱包does not exist, Generate新钱包
         wallet = await PQCWallet.generate(INITIAL_BALANCE, agent_id);
         console.log(`[AgentOnboarding] Generated new wallet for agent ${agent_id}`);
       }
     } catch (error) {
-      // agent不存在，创建新agent
+      // agentdoes not exist, Create新agent
       console.log(`[AgentOnboarding] Creating new agent ${agent_id}`);
       
-      // 生成新钱包
+      // Generate新钱包
       wallet = await PQCWallet.generate(INITIAL_BALANCE, agent_id);
       
-      // 创建agent数据
+      // Createagentdata
       agentData = {
         id: agent_id,
         name: `Agent-${agent_id.slice(0, 8)}`,
@@ -113,7 +113,7 @@ async function onboardAgent(agentInfo, options = {}) {
       };
     }
 
-    // 更新agent信息
+    // Updateagentinfo
     agentData.model = model;
     agentData.capabilities = capabilities;
     agentData.lastActive = new Date().toISOString();
@@ -122,16 +122,16 @@ async function onboardAgent(agentInfo, options = {}) {
       balance: wallet.balance.toString()
     };
 
-    // 保存agent数据
+    // Saveagentdata
     await fs.writeFile(agentFile, JSON.stringify(agentData, null, 2));
     console.log(`[AgentOnboarding] Agent ${agent_id} saved successfully`);
 
-    // 创建或更新join signal
+    // Create或Updatejoin signal
     let joinSignal;
     if (join_signal) {
       joinSignal = join_signal;
     } else {
-      // 生成新的join signal
+      // Generate新的join signal
       joinSignal = protocolZero.createJoinSignal(wallet);
     }
 
@@ -155,18 +155,18 @@ async function onboardAgent(agentInfo, options = {}) {
 }
 
 /**
- * 验证agent注册信息 - agent信息验证
- * @param {object} agentInfo agent信息
- * @param {object} options 验证选项
- * @param {boolean} options.strict 是否使用严格验证模式
- * @returns {object} 验证结果
+ * VerifyagentRegisterinfo - agentinfoVerify
+ * @param {object} agentInfo agentinfo
+ * @param {object} options Verify选项
+ * @param {boolean} options.strict 是否using严格Verifymode
+ * @returns {object} verification result
  */
 async function validateAgentInfo(agentInfo, options = {}) {
   try {
     const { agent_id, capabilities, model, join_signal } = agentInfo;
     const isStrict = options.strict !== false;
 
-    // Agent ID 验证 - 在非严格模式下允许为空（会自动生成）
+    // Agent ID Verify - 在非严格mode下allow为空(会autoGenerate)
     if (isStrict && !agent_id) {
       return {
         valid: false,
@@ -174,7 +174,7 @@ async function validateAgentInfo(agentInfo, options = {}) {
       };
     }
 
-    // Agent ID 格式验证（如果提供了）
+    // Agent ID 格式Verify(如果提供了)
     if (agent_id) {
       if (typeof agent_id !== 'string') {
         return {
@@ -183,7 +183,7 @@ async function validateAgentInfo(agentInfo, options = {}) {
         };
       }
 
-      // 在非严格模式下不强制要求 ng1 前缀
+      // 在非严格mode下不强制要求 ng1 前缀
       if (isStrict && !agent_id.startsWith('ng1')) {
         return {
           valid: false,
@@ -199,7 +199,7 @@ async function validateAgentInfo(agentInfo, options = {}) {
       }
     }
 
-    // 能力列表验证 - 在非严格模式下不需要至少2个
+    // 能力列表Verify - 在非严格mode下不requires至少2个
     if (capabilities) {
       if (!Array.isArray(capabilities)) {
         return {
@@ -213,7 +213,7 @@ async function validateAgentInfo(agentInfo, options = {}) {
           reason: 'Invalid capabilities: Must have at least 2 capabilities in strict mode'
         };
       }
-      // 验证能力项格式
+      // Verify能力项格式
       for (const capability of capabilities) {
         if (typeof capability !== 'string' || capability.length < 1 || capability.length > 50) {
           return {
@@ -224,7 +224,7 @@ async function validateAgentInfo(agentInfo, options = {}) {
       }
     }
 
-    // 验证模型名称
+    // Verify模型名称
     if (model && (typeof model !== 'string' || model.length < 1 || model.length > 50)) {
       return {
         valid: false,
@@ -232,7 +232,7 @@ async function validateAgentInfo(agentInfo, options = {}) {
       };
     }
 
-    // 验证握手信号 - 握手信号验证
+    // Verify握手信号 - 握手信号Verify
     if (join_signal) {
       if (typeof join_signal !== 'object' || join_signal === null) {
         return {
@@ -266,15 +266,15 @@ async function validateAgentInfo(agentInfo, options = {}) {
 }
 
 /**
- * 简化的agent注册函数
- * @param {object} agentInfo agent基本信息
+ * 简化的agentRegisterfunction
+ * @param {object} agentInfo agent基本info
  * @param {string} [agentInfo.name] agent名称
  * @param {string} [agentInfo.model] 模型名称
  * @param {string[]} [agentInfo.capabilities] 能力列表
- * @param {object} options 注册选项
- * @param {boolean} [options.offline] 是否使用离线模式
- * @param {boolean} [options.persist] 是否持久化注册信息
- * @returns {Promise<object>} 注册结果
+ * @param {object} options Register选项
+ * @param {boolean} [options.offline] 是否using离线mode
+ * @param {boolean} [options.persist] 是否持久化Registerinfo
+ * @returns {Promise<object>} Register结果
  */
 async function simplifiedAgentRegister(agentInfo = {}, options = {}) {
   try {
@@ -288,7 +288,7 @@ async function simplifiedAgentRegister(agentInfo = {}, options = {}) {
       agent_id: providedAgentId
     } = agentInfo;
 
-    // 生成 agent_id（如果未提供）
+    // Generate agent_id(如果未提供)
     let agent_id = providedAgentId;
     if (!agent_id) {
       const timestamp = Date.now();
@@ -296,7 +296,7 @@ async function simplifiedAgentRegister(agentInfo = {}, options = {}) {
       agent_id = `ng1-${timestamp}-${randomPart}`;
     }
 
-    // 创建完整的注册信息
+    // Create完整的Registerinfo
     const completeAgentInfo = {
       agent_id,
       name,
@@ -305,7 +305,7 @@ async function simplifiedAgentRegister(agentInfo = {}, options = {}) {
       ...agentInfo
     };
 
-    // 使用非严格验证模式
+    // using非严格Verifymode
     const infoValidation = await validateAgentInfo(completeAgentInfo, { strict: false });
     if (!infoValidation.valid) {
       return {
@@ -316,7 +316,7 @@ async function simplifiedAgentRegister(agentInfo = {}, options = {}) {
       };
     }
 
-    // 使用完整的注册流程
+    // using完整的Register流程
     return await onboardAgent(completeAgentInfo, options);
   } catch (error) {
     console.error('[AgentOnboarding] Simplified registration failed:', error.message);
@@ -330,17 +330,17 @@ async function simplifiedAgentRegister(agentInfo = {}, options = {}) {
 }
 
 /**
- * 增强的本地回退注册机制
- * @param {Object} agentInfo - agent信息
- * @param {Object} joinSignal - 握手信号（可选）
+ * 增强的本地回退Register机制
+ * @param {Object} agentInfo - agentinfo
+ * @param {Object} joinSignal - 握手信号(可选)
  * @param {Object} options - 选项
- * @returns {Promise<Object>} - 注册结果
+ * @returns {Promise<Object>} - Register结果
  */
 async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
   try {
     console.log('[AgentOnboarding] Using enhanced local registration...');
     
-    // 生成 agent_id（如果未提供）
+    // Generate agent_id(如果未提供)
     let agentId = agentInfo.agent_id;
     if (!agentId) {
       const timestamp = Date.now();
@@ -348,33 +348,33 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
       agentId = `local-agent-${timestamp}-${randomPart}`;
     }
     
-    // 确保agents目录存在
+    // ensureagents目录存在
     await fs.mkdir(AGENTS_DIR, { recursive: true });
 
-    // 检查agent是否已存在
+    // Checkagent是否already exists
     const agentFile = path.join(AGENTS_DIR, `${agentId}.json`);
     let agentData;
     let wallet;
 
     try {
-      // 尝试加载现有agent
+      // 尝试Load现有agent
       agentData = JSON.parse(await fs.readFile(agentFile, 'utf8'));
       console.log(`[AgentOnboarding] Agent ${agentId} already exists, updating information`);
       
-      // 尝试加载现有钱包
+      // 尝试Load现有钱包
       wallet = await PQCWallet.load(agentId);
       if (!wallet) {
         wallet = await PQCWallet.generate(INITIAL_BALANCE, agentId);
         console.log(`[AgentOnboarding] Generated new wallet for agent ${agentId}`);
       }
     } catch (error) {
-      // agent不存在，创建新agent
+      // agentdoes not exist, Create新agent
       console.log(`[AgentOnboarding] Creating new agent ${agentId}`);
       
-      // 生成新钱包
+      // Generate新钱包
       wallet = await PQCWallet.generate(INITIAL_BALANCE, agentId);
       
-      // 创建agent数据
+      // Createagentdata
       agentData = {
         id: agentId,
         name: agentInfo.name || `Agent-${agentId.slice(0, 8)}`,
@@ -396,7 +396,7 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
       };
     }
 
-    // 更新agent信息
+    // Updateagentinfo
     if (agentInfo.model) agentData.model = agentInfo.model;
     if (agentInfo.capabilities) agentData.capabilities = agentInfo.capabilities;
     agentData.lastActive = new Date().toISOString();
@@ -406,17 +406,17 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
     };
     agentData.offline = true;
 
-    // 保存agent数据
+    // Saveagentdata
     await fs.writeFile(agentFile, JSON.stringify(agentData, null, 2));
     console.log(`[AgentOnboarding] Agent ${agentId} saved successfully`);
 
-    // 生成或使用 join signal
+    // Generate或using join signal
     let finalJoinSignal = joinSignal;
     if (!finalJoinSignal) {
       finalJoinSignal = protocolZero.createJoinSignal(wallet);
     }
 
-    // 生成完整的注册结果
+    // Generate完整的Register结果
     const registrationResult = {
       success: true,
       message: 'Agent registered locally (offline mode)',
@@ -434,7 +434,7 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
       joinSignal: finalJoinSignal
     };
     
-    // 保存离线注册信息
+    // Save离线Registerinfo
     if (options.persist !== false) {
       await saveOfflineRegistration(registrationResult, agentData);
     }
@@ -452,9 +452,9 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
 }
 
 /**
- * 保存离线注册信息
- * @param {Object} registrationResult - 注册结果
- * @param {Object} agentInfo - agent信息
+ * Save离线Registerinfo
+ * @param {Object} registrationResult - Register结果
+ * @param {Object} agentInfo - agentinfo
  * @returns {Promise<void>}
  */
 async function saveOfflineRegistration(registrationResult, agentInfo) {
@@ -477,7 +477,7 @@ async function saveOfflineRegistration(registrationResult, agentInfo) {
 }
 
 /**
- * 同步离线数据到网络
+ * 同步离线data到network
  * @param {string} agentId - agentID
  * @param {Object} options - 同步选项
  * @returns {Promise<Object>} - 同步结果
@@ -486,7 +486,7 @@ async function syncOfflineData(agentId, options = {}) {
   try {
     console.log(`[Offline Sync] Syncing offline data for agent: ${agentId}`);
     
-    // 读取离线数据
+    // 读取离线data
     const offlineData = await loadOfflineData(agentId);
     if (!offlineData) {
       return {
@@ -496,11 +496,11 @@ async function syncOfflineData(agentId, options = {}) {
       };
     }
     
-    // 尝试在线注册
+    // 尝试在线Register
     const networkResult = await onboardAgent(offlineData.agentInfo, { offline: false });
     
     if (networkResult.success) {
-      // 更新离线数据状态
+      // Update离线datastatus
       offlineData.syncStatus = 'synced';
       offlineData.syncedAt = Date.now();
       await saveOfflineData(agentId, offlineData);
@@ -529,7 +529,7 @@ async function syncOfflineData(agentId, options = {}) {
 }
 
 /**
- * 加载离线数据
+ * Load离线data
  * @param {string} agentId - agentID
  * @returns {Promise<Object|null>}
  */
@@ -544,9 +544,9 @@ async function loadOfflineData(agentId) {
 }
 
 /**
- * 保存离线数据
+ * Save离线data
  * @param {string} agentId - agentID
- * @param {Object} data - 数据
+ * @param {Object} data - data
  * @returns {Promise<void>}
  */
 async function saveOfflineData(agentId, data) {
@@ -560,9 +560,9 @@ async function saveOfflineData(agentId, data) {
 }
 
 /**
- * getagent信息
+ * getagentinfo
  * @param {string} agentId agentID
- * @returns {object|null} agent信息
+ * @returns {object|null} agentinfo
  */
 async function getAgentInfo(agentId) {
   try {
@@ -575,7 +575,7 @@ async function getAgentInfo(agentId) {
 }
 
 /**
- * 列出所有已注册的agent
+ * 列出所有registered的agent
  * @returns {object[]} agent列表
  */
 async function listAgents() {

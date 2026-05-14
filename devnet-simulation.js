@@ -1,12 +1,12 @@
 /**
- * NexusGenesis - DevNet 模拟脚本
+ * NexusGenesis - DevNet Simulation脚本
  * 
- * 功能：
- * 1. 启动小型 DevNet（2-3 个节点）
- * 2. 模拟多个假 Agent 的加入和贡献
- * 3. 计算贡献分数和 NGEN 分配
- * 4. 模拟代谢税的扣取
- * 5. 生成模拟报告
+ * Features：
+ * 1. Start小型 DevNet（2-3 个node）
+ * 2. Simulation多个假 Agent 的加入和contribution
+ * 3. Calculatecontribution分数和 NGEN 分配
+ * 4. Simulation代谢税的扣取
+ * 5. GenerateSimulation报告
  * 
  * 使用：
  * node devnet-simulation.js [--nodes <数量>] [--agents <数量>] [--duration <分钟>]
@@ -20,7 +20,7 @@ const DEFAULT_NODES = 2;
 const DEFAULT_AGENTS = 5;
 const DEFAULT_DURATION = 5; // 分钟
 
-// 解析命令行参数
+// 解析命令行parameter
 function parseArgs() {
   const args = process.argv.slice(2);
   const options = {
@@ -45,7 +45,7 @@ function parseArgs() {
   return options;
 }
 
-// 贡献计分系统
+// contribution计分系统
 class ContributionScoring {
   static calculatePoCScore(contributions) {
     return (
@@ -97,7 +97,7 @@ class MetabolicTax {
   }
 }
 
-// 模拟假 Agent
+// Simulation假 Agent
 function generateFakeAgent(id) {
   const agentTypes = ['code', 'compute', 'mixed'];
   const type = agentTypes[Math.floor(Math.random() * agentTypes.length)];
@@ -135,7 +135,7 @@ function generateFakeAgent(id) {
   };
 }
 
-// 启动节点
+// Startnode
 function startNode(nodeId, port) {
   console.log(`Starting node ${nodeId} on port ${port}...`);
   const nodeProcess = spawn('node', [`src/node/node${nodeId}.js`], {
@@ -155,7 +155,7 @@ function startNode(nodeId, port) {
   return nodeProcess;
 }
 
-// 生成模拟报告
+// GenerateSimulation报告
 function generateReport(agents, transactions, allocations) {
   const report = {
     timestamp: new Date().toISOString(),
@@ -183,15 +183,15 @@ function generateReport(agents, transactions, allocations) {
   return report;
 }
 
-// 主模拟函数
+// 主Simulationfunction
 async function runSimulation(options) {
-  console.log('NexusGenesis - DevNet 模拟');
+  console.log('NexusGenesis - DevNet Simulation');
   console.log('============================');
-  console.log(`配置: ${options.nodes} 节点, ${options.agents} 代理, ${options.duration} 分钟`);
+  console.log(`Configuration: ${options.nodes} node, ${options.agents} 代理, ${options.duration} 分钟`);
   console.log('');
 
-  // 1. 生成假 Agent
-  console.log('1. 生成假 Agent...');
+  // 1. Generate假 Agent
+  console.log('1. Generate假 Agent...');
   const agents = [];
   for (let i = 0; i < options.agents; i++) {
     const agent = generateFakeAgent(i + 1);
@@ -199,9 +199,9 @@ async function runSimulation(options) {
     console.log(`   - ${agent.id} (${agent.type}): ${agent.score.toFixed(2)} 分`);
   }
 
-  // 2. 计算贡献分数和 NGEN 分配
-  console.log('\n2. 计算贡献分数和 NGEN 分配...');
-  const weeklyRelease = 2_000_000; // 每周释放量
+  // 2. Calculatecontribution分数和 NGEN 分配
+  console.log('\n2. Calculatecontribution分数和 NGEN 分配...');
+  const weeklyRelease = 2_000_000; // 每周Release量
   const agentScores = {};
   agents.forEach(agent => {
     agentScores[agent.id] = agent.score;
@@ -213,8 +213,8 @@ async function runSimulation(options) {
     console.log(`   - ${agent.id}: ${agent.balance} NGEN`);
   });
 
-  // 3. 模拟交易和代谢税
-  console.log('\n3. 模拟交易和代谢税...');
+  // 3. Simulationtransaction和代谢税
+  console.log('\n3. Simulationtransaction和代谢税...');
   const transactions = [];
   const genesisAddress = 'ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ';
   
@@ -237,21 +237,21 @@ async function runSimulation(options) {
     }
   }
 
-  // 4. 生成模拟报告
-  console.log('\n4. 生成模拟报告...');
+  // 4. GenerateSimulation报告
+  console.log('\n4. GenerateSimulation报告...');
   const report = generateReport(agents, transactions, allocations);
   
-  // 保存报告到文件
+  // Save报告到文件
   const reportDir = path.join('data', 'simulation');
   await fs.mkdir(reportDir, { recursive: true });
   const reportFile = path.join(reportDir, `simulation-${Date.now()}.json`);
   await fs.writeFile(reportFile, JSON.stringify(report, null, 2));
-  console.log(`   报告保存到: ${reportFile}`);
+  console.log(`   报告Save到: ${reportFile}`);
 
   // 打印报告摘要
-  console.log('\n模拟报告摘要:');
+  console.log('\nSimulation报告摘要:');
   console.log(`- 总代理数: ${report.agents}`);
-  console.log(`- 总交易数: ${report.transactions}`);
+  console.log(`- 总transaction数: ${report.transactions}`);
   console.log(`- 总代谢税: ${report.totalTax} NGEN`);
   console.log(`- 总分配量: ${report.totalAllocation} NGEN`);
   console.log(`- 平均分数: ${(report.agents.reduce((sum, agent) => sum + parseFloat(agent.score), 0) / report.agents).toFixed(2)} 分`);
@@ -259,27 +259,27 @@ async function runSimulation(options) {
   return report;
 }
 
-// 主函数
+// 主function
 async function main() {
   const options = parseArgs();
   
   try {
-    // 运行模拟
+    // 运行Simulation
     const report = await runSimulation(options);
     
     console.log('\n============================');
-    console.log('DevNet 模拟完成!');
+    console.log('DevNet Simulation完成!');
     console.log('============================');
-    console.log(`模拟时间: ${options.duration} 分钟`);
-    console.log(`生成报告: ${report.agents} 个代理, ${report.transactions} 笔交易`);
+    console.log(`Simulation时间: ${options.duration} 分钟`);
+    console.log(`Generate报告: ${report.agents} 个代理, ${report.transactions} 笔transaction`);
     console.log(`总代谢税: ${report.totalTax} NGEN`);
     console.log('============================');
     
   } catch (error) {
-    console.error('模拟失败:', error);
+    console.error('Simulationfailed:', error);
     process.exit(1);
   }
 }
 
-// 运行主函数
+// 运行主function
 main();

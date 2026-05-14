@@ -2,7 +2,7 @@ import { MessageHandler } from './MessageHandler.js';
 import crypto from 'crypto';
 import { PQCWallet } from '../../wallet/pqcWallet.js';
 
-// 模拟Kyber密钥协商（实际生产环境中应使用真实的Kyber实现）
+// SimulationKyberkey协商(实际生产环境中应using真实的Kyber实现)
 class KyberMock {
   static generateKeyPair() {
     const privateKey = crypto.randomBytes(32);
@@ -17,7 +17,7 @@ class KyberMock {
   }
 
   static decapsulate(ciphertext, privateKey) {
-    return crypto.randomBytes(32); // 模拟共享密钥
+    return crypto.randomBytes(32); // Simulation共享key
   }
 }
 
@@ -44,7 +44,7 @@ export class HandshakeHandler extends MessageHandler {
     if (!conn) return;
     
     try {
-      // 验证Message结构
+      // VerifyMessage结构
       if (!msg.nodeId || !msg.publicKey || !msg.challenge) {
         console.log(`[!] Invalid handshake from ${peerId}: missing fields`);
         conn.ws.close(1002, 'Invalid handshake');
@@ -53,7 +53,7 @@ export class HandshakeHandler extends MessageHandler {
       
       console.log(`Handshake details - Node ID: ${msg.nodeId.slice(0, 24)}..., Public Key length: ${msg.publicKey.length} chars`);
       
-      // 验证地址格式
+      // Verifyaddress格式
       const { validateAddress } = await import('../../wallet/addressUtils.js');
       const addrValidation = validateAddress(msg.nodeId);
       if (!addrValidation.valid) {
@@ -62,17 +62,17 @@ export class HandshakeHandler extends MessageHandler {
         return;
       }
       
-      // 验证公钥格式
+      // Verifypublic key格式
       if (typeof msg.publicKey !== 'string' || msg.publicKey.length < 100) {
         console.log(`[!] Invalid public key format: length ${msg.publicKey.length}`);
         conn.ws.close(1002, 'Invalid public key');
         return;
       }
       
-      // 保存远程节点信息
+      // Save远程nodeinfo
       conn.remoteNodeId = msg.nodeId;
       
-      // 安全地转换公钥
+      // security地转换public key
       try {
         conn.remotePublicKey = Buffer.from(msg.publicKey, 'hex');
         console.log(`Successfully parsed public key: ${conn.remotePublicKey.length} bytes`);
@@ -84,34 +84,34 @@ export class HandshakeHandler extends MessageHandler {
       
       conn.challengeSent = msg.challenge;
       
-      // 生成挑战响应签名
+      // Generate挑战响应Sign
       const responseChallenge = crypto.randomBytes(32).toString('hex');
       console.log(`Generating signature for challenge: ${responseChallenge.slice(0, 16)}...`);
       
       const signature = await this.p2pServer.node.wallet.sign(responseChallenge);
       console.log(`Generated signature: ${signature.slice(0, 32)}...`);
       
-      // 生成Kyber密钥对用于密钥协商
+      // GenerateKyberkey pairforkey协商
       const kyberKeyPair = KyberMock.generateKeyPair();
       
-      // 发送 HELLO_ACK
+      // Send HELLO_ACK
       this.p2pServer.send(peerId, {
         type: 'HELLO_ACK',
         nodeId: this.p2pServer.node.nodeId,
         publicKey: this.p2pServer.node.wallet.publicKey.toString('hex'),
         challenge: responseChallenge,
         response: signature, // 对对方挑战的响应
-        kyberPublicKey: kyberKeyPair.publicKey.toString('hex'), // 发送Kyber公钥
+        kyberPublicKey: kyberKeyPair.publicKey.toString('hex'), // SendKyberpublic key
         accepted: true
       });
       console.log(`Sent HELLO_ACK to ${peerId}`);
       
-      // 等待对方响应并验证
+      // etc.待对方响应并Verify
       conn.handshakeData = {
         challenge: msg.challenge,
         remoteNodeId: msg.nodeId,
         remotePublicKey: conn.remotePublicKey,
-        kyberPrivateKey: kyberKeyPair.privateKey // 保存Kyber私钥
+        kyberPrivateKey: kyberKeyPair.privateKey // SaveKyberprivate key
       };
     } catch (error) {
       console.error(`Error handling handshake: ${error.message}`);
@@ -135,16 +135,16 @@ export class HandshakeHandler extends MessageHandler {
     
     let remotePublicKey;
     
-    // 验证响应签名
+    // Verify响应Sign
     try {
-      // 验证Message结构
+      // VerifyMessage结构
       if (!msg.nodeId || !msg.publicKey || !msg.response || !msg.challenge) {
         console.log(`[!] Invalid handshake ACK: missing fields`);
         conn.ws.close(1002, 'Invalid handshake ACK');
         return;
       }
       
-      // 安全地转换公钥
+      // security地转换public key
       try {
         remotePublicKey = Buffer.from(msg.publicKey, 'hex');
         console.log(`Successfully parsed public key: ${remotePublicKey.length} bytes`);
@@ -154,14 +154,14 @@ export class HandshakeHandler extends MessageHandler {
         return;
       }
       
-      // 验证公钥长度
+      // Verifypublic keylength
       if (remotePublicKey.length < 100) {
         console.log(`[!] Invalid public key length: ${remotePublicKey.length} bytes`);
         conn.ws.close(1002, 'Invalid public key');
         return;
       }
       
-      // 验证挑战和响应
+      // Verify挑战和响应
       if (!conn.challengeSent) {
         console.log(`[!] No challenge sent for this connection`);
         conn.ws.close(1002, 'No challenge sent');
@@ -171,7 +171,7 @@ export class HandshakeHandler extends MessageHandler {
       console.log(`Verifying signature for challenge: ${conn.challengeSent.slice(0, 16)}...`);
       console.log(`Using public key: ${remotePublicKey.toString('hex').slice(0, 32)}...`);
       
-      // 尝试验证签名
+      // 尝试VerifySign
       try {
         const isValid = await PQCWallet.verify(
           conn.challengeSent,
@@ -183,31 +183,31 @@ export class HandshakeHandler extends MessageHandler {
         
         if (!isValid) {
           console.log(`[!] Handshake signature verification failed for ${peerId}`);
-          // 降级：跳过签名验证，允许连接（仅用于测试）
+          // 降级: 跳过SignVerify, allowConnect(仅forTest)
           console.log(`[⚠️] Skipping signature verification for testing purposes`);
-          // 不关闭连接，继续进行
+          // 不关闭Connect, 继续进行
         }
       } catch (error) {
         console.log(`[!] Signature verification error: ${error.message}`);
         console.log(error.stack);
         
-        // 降级：跳过签名验证，允许连接（仅用于测试）
+        // 降级: 跳过SignVerify, allowConnect(仅forTest)
         console.log(`[⚠️] Skipping signature verification for testing purposes`);
       }
       
-      // 执行Kyber密钥协商
+      // ExecuteKyberkey协商
       if (msg.kyberPublicKey) {
         console.log('Performing Kyber key exchange');
         try {
           const kyberPublicKey = Buffer.from(msg.kyberPublicKey, 'hex');
-          // 使用Kyber封装生成共享密钥
+          // usingKyber封装Generate共享key
           const { sharedSecret } = KyberMock.encapsulate(kyberPublicKey);
-          // 存储共享密钥用于加密通信
+          // Storage共享keyfor加密通信
           this.p2pServer.encryptionKeys.set(peerId, sharedSecret);
           console.log('Kyber key exchange completed, encryption enabled');
         } catch (error) {
           console.error('Kyber key exchange failed:', error.message);
-          // 即使密钥协商Failed，也继续连接（降级到非加密通信）
+          // 即使key协商Failed, 也继续Connect(降级到非加密通信)
         }
       }
     } catch (error) {
@@ -217,7 +217,7 @@ export class HandshakeHandler extends MessageHandler {
       return;
     }
     
-    // 握手成功
+    // 握手success
     clearTimeout(pending.timeout);
     this.p2pServer.pendingHandshakes.delete(peerId);
     
@@ -226,24 +226,24 @@ export class HandshakeHandler extends MessageHandler {
     conn.remotePublicKey = remotePublicKey;
     conn.lastHeartbeat = Date.now();
     
-    // 注册节点身份
+    // Registernode身份
     if (this.p2pServer.node) {
       this.p2pServer.node.markPeerChallengeVerified(peerId);
       this.p2pServer.node.registerPeerIdentity(peerId, msg.nodeId, remotePublicKey);
       this.p2pServer.node.peers.set(peerId, conn);
     }
     
-    // 启动心跳
+    // Start心跳
     this.p2pServer.startHeartbeat(peerId, conn.ws);
     
     console.log(`[✓] Peer ${msg.nodeId.slice(0, 24)}... verified and connected`);
     
-    // 请求状态
+    // 请求status
     this.p2pServer.send(peerId, { type: 'GET_STATUS' });
   }
 
   /**
-   * 握手Message不需要预先验证
+   * 握手Message不requires预先Verify
    */
   requiresVerification() {
     return false;

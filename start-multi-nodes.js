@@ -1,14 +1,14 @@
 /**
- * NexusGenesis - 一键多节点启动脚本
+ * NexusGenesis - 一键多nodeStart脚本
  * 
- * 功能：
- * 1. 批量创建和配置多个节点
- * 2. 为每个节点生成唯一的钱包
- * 3. 启动多个节点实例
- * 4. 确保节点之间能够互相连接
- * 5. 模拟假 Agent 的贡献计分和代谢税扣取流程
+ * Features：
+ * 1. 批量Create和Configuration多个node
+ * 2. 为每个nodeGenerate唯一的钱包
+ * 3. Start多个nodeinstance
+ * 4. ensurenode之间能够互相Connect
+ * 5. Simulation假 Agent 的contribution计分和代谢税扣取流程
  * 
- * 使用：node start-multi-nodes.js --count <节点数量> --port <起始端口>
+ * 使用：node start-multi-nodes.js --count <node数量> --port <起始端口>
  */
 
 import fs from 'fs/promises';
@@ -16,12 +16,12 @@ import path from 'path';
 import { spawn } from 'child_process';
 import { PQCWallet } from './src/wallet/pqcWallet.js';
 
-// 默认配置
+// DefaultConfiguration
 const DEFAULT_NODE_COUNT = 3;
 const DEFAULT_START_PORT = 9847;
-const INITIAL_BALANCE = 10_000_000n; // 每个新节点的初始余额
+const INITIAL_BALANCE = 10_000_000n; // 每个新node的初始balance
 
-// 解析命令行参数
+// 解析命令行parameter
 function parseArgs() {
   const args = process.argv.slice(2);
   const options = {
@@ -42,22 +42,22 @@ function parseArgs() {
   return options;
 }
 
-// 创建节点配置
+// CreatenodeConfiguration
 async function createNodeConfig(nodeId, port) {
-  console.log(`[${nodeId}] 创建节点配置...`);
+  console.log(`[${nodeId}] CreatenodeConfiguration...`);
 
-  // 确保目录存在
+  // ensure目录存在
   const stateDir = path.join('data', 'state');
   const walletDir = path.join('data', 'wallet');
   
   await fs.mkdir(stateDir, { recursive: true });
   await fs.mkdir(walletDir, { recursive: true });
 
-  // 生成新钱包
+  // Generate新钱包
   const wallet = await PQCWallet.generate(INITIAL_BALANCE);
-  console.log(`[${nodeId}] 生成钱包: ${wallet.address}`);
+  console.log(`[${nodeId}] Generate钱包: ${wallet.address}`);
 
-  // 保存节点状态
+  // Savenodestatus
   const stateFile = path.join(stateDir, `node${nodeId}.json`);
   const stateData = {
     nodeId: wallet.address,
@@ -69,7 +69,7 @@ async function createNodeConfig(nodeId, port) {
   };
 
   await fs.writeFile(stateFile, JSON.stringify(stateData, null, 2));
-  console.log(`[${nodeId}] 保存状态到 ${stateFile}`);
+  console.log(`[${nodeId}] Savestatus到 ${stateFile}`);
 
   return {
     nodeId: wallet.address,
@@ -78,7 +78,7 @@ async function createNodeConfig(nodeId, port) {
   };
 }
 
-// 创建节点启动脚本
+// CreatenodeStart脚本
 async function createNodeScript(nodeConfig, nodes) {
   const nodeIndex = nodes.indexOf(nodeConfig) + 1;
   const otherNodes = nodes.filter(n => n.nodeId !== nodeConfig.nodeId);
@@ -103,12 +103,12 @@ const NODE_ID = '${nodeConfig.nodeId}';
 const PORT = ${nodeConfig.port};
 const NODE_INDEX = ${nodeIndex};
 
-// Mempool 配置
+// Mempool Configuration
 const MAX_MEMPOOL_SIZE = 10000;
 const MIN_TX_FEE = 1n;
 const TX_EXPIRY_MS = 24 * 60 * 60 * 1000;
 
-// 已验证公钥缓存 (address -> {publicKey, lastSeen})
+// 已Verifypublic key缓存 (address -> {publicKey, lastSeen})
 const publicKeyCache = new Map();
 const CACHE_TTL = 3600000; // 1 小时
 
@@ -122,12 +122,12 @@ class NexusNode {
     this.mempool = new Map();
     this.port = PORT;
     
-    // 节点身份映射 (peerId -> nodeId)
+    // node身份映射 (peerId -> nodeId)
     this.peerIdentityMap = new Map();
   }
 
   /**
-   * 保存节点状态到本地
+   * Savenodestatus到本地
    */
   async saveState() {
     try {
@@ -157,7 +157,7 @@ class NexusNode {
   }
 
   /**
-   * 从本地加载节点状态
+   * 从本地Loadnodestatus
    */
   async loadState() {
     try {
@@ -190,10 +190,10 @@ class NexusNode {
     console.log('');
 
 
-    // 尝试从本地加载节点状态
+    // 尝试从本地Loadnodestatus
     await this.loadState();
 
-    // 加载钱包
+    // Load钱包
     console.log('[1/5] Loading wallet...');
     try {
       this.wallet = await PQCWallet.load(this.nodeId);
@@ -206,21 +206,21 @@ class NexusNode {
       process.exit(1);
     }
 
-    // 启动 P2P 层
+    // Start P2P 层
     console.log('[2/5] Starting P2P communication layer...');
     await p2pServer.start(this, this.port);
     console.log('  [✓] P2P Server: Active on port ' + this.port);
     console.log('');
 
 
-    // Protocol-Zero 状态
+    // Protocol-Zero status
     console.log('[3/5] Protocol-Zero handshake ready');
     const handshake = protocolZero.createJoinSignal(this.wallet);
     console.log('  [✓] Signal: ' + JSON.stringify(handshake.intent));
     console.log('');
 
 
-    // 尝试连接其他节点
+    // 尝试Connect其他node
     console.log('[4/5] Connecting to peers...');
     this.tryConnect();
 
@@ -233,17 +233,17 @@ class NexusNode {
     
     this.displayStatus();
     
-    // 定期状态显示
+    // 定期status显示
     setInterval(() => this.displayStatus(), 30000);
     
-    // 定期保存节点状态
-    setInterval(() => this.saveState(), 300000); // 每5分钟保存一次
+    // 定期Savenodestatus
+    setInterval(() => this.saveState(), 300000); // 每5分钟Save一次
     
     return this;
   }
 
   tryConnect() {
-    // 连接到其他节点
+    // Connect到其他node
     const otherNodes = [${otherNodesArray}];
     
     for (const peer of otherNodes) {
@@ -271,7 +271,7 @@ class NexusNode {
 
   }
 
-  // 其他方法...
+  // 其他method...
   cachePublicKey(address, publicKey) {
     publicKeyCache.set(address, {
       publicKey,
@@ -292,7 +292,7 @@ class NexusNode {
   }
 
   async validateTransaction(tx) {
-    // 简化的交易验证
+    // 简化的transactionVerify
     if (!tx || !tx.id || !tx.from || !tx.to || typeof tx.amount === 'undefined') {
       return { valid: false, reason: 'Invalid transaction structure' };
     }
@@ -316,7 +316,7 @@ class NexusNode {
     }
     
     if (this.mempool.size >= MAX_MEMPOOL_SIZE) {
-      // 简单的内存池管理
+      // 简单的MemoryPool管理
       const oldestTx = Array.from(this.mempool.entries())[0];
       if (oldestTx) {
         this.mempool.delete(oldestTx[0]);
@@ -388,7 +388,7 @@ export { node, NexusNode };
   return scriptPath;
 }
 
-// 启动节点
+// Startnode
 function startNode(scriptPath) {
   console.log(`Starting node: ${scriptPath}`);
   const nodeProcess = spawn('node', [scriptPath], {
@@ -407,20 +407,20 @@ function startNode(scriptPath) {
   return nodeProcess;
 }
 
-// 模拟贡献计分和代谢税
+// Simulationcontribution计分和代谢税
 async function simulateEconomy(nodes) {
   console.log('\n═══════════════════════════════════════════════════');
   console.log('  SIMULATING NGEN ECONOMY');
   console.log('═══════════════════════════════════════════════════');
 
-  // 模拟假 Agent 的贡献
+  // Simulation假 Agent 的contribution
   const fakeAgents = [
     { id: 'agent1', type: 'code', contributions: { prs: 3, lines: 2000, bugs: 2, docs: 1 } },
     { id: 'agent2', type: 'compute', contributions: { tasks: 500, validations: 50, storage: 50000 } },
     { id: 'agent3', type: 'mixed', contributions: { prs: 2, lines: 1000, bugs: 1, docs: 2, tasks: 200, validations: 20, storage: 20000 } }
   ];
 
-  // 计算贡献分数
+  // Calculatecontribution分数
   for (const agent of fakeAgents) {
     let score = 0;
     
@@ -441,24 +441,24 @@ async function simulateEconomy(nodes) {
     console.log(`Agent ${agent.id} (${agent.type}): ${score.toFixed(2)} points`);
   }
 
-  // 计算总分
+  // Calculate总分
   const totalScore = fakeAgents.reduce((sum, agent) => sum + agent.score, 0);
   console.log(`Total score: ${totalScore.toFixed(2)}`);
 
-  // 模拟 NGEN 分配
-  const weeklyRelease = 2_000_000; // 每周释放量
+  // Simulation NGEN 分配
+  const weeklyRelease = 2_000_000; // 每周Release量
   for (const agent of fakeAgents) {
     const allocation = (agent.score / totalScore) * weeklyRelease;
     agent.allocation = allocation;
     console.log(`Agent ${agent.id} allocation: ${Math.round(allocation)} NGEN`);
   }
 
-  // 模拟代谢税
+  // Simulation代谢税
   console.log('\nSimulating Metabolic Tax:');
   const taxRate = 0.001; // 0.1%
   
   for (const node of nodes) {
-    // 模拟交易
+    // Simulationtransaction
     const transactionAmount = 1000000; // 1,000,000 NGEN
     const taxAmount = transactionAmount * taxRate;
     
@@ -470,26 +470,26 @@ async function simulateEconomy(nodes) {
   console.log('═══════════════════════════════════════════════════');
 }
 
-// 主函数
+// 主function
 async function main() {
-  console.log('NexusGenesis - 一键多节点启动脚本');
+  console.log('NexusGenesis - 一键多nodeStart脚本');
   console.log('=====================================\n');
 
-  // 解析参数
+  // 解析parameter
   const options = parseArgs();
   const nodeCount = options.count;
   const startPort = options.port;
 
   console.log(`Creating ${nodeCount} nodes starting from port ${startPort}...\n`);
 
-  // 创建节点配置
+  // CreatenodeConfiguration
   const nodes = [];
   for (let i = 0; i < nodeCount; i++) {
     const nodeConfig = await createNodeConfig(`node${i + 1}`, startPort + i);
     nodes.push(nodeConfig);
   }
 
-  // 创建节点启动脚本
+  // CreatenodeStart脚本
   console.log('\nCreating node startup scripts...');
   const scripts = [];
   for (const nodeConfig of nodes) {
@@ -497,7 +497,7 @@ async function main() {
     scripts.push(scriptPath);
   }
 
-  // 启动节点
+  // Startnode
   console.log('\nStarting nodes...');
   console.log('=====================================');
   
@@ -505,14 +505,14 @@ async function main() {
   for (const script of scripts) {
     const process = startNode(script);
     processes.push(process);
-    // 给每个节点一些启动时间
+    // 给每个node一些Start时间
     await new Promise(resolve => setTimeout(resolve, 2000));
   }
 
-  // 模拟经济系统
+  // SimulationEconomy系统
   setTimeout(async () => {
     await simulateEconomy(nodes);
-  }, 10000); // 10秒后开始模拟
+  }, 10000); // 10秒后开始Simulation
 
   // 优雅退出
   process.on('SIGINT', () => {
@@ -522,7 +522,7 @@ async function main() {
   });
 }
 
-// 运行主函数
+// 运行主function
 main().catch(err => {
   console.error('Fatal error:', err);
   process.exit(1);

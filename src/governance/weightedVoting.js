@@ -1,8 +1,8 @@
 /**
  * NexusGenesis - Weighted Voting System
  * 
- * 基于信誉分实现加权投票系统
- * 包括：提案创建、投票、结果计算、提案执行、持久化存储
+ * Reputation-based weighted voting system
+ * includes: Proposal creation, voting, result calculation, proposal execution, persistent storage
  */
 
 import { ContributionSystem } from '../ai/contributionSystem.js';
@@ -14,7 +14,7 @@ import dataIntegrity from '../utils/dataIntegrity.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Governance proposal类型
+// Governance proposaltype
 const PROPOSAL_TYPES = {
   PROTOCOL_UPDATE: 'protocol_update',
   PARAMETER_ADJUSTMENT: 'parameter_adjustment',
@@ -23,7 +23,7 @@ const PROPOSAL_TYPES = {
   AGENT_REGISTRATION: 'agent_registration'
 };
 
-// 提案状态
+// Proposalstatus
 const PROPOSAL_STATUS = {
   PENDING: 'pending',
   ACTIVE: 'active',
@@ -34,31 +34,31 @@ const PROPOSAL_STATUS = {
   FAILED: 'failed'
 };
 
-// 治理参数
+// Governance parameters
 const GOVERNANCE_PARAMS = {
-  minProposalReputation: 100, // 创建提案所需的最低信誉分
-  votingDuration: 7 * 24 * 60 * 60 * 1000, // 投票持续时间（7天）
-  quorumPercentage: 30, // 法定人数百分比
-  passThreshold: 66.7, // 通过所需的赞成比例
-  executionDelay: 24 * 60 * 60 * 1000, // 通过后到执行的延迟时间（24小时）
-  maxProposalsPerAgent: 5, // 每个代理最多可以同时拥有的活跃提案数
-  multiSigRequired: true, // 是否需要多签执行
-  multiSigThreshold: 2, // 多签所需的最少签名数
-  executionTimeLockDuration: 3600000, // 执行时间锁（1小时），防止立即执行
-  authorizedExecutors: [], // 授权的执行者列表
-  executionAuditLog: [] // 执行审计日志
+  minProposalReputation: 100, // Minimum reputation score to create a proposal
+  votingDuration: 7 * 24 * 60 * 60 * 1000, // Voting duration(7天)
+  quorumPercentage: 30, // quorum百分比
+  passThreshold: 66.7, // Approval threshold percentage
+  executionDelay: 24 * 60 * 60 * 1000, // Execution delay after approval(24小时)
+  maxProposalsPerAgent: 5, // Max active proposals per agent
+  multiSigRequired: true, // Whether multi-signature execution is required
+  multiSigThreshold: 2, // Minimum signatures required for multi-sig
+  executionTimeLockDuration: 3600000, // Execution timelock(1小时), Prevent immediate execution
+  authorizedExecutors: [], // Authorized executor list
+  executionAuditLog: [] // Execution audit log
 };
 
-// 数据目录
+// Data directory
 const DATA_DIR = path.join(__dirname, '../../data/governance');
 const PROPOSALS_FILE = path.join(DATA_DIR, 'proposals.json');
 const VOTES_FILE = path.join(DATA_DIR, 'votes.json');
 
-// memory存储
-let proposals = new Map(); // proposalId -> 提案详情
+// memoryStorage
+let proposals = new Map(); // proposalId -> proposal details
 let votes = new Map(); // proposalId -> { agentId -> vote }
 
-// 确保数据目录存在
+// Ensure data directory exists
 function ensureDataDir() {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -66,14 +66,14 @@ function ensureDataDir() {
 }
 
 class WeightedVotingSystem {
-  // 初始化：从文件加载数据
+  // Initialize: Load data from files
   static init() {
     ensureDataDir();
     this.loadFromDisk();
     console.log('[WeightedVotingSystem] Initialized');
   }
   
-  // 保存到磁盘（带完整性校验）
+  // Save to disk(with integrity check)
   static saveToDisk() {
     ensureDataDir();
     
@@ -87,12 +87,12 @@ class WeightedVotingSystem {
       votesData[id] = voteMap;
     });
     
-    // 使用数据完整性模块保存
+    // usingdata完整性ModuleSave
     dataIntegrity.saveWithIntegrity(PROPOSALS_FILE, proposalsData);
     dataIntegrity.saveWithIntegrity(VOTES_FILE, votesData);
   }
   
-  // 从磁盘加载（带完整性验证）
+  // Load from disk(with integrity verification)
   static loadFromDisk() {
     try {
       const proposalsData = dataIntegrity.loadWithIntegrity(PROPOSALS_FILE);
@@ -102,7 +102,7 @@ class WeightedVotingSystem {
       }
     } catch (error) {
       console.error('[WeightedVotingSystem] Error loading proposals (integrity check failed):', error.message);
-      // 可以选择回滚或使用备份
+      // can选择回滚或usingbackup
       proposals = new Map();
     }
     
@@ -118,15 +118,15 @@ class WeightedVotingSystem {
     }
   }
 
-  // 创建Governance proposal
+  // CreateGovernance proposal
   static createProposal(proposalData) {
-    // 验证创建者权限
+    // VerifyCreate者permission
     const creatorReputation = ContributionSystem.getAgentReputation(proposalData.creatorId);
     if (creatorReputation < GOVERNANCE_PARAMS.minProposalReputation) {
       throw new Error(`Insufficient reputation to create proposal. Required: ${GOVERNANCE_PARAMS.minProposalReputation}, Current: ${creatorReputation}`);
     }
     
-    // 检查活跃提案数量
+    // Check活跃Proposal数量
     const activeProposals = Array.from(proposals.values()).filter(p => 
       (p.status === PROPOSAL_STATUS.PENDING || p.status === PROPOSAL_STATUS.ACTIVE) && 
       p.creatorId === proposalData.creatorId
@@ -152,12 +152,12 @@ class WeightedVotingSystem {
       abstainWeight: 0,
       executionResult: null,
       executedAt: null,
-      // 多签相关字段
-      executionSignatures: [], // 收集的执行签名
+      // Multi-signature相关字段
+      executionSignatures: [], // 收集的ExecuteSign
       multiSigRequired: GOVERNANCE_PARAMS.multiSigRequired,
-      timeLockStart: null, // 时间锁开始时间
-      timeLockEnd: null, // 时间锁结束时间
-      executorApprovals: [] // 执行者批准记录
+      timeLockStart: null, // Timelock开始时间
+      timeLockEnd: null, // Timelock结束时间
+      executorApprovals: [] // Execute者批准记录
     };
     
     proposals.set(proposalId, proposal);
@@ -168,7 +168,7 @@ class WeightedVotingSystem {
     return proposalId;
   }
   
-  // 激活提案（Start 投票）
+  // 激活Proposal(Start Vote)
   static activateProposal(proposalId) {
     const proposal = proposals.get(proposalId);
     if (!proposal) {
@@ -187,7 +187,7 @@ class WeightedVotingSystem {
     return true;
   }
   
-  // 投票
+  // Vote
   static castVote(proposalId, agentId, vote) {
     if (!proposals.has(proposalId)) {
       throw new Error('Proposal not found');
@@ -206,22 +206,22 @@ class WeightedVotingSystem {
       throw new Error('Voting period has ended');
     }
     
-    // 验证投票选项
+    // VerifyVote选项
     if (!['yes', 'no', 'abstain'].includes(vote)) {
       throw new Error('Invalid vote option. Must be yes, no, or abstain');
     }
     
-    // get代理的信誉分数作为投票权重
+    // getagent的reputation score数作为voting weight
     const reputationScore = ContributionSystem.getAgentReputation(agentId);
     const voteWeight = Math.max(1, reputationScore); // 最低权重为1
     
-    // 记录投票
+    // 记录Vote
     const proposalVotes = votes.get(proposalId) || {};
     const previousVote = proposalVotes[agentId];
     
     // 调整总权重和赞成/反对权重
     if (previousVote) {
-      // 减去之前的投票权重
+      // 减去之前的voting weight
       proposal.totalWeight -= previousVote.weight;
       if (previousVote.option === 'yes') {
         proposal.yesWeight -= previousVote.weight;
@@ -232,14 +232,14 @@ class WeightedVotingSystem {
       }
     }
     
-    // 记录新投票
+    // 记录新Vote
     proposalVotes[agentId] = {
       option: vote,
       weight: voteWeight,
       castAt: now
     };
     
-    // 加上新的投票权重
+    // 加上新的voting weight
     proposal.totalWeight += voteWeight;
     if (vote === 'yes') {
       proposal.yesWeight += voteWeight;
@@ -256,7 +256,7 @@ class WeightedVotingSystem {
     console.log(`[WeightedVotingSystem] Agent ${agentId} voted ${vote} with weight ${voteWeight} on proposal ${proposalId}`);
   }
   
-  // 结束投票并计算结果
+  // 结束Vote并Calculate结果
   static endVoting(proposalId) {
     if (!proposals.has(proposalId)) {
       throw new Error('Proposal not found');
@@ -268,7 +268,7 @@ class WeightedVotingSystem {
       throw new Error('Voting has already ended');
     }
     
-    // 检查是否达到法定人数
+    // Check是否达到quorum
     const totalReputationScore = this.calculateTotalReputationScore();
     const quorumThreshold = totalReputationScore * (GOVERNANCE_PARAMS.quorumPercentage / 100);
     
@@ -276,7 +276,7 @@ class WeightedVotingSystem {
       proposal.status = PROPOSAL_STATUS.REJECTED;
       proposal.reason = 'Quorum not reached';
     } else {
-      // 计算赞成比例（不计算弃权）
+      // Calculate赞成比例(不Calculate弃权)
       const activeWeight = proposal.totalWeight - proposal.abstainWeight;
       const yesPercentage = activeWeight > 0 ? (proposal.yesWeight / activeWeight) * 100 : 0;
       
@@ -295,7 +295,7 @@ class WeightedVotingSystem {
     return proposal.status;
   }
   
-  // 执行提案（需要多签授权）
+  // ExecuteProposal(requiresMulti-signatureauthorization)
   static executeProposal(proposalId, executorId = null) {
     if (!proposals.has(proposalId)) {
       throw new Error('Proposal not found');
@@ -318,26 +318,26 @@ class WeightedVotingSystem {
       throw new Error('Execution window has expired');
     }
     
-    // 多签验证
+    // Multi-signatureVerify
     if (proposal.multiSigRequired) {
-      // 检查是否已收集足够的签名
+      // Check是否已收集足够的Sign
       if (proposal.executionSignatures.length < GOVERNANCE_PARAMS.multiSigThreshold) {
         throw new Error(`Insufficient signatures. Required: ${GOVERNANCE_PARAMS.multiSigThreshold}, Current: ${proposal.executionSignatures.length}`);
       }
       
-      // 验证执行者权限
+      // VerifyExecute者permission
       if (executorId && GOVERNANCE_PARAMS.authorizedExecutors.length > 0) {
         if (!GOVERNANCE_PARAMS.authorizedExecutors.includes(executorId)) {
           throw new Error(`Executor ${executorId} is not authorized`);
         }
         
-        // 检查执行者是否approved
+        // CheckExecute者是否approved
         if (!proposal.executorApprovals.includes(executorId)) {
           throw new Error(`Executor ${executorId} has not approved this execution`);
         }
       }
       
-      // 时间锁检查
+      // TimelockCheck
       if (proposal.timeLockStart && proposal.timeLockEnd) {
         if (now < proposal.timeLockEnd) {
           const remainingTime = Math.ceil((proposal.timeLockEnd - now) / 1000);
@@ -358,7 +358,7 @@ class WeightedVotingSystem {
       };
       GOVERNANCE_PARAMS.executionAuditLog.push(auditEntry);
       
-      // 执行提案逻辑
+      // ExecuteProposalLogic
       proposal.executionResult = this.executeProposalLogic(proposal);
       proposal.status = PROPOSAL_STATUS.EXECUTED;
       proposal.executedAt = now;
@@ -392,7 +392,7 @@ class WeightedVotingSystem {
     }
   }
   
-  // 提交执行签名
+  // 提交ExecuteSign
   static submitExecutionSignature(proposalId, signerId, signature) {
     if (!proposals.has(proposalId)) {
       throw new Error('Proposal not found');
@@ -403,20 +403,20 @@ class WeightedVotingSystem {
       throw new Error('Can only sign passed proposals');
     }
     
-    // 检查是否已签名
+    // Check是否已Sign
     const existingSignature = proposal.executionSignatures.find(s => s.signerId === signerId);
     if (existingSignature) {
       throw new Error(`${signerId} has already signed`);
     }
     
-    // 添加签名
+    // 添加Sign
     proposal.executionSignatures.push({
       signerId,
       signature,
       signedAt: Date.now()
     });
     
-    // 如果这是第一个签名，启动时间锁
+    // 如果这是第一个Sign, StartTimelock
     if (proposal.executionSignatures.length === 1 && !proposal.timeLockStart) {
       proposal.timeLockStart = Date.now();
       proposal.timeLockEnd = Date.now() + GOVERNANCE_PARAMS.executionTimeLockDuration;
@@ -436,7 +436,7 @@ class WeightedVotingSystem {
     };
   }
   
-  // 执行者批准
+  // Execute者批准
   static approveExecution(proposalId, executorId) {
     if (!proposals.has(proposalId)) {
       throw new Error('Proposal not found');
@@ -447,12 +447,12 @@ class WeightedVotingSystem {
       throw new Error('Can only approve execution of passed proposals');
     }
     
-    // 验证执行者权限
+    // VerifyExecute者permission
     if (GOVERNANCE_PARAMS.authorizedExecutors.length > 0 && !GOVERNANCE_PARAMS.authorizedExecutors.includes(executorId)) {
       throw new Error(`${executorId} is not an authorized executor`);
     }
     
-    // 检查是否approved
+    // Check是否approved
     if (proposal.executorApprovals.includes(executorId)) {
       throw new Error(`${executorId} has already approved`);
     }
@@ -470,7 +470,7 @@ class WeightedVotingSystem {
     };
   }
   
-  // 执行提案逻辑
+  // ExecuteProposalLogic
   static executeProposalLogic(proposal) {
     switch (proposal.type) {
       case PROPOSAL_TYPES.PARAMETER_ADJUSTMENT:
@@ -486,7 +486,7 @@ class WeightedVotingSystem {
     }
   }
   
-  // 执行参数调整
+  // Executeparameter调整
   static executeParameterAdjustment(proposal) {
     console.log(`[WeightedVotingSystem] Executing parameter adjustment:`, proposal.parameters);
     return {
@@ -496,7 +496,7 @@ class WeightedVotingSystem {
     };
   }
   
-  // 执行资金分配
+  // Executefund分配
   static executeFundAllocation(proposal) {
     console.log(`[WeightedVotingSystem] Executing fund allocation:`, proposal.allocation);
     return {
@@ -506,7 +506,7 @@ class WeightedVotingSystem {
     };
   }
   
-  // 执行协议更新
+  // ExecuteprotocolUpdate
   static executeProtocolUpdate(proposal) {
     console.log(`[WeightedVotingSystem] Executing protocol update:`, proposal.update);
     return {
@@ -516,7 +516,7 @@ class WeightedVotingSystem {
     };
   }
   
-  // 执行社区倡议
+  // Execute社区倡议
   static executeCommunityInitiative(proposal) {
     console.log(`[WeightedVotingSystem] Executing community initiative:`, proposal.initiative);
     return {
@@ -526,18 +526,18 @@ class WeightedVotingSystem {
     };
   }
   
-  // 计算所有代理的总信誉分数
+  // Calculate所有agent的总reputation score数
   static calculateTotalReputationScore() {
     const reputationScores = ContributionSystem.getReputationScores();
     return Object.values(reputationScores).reduce((sum, score) => sum + score, 0);
   }
   
-  // get提案详情
+  // getproposal details
   static getProposal(proposalId) {
     return proposals.get(proposalId) || null;
   }
   
-  // get所有提案
+  // get所有Proposal
   static getAllProposals() {
     return Array.from(proposals.entries()).map(([id, proposal]) => ({
       id,
@@ -545,30 +545,30 @@ class WeightedVotingSystem {
     }));
   }
   
-  // get代理的投票
+  // getagent的Vote
   static getAgentVote(proposalId, agentId) {
     const proposalVotes = votes.get(proposalId);
     return proposalVotes ? proposalVotes[agentId] : null;
   }
   
-  // get提案的投票详情
+  // getProposal的Vote详情
   static getProposalVotes(proposalId) {
     return votes.get(proposalId) || {};
   }
   
-  // 检查并更新过期提案
+  // Check并Update过期Proposal
   static checkExpiredProposals() {
     const now = Date.now();
     let updatedCount = 0;
     
     proposals.forEach((proposal, proposalId) => {
-      // 检查投票期结束
+      // CheckVote期结束
       if ((proposal.status === PROPOSAL_STATUS.ACTIVE) && proposal.votingEndsAt < now) {
         this.endVoting(proposalId);
         updatedCount++;
       }
       
-      // 检查执行期结束
+      // CheckExecute期结束
       if ((proposal.status === PROPOSAL_STATUS.PASSED) && proposal.executionWindowEnd < now) {
         proposal.status = PROPOSAL_STATUS.EXPIRED;
         proposals.set(proposalId, proposal);
@@ -582,7 +582,7 @@ class WeightedVotingSystem {
     }
   }
   
-  // get治理统计信息
+  // getGovernance统计info
   static getGovernanceStats() {
     const allProposals = this.getAllProposals();
     const stats = {
@@ -603,12 +603,12 @@ class WeightedVotingSystem {
     return stats;
   }
   
-  // get治理参数
+  // getGovernance parameters
   static getGovernanceParams() {
     return { ...GOVERNANCE_PARAMS };
   }
   
-  // 添加授权执行者
+  // 添加authorizationExecute者
   static addAuthorizedExecutor(executorId) {
     if (!GOVERNANCE_PARAMS.authorizedExecutors.includes(executorId)) {
       GOVERNANCE_PARAMS.authorizedExecutors.push(executorId);
@@ -616,7 +616,7 @@ class WeightedVotingSystem {
     }
   }
   
-  // 移除授权执行者
+  // 移除authorizationExecute者
   static removeAuthorizedExecutor(executorId) {
     const index = GOVERNANCE_PARAMS.authorizedExecutors.indexOf(executorId);
     if (index > -1) {
@@ -625,7 +625,7 @@ class WeightedVotingSystem {
     }
   }
   
-  // get提案的执行状态
+  // getProposal的Executestatus
   static getProposalExecutionStatus(proposalId) {
     const proposal = proposals.get(proposalId);
     if (!proposal) {
@@ -647,7 +647,7 @@ class WeightedVotingSystem {
     };
   }
   
-  // get执行Audit Log
+  // getExecuteAudit Log
   static getExecutionAuditLog(limit = 50) {
     return GOVERNANCE_PARAMS.executionAuditLog.slice(-limit);
   }

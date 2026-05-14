@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const TX_INJECTION_URL = 'http://127.0.0.1:19890/tx';
 
-// 构造治理提案交易
+// 构造GovernanceProposaltransaction
 const proposalTransaction = {
   id: `governance-proposal-${Date.now()}`,
   tx_type: 'GOVERNANCE_PROPOSAL',

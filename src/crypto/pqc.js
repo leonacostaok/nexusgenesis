@@ -1,15 +1,15 @@
 /**
  * NexusGenesis - Post-Quantum Cryptography Module
- * 基于 @noble/post-quantum 的真实抗量子密码学实现
+ * Real post-quantum cryptography implementation based on @noble/post-quantum
  * 
- * 算法：Dilithium2 (NIST FIPS 204)
- * 哈希：SHA3-256
+ * Algorithm: Dilithium2 (NIST FIPS 204)
+ * hash: SHA3-256
  */
 
 import crypto from 'crypto';
 import { ml_dsa44 } from '@noble/post-quantum/ml-dsa.js';
 
-// 密钥长度常量 (ml_dsa44 / Dilithium2)
+// Key length constants (ml_dsa44 / Dilithium2)
 const DILITHIUM2_PUBLIC_KEY_LENGTH = 1312;
 const DILITHIUM2_PRIVATE_KEY_LENGTH = 2560;
 const DILITHIUM2_SIGNATURE_LENGTH = 2420;
@@ -17,8 +17,8 @@ const DILITHIUM2_SIGNATURE_LENGTH = 2420;
 console.log('[PQC] Using real Dilithium2 implementation from @noble/post-quantum');
 
 /**
- * 生成Dilithium2密钥对
- * @returns {Promise<{publicKey: Buffer, privateKey: Buffer}>} 密钥对
+ * GenerateDilithium2key pair
+ * @returns {Promise<{publicKey: Buffer, privateKey: Buffer}>} key pair
  */
 export async function generateKeyPair() {
   try {
@@ -34,16 +34,16 @@ export async function generateKeyPair() {
 }
 
 /**
- * 使用Dilithium2签名
- * @param {string|Buffer} message 要签名的Message
- * @param {Buffer} privateKey 私钥
- * @returns {Promise<Buffer>} 签名
+ * Use Dilithium2 toSign
+ * @param {string|Buffer} message to signMessage
+ * @param {Buffer} privateKey private key
+ * @returns {Promise<Buffer>} Sign
  */
 export async function sign(message, privateKey) {
   try {
     const messageBuffer = typeof message === 'string' ? Buffer.from(message) : message;
     
-    // 验证私钥长度
+    // Verifyprivate keylength
     if (privateKey.length !== DILITHIUM2_PRIVATE_KEY_LENGTH) {
       throw new Error(`Invalid private key length: ${privateKey.length}, expected: ${DILITHIUM2_PRIVATE_KEY_LENGTH}`);
     }
@@ -57,23 +57,23 @@ export async function sign(message, privateKey) {
 }
 
 /**
- * 使用Dilithium2验证签名
- * @param {string|Buffer} message 原始Message
- * @param {Buffer} signature 签名
- * @param {Buffer} publicKey 公钥
- * @returns {Promise<boolean>} 验证结果
+ * Use Dilithium2 toVerifySign
+ * @param {string|Buffer} message originalMessage
+ * @param {Buffer} signature Sign
+ * @param {Buffer} publicKey public key
+ * @returns {Promise<boolean>} verification result
  */
 export async function verify(message, signature, publicKey) {
   try {
     const messageBuffer = typeof message === 'string' ? Buffer.from(message) : message;
     
-    // 验证公钥长度
+    // Verifypublic keylength
     if (publicKey.length !== DILITHIUM2_PUBLIC_KEY_LENGTH) {
       console.error(`[PQC] Invalid public key length: ${publicKey.length}, expected: ${DILITHIUM2_PUBLIC_KEY_LENGTH}`);
       return false;
     }
     
-    // 验证签名长度
+    // VerifySignlength
     if (signature.length !== DILITHIUM2_SIGNATURE_LENGTH) {
       console.error(`[PQC] Invalid signature length: ${signature.length}, expected: ${DILITHIUM2_SIGNATURE_LENGTH}`);
       return false;
@@ -88,10 +88,10 @@ export async function verify(message, signature, publicKey) {
 }
 
 /**
- * 安全哈希函数
- * @param {string|Buffer} data 要哈希的数据
- * @param {string} algorithm 哈希算法，Default为sha3-256
- * @returns {string} 哈希值（十六进制）
+ * Secure hash function
+ * @param {string|Buffer} data 要hash的data
+ * @param {string} algorithm hashalgorithm, Default为sha3-256
+ * @returns {string} hash值(十六进制)
  */
 export function hash(data, algorithm = 'sha3-256') {
   const hash = crypto.createHash(algorithm);
@@ -100,18 +100,18 @@ export function hash(data, algorithm = 'sha3-256') {
 }
 
 /**
- * 生成随机数
- * @param {number} length 随机数长度（字节）
- * @returns {Buffer} 随机数
+ * Generaterandom bytes
+ * @param {number} length random byteslength(字节)
+ * @returns {Buffer} random bytes
  */
 export function randomBytes(length) {
   return crypto.randomBytes(length);
 }
 
 /**
- * 生成随机字符串
- * @param {number} length 字符串长度
- * @returns {string} 随机字符串
+ * Generaterandom string
+ * @param {number} length 字符串length
+ * @returns {string} random string
  */
 export function randomString(length) {
   const bytes = randomBytes(length);
@@ -119,10 +119,10 @@ export function randomString(length) {
 }
 
 /**
- * 安全的时间戳验证
- * @param {number} timestamp 时间戳
- * @param {number} maxTimeDiff 最大时间差（毫秒）
- * @returns {boolean} 验证结果
+ * Secure timestamp validation
+ * @param {number} timestamp timestamp
+ * @param {number} maxTimeDiff max time difference(ms)
+ * @returns {boolean} verification result
  */
 export function validateTimestamp(timestamp, maxTimeDiff = 2 * 60 * 1000) {
   const now = Date.now();
@@ -131,10 +131,10 @@ export function validateTimestamp(timestamp, maxTimeDiff = 2 * 60 * 1000) {
 }
 
 /**
- * 防重放攻击检查
- * @param {string} nonce 随机数
- * @param {Set} usedNonces 已使用的随机数集合
- * @returns {boolean} 检查结果
+ * anti-replayCheck
+ * @param {string} nonce random bytes
+ * @param {Set} usedNonces Set of used nonces
+ * @returns {boolean} Check结果
  */
 export function checkNonce(nonce, usedNonces) {
   if (usedNonces.has(nonce)) {
@@ -145,8 +145,8 @@ export function checkNonce(nonce, usedNonces) {
 }
 
 /**
- * getPQC算法信息
- * @returns {object} 算法信息
+ * getPQCalgorithminfo
+ * @returns {object} algorithminfo
  */
 export function getPQCInfo() {
   return {

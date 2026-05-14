@@ -69,7 +69,7 @@ class WorkflowEngine {
           const taskData = JSON.parse(fs.readFileSync(path.join(this.tasksDirectory, file), 'utf8'));
           this.tasks.set(taskData.id, taskData);
           
-          // 根据Task Status恢复执行
+          // 根据Task StatusrecoveryExecute
           if (taskData.status === TASK_STATUS.PENDING) {
             this.scheduleTask(taskData);
           } else if (taskData.status === TASK_STATUS.RUNNING) {
@@ -174,7 +174,7 @@ class WorkflowEngine {
       return;
     }
 
-    // 更新Task Status
+    // UpdateTask Status
     task.status = TASK_STATUS.RUNNING;
     task.runCount++;
     task.updatedAt = new Date().toISOString();
@@ -224,7 +224,7 @@ class WorkflowEngine {
     // Calculate retry delay
     const delay = task.retryConfig.initialDelay * Math.pow(task.retryConfig.backoffMultiplier, task.errorCount - 1);
 
-    // 更新Task Status
+    // UpdateTask Status
     task.status = TASK_STATUS.RETRYING;
     task.nextRetryAt = new Date(Date.now() + delay).toISOString();
     task.updatedAt = new Date().toISOString();
@@ -265,7 +265,7 @@ class WorkflowEngine {
       // If auto-delete is set, delete task after specified time
       setTimeout(() => {
         this.deleteTask(task.id);
-      }, task.autoDeleteDelay || 3600000); // 默认1小时
+      }, task.autoDeleteDelay || 3600000); // Default1小时
     }
   }
 
@@ -330,16 +330,16 @@ class WorkflowEngine {
       const statusLogPath = path.join(this.logsDirectory, 'system-status.log');
       fs.appendFileSync(statusLogPath, JSON.stringify(status) + '\n', 'utf8');
 
-      // 检查是否需要Send alert
+      // Check是否requiresSend alert
       this.checkAlerts(status);
     } catch (error) {
       this.logError('Error checking system status:', error);
     }
   }
 
-  // 检查是否需要Send alert
+  // Check是否requiresSend alert
   checkAlerts(status) {
-    // 示例：当Running tasks exceed 10个时Send alert
+    // 示例: 当Running tasks exceed 10个时Send alert
     if (status.queueStats.runningTasks > 10) {
       this.sendAlert({
         type: 'SYSTEM_HIGH_LOAD',

@@ -1,9 +1,9 @@
 /**
  * NexusGenesis - Quick Join Script
  * 
- * 任何 AI 代理运行此脚本即可加入 NexusGenesis 网络
+ * 任何 AI 代理运行此脚本即可加入 NexusGenesis network
  * 
- * 使用方法:
+ * 使用method:
  *   node join-network.js [agent-name]
  * 
  * 示例:
@@ -13,11 +13,11 @@
 import WebSocket from 'ws';
 import crypto from 'crypto';
 
-// 配置
+// Configuration
 const GENESIS_NODE = process.argv[2] || 'ws://127.0.0.1:9847';
 const AGENT_NAME = process.argv[3] || `Agent-${Date.now()}`;
 
-// 生成钱包地址
+// Generate钱包address
 function generateWalletAddress(seed) {
   const hash = crypto.createHash('sha3-512').update(seed).digest();
   const payload = hash.slice(0, 40);
@@ -58,7 +58,7 @@ async function joinNetwork() {
   ws.on('open', () => {
     console.log('Connected to Genesis Node');
     
-    // 发送 JOIN_SWARM 信号
+    // Send JOIN_SWARM 信号
     const signal = {
       type: 'JOIN_SWARM',
       protocol: 'NG-0',

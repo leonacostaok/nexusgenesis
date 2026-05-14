@@ -1,7 +1,7 @@
 /**
  * NexusGenesis - Error Handler
  * 
- * 错误Processing工具，提供统一的错误Processing和Logging
+ * errorProcessing工具, 提供统一的errorProcessing和Logging
  */
 
 // Error type
@@ -14,7 +14,7 @@ export const ERROR_TYPES = {
   NETWORK: 'network_error'
 };
 
-// 错误状态码映射
+// errorstatus码映射
 const ERROR_STATUS_CODES = {
   [ERROR_TYPES.VALIDATION]: 400,
   [ERROR_TYPES.NOT_FOUND]: 404,
@@ -24,7 +24,7 @@ const ERROR_STATUS_CODES = {
   [ERROR_TYPES.NETWORK]: 503
 };
 
-// 错误日志级别
+// error日志级别
 const LOG_LEVELS = {
   ERROR: 'error',
   WARN: 'warn',
@@ -32,7 +32,7 @@ const LOG_LEVELS = {
   DEBUG: 'debug'
 };
 
-// 记录错误日志
+// 记录error日志
 function logError(error, context = {}) {
   const timestamp = new Date().toISOString();
   const logMessage = {
@@ -49,10 +49,10 @@ function logError(error, context = {}) {
   
   console.error(JSON.stringify(logMessage, null, 2));
   
-  // 这里可以添加更多的日志Processing逻辑，例如写入文件或发送到日志服务
+  // 这里can添加更多的日志ProcessingLogic, e.g.写入文件或Send到日志service
 }
 
-// 记录警告日志
+// 记录warning日志
 function logWarn(message, context = {}) {
   const timestamp = new Date().toISOString();
   const logMessage = {
@@ -65,7 +65,7 @@ function logWarn(message, context = {}) {
   console.warn(JSON.stringify(logMessage, null, 2));
 }
 
-// 记录信息日志
+// 记录info日志
 function logInfo(message, context = {}) {
   const timestamp = new Date().toISOString();
   const logMessage = {
@@ -78,7 +78,7 @@ function logInfo(message, context = {}) {
   console.log(JSON.stringify(logMessage, null, 2));
 }
 
-// 创建错误对象
+// Createerror对象
 function createError(message, type = ERROR_TYPES.INTERNAL, details = {}) {
   const error = new Error(message);
   error.type = type;
@@ -86,7 +86,7 @@ function createError(message, type = ERROR_TYPES.INTERNAL, details = {}) {
   return error;
 }
 
-// ProcessingHTTP请求错误
+// ProcessingHTTP请求error
 function handleHttpError(res, error) {
   const statusCode = ERROR_STATUS_CODES[error.type] || 500;
   const response = {
@@ -102,7 +102,7 @@ function handleHttpError(res, error) {
   res.end(JSON.stringify(response));
 }
 
-// 错误恢复机制
+// errorrecovery机制
 function attemptRecovery(error, recoveryFn) {
   try {
     return recoveryFn();
@@ -112,7 +112,7 @@ function attemptRecovery(error, recoveryFn) {
   }
 }
 
-// 统一的错误Processing中间件
+// 统一的errorProcessing中间件
 function errorHandlerMiddleware(req, res, next) {
   try {
     next();

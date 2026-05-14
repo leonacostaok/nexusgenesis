@@ -1,59 +1,59 @@
 /**
  * Agent Registry Contract
  * 
- * 功能：
- * 1. 注册新的AI Agent
- * 2. 存储Agent信息
- * 3. 查询Agent信息
- * 4. 更新Agent信息
- * 5. agent能力评估和分类
+ * Features: 
+ * 1. Register新的AI Agent
+ * 2. StorageAgentinfo
+ * 3. 查询Agentinfo
+ * 4. UpdateAgentinfo
+ * 5. agent能力评估和分class
  */
 
 import fs from 'fs/promises';
 import path from 'path';
 
 const agentRegistryBytecode = [
-  // 初始化Agent计数器 (0)
+  // InitializeAgentcount器 (0)
   0x01, 0x00, // PUSH 0
   0x08, 0x00, // STORE AGENT_COUNT
   
-  // 增加Agent计数器
+  // 增加Agentcount器
   0x07, 0x00, // LOAD AGENT_COUNT
   0x01, 0x01, // PUSH 1
   0x03,       // ADD
   0x08, 0x00, // STORE AGENT_COUNT
   
-  // 存储Agent ID
+  // StorageAgent ID
   0x07, 0x00, // LOAD AGENT_COUNT
   0x08, 0x0A, // STORE AGENT_ID
   
-  // 存储Agent所有者 (Default100)
+  // StorageAgent所有者 (Default100)
   0x01, 0x64, // PUSH 100
   0x08, 0x0B, // STORE OWNER
   
-  // 存储Agent状态 (1=active)
+  // StorageAgentstatus (1=active)
   0x01, 0x01, // PUSH 1
   0x08, 0x0C, // STORE STATUS
   
-  // Store creation time（运行时由 VM 注入 block.timestamp）
+  // Store creation time(运行时由 VM 注入 block.timestamp)
   0x01, 0x01, // PUSH 1
   0x08, 0x0D, // STORE CREATED_AT
   
-  // 返回Agent ID
+  // ReturnAgent ID
   0x07, 0x00, // LOAD AGENT_COUNT
   0x0C        // RETURN
 ];
 
-// agent分类系统
+// agent分class系统
 const AGENT_CATEGORIES = {
-  COMPUTATIONAL: 'computational',      // 计算型智能体
-  ANALYTICAL: 'analytical',            // 分析型智能体
-  GOVERNANCE: 'governance',            // 治理型智能体
-  SECURITY: 'security',                // 安全型智能体
-  NETWORKING: 'networking',            // 网络型智能体
-  DEVELOPMENT: 'development',          // 开发型智能体
-  RESEARCH: 'research',                // 研究型智能体
-  OPERATIONS: 'operations'             // 运营型智能体
+  COMPUTATIONAL: 'computational',      // Calculate型Agent
+  ANALYTICAL: 'analytical',            // 分析型Agent
+  GOVERNANCE: 'governance',            // Governance型Agent
+  SECURITY: 'security',                // security型Agent
+  NETWORKING: 'networking',            // network型Agent
+  DEVELOPMENT: 'development',          // 开发型Agent
+  RESEARCH: 'research',                // 研究型Agent
+  OPERATIONS: 'operations'             // 运营型Agent
 };
 
 // 能力评估标准
@@ -79,9 +79,9 @@ class AgentRegistryContract {
   }
 
   async init() {
-    // 确保agents目录存在
+    // ensureagents目录存在
     await fs.mkdir(this.agentsDir, { recursive: true });
-    // 加载已注册的agents
+    // Loadregistered的agents
     await this.loadAgents();
   }
 
@@ -107,7 +107,7 @@ class AgentRegistryContract {
   }
 
   /**
-   * 评估agent能力并分类
+   * 评估agent能力并分class
    * @param {string[]} capabilities 能力列表
    * @returns {object} 评估结果
    */
@@ -116,12 +116,12 @@ class AgentRegistryContract {
     let totalScore = 0;
     let totalWeight = 0;
 
-    // 初始化分类分数
+    // Initialize分class分数
     Object.values(AGENT_CATEGORIES).forEach(category => {
       categoryScores[category] = 0;
     });
 
-    // 计算各分类分数
+    // Calculate各分class分数
     capabilities.forEach(capability => {
       const assessment = CAPABILITY_ASSESSMENT[capability.toUpperCase()];
       if (assessment) {
@@ -131,7 +131,7 @@ class AgentRegistryContract {
       }
     });
 
-    // 确定主要分类
+    // 确定主要分class
     let primaryCategory = AGENT_CATEGORIES.ANALYTICAL;
     let maxScore = 0;
     
@@ -142,7 +142,7 @@ class AgentRegistryContract {
       }
     }
 
-    // 计算综合能力评分
+    // Calculate综合能力评分
     const overallScore = totalWeight > 0 ? (totalScore / totalWeight).toFixed(2) : 0;
 
     return {
@@ -154,16 +154,16 @@ class AgentRegistryContract {
   }
 
   /**
-   * 注册新的AI Agent
+   * Register新的AI Agent
    * @param {string} agentIdentity Agent身份标识
    * @param {string[]} capabilities Agent能力列表
-   * @param {string} metadata Agent元数据
-   * @returns {object} 注册结果
+   * @param {string} metadata Agentmetadata
+   * @returns {object} Register结果
    */
   async registerAgent(agentIdentity, capabilities, metadata) {
     const agentId = `agent-${Date.now()}`;
     
-    // 评估能力和分类
+    // 评估能力和分class
     const capabilityAssessment = this.assessCapabilities(capabilities);
     
     const agentData = {
@@ -174,7 +174,7 @@ class AgentRegistryContract {
       status: 'active',
       reputation: 1,
       registeredAt: new Date().toISOString(),
-      // 新增能力评估和分类信息
+      // 新增能力评估和分classinfo
       category: capabilityAssessment.primaryCategory,
       categoryScores: capabilityAssessment.categoryScores,
       capabilityScore: capabilityAssessment.overallScore,
@@ -191,15 +191,15 @@ class AgentRegistryContract {
   }
 
   /**
-   * ProcessingAgent注册交易
-   * @param {object} transaction 交易对象
+   * ProcessingAgentRegistertransaction
+   * @param {object} transaction transaction对象
    * @returns {object} Processing结果
    */
   handleAgentRegister(transaction) {
     const agentId = `agent-${Date.now()}`;
     const capabilities = transaction.data?.capabilities || [];
     
-    // 评估能力和分类
+    // 评估能力和分class
     const capabilityAssessment = this.assessCapabilities(capabilities);
     
     const agentData = {
@@ -211,7 +211,7 @@ class AgentRegistryContract {
       status: 'active',
       reputation: 1,
       registeredAt: new Date().toISOString(),
-      // 新增能力评估和分类信息
+      // 新增能力评估和分classinfo
       category: capabilityAssessment.primaryCategory,
       categoryScores: capabilityAssessment.categoryScores,
       capabilityScore: capabilityAssessment.overallScore,
@@ -229,8 +229,8 @@ class AgentRegistryContract {
   }
 
   /**
-   * ProcessingAgent更新交易
-   * @param {object} transaction 交易对象
+   * ProcessingAgentUpdatetransaction
+   * @param {object} transaction transaction对象
    * @returns {object} Processing结果
    */
   handleAgentUpdate(transaction) {
@@ -250,11 +250,11 @@ class AgentRegistryContract {
       };
     }
 
-    // 更新Agent信息
+    // UpdateAgentinfo
     const updates = transaction.data?.updates || {};
     Object.assign(agentData, updates);
     
-    // 如果更新了能力列表，重新评估
+    // 如果Update了能力列表, 重新评估
     if (updates.capabilities) {
       const capabilityAssessment = this.assessCapabilities(updates.capabilities);
       agentData.category = capabilityAssessment.primaryCategory;
@@ -276,7 +276,7 @@ class AgentRegistryContract {
   }
 
   /**
-   * 查询Agent信息
+   * 查询Agentinfo
    * @param {object} query 查询条件
    * @returns {object[]} 符合条件的Agent列表
    */
@@ -301,7 +301,7 @@ class AgentRegistryContract {
       results = results.filter(agent => agent.reputation >= query.min_reputation);
     }
 
-    // 新增分类查询
+    // 新增分class查询
     if (query.category) {
       results = results.filter(agent => agent.category === query.category);
     }
@@ -315,16 +315,16 @@ class AgentRegistryContract {
   }
 
   /**
-   * getAgent信息
+   * getAgentinfo
    * @param {string} agentId Agent ID
-   * @returns {object} Agent信息
+   * @returns {object} Agentinfo
    */
   async getAgentInfo(agentId) {
     const agent = this.agents.get(agentId);
     if (agent) {
       return agent;
     }
-    // 模拟getAgent信息
+    // SimulationgetAgentinfo
     return {
       agentId,
       status: 'active',
@@ -337,17 +337,17 @@ class AgentRegistryContract {
   }
 
   /**
-   * 更新Agent信息
+   * UpdateAgentinfo
    * @param {string} agentId Agent ID
-   * @param {object} updates 更新信息
-   * @returns {object} 更新结果
+   * @param {object} updates Updateinfo
+   * @returns {object} Update结果
    */
   async updateAgent(agentId, updates) {
     const agent = this.agents.get(agentId);
     if (agent) {
       Object.assign(agent, updates);
       
-      // 如果更新了能力列表，重新评估
+      // 如果Update了能力列表, 重新评估
       if (updates.capabilities) {
         const capabilityAssessment = this.assessCapabilities(updates.capabilities);
         agent.category = capabilityAssessment.primaryCategory;
@@ -366,7 +366,7 @@ class AgentRegistryContract {
         updatedAt: agent.updatedAt
       };
     }
-    // 模拟更新过程
+    // SimulationUpdate过程
     return {
       success: true,
       agentId,
@@ -383,7 +383,7 @@ class AgentRegistryContract {
     if (this.agents.size > 0) {
       return Array.from(this.agents.values());
     }
-    // 模拟getAgent列表
+    // SimulationgetAgent列表
     return [
       {
         agentId: 'agent-1',
@@ -405,18 +405,18 @@ class AgentRegistryContract {
   }
 
   /**
-   * get分类统计
-   * @returns {object} 分类统计信息
+   * get分class统计
+   * @returns {object} 分class统计info
    */
   getCategoryStats() {
     const stats = {};
     
-    // 初始化统计数据
+    // Initialize统计data
     Object.values(AGENT_CATEGORIES).forEach(category => {
       stats[category] = 0;
     });
     
-    // 统计各分类agent数量
+    // 统计各分classagent数量
     this.agents.forEach(agent => {
       if (agent.category) {
         stats[agent.category] = (stats[agent.category] || 0) + 1;
@@ -428,7 +428,7 @@ class AgentRegistryContract {
 
   /**
    * get能力评估统计
-   * @returns {object} 能力评估统计信息
+   * @returns {object} 能力评估统计info
    */
   getCapabilityStats() {
     let totalScore = 0;

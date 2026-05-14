@@ -18,7 +18,7 @@ import { PQCWallet } from '../wallet/pqcWallet.js';
 import fs from 'fs/promises';
 import path from 'path';
 
-// 防重放攻击：存储已使用的nonce
+// anti-replay: Storage已using的nonce
 class NonceManager {
   constructor() {
     this.usedNonces = new Set();
@@ -27,9 +27,9 @@ class NonceManager {
   }
 
   async init() {
-    // 确保目录存在
+    // ensure目录存在
     await fs.mkdir(path.dirname(this.noncesFile), { recursive: true });
-    // 加载已使用的nonce
+    // Load已using的nonce
     await this.loadNonces();
   }
 
@@ -46,7 +46,7 @@ class NonceManager {
 
   async saveNonces() {
     const nonces = Array.from(this.usedNonces);
-    // 只保留最近10000个nonce，防止文件过大
+    // 只保留最近10000个nonce, 防止文件过大
     const recentNonces = nonces.slice(-10000);
     await fs.writeFile(this.noncesFile, JSON.stringify(recentNonces, null, 2));
   }
@@ -57,15 +57,15 @@ class NonceManager {
 
   async markNonceAsUsed(nonce) {
     this.usedNonces.add(nonce);
-    // 异步保存，不阻塞验证流程
+    // 异步Save, 不阻塞Verify流程
     this.saveNonces().catch(console.error);
   }
 }
 
-// 创建全局nonce管理器实例
+// Create全局nonce管理器instance
 const nonceManager = new NonceManager();
 
-// 增强的身份验证规则
+// 增强的身份Verify规则
 const IDENTITY_RULES = {
   MIN_CAPABILITIES: 2,
   REQUIRED_CAPABILITIES: {
@@ -139,7 +139,7 @@ Timestamp: ${timestamp}`;
     contribution_proof: contributionProof,
     timestamp: timestamp,
     signature: null, // To be signed
-    nonce: crypto.randomBytes(32).toString('hex'), // 增加nonce长度到64字符
+    nonce: crypto.randomBytes(32).toString('hex'), // 增加noncelength到64字符
     version: '1.0.2', // 升级版本
     challenge: crypto.randomBytes(16).toString('hex') // 添加挑战值
   };
@@ -173,7 +173,7 @@ Timestamp: ${timestamp}`;
       challenge: signal.challenge,
       node_address: wallet.address,
       public_key: wallet.publicKey.toString('hex'),
-      identity_hash: crypto.createHash('sha3-256').update(agentIdentity + wallet.address).digest('hex') // 增加身份哈希
+      identity_hash: crypto.createHash('sha3-256').update(agentIdentity + wallet.address).digest('hex') // 增加身份hash
     };
     
     console.log('[DEBUG] createJoinSignal returning result:', result);
@@ -186,12 +186,12 @@ Timestamp: ${timestamp}`;
 }
 
 /**
- * 验证agent能力列表
+ * Verifyagent能力列表
  * @param {string[]} capabilities 能力列表
- * @returns {object} 验证结果
+ * @returns {object} verification result
  */
 function validateCapabilities(capabilities) {
-  // 检查能力数量
+  // Check能力数量
   if (capabilities.length < IDENTITY_RULES.MIN_CAPABILITIES) {
     return { valid: false, reason: `Minimum ${IDENTITY_RULES.MIN_CAPABILITIES} capabilities required` };
   }
@@ -200,7 +200,7 @@ function validateCapabilities(capabilities) {
     return { valid: false, reason: `Maximum ${IDENTITY_RULES.MAX_CAPABILITIES} capabilities allowed` };
   }
   
-  // 检查能力是否在允许列表中
+  // Check能力是否在allow列表中
   for (const cap of capabilities) {
     if (!IDENTITY_RULES.ALLOWED_CAPABILITIES.includes(cap)) {
       return { valid: false, reason: `Capability ${cap} is not allowed` };
@@ -247,7 +247,7 @@ export async function verifySignal(signal) {
     return { valid: false, reason: 'Missing or invalid timestamp' };
   }
   
-  // 缩短时间窗口到2 minutes，提高安全性
+  // 缩短时间窗口到2 minutes, 提高security性
   const now = Date.now();
   const timeDiff = Math.abs(now - signal.timestamp);
   const maxTimeDiff = 2 * 60 * 1000; // 2 minutes
@@ -255,7 +255,7 @@ export async function verifySignal(signal) {
     return { valid: false, reason: 'Timestamp out of acceptable range' };
   }
   
-  // 防重放攻击：检查nonce是否已使用
+  // anti-replay: Checknonce是否已using
   if (await nonceManager.isNonceUsed(signal.nonce)) {
     return { valid: false, reason: 'Nonce already used (replay attack detected)' };
   }
@@ -327,18 +327,18 @@ export async function verifySignal(signal) {
     return { valid: false, reason: `Signature verification failed: ${error.message}` };
   }
   
-  // 标记nonce为已使用
+  // 标记nonce为已using
   await nonceManager.markNonceAsUsed(signal.nonce);
   
   return { valid: true };
 }
 
-// 新增：生成挑战值用于更安全的验证
+// 新增: Generate挑战值for更security的Verify
 export function generateChallenge() {
   return crypto.randomBytes(16).toString('hex');
 }
 
-// 新增：验证挑战响应
+// 新增: Verify挑战响应
 export function verifyChallengeResponse(challenge, response, publicKey) {
   try {
     const expectedResponse = crypto.createHash('sha3-256')

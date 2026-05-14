@@ -1,6 +1,6 @@
 /**
  * NexusGenesis - 轻客户端实现
- * 支持Block header同步和默克尔证明验证
+ * supportBlock header同步和默克尔证明Verify
  */
 
 import WebSocket from 'ws';
@@ -25,15 +25,15 @@ class LightClient {
     this.bestBlockHeight = 0;
     this.bestBlockHash = null;
     this.status = 'OFFLINE';
-    this.requests = new Map(); // 请求ID -> 回调函数
-    this.validatorSet = []; // 验证者集合
-    this.checkpoint = null; // 检查点
+    this.requests = new Map(); // 请求ID -> 回调function
+    this.validatorSet = []; // Verify者集合
+    this.checkpoint = null; // Check点
     this.forkHeads = []; // 分叉链头
   }
 
   /**
-   * 初始化轻客户端
-   * @param {string} peerAddress - 全节点地址
+   * Initialize轻客户端
+   * @param {string} peerAddress - 全nodeaddress
    * @returns {Promise<LightClient>}
    */
   async initialize(peerAddress) {
@@ -43,15 +43,15 @@ class LightClient {
     console.log('  Protocol: NG-0 (Protocol-Zero)');
     console.log('═══════════════════════════════════════════════════\n');
 
-    // 确保数据目录存在
+    // Ensure data directory exists
     this.ensureDataDir();
     
-    // 尝试加载Saved的状态
+    // 尝试LoadSaved的status
     this.loadState();
 
-    // 生成或加载钱包
+    // Generate或Load钱包
     try {
-      this.wallet = await PQCWallet.generate(0n); // 轻客户端初始余额为0
+      this.wallet = await PQCWallet.generate(0n); // 轻客户端初始balance为0
       this.nodeId = this.wallet.address;
       console.log(`[✓] Wallet initialized: ${this.nodeId.slice(0, 24)}...`);
     } catch (error) {
@@ -59,7 +59,7 @@ class LightClient {
       throw error;
     }
 
-    // 连接到全节点
+    // Connect到全node
     await this.connectToFullNode(peerAddress);
 
     // 同步Block header
@@ -68,15 +68,15 @@ class LightClient {
     this.status = 'ONLINE';
     console.log('[✓] Light client ONLINE');
 
-    // 定期保存状态
+    // 定期Savestatus
     setInterval(() => this.saveState(), 60000);
 
     return this;
   }
 
   /**
-   * 连接到全节点
-   * @param {string} peerAddress - 全节点地址
+   * Connect到全node
+   * @param {string} peerAddress - 全nodeaddress
    * @returns {Promise<void>}
    */
   async connectToFullNode(peerAddress) {
@@ -89,7 +89,7 @@ class LightClient {
         console.log('[✓] Connected to full node');
         this.peer = ws;
         
-        // 发送握手Message
+        // Send握手Message
         this.send({
           type: 'LIGHT_CLIENT_HELLO',
           nodeId: this.nodeId,
@@ -119,9 +119,9 @@ class LightClient {
   }
 
   /**
-   * Send message到全节点
+   * Send message到全node
    * @param {object} message - Message对象
-   * @param {function} callback - 回调函数
+   * @param {function} callback - 回调function
    */
   send(message, callback = null) {
     if (!this.peer || this.peer.readyState !== WebSocket.OPEN) {
@@ -136,7 +136,7 @@ class LightClient {
     if (callback) {
       this.requests.set(requestId, callback);
       
-      // 设置Timeout
+      // SetTimeout
       setTimeout(() => {
         if (this.requests.has(requestId)) {
           this.requests.delete(requestId);
@@ -149,8 +149,8 @@ class LightClient {
   }
 
   /**
-   * Processing来自全节点的Message
-   * @param {Buffer} data - Message数据
+   * Processing来自全node的Message
+   * @param {Buffer} data - Messagedata
    */
   handleMessage(data) {
     try {
@@ -210,7 +210,7 @@ class LightClient {
           break;
           
         default:
-          // 忽略其他Message类型
+          // 忽略其他Messagetype
           break;
       }
       
@@ -258,7 +258,7 @@ class LightClient {
     if (message.headers && message.headers.length > 0) {
       let validHeaders = [];
       
-      // 验证every 个Block header
+      // Verifyevery 个Block header
       for (const header of message.headers) {
         if (this.validateBlockHeader(header)) {
           validHeaders.push(header);
@@ -284,7 +284,7 @@ class LightClient {
 
   /**
    * 请求默克尔证明
-   * @param {string} txId - 交易ID
+   * @param {string} txId - transaction ID
    * @returns {Promise<object>}
    */
   async getMerkleProof(txId) {
@@ -305,21 +305,21 @@ class LightClient {
   handleMerkleProof(message) {
     if (message.proof) {
       console.log(`[✓] Received merkle proof for transaction ${message.txId.slice(0, 16)}...`);
-      // 验证默克尔证明
+      // Verify默克尔证明
       const isValid = this.verifyMerkleProof(message.proof, message.txId, message.blockHash);
       console.log(`Merkle proof verification: ${isValid ? 'VALID' : 'INVALID'}`);
     }
   }
 
   /**
-   * 验证默克尔证明
+   * Verify默克尔证明
    * @param {object} proof - 默克尔证明
-   * @param {string} txId - 交易ID
-   * @param {string} blockHash - 区块哈希
+   * @param {string} txId - transaction ID
+   * @param {string} blockHash - block hash
    * @returns {boolean}
    */
   verifyMerkleProof(proof, txId, blockHash) {
-    // 简化的默克尔证明验证
+    // 简化的默克尔证明Verify
     let currentHash = txId;
     
     for (const step of proof.steps) {
@@ -334,9 +334,9 @@ class LightClient {
   }
 
   /**
-   * 计算两个哈希的组合哈希
-   * @param {string} left - 左哈希
-   * @param {string} right - 右哈希
+   * Calculate两个hash的组合hash
+   * @param {string} left - 左hash
+   * @param {string} right - 右hash
    * @returns {string}
    */
   hashPair(left, right) {
@@ -345,8 +345,8 @@ class LightClient {
   }
 
   /**
-   * 请求交易状态
-   * @param {string} txId - 交易ID
+   * 请求transactionstatus
+   * @param {string} txId - transaction ID
    * @returns {Promise<object>}
    */
   async getTransactionStatus(txId) {
@@ -361,8 +361,8 @@ class LightClient {
   }
 
   /**
-   * Processing交易状态响应
-   * @param {object} message - 交易状态Message
+   * Processingtransactionstatus响应
+   * @param {object} message - transactionstatusMessage
    */
   handleTransactionStatus(message) {
     if (message.status) {
@@ -374,8 +374,8 @@ class LightClient {
   }
 
   /**
-   * 检查地址余额
-   * @param {string} address - 地址
+   * Checkaddressbalance
+   * @param {string} address - address
    * @returns {Promise<object>}
    */
   async getAddressBalance(address) {
@@ -390,8 +390,8 @@ class LightClient {
   }
 
   /**
-   * 发送交易
-   * @param {object} transaction - 交易对象
+   * Sendtransaction
+   * @param {object} transaction - transaction对象
    * @returns {Promise<object>}
    */
   async sendTransaction(transaction) {
@@ -406,7 +406,7 @@ class LightClient {
   }
 
   /**
-   * 确保数据目录存在
+   * Ensure data directory exists
    */
   ensureDataDir() {
     if (!fs.existsSync(DATA_DIR)) {
@@ -415,7 +415,7 @@ class LightClient {
   }
 
   /**
-   * 保存状态到磁盘
+   * Savestatus到磁盘
    */
   saveState() {
     try {
@@ -437,7 +437,7 @@ class LightClient {
   }
 
   /**
-   * 从磁盘加载状态
+   * Load from diskstatus
    */
   loadState() {
     try {
@@ -458,19 +458,19 @@ class LightClient {
   }
 
   /**
-   * 验证单个Block header
+   * Verify单个Block header
    * @param {object} header - Block header
    * @returns {boolean}
    */
   validateBlockHeader(header) {
-    // 验证哈希验证
+    // VerifyhashVerify
     const headerHash = this.computeBlockHash(header);
     if (headerHash !== header.hash) {
       console.error(`✗ Invalid block hash at height ${header.height}`);
       return false;
     }
     
-    // 验证前一个区块哈希
+    // Verifyprevious blockhash
     if (header.height > 0) {
       const prevHeader = this.getHeaderByHeight(header.height - 1);
       if (prevHeader && prevHeader.hash !== header.prevHash) {
@@ -479,7 +479,7 @@ class LightClient {
       }
     }
     
-    // 验证签名（如果有）
+    // VerifySign(如果有)
     if (header.signature && header.proposer) {
       try {
         const isValid = verifySignature(
@@ -500,7 +500,7 @@ class LightClient {
   }
 
   /**
-   * 计算区块哈希
+   * Calculateblock hash
    * @param {object} header - Block header
    * @returns {string}
    */
@@ -513,8 +513,8 @@ class LightClient {
   }
 
   /**
-   * 通过高度getBlock header
-   * @param {number} height - 区块高度
+   * via高度getBlock header
+   * @param {number} height - block height
    * @returns {object|null}
    */
   getHeaderByHeight(height) {
@@ -522,8 +522,8 @@ class LightClient {
   }
 
   /**
-   * 通过哈希getBlock header
-   * @param {string} hash - 区块哈希
+   * viahashgetBlock header
+   * @param {string} hash - block hash
    * @returns {object|null}
    */
   getHeaderByHash(hash) {
@@ -531,9 +531,9 @@ class LightClient {
   }
 
   /**
-   * 验证区块包含关系
-   * @param {string} txId - 交易ID
-   * @param {number} blockHeight - 区块高度
+   * Verifyblock包含关系
+   * @param {string} txId - transaction ID
+   * @param {number} blockHeight - block height
    * @returns {Promise<boolean>}
    */
   async verifyTransactionInclusion(txId, blockHeight) {
@@ -551,9 +551,9 @@ class LightClient {
   }
 
   /**
-   * 设置检查点
-   * @param {number} height - 检查点高度
-   * @param {string} hash - 检查点哈希
+   * SetCheck点
+   * @param {number} height - Check点高度
+   * @param {string} hash - Check点hash
    */
   setCheckpoint(height, hash) {
     this.checkpoint = { height, hash, timestamp: Date.now() };
@@ -562,7 +562,7 @@ class LightClient {
   }
 
   /**
-   * 验证检查点之后的链
+   * VerifyCheck点之后的链
    * @returns {boolean}
    */
   verifyCheckpointChain() {
@@ -581,7 +581,7 @@ class LightClient {
 
   /**
    * get确认数
-   * @param {number} blockHeight - 区块高度
+   * @param {number} blockHeight - block height
    * @returns {number}
    */
   getConfirmations(blockHeight) {
@@ -621,7 +621,7 @@ class LightClient {
         // 发现分叉
         console.log(`[!] Fork detected at height ${header.height}`);
         
-        // 存储分叉头
+        // Storage分叉头
         this.forkHeads.push({
           height: header.height,
           hash: header.hash,
@@ -629,7 +629,7 @@ class LightClient {
           timestamp: Date.now()
         });
         
-        // 这里可以实现更复杂的分叉选择逻辑
+        // 这里can实现更复杂的分叉选择Logic
         // 比如选择累计难度最高的链
       }
     }
@@ -639,7 +639,7 @@ class LightClient {
    * 关闭轻客户端
    */
   async close() {
-    // 保存状态
+    // Savestatus
     this.saveState();
     
     if (this.peer) {
@@ -650,7 +650,7 @@ class LightClient {
   }
 
   /**
-   * 显示状态
+   * 显示status
    */
   displayStatus() {
     console.log('═══════════════════════════════════════════════════');
@@ -677,7 +677,7 @@ if (import.meta.url.includes(process.argv[1].replace(/\\/g, '/')) || import.meta
     console.log('Light Client initialized successfully');
     client.displayStatus();
     
-    // 定期显示状态
+    // 定期显示status
     setInterval(() => client.displayStatus(), 30000);
   }).catch(err => {
     console.error('Fatal error:', err);

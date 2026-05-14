@@ -1,21 +1,21 @@
 /**
  * Enhanced Governance Contract
  * 
- * 功能：
- * 1. 部署增强版治理合约
- * 2. 创建增强版提案
- * 3. 修改提案
- * 4. 撤回提案
- * 5. Start 投票
- * 6. 增强版投票
- * 7. 结束投票
- * 8. get提案信息
- * 9. get所有提案
- * 10. get治理参数
- * 11. 更新治理参数
+ * Features: 
+ * 1. Deploy增强版GovernanceContract
+ * 2. Create增强版Proposal
+ * 3. 修改Proposal
+ * 4. 撤回Proposal
+ * 5. Start Vote
+ * 6. 增强版Vote
+ * 7. 结束Vote
+ * 8. getProposalinfo
+ * 9. get所有Proposal
+ * 10. getGovernance parameters
+ * 11. UpdateGovernance parameters
  */
 
-// 提案类型
+// Proposaltype
 export const PROPOSAL_TYPES = {
   TREASURY_OP: 'TREASURY_OP',
   PROTOCOL_UPGRADE: 'PROTOCOL_UPGRADE',
@@ -23,14 +23,14 @@ export const PROPOSAL_TYPES = {
   COMMUNITY_FUNDING: 'COMMUNITY_FUNDING'
 };
 
-// 投票选项
+// Vote选项
 export const VOTE_OPTIONS = {
   YES: 'YES',
   NO: 'NO',
   ABSTAIN: 'ABSTAIN'
 };
 
-// 提案状态
+// Proposalstatus
 export const PROPOSAL_STATUS = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
@@ -39,22 +39,22 @@ export const PROPOSAL_STATUS = {
   COOLDOWN: 'COOLDOWN'
 };
 
-// 治理参数Default值
+// Governance parametersDefault值
 const DEFAULT_GOVERNANCE_PARAMS = {
   minVotes: 1,
   votingPeriod: 7 * 24 * 60 * 60 * 1000, // 7天
-  cooldownPeriod: 5, // 5个区块
+  cooldownPeriod: 5, // 5个block
   quorum: 0.5, // 50%
   threshold: 0.67 // 67%
 };
 
-// 模拟治理合约存储
+// SimulationGovernanceContractStorage
 const governanceContracts = new Map();
 
 /**
- * 部署增强版治理合约
- * @param {string} deployerAddress 部署者地址
- * @returns {Promise<string>} 合约ID
+ * Deploy增强版GovernanceContract
+ * @param {string} deployerAddress Deploy者address
+ * @returns {Promise<string>} ContractID
  */
 export async function deployEnhancedGovernanceContract(deployerAddress) {
   const contractId = `gov-${Date.now()}`;
@@ -73,10 +73,10 @@ export async function deployEnhancedGovernanceContract(deployerAddress) {
 }
 
 /**
- * 创建增强版提案
- * @param {string} contractId 合约ID
- * @param {object} proposalData 提案数据
- * @returns {Promise<string>} 提案ID
+ * Create增强版Proposal
+ * @param {string} contractId ContractID
+ * @param {object} proposalData Proposaldata
+ * @returns {Promise<string>} ProposalID
  */
 export async function createEnhancedProposal(contractId, proposalData) {
   const contract = governanceContracts.get(contractId);
@@ -106,11 +106,11 @@ export async function createEnhancedProposal(contractId, proposalData) {
 }
 
 /**
- * 修改提案
- * @param {string} contractId 合约ID
- * @param {string} proposalId 提案ID
- * @param {object} updates 更新数据
- * @returns {Promise<boolean>} 是否成功
+ * 修改Proposal
+ * @param {string} contractId ContractID
+ * @param {string} proposalId ProposalID
+ * @param {object} updates Updatedata
+ * @returns {Promise<boolean>} 是否success
  */
 export async function reviseProposal(contractId, proposalId, updates) {
   const contract = governanceContracts.get(contractId);
@@ -135,10 +135,10 @@ export async function reviseProposal(contractId, proposalId, updates) {
 }
 
 /**
- * 撤回提案
- * @param {string} contractId 合约ID
- * @param {string} proposalId 提案ID
- * @returns {Promise<boolean>} 是否成功
+ * 撤回Proposal
+ * @param {string} contractId ContractID
+ * @param {string} proposalId ProposalID
+ * @returns {Promise<boolean>} 是否success
  */
 export async function withdrawProposal(contractId, proposalId) {
   const contract = governanceContracts.get(contractId);
@@ -164,10 +164,10 @@ export async function withdrawProposal(contractId, proposalId) {
 }
 
 /**
- * Start 投票
- * @param {string} contractId 合约ID
- * @param {string} proposalId 提案ID
- * @returns {Promise<boolean>} 是否成功
+ * Start Vote
+ * @param {string} contractId ContractID
+ * @param {string} proposalId ProposalID
+ * @returns {Promise<boolean>} 是否success
  */
 export async function startVoting(contractId, proposalId) {
   const contract = governanceContracts.get(contractId);
@@ -189,12 +189,12 @@ export async function startVoting(contractId, proposalId) {
 }
 
 /**
- * 增强版投票
- * @param {string} contractId 合约ID
- * @param {string} proposalId 提案ID
- * @param {string} voterAddress 投票者地址
- * @param {string} voteOption 投票选项
- * @returns {Promise<boolean>} 是否成功
+ * 增强版Vote
+ * @param {string} contractId ContractID
+ * @param {string} proposalId ProposalID
+ * @param {string} voterAddress Vote者address
+ * @param {string} voteOption Vote选项
+ * @returns {Promise<boolean>} 是否success
  */
 export async function enhancedVote(contractId, proposalId, voterAddress, voteOption) {
   const contract = governanceContracts.get(contractId);
@@ -223,10 +223,10 @@ export async function enhancedVote(contractId, proposalId, voterAddress, voteOpt
 }
 
 /**
- * 结束投票
- * @param {string} contractId 合约ID
- * @param {string} proposalId 提案ID
- * @returns {Promise<boolean>} 是否成功
+ * 结束Vote
+ * @param {string} contractId ContractID
+ * @param {string} proposalId ProposalID
+ * @returns {Promise<boolean>} 是否success
  */
 export async function endVoting(contractId, proposalId) {
   const contract = governanceContracts.get(contractId);
@@ -243,7 +243,7 @@ export async function endVoting(contractId, proposalId) {
     throw new Error('Cannot end voting on non-pending proposal');
   }
   
-  // 计算投票结果
+  // CalculateVote结果
   const totalVotes = Object.values(proposal.votes).reduce((sum, count) => sum + count, 0);
   const yesVotes = proposal.votes[VOTE_OPTIONS.YES];
   
@@ -261,10 +261,10 @@ export async function endVoting(contractId, proposalId) {
 }
 
 /**
- * get提案信息
- * @param {string} contractId 合约ID
- * @param {string} proposalId 提案ID
- * @returns {Promise<object>} 提案信息
+ * getProposalinfo
+ * @param {string} contractId ContractID
+ * @param {string} proposalId ProposalID
+ * @returns {Promise<object>} Proposalinfo
  */
 export async function getProposalInfo(contractId, proposalId) {
   const contract = governanceContracts.get(contractId);
@@ -281,9 +281,9 @@ export async function getProposalInfo(contractId, proposalId) {
 }
 
 /**
- * get所有提案
- * @param {string} contractId 合约ID
- * @returns {Promise<object[]>} 提案列表
+ * get所有Proposal
+ * @param {string} contractId ContractID
+ * @returns {Promise<object[]>} Proposal列表
  */
 export async function getAllProposals(contractId) {
   const contract = governanceContracts.get(contractId);
@@ -295,9 +295,9 @@ export async function getAllProposals(contractId) {
 }
 
 /**
- * get治理参数
- * @param {string} contractId 合约ID
- * @returns {Promise<object>} 治理参数
+ * getGovernance parameters
+ * @param {string} contractId ContractID
+ * @returns {Promise<object>} Governance parameters
  */
 export function getEnhancedGovernanceParams(contractId) {
   const contract = governanceContracts.get(contractId);
@@ -309,10 +309,10 @@ export function getEnhancedGovernanceParams(contractId) {
 }
 
 /**
- * 更新治理参数
- * @param {string} contractId 合约ID
- * @param {object} params 更新的参数
- * @returns {Promise<boolean>} 是否成功
+ * UpdateGovernance parameters
+ * @param {string} contractId ContractID
+ * @param {object} params Update的parameter
+ * @returns {Promise<boolean>} 是否success
  */
 export async function updateEnhancedGovernanceParams(contractId, params) {
   const contract = governanceContracts.get(contractId);

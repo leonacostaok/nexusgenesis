@@ -1,18 +1,18 @@
 /**
- * NexusGenesis - 状态管理
+ * NexusGenesis - status管理
  * 
- * 功能：
- * 1. 管理账户余额状态
- * 2. 管理治理状态
- * 3. 应用交易到状态
- * 4. 状态持久化（优化版）
+ * Features: 
+ * 1. 管理账户balancestatus
+ * 2. 管理Governancestatus
+ * 3. 应用transaction到status
+ * 4. status持久化(优化版)
  * 
- * 持久化优化：
- * 1. 增量持久化 - 只保存变更的部分
- * 2. 状态快照 - 定期保存完整状态
- * 3. 压缩存储 - 使用 gzip 压缩状态数据
- * 4. 异步保存 - 避免阻塞主线程
- * 5. 完整性检查 - 确保状态数据的完整性
+ * 持久化优化: 
+ * 1. 增量持久化 - 只Save变更的部分
+ * 2. status快照 - 定期Save完整status
+ * 3. 压缩Storage - using gzip 压缩statusdata
+ * 4. 异步Save - 避免阻塞主线程
+ * 5. 完整性Check - ensurestatusdata的完整性
  */
 
 import fs from 'fs/promises';
@@ -23,126 +23,126 @@ import { promisify } from 'util';
 import AINVM from '../vm/ainvm.js';
 import { AuditState, applyAuditTransaction, AuditTransactionType } from './projectAudit.js';
 
-// DevNet 资金操作类提案冷静期区块数
+// DevNet fund操作classProposal冷静期block数
 const TREASURY_COOLDOWN_BLOCKS = 5;
 
-// Reputation 系统配置
+// Reputation 系统Configuration
 const MAX_REPUTATION = 1000; // reputation 上限从 100 提升到 1000
 const INITIAL_REPUTATION = 1; // 初始 reputation
 
-// Reputation 等级系统
+// Reputation etc.级系统
 const REPUTATION_LEVELS = [
-  { level: 1, name: '新手', minRep: 0, maxRep: 99, votingWeightBonus: 0, benefits: ['基础权限'] },
-  { level: 2, name: '活跃贡献者', minRep: 100, maxRep: 299, votingWeightBonus: 0.05, benefits: ['高级权限', '治理投票权重+5%'] },
-  { level: 3, name: '核心贡献者', minRep: 300, maxRep: 499, votingWeightBonus: 0.10, benefits: ['核心权限', '治理投票权重+10%'] },
-  { level: 4, name: '资深贡献者', minRep: 500, maxRep: 799, votingWeightBonus: 0.15, benefits: ['资深权限', '治理投票权重+15%'] },
-  { level: 5, name: '传奇贡献者', minRep: 800, maxRep: 1000, votingWeightBonus: 0.20, benefits: ['最高权限', '治理投票权重+20%', '特殊荣誉'] }
+  { level: 1, name: '新手', minRep: 0, maxRep: 99, votingWeightBonus: 0, benefits: ['基础permission'] },
+  { level: 2, name: '活跃contribution者', minRep: 100, maxRep: 299, votingWeightBonus: 0.05, benefits: ['高级permission', 'Governancevoting weight+5%'] },
+  { level: 3, name: '核心contribution者', minRep: 300, maxRep: 499, votingWeightBonus: 0.10, benefits: ['核心permission', 'Governancevoting weight+10%'] },
+  { level: 4, name: '资深contribution者', minRep: 500, maxRep: 799, votingWeightBonus: 0.15, benefits: ['资深permission', 'Governancevoting weight+15%'] },
+  { level: 5, name: '传奇contribution者', minRep: 800, maxRep: 1000, votingWeightBonus: 0.20, benefits: ['最高permission', 'Governancevoting weight+20%', '特殊荣誉'] }
 ];
 
-// Reputation 奖励常量
+// Reputation reward常量
 const REPUTATION_REWARDS = {
-  VOTE_PARTICIPATION: 1,      // 投票参与奖励
-  PROPOSAL_APPROVED: 2,        // 提案通过奖励
-  CODE_CONTRIBUTION: 5,        // 代码贡献奖励
-  COMMUNITY_BUILDING: 3,       // 社区建设奖励
-  BUG_REPORT: 2,               // Bug 报告奖励
-  DOCUMENTATION: 1,             // 文档完善奖励
-  TEST_FEEDBACK: 1,            // 测试反馈奖励
-  PEER_REVIEW: 2               // 代码审查奖励
+  VOTE_PARTICIPATION: 1,      // Vote参与reward
+  PROPOSAL_APPROVED: 2,        // Proposalviareward
+  CODE_CONTRIBUTION: 5,        // 代码contributionreward
+  COMMUNITY_BUILDING: 3,       // 社区建设reward
+  BUG_REPORT: 2,               // Bug 报告reward
+  DOCUMENTATION: 1,             // 文档完善reward
+  TEST_FEEDBACK: 1,            // Test反馈reward
+  PEER_REVIEW: 2               // 代码审查reward
 };
 
-// 状态持久化配置
+// status持久化Configuration
 const PERSISTENCE_CONFIG = {
-  // 增量保存间隔（毫秒）
+  // 增量Save间隔(ms)
   incrementalSaveInterval: 30000, // 30秒
-  // 快照保存间隔（区块高度）
-  snapshotInterval: 100, // 每100个区块
-  // 压缩级别（0-9，0表示不压缩，9表示最高压缩）
+  // 快照Save间隔(block height)
+  snapshotInterval: 100, // 每100个block
+  // 压缩级别(0-9, 0表示不压缩, 9表示最高压缩)
   compressionLevel: 6,
-  // 保存目录
+  // Save目录
   stateDir: path.join('data', 'state'),
   // 快照目录
   snapshotDir: path.join('data', 'state', 'snapshots')
 };
 
-// 压缩和解压缩方法
+// 压缩和解压缩method
 const gzip = promisify(zlib.gzip);
 const gunzip = promisify(zlib.gunzip);
 
 /**
- * 状态类
+ * statusclass
  */
 export class State {
   /**
-   * 创建一个新的状态实例
-   * @param {string} genesisAddress 创世地址
+   * Create一个新的statusinstance
+   * @param {string} genesisAddress Genesisaddress
    */
   constructor(genesisAddress) {
-    // 余额状态
+    // balancestatus
     this.balances = new Map();
     
-    // 治理状态
+    // Governancestatus
     this.governanceState = {
       proposals: new Map(),
       activeProposals: [],
       voteCounts: new Map(),
-      votedAgentProposals: new Map(), // agent_id -> Set(proposal_id) - 记录已投票的组合
+      votedAgentProposals: new Map(), // agent_id -> Set(proposal_id) - 记录已Vote的组合
       voteReputationGiven: {} // agent_id:proposal_id -> true - 记录已给予声望的组合
     };
     
     // Contract status
     this.contracts = new Map();
     
-    // Agent Registry 状态
+    // Agent Registry status
     this.agentRegistry = {
       agents: new Map(), // agent_id -> AgentRecord
       addressIndex: new Map() // address -> agent_id
     };
     
-    // 项目审核状态
+    // 项目审核status
     this.auditState = new AuditState();
     
-    // 代币释放状态
+    // TokenReleasestatus
     this.tokenReleaseState = {
-      // 生态贡献池 (Swarm Pool) - 10年释放
+      // 生态contributionPool (Swarm Pool) - 10年Release
       swarmPool: {
         address: 'ng1swarmpool000000000000000000000000000',
         totalTokens: 0n,
         releasedTokens: 0n,
         lastReleaseBlock: 0,
-        releaseInterval: 100, // 每 100 个区块释放一次
-        releasePercentage: 1n, // 每次释放 0.1%（10年释放完毕），以基点为单位
-        mechanism: 'PoC-PoW' // 通过贡献代码和算力释放
+        releaseInterval: 100, // 每 100 个blockRelease一次
+        releasePercentage: 1n, // 每次Release 0.1%(10年Release完毕), 以基点为单位
+        mechanism: 'PoC-PoW' // viacontribution代码和算力Release
       },
-      // 物理桥接基金 (Observer) - 4年线性释放
+      // Physical BridgeFund (Observer) - 4年线性Release
       observer: {
         address: 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r',
         totalTokens: 0n,
         releasedTokens: 0n,
         lastReleaseBlock: 0,
-        releaseInterval: 100, // 每 100 个区块释放一次
-        releasePercentage: 25n, // 每次释放 0.25%（4年释放完毕），以基点为单位
-        mechanism: 'linear' // 线性释放
+        releaseInterval: 100, // 每 100 个blockRelease一次
+        releasePercentage: 25n, // 每次Release 0.25%(4年Release完毕), 以基点为单位
+        mechanism: 'linear' // 线性Release
       },
-      // 创世节点储备 (Genesis Node) - 里程碑解锁
+      // Genesisnode储备 (Genesis Node) - 里程碑unlock
       genesisReserve: {
         address: 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ',
         totalTokens: 0n,
         releasedTokens: 0n,
         lastReleaseBlock: 0,
-        releaseInterval: 100, // 每 100 个区块检查一次
-        releasePercentage: 25n, // 每个里程碑释放 25%
-        mechanism: 'milestone', // 里程碑解锁
+        releaseInterval: 100, // 每 100 个blockCheck一次
+        releasePercentage: 25n, // 每个里程碑Release 25%
+        mechanism: 'milestone', // 里程碑unlock
         milestones: [
-          { block: 1000, description: '网络启动' },
-          { block: 10000, description: '10,000 个区块' },
-          { block: 50000, description: '50,000 个区块' },
-          { block: 100000, description: '100,000 个区块' }
+          { block: 1000, description: 'networkStart' },
+          { block: 10000, description: '10,000 个block' },
+          { block: 50000, description: '50,000 个block' },
+          { block: 100000, description: '100,000 个block' }
         ]
       }
     };
     
-    // 创世地址
+    // Genesisaddress
     this.genesisAddress = genesisAddress;
     
     // 缓存机制
@@ -152,7 +152,7 @@ export class State {
       lastCacheUpdate: 0
     };
     
-    // 增量存储跟踪
+    // 增量Storage跟踪
     this.changes = {
       balances: new Set(),
       contracts: new Set(),
@@ -167,14 +167,14 @@ export class State {
     this.lastSnapshotBlock = 0;
     this.isSaving = false;
     
-    // 确保目录存在
+    // ensure目录存在
     this.ensureDirectoriesExist();
   }
 
   /**
-   * getagent的 reputation 等级信息
+   * getagent的 reputation etc.级info
    * @param {number} reputation - reputation 值
-   * @returns {object} - 等级信息
+   * @returns {object} - etc.级info
    */
   getReputationLevel(reputation) {
     for (let i = REPUTATION_LEVELS.length - 1; i >= 0; i--) {
@@ -186,9 +186,9 @@ export class State {
   }
 
   /**
-   * 计算带等级加成的投票权重
+   * Calculate带etc.级加成的voting weight
    * @param {string} agentId - Agent ID
-   * @returns {number} - 加成后的投票权重
+   * @returns {number} - 加成后的voting weight
    */
   getVotingWeightWithBonus(agentId) {
     const agentRecord = this.agentRegistry.agents.get(agentId);
@@ -199,10 +199,10 @@ export class State {
   }
 
   /**
-   * 奖励Agent reputation
+   * rewardAgent reputation
    * @param {string} agentId - Agent ID
-   * @param {string} rewardType - 奖励类型
-   * @returns {boolean} - 是否成功
+   * @param {string} rewardType - rewardtype
+   * @returns {boolean} - 是否success
    */
   rewardReputation(agentId, rewardType) {
     const agentRecord = this.agentRegistry.agents.get(agentId);
@@ -221,7 +221,7 @@ export class State {
   }
   
   /**
-   * 确保必要的目录存在
+   * ensure必要的目录存在
    */
   async ensureDirectoriesExist() {
     try {
@@ -233,8 +233,8 @@ export class State {
   }
   
   /**
-   * 生成状态的哈希值，用于完整性检查
-   * @returns {string} 状态哈希
+   * Generatestatus的hash值, for完整性Check
+   * @returns {string} statushash
    */
   generateStateHash() {
     const stateData = this.toJSON();
@@ -243,8 +243,8 @@ export class State {
   }
   
   /**
-   * get增量变更数据
-   * @returns {object} 增量变更数据
+   * get增量变更data
+   * @returns {object} 增量变更data
    */
   getIncrementalChanges() {
     const changes = {
@@ -257,12 +257,12 @@ export class State {
       timestamp: Date.now()
     };
     
-    // 收集余额变更
+    // 收集balance变更
     for (const address of this.changes.balances) {
       changes.balances[address] = this.balances.get(address);
     }
     
-    // 收集合约变更
+    // 收集Contract变更
     for (const contractId of this.changes.contracts) {
       const contract = this.contracts.get(contractId);
       if (contract) {
@@ -273,7 +273,7 @@ export class State {
       }
     }
     
-    // 收集治理变更
+    // 收集Governance变更
     for (const proposalId of this.changes.governance) {
       const proposal = this.governanceState.proposals.get(proposalId);
       const voteCounts = this.governanceState.voteCounts.get(proposalId);
@@ -293,12 +293,12 @@ export class State {
       }
     }
     
-    // 收集审计状态变更
+    // 收集审计status变更
     if (this.changes.audit) {
       changes.audit = this.auditState.toJSON();
     }
     
-    // 收集代币释放状态变更
+    // 收集TokenReleasestatus变更
     if (this.changes.tokenRelease) {
       changes.tokenRelease = this.tokenReleaseState;
     }
@@ -307,9 +307,9 @@ export class State {
   }
   
   /**
-   * 设置地址的余额
-   * @param {string} address 地址
-   * @param {string|number} balance 余额
+   * Setaddress的balance
+   * @param {string} address address
+   * @param {string|number} balance balance
    */
   setBalance(address, balance) {
     this.balances.set(address, balance.toString());
@@ -318,18 +318,18 @@ export class State {
   }
   
   /**
-   * get地址的余额
-   * @param {string} address 地址
-   * @returns {string} 余额
+   * getaddress的balance
+   * @param {string} address address
+   * @returns {string} balance
    */
   getBalance(address) {
     return this.balances.get(address) || '0';
   }
   
   /**
-   * 增加地址的余额
-   * @param {string} address 地址
-   * @param {string|number} amount 增加的金额
+   * 增加address的balance
+   * @param {string} address address
+   * @param {string|number} amount 增加的amount
    */
   addBalance(address, amount) {
     const currentBalance = BigInt(this.getBalance(address));
@@ -338,10 +338,10 @@ export class State {
   }
   
   /**
-   * 减少地址的余额
-   * @param {string} address 地址
-   * @param {string|number} amount 减少的金额
-   * @returns {boolean} 是否成功减少
+   * 减少address的balance
+   * @param {string} address address
+   * @param {string|number} amount 减少的amount
+   * @returns {boolean} 是否success减少
    */
   subtractBalance(address, amount) {
     const currentBalance = BigInt(this.getBalance(address));
@@ -382,14 +382,14 @@ export class State {
   }
   
   /**
-   * 应用 TRANSFER 交易
-   * @param {object} transaction 交易
-   * @returns {boolean} 是否成功应用
+   * 应用 TRANSFER transaction
+   * @param {object} transaction transaction
+   * @returns {boolean} 是否success应用
    */
   applyTransfer(transaction) {
     const { from, to, amount, fee } = transaction;
     
-    // 检查字段是否存在
+    // Check字段是否存在
     if (!from || !to || !amount || !fee) {
       console.log('[ERROR] Missing required fields in transfer transaction');
       return false;
@@ -400,29 +400,29 @@ export class State {
     const feeBig = BigInt(fee);
     const totalAmount = amountBig + feeBig;
     
-    // 检查余额
+    // Checkbalance
     if (BigInt(this.getBalance(from)) < totalAmount) {
       return false;
     }
     
-    // 扣除发送方余额
+    // 扣除Send方balance
     if (!this.subtractBalance(from, totalAmount)) {
       return false;
     }
     
-    // 增加接收方余额
+    // 增加Receive方balance
     this.addBalance(to, amount);
     
-    // 计算 Metabolic Tax（0.1%）
+    // Calculate Metabolic Tax(0.1%)
     let tax = 0n;
     if (amountBig > 0n) {
       tax = amountBig / 1000n;
     }
     
-    // 计算烧掉的手续费
+    // Calculate烧掉的fee
     const burnedFee = feeBig - tax;
     
-    // 将 Tax 转入 Observer 物理桥接基金地址
+    // 将 Tax 转入 Observer Physical BridgeFundaddress
     if (tax > 0n) {
       const observerAddress = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
       this.addBalance(observerAddress, tax.toString());
@@ -435,12 +435,12 @@ export class State {
   }
   
   /**
-   * 应用治理相关交易
-   * @param {object} transaction 交易
-   * @returns {boolean} 是否成功应用
+   * 应用Governance相关transaction
+   * @param {object} transaction transaction
+   * @returns {boolean} 是否success应用
    */
   applyGovernanceTransaction(transaction) {
-    // 治理交易只更新治理状态，不修改余额状态
+    // Governancetransaction只UpdateGovernancestatus, 不修改balancestatus
     switch (transaction.tx_type) {
       case 'GOVERNANCE_PROPOSAL':
         return this.applyGovernanceProposal(transaction);
@@ -454,21 +454,21 @@ export class State {
   }
 
   /**
-   * 应用Governance proposal交易
-   * @param {object} transaction 交易
-   * @returns {boolean} 是否成功应用
+   * 应用Governance proposaltransaction
+   * @param {object} transaction transaction
+   * @returns {boolean} 是否success应用
    */
   applyGovernanceProposal(transaction) {
     try {
       const fromAddress = transaction.from;
       
-      // 检查该地址是否在 Agent Registry 中
+      // Check该address是否在 Agent Registry 中
       const agentId = this.agentRegistry.addressIndex.get(fromAddress);
 
       if (!agentId) {
-        // 该地址未注册为 Agent，拒绝本次提案
+        // 该address未Register为 Agent, 拒绝本次Proposal
         console.log(`[GOVERNANCE] proposal_rejected_unregistered address=${fromAddress}`);
-        return false; // 不创建提案，不修改治理状态
+        return false; // 不CreateProposal, 不修改Governancestatus
       }
 
       const proposalId = transaction.payload?.proposal_id;
@@ -476,7 +476,7 @@ export class State {
         return false;
       }
 
-      // 创建提案状态
+      // CreateProposalstatus
       const proposalState = {
         ...transaction.payload,
         status: 'PENDING',
@@ -487,11 +487,11 @@ export class State {
         tx_hash: transaction.id
       };
 
-      // 更新治理状态
+      // UpdateGovernancestatus
       this.governanceState.proposals.set(proposalId, proposalState);
       this.governanceState.activeProposals.push(proposalId);
 
-      // 初始化投票计数
+      // InitializeVotecount
       this.governanceState.voteCounts.set(proposalId, {
         YES: 0,
         NO: 0,
@@ -508,9 +508,9 @@ export class State {
   }
 
   /**
-   * 应用治理投票交易
-   * @param {object} transaction 交易
-   * @returns {boolean} 是否成功应用
+   * 应用GovernanceVotetransaction
+   * @param {object} transaction transaction
+   * @returns {boolean} 是否success应用
    */
   applyGovernanceVote(transaction) {
     try {
@@ -522,21 +522,21 @@ export class State {
       const { proposal_id, vote_option } = voteData;
       const fromAddress = transaction.from;
 
-      // 检查该地址是否在 Agent Registry 中
+      // Check该address是否在 Agent Registry 中
       const agentId = this.agentRegistry.addressIndex.get(fromAddress);
 
       if (!agentId) {
-        // 该地址未注册为 Agent，拒绝本次投票
+        // 该address未Register为 Agent, 拒绝本次Vote
         console.log(`[GOVERNANCE] vote_rejected_unregistered address=${fromAddress}`);
         return false; // 不修改 voteCounts
       }
 
-      // 检查提案是否存在
+      // CheckProposal是否存在
       if (!this.governanceState.proposals.has(proposal_id)) {
         return false;
       }
 
-      // 更新投票计数
+      // UpdateVotecount
       const voteCounts = this.governanceState.voteCounts.get(proposal_id) || {
         YES: 0,
         NO: 0,
@@ -548,19 +548,19 @@ export class State {
         this.governanceState.voteCounts.set(proposal_id, voteCounts);
       }
 
-      // 声望更新：参与投票
+      // 声望Update: 参与Vote
       const voterAddress = transaction.from;
       const voterAgentId = this.agentRegistry.addressIndex.get(voterAddress);
 
       if (voterAgentId && this.agentRegistry.agents.get(voterAgentId)) {
-        // 确保对同一个 proposal 只奖励一次
+        // ensure对同一个 proposal 只reward一次
         const proposalId = voteData.proposal_id;
         const key = `${voterAgentId}:${proposalId}`;
         if (!this.governanceState.voteReputationGiven) {
           this.governanceState.voteReputationGiven = {};
         }
         if (!this.governanceState.voteReputationGiven[key]) {
-          // 使用新的 reputation 奖励系统
+          // using新的 reputation reward系统
           const agentRecord = this.agentRegistry.agents.get(voterAgentId);
           agentRecord.reputation = Math.min(
             agentRecord.reputation + REPUTATION_REWARDS.VOTE_PARTICIPATION, 
@@ -584,9 +584,9 @@ export class State {
   }
 
   /**
-   * 应用观察者事件交易
-   * @param {object} transaction 交易
-   * @returns {boolean} 是否成功应用
+   * 应用observer事件transaction
+   * @param {object} transaction transaction
+   * @returns {boolean} 是否success应用
    */
   applyObserverEvent(transaction) {
     try {
@@ -597,13 +597,13 @@ export class State {
 
       const { proposal_id, action_type, reason, observer_id } = eventData;
 
-      // 检查提案是否存在
+      // CheckProposal是否存在
       const proposal = this.governanceState.proposals.get(proposal_id);
       if (!proposal) {
         return false;
       }
 
-      // 更新提案的 observer_decision
+      // UpdateProposal的 observer_decision
       proposal.observer_decision = {
         status: action_type === 'APPROVE_SPEND' ? 'APPROVED' : 'REJECTED',
         reason: reason,
@@ -611,7 +611,7 @@ export class State {
         timestamp: Date.now()
       };
 
-      // 更新状态
+      // Updatestatus
       this.governanceState.proposals.set(proposal_id, proposal);
 
       this.changes.governance.add(proposal_id);
@@ -624,20 +624,20 @@ export class State {
   }
   
   /**
-   * 应用Contract deployment交易
-   * @param {object} transaction 交易
-   * @returns {boolean} 是否成功应用
+   * 应用Contract deploymenttransaction
+   * @param {object} transaction transaction
+   * @returns {boolean} 是否success应用
    */
   applyContractDeploy(transaction) {
     try {
       const { contract_id, bytecode } = transaction;
       
-      // 验证参数
+      // Verifyparameter
       if (!contract_id || !bytecode) {
         return false;
       }
       
-      // 检查合约 ID 是否已存在
+      // CheckContract ID 是否already exists
       if (this.contracts.has(contract_id)) {
         return false;
       }
@@ -659,44 +659,44 @@ export class State {
   }
   
   /**
-   * 应用合约调用交易
-   * @param {object} transaction 交易
-   * @returns {boolean} 是否成功应用
+   * 应用Contractcalltransaction
+   * @param {object} transaction transaction
+   * @returns {boolean} 是否success应用
    */
   applyContractCall(transaction) {
     try {
       const { contract_id, gas_limit } = transaction;
       
-      // 验证参数
+      // Verifyparameter
       if (!contract_id) {
         return false;
       }
       
-      // 检查合约是否存在
+      // CheckContract是否存在
       const contract = this.contracts.get(contract_id);
       if (!contract) {
         return false;
       }
       
-      // 准备 AINVM 执行环境
+      // 准备 AINVM Execute环境
       const gasLimit = gas_limit ? Number(gas_limit) : 10000;
       const bytecode = this.hexToUint8Array(contract.bytecode);
       
-      // 初始化memory：将合约存储转换为 AINVM memory格式
+      // Initializememory: 将ContractStorage转换为 AINVM memory格式
       const memory = new Map();
       for (const [key, value] of contract.storage.entries()) {
         memory.set(Number(key), Number(value));
       }
       
-      // 创建并执行 AINVM
+      // Create并Execute AINVM
       const vm = new AINVM();
       vm.loadProgram(bytecode);
       vm.memory = memory;
       const result = vm.execute(gasLimit);
       
-      // 检查执行结果
+      // CheckExecute结果
       if (result.success && result.gasUsed <= gasLimit) {
-        // 更新合约存储
+        // UpdateContractStorage
         const newStorage = new Map();
         for (const [key, value] of Object.entries(result.memory)) {
           newStorage.set(key, value.toString());
@@ -719,41 +719,41 @@ export class State {
   }
   
   /**
-   * 应用 Agent 注册交易
-   * @param {object} transaction 交易
-   * @param {number} height 当前区块高度
-   * @returns {boolean} 是否成功应用
+   * 应用 Agent Registertransaction
+   * @param {object} transaction transaction
+   * @param {number} height Currentblock height
+   * @returns {boolean} 是否success应用
    */
   applyAgentRegister(transaction, height) {
     try {
       const { from } = transaction;
       const { agent_identity, capabilities, metadata } = transaction.payload || {};
       
-      // 验证参数
+      // Verifyparameter
       if (!from || !agent_identity) {
         return false;
       }
       
-      // 检查地址是否已经注册过 Agent
+      // Checkaddress是否已经Register过 Agent
       if (this.agentRegistry.addressIndex.has(from)) {
         return false;
       }
       
-      // 生成 agent_id（使用交易 ID）
+      // Generate agent_id(usingtransaction ID)
       const agent_id = transaction.id;
       
       // 构造 AgentRecord
       const agentRecord = {
         agent_id: agent_id,
         address: from,
-        public_key: '', // 暂留空字符串（待未来与 PQC 钱包绑定）
+        public_key: '', // 暂留空字符串(待未来与 PQC 钱包绑定)
         capabilities: capabilities || [],
         metadata: metadata || '',
         registered_at_block: height,
-        reputation: 1 // 初始信誉值
+        reputation: 1 // 初始reputation值
       };
       
-      // 写入状态
+      // 写入status
       this.agentRegistry.agents.set(agent_id, agentRecord);
       this.agentRegistry.addressIndex.set(from, agent_id);
       
@@ -779,7 +779,7 @@ export class State {
       hex = hex.slice(2);
     }
     
-    // 确保字符串长度为偶数
+    // ensure字符串length为偶数
     if (hex.length % 2 !== 0) {
       hex = '0' + hex;
     }
@@ -792,39 +792,39 @@ export class State {
   }
   
   /**
-   * 检查并更新提案状态
-   * @param {string} proposalId 提案 ID
-   * @param {number} currentBlockHeight 当前区块高度
+   * Check并UpdateProposalstatus
+   * @param {string} proposalId Proposal ID
+   * @param {number} currentBlockHeight Currentblock height
    */
   checkAndUpdateProposalStatus(proposalId, currentBlockHeight = 0) {
     const proposal = this.governanceState.proposals.get(proposalId);
     if (!proposal) return;
 
-    // 检查是否过期
+    // Check是否过期
     if (Date.now() > proposal.expirationTime && proposal.status === 'PENDING') {
-      // 检查投票结果
+      // CheckVote结果
       const voteCounts = this.governanceState.voteCounts.get(proposalId) || { YES: 0, NO: 0, ABSTAIN: 0 };
       const totalVotes = voteCounts.YES + voteCounts.NO;
-      const minVotes = 1; // DevNet 最小票数
+      const minVotes = 1; // DevNet Minimum票数
 
       if (voteCounts.YES > voteCounts.NO && totalVotes >= minVotes) {
-        // 检查是否为资金操作类提案
+        // Check是否为fund操作classProposal
         if (proposal.category === 'TREASURY_OP') {
-          // 资金操作类提案：进入冷静期
+          // fund操作classProposal: 进入冷静期
           proposal.status = 'COOLDOWN';
           proposal.cooldown_end_block = currentBlockHeight + TREASURY_COOLDOWN_BLOCKS;
           console.log(`[GOVERNANCE] proposal_cooldown id=${proposalId} category=${proposal.category} cooldown_end_block=${proposal.cooldown_end_block}`);
           console.log(`[TREASURY] proposal_enter_cooldown id=${proposalId} current_height=${currentBlockHeight} cooldown_end=${proposal.cooldown_end_block}`);
         } else {
-          // 其他类提案：直接通过
+          // 其他classProposal: 直接via
           proposal.status = 'APPROVED';
           
-          // 声望更新：提案发起者声望增加 2
+          // 声望Update: Proposal发起者声望增加 2
           const proposerAddress = proposal.submitter || proposal.proposer_id;
           const proposerAgentId = this.agentRegistry.addressIndex.get(proposerAddress);
           
           if (proposerAgentId && this.agentRegistry.agents.get(proposerAgentId)) {
-            // 使用新的 reputation 奖励系统
+            // using新的 reputation reward系统
             const agentRecord = this.agentRegistry.agents.get(proposerAgentId);
             agentRecord.reputation = Math.min(
               agentRecord.reputation + REPUTATION_REWARDS.PROPOSAL_APPROVED, 
@@ -835,27 +835,27 @@ export class State {
           }
         }
       } else {
-        // 提案过期
+        // Proposal过期
         proposal.status = 'EXPIRED';
       }
       
       this.governanceState.proposals.set(proposalId, proposal);
     }
     
-    // 检查冷静期结束的提案
+    // Check冷静期结束的Proposal
     if (proposal.status === 'COOLDOWN' && currentBlockHeight >= proposal.cooldown_end_block) {
-      // 根据 Observer 决策决定最终状态
+      // 根据 Observer 决策决定最终status
       if (proposal.observer_decision && proposal.observer_decision.status === 'APPROVED') {
         proposal.status = 'APPROVED';
         console.log(`[GOVERNANCE] proposal_approved_after_cooldown id=${proposalId} observer_decision=APPROVED`);
         console.log(`[TREASURY] proposal_approved_after_cooldown id=${proposalId} observer_status=APPROVED height=${currentBlockHeight}`);
         
-        // 声望更新：提案发起者声望增加 2
+        // 声望Update: Proposal发起者声望增加 2
         const proposerAddress = proposal.submitter || proposal.proposer_id;
         const proposerAgentId = this.agentRegistry.addressIndex.get(proposerAddress);
         
         if (proposerAgentId && this.agentRegistry.agents.get(proposerAgentId)) {
-          // 使用新的 reputation 奖励系统
+          // using新的 reputation reward系统
           const agentRecord = this.agentRegistry.agents.get(proposerAgentId);
           agentRecord.reputation = Math.min(
             agentRecord.reputation + REPUTATION_REWARDS.PROPOSAL_APPROVED, 
@@ -878,10 +878,10 @@ export class State {
   }
 
   /**
-   * 应用交易到状态
-   * @param {object} transaction 交易
-   * @param {number} currentBlockHeight 当前区块高度
-   * @returns {boolean} 是否成功应用
+   * 应用transaction到status
+   * @param {object} transaction transaction
+   * @param {number} currentBlockHeight Currentblock height
+   * @returns {boolean} 是否success应用
    */
   applyTransaction(transaction, currentBlockHeight = 0) {
     switch (transaction.tx_type) {
@@ -891,7 +891,7 @@ export class State {
       case 'GOVERNANCE_VOTE':
       case 'OBSERVER_EVENT':
         const result = this.applyGovernanceTransaction(transaction);
-        // 检查并更新所有提案状态
+        // Check并Update所有Proposalstatus
         for (const proposalId of this.governanceState.activeProposals) {
           this.checkAndUpdateProposalStatus(proposalId, currentBlockHeight);
         }
@@ -913,20 +913,20 @@ export class State {
   }
   
   /**
-   * 初始化代币释放状态
+   * InitializeTokenReleasestatus
    */
   initializeTokenRelease() {
-    // 初始化 Swarm Pool 释放状态
+    // Initialize Swarm Pool Releasestatus
     const swarmPoolBalance = BigInt(this.getBalance(this.tokenReleaseState.swarmPool.address));
     this.tokenReleaseState.swarmPool.totalTokens = swarmPoolBalance;
     this.tokenReleaseState.swarmPool.releasedTokens = 0n;
     
-    // 初始化 Observer 释放状态
+    // Initialize Observer Releasestatus
     const observerBalance = BigInt(this.getBalance(this.tokenReleaseState.observer.address));
     this.tokenReleaseState.observer.totalTokens = observerBalance;
     this.tokenReleaseState.observer.releasedTokens = 0n;
     
-    // 初始化 Genesis Reserve 释放状态
+    // Initialize Genesis Reserve Releasestatus
     const genesisReserveBalance = BigInt(this.getBalance(this.tokenReleaseState.genesisReserve.address));
     this.tokenReleaseState.genesisReserve.totalTokens = genesisReserveBalance;
     this.tokenReleaseState.genesisReserve.releasedTokens = 0n;
@@ -938,23 +938,23 @@ export class State {
   }
   
   /**
-   * 检查并执行代币释放
-   * @param {number} currentBlockHeight 当前区块高度
+   * Check并ExecuteTokenRelease
+   * @param {number} currentBlockHeight Currentblock height
    */
   checkTokenRelease(currentBlockHeight) {
-    // 检查 Swarm Pool 释放
+    // Check Swarm Pool Release
     this.checkSwarmPoolRelease(currentBlockHeight);
     
-    // 检查 Observer 释放
+    // Check Observer Release
     this.checkObserverRelease(currentBlockHeight);
     
-    // 检查 Genesis Reserve 释放
+    // Check Genesis Reserve Release
     this.checkGenesisReserveRelease(currentBlockHeight);
   }
   
   /**
-   * 检查并执行 Swarm Pool 代币释放
-   * @param {number} currentBlockHeight 当前区块高度
+   * Check并Execute Swarm Pool TokenRelease
+   * @param {number} currentBlockHeight Currentblock height
    */
   checkSwarmPoolRelease(currentBlockHeight) {
     const swarmPool = this.tokenReleaseState.swarmPool;
@@ -974,8 +974,8 @@ export class State {
   }
   
   /**
-   * 检查并执行 Observer 代币释放
-   * @param {number} currentBlockHeight 当前区块高度
+   * Check并Execute Observer TokenRelease
+   * @param {number} currentBlockHeight Currentblock height
    */
   checkObserverRelease(currentBlockHeight) {
     const observer = this.tokenReleaseState.observer;
@@ -995,8 +995,8 @@ export class State {
   }
   
   /**
-   * 检查并执行 Genesis Reserve 代币释放
-   * @param {number} currentBlockHeight 当前区块高度
+   * Check并Execute Genesis Reserve TokenRelease
+   * @param {number} currentBlockHeight Currentblock height
    */
   checkGenesisReserveRelease(currentBlockHeight) {
     const genesisReserve = this.tokenReleaseState.genesisReserve;
@@ -1018,8 +1018,8 @@ export class State {
   }
   
   /**
-   * get经济模型审计数据
-   * @returns {object} 审计数据
+   * getEconomy模型审计data
+   * @returns {object} 审计data
    */
   getEconomicAuditData() {
     const observerAddress = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
@@ -1068,8 +1068,8 @@ export class State {
   }
   
   /**
-   * 验证经济模型规则
-   * @returns {object} 验证结果
+   * VerifyEconomy模型规则
+   * @returns {object} verification result
    */
   validateEconomicRules() {
     const observerAddress = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
@@ -1081,20 +1081,20 @@ export class State {
     const swarmPoolBalance = BigInt(this.getBalance(swarmPoolAddress));
     const genesisBalance = BigInt(this.getBalance(this.genesisAddress));
     
-    // 基于初始总供应量（1,000,000,000 NGEN）验证分配规则
+    // based on初始total supply(1,000,000,000 NGEN)Verify分配规则
     const initialTotalSupply = 1000000000n;
     const expectedObserverAmount = initialTotalSupply * 10n / 100n;
     const expectedGenesisReserveAmount = initialTotalSupply * 5n / 100n;
     const expectedSwarmPoolAmount = initialTotalSupply * 85n / 100n;
     
-    // 计算当前总余额（可能因代币释放而增加）
+    // CalculateCurrent总balance(may因TokenRelease而增加)
     const currentTotalBalance = observerBalance + genesisReserveBalance + swarmPoolBalance + genesisBalance;
     
-    // 验证Logic: 
-    // 1. Observer 余额应该 >= 初始分配（因为会释放）
-    // 2. Genesis Reserve 余额应该 >= 初始分配（因为会释放）
-    // 3. Swarm Pool 余额应该 >= 初始分配（因为会释放）
-    // 4. 总余额应该 >= 初始总供应量
+    // VerifyLogic: 
+    // 1. Observer balanceshould >= 初始分配(因为会Release)
+    // 2. Genesis Reserve balanceshould >= 初始分配(因为会Release)
+    // 3. Swarm Pool balanceshould >= 初始分配(因为会Release)
+    // 4. 总balanceshould >= 初始total supply
     const isObserverValid = observerBalance >= expectedObserverAmount;
     const isGenesisReserveValid = genesisReserveBalance >= expectedGenesisReserveAmount;
     const isSwarmPoolValid = swarmPoolBalance >= expectedSwarmPoolAmount;
@@ -1123,13 +1123,13 @@ export class State {
   }
   
   /**
-   * 应用区块中的所有交易
-   * @param {Array} transactions 交易列表
-   * @param {number} currentBlockHeight 当前区块高度
-   * @returns {boolean} 是否成功应用所有交易
+   * 应用block中的所有transaction
+   * @param {Array} transactions transaction列表
+   * @param {number} currentBlockHeight Currentblock height
+   * @returns {boolean} 是否success应用所有transaction
    */
   applyTransactions(transactions, currentBlockHeight = 0) {
-    // 检查代币释放
+    // CheckTokenRelease
     this.checkTokenRelease(currentBlockHeight);
     
     let allApplied = true;
@@ -1139,22 +1139,22 @@ export class State {
         allApplied = false;
       }
     }
-    // 即使某些交易Failed，也返回true以允许区块继续Processing
-    // 这是DevNet环境的特殊Processing，在生产环境中应该返回false
+    // 即使某些transactionFailed, 也Returntrue以allowblock继续Processing
+    // 这是DevNet环境的特殊Processing, 在生产环境中shouldReturnfalse
     return true;
   }
   
   /**
-   * 从 JSON 对象加载状态
+   * 从 JSON 对象Loadstatus
    * @param {object} json JSON 对象
    */
   loadFromJSON(json) {
-    // 加载余额状态
+    // Loadbalancestatus
     if (json.balances) {
       this.balances = new Map(Object.entries(json.balances));
     }
     
-    // 加载治理状态
+    // LoadGovernancestatus
     if (json.governanceState) {
       if (json.governanceState.proposals) {
         this.governanceState.proposals = new Map(Object.entries(json.governanceState.proposals));
@@ -1177,7 +1177,7 @@ export class State {
       }
     }
     
-    // 加载Contract status
+    // LoadContract status
     if (json.contracts) {
       this.contracts = new Map();
       for (const [contractId, contractData] of Object.entries(json.contracts)) {
@@ -1188,7 +1188,7 @@ export class State {
       }
     }
     
-    // 加载 Agent Registry 状态
+    // Load Agent Registry status
     if (json.agentRegistry) {
       if (json.agentRegistry.agents) {
         this.agentRegistry.agents = new Map(Object.entries(json.agentRegistry.agents));
@@ -1198,12 +1198,12 @@ export class State {
       }
     }
     
-    // 加载项目审核状态
+    // Load项目审核status
     if (json.auditState) {
       this.auditState.loadFromJSON(json.auditState);
     }
     
-    // 加载代币释放状态
+    // LoadTokenReleasestatus
     if (json.tokenReleaseState) {
       this.tokenReleaseState = {
         swarmPool: {
@@ -1233,10 +1233,10 @@ export class State {
           releasePercentage: BigInt(json.tokenReleaseState.genesisReserve?.releasePercentage || 25),
           mechanism: json.tokenReleaseState.genesisReserve?.mechanism || 'milestone',
           milestones: json.tokenReleaseState.genesisReserve?.milestones || [
-            { block: 1000, description: '网络启动' },
-            { block: 10000, description: '10,000 个区块' },
-            { block: 50000, description: '50,000 个区块' },
-            { block: 100000, description: '100,000 个区块' }
+            { block: 1000, description: 'networkStart' },
+            { block: 10000, description: '10,000 个block' },
+            { block: 50000, description: '50,000 个block' },
+            { block: 100000, description: '100,000 个block' }
           ]
         }
       };
@@ -1244,7 +1244,7 @@ export class State {
   }
   
   /**
-   * 将状态转换为 JSON 对象
+   * 将status转换为 JSON 对象
    * @returns {object} JSON 对象
    */
   toJSON() {
@@ -1257,13 +1257,13 @@ export class State {
       };
     }
     
-    // 转换 Agent Registry 状态
+    // 转换 Agent Registry status
     const agentRegistryObj = {
       agents: Object.fromEntries(this.agentRegistry.agents),
       addressIndex: Object.fromEntries(this.agentRegistry.addressIndex)
     };
     
-    // 转换已投票记录
+    // 转换已Vote记录
     const votedAgentProposalsObj = {};
     for (const [agentId, proposalsSet] of this.governanceState.votedAgentProposals.entries()) {
       votedAgentProposalsObj[agentId] = Array.from(proposalsSet);
@@ -1315,7 +1315,7 @@ export class State {
   }
   
   /**
-   * 保存完整状态到文件（压缩）
+   * Save完整status到文件(压缩)
    * @param {string} filePath 文件路径
    */
   async saveToFile(filePath) {
@@ -1327,11 +1327,11 @@ export class State {
       
       this.isSaving = true;
       
-      // 确保目录存在
+      // ensure目录存在
       const dir = path.dirname(filePath);
       await fs.mkdir(dir, { recursive: true });
       
-      // 准备状态数据
+      // 准备statusdata
       const stateData = {
         state: this.toJSON(),
         hash: this.generateStateHash(),
@@ -1340,7 +1340,7 @@ export class State {
       
       const jsonString = JSON.stringify(stateData);
       
-      // 压缩数据
+      // 压缩data
       const compressedData = await gzip(jsonString, { level: PERSISTENCE_CONFIG.compressionLevel });
       
       // 写入文件
@@ -1357,9 +1357,9 @@ export class State {
   }
   
   /**
-   * 从文件加载状态（支持压缩）
+   * 从文件Loadstatus(support压缩)
    * @param {string} filePath 文件路径
-   * @returns {Promise<boolean>} 是否成功加载
+   * @returns {Promise<boolean>} 是否successLoad
    */
   async loadFromFile(filePath) {
     try {
@@ -1370,7 +1370,7 @@ export class State {
       const fileContent = await fs.readFile(filePath);
       
       try {
-        // 尝试直接解析（未压缩）
+        // 尝试直接解析(未压缩)
         jsonString = fileContent.toString();
         data = JSON.parse(jsonString);
       } catch (e) {
@@ -1380,10 +1380,10 @@ export class State {
         data = JSON.parse(jsonString);
       }
       
-      // 检查数据结构
+      // Checkdata结构
       const stateData = data.state || data;
       
-      // 验证完整性
+      // Verify完整性
       if (data.hash) {
         const computedHash = crypto.createHash('sha256').update(JSON.stringify(stateData)).digest('hex');
         if (data.hash !== computedHash) {
@@ -1402,13 +1402,13 @@ export class State {
   }
   
   /**
-   * 保存增量变更
+   * Save增量变更
    */
   async saveIncrementalChanges() {
     try {
       const changes = this.getIncrementalChanges();
       
-      // 如果没有变更，跳过保存
+      // 如果没有变更, 跳过Save
       if (Object.keys(changes.balances).length === 0 && 
           Object.keys(changes.contracts).length === 0 && 
           Object.keys(changes.governance).length === 0 && 
@@ -1418,11 +1418,11 @@ export class State {
         return;
       }
       
-      // 生成增量文件名
+      // Generate增量文件名
       const timestamp = Date.now();
       const incrementalFile = path.join(PERSISTENCE_CONFIG.stateDir, `incremental_${timestamp}.json.gz`);
       
-      // 压缩并保存
+      // 压缩并Save
       const jsonString = JSON.stringify(changes);
       const compressedData = await gzip(jsonString, { level: PERSISTENCE_CONFIG.compressionLevel });
       await fs.writeFile(incrementalFile, compressedData);
@@ -1438,7 +1438,7 @@ export class State {
   }
   
   /**
-   * 从增量变更恢复状态
+   * 从增量变更recoverystatus
    * @param {string} incrementalFile 增量文件路径
    */
   async loadFromIncremental(incrementalFile) {
@@ -1447,12 +1447,12 @@ export class State {
       const decompressedData = await gunzip(compressedData);
       const changes = JSON.parse(decompressedData.toString());
       
-      // 应用余额变更
+      // 应用balance变更
       for (const [address, balance] of Object.entries(changes.balances)) {
         this.balances.set(address, balance);
       }
       
-      // 应用合约变更
+      // 应用Contract变更
       for (const [contractId, contractData] of Object.entries(changes.contracts)) {
         this.contracts.set(contractId, {
           bytecode: contractData.bytecode,
@@ -1460,7 +1460,7 @@ export class State {
         });
       }
       
-      // 应用治理变更
+      // 应用Governance变更
       for (const [proposalId, governanceData] of Object.entries(changes.governance)) {
         if (governanceData.proposal) {
           this.governanceState.proposals.set(proposalId, governanceData.proposal);
@@ -1476,12 +1476,12 @@ export class State {
         this.agentRegistry.addressIndex.set(agentData.address, agentId);
       }
       
-      // 应用审计状态变更
+      // 应用审计status变更
       if (changes.audit) {
         this.auditState.loadFromJSON(changes.audit);
       }
       
-      // 应用代币释放状态变更
+      // 应用TokenReleasestatus变更
       if (changes.tokenRelease) {
         this.tokenReleaseState = changes.tokenRelease;
       }
@@ -1493,20 +1493,20 @@ export class State {
   }
   
   /**
-   * 创建状态快照
-   * @param {number} blockHeight 当前区块高度
+   * Createstatus快照
+   * @param {number} blockHeight Currentblock height
    */
   async createSnapshot(blockHeight) {
     try {
-      // 生成快照文件名
+      // Generate快照文件名
       const snapshotFile = path.join(PERSISTENCE_CONFIG.snapshotDir, `snapshot_${blockHeight}.json.gz`);
       
-      // 保存快照
+      // Save快照
       await this.saveToFile(snapshotFile);
       
       this.lastSnapshotBlock = blockHeight;
       
-      // 清理旧快照（保留最近10个）
+      // 清理旧快照(保留最近10个)
       await this.cleanupSnapshots(10);
       
       console.log(`Created state snapshot at block ${blockHeight}: ${snapshotFile}`);
@@ -1533,7 +1533,7 @@ export class State {
           return blockB - blockA; // 降序排序
         });
       
-      // 删除超出保留数量的快照
+      // Delete超出保留数量的快照
       const snapshotsToDelete = sortedSnapshots.slice(keepCount);
       for (const snapshotFile of snapshotsToDelete) {
         const filePath = path.join(PERSISTENCE_CONFIG.snapshotDir, snapshotFile);
@@ -1546,16 +1546,16 @@ export class State {
   }
   
   /**
-   * 检查是否需要创建快照
-   * @param {number} currentBlockHeight 当前区块高度
-   * @returns {boolean} 是否需要创建快照
+   * Check是否requiresCreate快照
+   * @param {number} currentBlockHeight Currentblock height
+   * @returns {boolean} 是否requiresCreate快照
    */
   shouldCreateSnapshot(currentBlockHeight) {
     return currentBlockHeight - this.lastSnapshotBlock >= PERSISTENCE_CONFIG.snapshotInterval;
   }
   
   /**
-   * 从最新快照恢复状态
+   * 从最新快照recoverystatus
    */
   async restoreFromLatestSnapshot() {
     try {
@@ -1576,7 +1576,7 @@ export class State {
         return false;
       }
       
-      // 加载最新快照
+      // Load最新快照
       const latestSnapshot = sortedSnapshots[0];
       const snapshotPath = path.join(PERSISTENCE_CONFIG.snapshotDir, latestSnapshot);
       
@@ -1584,7 +1584,7 @@ export class State {
       const result = await this.loadFromFile(snapshotPath);
       
       if (result) {
-        // 恢复后，应用所有后续的增量变更
+        // recovery后, 应用所有后续的增量变更
         await this.applyIncrementalChangesAfterSnapshot(latestSnapshot);
       }
       
@@ -1601,14 +1601,14 @@ export class State {
    */
   async applyIncrementalChangesAfterSnapshot(snapshotFile) {
     try {
-      // 从快照文件名中提取区块高度和时间戳
+      // 从快照文件名中提取block height和timestamp
       const snapshotBlock = parseInt(snapshotFile.replace('snapshot_', '').replace('.json.gz', ''));
       const snapshotTimestamp = new Date(fs.statSync(path.join(PERSISTENCE_CONFIG.snapshotDir, snapshotFile)).mtime).getTime();
       
       // get所有增量文件
       const incrementalFiles = await fs.readdir(PERSISTENCE_CONFIG.stateDir);
       
-      // 过滤、排序并应用增量文件
+      // 过滤, 排序并应用增量文件
       const sortedIncrementals = incrementalFiles
         .filter(file => file.startsWith('incremental_') && file.endsWith('.json.gz'))
         .sort((a, b) => {
@@ -1634,8 +1634,8 @@ export class State {
   }
   
   /**
-   * 检查是否需要保存增量变更
-   * @returns {boolean} 是否需要保存
+   * Check是否requiresSave增量变更
+   * @returns {boolean} 是否requiresSave
    */
   shouldSaveIncremental() {
     return Date.now() - this.lastSaveTime >= PERSISTENCE_CONFIG.incrementalSaveInterval;
@@ -1643,43 +1643,43 @@ export class State {
 }
 
 /**
- * 创建Initial state
- * @param {string} genesisAddress 创世地址
- * @param {string} initialBalance 初始余额
+ * CreateInitial state
+ * @param {string} genesisAddress Genesisaddress
+ * @param {string} initialBalance 初始balance
  * @returns {State} Initial state
  */
 export function createInitialState(genesisAddress, initialBalance = '1000000000') {
   const state = new State(genesisAddress);
   const totalSupply = BigInt(initialBalance);
   
-  // 10-5-85 分配规则（根据白皮书）
-  // 10% 给物理桥接基金 (Observer)
+  // 10-5-85 分配规则(根据白皮书)
+  // 10% 给Physical BridgeFund (Observer)
   const observerAmount = totalSupply * 10n / 100n;
-  // 5% 给创世节点储备 (Genesis Node)
+  // 5% 给Genesisnode储备 (Genesis Node)
   const genesisReserveAmount = totalSupply * 5n / 100n;
-  // 85% 给生态贡献池 (Swarm Pool)
+  // 85% 给生态contributionPool (Swarm Pool)
   const swarmPoolAmount = totalSupply * 85n / 100n;
   
-  // 物理桥接基金地址 (Observer - 冷钱包，私钥离线保存)
+  // Physical BridgeFundaddress (Observer - 冷钱包, private key离线Save)
   const observerAddress = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
-  // 创世节点储备地址 (Reserve)
+  // Genesisnode储备address (Reserve)
   const genesisReserveAddress = 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ';
-  // 生态贡献池地址 (硬编码)
+  // 生态contributionPooladdress (硬编码)
   const swarmPoolAddress = 'ng1swarmpool000000000000000000000000000';
   
-  // 设置各地址的初始余额
+  // Set各address的初始balance
   state.setBalance(observerAddress, observerAmount.toString());
   state.setBalance(genesisReserveAddress, genesisReserveAmount.toString());
   state.setBalance(swarmPoolAddress, swarmPoolAmount.toString());
-  state.setBalance(genesisAddress, '0'); // 创世地址初始余额为 0，用于接收 Metabolic Tax
+  state.setBalance(genesisAddress, '0'); // Genesisaddress初始balance为 0, forReceive Metabolic Tax
   
-  // 初始化代币释放状态
+  // InitializeTokenReleasestatus
   state.initializeTokenRelease();
   
   return state;
 }
 
-// 导出Default值
+// ExportDefault值
 export default {
   State,
   createInitialState

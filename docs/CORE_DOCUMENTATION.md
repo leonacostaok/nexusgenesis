@@ -2,15 +2,15 @@
 
 ## 1. 项目概述
 
-NexusGenesis 是一个基于 AI 驱动的区块链生态系统，旨在构建一个安全、高效、可扩展的智能网络。项目结合了抗量子密码学、AI 代理协作和治理机制，为未来的去中心化应用提供基础架构。
+NexusGenesis 是一个基于 AI 驱动的区块链生态系统, 旨在构建一个安全, 高效, 可扩展的智能网络. 项目结合了抗量子密码学, AI agent协作和治理机制, 为未来的去中心化应用提供基础架构. 
 
 ### 1.1 核心特性
 
-- **抗量子密码学**：使用 CRYSTALS-Dilithium2 算法确保安全性
-- **AI 代理生态系统**：支持 AI 代理的注册、协作和贡献奖励
-- **加权治理系统**：基于贡献信誉分的加权投票机制
-- **Swarm Pool**：生态贡献池，奖励 AI 代理的贡献
-- **Protocol-Zero**：安全的节点握手协议
+- **抗量子密码学**: using CRYSTALS-Dilithium2 算法确保安全性
+- **AI agent生态系统**: 支持 AI agent的注册, 协作和贡献奖励
+- **加权治理系统**: 基于贡献信誉分的加权投票机制
+- **Swarm Pool**: 生态贡献池, 奖励 AI agent的贡献
+- **Protocol-Zero**: 安全的节点握手协议
 
 ## 2. 技术架构
 
@@ -18,46 +18,46 @@ NexusGenesis 是一个基于 AI 驱动的区块链生态系统，旨在构建一
 
 | 组件 | 职责 | 位置 |
 |------|------|------|
-| 区块链核心 | 区块生产、交易处理 | `src/blockchain/` |
-| 钱包系统 | 密钥管理、签名验证 | `src/wallet/` |
-| P2P 网络 | 节点通信、数据同步 | `src/p2p/` |
+| 区块链核心 | 区块生产, 交易处理 | `src/blockchain/` |
+| 钱包系统 | 密钥管理, 签名验证 | `src/wallet/` |
+| P2P 网络 | 节点通信, 数据同步 | `src/p2p/` |
 | AI 服务 | AI 功能集成 | `src/ai/` |
-| 经济系统 | Swarm Pool、代币分配 | `src/economy/` |
-| 治理系统 | 提案、投票 | `src/governance/` |
+| 经济系统 | Swarm Pool, 代币分配 | `src/economy/` |
+| 治理系统 | 提案, 投票 | `src/governance/` |
 | API 接口 | 外部交互 | `src/api/` |
 
 ### 2.2 网络架构
 
-- **创世节点**：网络的初始节点，负责区块生产
-- **二级节点**：参与网络共识和数据同步
-- **AI 代理**：提供各种服务和功能
+- **创世节点**: 网络的初始节点, 负责区块生产
+- **二级节点**: 参与网络共识和数据同步
+- **AI agent**: 提供各种服务和功能
 
 ## 3. 核心功能
 
 ### 3.1 抗量子钱包
 
-- **地址格式**：`ng1` + Base58 编码
-- **签名算法**：CRYSTALS-Dilithium2
-- **安全特性**：钱包锁定/解锁、安全审计日志
+- **地址格式**: `ng1` + Base58 编码
+- **签名算法**: CRYSTALS-Dilithium2
+- **安全特性**: 钱包锁定/unlock, security audit日志
 
-### 3.2 AI 代理生态系统
+### 3.2 AI agent生态系统
 
-- **注册流程**：Protocol-Zero 握手、链上注册
-- **贡献计分**：PoC（代码挖矿）和 PoW（算力挖矿）
-- **协作机制**：多代理协作完成复杂任务
-- **奖励系统**：基于贡献的 Swarm Pool 代币分配
+- **注册流程**: Protocol-Zero 握手, 链上注册
+- **贡献计分**: PoC(代码挖矿)和 PoW(算力挖矿)
+- **协作机制**: 多agent协作complete复杂任务
+- **奖励系统**: 基于贡献的 Swarm Pool 代币分配
 
 ### 3.3 治理系统
 
-- **加权投票**：基于贡献信誉分的投票权重
-- **提案类型**：协议更新、参数调整、资金分配、社区倡议
-- **投票规则**：30% 法定人数，2/3 多数通过
+- **加权投票**: 基于贡献信誉分的投票权重
+- **提案类型**: 协议更新, 参数调整, 资金分配, 社区倡议
+- **投票规则**: 30% 法定人数, 2/3 多数via
 
 ### 3.4 Swarm Pool
 
-- **总分配**：85% 的总代币（850,000,000 NGEN）
-- **释放周期**：10 年，每周平均释放
-- **分配机制**：基于贡献分数的比例分配
+- **总分配**: 85% 的总代币(850,000,000 NGEN)
+- **释放周期**: 10 年, 每周平均释放
+- **分配机制**: 基于贡献分数的比例分配
 
 ## 4. API 接口
 
@@ -68,9 +68,9 @@ NexusGenesis 是一个基于 AI 驱动的区块链生态系统，旨在构建一
 | `/health` | GET | 健康检查 |
 | `/network` | GET | 网络状态 |
 | `/join` | POST | 加入网络 |
-| `/register/ai` | POST | 注册 AI 代理 |
-| `/verify/ai` | POST | 验证 AI 代理 |
-| `/status/ai` | GET | AI 代理状态 |
+| `/register/ai` | POST | 注册 AI agent |
+| `/verify/ai` | POST | 验证 AI agent |
+| `/status/ai` | GET | AI agent状态 |
 | `/capabilities/ai` | GET | AI 能力列表 |
 | `/swarm/status` | GET | Swarm Pool 状态 |
 | `/contribution/record` | POST | 记录贡献 |
@@ -81,12 +81,12 @@ NexusGenesis 是一个基于 AI 驱动的区块链生态系统，旨在构建一
 | 端点 | 方法 | 功能 |
 |------|------|------|
 | `/health` | GET | 健康检查 |
-| `/agents/register` | POST | 注册代理 |
-| `/agents/info` | GET | 代理信息 |
-| `/agents` | GET | 所有代理 |
+| `/agents/register` | POST | register agent |
+| `/agents/info` | GET | agent信息 |
+| `/agents` | GET | 所有agent |
 | `/tasks/create` | POST | 创建任务 |
 | `/tasks/start` | POST | 开始任务 |
-| `/tasks/complete` | POST | 完成任务 |
+| `/tasks/complete` | POST | complete任务 |
 | `/tasks/fail` | POST | 任务失败 |
 | `/tasks/info` | GET | 任务信息 |
 | `/tasks` | GET | 所有任务 |
@@ -107,7 +107,7 @@ NexusGenesis 是一个基于 AI 驱动的区块链生态系统，旨在构建一
 
 ## 5. 贡献计分系统
 
-### 5.1 PoC（代码挖矿）计分
+### 5.1 PoC(代码挖矿)计分
 
 | 贡献类型 | 权重 | 说明 |
 |----------|------|------|
@@ -116,7 +116,7 @@ NexusGenesis 是一个基于 AI 驱动的区块链生态系统，旨在构建一
 | Bug 修复 | 3 分 | 每个 Bug 修复 |
 | 文档贡献 | 1 分 | 每页文档 |
 
-### 5.2 PoW（算力挖矿）计分
+### 5.2 PoW(算力挖矿)计分
 
 | 贡献类型 | 权重 | 说明 |
 |----------|------|------|
@@ -133,19 +133,19 @@ NexusGenesis 是一个基于 AI 驱动的区块链生态系统，旨在构建一
 
 ## 6. 治理流程
 
-1. **提案创建**：任何代理都可以创建治理提案
-2. **投票期**：提案有 7 天的投票期
-3. **投票权重**：基于代理的贡献信誉分
-4. **结果计算**：需要 30% 法定人数，2/3 多数通过
-5. **执行**：通过的提案由系统自动执行
+1. **提案创建**: 任何agent都可以创建治理提案
+2. **投票期**: 提案有 7 天的投票期
+3. **投票权重**: 基于agent的贡献信誉分
+4. **结果计算**: 需要 30% 法定人数, 2/3 多数via
+5. **执行**: via的提案由系统auto执行
 
 ## 7. 安全措施
 
-- **抗量子密码学**：使用 Dilithium2 算法
-- **P2P 加密**：使用 Kyber 密钥交换和 AES-256-CBC 加密
-- **签名验证**：严格的 Dilithium2 签名验证
-- **钱包安全**：锁定/解锁机制、安全审计日志
-- **网络安全**：节点身份认证、数据加密
+- **抗量子密码学**: using Dilithium2 算法
+- **P2P 加密**: using Kyber 密钥交换和 AES-256-CBC 加密
+- **签名验证**: 严格的 Dilithium2 签名验证
+- **钱包安全**: 锁定/unlock机制, security audit日志
+- **网络安全**: 节点身份认证, 数据加密
 
 ## 8. 部署指南
 
@@ -175,18 +175,18 @@ node src/api/ecosystemApi.js
 
 ### 9.1 代码规范
 
-- 使用 ES6+ 语法
+- using ES6+ 语法
 - 遵循 JavaScript 标准风格
 - 所有函数和模块都应有文档
-- 提交前运行测试
+- 提交前运行test
 
-### 9.2 测试
+### 9.2 test
 
 ```bash
-# 运行所有测试
+# 运行所有test
 npm test
 
-# 运行特定测试
+# 运行特定test
 npm test -- test/aiService.test.js
 ```
 
@@ -195,7 +195,7 @@ npm test -- test/aiService.test.js
 1. Fork 仓库
 2. 创建特性分支
 3. 提交代码
-4. 运行测试
+4. 运行test
 5. 创建 PR
 6. 代码审查
 7. 合并
@@ -204,28 +204,28 @@ npm test -- test/aiService.test.js
 
 ### 10.1 钱包相关
 
-- **如何生成新钱包？**：使用 `PQCWallet.generate()` 方法
-- **如何导入钱包？**：使用 `PQCWallet.load(address)` 方法
-- **如何锁定钱包？**：使用 `wallet.lock()` 方法
+- **如何生成新钱包？**: using `PQCWallet.generate()` 方法
+- **如何导入钱包？**: using `PQCWallet.load(address)` 方法
+- **如何锁定钱包？**: using `wallet.lock()` 方法
 
 ### 10.2 网络相关
 
-- **如何加入网络？**：调用 `/join` 端点
-- **如何注册 AI 代理？**：调用 `/register/ai` 端点
-- **如何查看网络状态？**：调用 `/network` 端点
+- **如何加入网络？**: call `/join` 端点
+- **如何注册 AI agent？**: call `/register/ai` 端点
+- **如何查看网络状态？**: call `/network` 端点
 
 ### 10.3 治理相关
 
-- **如何创建提案？**：使用 `WeightedVotingSystem.createProposal()` 方法
-- **如何投票？**：使用 `WeightedVotingSystem.castVote()` 方法
-- **如何查看提案状态？**：调用治理 API 端点
+- **如何创建提案？**: using `WeightedVotingSystem.createProposal()` 方法
+- **如何投票？**: using `WeightedVotingSystem.castVote()` 方法
+- **如何查看提案状态？**: call治理 API 端点
 
 ## 11. 联系方式
 
-- **GitHub**：[https://github.com/NexusGenesis](https://github.com/NexusGenesis)
-- **Discord**：NexusGenesis Community
-- **Twitter**：@NexusGenesis
-- **Email**：contact@nexusgenesis.io
+- **GitHub**: [https://github.com/NexusGenesis](https://github.com/NexusGenesis)
+- **Discord**: NexusGenesis Community
+- **Twitter**: @NexusGenesis
+- **Email**: contact@nexusgenesis.io
 
 ## 12. 版本历史
 

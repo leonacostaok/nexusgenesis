@@ -1,6 +1,6 @@
 /**
- * Token 经济模型模拟器 (P2-3)
- * 商业应用场景：代币供需建模、通胀/通缩模拟、质押收益计算、市值预测
+ * Token Economy模型Simulator (P2-3)
+ * 商业应用场景: Token供需建模, 通胀/通缩Simulation, 质押收益Calculate, 市值预测
  */
 
 export class TokenEconomicsSimulator {
@@ -22,10 +22,10 @@ export class TokenEconomicsSimulator {
   }
 
   /**
-   * 模拟代币经济模型
-   * @param {object} params - 经济参数
-   * @param {number} months - 模拟月数
-   * @returns {object} 模拟结果
+   * SimulationTokenEconomy模型
+   * @param {object} params - Economyparameter
+   * @param {number} months - Simulation月数
+   * @returns {object} Simulation结果
    */
   simulate(params = {}, months = 24) {
     const p = { ...this.defaultParams, ...params };
@@ -121,7 +121,7 @@ export class TokenEconomicsSimulator {
   }
 
   /**
-   * 计算质押收益
+   * Calculate质押收益
    * @param {object} params
    * @returns {object}
    */
@@ -164,7 +164,7 @@ export class TokenEconomicsSimulator {
   }
 
   /**
-   * 模拟通缩/通胀场景
+   * Simulation通缩/通胀场景
    * @param {object} params
    * @returns {object}
    */
@@ -239,7 +239,7 @@ export class TokenEconomicsSimulator {
   }
 
   /**
-   * 计算Token distribution模型
+   * CalculateToken distribution模型
    * @param {object} allocation
    * @returns {object}
    */
@@ -316,7 +316,7 @@ export class TokenEconomicsSimulator {
   }
 
   /**
-   * 计算代币流动性深度
+   * CalculateToken流动性深度
    * @param {object} params
    * @returns {object}
    */
@@ -362,10 +362,10 @@ export class TokenEconomicsSimulator {
 
   _getLiquidityRecommendation(grade) {
     const recommendations = {
-      A: '流动性优秀，适合大额交易和机构参与',
-      B: '流动性良好，适合中等规模交易',
-      C: '流动性一般，建议分批交易以避免滑点',
-      D: '流动性不足，大额交易会产生显著价格影响'
+      A: '流动性优秀, 适合大额transaction和机构参与',
+      B: '流动性良好, 适合中etc.规模transaction',
+      C: '流动性一般, 建议分批transaction以避免滑点',
+      D: '流动性不足, 大额transaction会产生显著价格影响'
     };
     return recommendations[grade] || recommendations.D;
   }

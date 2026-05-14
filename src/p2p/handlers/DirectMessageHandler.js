@@ -7,7 +7,7 @@ export class DirectMessageHandler extends MessageHandler {
   async handle(peerId, msg) {
     console.log(`Received direct message from ${peerId} to ${msg.targetNodeId}`);
     
-    // 验证发送方是否已验证
+    // VerifySend方是否已Verify
     const isVerified = this.p2pServer.node.isPeerVerified(peerId);
     const hasNodeId = this.p2pServer.peerIdToNodeId.has(peerId);
     
@@ -23,7 +23,7 @@ export class DirectMessageHandler extends MessageHandler {
       return false;
     }
     
-    // 如果通过Protocol-Zero握手但还未在node中注册，临时允许通信
+    // 如果viaProtocol-Zero握手但还未在node中Register, 临时allow通信
     if (!isVerified && hasNodeId) {
       console.log(`[DEBUG] Peer ${peerId} has nodeId but not verified, allowing communication`);
     }
@@ -31,14 +31,14 @@ export class DirectMessageHandler extends MessageHandler {
     // 查找目标agent
     let targetPeerId = this.p2pServer.getPeerIdByNodeId(msg.targetNodeId);
     
-    // 检查目标是否是 Genesis 节点自身
+    // Check目标是否是 Genesis node自身
     if (msg.targetNodeId === this.p2pServer.node.nodeId) {
       console.log(`[✓] Direct message to Genesis node received`);
       
-      // ProcessingMessage（这里可以添加具体的Processing逻辑）
+      // ProcessingMessage(这里can添加具体的ProcessingLogic)
       console.log(`[MESSAGE] From: ${this.p2pServer.getNodeIdByPeerId(peerId)}, Message: ${msg.message}`);
       
-      // 确认Message已接收
+      // 确认Messagereceived
       this.p2pServer.send(peerId, {
         type: 'DIRECT_MESSAGE_ACK',
         targetNodeId: msg.targetNodeId,
@@ -49,13 +49,13 @@ export class DirectMessageHandler extends MessageHandler {
       return true;
     }
     
-    // 如果直接找到，使用直接连接
+    // 如果直接找到, using直接Connect
     if (!targetPeerId) {
-      // 尝试通过Kademlia路由查找
+      // 尝试viaKademlia路由查找
       const route = this.p2pServer.selectBestRoute(msg.targetNodeId);
       if (route) {
         console.log(`[!] Target node ${msg.targetNodeId} not found directly, routing through ${route}`);
-        // 转发Message到路由节点
+        // 转发Message到路由node
         this.p2pServer.sendToRoute(route, {
           type: 'DIRECT_MESSAGE',
           fromNodeId: this.p2pServer.getNodeIdByPeerId(peerId),
@@ -95,7 +95,7 @@ export class DirectMessageHandler extends MessageHandler {
       timestamp: msg.timestamp || Date.now()
     });
     
-    // 确认Message已发送
+    // 确认Messagesent
     this.p2pServer.send(peerId, {
       protocol: msg.protocol || 'NG-0',
       type: 'DIRECT_MESSAGE_ACK',
@@ -108,7 +108,7 @@ export class DirectMessageHandler extends MessageHandler {
   }
 
   /**
-   * 直接Message需要节点验证
+   * 直接MessagerequiresnodeVerify
    */
   requiresVerification() {
     return true;

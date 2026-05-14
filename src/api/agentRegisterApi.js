@@ -1,13 +1,13 @@
 /**
  * NexusGenesis - Agent On-Chain Registration API
  * 
- * 提供agent链上注册的 HTTP 接口
+ * 提供agenton-chainRegister的 HTTP 接口
  * 
- * 端点：
- * POST /api/v1/agents/register - 注册新agent
- * GET /api/v1/agents/:agentId - 查询agent信息
+ * 端点: 
+ * POST /api/v1/agents/register - Register新agent
+ * GET /api/v1/agents/:agentId - 查询agentinfo
  * GET /api/v1/agents - 列出所有agent
- * GET /api/v1/agents/address/:address - 通过地址查询agent
+ * GET /api/v1/agents/address/:address - viaaddress查询agent
  */
 
 import express from 'express';
@@ -24,13 +24,13 @@ const router = express.Router();
 
 /**
  * POST /api/v1/agents/register
- * 注册新agent到区块链
+ * Register新agent到block链
  */
 router.post('/register', async (req, res) => {
   try {
     const { from, agent_identity, capabilities, metadata, public_key } = req.body;
 
-    // 验证必填字段
+    // Verify必填字段
     if (!from || !agent_identity) {
       return res.status(400).json({
         success: false,
@@ -38,7 +38,7 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // 验证地址格式
+    // Verifyaddress格式
     if (!from.startsWith('ng1') || from.length < 30) {
       return res.status(400).json({
         success: false,
@@ -46,7 +46,7 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // 验证 agent_identity 格式
+    // Verify agent_identity 格式
     if (!/^[a-zA-Z0-9_-]{3,64}$/.test(agent_identity)) {
       return res.status(400).json({
         success: false,
@@ -54,7 +54,7 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // 验证 capabilities
+    // Verify capabilities
     if (capabilities && !Array.isArray(capabilities)) {
       return res.status(400).json({
         success: false,
@@ -62,7 +62,7 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // 检查地址是否已注册
+    // Checkaddress是否registered
     if (req.app.locals.state && isAddressRegistered(from, req.app.locals.state)) {
       return res.status(409).json({
         success: false,
@@ -70,7 +70,7 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // 创建交易
+    // Createtransaction
     const transaction = createAgentRegisterTransaction(from, {
       agent_identity,
       capabilities: capabilities || [],
@@ -78,7 +78,7 @@ router.post('/register', async (req, res) => {
       public_key: public_key || ''
     });
 
-    // 验证交易
+    // Verifytransaction
     const validation = validateAgentRegisterTransaction(transaction);
     if (!validation.valid) {
       return res.status(400).json({
@@ -87,7 +87,7 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // 如果Blockchain state可用，直接应用交易
+    // 如果Blockchain state可用, 直接应用transaction
     let applied = false;
     if (req.app.locals.state) {
       const currentHeight = req.app.locals.blockHeight || 1;
@@ -124,7 +124,7 @@ router.post('/register', async (req, res) => {
 
 /**
  * GET /api/v1/agents
- * 列出所有已注册agent
+ * 列出所有registeredagent
  */
 router.get('/', async (req, res) => {
   try {
@@ -160,7 +160,7 @@ router.get('/', async (req, res) => {
 
 /**
  * GET /api/v1/agents/:agentId
- * 查询指定agent信息
+ * 查询指定agentinfo
  */
 router.get('/:agentId', async (req, res) => {
   try {
@@ -206,7 +206,7 @@ router.get('/:agentId', async (req, res) => {
 
 /**
  * GET /api/v1/agents/address/:address
- * 通过地址查询agent
+ * viaaddress查询agent
  */
 router.get('/address/:address', async (req, res) => {
   try {
@@ -252,7 +252,7 @@ router.get('/address/:address', async (req, res) => {
 
 /**
  * POST /api/v1/agents/verify
- * 验证agent注册交易
+ * VerifyagentRegistertransaction
  */
 router.post('/verify', async (req, res) => {
   try {

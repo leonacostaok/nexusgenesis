@@ -1,4 +1,4 @@
-# NexusGenesis API 自动文档
+# NexusGenesis API auto文档
 > Auto-generated: 2026-05-11 | Version: 1.0.0
 
 ---
@@ -7,7 +7,7 @@
 
 **类名:** `NexusGenesisSDK`
 
-**描述:** NexusGenesis SDK 为开发者提供智能合约开发、部署和交互的工具 支持：合约管理、Agent 操作、跨链桥接、事件订阅
+**描述:** NexusGenesis SDK 为开发者提供智能合约开发, 部署和交互的工具 支持: 合约管理, Agent 操作, 跨链桥接, 事件订阅
 
 ### 方法列表 (73)
 
@@ -115,11 +115,11 @@
 
 ---
 
-## 智能体管理 (AgentManager)
+## agent管理 (AgentManager)
 
 **类名:** `AgentManager`
 
-**描述:** （无描述）
+**描述:** (无描述)
 
 ### 方法列表 (72)
 
@@ -204,7 +204,7 @@
 
 **类名:** `ContractTemplateLibrary`
 
-**描述:** NexusGenesis - 智能合约模板库 提供常用场景的智能合约模板：DID、DAO、Token、NFT等
+**描述:** NexusGenesis - 智能合约模板库 提供常用场景的智能合约模板: DID, DAO, Token, NFT等
 
 ### 方法列表 (21)
 

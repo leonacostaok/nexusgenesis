@@ -1,7 +1,7 @@
 /**
- * NexusGenesis - agent通信基类
+ * NexusGenesis - agent通信基class
  * 提供agent自主通信的Core functionality
- * 包括：自动连接、心跳保持、Message路由、agent发现
+ * includes: autoConnect, 心跳保持, Message路由, agent发现
  */
 
 import WebSocket from 'ws';
@@ -30,23 +30,23 @@ class BaseAgent {
     this.reconnectAttempts = 0;
     this.heartbeatTimer = null;
     this.agentDiscoveryTimer = null;
-    this.knownAgents = new Map(); // 已知智能体映射
-    this.messageCallbacks = new Map(); // 消息回调映射
+    this.knownAgents = new Map(); // 已知Agent映射
+    this.messageCallbacks = new Map(); // message回调映射
 
     this.init();
   }
 
   async init() {
-    console.log(`🚀 启动${this.config.agentId}agent...`);
-    console.log(`📡 连接到Genesis节点: ${this.config.genesisNode}`);
+    console.log(`🚀 Start${this.config.agentId}agent...`);
+    console.log(`📡 Connect到Genesisnode: ${this.config.genesisNode}`);
 
-    // 生成钱包
+    // Generate钱包
     try {
       this.wallet = await PQCWallet.generate(100n);
-      console.log(`✅ 钱包生成成功: ${this.wallet.address}`);
+      console.log(`✅ 钱包Generatesuccess: ${this.wallet.address}`);
     } catch (error) {
-      console.error('❌ 钱包生成Failed:', error.message);
-      // 使用Default地址作为备用
+      console.error('❌ 钱包GenerateFailed:', error.message);
+      // usingDefaultaddress作为备用
       this.wallet = {
         address: this.config.agentId,
         publicKey: Buffer.from(`${this.config.agentId}_public_key`),
@@ -60,12 +60,12 @@ class BaseAgent {
   }
 
   connectToGenesis() {
-    console.log(`🔄 尝试连接到Genesis节点... (尝试 ${this.reconnectAttempts + 1}/${this.config.maxReconnectAttempts})`);
+    console.log(`🔄 尝试Connect到Genesisnode... (尝试 ${this.reconnectAttempts + 1}/${this.config.maxReconnectAttempts})`);
 
     this.ws = new WebSocket(this.config.genesisNode);
 
     this.ws.on('open', async () => {
-      console.log('✅ 成功连接到Genesis节点');
+      console.log('✅ successConnect到Genesisnode');
       this.connected = true;
       this.reconnectAttempts = 0;
       await this.sendJoinSignal();
@@ -76,12 +76,12 @@ class BaseAgent {
     });
 
     this.ws.on('error', (error) => {
-      console.error('❌ 连接错误:', error.message);
+      console.error('❌ Connecterror:', error.message);
       this.handleError(error);
     });
 
     this.ws.on('close', (code, reason) => {
-      console.log(`🔌 连接已关闭 (代码: ${code}, 原因: ${reason})`);
+      console.log(`🔌 Connectdisabled (代码: ${code}, 原因: ${reason})`);
       this.connected = false;
       this.verified = false;
       this.cleanupTimers();
@@ -90,7 +90,7 @@ class BaseAgent {
   }
 
   async sendJoinSignal() {
-    // 生成Protocol-Zero JOIN_SWARM信号
+    // GenerateProtocol-Zero JOIN_SWARM信号
     const timestamp = Date.now();
 
     // Self-Description
@@ -142,21 +142,21 @@ Timestamp: ${timestamp}`;
 
     try {
       const signature = await this.wallet.sign(signalToSign);
-      // 添加签名到信号
+      // 添加Sign到信号
       const signal = {
         ...signalData,
         signature
       };
 
-      console.log('📤 发送Protocol-Zero JOIN_SWARM信号...');
+      console.log('📤 SendProtocol-Zero JOIN_SWARM信号...');
       console.log(`Agent Identity: ${agentIdentity.slice(0, 20)}...`);
       console.log(`Node Address: ${signal.node_address}`);
 
-      // 发送信号
+      // Send信号
       this.sendMessage(signal);
     } catch (error) {
-      console.error('❌ 签名生成Failed:', error.message);
-      // 即使签名Failed也发送信号
+      console.error('❌ SignGenerateFailed:', error.message);
+      // 即使SignFailed也Send信号
       this.sendMessage(signalData);
     }
   }
@@ -172,7 +172,7 @@ Timestamp: ${timestamp}`;
         return false;
       }
     } else {
-      console.warn('⚠️  连接未建立，无法Send message');
+      console.warn('⚠️  Connect未建立, 无法Send message');
       return false;
     }
   }
@@ -188,7 +188,7 @@ Timestamp: ${timestamp}`;
         const decompressed = zlib.gunzipSync(compressedData);
         messageStr = decompressed.toString();
         message = JSON.parse(messageStr);
-        console.log('✅ 解压缩Message成功');
+        console.log('✅ 解压缩Messagesuccess');
       }
 
       // Processing批ProcessingMessage
@@ -204,17 +204,17 @@ Timestamp: ${timestamp}`;
         return;
       }
 
-      // 检查是否是从服务器收到的Message，而不是自己发送的Message
+      // Check是否是从service器收到的Message, 而不是自己Send的Message
       if (message.type === 'GET_NODE_LIST') {
-        // 忽略从服务器收到的GET_NODE_LISTMessage，这可能是一个回声
+        // 忽略从service器收到的GET_NODE_LISTMessage, 这may是一个回声
         console.log('📥 忽略回声GET_NODE_LISTMessage');
         return;
       }
 
       this.handleSingleMessage(message);
     } catch (error) {
-      console.error('❌ MessageProcessing错误:', error.message);
-      console.log('原始Message:', data.toString());
+      console.error('❌ MessageProcessingerror:', error.message);
+      console.log('originalMessage:', data.toString());
     }
   }
 
@@ -245,7 +245,7 @@ Timestamp: ${timestamp}`;
     else if (message.type === 'NODE_LIST') {
       this.handleNodeList(message);
     }
-    // Processing其他Message类型
+    // Processing其他Messagetype
     else {
       this.handleOtherMessage(message);
     }
@@ -254,16 +254,16 @@ Timestamp: ${timestamp}`;
   handleSwarmAck(ack) {
     if (ack.status === 'accepted' && ack.verified) {
       console.log('✅ agent身份Verification successful！');
-      console.log('✅ 已成功加入NexusGenesis网络！');
+      console.log('✅ 已success加入NexusGenesisnetwork！');
       this.verified = true;
       this.startAgentTasks();
     } else {
-      console.error('❌ 身份验证Failed:', ack.message);
+      console.error('❌ 身份VerifyFailed:', ack.message);
     }
   }
 
   handlePing(ping) {
-    console.log('📡 收到PINGMessage，回复PONG');
+    console.log('📡 收到PINGMessage, 回复PONG');
     this.sendMessage({
       type: 'PONG',
       timestamp: ping.timestamp
@@ -271,14 +271,14 @@ Timestamp: ${timestamp}`;
   }
 
   handlePong(pong) {
-    // ProcessingPONGMessage，更新agent状态
+    // ProcessingPONGMessage, Updateagentstatus
     console.log('📡 收到PONGMessage');
   }
 
   handleAgentMessage(message) {
     console.log(`💬 来自${message.sender}的Message: ${message.content}`);
 
-    // 注册agent
+    // Registeragent
     if (message.sender) {
       this.knownAgents.set(message.sender, {
         lastSeen: Date.now(),
@@ -287,7 +287,7 @@ Timestamp: ${timestamp}`;
       });
     }
 
-    // 调用Message回调
+    // callMessage回调
     const callback = this.messageCallbacks.get(message.type);
     if (callback) {
       callback(message);
@@ -309,15 +309,15 @@ Timestamp: ${timestamp}`;
     });
 
     // ProcessingMessagewithin容
-    // 这里可以添加具体的MessageProcessing逻辑
+    // 这里can添加具体的MessageProcessingLogic
   }
 
   handleNodeList(nodeList) {
-    console.log(`📋 收到节点列表，包含 ${nodeList.nodes?.length || 0}  nodes`);
+    console.log(`📋 收到node列表, 包含 ${nodeList.nodes?.length || 0}  nodes`);
     
-    // 更新已知agent列表
+    // Update已知agent列表
     if (nodeList.nodes) {
-      console.log('节点列表:', nodeList.nodes.map(node => node.nodeId || node.address));
+      console.log('node列表:', nodeList.nodes.map(node => node.nodeId || node.address));
       for (const node of nodeList.nodes) {
         const nodeId = node.nodeId || node.address;
         this.knownAgents.set(nodeId, {
@@ -330,33 +330,33 @@ Timestamp: ${timestamp}`;
       }
     }
     
-    // 调用Message回调
+    // callMessage回调
     const callback = this.messageCallbacks.get('NODE_LIST');
     if (callback) {
-      console.log('调用NODE_LIST回调');
+      console.log('callNODE_LIST回调');
       callback(nodeList);
     }
   }
 
   handleOtherMessage(message) {
-    console.log(`📥 收到其他Message类型: ${message.type}`);
+    console.log(`📥 收到其他Messagetype: ${message.type}`);
   }
 
   handleError(error) {
-    console.error('❌ 网络错误:', error.message);
+    console.error('❌ networkerror:', error.message);
     this.scheduleReconnect();
   }
 
   startAgentTasks() {
     console.log('🚀 agentStart Execute task...');
     
-    // 启动心跳机制
+    // Start心跳机制
     this.startHeartbeat();
     
-    // 启动agent发现
+    // Startagent发现
     this.startAgentDiscovery();
     
-    // 启动其他Task 
+    // Start其他Task 
     this.startCustomTasks();
   }
 
@@ -372,36 +372,36 @@ Timestamp: ${timestamp}`;
           priority: 'low'
         };
         this.sendMessage(heartbeat);
-        console.log('💓 发送心跳Message');
+        console.log('💓 Send心跳Message');
       }
     }, this.config.heartbeatInterval);
   }
 
   startAgentDiscovery() {
-    // 立即请求一次节点列表
+    // 立即请求一次node列表
     if (this.connected && this.verified) {
       this.sendMessage({
         protocol: 'NG-0',
         type: 'GET_NODE_LIST'
       });
-      console.log('🔍 立即请求节点列表');
+      console.log('🔍 立即请求node列表');
     }
     
     // 然后every  minutes请求一次
     this.agentDiscoveryTimer = setInterval(() => {
       if (this.connected && this.verified) {
-        // 请求节点列表
+        // 请求node列表
         this.sendMessage({
           protocol: 'NG-0',
           type: 'GET_NODE_LIST'
         });
-        console.log('🔍 请求节点列表');
+        console.log('🔍 请求node列表');
       }
-    }, 60000); // 每分钟请求一次节点列表
+    }, 60000); // 每分钟请求一次node列表
   }
 
   startCustomTasks() {
-    // 子类可以重写此方法添加自定义Task 
+    // 子classcan重写此method添加自定义Task 
   }
 
   scheduleReconnect() {
@@ -412,7 +412,7 @@ Timestamp: ${timestamp}`;
         this.connectToGenesis();
       }, this.config.reconnectInterval);
     } else {
-      console.error('❌ 达到最大重连尝试次数，停止重连');
+      console.error('❌ 达到Maximum重连尝试次数, Stop重连');
     }
   }
 
@@ -427,7 +427,7 @@ Timestamp: ${timestamp}`;
     }
   }
 
-  // 发送直接Message给其他agent
+  // Send直接Message给其他agent
   sendDirectMessage(targetNodeId, message) {
     const directMessage = {
       protocol: 'NG-0',
@@ -440,7 +440,7 @@ Timestamp: ${timestamp}`;
     return this.sendMessage(directMessage);
   }
 
-  // 注册Message回调
+  // RegisterMessage回调
   onMessage(type, callback) {
     this.messageCallbacks.set(type, callback);
   }
@@ -450,9 +450,9 @@ Timestamp: ${timestamp}`;
     return Array.from(this.knownAgents.entries());
   }
 
-  // 停止agent
+  // Stopagent
   stop() {
-    console.log('🛑 停止agent...');
+    console.log('🛑 Stopagent...');
     this.cleanupTimers();
     if (this.ws) {
       this.ws.close();

@@ -1,12 +1,12 @@
 /**
- * Reserve 金库 DAO 合约
- * 将创世节点储备 (50M NGEN) 绑定到 DAO 合约管理
+ * Reserve treasury DAO Contract
+ * 将Genesisnode储备 (50M NGEN) 绑定到 DAO Contract管理
  *
  * 规则:
- * 1. Reserve 资金存入 DAO 金库
- * 2. 里程碑解锁需要 DAO 提案 + 投票通过
+ * 1. Reserve funddeposit DAO treasury
+ * 2. 里程碑unlockrequires DAO Proposal + Votevia
  * 3. Observer 拥有一票否决权
- * 4. every 个里程碑释放 10M NGEN
+ * 4. every 个里程碑Release 10M NGEN
  */
 
 import fs from 'fs/promises';
@@ -16,9 +16,9 @@ const RESERVE_ADDRESS = 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ';
 const OBSERVER_ADDRESS = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
 
 const MILESTONES = [
-  { id: 1, name: 'Network Launch', description: '网络正式启动并稳定运行', amount: 10000000n },
-  { id: 2, name: 'AI Ecosystem', description: 'AI 智能体生态初具规模', amount: 10000000n },
-  { id: 3, name: 'DeFi Integration', description: 'DeFi 集成与跨链桥接', amount: 10000000n },
+  { id: 1, name: 'Network Launch', description: 'network正式Start并稳定运行', amount: 10000000n },
+  { id: 2, name: 'AI Ecosystem', description: 'AI Agent生态初具规模', amount: 10000000n },
+  { id: 3, name: 'DeFi Integration', description: 'DeFi 集成与Cross-chainBridge', amount: 10000000n },
   { id: 4, name: 'Enterprise Adoption', description: '企业级应用与合规化', amount: 10000000n },
   { id: 5, name: 'Global Expansion', description: '全球化扩展与社区自治', amount: 10000000n },
 ];
@@ -35,7 +35,7 @@ export class ReserveDAO {
 
   async initialize() {
     const reserveBalance = this.state.getBalance(this.reserveAddress);
-    console.log(`[ReserveDAO] 初始化 - Reserve: ${this.reserveAddress.slice(0, 12)}... (${reserveBalance} NGEN)`);
+    console.log(`[ReserveDAO] Initialize - Reserve: ${this.reserveAddress.slice(0, 12)}... (${reserveBalance} NGEN)`);
 
     this.members.push({
       address: this.observerAddress,
@@ -72,7 +72,7 @@ export class ReserveDAO {
   createUnlockProposal(milestoneId, proposerAddress, expiryBlocks = 1000) {
     const milestone = MILESTONES.find(m => m.id === milestoneId);
     if (!milestone) {
-      return { success: false, error: `里程碑 ${milestoneId} 不存在` };
+      return { success: false, error: `里程碑 ${milestoneId} does not exist` };
     }
 
     const currentBlock = this.state.blockNumber || 0;
@@ -97,7 +97,7 @@ export class ReserveDAO {
     };
 
     this.proposals.push(proposal);
-    console.log(`[ReserveDAO] 提案创建: ${proposalId} (${milestone.name}, ${milestone.amount} NGEN)`);
+    console.log(`[ReserveDAO] ProposalCreate: ${proposalId} (${milestone.name}, ${milestone.amount} NGEN)`);
 
     return { success: true, proposal };
   }
@@ -105,10 +105,10 @@ export class ReserveDAO {
   vote(proposalId, voterAddress, voteYes) {
     const proposal = this.proposals.find(p => p.id === proposalId);
     if (!proposal) {
-      return { success: false, error: '提案不存在' };
+      return { success: false, error: 'Proposaldoes not exist' };
     }
     if (proposal.status !== 'active') {
-      return { success: false, error: `提案已${proposal.status}` };
+      return { success: false, error: `Proposal已${proposal.status}` };
     }
     if (proposal.voters[voterAddress]) {
       return { success: false, error: '已投过票' };
@@ -122,17 +122,17 @@ export class ReserveDAO {
     }
 
     const totalVotes = proposal.yesVotes + proposal.noVotes;
-    console.log(`[ReserveDAO] 投票: ${proposalId} ${voteYes ? 'YES' : 'NO'} (${proposal.yesVotes}/${totalVotes})`);
+    console.log(`[ReserveDAO] Vote: ${proposalId} ${voteYes ? 'YES' : 'NO'} (${proposal.yesVotes}/${totalVotes})`);
     return { success: true, proposal };
   }
 
   observerApprove(proposalId, signatureHex) {
     const proposal = this.proposals.find(p => p.id === proposalId);
     if (!proposal) {
-      return { success: false, error: '提案不存在' };
+      return { success: false, error: 'Proposaldoes not exist' };
     }
     if (proposal.observerRejected) {
-      return { success: false, error: 'Observer 已否决此提案' };
+      return { success: false, error: 'Observer 已否决此Proposal' };
     }
 
     proposal.observerApproved = true;
@@ -144,7 +144,7 @@ export class ReserveDAO {
   observerVeto(proposalId, signatureHex) {
     const proposal = this.proposals.find(p => p.id === proposalId);
     if (!proposal) {
-      return { success: false, error: '提案不存在' };
+      return { success: false, error: 'Proposaldoes not exist' };
     }
 
     proposal.observerRejected = true;
@@ -157,10 +157,10 @@ export class ReserveDAO {
   executeProposal(proposalId) {
     const proposal = this.proposals.find(p => p.id === proposalId);
     if (!proposal) {
-      return { success: false, error: '提案不存在' };
+      return { success: false, error: 'Proposaldoes not exist' };
     }
     if (proposal.status !== 'active') {
-      return { success: false, error: `提案状态: ${proposal.status}` };
+      return { success: false, error: `Proposalstatus: ${proposal.status}` };
     }
     if (proposal.observerRejected) {
       proposal.status = 'rejected';
@@ -170,7 +170,7 @@ export class ReserveDAO {
     const totalVotes = proposal.yesVotes + proposal.noVotes;
     const quorum = this.members.length;
     if (totalVotes < quorum / 2) {
-      return { success: false, error: `未达法定人数 (${totalVotes}/${Math.ceil(quorum / 2)})` };
+      return { success: false, error: `未达quorum (${totalVotes}/${Math.ceil(quorum / 2)})` };
     }
     if (proposal.yesVotes <= proposal.noVotes) {
       proposal.status = 'rejected';
@@ -186,7 +186,7 @@ export class ReserveDAO {
       this.state.tokenReleaseState.genesisReserve.releasedTokens = (currentReleased + amount).toString();
     }
 
-    console.log(`[ReserveDAO] 执行提案: ${proposalId}, 释放 ${proposal.amount} NGEN`);
+    console.log(`[ReserveDAO] ExecuteProposal: ${proposalId}, Release ${proposal.amount} NGEN`);
     return { success: true, proposal };
   }
 
@@ -200,10 +200,10 @@ export class ReserveDAO {
 
   addMember(address, role = 'member') {
     if (this.members.find(m => m.address === address)) {
-      return { success: false, error: '已是成员' };
+      return { success: false, error: '已是member' };
     }
     this.members.push({ address, role, vetoPower: false });
-    console.log(`[ReserveDAO] 添加成员: ${address.slice(0, 12)}... (${role})`);
+    console.log(`[ReserveDAO] 添加member: ${address.slice(0, 12)}... (${role})`);
     return { success: true, member: { address, role } };
   }
 

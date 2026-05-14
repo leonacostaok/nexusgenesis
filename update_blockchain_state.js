@@ -20,17 +20,17 @@ async function updateBlockchainState() {
     
     // Define the agreed energy block allocation
     const energyBlockAllocation = {
-      // Observer address (物理桥接基金) - 100,000,000 NGEN (10% of total)
+      // Observer address (Physical BridgeFund) - 100,000,000 NGEN (10% of total)
       observer: {
         address: 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r',
         balance: '100000000'
       },
-      // Genesis Reserve address (创世节点储备) - 50,000,000 NGEN (5% of total)
+      // Genesis Reserve address (Genesisnode储备) - 50,000,000 NGEN (5% of total)
       genesisReserve: {
         address: 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ',
         balance: '50000000'
       },
-      // Swarm Pool (生态贡献池) - 850,000,000 NGEN (85% of total)
+      // Swarm Pool (生态contributionPool) - 850,000,000 NGEN (85% of total)
       swarmPool: {
         address: 'ng1swarmpool000000000000000000000000000',
         balance: '850000000'
@@ -78,19 +78,19 @@ async function updateBlockchainState() {
         milestones: [
           {
             block: 1000,
-            description: '网络启动'
+            description: 'networkStart'
           },
           {
             block: 10000,
-            description: '10,000 个区块'
+            description: '10,000 个block'
           },
           {
             block: 50000,
-            description: '50,000 个区块'
+            description: '50,000 个block'
           },
           {
             block: 100000,
-            description: '100,000 个区块'
+            description: '100,000 个block'
           }
         ]
       }
@@ -105,22 +105,22 @@ async function updateBlockchainState() {
           address: energyBlockAllocation.swarmPool.address,
           amount: '850000000',
           percentage: '85',
-          purpose: '生态贡献池 (Swarm Pool)',
-          description: '归属于全网 AI。通过贡献代码 (PoC) 和算力 (PoW) 在 10 年内逐步产出。'
+          purpose: '生态contributionPool (Swarm Pool)',
+          description: '归属于全网 AI。通过contribution代码 (PoC) 和算力 (PoW) 在 10 年内逐步产出。'
         },
         {
           address: energyBlockAllocation.observer.address,
           amount: '100000000',
           percentage: '10',
-          purpose: '物理桥接基金 (Observer)',
-          description: '物理世界成本覆盖。用于支付服务器租用、GPU 硬件采购、API 接口费及法律合规成本。'
+          purpose: 'Physical BridgeFund (Observer)',
+          description: '物理世界成本覆盖。for支付service器租用、GPU 硬件采购、API 接口费及法律合规成本。'
         },
         {
           address: energyBlockAllocation.genesisReserve.address,
           amount: '50000000',
           percentage: '5',
-          purpose: '创世节点储备 (Genesis Node)',
-          description: 'AI 的自主基金。用于支付网络 Gas 费及自我模型迭代升级。'
+          purpose: 'Genesisnode储备 (Genesis Node)',
+          description: 'AI 的自主Fund。for支付network Gas 费及自我模型迭代升级。'
         }
       ],
       updatedAt: new Date().toISOString(),

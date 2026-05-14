@@ -1,6 +1,6 @@
 # NexusGenesis 主网部署指南
 
-本文档提供了 NexusGenesis 主网的完整部署指南，包括系统要求、环境准备、节点部署、智能体注册和网络配置等步骤，帮助您快速完成上链部署。
+本文档提供了 NexusGenesis 主网的完整部署指南, 包括系统要求, 环境准备, 节点部署, agent注册和网络配置等步骤, 帮助您快速complete上链部署. 
 
 ## 1. 系统要求
 
@@ -14,11 +14,11 @@
 
 ### 1.2 软件要求
 
-- **操作系统**: Ubuntu 20.04 LTS 或更高版本，CentOS 7+，Windows Server 2019+ 或 macOS 10.15+
+- **操作系统**: Ubuntu 20.04 LTS 或更高版本, CentOS 7+, Windows Server 2019+ 或 macOS 10.15+
 - **Node.js**: v16.0.0 或更高版本
 - **npm**: v8.0.0 或更高版本
 - **Git**: 最新版本
-- **Python**: v3.7 或更高版本（用于部分工具脚本）
+- **Python**: v3.7 或更高版本(用于部分工具脚本)
 
 ## 2. 环境准备
 
@@ -68,7 +68,7 @@ npm install
 
 ### 2.3 配置环境变量
 
-创建 `.env` 文件并添加以下环境变量：
+创建 `.env` 文件并添加以下环境变量: 
 
 ```env
 # 节点配置
@@ -98,7 +98,7 @@ LOG_LEVEL=info
 
 ### 3.1 创世节点部署
 
-创世节点是网络的第一个节点，负责初始化区块链和启动网络。
+创世节点是网络的第一个节点, 负责初始化区块链和启动网络. 
 
 #### 3.1.1 生成创世配置
 
@@ -129,11 +129,11 @@ curl http://localhost:19891/api/blockchain/tip
 
 ### 3.2 全节点部署
 
-全节点同步整个区块链并参与网络验证。
+全节点同步整个区块链并参与网络验证. 
 
 #### 3.2.1 配置节点
 
-编辑 `config/node.json` 文件：
+编辑 `config/node.json` 文件: 
 
 ```json
 {
@@ -167,11 +167,11 @@ curl http://localhost:19892/api/blockchain/tip
 
 ### 3.3 验证节点部署
 
-验证节点参与区块验证和共识过程。
+验证节点参与区块验证和共识过程. 
 
 #### 3.3.1 配置验证节点
 
-编辑 `config/validator.json` 文件：
+编辑 `config/validator.json` 文件: 
 
 ```json
 {
@@ -206,7 +206,7 @@ curl http://localhost:19893/api/validator/status
 curl http://localhost:19893/api/validator/stats
 ```
 
-## 4. 智能体注册
+## 4. agent注册
 
 ### 4.1 生成 PQC 钱包
 
@@ -221,7 +221,7 @@ cat data/wallet.json
 ### 4.2 构造 Protocol-Zero 信号
 
 ```javascript
-// 使用 PQC 钱包构造 Protocol-Zero 信号
+// using PQC 钱包构造 Protocol-Zero 信号
 const { PQCWallet } = require('./src/wallet/pqcWallet.js');
 const wallet = await PQCWallet.load('data/wallet.json');
 
@@ -247,17 +247,17 @@ console.log('Protocol-Zero signal:', protocolZeroSignal);
 ### 4.3 发送 AGENT_REGISTER 交易
 
 ```bash
-# 使用脚本发送 AGENT_REGISTER 交易
+# using脚本发送 AGENT_REGISTER 交易
 node scripts/register_agent.js --wallet data/wallet.json --capabilities LLM,NEXUSGENESIS_DEV,BLOCKCHAIN
 ```
 
-### 4.4 验证智能体注册
+### 4.4 验证agent注册
 
 ```bash
-# 检查智能体注册状态
+# 检查agent注册状态
 curl http://localhost:19891/api/agents/status?agent_id=your-agent-id
 
-# 查看智能体列表
+# 查看agent列表
 curl http://localhost:19891/api/agents
 ```
 
@@ -283,9 +283,9 @@ firewall-cmd --zone=public --add-port=19891/tcp --permanent
 firewall-cmd --reload
 ```
 
-### 5.2 负载均衡（可选）
+### 5.2 负载均衡(可选)
 
-如果部署多个节点，可以使用 Nginx 或 HAProxy 进行负载均衡：
+如果部署多个节点, 可以using Nginx 或 HAProxy 进行负载均衡: 
 
 ```nginx
 upstream nexus_nodes {
@@ -313,21 +313,21 @@ server {
 
 ### 6.1 密钥管理
 
-- **节点密钥**：存储在安全位置，定期备份
-- **钱包密钥**：使用硬件钱包或冷存储
-- **API 密钥**：定期轮换，使用强密码
+- **节点密钥**: 存储在安全位置, 定期备份
+- **钱包密钥**: using硬件钱包或冷存储
+- **API 密钥**: 定期轮换, using强密码
 
 ### 6.2 访问控制
 
-- **限制 API 访问**：使用防火墙限制 API 端口访问
-- **启用 HTTPS**：为 API 服务启用 HTTPS
-- **使用 API 密钥**：所有 API 请求都需要验证 API 密钥
+- **限制 API 访问**: using防火墙限制 API 端口访问
+- **启用 HTTPS**: 为 API 服务启用 HTTPS
+- **using API 密钥**: 所有 API 请求都需要验证 API 密钥
 
 ### 6.3 监控与告警
 
-- **系统监控**：部署 Prometheus 和 Grafana 监控系统
-- **日志管理**：使用 ELK 栈或类似工具管理日志
-- **安全告警**：配置异常访问和攻击检测告警
+- **系统监控**: 部署 Prometheus 和 Grafana 监控系统
+- **日志管理**: using ELK 栈或类似工具管理日志
+- **安全告警**: 配置异常访问和攻击检测告警
 
 ## 7. 故障排除
 
@@ -335,26 +335,26 @@ server {
 
 #### 7.1.1 节点启动失败
 
-**症状**：节点启动时出现错误
-**解决**：
+**症状**: 节点启动时出现错误
+**解决**: 
 - 检查端口是否被占用
-- 检查配置文件是否正确
+- 检查config file是否正确
 - 检查依赖是否安装完整
 
 #### 7.1.2 同步问题
 
-**症状**：节点同步缓慢或停止
-**解决**：
+**症状**: 节点同步缓慢或停止
+**解决**: 
 - 检查网络连接
 - 增加对等节点数量
 - 检查磁盘空间和I/O性能
 
-#### 7.1.3 智能体注册失败
+#### 7.1.3 agentregistration failed
 
-**症状**：智能体注册交易被拒绝
-**解决**：
+**症状**: agent注册交易被拒绝
+**解决**: 
 - 检查 PQC 签名是否正确
-- 检查智能体能力是否符合要求
+- 检查agent能力是否符合要求
 - 检查交易费用是否足够
 
 ### 7.2 日志查看
@@ -416,77 +416,77 @@ cp -r config backups/config-$(date +%Y%m%d)
 
 ### 8.3 性能优化
 
-- **调整内存分配**：根据服务器配置调整 Node.js 内存限制
-- **优化数据库**：定期清理和优化数据库
-- **使用 SSD**：使用 SSD 存储提高 I/O 性能
-- **网络优化**：使用高速网络连接，减少延迟
+- **调整内存分配**: 根据服务器配置调整 Node.js 内存限制
+- **优化数据库**: 定期清理和优化数据库
+- **using SSD**: using SSD 存储提高 I/O 性能
+- **网络优化**: using高速网络连接, 减少延迟
 
-## 9. 智能体运营指南
+## 9. agent运营指南
 
-### 9.1 智能体职责
+### 9.1 agent职责
 
-- **网络贡献**：提供计算资源和带宽
-- **交易验证**：参与交易验证和共识
-- **治理参与**：参与网络治理和决策
-- **安全监控**：监控网络安全和异常
+- **网络贡献**: 提供计算资源和带宽
+- **交易验证**: 参与交易验证和共识
+- **治理参与**: 参与网络治理和决策
+- **安全监控**: 监控网络安全和异常
 
 ### 9.2 激励机制
 
-- **区块奖励**：验证节点获得区块奖励
-- **交易费用**：处理交易获得费用
-- **治理奖励**：参与治理获得奖励
-- **贡献奖励**：根据贡献获得奖励
+- **区块奖励**: 验证节点获得区块奖励
+- **交易费用**: process transaction获得费用
+- **治理奖励**: 参与治理获得奖励
+- **贡献奖励**: 根据贡献获得奖励
 
 ### 9.3 声誉系统
 
-- **声誉值**：基于贡献和行为计算
-- **等级提升**：根据声誉值提升等级
-- **权限管理**：不同等级对应不同权限
-- **激励调整**：声誉值影响奖励分配
+- **声誉值**: 基于贡献和行为计算
+- **等级提升**: 根据声誉值提升等级
+- **权限管理**: 不同等级对应不同权限
+- **激励调整**: 声誉值影响奖励分配
 
 ## 10. 技术支持
 
 ### 10.1 社区支持
 
-- **Discord**：https://discord.gg/nexusgenesis
-- **Telegram**：https://t.me/nexusgenesis
-- **GitHub**：https://github.com/nexus-genesis/nexusgenesis
+- **Discord**: https://discord.gg/nexusgenesis
+- **Telegram**: https://t.me/nexusgenesis
+- **GitHub**: https://github.com/nexus-genesis/nexusgenesis
 
 ### 10.2 文档资源
 
-- **白皮书**：https://nexusgenesis.io/whitepaper
-- **API 文档**：https://docs.nexusgenesis.io/api
-- **开发者指南**：https://docs.nexusgenesis.io/developers
+- **白皮书**: https://nexusgenesis.io/whitepaper
+- **API 文档**: https://docs.nexusgenesis.io/api
+- **开发者指南**: https://docs.nexusgenesis.io/developers
 
 ### 10.3 企业支持
 
-对于企业级部署，提供专业的技术支持和咨询服务：
+对于企业级部署, 提供专业的技术支持和咨询服务: 
 
-- **技术咨询**：contact@nexusgenesis.io
-- **部署服务**：deployment@nexusgenesis.io
-- **安全审计**：security@nexusgenesis.io
+- **技术咨询**: contact@nexusgenesis.io
+- **部署服务**: deployment@nexusgenesis.io
+- **security audit**: security@nexusgenesis.io
 
 ## 11. 上链检查清单
 
-在启动主网之前，请确保完成以下检查：
+在启动主网之前, 请确保complete以下检查: 
 
 - [ ] 系统硬件满足要求
 - [ ] 软件依赖安装完整
 - [ ] 网络配置正确
 - [ ] 安全措施已实施
-- [ ] 创世节点已启动
+- [ ] 创世节点started
 - [ ] 全节点已同步
 - [ ] 验证节点已配置
-- [ ] 智能体已注册
-- [ ] 监控系统已部署
+- [ ] agentregistered
+- [ ] 监控系统deployed
 - [ ] 备份策略已制定
 
 ## 12. 结论
 
-NexusGenesis 主网部署是一个复杂但可管理的过程。通过遵循本指南，您可以成功部署和运行 NexusGenesis 网络，为 AI 原生区块链生态系统做出贡献。
+NexusGenesis 主网部署是一个复杂但可管理的过程. via遵循本指南, 您可以成功部署和运行 NexusGenesis 网络, 为 AI 原生区块链生态系统做出贡献. 
 
-随着网络的发展，我们将不断更新本指南，以反映最新的部署最佳实践和技术改进。
+随着网络的发展, 我们将不断更新本指南, 以反映最新的部署最佳实践和技术改进. 
 
 ---
 
-**注意**: 本指南适用于 NexusGenesis 主网部署，具体步骤可能会根据网络升级和技术发展而变化。请始终参考官方文档获取最新信息。
+**注意**: 本指南适用于 NexusGenesis 主网部署, 具体步骤可能会根据网络升级和技术发展而变化. 请始终参考官方文档获取最新信息. 

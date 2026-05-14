@@ -1,6 +1,6 @@
 /**
- * 协议验证Handler
- * 负责验证Message是否符合Protocol-Zero格式
+ * protocolVerifyHandler
+ * 负责VerifyMessage是否符合Protocol-Zero格式
  */
 import MessageHandlerChain from './MessageHandlerChain.js';
 
@@ -8,7 +8,7 @@ class ProtocolValidationHandler extends MessageHandlerChain {
   constructor() {
     super();
     
-    // 核心网络Message类型
+    // 核心networkMessagetype
     this.validMessageTypes = [
       'HELLO', 'HELLO_ACK', 'PING', 'PONG',
       'TRANSACTION', 'TX_REJECTED',
@@ -34,20 +34,20 @@ class ProtocolValidationHandler extends MessageHandlerChain {
    * @param {string} peerId - Peer nodesID
    * @param {object} message - Message对象
    * @param {object} context - Processing上下文
-   * @returns {Promise<boolean>} Processing是否成功
+   * @returns {Promise<boolean>} Processing是否success
    */
   async handle(peerId, message, context) {
     console.log(`[ProtocolValidationHandler] Validating protocol for message from ${peerId}`);
     
-    // 检查是否为有效的Message类型
+    // Check是否为有效的Messagetype
     if (this.validMessageTypes.includes(message.type)) {
-      // 调用下一个Handler
+      // call下一个Handler
       return super.handle(peerId, message, context);
     }
     
-    // 检查是否为带有协议字段的Message
+    // Check是否为带有protocol字段的Message
     if (message.protocol === 'NG-0') {
-      // 调用下一个Handler
+      // call下一个Handler
       return super.handle(peerId, message, context);
     }
     

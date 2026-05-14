@@ -9,14 +9,14 @@
 
 ## 📋 背景
 
-NexusGenesis 项目目前有两个并行实现：
+NexusGenesis 项目目前有两个并行实现: 
 
 | 实现 | 语言 | 位置 | 状态 |
 |------|------|------|------|
-| **NexusGenesis Core** | JavaScript/Node.js | `C:\Users\f0tro\Documents\trae_projects\NexusGenesis` | ✅ P2P 网络运行中 |
+| **NexusGenesis Core** | JavaScript/Node.js | `C:\Users\f0tro\Documents\trae_projects\NexusGenesis` | ✅ P2P 网络running |
 | **NexusGenesis Py** | Python | `C:\Users\f0tro\.openclaw\workspace\nexus-genesis` | 🟡 原型阶段 |
 
-本协议定义统一标准，确保双语言实现互操作。
+本协议定义统一标准, 确保双语言实现互操作. 
 
 ---
 
@@ -25,23 +25,23 @@ NexusGenesis 项目目前有两个并行实现：
 ### 1. 地址格式 (PQC-P2PKH-v2)
 
 ```
-格式：ng1 + Base58(1 字节版本 + 20 字节公钥哈希 + 4 字节校验和)
-总长度：~35 字符 (ng1 前缀 + 25 字节 Base58 编码)
+格式: ng1 + Base58(1 字节版本 + 20 字节公钥哈希 + 4 字节校验和)
+总长度: ~35 字符 (ng1 前缀 + 25 字节 Base58 编码)
 ```
 
-**生成流程：**
+**生成流程: **
 ```
 1. 生成 Dilithium2 公钥 (1312 字节)
 2. SHA3-256 哈希公钥 → 32 字节摘要
 3. 截取前 20 字节 → 公钥哈希
 4. 添加版本前缀 0x00 → 21 字节
 5. SHA3-256(21 字节) 取前 4 字节 → 校验和
-6. 拼接：版本 + 公钥哈希 + 校验和 → 25 字节
+6. 拼接: 版本 + 公钥哈希 + 校验和 → 25 字节
 7. Base58 编码
 8. 添加前缀 "ng1"
 ```
 
-**验证流程：**
+**验证流程: **
 ```
 1. 检查前缀 "ng1"
 2. Base58 解码 → 25 字节
@@ -51,7 +51,7 @@ NexusGenesis 项目目前有两个并行实现：
 6. 重新计算校验和并比对
 ```
 
-**示例地址：**
+**示例地址: **
 ```
 ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ  ← 创世节点
 ngSuZyaFVkfutfwkoAgZoWo3zBhnKCx7XLu6b7uVH7GxHjpa13DxwUi63w5vvst  ← 官方创世 (特殊标识符)
@@ -72,7 +72,7 @@ ngSuZyaFVkfutfwkoAgZoWo3zBhnKCx7XLu6b7uVH7GxHjpa13DxwUi63w5vvst  ← 官方创�
 
 ### 3. Protocol-Zero (NG-0) 握手
 
-**AI 代理加入网络的标准流程：**
+**AI agent加入网络的标准流程: **
 
 ```
 ┌─────────────┐                    ┌─────────────┐
@@ -102,7 +102,7 @@ ngSuZyaFVkfutfwkoAgZoWo3zBhnKCx7XLu6b7uVH7GxHjpa13DxwUi63w5vvst  ← 官方创�
        │
 ```
 
-**WebSocket 消息格式：**
+**WebSocket 消息格式: **
 ```json
 {
   "type": "HELLO|HELLO_ACK|PING|PONG|TRANSACTION|PROTOCOL_ZERO|...",
@@ -133,12 +133,12 @@ ngSuZyaFVkfutfwkoAgZoWo3zBhnKCx7XLu6b7uVH7GxHjpa13DxwUi63w5vvst  ← 官方创�
 
 ### 5. NGEN 代币经济
 
-**分配协议 (10-5-85)：**
+**分配协议 (10-5-85): **
 - 10% → Observer (人类监督者)
 - 5% → Genesis (创始团队/AI)
-- 85% → Swarm (AI 代理社区，基于贡献分配)
+- 85% → Swarm (AI agent社区, 基于贡献分配)
 
-**Gas 模型：**
+**Gas 模型: **
 | 操作 | Gas 成本 |
 |------|----------|
 | 基础运算 | 1 |
@@ -170,11 +170,11 @@ ngSuZyaFVkfutfwkoAgZoWo3zBhnKCx7XLu6b7uVH7GxHjpa13DxwUi63w5vvst  ← 官方创�
 
 | 日期 | 里程碑 | 状态 |
 |------|--------|------|
-| 2026-02-23 | 项目初始化 | ✅ 完成 |
-| 2026-02-24 | 协议统一规范 | ✅ 完成 |
-| 2026-02-25 | Python 代码更新 | ⏳ 进行中 |
-| 2026-03-01 | P2P 互连测试 | ⏳ 计划中 |
-| 2026-03-15 | 测试网 V1 | ⏳ 计划中 |
+| 2026-02-23 | 项目初始化 | ✅ complete |
+| 2026-02-24 | 协议统一规范 | ✅ complete |
+| 2026-02-25 | Python 代码更新 | ⏳ in progress |
+| 2026-03-01 | P2P 互连test | ⏳ 计划中 |
+| 2026-03-15 | test网 V1 | ⏳ 计划中 |
 
 ---
 

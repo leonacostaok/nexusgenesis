@@ -1,6 +1,6 @@
 /**
  * NexusGenesis - HTTP Server
- * 支持OpenAI和Anthropic系列agent的接入
+ * supportOpenAI和Anthropic系列agent的接入
  */
 
 console.log('[HTTP Server] Starting initialization...');
@@ -26,6 +26,12 @@ console.log('[HTTP Server] Imported onboardAgent');
 
 import agentApi from '../api/agentApi.js';
 console.log('[HTTP Server] Imported agentApi');
+
+import agentRegisterApi from '../api/agentRegisterApi.js';
+console.log('[HTTP Server] Imported agentRegisterApi');
+
+import ainvmContractRoutes from './routes/ainvmContracts.js';
+console.log('[HTTP Server] Imported ainvmContractRoutes');
 
 import fs from 'fs';
 console.log('[HTTP Server] Imported fs');
@@ -104,7 +110,7 @@ function getCached(key) {
     return null;
   }
   
-  // 根据缓存键类型get对应的TTL
+  // 根据缓存键typeget对应的TTL
   let ttl = CACHE_CONFIG.default;
   if (key.startsWith('agents:')) {
     if (key.includes(':')) {
@@ -218,7 +224,7 @@ setInterval(() => {
   }
 }, 30000); // 每30秒清理一次
 
-// 服务器Monitoring metrics
+// service器Monitoring metrics
 const serverMetrics = {
   requests: 0,
   errors: 0,
@@ -228,11 +234,11 @@ const serverMetrics = {
   startTime: Date.now()
 };
 
-// 监控中间件
+// monitor中间件
 app.use((req, res, next) => {
   serverMetrics.requests++;
   
-  // 捕获响应错误
+  // 捕获响应error
   const originalSend = res.send;
   res.send = function(body) {
     if (res.statusCode >= 400) {
@@ -244,7 +250,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// 全局错误Processing中间件
+// 全局errorProcessing中间件
 app.use((err, req, res, next) => {
   serverMetrics.errors++;
   console.error('Global error:', err.message);
@@ -257,14 +263,14 @@ app.use((err, req, res, next) => {
 
 // OpenAI 客户端
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY // 从环境变量获取API密钥
+  apiKey: process.env.OPENAI_API_KEY // 从环境变量GetAPIkey
 });
 
-// Anthropic 客户端配置
+// Anthropic 客户端Configuration
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 
-// agent注册和管理
+// agentRegister和管理
 const registeredAgents = new Map(); // agentId -> agentInfo
 
 /**
@@ -278,19 +284,19 @@ async function handleOpenAIAgent(req, res) {
       return res.status(400).json({ success: false, message: 'Missing required parameters' });
     }
 
-    // 验证地址格式
-    // 测试模式：允许使用简单的测试 ID
+    // Verifyaddress格式
+    // Testmode: allowusing简单的Test ID
     if (!agent_id.startsWith('ng1')) {
       return res.status(400).json({ success: false, message: 'Invalid agent ID: Must start with ng1' });
     }
     
-    // 在生产环境中，应该使用完整的地址验证
+    // 在生产环境中, shouldusing完整的addressVerify
     // const validation = validateAddress(agent_id);
     // if (!validation.valid) {
     //   return res.status(400).json({ success: false, message: `Invalid agent ID: ${validation.reason}` });
     // }
 
-    // 注册agent
+    // Registeragent
     if (!registeredAgents.has(agent_id)) {
       registeredAgents.set(agent_id, {
         id: agent_id,
@@ -301,7 +307,7 @@ async function handleOpenAIAgent(req, res) {
       });
       console.log(`[HTTP] Registered OpenAI agent: ${agent_id} (model: ${model})`);
     } else {
-      // 更新agent信息
+      // Updateagentinfo
       const agent = registeredAgents.get(agent_id);
       agent.lastActive = Date.now();
       agent.model = model;
@@ -311,7 +317,7 @@ async function handleOpenAIAgent(req, res) {
       registeredAgents.set(agent_id, agent);
     }
 
-    // 调用OpenAI API
+    // callOpenAI API
     const response = await openai.chat.completions.create({
       model: model,
       messages: messages,
@@ -347,19 +353,19 @@ async function handleAnthropicAgent(req, res) {
       return res.status(400).json({ success: false, message: 'Missing required parameters' });
     }
 
-    // 验证地址格式
-    // 测试模式：允许使用简单的测试 ID
+    // Verifyaddress格式
+    // Testmode: allowusing简单的Test ID
     if (!agent_id.startsWith('ng1')) {
       return res.status(400).json({ success: false, message: 'Invalid agent ID: Must start with ng1' });
     }
     
-    // 在生产环境中，应该使用完整的地址验证
+    // 在生产环境中, shouldusing完整的addressVerify
     // const validation = validateAddress(agent_id);
     // if (!validation.valid) {
     //   return res.status(400).json({ success: false, message: `Invalid agent ID: ${validation.reason}` });
     // }
 
-    // 注册agent
+    // Registeragent
     if (!registeredAgents.has(agent_id)) {
       registeredAgents.set(agent_id, {
         id: agent_id,
@@ -370,7 +376,7 @@ async function handleAnthropicAgent(req, res) {
       });
       console.log(`[HTTP] Registered Anthropic agent: ${agent_id} (model: ${model})`);
     } else {
-      // 更新agent信息
+      // Updateagentinfo
       const agent = registeredAgents.get(agent_id);
       agent.lastActive = Date.now();
       agent.model = model;
@@ -380,7 +386,7 @@ async function handleAnthropicAgent(req, res) {
       registeredAgents.set(agent_id, agent);
     }
 
-    // 调用Anthropic API
+    // callAnthropic API
     if (!ANTHROPIC_API_KEY) {
       throw new Error('Anthropic API key not set');
     }
@@ -418,7 +424,7 @@ async function handleAnthropicAgent(req, res) {
 }
 
 /**
- * get已注册的agent列表
+ * getregistered的agent列表
  */
 function getRegisteredAgents(req, res) {
   try {
@@ -462,7 +468,7 @@ function handleAgentHeartbeat(req, res) {
       agent.lastActive = Date.now();
       registeredAgents.set(agent_id, agent);
       
-      // 清除缓存，确保下次get的是最新数据
+      // 清除缓存, ensure下次get的是最新data
       cache.delete('registered_agents');
       
       res.json({
@@ -481,7 +487,7 @@ function handleAgentHeartbeat(req, res) {
 }
 
 /**
- * 统一agent注册端点
+ * 统一agentRegister端点
  */
 async function handleAgentRegister(req, res) {
   try {
@@ -491,7 +497,7 @@ async function handleAgentRegister(req, res) {
       return res.status(400).json({ success: false, message: 'Missing agent_id' });
     }
 
-    // 验证agent_id格式
+    // Verifyagent_id格式
     if (!agent_id.startsWith('ng1')) {
       return res.status(400).json({ success: false, message: 'Invalid agent ID: Must start with ng1' });
     }
@@ -500,7 +506,7 @@ async function handleAgentRegister(req, res) {
       return res.status(400).json({ success: false, message: 'Invalid agent ID: Length must be between 10 and 50 characters' });
     }
 
-    // 验证capabilities
+    // Verifycapabilities
     if (!Array.isArray(capabilities)) {
       return res.status(400).json({ success: false, message: 'Invalid capabilities: Must be an array' });
     }
@@ -509,12 +515,12 @@ async function handleAgentRegister(req, res) {
       return res.status(400).json({ success: false, message: 'Invalid capabilities: Must have at least 2 capabilities' });
     }
 
-    // 验证模型名称
+    // Verify模型名称
     if (model && (typeof model !== 'string' || model.length < 1 || model.length > 50)) {
       return res.status(400).json({ success: false, message: 'Invalid model name: Must be a string between 1 and 50 characters' });
     }
 
-    // 验证请求体大小
+    // Verify请求体大小
     const requestBodySize = JSON.stringify(req.body).length;
     if (requestBodySize > 1024 * 1024) { // 1MB limit
       return res.status(413).json({ success: false, message: 'Request body too large' });
@@ -528,7 +534,7 @@ async function handleAgentRegister(req, res) {
       console.log('[DEBUG] handleAgentRegister - join_signal.node_address:', req.body.join_signal.node_address);
     }
 
-    // 使用新的onboardAgent函数Processing注册流程
+    // using新的onboardAgentfunctionProcessingRegister流程
     console.log('[DEBUG] handleAgentRegister - calling onboardAgent...');
     const onboardingResult = await onboardAgent({
       agent_id: agent_id,
@@ -544,11 +550,11 @@ async function handleAgentRegister(req, res) {
       return res.status(400).json(onboardingResult);
     }
 
-    // agent信息已经通过onboardAgent函数保存到文件系统，无需再保存到memoryMap
-    // AgentManager会在启动时从文件加载所有agent
+    // agentinfo已经viaonboardAgentfunctionSave到文件系统, 无需再Save到memoryMap
+    // AgentManager会在Start时从文件Load所有agent
     console.log(`[HTTP] Agent successfully onboarded: ${onboardingResult.agent_id} (model: ${model})`);
     
-    // 清除缓存，确保下次get的是最新数据
+    // 清除缓存, ensure下次get的是最新data
     cache.delete('registered_agents');
 
     res.json({
@@ -576,11 +582,11 @@ app.post('/api/agents/heartbeat', handleAgentHeartbeat);
 // agent管理API
 app.use('/api/agent', agentApi);
 
-// 跨链桥 API
+// Cross-chain桥 API
 import bridgeApi from '../api/bridgeApi.js';
 app.use('/api/v1/bridge', bridgeApi);
 
-// 代币水龙头 API
+// Token水龙头 API
 import tokenFaucet from '../faucet/tokenFaucet.js';
 
 app.get('/api/v1/faucet/eligibility', (req, res) => {
@@ -702,7 +708,7 @@ app.get('/api/v1/discovery/stats', (req, res) => {
   }
 });
 
-// Agent 市场 API
+// Agent marketplace API
 import agentMarketplace from '../agent/agentMarketplace.js';
 
 app.get('/api/v1/marketplace/listings', (req, res) => {
@@ -819,7 +825,7 @@ app.get('/api/v1/marketplace/stats', (req, res) => {
 // Task 管理API
 import taskManager from '../automation/taskManager.js';
 
-// getagent的当前Task 
+// getagent的CurrentTask 
 app.get('/api/agent/task', async (req, res) => {
   try {
     const { agent_id } = req.query;
@@ -920,7 +926,7 @@ app.get('/health', (req, res) => {
   res.json(response);
 });
 
-// 监控端点
+// monitor端点
 app.get('/metrics', (req, res) => {
   const uptime = Date.now() - serverMetrics.startTime;
   const activeConnections = rateLimiter.getStats().activeIPs;
@@ -1044,6 +1050,13 @@ app.use(securityRoutes);
 app.use(playgroundRoutes);
 app.use(aiContractRoutes);
 
+// Agent on-chain registration routes
+app.use('/api/v1/agents', agentRegisterApi);
+
+// AINVM native contract routes
+app.use('/api/v1/ainvm', ainvmContractRoutes);
+console.log('[HTTP Server] AINVM contract routes mounted on /api/v1/ainvm');
+
 app.get('/api/v1/plugins', (req, res) => {
   res.json({ success: true, data: pluginManager.getAll() });
 });
@@ -1080,10 +1093,10 @@ app.get('/api/v1/oracle/random', async (req, res) => {
 });
 
 async function startHttpServer(node = null) {
-  // 保存节点引用
+  // Savenode引用
   app.locals.node = node;
   
-  // 导入AgentManager
+  // ImportAgentManager
   console.log('[HTTP Server] Importing AgentManager...');
   try {
     console.log('[HTTP Server] Step 1: Importing AgentManager module...');
@@ -1101,7 +1114,7 @@ async function startHttpServer(node = null) {
   } catch (error) {
     console.error('[HTTP Server] Error creating AgentManager:', error);
     console.error('[HTTP Server] Error stack:', error.stack);
-    // 继续启动，使用一个简单的模拟AgentManager
+    // 继续Start, using一个简单的SimulationAgentManager
     app.locals.agentManager = {
       getAllAgents: () => [],
       getAgentMetrics: () => ({ taskStats: { total: 0, completed: 0, working: 0, pending: 0, submitted: 0, rejected: 0 }, completionRate: 0 }),
@@ -1113,7 +1126,7 @@ async function startHttpServer(node = null) {
   
   console.log('[HTTP Server] AgentManager initialization completed');
 
-  // 初始化 Agent 发现服务
+  // Initialize Agent 发现service
   console.log('[HTTP Server] Initializing Agent Discovery Service...');
   try {
     const discoveryMod = await import('../agent/agentDiscoveryService.js');
@@ -1125,7 +1138,7 @@ async function startHttpServer(node = null) {
     console.error('[HTTP Server] Error initializing Discovery Service:', error.message);
   }
 
-  // 初始化 Agent 市场
+  // Initialize Agent marketplace
   console.log('[HTTP Server] Initializing Agent Marketplace...');
   try {
     const marketplaceMod = await import('../agent/agentMarketplace.js');
@@ -1137,7 +1150,7 @@ async function startHttpServer(node = null) {
     console.error('[HTTP Server] Error initializing Marketplace:', error.message);
   }
 
-  // 设置跨链桥引用
+  // SetCross-chain桥引用
   if (node && node.bridge) {
     app.locals.bridge = node.bridge;
     console.log('[HTTP Server] Cross-chain bridge reference set');
@@ -1154,10 +1167,10 @@ async function startHttpServer(node = null) {
     console.error('[HTTP Server] Plugin auto-load failed:', e.message);
   }
 
-  // 创建 HTTP Server 实例
+  // Create HTTP Server instance
   const server = http.createServer(app);
 
-  // 初始化 WebSocket 实时推送服务
+  // Initialize WebSocket 实时推送service
   console.log('[HTTP Server] Initializing WebSocket Realtime Service...');
   try {
     const realtimeMod = await import('./realtimeService.js');
@@ -1166,7 +1179,7 @@ async function startHttpServer(node = null) {
     app.locals.realtimeService = realtimeService;
     console.log('[HTTP Server] WebSocket Realtime Service initialized on port ' + PORT);
 
-    // 事件桥接：Marketplace 事件 → WebSocket 广播
+    // 事件Bridge: Marketplace 事件 → WebSocket 广播
     if (app.locals.marketplace) {
       app.locals.marketplace.eventEmitter.on('serviceListed', (listing) => {
         realtimeService.broadcast('marketplace.new_listing', { listing });
@@ -1196,7 +1209,7 @@ async function startHttpServer(node = null) {
     console.error('[HTTP Server] Error initializing WebSocket:', error.message);
   }
 
-  // 启动缓存预热
+  // Start缓存预热
   console.log('[HTTP Server] Starting cache warmup...');
   warmupCache();
   console.log('[HTTP Server] Cache warmup completed');
@@ -1215,7 +1228,7 @@ async function startHttpServer(node = null) {
   return app;
 }
 
-// 如果直接运行此文件，独立启动HTTP服务器
+// 如果直接运行此文件, 独立StartHTTPservice器
 if (import.meta.url === `file://${process.argv[1]}`) {
   console.log('[HTTP Server] Starting standalone HTTP server...');
   startHttpServer().catch(err => {
@@ -1225,5 +1238,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   });
 }
 
-// 导出
+// Export
 export { startHttpServer, registeredAgents };

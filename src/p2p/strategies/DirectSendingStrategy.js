@@ -1,6 +1,6 @@
 /**
- * 直接发送策略
- * 用于发送紧急Message或小Message，直接发送，不进行批Processing
+ * 直接Send策略
+ * forSend紧急Message或小Message, 直接Send, 不进行批Processing
  */
 import MessageSendingStrategy from './MessageSendingStrategy.js';
 import EncryptionService from '../services/EncryptionService.js';
@@ -23,7 +23,7 @@ class DirectSendingStrategy extends MessageSendingStrategy {
       let messageStr = JSON.stringify(message);
       const bytesSent = messageStr.length;
       
-      // 加密Message（如果有共享密钥）
+      // 加密Message(如果有共享key)
       const sharedSecret = this.encryptionKeys.get(peerId);
       if (sharedSecret && this.encryptionService.shouldEncrypt(message.type)) {
         const encryptedData = this.encryptionService.encryptMessage(messageStr, sharedSecret);
@@ -52,18 +52,18 @@ class DirectSendingStrategy extends MessageSendingStrategy {
   }
   
   shouldUse(message) {
-    // 心跳等紧急Message，直接发送
+    // 心跳etc.紧急Message, 直接Send
     return message.type === 'PING' || message.type === 'PONG' || message.type === 'HELLO' || message.type === 'HELLO_ACK';
   }
   
   /**
-   * 更新流量统计
+   * Update流量统计
    * @param {string} peerId - Peer nodesID
-   * @param {number} bytesSent - 发送的字节数
+   * @param {number} bytesSent - Send的字节数
    */
   updateTrafficStats(peerId, bytesSent) {
-    // 这里可以添加流量统计逻辑
-    // 暂时为空，需要集成到现有流量统计系统
+    // 这里can添加流量统计Logic
+    // 暂时为空, requires集成到现有流量统计系统
   }
 }
 

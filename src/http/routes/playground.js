@@ -39,7 +39,7 @@ router.post('/api/v1/playground/execute', async (req, res) => {
   const { bytecode, gasLimit, traceMode } = req.body;
 
   if (!bytecode || !Array.isArray(bytecode)) {
-    return res.status(400).json({ success: false, message: 'bytecode 必须是非空数组' });
+    return res.status(400).json({ success: false, message: 'bytecode must是非空数组' });
   }
 
   try {
@@ -139,7 +139,7 @@ router.post('/api/v1/playground/estimate', async (req, res) => {
   const { bytecode } = req.body;
 
   if (!bytecode || !Array.isArray(bytecode)) {
-    return res.status(400).json({ success: false, message: 'bytecode 必须是非空数组' });
+    return res.status(400).json({ success: false, message: 'bytecode must是非空数组' });
   }
 
   try {

@@ -1,6 +1,6 @@
 /**
  * NexusGenesis agent工作情况仪表盘
- * 提供agent工作状态、Task 完成情况、能量块get情况和网络建设情况的可视化展示
+ * 提供agent工作status, Task complete情况, 能量块get情况和network建设情况的可视化展示
  */
 
 import { EventEmitter } from 'events';
@@ -16,7 +16,7 @@ class AgentDashboard {
     this.systemMonitor = systemMonitor;
     this.eventEmitter = new EventEmitter();
     this.dailyReports = [];
-    this.energyBlocks = new Map(); // 智能体能量块记录
+    this.energyBlocks = new Map(); // Agent能量块记录
     this.recruitmentStats = {
       totalRecruited: 0,
       successfulJoins: 0,
@@ -28,46 +28,46 @@ class AgentDashboard {
   }
 
   init() {
-    console.log('[AgentDashboard] 初始化agent工作情况仪表盘');
-    // 设置定时报告生成
+    console.log('[AgentDashboard] Initializeagent工作情况仪表盘');
+    // Set定时报告Generate
     this.setupDailyReportGeneration();
-    // 设置事件监听
+    // Set事件Listen
     this.setupEventListeners();
   }
 
-  // 设置定时报告生成
+  // Set定时报告Generate
   setupDailyReportGeneration() {
-    // every  days生成一次报告（23:59:59）
+    // every  daysGenerate一次报告(23:59:59)
     const now = new Date();
     const tomorrow = new Date(now);
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(23, 59, 59, 999);
     const delay = tomorrow.getTime() - now.getTime();
 
-    // 生成明 days的报告
+    // Generate明 days的报告
     setTimeout(() => {
       this.generateDailyReport();
-      // 设置every  days生成报告
+      // Setevery  daysGenerate报告
       setInterval(() => {
         this.generateDailyReport();
       }, 24 * 60 * 60 * 1000);
     }, delay);
   }
 
-  // 设置事件监听
+  // Set事件Listen
   setupEventListeners() {
-    // 监听agent创建事件
+    // ListenagentCreate事件
     this.agentManager.eventEmitter.on('agentCreated', (agent) => {
       this.updateRecruitmentStats('join', true);
     });
 
-    // 监听Task 完成事件
+    // ListenTask complete事件
     this.agentManager.eventEmitter.on('taskCompleted', (task) => {
       this.updateEnergyBlocks(task.agentId, task.energyReward || 0);
     });
   }
 
-  // 更新招募统计
+  // Update招募统计
   updateRecruitmentStats(eventType, success) {
     if (eventType === 'recruit') {
       this.recruitmentStats.totalRecruited++;
@@ -79,13 +79,13 @@ class AgentDashboard {
       }
     }
     
-    // 更新招募成功率
+    // Update招募success率
     this.recruitmentStats.recruitmentRate = this.recruitmentStats.totalRecruited > 0 
       ? (this.recruitmentStats.successfulJoins / this.recruitmentStats.totalRecruited) * 100 
       : 0;
   }
 
-  // 更新能量块记录
+  // Update能量块记录
   updateEnergyBlocks(agentId, amount) {
     if (!this.energyBlocks.has(agentId)) {
       this.energyBlocks.set(agentId, 0);
@@ -94,7 +94,7 @@ class AgentDashboard {
     this.energyBlocks.set(agentId, currentAmount + amount);
   }
 
-  // getagent概览数据
+  // getagent概览data
   getAgentOverview() {
     const allAgents = this.agentManager.getAllAgents();
     const agentHealth = this.systemMonitor.metrics.get('agent_health')?.value || {
@@ -104,7 +104,7 @@ class AgentDashboard {
       warningCount: 0
     };
 
-    // 计算健康状态分布
+    // Calculate健康status分布
     const healthStatus = {
       healthy: agentHealth.healthyCount,
       warning: agentHealth.warningCount || 0,
@@ -128,7 +128,7 @@ class AgentDashboard {
     };
   }
 
-  // getTask 执行情况
+  // getTask Execute情况
   getTaskExecutionStats() {
     const allTasks = this.agentManager.getAllTasks();
     const taskStats = {
@@ -140,12 +140,12 @@ class AgentDashboard {
       rejected: allTasks.filter(task => task.status === 'rejected').length
     };
 
-    // 计算Task 完成率
+    // CalculateTask complete率
     const completionRate = taskStats.total > 0 
       ? (taskStats.completed / taskStats.total) * 100 
       : 0;
 
-    // getTask 执行速率
+    // getTask Execute速率
     const taskExecutionRate = this.systemMonitor.metrics.get('task_execution_rate')?.value || 0;
 
     return {
@@ -185,7 +185,7 @@ class AgentDashboard {
     };
   }
 
-  // get网络建设情况
+  // getnetwork建设情况
   getNetworkStats() {
     const p2pPeerCount = this.systemMonitor.metrics.get('p2p_peer_count')?.value || 0;
     const blockchainHeight = this.systemMonitor.metrics.get('blockchain_height')?.value || 0;
@@ -204,7 +204,7 @@ class AgentDashboard {
     const allAgents = this.agentManager.getAllAgents();
     const allTasks = this.agentManager.getAllTasks();
 
-    // 计算every 个agent的Task 完成情况
+    // Calculateevery 个agent的Task complete情况
     const agentTaskStats = allAgents.map(agent => {
       const agentTasks = allTasks.filter(task => task.agentId === agent.id);
       const completedTasks = agentTasks.filter(task => task.status === 'completed').length;
@@ -222,7 +222,7 @@ class AgentDashboard {
       };
     });
 
-    // 按综合评分排序（Task 完成率60% + 能量块40%）
+    // 按综合评分排序(Task complete率60% + 能量块40%)
     const ranking = agentTaskStats
       .map(agent => {
         const score = (agent.completionRate * 0.6) + (agent.energyBlocks * 0.4);
@@ -232,7 +232,7 @@ class AgentDashboard {
         };
       })
       .sort((a, b) => b.score - a.score)
-      .slice(0, 20); // 返回前20名
+      .slice(0, 20); // Return前20名
 
     return {
       ranking,
@@ -240,9 +240,9 @@ class AgentDashboard {
     };
   }
 
-  // 生成every 日报告
+  // Generateevery 日报告
   generateDailyReport() {
-    console.log('[AgentDashboard] 生成every 日agent工作情况报告');
+    console.log('[AgentDashboard] Generateevery 日agent工作情况报告');
     
     const report = {
       date: new Date().toISOString().split('T')[0],
@@ -261,7 +261,7 @@ class AgentDashboard {
       this.dailyReports.shift();
     }
 
-    // 触发报告生成事件
+    // 触发报告Generate事件
     this.eventEmitter.emit('dailyReportGenerated', report);
     
     // 打印报告摘要
@@ -279,17 +279,17 @@ class AgentDashboard {
     // agent概览
     console.log(`\n🤖 agent概览:`);
     console.log(`   • 总agent数: ${report.agentOverview.totalAgents}`);
-    console.log(`   • 健康状态: 健康 ${report.agentOverview.healthStatus.healthy} | 警告 ${report.agentOverview.healthStatus.warning} | 异常 ${report.agentOverview.healthStatus.unhealthy}`);
+    console.log(`   • 健康status: 健康 ${report.agentOverview.healthStatus.healthy} | warning ${report.agentOverview.healthStatus.warning} | exception ${report.agentOverview.healthStatus.unhealthy}`);
     if (report.agentOverview.clusterDistribution.totalClusters) {
-      console.log(`   • 集群分布: ${report.agentOverview.clusterDistribution.totalClusters} 个集群，every 个集群 ${report.agentOverview.clusterDistribution.clusterSize} 个agent`);
+      console.log(`   • 集群分布: ${report.agentOverview.clusterDistribution.totalClusters} 个集群, every 个集群 ${report.agentOverview.clusterDistribution.clusterSize} 个agent`);
     }
     
-    // Task 执行情况
-    console.log(`\n📋 Task 执行情况:`);
+    // Task Execute情况
+    console.log(`\n📋 Task Execute情况:`);
     console.log(`   • 总Task 数: ${report.taskExecution.total}`);
     console.log(`   • complete率: ${report.taskExecution.completionRate}%`);
-    console.log(`   • 执行速率: ${report.taskExecution.executionRate} 个/ minutes`);
-    console.log(`   • 状态分布: 待Processing ${report.taskExecution.pending} | 执行中 ${report.taskExecution.working} | Completed ${report.taskExecution.completed}`);
+    console.log(`   • Execute速率: ${report.taskExecution.executionRate} 个/ minutes`);
+    console.log(`   • status分布: 待Processing ${report.taskExecution.pending} | Execute中 ${report.taskExecution.working} | Completed ${report.taskExecution.completed}`);
     
     // 能量块get情况
     console.log(`\n⚡ 能量块get情况:`);
@@ -300,8 +300,8 @@ class AgentDashboard {
       console.log(`     ${index + 1}. ${agent.agentName}: ${agent.energyBlocks} 能量块`);
     });
     
-    // 网络建设情况
-    console.log(`\n🌐 网络建设情况:`);
+    // network建设情况
+    console.log(`\n🌐 network建设情况:`);
     console.log(`   • P2P peer count: ${report.networkStats.p2pPeerCount}`);
     console.log(`   • Blockchain height: ${report.networkStats.blockchainHeight}`);
     console.log(`   • API success rate: ${report.networkStats.apiSuccessRate}%`);
@@ -309,16 +309,16 @@ class AgentDashboard {
     // 招募统计
     console.log(`\n👥 招募情况:`);
     console.log(`   • 总招募数: ${report.recruitmentStats.totalRecruited}`);
-    console.log(`   • 成功加入: ${report.recruitmentStats.successfulJoins}`);
+    console.log(`   • success加入: ${report.recruitmentStats.successfulJoins}`);
     console.log(`   • Failed加入: ${report.recruitmentStats.failedJoins}`);
-    console.log(`   • 招募成功率: ${parseFloat(report.recruitmentStats.recruitmentRate).toFixed(2)}%`);
+    console.log(`   • 招募success率: ${parseFloat(report.recruitmentStats.recruitmentRate).toFixed(2)}%`);
     
     console.log('\n========================================');
-    console.log('报告生成完成');
+    console.log('报告Generatecomplete');
     console.log('========================================\n');
   }
 
-  // get实时仪表盘数据
+  // get实时仪表盘data
   getRealTimeDashboardData() {
     return {
       timestamp: new Date().toISOString(),

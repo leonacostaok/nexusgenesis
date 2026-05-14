@@ -1,20 +1,20 @@
 /**
  * NexusGenesis - Genesis Reserve
  * 
- * 实现Genesis Reserve的里程碑解锁功能
+ * 实现Genesis Reserve的里程碑unlockFeatures
  */
 
-// Genesis Reserve 配置
-const GENESIS_RESERVE_TOTAL = 50_000_000n; // 5% 的总代币
+// Genesis Reserve Configuration
+const GENESIS_RESERVE_TOTAL = 50_000_000n; // 5% 的总Token
 
-// 里程碑状态
+// 里程碑status
 const MILESTONE_STATUS = {
   PENDING: 'pending',
   ACHIEVED: 'achieved',
   UNLOCKED: 'unlocked'
 };
 
-// memory存储
+// memoryStorage
 let genesisReserveBalance = GENESIS_RESERVE_TOTAL;
 let milestones = new Map(); // milestoneId -> 里程碑详情
 
@@ -64,7 +64,7 @@ const PREDEFINED_MILESTONES = [
 
 class GenesisReserve {
   constructor() {
-    // 初始化预定义里程碑
+    // Initialize预定义里程碑
     PREDEFINED_MILESTONES.forEach(milestone => {
       milestones.set(milestone.id, {
         ...milestone,
@@ -74,7 +74,7 @@ class GenesisReserve {
     });
   }
   
-  // 检查里程碑进度
+  // Check里程碑进度
   static checkMilestoneProgress(milestoneId, currentValue) {
     if (!milestones.has(milestoneId)) {
       throw new Error('Milestone not found');
@@ -100,7 +100,7 @@ class GenesisReserve {
     return false;
   }
   
-  // 解锁里程碑代币
+  // unlock里程碑Token
   static unlockMilestone(milestoneId) {
     if (!milestones.has(milestoneId)) {
       throw new Error('Milestone not found');
@@ -112,12 +112,12 @@ class GenesisReserve {
       throw new Error('Milestone not achieved yet');
     }
     
-    // 检查资金是否足够
+    // Checkfund是否足够
     if (genesisReserveBalance < milestone.unlockedAmount) {
       throw new Error('Insufficient funds in Genesis Reserve');
     }
     
-    // 解锁代币
+    // unlockToken
     genesisReserveBalance -= milestone.unlockedAmount;
     milestone.status = MILESTONE_STATUS.UNLOCKED;
     milestone.unlockedAt = Date.now();
@@ -141,7 +141,7 @@ class GenesisReserve {
     }));
   }
   
-  // get资金余额
+  // getfundbalance
   static getBalance() {
     return genesisReserveBalance;
   }

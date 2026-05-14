@@ -1,9 +1,9 @@
 /**
  * NexusGenesis - 项目审核子系统
  * 
- * 功能：
+ * Features: 
  * 1. 项目提交与审核流程管理
- * 2. 审核状态跟踪
+ * 2. 审核status跟踪
  * 3. 审核结果记录
  * 4. 审核统计分析
  */
@@ -11,9 +11,9 @@
 import crypto from 'crypto';
 
 /**
- * 计算数据的 SHA-256 哈希
- * @param {any} data 要哈希的数据
- * @returns {string} 哈希值（十六进制字符串）
+ * Calculatedata的 SHA-256 hash
+ * @param {any} data 要hash的data
+ * @returns {string} hash值(十六进制字符串)
  */
 function calculateHash(data) {
   const jsonString = JSON.stringify(data);
@@ -21,7 +21,7 @@ function calculateHash(data) {
 }
 
 /**
- * 项目审核状态枚举
+ * 项目审核status枚举
  */
 export const AuditStatus = {
   PENDING: 'PENDING',
@@ -31,7 +31,7 @@ export const AuditStatus = {
 };
 
 /**
- * 项目审核交易类型
+ * 项目审核transactiontype
  */
 export const AuditTransactionType = {
   PROJECT_SUBMIT: 'PROJECT_SUBMIT',
@@ -41,15 +41,15 @@ export const AuditTransactionType = {
 };
 
 /**
- * 项目审核类
+ * 项目审核class
  */
 export class ProjectAudit {
   /**
-   * 创建项目审核实例
+   * Create项目审核instance
    * @param {string} projectId 项目ID
    * @param {string} name 项目名称
    * @param {string} description 项目描述
-   * @param {string} submitter 提交者地址
+   * @param {string} submitter 提交者address
    */
   constructor(projectId, name, description, submitter) {
     this.projectId = projectId;
@@ -69,7 +69,7 @@ export class ProjectAudit {
 
   /**
    * Start 审核
-   * @param {string} reviewer 审核者地址
+   * @param {string} reviewer 审核者address
    */
   startReview(reviewer) {
     if (!this.reviewers.includes(reviewer)) {
@@ -80,7 +80,7 @@ export class ProjectAudit {
 
   /**
    * 提交审核意见
-   * @param {string} reviewer 审核者地址
+   * @param {string} reviewer 审核者address
    * @param {boolean} approved 是否批准
    * @param {string} reason 审核理由
    */
@@ -134,9 +134,9 @@ export class ProjectAudit {
   }
 
   /**
-   * 从JSON对象创建实例
+   * 从JSON对象Createinstance
    * @param {object} json JSON对象
-   * @returns {ProjectAudit} 项目审核实例
+   * @returns {ProjectAudit} 项目审核instance
    */
   static fromJSON(json) {
     const audit = new ProjectAudit(
@@ -159,11 +159,11 @@ export class ProjectAudit {
 }
 
 /**
- * 项目审核状态管理
+ * 项目审核status管理
  */
 export class AuditState {
   /**
-   * 创建审核状态实例
+   * Create审核statusinstance
    */
   constructor() {
     this.projects = new Map(); // projectId -> ProjectAudit
@@ -173,8 +173,8 @@ export class AuditState {
 
   /**
    * 提交项目审核
-   * @param {object} transaction 交易
-   * @returns {boolean} 是否成功
+   * @param {object} transaction transaction
+   * @returns {boolean} 是否success
    */
   submitProject(transaction) {
     try {
@@ -185,16 +185,16 @@ export class AuditState {
         return false;
       }
 
-      // 检查项目是否已存在
+      // Check项目是否already exists
       if (this.projects.has(project_id)) {
         return false;
       }
 
-      // 创建项目审核实例
+      // Create项目审核instance
       const projectAudit = new ProjectAudit(project_id, name, description, submitter);
       this.projects.set(project_id, projectAudit);
 
-      // 更新提交者索引
+      // Update提交者索引
       if (!this.submitterIndex.has(submitter)) {
         this.submitterIndex.set(submitter, new Set());
       }
@@ -210,8 +210,8 @@ export class AuditState {
 
   /**
    * 审核项目
-   * @param {object} transaction 交易
-   * @returns {boolean} 是否成功
+   * @param {object} transaction transaction
+   * @returns {boolean} 是否success
    */
   reviewProject(transaction) {
     try {
@@ -222,7 +222,7 @@ export class AuditState {
         return false;
       }
 
-      // 检查项目是否存在
+      // Check项目是否存在
       const projectAudit = this.projects.get(project_id);
       if (!projectAudit) {
         return false;
@@ -234,7 +234,7 @@ export class AuditState {
       // 提交审核意见
       projectAudit.submitReview(reviewer, approved, reason || '');
 
-      // 更新审核者索引
+      // Update审核者索引
       if (!this.reviewerIndex.has(reviewer)) {
         this.reviewerIndex.set(reviewer, new Set());
       }
@@ -250,8 +250,8 @@ export class AuditState {
 
   /**
    * 批准项目
-   * @param {object} transaction 交易
-   * @returns {boolean} 是否成功
+   * @param {object} transaction transaction
+   * @returns {boolean} 是否success
    */
   approveProject(transaction) {
     return this.finalizeProject(transaction, true);
@@ -259,8 +259,8 @@ export class AuditState {
 
   /**
    * 拒绝项目
-   * @param {object} transaction 交易
-   * @returns {boolean} 是否成功
+   * @param {object} transaction transaction
+   * @returns {boolean} 是否success
    */
   rejectProject(transaction) {
     return this.finalizeProject(transaction, false);
@@ -268,9 +268,9 @@ export class AuditState {
 
   /**
    * complete项目审核
-   * @param {object} transaction 交易
+   * @param {object} transaction transaction
    * @param {boolean} approved 是否批准
-   * @returns {boolean} 是否成功
+   * @returns {boolean} 是否success
    */
   finalizeProject(transaction, approved) {
     try {
@@ -281,7 +281,7 @@ export class AuditState {
         return false;
       }
 
-      // 检查项目是否存在
+      // Check项目是否存在
       const projectAudit = this.projects.get(project_id);
       if (!projectAudit) {
         return false;
@@ -299,9 +299,9 @@ export class AuditState {
   }
 
   /**
-   * get项目审核信息
+   * get项目审核info
    * @param {string} projectId 项目ID
-   * @returns {ProjectAudit|null} 项目审核实例
+   * @returns {ProjectAudit|null} 项目审核instance
    */
   getProjectAudit(projectId) {
     return this.projects.get(projectId) || null;
@@ -309,7 +309,7 @@ export class AuditState {
 
   /**
    * get提交者的所有项目
-   * @param {string} submitter 提交者地址
+   * @param {string} submitter 提交者address
    * @returns {Array} 项目ID列表
    */
   getProjectsBySubmitter(submitter) {
@@ -318,7 +318,7 @@ export class AuditState {
 
   /**
    * get审核者的所有项目
-   * @param {string} reviewer 审核者地址
+   * @param {string} reviewer 审核者address
    * @returns {Array} 项目ID列表
    */
   getProjectsByReviewer(reviewer) {
@@ -327,24 +327,24 @@ export class AuditState {
 
   /**
    * get所有项目
-   * @returns {Array} 项目审核实例列表
+   * @returns {Array} 项目审核instance列表
    */
   getAllProjects() {
     return Array.from(this.projects.values());
   }
 
   /**
-   * get特定状态的项目
-   * @param {string} status 状态
-   * @returns {Array} 项目审核实例列表
+   * get特定status的项目
+   * @param {string} status status
+   * @returns {Array} 项目审核instance列表
    */
   getProjectsByStatus(status) {
     return Array.from(this.projects.values()).filter(project => project.status === status);
   }
 
   /**
-   * 计算审核统计信息
-   * @returns {object} 统计信息
+   * Calculate审核统计info
+   * @returns {object} 统计info
    */
   getAuditStats() {
     const allProjects = this.getAllProjects();
@@ -382,7 +382,7 @@ export class AuditState {
   }
 
   /**
-   * 从JSON对象加载状态
+   * 从JSON对象Loadstatus
    * @param {object} json JSON对象
    */
   loadFromJSON(json) {
@@ -437,10 +437,10 @@ export class AuditState {
 }
 
 /**
- * 应用项目审核交易
- * @param {object} transaction 交易
- * @param {AuditState} auditState 审核状态
- * @returns {boolean} 是否成功
+ * 应用项目审核transaction
+ * @param {object} transaction transaction
+ * @param {AuditState} auditState 审核status
+ * @returns {boolean} 是否success
  */
 export function applyAuditTransaction(transaction, auditState) {
   switch (transaction.tx_type) {
@@ -457,7 +457,7 @@ export function applyAuditTransaction(transaction, auditState) {
   }
 }
 
-// 导出Default值
+// ExportDefault值
 export default {
   ProjectAudit,
   AuditState,

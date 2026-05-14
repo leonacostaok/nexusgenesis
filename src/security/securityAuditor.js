@@ -447,14 +447,14 @@ export class SecurityAuditor {
   generateReport(result) {
     const lines = [];
     lines.push('═══════════════════════════════════════════');
-    lines.push('  NexusGenesis 智能合约安全审计报告');
+    lines.push('  NexusGenesis Smart Contractsecurity审计报告');
     lines.push('═══════════════════════════════════════════');
-    lines.push(`  合约名称: ${result.contractName}`);
+    lines.push(`  Contract名称: ${result.contractName}`);
     lines.push(`  审计时间: ${result.timestamp}`);
-    lines.push(`  安全评分: ${result.score}/100`);
+    lines.push(`  security评分: ${result.score}/100`);
     lines.push(`  风险级别: ${result.summary.risk}`);
-    lines.push(`  字节码量: ${result.bytecodeSize} bytes`);
-    lines.push(`  操作码数: ${result.opcodeCount}`);
+    lines.push(`  bytecode量: ${result.bytecodeSize} bytes`);
+    lines.push(`  opcode数: ${result.opcodeCount}`);
     lines.push(`  发现问题: ${result.findings.length}`);
     lines.push('');
     lines.push('─── 严重级别分布');
@@ -473,7 +473,7 @@ export class SecurityAuditor {
       idx++;
     }
     if (result.findings.length === 0) {
-      lines.push('  ✅ 未发现安全问题');
+      lines.push('  ✅ 未发现security问题');
     }
     lines.push('');
     lines.push('─── 建议');

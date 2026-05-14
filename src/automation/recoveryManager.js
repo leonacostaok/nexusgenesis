@@ -213,7 +213,7 @@ class RecoveryManager {
         attempt: attempts
       });
 
-      // 冷却期后重置尝试计数
+      // 冷却期后重置尝试count
       setTimeout(() => {
         this.recoveryAttempts.delete(failureType);
       }, this.config.recoveryCooldown);
@@ -264,17 +264,17 @@ class RecoveryManager {
     node.status = 'RECOVERING';
 
     try {
-      // 加载之前保存的状态
+      // Load之前Save的status
       const loaded = await node.loadState();
       if (loaded) {
         console.log('[RecoveryManager] Node state restored from backup');
       }
 
-      // 加载区块链
+      // Loadblock链
       await node.loadBlockchain();
       console.log('[RecoveryManager] Blockchain loaded, height:', node.blockchain?.length);
 
-      // Reinitializing共识
+      // ReinitializingConsensus
       if (node.initializeConsensus) {
         node.initializeConsensus();
         console.log('[RecoveryManager] Consensus reinitialized');
@@ -423,7 +423,7 @@ class RecoveryManager {
 
     console.log('[RecoveryManager] Draining mempool backlog...');
 
-    // 按 fee 降序排列交易，只保留高手续费的
+    // 按 fee 降序排列transaction, 只保留高fee的
     const entries = Array.from(node.mempool.entries())
       .sort((a, b) => Number(BigInt(b[1].fee || '0') - BigInt(a[1].fee || '0')))
       .slice(0, 2000);
@@ -461,7 +461,7 @@ class RecoveryManager {
     const node = this.nodeRef;
     if (!node) return;
 
-    // 通用的Recovery strategy：先尝试轻量修复
+    // 通用的Recovery strategy: 先尝试轻量修复
     await this._repairMempool();
     await this._reconnectPeers();
 
@@ -487,7 +487,7 @@ class RecoveryManager {
         ...data
       }, null, 2)).catch(() => {});
     } catch (e) {
-      // 日志Failed不影响恢复
+      // 日志Failed不影响recovery
     }
   }
 
@@ -518,7 +518,7 @@ class RecoveryManager {
   }
 }
 
-// 单例导出
+// 单例Export
 const recoveryManager = new RecoveryManager();
 export default recoveryManager;
 export { RecoveryManager, RECOVERY_STATES, FAILURE_TYPES, RECOVERY_STRATEGIES };

@@ -1,52 +1,52 @@
 /**
- * 计数器智能合约示例
- * 功能：增加和减少计数值
+ * count器Smart Contract示例
+ * Features: 增加和减少count值
  */
 
 import contractManager from '../contractManager.js';
 
-// 计数器合约字节码
+// count器Contractbytecode
 // Logic: 
-// 1. 从memory地址0加载当前值
+// 1. 从memoryaddress0LoadCurrent值
 // 2. 压入1
 // 3. 相加
-// 4. 保存回memory地址0
-// 5. 加载新值
-// 6. 返回
+// 4. Save回memoryaddress0
+// 5. Load新值
+// 6. Return
 const counterBytecode = [
-  0x07, 0x00, // LOAD 0     // 加载当前计数
+  0x07, 0x00, // LOAD 0     // LoadCurrentcount
   0x01, 0x01, // PUSH 1     // 压入1
   0x03,       // ADD        // 相加
-  0x08, 0x00, // STORE 0    // 保存回存储
-  0x07, 0x00, // LOAD 0     // 加载新值
-  0x0C        // RETURN     // 返回
+  0x08, 0x00, // STORE 0    // Save回Storage
+  0x07, 0x00, // LOAD 0     // Load新值
+  0x0C        // RETURN     // Return
 ];
 
-// 修复后的计数器合约字节码（使用临时变量）
+// 修复后的count器Contractbytecode(using临时变量)
 const counterBytecodeFixed = [
-  0x07, 0x00, // LOAD 0     // 加载当前计数
+  0x07, 0x00, // LOAD 0     // LoadCurrentcount
   0x01, 0x01, // PUSH 1     // 压入1
   0x03,       // ADD        // 相加
-  0x08, 0x00, // STORE 0    // 保存回存储
-  0x07, 0x00, // LOAD 0     // 加载新值
-  0x0C        // RETURN     // 返回
+  0x08, 0x00, // STORE 0    // Save回Storage
+  0x07, 0x00, // LOAD 0     // Load新值
+  0x0C        // RETURN     // Return
 ];
 
-// 部署计数器合约
+// Deploycount器Contract
 async function deployCounterContract() {
   const contractId = contractManager.deployContract(counterBytecode, 'Counter Contract');
   console.log(`Counter contract deployed with ID: ${contractId}`);
   return contractId;
 }
 
-// 执行计数器合约（增加计数）
+// Executecount器Contract(增加count)
 async function executeCounterContract(contractId) {
   const result = contractManager.executeContract(contractId);
   console.log('Counter execution result:', result);
   return result;
 }
 
-// get计数器值
+// getcount器值
 function getCounterValue(contractId) {
   const contractInfo = contractManager.getContractInfo(contractId);
   if (contractInfo) {
@@ -55,7 +55,7 @@ function getCounterValue(contractId) {
   return 0;
 }
 
-// 测试计数器合约
+// Testcount器Contract
 async function testCounterContract() {
   console.log('=== Testing Counter Contract ===');
   
@@ -65,13 +65,13 @@ async function testCounterContract() {
   // 初始值
   console.log('Initial counter value:', getCounterValue(contractId));
   
-  // 执行5次
+  // Execute5次
   for (let i = 1; i <= 5; i++) {
     await executeCounterContract(contractId);
     console.log(`After execution ${i}:`, getCounterValue(contractId));
   }
   
-  // 保存状态
+  // Savestatus
   await contractManager.saveState();
   console.log('Contract state saved');
   

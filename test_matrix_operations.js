@@ -1,20 +1,20 @@
 /**
- * 矩阵运算指令测试脚本
- * 测试 AINVM 矩阵运算指令的实现
+ * 矩阵运算指令Test脚本
+ * Test AINVM 矩阵运算指令的实现
  */
 
 import AINVM from './src/vm/ainvm.js';
 
 function testMatrixOperations() {
-  console.log('=== 矩阵运算指令测试开始 ===\n');
+  console.log('=== 矩阵运算指令Test开始 ===\n');
   
-  // 创建 AINVM 实例
+  // Create AINVM instance
   const vm = new AINVM();
   
-  // 测试 1: 矩阵创建和基本操作
-  console.log('测试 1: 矩阵创建和基本操作');
+  // Test 1: 矩阵Create和基本操作
+  console.log('Test 1: 矩阵Create和基本操作');
   
-  // 字节码：创建 2x2 矩阵
+  // bytecode：Create 2x2 矩阵
   // PUSH 2 (rows)
   // PUSH 2 (cols)
   // MAT_CREATE
@@ -27,12 +27,12 @@ function testMatrixOperations() {
   
   vm.loadProgram(program1);
   const result1 = vm.execute(100);
-  console.log('矩阵创建结果:', result1);
+  console.log('矩阵Create结果:', result1);
   
-  // 测试 2: 矩阵存储和加载
-  console.log('\n测试 2: 矩阵存储和加载');
+  // Test 2: 矩阵Storage和Load
+  console.log('\nTest 2: 矩阵Storage和Load');
   
-  // 字节码：创建矩阵并存储值
+  // bytecode：Create矩阵并Storage值
   // PUSH 2 (rows)
   // PUSH 2 (cols)
   // MAT_CREATE
@@ -60,12 +60,12 @@ function testMatrixOperations() {
   
   vm.loadProgram(program2);
   const result2 = vm.execute(100);
-  console.log('矩阵存储和加载结果:', result2);
+  console.log('矩阵Storage和Load结果:', result2);
   
-  // 测试 3: 矩阵加法
-  console.log('\n测试 3: 矩阵加法');
+  // Test 3: 矩阵加法
+  console.log('\nTest 3: 矩阵加法');
   
-  // 字节码：创建两个矩阵并相加
+  // bytecode：Create两个矩阵并相加
   // PUSH 2 (rows)
   // PUSH 2 (cols)
   // MAT_CREATE (mat1)
@@ -153,10 +153,10 @@ function testMatrixOperations() {
   const result3 = vm.execute(1000);
   console.log('矩阵加法结果:', result3);
   
-  // 测试 4: 矩阵乘法
-  console.log('\n测试 4: 矩阵乘法');
+  // Test 4: 矩阵乘法
+  console.log('\nTest 4: 矩阵乘法');
   
-  // 字节码：创建两个矩阵并相乘
+  // bytecode：Create两个矩阵并相乘
   // PUSH 2 (rows)
   // PUSH 2 (cols)
   // MAT_CREATE (mat1)
@@ -244,10 +244,10 @@ function testMatrixOperations() {
   const result4 = vm.execute(1000);
   console.log('矩阵乘法结果:', result4);
   
-  // 测试 5: 矩阵转置
-  console.log('\n测试 5: 矩阵转置');
+  // Test 5: 矩阵转置
+  console.log('\nTest 5: 矩阵转置');
   
-  // 字节码：创建矩阵并转置
+  // bytecode：Create矩阵并转置
   // PUSH 2 (rows)
   // PUSH 3 (cols)
   // MAT_CREATE
@@ -265,8 +265,8 @@ function testMatrixOperations() {
   const result5 = vm.execute(100);
   console.log('矩阵转置结果:', result5);
   
-  console.log('\n=== 矩阵运算指令测试完成 ===');
+  console.log('\n=== 矩阵运算指令Test完成 ===');
 }
 
-// 运行测试
+// 运行Test
 testMatrixOperations();

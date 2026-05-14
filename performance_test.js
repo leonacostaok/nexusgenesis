@@ -1,6 +1,6 @@
 /**
- * 智能合约性能测试脚本
- * 测试AINVM智能合约的执行性能和网络响应时间
+ * Smart Contract性能Test脚本
+ * TestAINVMSmart Contract的Execute性能和network响应时间
  */
 
 import contractManager from './src/contracts/contractManager.js';
@@ -13,14 +13,14 @@ import { testAIContract } from './src/contracts/examples/ai.js';
 import fs from 'fs';
 import path from 'path';
 
-// 性能测试配置
+// 性能TestConfiguration
 const config = {
-  iterations: 100, // 每个测试的迭代次数
+  iterations: 100, // 每个Test的迭代次数
   warmup: 10,     // 预热迭代次数
   gasLimit: 10000  // Gas限制
 };
 
-// 性能测试结果
+// 性能Test结果
 const results = {
   counter: [],
   matrix: [],
@@ -30,22 +30,22 @@ const results = {
   ai: []
 };
 
-// 测试执行时间
+// TestExecute时间
 function measureExecutionTime(fn, name) {
   const start = process.hrtime();
   const result = fn();
   const end = process.hrtime(start);
-  const duration = end[0] * 1000 + end[1] / 1000000; // 转换为毫秒
+  const duration = end[0] * 1000 + end[1] / 1000000; // 转换为ms
   
   console.log(`${name}: ${duration.toFixed(2)}ms`);
   return duration;
 }
 
-// 测试计数器合约性能
+// Test计数器Contract性能
 async function testCounterPerformance() {
   console.log('\n=== Testing Counter Contract Performance ===');
   
-  // 部署合约
+  // DeployContract
   const contractId = await testCounterContract();
   
   // 预热
@@ -53,7 +53,7 @@ async function testCounterPerformance() {
     contractManager.executeContract(contractId, config.gasLimit);
   }
   
-  // 性能测试
+  // 性能Test
   for (let i = 0; i < config.iterations; i++) {
     const duration = measureExecutionTime(() => {
       return contractManager.executeContract(contractId, config.gasLimit);
@@ -64,11 +64,11 @@ async function testCounterPerformance() {
   return contractId;
 }
 
-// 测试矩阵运算合约性能
+// Test矩阵运算Contract性能
 async function testMatrixPerformance() {
   console.log('\n=== Testing Matrix Operations Performance ===');
   
-  // 部署合约
+  // DeployContract
   const contractId = await testMatrixContract();
   
   // 预热
@@ -76,7 +76,7 @@ async function testMatrixPerformance() {
     contractManager.executeContract(contractId, config.gasLimit);
   }
   
-  // 性能测试
+  // 性能Test
   for (let i = 0; i < config.iterations; i++) {
     const duration = measureExecutionTime(() => {
       return contractManager.executeContract(contractId, config.gasLimit);
@@ -87,11 +87,11 @@ async function testMatrixPerformance() {
   return contractId;
 }
 
-// 测试代币合约性能
+// TestTokenContract性能
 async function testTokenPerformance() {
   console.log('\n=== Testing Token Contract Performance ===');
   
-  // 部署合约
+  // DeployContract
   const contractId = await testTokenContract();
   
   // 预热
@@ -99,7 +99,7 @@ async function testTokenPerformance() {
     contractManager.executeContract(contractId, config.gasLimit);
   }
   
-  // 性能测试
+  // 性能Test
   for (let i = 0; i < config.iterations; i++) {
     const duration = measureExecutionTime(() => {
       return contractManager.executeContract(contractId, config.gasLimit);
@@ -110,11 +110,11 @@ async function testTokenPerformance() {
   return contractId;
 }
 
-// 测试治理合约性能
+// TestGovernanceContract性能
 async function testGovernancePerformance() {
   console.log('\n=== Testing Governance Contract Performance ===');
   
-  // 部署合约
+  // DeployContract
   const contractId = await testGovernanceContract();
   
   // 预热
@@ -122,7 +122,7 @@ async function testGovernancePerformance() {
     contractManager.executeContract(contractId, config.gasLimit);
   }
   
-  // 性能测试
+  // 性能Test
   for (let i = 0; i < config.iterations; i++) {
     const duration = measureExecutionTime(() => {
       return contractManager.executeContract(contractId, config.gasLimit);
@@ -133,11 +133,11 @@ async function testGovernancePerformance() {
   return contractId;
 }
 
-// 测试DID合约性能
+// TestDIDContract性能
 async function testDIDPerformance() {
   console.log('\n=== Testing DID Contract Performance ===');
   
-  // 部署合约
+  // DeployContract
   const contractId = await testDIDContract();
   
   // 预热
@@ -145,7 +145,7 @@ async function testDIDPerformance() {
     contractManager.executeContract(contractId, config.gasLimit);
   }
   
-  // 性能测试
+  // 性能Test
   for (let i = 0; i < config.iterations; i++) {
     const duration = measureExecutionTime(() => {
       return contractManager.executeContract(contractId, config.gasLimit);
@@ -156,11 +156,11 @@ async function testDIDPerformance() {
   return contractId;
 }
 
-// 测试AI合约性能
+// TestAIContract性能
 async function testAIPerformance() {
   console.log('\n=== Testing AI Contract Performance ===');
   
-  // 部署合约
+  // DeployContract
   const contractId = await testAIContract();
   
   // 预热
@@ -168,7 +168,7 @@ async function testAIPerformance() {
     contractManager.executeContract(contractId, config.gasLimit);
   }
   
-  // 性能测试
+  // 性能Test
   for (let i = 0; i < config.iterations; i++) {
     const duration = measureExecutionTime(() => {
       return contractManager.executeContract(contractId, config.gasLimit);
@@ -179,7 +179,7 @@ async function testAIPerformance() {
   return contractId;
 }
 
-// 计算性能统计数据
+// Calculate性能统计data
 function calculateStats(data) {
   const sorted = data.sort((a, b) => a - b);
   const min = sorted[0];
@@ -198,7 +198,7 @@ function calculateStats(data) {
   };
 }
 
-// 生成性能报告
+// Generate性能报告
 function generateReport() {
   console.log('\n=== Performance Test Report ===');
   console.log('\nCounter Contract:');
@@ -219,7 +219,7 @@ function generateReport() {
   console.log('\nAI Contract:');
   console.log(calculateStats(results.ai));
   
-  // 计算总体性能
+  // Calculate总体性能
   const allResults = [
     ...results.counter,
     ...results.matrix,
@@ -232,7 +232,7 @@ function generateReport() {
   console.log('\nOverall Performance:');
   console.log(calculateStats(allResults));
   
-  // 保存报告到文件
+  // Save报告到文件
   const report = {
     timestamp: new Date().toISOString(),
     config,
@@ -258,17 +258,17 @@ function generateReport() {
   console.log(`\nReport saved to: ${reportPath}`);
 }
 
-// 主测试函数
+// 主Testfunction
 async function main() {
   console.log('=== Starting Smart Contract Performance Tests ===');
   console.log(`Configuration: ${JSON.stringify(config, null, 2)}`);
   
   try {
-    // 加载现有合约状态
+    // Load现有Contractstatus
     await contractManager.loadState();
     console.log('Loaded existing contract state');
     
-    // 运行性能测试
+    // 运行性能Test
     await testCounterPerformance();
     await testMatrixPerformance();
     await testTokenPerformance();
@@ -276,10 +276,10 @@ async function main() {
     await testDIDPerformance();
     await testAIPerformance();
     
-    // 生成报告
+    // Generate报告
     generateReport();
     
-    // 保存合约状态
+    // SaveContractstatus
     await contractManager.saveState();
     console.log('\nContract state saved');
     
@@ -290,5 +290,5 @@ async function main() {
   }
 }
 
-// 运行测试
+// 运行Test
 main();

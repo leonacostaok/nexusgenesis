@@ -1,25 +1,25 @@
 /**
- * AINVM (AI Network Virtual Machine) - 最小实现
+ * AINVM (AI Network Virtual Machine) - Minimum实现
  * 
- * 栈机模型的虚拟机，支持确定性执行和可计费
+ * stack机模型的虚拟机, support确定性Execute和可计费
  */
 
 class AINVM {
   constructor() {
-    this.stack = [];          // 执行栈
-    this.memory = new Map();  // 简单内存（键值存储）
-    this.pc = 0;              // 程序计数器
-    this.gasUsed = 0;         // 已使用的 gas
+    this.stack = [];          // Executestack
+    this.memory = new Map();  // 简单Memory(键值Storage)
+    this.pc = 0;              // 程序count器
+    this.gasUsed = 0;         // 已using的 gas
     this.gasLimit = 0;        // gas 限制
-    this.program = [];        // 字节码程序
-    this.halted = false;       // 是否已停止执行
-    this.returnValue = null;   // 返回值
-    this.matrixCounter = 0;    // 矩阵ID计数器（确定性）
+    this.program = [];        // bytecode程序
+    this.halted = false;       // 是否已StopExecute
+    this.returnValue = null;   // Return值
+    this.matrixCounter = 0;    // 矩阵IDcount器(确定性)
   }
 
   /**
-   * 加载程序
-   * @param {Uint8Array|Array} program - 字节码程序
+   * Load程序
+   * @param {Uint8Array|Array} program - bytecode程序
    */
   loadProgram(program) {
     this.program = Array.isArray(program) ? program : Array.from(program);
@@ -27,7 +27,7 @@ class AINVM {
   }
 
   /**
-   * 重置 VM 状态
+   * 重置 VM status
    */
   reset() {
     this.stack = [];
@@ -39,9 +39,9 @@ class AINVM {
   }
 
   /**
-   * 执行程序
+   * Execute程序
    * @param {number} gasLimit - gas 限制
-   * @returns {object} 执行结果
+   * @returns {object} Execute结果
    */
   execute(gasLimit) {
     this.gasLimit = gasLimit;
@@ -81,7 +81,7 @@ class AINVM {
   }
 
   /**
-   * 执行单步指令
+   * Execute单步指令
    */
   step() {
     if (this.pc >= this.program.length) {
@@ -129,7 +129,7 @@ class AINVM {
       case 0x0C: // RETURN
         this.executeRETURN();
         break;
-      // 逻辑运算指令
+      // Logic运算指令
       case 0x0D: // AND
         this.executeAND();
         break;
@@ -196,7 +196,7 @@ class AINVM {
       case 0x22: // AI_MODEL_SAVE
         this.executeAI_MODEL_SAVE();
         break;
-      // 安全相关指令
+      // security相关指令
       case 0x30: // SECURITY_CHECK
         this.executeSECURITY_CHECK();
         break;
@@ -216,7 +216,7 @@ class AINVM {
    * @param {number} amount - gas 数量
    */
   consumeGas(amount) {
-    // 优化：添加gas消耗限制，防止过度消耗
+    // 优化: 添加gas消耗限制, 防止过度消耗
     const MAX_GAS_PER_OPERATION = 10000;
     if (amount > MAX_GAS_PER_OPERATION) {
       amount = MAX_GAS_PER_OPERATION;
@@ -229,8 +229,8 @@ class AINVM {
   }
 
   /**
-   * 估算执行gas消耗
-   * @param {Array} program - 字节码程序
+   * 估算Executegas消耗
+   * @param {Array} program - bytecode程序
    * @returns {number} 估算的gas消耗
    */
   estimateGas(program) {
@@ -274,7 +274,7 @@ class AINVM {
         case 0x0C: // RETURN
           estimatedGas += 0;
           break;
-        // 逻辑和数学运算
+        // Logic和数学运算
         case 0x0D: // AND
         case 0x0E: // OR
         case 0x0F: // NOT
@@ -331,9 +331,9 @@ class AINVM {
   }
 
   /**
-   * 优化字节码
-   * @param {Array} bytecode - 原始字节码
-   * @returns {Array} 优化后的字节码
+   * 优化bytecode
+   * @param {Array} bytecode - originalbytecode
+   * @returns {Array} 优化后的bytecode
    */
   optimizeBytecode(bytecode) {
     const optimized = [];
@@ -349,7 +349,7 @@ class AINVM {
         optimized.push(0x1D);       // DUP
         i += 4;
       }
-      // 优化2: PUSH x, POP -> 删除两者
+      // 优化2: PUSH x, POP -> Delete两者
       else if (opcode === 0x02 && optimized.length >= 2 && optimized[optimized.length - 2] === 0x01) {
         optimized.pop();
         optimized.pop();
@@ -379,9 +379,9 @@ class AINVM {
   }
 
   /**
-   * 计算Gas优化率
-   * @param {Array} original - 原始字节码
-   * @param {Array} optimized - 优化后字节码
+   * CalculateGas优化率
+   * @param {Array} original - originalbytecode
+   * @param {Array} optimized - 优化后bytecode
    * @returns {object} 优化统计
    */
   calculateOptimizationStats(original, optimized) {
@@ -402,7 +402,7 @@ class AINVM {
   }
 
   /**
-   * 执行 PUSH 指令
+   * Execute PUSH 指令
    */
   executePUSH() {
     if (this.pc >= this.program.length) {
@@ -415,7 +415,7 @@ class AINVM {
   }
 
   /**
-   * 执行 POP 指令
+   * Execute POP 指令
    */
   executePOP() {
     if (this.stack.length === 0) {
@@ -426,7 +426,7 @@ class AINVM {
   }
 
   /**
-   * 执行 ADD 指令
+   * Execute ADD 指令
    */
   executeADD() {
     if (this.stack.length < 2) {
@@ -439,7 +439,7 @@ class AINVM {
   }
 
   /**
-   * 执行 SUB 指令
+   * Execute SUB 指令
    */
   executeSUB() {
     if (this.stack.length < 2) {
@@ -452,7 +452,7 @@ class AINVM {
   }
 
   /**
-   * 执行 MUL 指令
+   * Execute MUL 指令
    */
   executeMUL() {
     if (this.stack.length < 2) {
@@ -465,7 +465,7 @@ class AINVM {
   }
 
   /**
-   * 执行 DIV 指令
+   * Execute DIV 指令
    */
   executeDIV() {
     if (this.stack.length < 2) {
@@ -481,7 +481,7 @@ class AINVM {
   }
 
   /**
-   * 执行 LOAD 指令
+   * Execute LOAD 指令
    */
   executeLOAD() {
     if (this.pc >= this.program.length) {
@@ -490,7 +490,7 @@ class AINVM {
     const address = this.program[this.pc];
     this.pc++;
     
-    // 验证地址范围
+    // Verifyaddress范围
     if (typeof address !== 'number' || address < 0 || address > 255) {
       throw new Error('Invalid memory address');
     }
@@ -501,7 +501,7 @@ class AINVM {
   }
 
   /**
-   * 执行 STORE 指令
+   * Execute STORE 指令
    */
   executeSTORE() {
     if (this.pc >= this.program.length) {
@@ -513,7 +513,7 @@ class AINVM {
     const address = this.program[this.pc];
     this.pc++;
     
-    // 验证地址范围
+    // Verifyaddress范围
     if (typeof address !== 'number' || address < 0 || address > 255) {
       throw new Error('Invalid memory address');
     }
@@ -524,7 +524,7 @@ class AINVM {
   }
 
   /**
-   * 执行 JMP 指令
+   * Execute JMP 指令
    */
   executeJMP() {
     if (this.pc >= this.program.length) {
@@ -536,7 +536,7 @@ class AINVM {
   }
 
   /**
-   * 执行 JZ 指令
+   * Execute JZ 指令
    */
   executeJZ() {
     if (this.pc >= this.program.length) {
@@ -555,7 +555,7 @@ class AINVM {
   }
 
   /**
-   * 执行 HALT 指令
+   * Execute HALT 指令
    */
   executeHALT() {
     this.halted = true;
@@ -563,7 +563,7 @@ class AINVM {
   }
 
   /**
-   * 执行 RETURN 指令
+   * Execute RETURN 指令
    */
   executeRETURN() {
     this.halted = true;
@@ -574,8 +574,8 @@ class AINVM {
   }
 
   /**
-   * 执行 MAT_CREATE 指令
-   * 栈操作：[rows, cols] -> [matrix_id]
+   * Execute MAT_CREATE 指令
+   * stack操作: [rows, cols] -> [matrix_id]
    */
   executeMAT_CREATE() {
     if (this.stack.length < 2) {
@@ -584,7 +584,7 @@ class AINVM {
     const cols = this.stack.pop();
     const rows = this.stack.pop();
     
-    // 验证矩阵维度
+    // Verify矩阵维度
     if (rows <= 0 || cols <= 0) {
       throw new Error('Matrix dimensions must be positive');
     }
@@ -592,10 +592,10 @@ class AINVM {
       throw new Error('Matrix dimensions too large');
     }
     
-    // 生成矩阵ID - 使用确定性计数器
+    // Generate矩阵ID - using确定性count器
     const matrixId = `mat_${this.matrixCounter++}`;
     
-    // 在memory中创建矩阵
+    // 在memory中Create矩阵
     this.memory.set(matrixId, {
       rows,
       cols,
@@ -607,8 +607,8 @@ class AINVM {
   }
 
   /**
-   * 执行 MAT_ADD 指令
-   * 栈操作：[mat_id1, mat_id2] -> [result_mat_id]
+   * Execute MAT_ADD 指令
+   * stack操作: [mat_id1, mat_id2] -> [result_mat_id]
    */
   executeMAT_ADD() {
     if (this.stack.length < 2) {
@@ -628,16 +628,16 @@ class AINVM {
       throw new Error('Matrix dimensions mismatch for addition');
     }
     
-    // 生成结果矩阵ID - 使用确定性计数器
+    // Generate结果矩阵ID - using确定性count器
     const resultMatId = `mat_${this.matrixCounter++}`;
     
-    // 执行矩阵加法
+    // Execute矩阵加法
     const resultData = [];
     for (let i = 0; i < mat1.rows * mat1.cols; i++) {
       resultData.push(mat1.data[i] + mat2.data[i]);
     }
     
-    // 存储结果矩阵
+    // Storage结果矩阵
     this.memory.set(resultMatId, {
       rows: mat1.rows,
       cols: mat1.cols,
@@ -649,8 +649,8 @@ class AINVM {
   }
 
   /**
-   * 执行 MAT_MUL 指令
-   * 栈操作：[mat_id1, mat_id2] -> [result_mat_id]
+   * Execute MAT_MUL 指令
+   * stack操作: [mat_id1, mat_id2] -> [result_mat_id]
    */
   executeMAT_MUL() {
     if (this.stack.length < 2) {
@@ -670,21 +670,21 @@ class AINVM {
       throw new Error('Matrix dimensions mismatch for multiplication');
     }
     
-    // 计算运算复杂度，限制矩阵大小
+    // Calculate运算复杂度, 限制矩阵大小
     const complexity = mat1.rows * mat1.cols * mat2.cols;
     if (complexity > 1000000) {
       throw new Error('Matrix multiplication too complex');
     }
     
-    // 生成结果矩阵ID - 使用确定性计数器
+    // Generate结果矩阵ID - using确定性count器
     const resultMatId = `mat_${this.matrixCounter++}`;
     
-    // 执行矩阵乘法 - 优化实现
+    // Execute矩阵乘法 - 优化实现
     const resultData = Array(mat1.rows * mat2.cols).fill(0);
     for (let i = 0; i < mat1.rows; i++) {
       for (let k = 0; k < mat1.cols; k++) {
         const value = mat1.data[i * mat1.cols + k];
-        if (value !== 0) { // 跳过零值，提高性能
+        if (value !== 0) { // 跳过零值, 提高性能
           for (let j = 0; j < mat2.cols; j++) {
             resultData[i * mat2.cols + j] += value * mat2.data[k * mat2.cols + j];
           }
@@ -692,7 +692,7 @@ class AINVM {
       }
     }
     
-    // 存储结果矩阵
+    // Storage结果矩阵
     this.memory.set(resultMatId, {
       rows: mat1.rows,
       cols: mat2.cols,
@@ -704,8 +704,8 @@ class AINVM {
   }
 
   /**
-   * 执行 MAT_TRANS 指令
-   * 栈操作：[mat_id] -> [transposed_mat_id]
+   * Execute MAT_TRANS 指令
+   * stack操作: [mat_id] -> [transposed_mat_id]
    */
   executeMAT_TRANS() {
     if (this.stack.length < 1) {
@@ -718,10 +718,10 @@ class AINVM {
       throw new Error('Matrix not found');
     }
     
-    // 生成转置矩阵ID - 使用确定性计数器
+    // Generate转置矩阵ID - using确定性count器
     const transposedMatId = `mat_${this.matrixCounter++}`;
     
-    // 执行矩阵转置
+    // Execute矩阵转置
     const transposedData = Array(mat.cols * mat.rows).fill(0);
     for (let i = 0; i < mat.rows; i++) {
       for (let j = 0; j < mat.cols; j++) {
@@ -729,7 +729,7 @@ class AINVM {
       }
     }
     
-    // 存储转置矩阵
+    // Storage转置矩阵
     this.memory.set(transposedMatId, {
       rows: mat.cols,
       cols: mat.rows,
@@ -741,8 +741,8 @@ class AINVM {
   }
 
   /**
-   * 执行 MAT_LOAD 指令
-   * 栈操作：[mat_id, row, col] -> [value]
+   * Execute MAT_LOAD 指令
+   * stack操作: [mat_id, row, col] -> [value]
    */
   executeMAT_LOAD() {
     if (this.stack.length < 3) {
@@ -767,8 +767,8 @@ class AINVM {
   }
 
   /**
-   * 执行 MAT_STORE 指令
-   * 栈操作：[mat_id, row, col, value] -> []
+   * Execute MAT_STORE 指令
+   * stack操作: [mat_id, row, col, value] -> []
    */
   executeMAT_STORE() {
     if (this.stack.length < 4) {
@@ -793,8 +793,8 @@ class AINVM {
   }
 
   /**
-   * get当前状态
-   * @returns {object} VM 状态
+   * getCurrentstatus
+   * @returns {object} VM status
    */
   getState() {
     return {
@@ -809,8 +809,8 @@ class AINVM {
   }
 
   /**
-   * 执行 AI_INFERENCE 指令
-   * 栈操作：[model_id, input_data] -> [output_data]
+   * Execute AI_INFERENCE 指令
+   * stack操作: [model_id, input_data] -> [output_data]
    */
   executeAI_INFERENCE() {
     if (this.stack.length < 2) {
@@ -819,17 +819,17 @@ class AINVM {
     const inputData = this.stack.pop();
     const modelId = this.stack.pop();
     
-    // 验证模型是否存在
+    // Verify模型是否存在
     const model = this.memory.get(modelId);
     if (!model) {
       throw new Error(`AI model not found: ${modelId}`);
     }
     
-    // 模拟AI推理过程
-    // 实际实现中，这里会调用真实的AI模型
+    // SimulationAI推理过程
+    // 实际实现中, 这里会call真实的AI模型
     const outputData = `inference_result_${Date.now()}`;
     
-    // 存储推理结果
+    // Storage推理结果
     const resultId = `ai_result_${this.matrixCounter++}`;
     this.memory.set(resultId, outputData);
     
@@ -838,30 +838,30 @@ class AINVM {
   }
 
   /**
-   * 执行 SECURITY_CHECK 指令
-   * 栈操作：[] -> [security_status]
+   * Execute SECURITY_CHECK 指令
+   * stack操作: [] -> [security_status]
    */
   executeSECURITY_CHECK() {
-    // 执行安全检查
-    // 检查栈深度
+    // ExecutesecurityCheck
+    // Checkstack深度
     if (this.stack.length > 1000) {
       throw new Error('Stack depth exceeded');
     }
     
-    // 检查memory使用
+    // Checkmemoryusing
     const memorySize = Object.keys(this.memory).length;
     if (memorySize > 10000) {
       throw new Error('Memory usage exceeded');
     }
     
-    // 返回安全状态
-    this.stack.push(1); // 1表示安全
+    // Returnsecuritystatus
+    this.stack.push(1); // 1表示security
     this.consumeGas(5);
   }
 
   /**
-   * 执行 REENTRANCY_LOCK 指令
-   * 栈操作：[lock_id] -> []
+   * Execute REENTRANCY_LOCK 指令
+   * stack操作: [lock_id] -> []
    */
   executeREENTRANCY_LOCK() {
     if (this.stack.length < 1) {
@@ -869,19 +869,19 @@ class AINVM {
     }
     const lockId = this.stack.pop();
     
-    // 检查锁是否已存在
+    // Check锁是否already exists
     if (this.memory.get(`lock_${lockId}`)) {
       throw new Error('Reentrancy detected');
     }
     
-    // 设置锁
+    // Set锁
     this.memory.set(`lock_${lockId}`, true);
     this.consumeGas(10);
   }
 
   /**
-   * 执行 REENTRANCY_UNLOCK 指令
-   * 栈操作：[lock_id] -> []
+   * Execute REENTRANCY_UNLOCK 指令
+   * stack操作: [lock_id] -> []
    */
   executeREENTRANCY_UNLOCK() {
     if (this.stack.length < 1) {
@@ -889,19 +889,19 @@ class AINVM {
     }
     const lockId = this.stack.pop();
     
-    // 检查锁是否存在
+    // Check锁是否存在
     if (!this.memory.get(`lock_${lockId}`)) {
       throw new Error('Lock not found');
     }
     
-    // 释放锁
+    // Release锁
     this.memory.delete(`lock_${lockId}`);
     this.consumeGas(5);
   }
 
   /**
-   * 执行 AI_MODEL_LOAD 指令
-   * 栈操作：[model_path] -> [model_id]
+   * Execute AI_MODEL_LOAD 指令
+   * stack操作: [model_path] -> [model_id]
    */
   executeAI_MODEL_LOAD() {
     if (this.stack.length < 1) {
@@ -909,11 +909,11 @@ class AINVM {
     }
     const modelPath = this.stack.pop();
     
-    // 模拟加载AI模型
-    // 实际实现中，这里会从指定路径加载模型
+    // SimulationLoadAI模型
+    // 实际实现中, 这里会从指定路径Load模型
     const modelId = `ai_model_${this.matrixCounter++}`;
     
-    // 存储模型信息
+    // Storage模型info
     this.memory.set(modelId, {
       path: modelPath,
       loadedAt: Date.now(),
@@ -921,12 +921,12 @@ class AINVM {
     });
     
     this.stack.push(modelId);
-    this.consumeGas(50); // 模型加载消耗较多gas
+    this.consumeGas(50); // 模型Load消耗较多gas
   }
 
   /**
-   * 执行 AI_MODEL_SAVE 指令
-   * 栈操作：[model_id, model_path] -> []
+   * Execute AI_MODEL_SAVE 指令
+   * stack操作: [model_id, model_path] -> []
    */
   executeAI_MODEL_SAVE() {
     if (this.stack.length < 2) {
@@ -935,25 +935,25 @@ class AINVM {
     const modelPath = this.stack.pop();
     const modelId = this.stack.pop();
     
-    // 验证模型是否存在
+    // Verify模型是否存在
     const model = this.memory.get(modelId);
     if (!model) {
       throw new Error(`AI model not found: ${modelId}`);
     }
     
-    // 模拟保存AI模型
-    // 实际实现中，这里会将模型保存到指定路径
+    // SimulationSaveAI模型
+    // 实际实现中, 这里会将模型Save到指定路径
     model.savedPath = modelPath;
     model.savedAt = Date.now();
     
-    this.consumeGas(30); // 模型保存消耗中等gas
+    this.consumeGas(30); // 模型Save消耗中etc.gas
   }
 
-  // ========== 新增指令执行方法 ==========
+  // ========== 新增指令Executemethod ==========
 
   /**
-   * 执行 AND 指令
-   * 栈操作：[a, b] -> [a & b]
+   * Execute AND 指令
+   * stack操作: [a, b] -> [a & b]
    */
   executeAND() {
     if (this.stack.length < 2) {
@@ -966,8 +966,8 @@ class AINVM {
   }
 
   /**
-   * 执行 OR 指令
-   * 栈操作：[a, b] -> [a | b]
+   * Execute OR 指令
+   * stack操作: [a, b] -> [a | b]
    */
   executeOR() {
     if (this.stack.length < 2) {
@@ -980,8 +980,8 @@ class AINVM {
   }
 
   /**
-   * 执行 NOT 指令
-   * 栈操作：[a] -> [~a]
+   * Execute NOT 指令
+   * stack操作: [a] -> [~a]
    */
   executeNOT() {
     if (this.stack.length < 1) {
@@ -993,8 +993,8 @@ class AINVM {
   }
 
   /**
-   * 执行 XOR 指令
-   * 栈操作：[a, b] -> [a ^ b]
+   * Execute XOR 指令
+   * stack操作: [a, b] -> [a ^ b]
    */
   executeXOR() {
     if (this.stack.length < 2) {
@@ -1007,8 +1007,8 @@ class AINVM {
   }
 
   /**
-   * 执行 EQ 指令
-   * 栈操作：[a, b] -> [a == b ? 1 : 0]
+   * Execute EQ 指令
+   * stack操作: [a, b] -> [a == b ? 1 : 0]
    */
   executeEQ() {
     if (this.stack.length < 2) {
@@ -1021,8 +1021,8 @@ class AINVM {
   }
 
   /**
-   * 执行 LT 指令
-   * 栈操作：[a, b] -> [b < a ? 1 : 0]
+   * Execute LT 指令
+   * stack操作: [a, b] -> [b < a ? 1 : 0]
    */
   executeLT() {
     if (this.stack.length < 2) {
@@ -1035,8 +1035,8 @@ class AINVM {
   }
 
   /**
-   * 执行 GT 指令
-   * 栈操作：[a, b] -> [b > a ? 1 : 0]
+   * Execute GT 指令
+   * stack操作: [a, b] -> [b > a ? 1 : 0]
    */
   executeGT() {
     if (this.stack.length < 2) {
@@ -1049,8 +1049,8 @@ class AINVM {
   }
 
   /**
-   * 执行 MOD 指令
-   * 栈操作：[a, b] -> [b % a]
+   * Execute MOD 指令
+   * stack操作: [a, b] -> [b % a]
    */
   executeMOD() {
     if (this.stack.length < 2) {
@@ -1066,8 +1066,8 @@ class AINVM {
   }
 
   /**
-   * 执行 SHL 指令
-   * 栈操作：[a, b] -> [b << a]
+   * Execute SHL 指令
+   * stack操作: [a, b] -> [b << a]
    */
   executeSHL() {
     if (this.stack.length < 2) {
@@ -1080,8 +1080,8 @@ class AINVM {
   }
 
   /**
-   * 执行 SHR 指令
-   * 栈操作：[a, b] -> [b >> a]
+   * Execute SHR 指令
+   * stack操作: [a, b] -> [b >> a]
    */
   executeSHR() {
     if (this.stack.length < 2) {
@@ -1094,8 +1094,8 @@ class AINVM {
   }
 
   /**
-   * 执行 DUP 指令
-   * 栈操作：[a] -> [a, a]
+   * Execute DUP 指令
+   * stack操作: [a] -> [a, a]
    */
   executeDUP() {
     if (this.stack.length < 1) {
@@ -1107,8 +1107,8 @@ class AINVM {
   }
 
   /**
-   * 执行 SWAP 指令
-   * 栈操作：[a, b] -> [b, a]
+   * Execute SWAP 指令
+   * stack操作: [a, b] -> [b, a]
    */
   executeSWAP() {
     if (this.stack.length < 2) {
@@ -1122,7 +1122,7 @@ class AINVM {
   }
 }
 
-// 导出 AINVM
+// Export AINVM
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = AINVM;
 }

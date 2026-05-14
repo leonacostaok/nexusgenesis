@@ -4,7 +4,7 @@ async function testPQCImplementation() {
   console.log('Testing PQC Wallet Implementation...');
   
   try {
-    // 生成新钱包
+    // Generate新钱包
     console.log('1. Generating new wallet...');
     const wallet = await PQCWallet.generate();
     
@@ -13,18 +13,18 @@ async function testPQCImplementation() {
     console.log('   Public key length:', wallet.publicKey.length, 'bytes');
     console.log('   Secret key length:', wallet.secretKey.length, 'bytes');
     
-    // 测试签名功能
+    // TestSignFeatures
     console.log('\n2. Testing signature functionality...');
     const message = 'test message for signature';
     const signature = await wallet.sign(message);
     console.log('   Signature generated:', signature.substring(0, 64) + '...');
     
-    // 测试验证功能
+    // TestVerifyFeatures
     console.log('\n3. Testing signature verification...');
     const isValid = await PQCWallet.verify(message, signature, wallet.publicKey);
     console.log('   Signature verification result:', isValid);
     
-    // 测试交易签名
+    // TesttransactionSign
     console.log('\n4. Testing transaction signing...');
     const txData = {
       from: wallet.address,

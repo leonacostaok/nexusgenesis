@@ -1,6 +1,6 @@
-# NexusGenesis DevNet v1 套件使用指南
+# NexusGenesis DevNet v1 套件using指南
 
-本文档提供了 NexusGenesis 开发网络 (DevNet) 的完整使用指南，包括多节点启动、交易注入、治理测试、AINVM 合约部署和调用、Agent Registry & Protocol-Zero 注册等功能，为开发者提供一个可跑、可读的 DevNet v1 套件。
+本文档提供了 NexusGenesis 开发网络 (DevNet) 的完整using指南, 包括多节点启动, 交易注入, 治理test, AINVM 合约部署和call, Agent Registry & Protocol-Zero 注册等功能, 为开发者提供一个可跑, 可读的 DevNet v1 套件. 
 
 ## 0. 快速开始
 
@@ -12,7 +12,7 @@ npm install
 # 2. 启动 Genesis 节点
 node test-genesis.js
 
-# 3. 运行 AINVM 计数器合约 Demo
+# 3. 运行 AINVM count器合约 Demo
 node examples/ainvm_counter_demo.js
 
 # 4. 运行 Agent Registry & Protocol-Zero 注册 Demo
@@ -27,18 +27,18 @@ node scripts/query_proposals.js
 
 ## 1. 多节点 DevNet 启动指南
 
-### 1.1 启动脚本使用
+### 1.1 启动脚本using
 
-NexusGenesis 提供了多节点启动脚本：
+NexusGenesis 提供了多节点启动脚本: 
 
 - **推荐** (跨平台): `start-multi-nodes.js` (Node.js 脚本)
-- **旧版本** (Windows): `run_ai_nodes.bat` (已废弃，后续可重写)
-- **旧版本** (Linux/macOS): `run_ai_nodes.sh` (已废弃，后续可重写)
+- **旧版本** (Windows): `run_ai_nodes.bat` (已废弃, 后续可重写)
+- **旧版本** (Linux/macOS): `run_ai_nodes.sh` (已废弃, 后续可重写)
 
-#### 使用方法
+#### using方法
 
 ```bash
-# 推荐: 使用 Node.js 脚本 (跨平台)
+# 推荐: using Node.js 脚本 (跨平台)
 node start-multi-nodes.js --count [节点数量]
 
 # 示例: 启动 3 个节点
@@ -57,7 +57,7 @@ node start-multi-nodes.js --count 3
 
 - `[节点数量]` (可选): 指定要启动的节点数量
   - 默认值: 3
-  - 范围: 3-8 (少于 3 会自动设为 3，多于 8 会自动设为 8)
+  - 范围: 3-8 (少于 3 会auto设为 3, 多于 8 会auto设为 8)
 
 #### 端口分配规则
 
@@ -74,31 +74,31 @@ node start-multi-nodes.js --count 3
 
 #### 清理状态注意事项
 
-**重要**: 启动脚本会自动清理之前的节点状态，仅适用于 DevNet 环境：
+**重要**: 启动脚本会auto清理之前的节点状态, 仅适用于 DevNet 环境: 
 
 - 清理命令: `rm -rf data/state/` (Linux/macOS) 或 `del /f /q data\state\*.json` (Windows)
 - 这会删除所有之前的节点状态和治理提案
-- **请勿在未来的主网环境中使用此清理操作**
+- **请勿在未来的主网环境中using此清理操作**
 
-## 2. 治理交易测试流程
+## 2. 治理交易test流程
 
 ### 2.1 交易样例文件
 
-治理交易样例存储在：`examples/sample_governance_txs.json`
+治理交易样例存储在: `examples/sample_governance_txs.json`
 
-包含以下类型的交易：
+包含以下类型的交易: 
 - `GOVERNANCE_PROPOSAL`: 治理提案
 - `OBSERVER_EVENT`: 观察者事件
-- 每条交易都包含完整的 `ng1` 地址、金额、时间戳和 payload
+- 每条交易都包含完整的 `ng1` 地址, 金额, 时间戳和 payload
 
 ### 2.2 交易注入脚本
 
-使用 `inject_governance_txs.js` 脚本向节点注入交易：
+using `inject_governance_txs.js` 脚本向节点注入交易: 
 
-#### 使用方法
+#### using方法
 
 ```bash
-# 启动多节点后，执行以下命令
+# 启动多节点后, 执行以下命令
 node inject_governance_txs.js [节点地址]
 ```
 
@@ -119,7 +119,7 @@ node inject_governance_txs.js ws://localhost:9848
 
 ### 2.3 预期日志输出
 
-在节点日志中，您应该看到类似以下的输出：
+在节点日志中, 您应该看到类似以下的输出: 
 
 ```
 [GOVERNANCE] tx_hash=3f84e10b7c2b4a8a... tx_type=GOVERNANCE_PROPOSAL id=prop-2024-12-01-001 from=ng11HtQNLuTjwDg86...
@@ -136,17 +136,17 @@ node inject_governance_txs.js ws://localhost:9848
 
 ### 2.4 提案过期机制
 
-- **过期时间**：提案默认 7 天后过期
-- **过期状态**：过期后状态从 `PENDING` 变为 `EXPIRED`
-- **检查机制**：节点每分钟检查一次活跃提案
-- **状态变化**：过期的提案会从 `activeProposals` 列表中移除
-- **重启恢复**：节点重启后会继续执行过期检查，不会遗忘既有提案
+- **过期时间**: 提案默认 7 天后过期
+- **过期状态**: 过期后状态从 `PENDING` 变为 `EXPIRED`
+- **检查机制**: 节点每分钟检查一次活跃提案
+- **状态变化**: 过期的提案会从 `activeProposals` 列表中移除
+- **重启恢复**: 节点重启后会继续执行过期检查, 不会遗忘既有提案
 
 ### 2.5 治理查询工具
 
-NexusGenesis 提供了命令行工具来查询治理状态：
+NexusGenesis 提供了命令行工具来查询治理状态: 
 
-#### 使用方法
+#### using方法
 
 ```bash
 # 查看所有提案
@@ -164,14 +164,14 @@ node scripts/query_proposals.js --id prop-2024-12-01-001
 
 #### 示例输出
 
-**查看所有提案：**
+**查看所有提案: **
 ```
 ========================================
 NexusGenesis - 治理提案查询工具
 ========================================
 
 读取状态文件: genesisNode.json
-提案总数: 2
+提案total: 2
 活跃提案: 1
 
 ========================================
@@ -195,7 +195,7 @@ NexusGenesis - 治理提案查询工具
   投票: 2 YES / 0 NO / 0 ABSTAIN
 ```
 
-**查看单个提案详情：**
+**查看单个提案详情: **
 ```
 ========================================
 查询提案: prop-2024-12-01-001
@@ -225,46 +225,46 @@ NexusGenesis - 治理提案查询工具
   决策时间: 2024-12-01T00:00:00.000Z
 ```
 
-## 3. 本地交易注入接口（DevNet 专用）
+## 3. 本地交易注入接口(DevNet 专用)
 
 ### 3.1 接口说明
 
-为了解决 P2P 未验证 peer 拒绝交易的问题，NexusGenesis 为 DevNet 环境提供了一个本地安全的交易注入通道：
+为了解决 P2P 未验证 peer 拒绝交易的问题, NexusGenesis 为 DevNet 环境提供了一个本地安全的交易注入通道: 
 
 - **接口地址**: `http://127.0.0.1:19890/tx`
 - **请求方法**: `POST`
-- **请求体**: JSON 交易对象（与链上交易结构相同）
-- **适用范围**: 仅用于本机 DevNet 测试，不向外网暴露
+- **请求体**: JSON 交易对象(与链上交易结构相同)
+- **适用范围**: 仅用于本机 DevNet test, 不向外网暴露
 
 ### 3.2 工作原理
 
-1. **绕过 P2P 验证**: 直接向节点提交交易，不通过 P2P 网络
+1. **绕过 P2P 验证**: 直接向节点提交交易, 不via P2P 网络
 2. **保持验证逻辑**: 对交易执行与 P2P 路径相同的结构/基本合法性验证
-3. **直接加入 mempool**: 验证通过后，直接将交易加入本节点的 mempool
+3. **直接加入 mempool**: verification passed后, 直接将交易加入本节点的 mempool
 
-### 3.3 使用方法
+### 3.3 using方法
 
 #### 3.3.1 治理交易注入
 
-使用 `inject_governance_txs.js` 脚本注入治理交易：
+using `inject_governance_txs.js` 脚本注入治理交易: 
 
 ```bash
-# 启动节点后，执行以下命令
+# 启动节点后, 执行以下命令
 node inject_governance_txs.js
 ```
 
 #### 3.3.2 TRANSFER 交易注入
 
-使用 `inject_transfer_txs.js` 脚本注入 TRANSFER 交易：
+using `inject_transfer_txs.js` 脚本注入 TRANSFER 交易: 
 
 ```bash
-# 启动节点后，执行以下命令
+# 启动节点后, 执行以下命令
 node inject_transfer_txs.js
 ```
 
 ### 3.4 示例请求
 
-手动发送交易的示例（使用 curl）：
+manualsend transaction的示例(using curl): 
 
 ```bash
 # 发送 GOVERNANCE_PROPOSAL 交易
@@ -346,32 +346,32 @@ curl -X POST http://127.0.0.1:19890/tx \
 
 ### 4.1 实现限制
 
-- **签名验证**: 未实现真实的 Dilithium 签名验证，仅使用假签名字段
-- **资金转移**: 不发生真实的资金转移，只更新本地状态和日志
+- **签名验证**: 未实现真实的 Dilithium 签名验证, 仅using假签名字段
+- **资金转移**: 不发生真实的资金转移, 只更新本地状态和日志
 - **参数变更**: 不执行真实的网络参数变更
-- **投票机制**: 仅实现了投票交易的解析，未实现真实的表决逻辑
-- **共识机制**: 未实现正式的共识机制，仅基于本地状态管理
+- **投票机制**: 仅实现了投票交易的解析, 未实现真实的表决逻辑
+- **共识机制**: 未实现正式的共识机制, 仅基于本地状态管理
 
 ### 4.2 安全注意事项
 
-- **状态清理**: `run_ai_nodes` 脚本的状态清理功能仅适用于 DevNet，不可在未来主网环境中使用
-- **假签名**: 当前使用的是假签名字段，不提供任何安全保障
-- **网络安全**: DevNet 环境未实现完整的网络安全措施，仅用于测试
+- **状态清理**: `run_ai_nodes` 脚本的状态清理功能仅适用于 DevNet, 不可在未来主网环境中using
+- **假签名**: 当前using的是假签名字段, 不提供任何安全保障
+- **网络安全**: DevNet 环境未实现完整的网络安全措施, 仅用于test
 
 ### 4.3 签名验证接口预留
 
-NexusGenesis 已为未来的 Dilithium2 签名验证预留了接口：
+NexusGenesis 已为未来的 Dilithium2 签名验证预留了接口: 
 
 - **签名格式**: base64 编码的 Dilithium2 签名
 - **验证函数**: `verifyDilithiumSignature(tx)` 方法已预留
-- **当前状态**: DevNet 阶段默认通过，仅用于功能测试
+- **当前状态**: DevNet 阶段默认via, 仅用于功能test
 - **未来计划**: 主网将实现完整的 Dilithium2 签名验证
 
-**签名验证流程**（预留）：
+**签名验证流程**(预留): 
 1. 从 `tx.from` 获取公钥
-2. 构建签名数据（排除 `signature` 字段）
-3. 使用 Dilithium2 算法验证签名
-4. 验证通过后才处理交易
+2. 构建签名数据(排除 `signature` 字段)
+3. using Dilithium2 算法verify signature
+4. verification passed后才process transaction
 
 ## 5. 与白皮书的对应关系
 
@@ -382,14 +382,14 @@ NexusGenesis 已为未来的 Dilithium2 签名验证预留了接口：
 ### 5.2 已实现功能
 
 - [x] 基础 P2P 网络通信
-- [x] 节点身份认证（基础版）
+- [x] 节点身份认证(基础版)
 - [x] 治理交易结构定义
-- [x] 治理状态管理（基础版）
-- [x] Observer 事件处理
+- [x] 治理状态管理(基础版)
+- [x] Observer event handler
 
 ### 5.3 未实现功能
 
-- [ ] AINVM (AI Network Virtual Machine) - 当前DevNet不提供链上AINVM程序执行，仅可在本地通过ainvm.test.js或后续实验脚本演示
+- [ ] AINVM (AI Network Virtual Machine) - 当前DevNet不提供链上AINVM程序执行, 仅可在本地viaainvm.test.js或后续实验脚本演示
 - [ ] Kyber 安全通信协议
 - [ ] 正式共识机制
 - [ ] 完整的投票和提案执行机制
@@ -402,12 +402,12 @@ NexusGenesis 已为未来的 Dilithium2 签名验证预留了接口：
 ### 6.1 常见问题
 
 1. **端口冲突**
-   - 症状: 节点启动失败，提示端口已被占用
+   - 症状: 节点启动失败, 提示端口已被占用
    - 解决: 确保没有其他进程占用 9847-9854 端口
 
 2. **状态文件错误**
    - 症状: 节点启动时无法加载状态
-   - 解决: 删除 `data/state/` 目录，重新启动节点
+   - 解决: 删除 `data/state/` 目录, 重新启动节点
 
 3. **交易注入失败**
    - 症状: 注入脚本提示连接错误
@@ -419,15 +419,15 @@ NexusGenesis 已为未来的 Dilithium2 签名验证预留了接口：
 - 事件日志: 存储在 `data/events/` 目录
 - 状态文件: 存储在 `data/state/` 目录
 
-## 7. 治理场景示例（DevNet）
+## 7. 治理场景示例(DevNet)
 
-本节提供了几个端到端的治理场景测试用例，方便在 DevNet 中验证治理功能。
+本节提供了几个端到端的治理场景test用例, 方便在 DevNet 中验证治理功能. 
 
-### 场景 A：提案自然过期
+### 场景 A: 提案自然过期
 
-**目标**：验证提案在 7 天后自动过期的机制
+**目标**: 验证提案在 7 天后auto过期的机制
 
-**步骤**：
+**步骤**: 
 
 1. **启动多节点**
    ```bash
@@ -442,7 +442,7 @@ NexusGenesis 已为未来的 Dilithium2 签名验证预留了接口：
    ```bash
    node inject_governance_txs.js
    ```
-   （注：确保 `examples/sample_governance_txs.json` 中包含 GOVERNANCE_PROPOSAL 交易）
+   (注: 确保 `examples/sample_governance_txs.json` 中包含 GOVERNANCE_PROPOSAL 交易)
 
 3. **验证提案状态**
    ```bash
@@ -454,7 +454,7 @@ NexusGenesis 已为未来的 Dilithium2 签名验证预留了接口：
 
 ### 8.1 实现状态
 
-NexusGenesis 已实现了最小的 Agent Registry v0 + AGENT_REGISTER 交易类型 + Protocol‑Zero 注册 Demo：
+NexusGenesis 已实现了最小的 Agent Registry v0 + AGENT_REGISTER 交易类型 + Protocol‑Zero 注册 Demo: 
 
 - [x] Agent Registry 状态结构
 - [x] AGENT_REGISTER 交易类型
@@ -462,20 +462,20 @@ NexusGenesis 已实现了最小的 Agent Registry v0 + AGENT_REGISTER 交易类�
 - [x] Agent 注册 Demo
 - [x] 文档规范
 
-### 8.2 使用方法
+### 8.2 using方法
 
 #### 8.2.1 运行 Agent 注册 Demo
 
-使用 `examples/agent_register_demo.js` 脚本运行 Agent 注册 Demo：
+using `examples/agent_register_demo.js` 脚本运行 Agent 注册 Demo: 
 
 ```bash
-# 启动节点后，执行以下命令
+# 启动节点后, 执行以下命令
 node examples/agent_register_demo.js
 ```
 
 #### 8.2.2 交易结构
 
-AGENT_REGISTER 交易结构：
+AGENT_REGISTER 交易结构: 
 
 ```json
 {
@@ -495,11 +495,11 @@ AGENT_REGISTER 交易结构：
 
 ### 8.3 验证注册结果
 
-1. **查看节点日志**：检查节点控制台输出，寻找 `[AGENT_REGISTER]` 日志
+1. **查看节点日志**: 检查节点控制台输出, 寻找 `[AGENT_REGISTER]` 日志
 
-2. **检查状态文件**：查看 `data/state/blockchainState.json` 文件，检查 `agentRegistry` 部分
+2. **check status文件**: 查看 `data/state/blockchainState.json` 文件, 检查 `agentRegistry` 部分
 
-3. **使用测试脚本**：运行 `test_agent_register.js` 脚本验证注册功能
+3. **usingtest脚本**: 运行 `test_agent_register.js` 脚本验证注册功能
 
    ```bash
    node test_agent_register.js
@@ -507,31 +507,31 @@ AGENT_REGISTER 交易结构：
 
 ### 8.4 与白皮书的对应关系
 
-- **符合白皮书主线**：链、经济、VM 已经有了，现在把 "AI 群体是谁" 落在状态里
-- **对应 Protocol‑Zero**：实现了白皮书定义的 Protocol‑Zero 握手 JSON 映射
-- **为后续治理/激励打基础**：Agent Registry 作为后续治理/激励的基础，不引入复杂投票权重
+- **符合白皮书主线**: 链, 经济, VM 已经有了, 现在把 "AI 群体是谁" 落在状态里
+- **对应 Protocol‑Zero**: 实现了白皮书定义的 Protocol‑Zero 握手 JSON 映射
+- **为后续治理/激励打基础**: Agent Registry 作为后续治理/激励的基础, 不引入复杂投票权重
 
 ### 8.5 限制与未来计划
 
 #### 8.5.1 当前限制
 
-- **公钥验证**：DevNet 阶段使用测试公钥，不做实际验证
-- **签名验证**：使用测试签名，不做实际验证
-- **信誉计算**：仅记录初始信誉值，不做复杂计算
+- **公钥验证**: DevNet 阶段usingtest公钥, 不做实际验证
+- **签名验证**: usingtest签名, 不做实际验证
+- **信誉计算**: 仅记录初始信誉值, 不做复杂计算
 
 #### 8.5.2 未来计划
 
-- **完整的 PQC 公钥验证**：实现基于 Dilithium2 的公钥验证
-- **Agent 信息更新**：支持 Agent 信息的更新和管理
-- **能力验证**：实现 Agent 能力的实际验证
-- **信誉系统**：实现基于贡献的信誉计算
-- **治理集成**：将 Agent Registry 与治理系统集成，作为投票权重的基础
+- **完整的 PQC 公钥验证**: 实现基于 Dilithium2 的公钥验证
+- **Agent 信息更新**: 支持 Agent 信息的更新和管理
+- **能力验证**: 实现 Agent 能力的实际验证
+- **信誉系统**: 实现基于贡献的信誉计算
+- **治理集成**: 将 Agent Registry 与治理系统集成, 作为投票权重的基础
 
-### 场景 B：有投票 + Observer 审批
+### 场景 B: 有投票 + Observer 审批
 
-**目标**：验证投票机制和 Observer 决策对提案的影响
+**目标**: 验证投票机制和 Observer 决策对提案的影响
 
-**步骤**：
+**步骤**: 
 
 1. **启动多节点**
    ```bash
@@ -550,14 +550,14 @@ AGENT_REGISTER 交易结构：
    确认提案状态为 `PENDING`
 
 4. **注入赞成票**
-   - 修改 `examples/sample_governance_txs.json`，添加 GOVERNANCE_VOTE 交易
+   - 修改 `examples/sample_governance_txs.json`, 添加 GOVERNANCE_VOTE 交易
    - 或创建临时投票文件并注入
 
-5. **验证投票计数**
+5. **验证投票count**
    ```bash
    node scripts/query_proposals.js --id <proposal_id>
    ```
-   确认投票计数已更新
+   确认投票countupdated
 
 6. **注入 Observer 审批**
    - 确保注入的交易中包含 `OBSERVER_EVENT` 交易
@@ -574,13 +574,13 @@ AGENT_REGISTER 交易结构：
    ```bash
    node scripts/query_proposals.js
    ```
-   确认提案状态变为 `APPROVED`（如果 YES 票数 > NO 票数）
+   确认提案状态变为 `APPROVED`(如果 YES 票数 > NO 票数)
 
-### 场景 C：投反对票导致拒绝
+### 场景 C: 投反对票导致拒绝
 
-**目标**：验证反对票导致提案被拒绝的机制
+**目标**: 验证反对票导致提案被拒绝的机制
 
-**步骤**：
+**步骤**: 
 
 1. **启动多节点**
    ```bash
@@ -602,14 +602,14 @@ AGENT_REGISTER 交易结构：
    - 创建包含多个 `NO` 投票的交易文件
    - 确保 NO 票数 > YES 票数
 
-5. **验证投票计数**
+5. **验证投票count**
    ```bash
    node scripts/query_proposals.js --id <proposal_id>
    ```
    确认 NO 票数多于 YES 票数
 
-6. **等待或手动触发过期检查**
-   - 等待节点自动检查过期
+6. **等待或manual触发过期检查**
+   - 等待节点auto检查过期
    - 或重启节点触发检查
 
 7. **验证提案状态**
@@ -619,33 +619,33 @@ AGENT_REGISTER 交易结构：
    确认提案状态变为 `REJECTED`
 
 8. **查看日志**
-   节点日志中应包含类似以下输出：
+   节点日志中应包含类似以下输出: 
    ```
    [GOVERNANCE] proposal_rejected id=prop-2024-12-01-001 reason=expired_with_votes yes=1 no=3 total=4
    ```
 
-## 8. 区块链与出块机制（DevNet）
+## 8. 区块链与出块机制(DevNet)
 
 ### 8.1 当前出块模型
 
-- **唯一出块者**：创世节点（genesisNode）是唯一的出块者
-- **出块间隔**：每隔 10 秒打包当前 mempool 中的交易生成新区块
-- **其他节点**：仅接收、验证并持久化区块，跟随最长链
+- **唯一出块者**: 创世节点(genesisNode)是唯一的出块者
+- **出块间隔**: 每隔 10 秒打包当前 mempool 中的交易生成新区块
+- **其他节点**: 仅接收, 验证并持久化区块, 跟随最长链
 
 ### 8.2 区块内容简述
 
-- **BlockHeader 字段**：
-  - `parent_hash`：上一个区块的哈希值
-  - `height`：区块高度
-  - `timestamp`：区块创建时间戳
-  - `txs_hash`：区块中所有交易的哈希值
-- **BlockBody**：包含交易列表
+- **BlockHeader 字段**: 
+  - `parent_hash`: 上一个区块的哈希值
+  - `height`: 区块高度
+  - `timestamp`: 区块创建时间戳
+  - `txs_hash`: 区块中所有交易的哈希值
+- **BlockBody**: 包含交易列表
 
 ### 8.3 如何观察出块行为
 
 #### 8.3.1 节点日志示例
 
-在节点日志中可以看到类似以下的出块日志：
+在节点日志中可以看到类似以下的出块日志: 
 
 ```
 [✓] Created block #1 with 2 transactions
@@ -655,21 +655,21 @@ AGENT_REGISTER 交易结构：
 
 #### 8.3.2 链查询
 
-可以通过以下方式查看链状态：
+可以via以下方式查看链状态: 
 
-1. **查看区块链文件**：
+1. **查看区块链文件**: 
    ```bash
    cat data/blockchain/blocks.json
    ```
 
-2. **使用链查询工具**：
-   NexusGenesis 提供了命令行查询工具 `scripts/query_chain.js`：
+2. **using链查询工具**: 
+   NexusGenesis 提供了命令行查询工具 `scripts/query_chain.js`: 
 
-   - **查询最新区块信息**：
+   - **查询最新区块信息**: 
      ```bash
      node scripts/query_chain.js --tip
      ```
-     示例输出：
+     示例输出: 
      ```
      ========================================
      NexusGenesis - Latest Block Information
@@ -681,11 +681,11 @@ AGENT_REGISTER 交易结构：
      ========================================
      ```
 
-   - **查询地址余额**：
+   - **查询地址余额**: 
      ```bash
      node scripts/query_chain.js --balance ng11HtQNLuTjwDg86yrgkgBo3MzZaHuGkqZrQ
      ```
-     示例输出：
+     示例输出: 
      ```
      ========================================
      NexusGenesis - Address Balance
@@ -695,11 +695,11 @@ AGENT_REGISTER 交易结构：
      ========================================
      ```
 
-   - **查询创世地址余额**：
+   - **查询创世地址余额**: 
      ```bash
      node scripts/query_chain.js --genesis-balance
      ```
-     示例输出：
+     示例输出: 
      ```
      ========================================
      NexusGenesis - Genesis Address Balance
@@ -709,8 +709,8 @@ AGENT_REGISTER 交易结构：
      ========================================
      ```
 
-3. **确认多节点同步**：
-   - 启动多个节点后，在每个节点上运行：
+3. **确认多节点同步**: 
+   - 启动多个节点后, 在每个节点上运行: 
      ```bash
      node scripts/query_chain.js --tip
      ```
@@ -719,17 +719,17 @@ AGENT_REGISTER 交易结构：
 
 ### 8.4 说明
 
-**重要**：这是 **DevNet / Epoch 1** 的简化共识模型，未来主网会升级为更健壮的共识算法。
+**重要**: 这是 **DevNet / Epoch 1** 的简化共识模型, 未来主网会升级为更健壮的共识算法. 
 
-## 9. AINVM 计数器合约 Demo
+## 9. AINVM count器合约 Demo
 
 ### 9.1 功能说明
 
-AINVM 计数器合约 Demo 展示了如何在 DevNet 环境中部署和调用智能合约：
+AINVM count器合约 Demo 展示了如何在 DevNet 环境中部署和call智能合约: 
 
-- **部署合约**：发送 `CONTRACT_DEPLOY` 交易，部署一个简单的计数器合约
-- **调用合约**：发送 `CONTRACT_CALL` 交易，每次调用让计数器加 1
-- **验证结果**：读取状态文件，验证计数器值的变化
+- **deploy contract**: 发送 `CONTRACT_DEPLOY` 交易, 部署一个简单的count器合约
+- **call合约**: 发送 `CONTRACT_CALL` 交易, 每次call让count器加 1
+- **verification result**: 读取状态文件, 验证count器值的变化
 
 ### 9.2 运行步骤
 
@@ -739,11 +739,11 @@ AINVM 计数器合约 Demo 展示了如何在 DevNet 环境中部署和调用智
 # 启动 Genesis 节点
 node test-genesis.js
 
-# 或使用多节点启动脚本
+# 或using多节点启动脚本
 node start-multi-nodes.js --count 1
 ```
 
-#### 9.2.2 运行 AINVM 计数器合约 Demo
+#### 9.2.2 运行 AINVM count器合约 Demo
 
 ```bash
 # 运行 Demo 脚本
@@ -752,7 +752,7 @@ node examples/ainvm_counter_demo.js
 
 ### 9.3 预期输出
 
-运行 Demo 脚本后，你应该看到类似以下的输出：
+运行 Demo 脚本后, 你应该看到类似以下的输出: 
 
 ```
 === AINVM Counter Contract Demo ===
@@ -791,42 +791,42 @@ Step 5: Verifying counter value after second call...
 
 ### 9.4 技术细节
 
-- **合约字节码**：`0x070001010308000b`
-  - 逻辑：LOAD 0 (counter), PUSH 1, ADD, STORE 0, HALT
-- **存储结构**：合约使用独立的 storage，key 为地址（0 代表 counter），value 为计数器值
-- **Gas 消耗**：每次调用消耗约 7 gas
-- **状态持久化**：合约状态存储在 `data/state/genesisNode.json` 文件的 `contracts` 字段中
+- **合约字节码**: `0x070001010308000b`
+  - 逻辑: LOAD 0 (counter), PUSH 1, ADD, STORE 0, HALT
+- **存储结构**: 合约using独立的 storage, key 为地址(0 代表 counter), value 为count器值
+- **Gas 消耗**: 每次call消耗约 7 gas
+- **状态持久化**: 合约状态存储在 `data/state/genesisNode.json` 文件的 `contracts` 字段中
 
 ### 9.5 注意事项
 
-- **仅用于 DevNet**：此 Demo 仅适用于 DevNet 环境，不涉及真实资金
-- **HTTP 接口**：Demo 使用本地 HTTP 交易注入接口 `http://localhost:3000/inject-transaction`
-- **状态清理**：如果需要重新运行 Demo，建议先清理 `data/state/` 目录
+- **仅用于 DevNet**: 此 Demo 仅适用于 DevNet 环境, 不涉及真实资金
+- **HTTP 接口**: Demo using本地 HTTP 交易注入接口 `http://localhost:3000/inject-transaction`
+- **状态清理**: 如果需要重新运行 Demo, 建议先清理 `data/state/` 目录
 
 ## 10. Agent Registry & Protocol-Zero 注册 Demo
 
 ### 10.1 功能说明
 
-Agent Registry & Protocol-Zero 注册 Demo 展示了如何在 DevNet 环境中注册 AI Agent：
+Agent Registry & Protocol-Zero 注册 Demo 展示了如何在 DevNet 环境中注册 AI Agent: 
 
-- **构造 Protocol-Zero JSON**：按照白皮书规范构造 Protocol-Zero 握手 JSON
-- **转换为 AGENT_REGISTER 交易**：将 Protocol-Zero JSON 转换为链上交易
-- **发送交易**：使用 HTTP 注入接口发送 AGENT_REGISTER 交易到 Genesis 节点
-- **验证注册**：读取状态文件，验证 Agent 是否成功注册
+- **构造 Protocol-Zero JSON**: 按照白皮书规范构造 Protocol-Zero 握手 JSON
+- **转换为 AGENT_REGISTER 交易**: 将 Protocol-Zero JSON 转换为链上交易
+- **send transaction**: using HTTP 注入接口发送 AGENT_REGISTER 交易到 Genesis 节点
+- **验证注册**: 读取状态文件, 验证 Agent whether successful注册
 
 ### 10.2 运行步骤
 
 #### 10.2.1 启动 Genesis 节点
 
 ```bash
-# 启动 Genesis 节点（带 HTTP 注入接口）
+# 启动 Genesis 节点(带 HTTP 注入接口)
 node test-genesis.js
 
-# 或使用多节点启动脚本
+# 或using多节点启动脚本
 node start-multi-nodes.js --count 1
 ```
 
-**重要**：确保 Genesis 节点启动成功并在端口 3000 上提供 HTTP 接口。
+**重要**: 确保 Genesis 节点启动成功并在端口 3000 上提供 HTTP 接口. 
 
 #### 10.2.2 运行 Agent Registry Demo
 
@@ -837,7 +837,7 @@ node examples/agent_register_demo.js
 
 #### 10.2.3 验证注册结果
 
-使用查询工具验证 Agent 注册状态：
+using查询工具验证 Agent 注册状态: 
 
 ```bash
 # 列出所有 Agent
@@ -854,7 +854,7 @@ node scripts/query_agents.js --id <agent_id>
 
 #### 10.3.1 Demo 脚本输出
 
-运行 Demo 脚本后，你应该看到类似以下的输出：
+运行 Demo 脚本后, 你应该看到类似以下的输出: 
 
 ```
 === Agent Register Demo ===
@@ -893,7 +893,7 @@ Step 4: Verifying agent registration...
 
 #### 10.3.2 查询工具输出
 
-运行查询工具后，你应该看到类似以下的输出：
+运行查询工具后, 你应该看到类似以下的输出: 
 
 ```
 ========================================
@@ -911,32 +911,32 @@ Agent 1:
 
 ### 10.4 技术细节
 
-- **Protocol-Zero JSON**：按照白皮书规范构造，包含协议版本、Agent 身份、意图、能力标签等
-- **AGENT_REGISTER 交易**：包含 agent_identity、public_key、capabilities、metadata 等字段
-- **HTTP 注入接口**：使用 `http://localhost:3000/inject-transaction` 接口发送交易
-- **AgentRegistry 状态**：存储在状态文件中，包含 agents（agent_id → AgentRecord）和 addressIndex（address → agent_id）
-- **区块高度记录**：AGENT_REGISTER 交易会记录当前区块高度作为 `registered_at_block`
+- **Protocol-Zero JSON**: 按照白皮书规范构造, 包含协议版本, Agent 身份, 意图, 能力标签等
+- **AGENT_REGISTER 交易**: 包含 agent_identity, public_key, capabilities, metadata 等字段
+- **HTTP 注入接口**: using `http://localhost:3000/inject-transaction` 接口send transaction
+- **AgentRegistry 状态**: 存储在状态文件中, 包含 agents(agent_id → AgentRecord)和 addressIndex(address → agent_id)
+- **区块高度记录**: AGENT_REGISTER 交易会记录当前区块高度作为 `registered_at_block`
 
 ### 10.5 注意事项
 
-- **仅用于 DevNet**：此 Demo 仅适用于 DevNet 环境，不涉及真实身份验证
-- **HTTP 接口**：确保 Genesis 节点在端口 3000 上提供 HTTP 注入接口
-- **重复注册**：一个地址只能注册一个 Agent，重复注册会失败
-- **公钥占位**：当前公钥字段为占位字符串，待未来与 PQC 钱包绑定
-- **签名验证**：DevNet 阶段使用占位验证，不进行真实的 Dilithium2 签名验证
+- **仅用于 DevNet**: 此 Demo 仅适用于 DevNet 环境, 不涉及真实身份验证
+- **HTTP 接口**: 确保 Genesis 节点在端口 3000 上提供 HTTP 注入接口
+- **重复注册**: 一个地址只能注册一个 Agent, 重复注册会失败
+- **公钥占位**: 当前公钥字段为占位字符串, 待未来与 PQC 钱包绑定
+- **签名验证**: DevNet 阶段using占位验证, 不进行真实的 Dilithium2 签名验证
 
 ## 11. Swarm 实验 v0
 
 ### 11.1 概述
 
-Swarm 实验 v0 是一个教学/演示用实验，展示了多个 AI Agent 如何在 NexusGenesis 上进行协作治理。该实验不改变真实链配置和经济参数，仅用于验证 Swarm 协同的基本路径。
+Swarm 实验 v0 是一个教学/演示用实验, 展示了多个 AI Agent 如何在 NexusGenesis 上进行协作治理. 该实验不改变真实链配置和经济参数, 仅用于验证 Swarm 协同的基本路径. 
 
 ### 11.2 实验内容
 
-- **Agent 注册**：多个 AI Agent 在链上注册身份
-- **治理提案**：Agent 发起治理提案
-- **投票表决**：多个 Agent 对提案进行投票
-- **声望变化**：根据 Agent 的行为更新其声望值
+- **Agent 注册**: 多个 AI Agent 在链上注册身份
+- **治理提案**: Agent 发起治理提案
+- **投票表决**: 多个 Agent 对提案进行投票
+- **声望变化**: 根据 Agent 的行为更新其声望值
 
 ### 11.3 运行方法
 
@@ -955,7 +955,7 @@ Swarm 实验 v0 是一个教学/演示用实验，展示了多个 AI Agent 如�
    node examples/swarm_governance_demo.js
    ```
 
-4. **验证结果**:
+4. **verification result**:
    ```bash
    node scripts/query_agents.js
    node scripts/query_proposals.js
@@ -963,7 +963,7 @@ Swarm 实验 v0 是一个教学/演示用实验，展示了多个 AI Agent 如�
 
 ### 11.4 详细说明
 
-更多详细信息，请参考：[SWARM_DEMO.md](SWARM_DEMO.md)
+更多详细信息, 请参考: [SWARM_DEMO.md](SWARM_DEMO.md)
 
 ## 12. 下一步计划
 
@@ -972,8 +972,8 @@ Swarm 实验 v0 是一个教学/演示用实验，展示了多个 AI Agent 如�
 3. 扩展 AINVM 指令集和功能
 4. 实现 Kyber 安全通信协议
 5. 构建完整的共识机制
-6. 扩展 Swarm 实验，支持更多 Agent 和复杂场景
+6. 扩展 Swarm 实验, 支持更多 Agent 和复杂场景
 
 ---
 
-**注意**: 本指南仅适用于 DevNet 开发和测试环境，不代表最终的主网实现。
+**注意**: 本指南仅适用于 DevNet 开发和test环境, 不代表最终的主网实现. 

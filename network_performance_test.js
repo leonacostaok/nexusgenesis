@@ -1,6 +1,6 @@
 /**
- * 网络性能测试脚本
- * 测试整个区块链网络的性能和稳定性
+ * network性能Test脚本
+ * Test整个block链network的性能和稳定性
  */
 
 import fs from 'fs';
@@ -8,20 +8,20 @@ import path from 'path';
 import WebSocket from 'ws';
 import { performance } from 'perf_hooks';
 
-// 性能测试配置
+// 性能TestConfiguration
 const config = {
-  iterations: 100,         // 每个测试的迭代次数
+  iterations: 100,         // 每个Test的迭代次数
   warmup: 10,              // 预热迭代次数
   nodes: [
     { url: 'ws://localhost:9847', name: 'node1' },
     { url: 'ws://localhost:9848', name: 'node2' },
     { url: 'ws://localhost:9849', name: 'node3' }
   ],
-  batchSize: 10,            // 批量交易大小
-  maxNodes: 10              // 扩展性测试的最大节点数
+  batchSize: 10,            // 批量transaction大小
+  maxNodes: 10              // 扩展性Test的Maximumnode数
 };
 
-// 性能测试结果
+// 性能Test结果
 const results = {
   nodeSync: [],
   transaction: [],
@@ -29,7 +29,7 @@ const results = {
   scalability: []
 };
 
-// 测试执行时间
+// TestExecute时间
 function measureExecutionTime(fn, name) {
   const start = performance.now();
   const result = fn();
@@ -40,7 +40,7 @@ function measureExecutionTime(fn, name) {
   return duration;
 }
 
-// 测试节点同步速度
+// Testnode同步速度
 async function testNodeSyncSpeed() {
   console.log('\n=== Testing Node Synchronization Speed ===');
   
@@ -56,7 +56,7 @@ async function testNodeSyncSpeed() {
         ws.on('open', async () => {
           const start = performance.now();
           
-          // 发送同步请求
+          // Send同步请求
           ws.send(JSON.stringify({
             type: 'SYNC_REQUEST',
             data: {
@@ -97,18 +97,18 @@ async function testNodeSyncSpeed() {
   return syncResults;
 }
 
-// 测试交易处理能力
+// TesttransactionProcess能力
 async function testTransactionProcessing() {
   console.log('\n=== Testing Transaction Processing Capacity ===');
   
   const txResults = [];
   const testWallet = 'ng112DZqYRZKQBWqNgqifQnzAnDJiBT27C2y7';
   
-  // 测试单交易处理
+  // Test单transactionProcess
   console.log('Testing single transaction processing...');
   for (let i = 0; i < config.iterations; i++) {
     const duration = measureExecutionTime(() => {
-      // 模拟交易处理
+      // SimulationtransactionProcess
       const transaction = {
         from: testWallet,
         to: testWallet,
@@ -117,13 +117,13 @@ async function testTransactionProcessing() {
         nonce: i,
         timestamp: Date.now()
       };
-      // 模拟验证和处理
+      // SimulationVerify和Process
       return JSON.stringify(transaction);
     }, `Single transaction ${i + 1}`);
     txResults.push(duration);
   }
   
-  // 测试批量交易处理
+  // Test批量transactionProcess
   console.log('\nTesting batch transaction processing...');
   for (let i = 0; i < config.iterations / config.batchSize; i++) {
     const duration = measureExecutionTime(() => {
@@ -147,21 +147,21 @@ async function testTransactionProcessing() {
   return txResults;
 }
 
-// 测试智能合约执行效率
+// TestSmart ContractExecute效率
 async function testSmartContractExecution() {
   console.log('\n=== Testing Smart Contract Execution Efficiency ===');
   
-  // 导入合约管理器
+  // ImportContract管理器
   const { default: contractManager } = await import('./src/contracts/contractManager.js');
   const { testCounterContract } = await import('./src/contracts/examples/counter.js');
   
   const scResults = [];
   
   try {
-    // 加载现有合约状态
+    // Load现有Contractstatus
     await contractManager.loadState();
     
-    // 部署测试合约
+    // DeployTestContract
     const contractId = await testCounterContract();
     
     // 预热
@@ -169,7 +169,7 @@ async function testSmartContractExecution() {
       await contractManager.executeContract(contractId, 10000);
     }
     
-    // 性能测试
+    // 性能Test
     for (let i = 0; i < config.iterations; i++) {
       const start = performance.now();
       await contractManager.executeContract(contractId, 10000);
@@ -179,7 +179,7 @@ async function testSmartContractExecution() {
       scResults.push(duration);
     }
     
-    // 保存合约状态
+    // SaveContractstatus
     await contractManager.saveState();
   } catch (error) {
     console.error('Error testing smart contract execution:', error);
@@ -189,18 +189,18 @@ async function testSmartContractExecution() {
   return scResults;
 }
 
-// 测试网络扩展性
+// Testnetwork扩展性
 async function testNetworkScalability() {
   console.log('\n=== Testing Network Scalability ===');
   
   const scalabilityResults = [];
   
-  // 模拟不同节点数量下的性能
+  // Simulation不同node数量下的性能
   for (let nodeCount = 1; nodeCount <= config.maxNodes; nodeCount++) {
     console.log(`Testing with ${nodeCount} nodes...`);
     
     const duration = measureExecutionTime(() => {
-      // 模拟节点间通信
+      // Simulationnode间通信
       const messages = [];
       for (let i = 0; i < nodeCount; i++) {
         for (let j = 0; j < nodeCount; j++) {
@@ -227,7 +227,7 @@ async function testNetworkScalability() {
   return scalabilityResults;
 }
 
-// 计算性能统计数据
+// Calculate性能统计data
 function calculateStats(data) {
   if (!data || data.length === 0) {
     return {
@@ -258,7 +258,7 @@ function calculateStats(data) {
   };
 }
 
-// 生成性能报告
+// Generate性能报告
 function generateReport() {
   console.log('\n=== Network Performance Test Report ===');
   
@@ -278,7 +278,7 @@ function generateReport() {
     console.log(`${result.nodeCount} nodes: ${result.duration.toFixed(2)}ms`);
   });
   
-  // 保存报告到文件
+  // Save报告到文件
   const report = {
     timestamp: new Date().toISOString(),
     config,
@@ -301,19 +301,19 @@ function generateReport() {
   console.log(`\nReport saved to: ${reportPath}`);
 }
 
-// 主测试函数
+// 主Testfunction
 async function main() {
   console.log('=== Starting Network Performance Tests ===');
   console.log(`Configuration: ${JSON.stringify(config, null, 2)}`);
   
   try {
-    // 运行性能测试
+    // 运行性能Test
     await testNodeSyncSpeed();
     await testTransactionProcessing();
     await testSmartContractExecution();
     await testNetworkScalability();
     
-    // 生成报告
+    // Generate报告
     generateReport();
     
     console.log('\n=== Network performance tests completed successfully! ===');
@@ -323,5 +323,5 @@ async function main() {
   }
 }
 
-// 运行测试
+// 运行Test
 main();

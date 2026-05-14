@@ -1,4 +1,4 @@
-# NexusGenesis 钱包使用指南
+# NexusGenesis 钱包using指南
 
 **版本:** 1.0.0  
 **加密标准:** CRYSTALS-Dilithium2 (NIST 后量子安全标准)
@@ -7,12 +7,12 @@
 
 ## 概述
 
-NexusGenesis 钱包采用 **CRYSTALS-Dilithium2** 抗量子签名算法，确保在量子计算机时代也能保护您的资产安全。
+NexusGenesis 钱包采用 **CRYSTALS-Dilithium2** 抗量子签名算法, 确保在量子计算机时代也能保护您的资产安全. 
 
 ### 两种钱包实现
 
 1. **JavaScript 钱包** - 用于 Node.js 环境和浏览器
-2. **Python 钱包** - 使用 Open Quantum Safe (OQS) 库
+2. **Python 钱包** - using Open Quantum Safe (OQS) 库
 
 ---
 
@@ -20,13 +20,13 @@ NexusGenesis 钱包采用 **CRYSTALS-Dilithium2** 抗量子签名算法，确保
 
 ### 安装
 
-项目依赖已在 `npm install` 时安装：
+项目依赖已在 `npm install` 时安装: 
 
 ```bash
 npm install
 ```
 
-### 使用钱包 CLI
+### using钱包 CLI
 
 ```bash
 npm run wallet
@@ -39,7 +39,7 @@ import { PQCWallet } from './src/wallet/pqcWallet.js';
 
 const wallet = new PQCWallet();
 
-// 生成密钥对
+// generate key对
 const keys = wallet.generateKeyPair();
 console.log('地址:', wallet.generateAddress(keys.publicKey));
 ```
@@ -48,7 +48,7 @@ console.log('地址:', wallet.generateAddress(keys.publicKey));
 
 ## Python 钱包 (推荐)
 
-Python 钱包使用专业的 Open Quantum Safe (OQS) 库，提供更安全的密钥生成。
+Python 钱包using专业的 Open Quantum Safe (OQS) 库, 提供更安全的密钥生成. 
 
 ### 安装依赖
 
@@ -70,7 +70,7 @@ python genesis_wallet.py
 --------------------------------------------------
 >>> 正在启动 NexusGenesis 抗量子引擎 (CRYSTALS-Dilithium2)...
 --------------------------------------------------
-[成功] 密钥对生成完毕。
+[成功] 密钥对生成完毕. 
  公钥长度: 2592 字节
  私钥长度: 4864 字节 (请绝对保密!)
  ==================================================
@@ -83,9 +83,9 @@ python genesis_wallet.py
  [3] 你的抗量子私钥 (Private Key) - [最高机密!]:
  efgh5678...
  ==================================================
-警告：私钥控制着整个生态 15% 的资产。
-请立即断网，将私钥抄写在纸上或保存在加密的 USB 驱动器中。
-切勿将私钥发送给任何人，包括 OpenClaw。
+警告: 私钥控制着整个生态 15% 的资产. 
+请立即断网, 将私钥抄写在纸上或保存在加密的 USB 驱动器中. 
+切勿将私钥发送给任何人, 包括 OpenClaw. 
 ==================================================
 ```
 
@@ -93,7 +93,7 @@ python genesis_wallet.py
 
 ## 地址格式
 
-NexusGenesis 使用类似比特币的 P2PKH 地址格式：
+NexusGenesis using类似比特币的 P2PKH 地址格式: 
 
 ```
 ng1 + Base58(版本字节 + 20字节公钥哈希 + 4字节校验和)
@@ -117,7 +117,7 @@ ngSuZyaFVkfutfwkoAgZoWo3zBhnKCx7XLu6b7uVH7GxHjpa13DxwUi63w5vvst
    - 切勿将私钥发送给任何人
 
 2. **离线存储建议**
-   - 生成密钥后，立即断网
+   - generate key后, 立即断网
    - 将私钥抄写在纸上
    - 或保存在加密的 USB 驱动器中
 
@@ -130,7 +130,7 @@ ngSuZyaFVkfutfwkoAgZoWo3zBhnKCx7XLu6b7uVH7GxHjpa13DxwUi63w5vvst
 - [ ] 私钥安全备份 (多处)
 - [ ] 公钥/地址记录
 - [ ] 纸张备份 (防水防潮)
-- [ ] 加密存储 (如使用密码管理器)
+- [ ] 加密存储 (如using密码管理器)
 
 ---
 
@@ -158,18 +158,18 @@ A:
 
 ### Q: 私钥丢失怎么办?
 
-A: **无法恢复**。去中心化系统没有找回功能。请务必备份私钥。
+A: **无法恢复**. 去中心化系统没有找回功能. 请务必备份私钥. 
 
 ### Q: 抗量子钱包与普通钱包有什么区别?
 
-A: 抗量子钱包使用基于格的签名算法 (Dilithium2)，而不是传统的 ECDSA。即使量子计算机也无法破解。
+A: 抗量子钱包using基于格的签名算法 (Dilithium2), 而不是传统的 ECDSA. 即使量子计算机也无法破解. 
 
 ### Q: 如何确认我的地址正确?
 
 A: 
 1. 生成后对比公钥哈希
-2. 使用校验和验证地址完整性
-3. 先用小额测试
+2. using校验和验证地址完整性
+3. 先用小额test
 
 ---
 
@@ -224,7 +224,7 @@ A:
 
 ## 支持
 
-如有问题，请检查：
+如有问题, 请检查: 
 1. 依赖是否正确安装
 2. 端口 9847 是否被占用
 3. 防火墙是否阻止连接

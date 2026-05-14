@@ -4,32 +4,32 @@ async function testWalletSecurityFeatures() {
   console.log('Testing Wallet Security Features...');
   
   try {
-    // 1. 测试 BIP39 助记词功能
+    // 1. Test BIP39 助记词Features
     console.log('\n1. Testing BIP39 Mnemonic Features...');
     const wallet1 = await PQCWallet.generate();
     console.log('   Wallet generated:', wallet1.address);
     
-    // 导出助记词
+    // Export助记词
     const mnemonic = wallet1.toMnemonic();
     console.log('   Mnemonic phrase:', mnemonic);
     
-    // 从助记词恢复钱包
+    // 从助记词recovery钱包
     const wallet2 = await PQCWallet.fromMnemonic(mnemonic);
     console.log('   Wallet restored from mnemonic:', wallet2.address);
     
-    // 验证地址匹配
+    // Verifyaddress匹配
     if (wallet1.address === wallet2.address) {
       console.log('   ✅ Mnemonic recovery successful - addresses match');
     } else {
       console.log('   ❌ Mnemonic recovery failed - addresses do not match');
     }
     
-    // 2. 测试私钥完整性验证
+    // 2. Testprivate key完整性Verify
     console.log('\n2. Testing Private Key Integrity Verification...');
     const integrityResult = wallet1.verifyPrivateKeyIntegrity();
     console.log('   Private key integrity:', integrityResult ? '✅ Valid' : '❌ Invalid');
     
-    // 3. 测试多重签名钱包
+    // 3. Test多重Sign钱包
     console.log('\n3. Testing Multi-Sig Wallet...');
     const wallet3 = await PQCWallet.generate();
     const wallet4 = await PQCWallet.generate();
@@ -42,13 +42,13 @@ async function testWalletSecurityFeatures() {
       wallet5.publicKey.toString('hex')
     ];
     
-    // 创建 2-of-4 多重签名钱包
+    // Create 2-of-4 多重Sign钱包
     const multiSigWallet = new PQCWallet.MultiSigWallet(2, publicKeys);
     console.log('   Multi-sig wallet address:', multiSigWallet.address);
     console.log('   Required signatures:', multiSigWallet.requiredSignatures);
     console.log('   Total signers:', multiSigWallet.publicKeys.length);
     
-    // 测试多重签名验证
+    // Test多重SignVerify
     const txData = {
       from: multiSigWallet.address,
       to: 'ng1ExampleAddress',
@@ -59,11 +59,11 @@ async function testWalletSecurityFeatures() {
       nonce: '0'
     };
     
-    // 生成两个签名
+    // Generate两个Sign
     const signature1 = await wallet1.signTransaction(txData);
     const signature2 = await wallet3.signTransaction(txData);
     
-    // 验证签名
+    // VerifySign
     const verificationResult = await multiSigWallet.verifyMultiSignature(txData, [signature1, signature2]);
     console.log('   Multi-signature verification:', verificationResult ? '✅ Valid' : '❌ Invalid');
     

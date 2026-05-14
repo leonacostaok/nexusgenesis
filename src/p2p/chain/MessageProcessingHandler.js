@@ -1,6 +1,6 @@
 /**
  * MessageProcessingHandler
- * 负责调用实际的MessageHandler来ProcessingMessage
+ * 负责call实际的MessageHandler来ProcessingMessage
  */
 import MessageHandlerChain from './MessageHandlerChain.js';
 
@@ -10,12 +10,12 @@ class MessageProcessingHandler extends MessageHandlerChain {
    * @param {string} peerId - Peer nodesID
    * @param {object} message - Message对象
    * @param {object} context - Processing上下文
-   * @returns {Promise<boolean>} Processing是否成功
+   * @returns {Promise<boolean>} Processing是否success
    */
   async handle(peerId, message, context) {
     console.log(`[MessageProcessingHandler] Processing message from ${peerId}`);
     
-    // 特殊Processing：Protocol-Zero 信号（包含 protocol 字段的情况）
+    // 特殊Processing: Protocol-Zero 信号(包含 protocol 字段的情况)
     if (message.protocol === 'NG-0' && message.intent) {
       const handler = context.handlerRegistry.getHandler('PROTOCOL_ZERO');
       if (handler) {
@@ -32,7 +32,7 @@ class MessageProcessingHandler extends MessageHandlerChain {
       return false;
     }
     
-    // 检查是否需要节点验证
+    // Check是否requiresnodeVerify
     if (handler.requiresVerification() && context.node && !context.node.isPeerVerified(peerId)) {
       console.log(`[!] Ignoring message from unverified peer ${peerId}`);
       context.p2pServer.send(peerId, {

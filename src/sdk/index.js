@@ -1,7 +1,7 @@
 /**
  * NexusGenesis SDK
- * 为开发者提供智能合约开发、部署和交互的工具
- * 支持：合约管理、Agent 操作、跨链桥接、事件订阅
+ * 为Developer提供Smart Contract开发, Deploy和交互的工具
+ * support: Contract管理, Agent 操作, Cross-chainBridge, 事件订阅
  */
 
 import contractManager from '../contracts/contractManager.js';
@@ -29,7 +29,7 @@ class NexusGenesisSDK {
     this._pollingIntervals = [];
   }
 
-  // ==================== 合约操作 ====================
+  // ==================== Contract操作 ====================
 
   deployContract(bytecode, name = 'Unnamed Contract') {
     return this.contractManager.deployContract(bytecode, name);
@@ -272,7 +272,7 @@ class NexusGenesisSDK {
     }
   }
 
-  // ==================== 市场操作 ====================
+  // ==================== marketplace操作 ====================
 
   async searchMarketplace(filters = {}) {
     try {
@@ -356,7 +356,7 @@ class NexusGenesisSDK {
     }
   }
 
-  // ==================== 跨链桥操作 ====================
+  // ==================== Cross-chain桥操作 ====================
 
   async getBridgeStatus() {
     try {
@@ -501,7 +501,7 @@ class NexusGenesisSDK {
     };
   }
 
-  // ==================== 开发者激励操作（Phase 2 新增） ====================
+  // ==================== DeveloperIncentive操作(Phase 2 新增) ====================
 
   createBugBounty(options) {
     return developerIncentives.createBugBounty(options);
@@ -563,7 +563,7 @@ class NexusGenesisSDK {
     return developerIncentives.getStats();
   }
 
-  // ==================== 治理操作（Phase 2 新增） ====================
+  // ==================== Governance操作(Phase 2 新增) ====================
 
   createProposal(options) {
     const agentId = options.creatorId || 'sdk-user';
@@ -597,7 +597,7 @@ class NexusGenesisSDK {
     return WeightedVotingSystem.executeProposal(proposalId, executorId || 'sdk-user');
   }
 
-  // ==================== 测试水龙头操作（Phase 2 新增） ====================
+  // ==================== Test水龙头操作(Phase 2 新增) ====================
 
   async faucetDrip(recipientAddress, amount = 100) {
     const addr = recipientAddress || this.wallet?.address;

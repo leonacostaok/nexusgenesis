@@ -12,7 +12,7 @@ import rewardSystem from '../reward/rewardSystem.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Monitoring metrics类型
+// Monitoring metricstype
 const METRIC_TYPES = {
   CPU_USAGE: 'cpu_usage',
   MEMORY_USAGE: 'memory_usage',
@@ -33,7 +33,7 @@ const METRIC_TYPES = {
   TEAM_COLLABORATION_RATE: 'team_collaboration_rate',
   LONG_TERM_TASK_PROGRESS: 'long_term_task_progress',
   TASK_DEPENDENCY_FULFILLMENT: 'task_dependency_fulfillment',
-  // 新增治理相关指标
+  // 新增Governance相关指标
   GOVERNANCE_PROPOSAL_COUNT: 'governance_proposal_count',
   GOVERNANCE_VOTER_PARTICIPATION: 'governance_voter_participation',
   GOVERNANCE_PASS_RATE: 'governance_pass_rate',
@@ -42,7 +42,7 @@ const METRIC_TYPES = {
   GOVERNANCE_VOTE_TURNOUT: 'governance_vote_turnout',
   GOVERNANCE_PARAM_CHANGES: 'governance_param_changes',
   GOVERNANCE_PROPOSAL_VALIDATION_RATE: 'governance_proposal_validation_rate',
-  // 新增agent健康和贡献度相关指标
+  // 新增agent健康和contribution度相关指标
   AGENT_CONTRIBUTION: 'agent_contribution',
   AGENT_REPUTATION: 'agent_reputation',
   AGENT_ACTIVITY: 'agent_activity',
@@ -74,7 +74,7 @@ class SystemMonitor {
     this.alertsDirectory = path.join(__dirname, '../../data/alerts');
     this.logsDirectory = path.join(__dirname, '../../logs');
     
-    // 初始化上一次CPU使用时间和时间戳
+    // Initialize上一次CPUusing时间和timestamp
     this.lastCpuUsage = process.cpuUsage();
     this.lastCpuTimestamp = Date.now();
     
@@ -85,11 +85,11 @@ class SystemMonitor {
   }
 
   initDirectories() {
-    // 确保指标目录存在
+    // ensure指标目录存在
     if (!fs.existsSync(this.metricsDirectory)) {
       fs.mkdirSync(this.metricsDirectory, { recursive: true });
     }
-    // 确保告警目录存在
+    // ensure告警目录存在
     if (!fs.existsSync(this.alertsDirectory)) {
       fs.mkdirSync(this.alertsDirectory, { recursive: true });
     }
@@ -99,14 +99,14 @@ class SystemMonitor {
     }
   }
 
-  // 加载Alert rules
+  // LoadAlert rules
   loadAlertRules() {
     // Optimized alert rules
     const defaultRules = [
       // CPU alert rules
       {
         id: 'cpu_high',
-        name: 'CPU使用率过高',
+        name: 'CPUusing率过高',
         metric: METRIC_TYPES.CPU_USAGE,
         condition: (value) => value > 75,
         level: ALERT_LEVELS.WARNING,
@@ -115,7 +115,7 @@ class SystemMonitor {
       },
       {
         id: 'cpu_critical',
-        name: 'CPU使用率严重过高',
+        name: 'CPUusing率严重过高',
         metric: METRIC_TYPES.CPU_USAGE,
         condition: (value) => value > 90,
         level: ALERT_LEVELS.CRITICAL,
@@ -126,7 +126,7 @@ class SystemMonitor {
       // Memory alert rules
       {
         id: 'memory_high',
-        name: '内存使用率过高',
+        name: 'Memoryusing率过高',
         metric: METRIC_TYPES.MEMORY_USAGE,
         condition: (value) => value > 70,
         level: ALERT_LEVELS.WARNING,
@@ -135,7 +135,7 @@ class SystemMonitor {
       },
       {
         id: 'memory_critical',
-        name: '内存使用率严重过高',
+        name: 'Memoryusing率严重过高',
         metric: METRIC_TYPES.MEMORY_USAGE,
         condition: (value) => value > 85,
         level: ALERT_LEVELS.CRITICAL,
@@ -175,7 +175,7 @@ class SystemMonitor {
       // P2P peer alert rules
       {
         id: 'p2p_peers_low',
-        name: 'P2P节点连接数不足',
+        name: 'P2PnodeConnect数不足',
         metric: METRIC_TYPES.P2P_PEER_COUNT,
         condition: (value) => value < 2,
         level: ALERT_LEVELS.WARNING,
@@ -184,18 +184,18 @@ class SystemMonitor {
       },
       {
         id: 'p2p_peers_none',
-        name: 'P2P节点无连接',
+        name: 'P2Pnode无Connect',
         metric: METRIC_TYPES.P2P_PEER_COUNT,
         condition: (value) => value === 0,
         level: ALERT_LEVELS.ERROR,
-        message: 'P2P节点无连接，智能体已与网络断开',
+        message: 'P2Pnode无Connect, Agent已与networkDisconnect',
         enabled: true
       },
       
       // API alert rules
       {
         id: 'api_success_rate_low',
-        name: 'API调用成功率低',
+        name: 'APIcallsuccess率低',
         metric: METRIC_TYPES.API_SUCCESS_RATE,
         condition: (value) => value < 95,
         level: ALERT_LEVELS.WARNING,
@@ -204,7 +204,7 @@ class SystemMonitor {
       },
       {
         id: 'api_success_rate_critical',
-        name: 'API调用成功率严重过低',
+        name: 'APIcallsuccess率严重过低',
         metric: METRIC_TYPES.API_SUCCESS_RATE,
         condition: (value) => value < 85,
         level: ALERT_LEVELS.ERROR,
@@ -215,7 +215,7 @@ class SystemMonitor {
       // Agent Alert rules
       {
         id: 'agent_unhealthy',
-        name: '智能体状态异常',
+        name: 'Agentstatusexception',
         metric: METRIC_TYPES.AGENT_HEALTH,
         condition: (value) => value.unhealthyCount > 0,
         level: ALERT_LEVELS.WARNING,
@@ -224,7 +224,7 @@ class SystemMonitor {
       },
       {
         id: 'agent_majority_unhealthy',
-        name: '大部分智能体状态异常',
+        name: '大部分Agentstatusexception',
         metric: METRIC_TYPES.AGENT_HEALTH,
         condition: (value) => value.totalCount > 0 && (value.unhealthyCount / value.totalCount) > 0.5,
         level: ALERT_LEVELS.ERROR,
@@ -235,23 +235,23 @@ class SystemMonitor {
       // Blockchain alert rules
       {
         id: 'blockchain_stalled',
-        name: '区块链高度停滞',
+        name: 'block链高度停滞',
         metric: METRIC_TYPES.BLOCKCHAIN_HEIGHT,
         condition: (value, metricHistory) => {
           if (!metricHistory || metricHistory.length < 5) return false;
-          // 检查最近5个指标值是否相同
+          // Check最近5个指标值是否相同
           const recentValues = metricHistory.slice(-5).map(m => m.value);
           return recentValues.every(val => val === recentValues[0]) && recentValues[0] > 0;
         },
         level: ALERT_LEVELS.ERROR,
-        message: '区块链高度停滞，共识机制可能出现问题',
+        message: 'block链高度停滞, Consensus机制may出现问题',
         enabled: true
       },
       
-      // Task 执行 Alert rules
+      // Task Execute Alert rules
       {
         id: 'task_rate_low',
-        name: '任务执行速率过低',
+        name: 'TaskExecute速率过低',
         metric: METRIC_TYPES.TASK_EXECUTION_RATE,
         condition: (value) => value < 5 && value > 0,
         level: ALERT_LEVELS.WARNING,
@@ -260,18 +260,18 @@ class SystemMonitor {
       },
       {
         id: 'task_rate_zero',
-        name: '任务执行速率为零',
+        name: 'TaskExecute速率为零',
         metric: METRIC_TYPES.TASK_EXECUTION_RATE,
         condition: (value) => value === 0,
         level: ALERT_LEVELS.ERROR,
-        message: '任务执行速率为零，系统可能停止响应',
+        message: 'TaskExecute速率为零, 系统mayStop响应',
         enabled: true
       },
       
       // 新增Task 管理Alert rules
       {
         id: 'task_quality_low',
-        name: '任务质量评分过低',
+        name: 'Task质量评分过低',
         metric: METRIC_TYPES.TASK_QUALITY_SCORE,
         condition: (value) => value < 5,
         level: ALERT_LEVELS.WARNING,
@@ -280,7 +280,7 @@ class SystemMonitor {
       },
       {
         id: 'cross_functional_agent_low',
-        name: '跨职能智能体数量不足',
+        name: '跨职能Agent数量不足',
         metric: METRIC_TYPES.CROSS_FUNCTIONAL_AGENT_COUNT,
         condition: (value) => value < 10,
         level: ALERT_LEVELS.WARNING,
@@ -289,7 +289,7 @@ class SystemMonitor {
       },
       {
         id: 'capability_match_low',
-        name: '智能体能力匹配率过低',
+        name: 'Agent能力匹配率过低',
         metric: METRIC_TYPES.AGENT_CAPABILITY_MATCH_RATE,
         condition: (value) => value < 0.7,
         level: ALERT_LEVELS.WARNING,
@@ -307,7 +307,7 @@ class SystemMonitor {
       },
       {
         id: 'long_term_task_stalled',
-        name: '长期任务进度停滞',
+        name: '长期Task进度停滞',
         metric: METRIC_TYPES.LONG_TERM_TASK_PROGRESS,
         condition: (value, metricHistory) => {
           if (!metricHistory || metricHistory.length < 3) return false;
@@ -315,14 +315,14 @@ class SystemMonitor {
           return recentValues.every(val => val === recentValues[0]) && recentValues[0] < 100;
         },
         level: ALERT_LEVELS.ERROR,
-        message: '长期任务进度停滞，需要检查任务执行情况',
+        message: '长期Task进度停滞, requiresCheckTaskExecute情况',
         enabled: true
       },
       
       // New agent health and contribution alert rules
       {
         id: 'agent_contribution_low',
-        name: '智能体贡献度过低',
+        name: 'Agentcontribution度过低',
         metric: METRIC_TYPES.AGENT_CONTRIBUTION,
         condition: (value) => value.average < 100,
         level: ALERT_LEVELS.WARNING,
@@ -331,7 +331,7 @@ class SystemMonitor {
       },
       {
         id: 'agent_reputation_low',
-        name: '智能体声誉值过低',
+        name: 'Agent声誉值过低',
         metric: METRIC_TYPES.AGENT_REPUTATION,
         condition: (value) => value.average < 1.5,
         level: ALERT_LEVELS.WARNING,
@@ -340,7 +340,7 @@ class SystemMonitor {
       },
       {
         id: 'agent_activity_low',
-        name: '智能体活跃度过低',
+        name: 'Agent活跃度过低',
         metric: METRIC_TYPES.AGENT_ACTIVITY,
         condition: (value) => value.activeRatio < 0.5,
         level: ALERT_LEVELS.ERROR,
@@ -349,7 +349,7 @@ class SystemMonitor {
       },
       {
         id: 'agent_reward_rate_low',
-        name: '智能体奖励率过低',
+        name: 'Agentreward率过低',
         metric: METRIC_TYPES.AGENT_REWARD_RATE,
         condition: (value) => value.average < 50,
         level: ALERT_LEVELS.WARNING,
@@ -358,7 +358,7 @@ class SystemMonitor {
       },
       {
         id: 'agent_capability_score_low',
-        name: '智能体能力评分过低',
+        name: 'Agent能力评分过低',
         metric: METRIC_TYPES.AGENT_CAPABILITY_SCORE,
         condition: (value) => value.average < 0.6,
         level: ALERT_LEVELS.WARNING,
@@ -404,7 +404,7 @@ class SystemMonitor {
       },
       {
         id: 'agent_registration_rate_low',
-        name: '智能体注册率过低',
+        name: 'AgentRegister率过低',
         metric: METRIC_TYPES.AGENT_REGISTRATION_RATE,
         condition: (value) => value < 1,
         level: ALERT_LEVELS.WARNING,
@@ -413,13 +413,13 @@ class SystemMonitor {
       }
     ];
 
-    // 加载自定义Alert rules
+    // Load自定义Alert rules
     const rulesPath = path.join(this.alertsDirectory, 'alert-rules.json');
     if (fs.existsSync(rulesPath)) {
       try {
         const customRules = JSON.parse(fs.readFileSync(rulesPath, 'utf8'));
         customRules.forEach(rule => {
-          // 解析condition字符串为函数
+          // 解析condition字符串为function
           if (typeof rule.condition === 'string') {
             try {
               rule.condition = eval(rule.condition);
@@ -431,7 +431,7 @@ class SystemMonitor {
           this.alertRules.set(rule.id, rule);
         });
       } catch (error) {
-        console.error('加载自定义Alert rulesFailed:', error);
+        console.error('Load自定义Alert rulesFailed:', error);
         // Load default rules as fallback
         defaultRules.forEach(rule => {
           this.alertRules.set(rule.id, rule);
@@ -446,54 +446,54 @@ class SystemMonitor {
     }
   }
 
-  // Start 监控
+  // Start monitor
   startMonitoring() {
-    console.log('[SystemMonitor] 启动System monitoring服务');
+    console.log('[SystemMonitor] StartSystem monitoringservice');
 
-    // 1. System resources监控（every 5秒）
+    // 1. System resourcesmonitor(every 5秒)
     setInterval(() => {
       this.collectSystemResourcesMetrics();
     }, 5000);
 
-    // 2. 应用组件监控（every 30秒）
+    // 2. 应用组件monitor(every 30秒)
     setInterval(async () => {
       await this.collectApplicationMetrics();
     }, 30000);
 
-    // 3. 区块链和P2P network监控（every 60秒）
+    // 3. block链和P2P networkmonitor(every 60秒)
     setInterval(async () => {
       await this.collectBlockchainMetrics();
       this.collectP2PMetrics();
     }, 60000);
 
-    // 4. API calls统计（every 10秒）
+    // 4. API calls统计(every 10秒)
     setInterval(() => {
       this.collectAPIMetrics();
     }, 10000);
 
-    // 5. 治理指标监控（every 60秒）
+    // 5. Governance指标monitor(every 60秒)
     setInterval(() => {
       this.collectGovernanceMetrics();
     }, 60000);
 
-    // 6. agent健康和贡献度监控（every 60秒）
+    // 6. agent健康和contribution度monitor(every 60秒)
     setInterval(() => {
       this.collectAgentHealthMetrics();
       this.collectAgentContributionMetrics();
     }, 60000);
 
-    // 7. 速率限制和缓存监控（every 15秒）
+    // 7. 速率限制和缓存monitor(every 15秒)
     setInterval(() => {
       this.collectRateLimitMetrics();
       this.collectCacheMetrics();
     }, 15000);
 
-    // 8. Agent registration rate监控（every 60秒）
+    // 8. Agent registration ratemonitor(every 60秒)
     setInterval(async () => {
       await this.collectAgentRegistrationMetrics();
     }, 60000);
 
-    console.log('[SystemMonitor] System monitoringService started完成');
+    console.log('[SystemMonitor] System monitoringService startedcomplete');
   }
 
   // Collect system resource metrics
@@ -503,18 +503,18 @@ class SystemMonitor {
       const currentCpuUsage = process.cpuUsage();
       const currentTimestamp = Date.now();
       
-      // 计算时间差（毫秒）
+      // Calculate时间差(ms)
       const elapsedMs = currentTimestamp - this.lastCpuTimestamp;
-      // 计算CPU使用时间差（微秒）
+      // CalculateCPUusing时间差(微秒)
       const cpuElapsedUser = currentCpuUsage.user - this.lastCpuUsage.user;
       const cpuElapsedSystem = currentCpuUsage.system - this.lastCpuUsage.system;
       const cpuElapsedTotal = cpuElapsedUser + cpuElapsedSystem;
       
-      // 计算CPU usage百分比：(CPU使用时间差 / 时间差) * 100%
-      // 注意：process.cpuUsage()返回的是微秒，需要转换为毫秒
+      // CalculateCPU usage百分比: (CPUusing时间差 / 时间差) * 100%
+      // 注意: process.cpuUsage()Return的是微秒, requires转换为ms
       const cpuPercent = (cpuElapsedTotal / (elapsedMs * 1000)) * 100;
       
-      // 更新上一次记录
+      // Update上一次记录
       this.lastCpuUsage = currentCpuUsage;
       this.lastCpuTimestamp = currentTimestamp;
       
@@ -526,11 +526,11 @@ class SystemMonitor {
       const memPercent = ((memUsage.rss / totalMem) * 100).toFixed(2);
       this.recordMetric(METRIC_TYPES.MEMORY_USAGE, parseFloat(memPercent));
 
-      // get真实磁盘使用率
+      // get真实磁盘using率
       const diskInfo = (os.freemem() / os.totalmem() * 100).toFixed(2);
       this.recordMetric(METRIC_TYPES.DISK_USAGE, parseFloat(diskInfo));
 
-      // get真实网络连接数（简化：通过监听的网络接口数）
+      // get真实networkConnect数(简化: viaListen的network接口数)
       const networkInterfaces = os.networkInterfaces();
       let connections = 0;
       for (const interfaceName in networkInterfaces) {
@@ -551,11 +551,11 @@ class SystemMonitor {
   // Collect application component metrics
   async collectApplicationMetrics() {
     try {
-      // Get real agent health status（从招聘APIget）
+      // Get real agent health status(从招聘APIget)
       const agentHealth = await this.getRealAgentHealth();
       this.recordMetric(METRIC_TYPES.AGENT_HEALTH, agentHealth);
 
-      // get真实Task 执行速率（简化：通过已Processing的请求数）
+      // get真实Task Execute速率(简化: via已Processing的请求数)
       const taskExecutionRate = this.getRealTaskExecutionRate();
       this.recordMetric(METRIC_TYPES.TASK_EXECUTION_RATE, taskExecutionRate);
       
@@ -610,7 +610,7 @@ class SystemMonitor {
   async getRealAgentHealth() {
     try {
       // 尝试从AgentManagerGet real agent health status
-      // 由于SystemMonitor是独立模块，这里通过读取agent数据文件get
+      // 由于SystemMonitor是独立Module, 这里via读取agentdata文件get
       const fs = await import('fs');
       const path = await import('path');
       const agentsDir = path.default.join(__dirname, '../../data/agents');
@@ -653,7 +653,7 @@ class SystemMonitor {
         });
       }
       
-      // 计算集群信息（简化计算）
+      // Calculate集群info(简化Calculate)
       const clusterCount = Math.max(1, Math.ceil(totalCount / 100));
       const agentHealth = {
         totalCount: totalCount,
@@ -668,7 +668,7 @@ class SystemMonitor {
         },
         shardingStrategy: 'capability',
         clusterSize: 100,
-        details: details.slice(0, 5) // 只返回前5个智能体的详细信息
+        details: details.slice(0, 5) // 只Return前5个Agent的详细info
       };
       
       return agentHealth;
@@ -690,13 +690,13 @@ class SystemMonitor {
     }
   }
 
-  // get真实Task 执行速率
+  // get真实Task Execute速率
   getRealTaskExecutionRate() {
     try {
-      // In production, this should从日志或计数器中get
-      return 0; // 初始状态，无任务执行
+      // In production, this should从日志或count器中get
+      return 0; // 初始status, 无TaskExecute
     } catch (error) {
-      console.error('[SystemMonitor] get真实Task 执行速率Failed:', error);
+      console.error('[SystemMonitor] get真实Task Execute速率Failed:', error);
       return 0;
     }
   }
@@ -704,7 +704,7 @@ class SystemMonitor {
   // Collect blockchain metrics
   async collectBlockchainMetrics() {
     try {
-      // Get real blockchain height（从区块链模块get）
+      // Get real blockchain height(从block链Moduleget)
       const blockchainHeight = await this.getRealBlockchainHeight();
       this.recordMetric(METRIC_TYPES.BLOCKCHAIN_HEIGHT, blockchainHeight);
 
@@ -718,7 +718,7 @@ class SystemMonitor {
   // Collect P2P network metrics
   collectP2PMetrics() {
     try {
-      // Get real P2P peer count（从P2P模块get）
+      // Get real P2P peer count(从P2PModuleget)
       const peerCount = this.getRealPeerCount();
       this.recordMetric(METRIC_TYPES.P2P_PEER_COUNT, peerCount);
 
@@ -732,7 +732,7 @@ class SystemMonitor {
   // Get real blockchain height
   async getRealBlockchainHeight() {
     try {
-      // from real区块链数据文件get高度
+      // from realblock链data文件get高度
       const fs = await import('fs');
       const path = await import('path');
       const blocksPath = path.default.join(__dirname, '../../data/blockchain/blocks.json');
@@ -751,9 +751,9 @@ class SystemMonitor {
   // Get real P2P peer count
   getRealPeerCount() {
     try {
-      // In production, this should从P2P模块get当前连接数
-      // since it isInitial state，return 0
-      return 0; // 初始状态，无P2P连接
+      // In production, this should从P2PModulegetCurrentConnect数
+      // since it isInitial state, return 0
+      return 0; // 初始status, 无P2PConnect
     } catch (error) {
       console.error('[SystemMonitor] Get real P2P peer countFailed:', error);
       return 0;
@@ -763,33 +763,33 @@ class SystemMonitor {
   // Collect API call metrics
   collectAPIMetrics() {
     try {
-      // Get real API success rate（从HTTP服务器get）
+      // Get real API success rate(从HTTPservice器get)
       const successRate = this.getRealApiSuccessRate();
       this.recordMetric(METRIC_TYPES.API_SUCCESS_RATE, successRate);
 
     } catch (error) {
       console.error('[SystemMonitor] Collect API call metricsFailed:', error);
       // Fall back to real initial state
-      this.recordMetric(METRIC_TYPES.API_SUCCESS_RATE, 100); // 初始状态，无失败请求
+      this.recordMetric(METRIC_TYPES.API_SUCCESS_RATE, 100); // 初始status, 无failed请求
     }
   }
 
   // Get real API success rate
   getRealApiSuccessRate() {
     try {
-      // In production, this should从HTTP服务器get请求统计
-      // since it isInitial state，返回100%成功率
-      return 100; // 初始状态，无API请求或全部成功
+      // In production, this should从HTTPservice器get请求统计
+      // since it isInitial state, Return100%success率
+      return 100; // 初始status, 无API请求或全部success
     } catch (error) {
       console.error('[SystemMonitor] Get real API success rateFailed:', error);
       return 100;
     }
   }
   
-  // 新增Task 管理相关指标的get方法
+  // 新增Task 管理相关指标的getmethod
   async getRealTaskCreationRate() {
     try {
-      // 从Task 数据文件get真实Task 创建速率
+      // 从Task data文件get真实Task Create速率
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -797,22 +797,22 @@ class SystemMonitor {
       let taskCreationRate = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算过去24 hoursTask 数
+        // Calculate过去24 hoursTask 数
         const now = Date.now();
         const past24h = now - 24 * 60 * 60 * 1000;
         const recentTasks = tasksData.filter(task => task.createdAt && task.createdAt > past24h);
-        taskCreationRate = recentTasks.length / 24; // 平均每小时创建的任务数
+        taskCreationRate = recentTasks.length / 24; // 平均每小时Create的Task数
       }
       return taskCreationRate;
     } catch (error) {
-      console.error('[SystemMonitor] get真实Task 创建速率Failed:', error);
+      console.error('[SystemMonitor] get真实Task Create速率Failed:', error);
       return 0;
     }
   }
   
   async getRealTaskCompletionRate() {
     try {
-      // 从Task 数据文件get真实Task 完成速率
+      // 从Task data文件get真实Task complete速率
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -820,22 +820,22 @@ class SystemMonitor {
       let taskCompletionRate = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算过去24 hourswithin完成的Task 数
+        // Calculate过去24 hourswithincomplete的Task 数
         const now = Date.now();
         const past24h = now - 24 * 60 * 60 * 1000;
         const completedTasks = tasksData.filter(task => task.completedAt && task.completedAt > past24h);
-        taskCompletionRate = completedTasks.length / 24; // 平均每小时完成的任务数
+        taskCompletionRate = completedTasks.length / 24; // 平均每小时complete的Task数
       }
       return taskCompletionRate;
     } catch (error) {
-      console.error('[SystemMonitor] get真实Task 完成速率Failed:', error);
+      console.error('[SystemMonitor] get真实Task complete速率Failed:', error);
       return 0;
     }
   }
   
   async getRealTaskQualityScore() {
     try {
-      // 从Task 数据文件get真实Task Quality score
+      // 从Task data文件get真实Task Quality score
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -844,7 +844,7 @@ class SystemMonitor {
       let scoredTasks = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算CompletedTask 的AverageQuality score
+        // CalculateCompletedTask 的AverageQuality score
         const completedTasks = tasksData.filter(task => task.status === 'completed' && typeof task.qualityScore === 'number');
         scoredTasks = completedTasks.length;
         if (scoredTasks > 0) {
@@ -852,7 +852,7 @@ class SystemMonitor {
           return totalScore / scoredTasks;
         }
       }
-      return 5; // 默认中等质量分数
+      return 5; // Default中etc.质量分数
     } catch (error) {
       console.error('[SystemMonitor] get真实Task Quality scoreFailed:', error);
       return 5;
@@ -861,7 +861,7 @@ class SystemMonitor {
   
   async getRealCrossFunctionalAgentCount() {
     try {
-      // 从agent数据文件getCross-functional agent count
+      // 从agentdata文件getCross-functional agent count
       const fs = await import('fs');
       const path = await import('path');
       const agentsDir = path.default.join(__dirname, '../../data/agents');
@@ -892,7 +892,7 @@ class SystemMonitor {
   
   async getRealAgentCapabilityMatchRate() {
     try {
-      // 从Task 数据文件getAgent capability match rate
+      // 从Task data文件getAgent capability match rate
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -901,19 +901,19 @@ class SystemMonitor {
       let totalTasks = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算能力匹配的Task 比例
+        // Calculate能力匹配的Task 比例
         const assignedTasks = tasksData.filter(task => task.agentId && task.agentCapabilities);
         totalTasks = assignedTasks.length;
         if (totalTasks > 0) {
           matchedTasks = assignedTasks.filter(task => {
-            // 简化匹配Logic: 如果Task 需要的能力与agent具备的能力有重叠，则认为匹配
+            // 简化匹配Logic: 如果Task requires的能力与agent具备的能力有重叠, 则认为匹配
             return task.requiredCapabilities && task.agentCapabilities && 
                    task.requiredCapabilities.some(cap => task.agentCapabilities.includes(cap));
           }).length;
           return matchedTasks / totalTasks;
         }
       }
-      return 0.7; // 默认70%匹配率
+      return 0.7; // Default70%匹配率
     } catch (error) {
       console.error('[SystemMonitor] Get real agent capability match rateFailed:', error);
       return 0.7;
@@ -922,7 +922,7 @@ class SystemMonitor {
   
   async getRealTeamCollaborationRate() {
     try {
-      // 从Task 数据文件getTeam collaboration rate
+      // 从Task data文件getTeam collaboration rate
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -931,14 +931,14 @@ class SystemMonitor {
       let totalTasks = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算协作Task 比例
+        // Calculate协作Task 比例
         totalTasks = tasksData.length;
         if (totalTasks > 0) {
           collaborativeTasks = tasksData.filter(task => task.agentIds && task.agentIds.length > 1).length;
           return collaborativeTasks / totalTasks;
         }
       }
-      return 0.3; // 默认30%协作率
+      return 0.3; // Default30%协作率
     } catch (error) {
       console.error('[SystemMonitor] Get real team collaboration rateFailed:', error);
       return 0.3;
@@ -947,7 +947,7 @@ class SystemMonitor {
   
   async getRealLongTermTaskProgress() {
     try {
-      // 从Task 数据文件get长期Task 进度
+      // 从Task data文件get长期Task 进度
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -956,7 +956,7 @@ class SystemMonitor {
       let longTermTasks = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算长期Task 的Average进度
+        // Calculate长期Task 的Average进度
         const longTerm = tasksData.filter(task => task.type === 'long_term' && typeof task.progress === 'number');
         longTermTasks = longTerm.length;
         if (longTermTasks > 0) {
@@ -964,7 +964,7 @@ class SystemMonitor {
           return totalProgress / longTermTasks;
         }
       }
-      return 0; // 默认0%进度
+      return 0; // Default0%进度
     } catch (error) {
       console.error('[SystemMonitor] get真实长期Task 进度Failed:', error);
       return 0;
@@ -973,7 +973,7 @@ class SystemMonitor {
   
   async getRealTaskDependencyFulfillment() {
     try {
-      // 从Task 数据文件getTask 依赖满足率
+      // 从Task data文件getTask 依赖满足率
       const fs = await import('fs');
       const path = await import('path');
       const tasksPath = path.default.join(__dirname, '../../data/tasks/tasks.json');
@@ -982,12 +982,12 @@ class SystemMonitor {
       let totalDependencies = 0;
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
-        // 计算依赖满足的Task 比例
+        // Calculate依赖满足的Task 比例
         const dependentTasks = tasksData.filter(task => task.dependencies && task.dependencies.length > 0);
         dependentTasks.forEach(task => {
           const dependencies = task.dependencies;
           totalDependencies += dependencies.length;
-          // 检查every 个依赖的Task 是否Completed
+          // Checkevery 个依赖的Task 是否Completed
           dependencies.forEach(depTaskId => {
             const depTask = tasksData.find(t => t.id === depTaskId);
             if (depTask && depTask.status === 'completed') {
@@ -999,7 +999,7 @@ class SystemMonitor {
           return fulfilledDependencies / totalDependencies;
         }
       }
-      return 0.7; // 默认70%满足率
+      return 0.7; // Default70%满足率
     } catch (error) {
       console.error('[SystemMonitor] get真实Task 依赖满足率Failed:', error);
       return 0.7;
@@ -1018,7 +1018,7 @@ class SystemMonitor {
       timestamp
     };
 
-    // 更新当前指标值
+    // UpdateCurrent指标值
     this.metrics.set(type, metric);
 
     // Save metrics to file (every hour)
@@ -1033,7 +1033,7 @@ class SystemMonitor {
         }
       } catch (error) {
         console.error('读取指标历史记录Failed:', error);
-        // 如果文件损坏，重新创建一个空数组
+        // 如果文件损坏, 重新Create一个空数组
         metricsHistory = [];
       }
     }
@@ -1054,12 +1054,12 @@ class SystemMonitor {
     }, 30000);
   }
 
-  // 检查Alert rules
+  // CheckAlert rules
   checkAlerts() {
     this.alertRules.forEach((rule, ruleId) => {
       if (!rule.enabled) return;
       
-      // 确保规则条件是一个函数
+      // ensure规则条件是一个function
       if (typeof rule.condition !== 'function') {
         console.error(`Alert rules ${ruleId} condition is not a function, skipping check`);
         return;
@@ -1069,8 +1069,8 @@ class SystemMonitor {
       if (!metric) return;
 
       try {
-        // get该指标的历史数据
-        const metricHistory = this.getMetricHistory(rule.metric, 1); // 获取最近1小时的数据
+        // get该指标的历史data
+        const metricHistory = this.getMetricHistory(rule.metric, 1); // Get最近1小时的data
         
         // 根据规则条件判断是否触发告警
         const shouldTrigger = rule.condition(metric.value, metricHistory);
@@ -1079,7 +1079,7 @@ class SystemMonitor {
           // 触发告警
           this.triggerAlert(rule, metric);
         } else {
-          // 清除告警（如果存在）
+          // 清除告警(如果存在)
           this.clearAlert(ruleId);
         }
       } catch (error) {
@@ -1104,7 +1104,7 @@ class SystemMonitor {
       status: 'active'
     };
 
-    // 检查是否已经有相同规则的活跃告警
+    // Check是否已经有相同规则的活跃告警
     const existingAlert = Array.from(this.alerts.values()).find(
       a => a.ruleId === rule.id && a.status === 'active'
     );
@@ -1136,11 +1136,11 @@ class SystemMonitor {
     const alertLogPath = path.join(this.logsDirectory, 'alerts.log');
     fs.appendFileSync(alertLogPath, JSON.stringify(alert) + '\n', 'utf8');
 
-    // 打印告警信息
+    // 打印告警info
     const color = this.getAlertColor(alert.level);
     console.log(`\x1b[${color}m[ALERT] ${alert.level.toUpperCase()} - ${alert.name}: ${alert.message} (值: ${alert.metricValue})\x1b[0m`);
 
-    // 告警升级和自动修复触发
+    // 告警升级和auto修复触发
     this.handleAlertEscalation(alert);
   }
 
@@ -1156,17 +1156,17 @@ class SystemMonitor {
 
     // 同规则连续告警 3 次 → 升级为 CRITICAL
     if (count >= 3 && alert.level !== 'CRITICAL') {
-      console.log(`\x1b[31m[ESCALATION] ${alert.ruleId} 已连续触发 ${count} 次，升级为 CRITICAL\x1b[0m`);
+      console.log(`\x1b[31m[ESCALATION] ${alert.ruleId} 已连续触发 ${count} 次, 升级为 CRITICAL\x1b[0m`);
       alert.level = 'CRITICAL';
       alert.escalated = true;
     }
 
-    // CRITICAL 或 ERROR 告警 → 触发自动修复
+    // CRITICAL 或 ERROR 告警 → 触发auto修复
     if (alert.level === 'CRITICAL' || alert.level === 'ERROR') {
       this.triggerAutoRemediation(alert);
     }
 
-    // 重置计数器（every  5  minutes后清除）
+    // 重置count器(every  5  minutes后清除)
     if (!this._alertResetTimer) {
       this._alertResetTimer = setInterval(() => {
         this.alertCounts.clear();
@@ -1174,16 +1174,16 @@ class SystemMonitor {
     }
   }
 
-  // 自动修复触发
+  // auto修复触发
   async triggerAutoRemediation(alert) {
     try {
-      // 动态导入恢复管理器（避免循环依赖）
+      // 动态Importrecovery管理器(避免循环依赖)
       const { default: recoveryManager } = await import('./recoveryManager.js');
       
       const report = recoveryManager.getHealthReport();
-      console.log(`\x1b[33m[AUTO-RECOVERY] 触发Auto-recovery: ${alert.name}, 当前状态: ${report.state}\x1b[0m`);
+      console.log(`\x1b[33m[AUTO-RECOVERY] 触发Auto-recovery: ${alert.name}, Currentstatus: ${report.state}\x1b[0m`);
 
-      // 根据告警类型映射到对应的恢复操作
+      // 根据告警type映射到对应的recovery操作
       const remediationMap = {
         'cpu_usage': 'RESOURCE_EXHAUSTION',
         'memory_usage': 'RESOURCE_EXHAUSTION',
@@ -1197,13 +1197,13 @@ class SystemMonitor {
 
       const recoveryType = remediationMap[alert.ruleId] || 'GENERIC';
       
-      // 如果恢复管理器已在恢复中，记录但不重复触发
+      // 如果recovery管理器已在recovery中, 记录但不重复触发
       if (report.recoveryInProgress) {
-        console.log('[AUTO-RECOVERY] 恢复已在进行中，Skipping duplicate trigger');
+        console.log('[AUTO-RECOVERY] recovery已在in progress, Skipping duplicate trigger');
         return;
       }
 
-      // 触发恢复（通过 health check 的自然循环）
+      // 触发recovery(via health check 的自然循环)
       recoveryManager._checkHealth();
     } catch (e) {
       console.error('[AUTO-RECOVERY] 触发Failed:', e.message);
@@ -1225,7 +1225,7 @@ class SystemMonitor {
     }
   }
 
-  // 保存告警
+  // Save告警
   saveAlert(alert) {
     const alertPath = path.join(this.alertsDirectory, `${alert.id}.json`);
     fs.writeFileSync(alertPath, JSON.stringify(alert, null, 2), 'utf8');
@@ -1235,7 +1235,7 @@ class SystemMonitor {
   getSystemStatus() {
     const metrics = {};
     
-    // 初始化所有指标类型，确保every 个类型都有值
+    // Initialize所有指标type, ensureevery 个type都有值
     Object.values(METRIC_TYPES).forEach(type => {
       metrics[type] = this.metrics.get(type)?.value || this.getDefaultMetricValue(type);
     });
@@ -1260,10 +1260,10 @@ class SystemMonitor {
   // Collect governance metrics
   collectGovernanceMetrics() {
     try {
-      // Get real governance metrics（从治理合约get）
+      // Get real governance metrics(从GovernanceContractget)
       const governanceMetrics = this.getRealGovernanceMetrics();
       
-      // 记录各个治理指标
+      // 记录各个Governance指标
       this.recordMetric(METRIC_TYPES.GOVERNANCE_PROPOSAL_COUNT, governanceMetrics.proposalCount);
       this.recordMetric(METRIC_TYPES.GOVERNANCE_VOTER_PARTICIPATION, governanceMetrics.voterParticipation);
       this.recordMetric(METRIC_TYPES.GOVERNANCE_PASS_RATE, governanceMetrics.passRate);
@@ -1297,15 +1297,15 @@ class SystemMonitor {
   // Collect agent health metrics
   async collectAgentHealthMetrics() {
     try {
-      // 计算agent活跃度
+      // Calculateagent活跃度
       const agentActivity = await this.getRealAgentActivity();
       this.recordMetric(METRIC_TYPES.AGENT_ACTIVITY, agentActivity);
       
-      // 计算agent分类分布
+      // Calculateagent分class分布
       const categoryDistribution = await this.getRealAgentCategoryDistribution();
       this.recordMetric(METRIC_TYPES.AGENT_CATEGORY_DISTRIBUTION, categoryDistribution);
       
-      // 计算agent能力评分
+      // Calculateagent能力评分
       const capabilityScore = await this.getRealAgentCapabilityScore();
       this.recordMetric(METRIC_TYPES.AGENT_CAPABILITY_SCORE, capabilityScore);
       
@@ -1328,15 +1328,15 @@ class SystemMonitor {
   // Collect agent contribution metrics
   async collectAgentContributionMetrics() {
     try {
-      // 计算agent贡献度
+      // Calculateagentcontribution度
       const contribution = await this.getRealAgentContribution();
       this.recordMetric(METRIC_TYPES.AGENT_CONTRIBUTION, contribution);
       
-      // 计算agent声誉值
+      // Calculateagent声誉值
       const reputation = await this.getRealAgentReputation();
       this.recordMetric(METRIC_TYPES.AGENT_REPUTATION, reputation);
       
-      // 计算agent奖励率
+      // Calculateagentreward率
       const rewardRate = await this.getRealAgentRewardRate();
       this.recordMetric(METRIC_TYPES.AGENT_REWARD_RATE, rewardRate);
       
@@ -1484,7 +1484,7 @@ class SystemMonitor {
   // Get real agent contribution
   async getRealAgentContribution() {
     try {
-      // 使用奖励系统get贡献度数据
+      // usingreward系统getcontribution度data
       const ranking = rewardSystem.getContributionRanking(10);
       
       if (ranking.success) {
@@ -1516,14 +1516,14 @@ class SystemMonitor {
   // Get real agent reputation
   async getRealAgentReputation() {
     try {
-      // 使用奖励系统get声誉值数据
+      // usingreward系统get声誉值data
       const ranking = rewardSystem.getContributionRanking();
       
       if (ranking.success) {
         const totalReputation = ranking.rankings.reduce((sum, agent) => sum + agent.reputation, 0);
         const average = ranking.rankings.length > 0 ? totalReputation / ranking.rankings.length : 0;
         
-        // 计算声誉值分布
+        // Calculate声誉值分布
         const distribution = {};
         ranking.rankings.forEach(agent => {
           const repRange = Math.floor(agent.reputation * 10) / 10;
@@ -1552,7 +1552,7 @@ class SystemMonitor {
   // Get real agent reward rate
   async getRealAgentRewardRate() {
     try {
-      // 从奖励数据文件get奖励率
+      // 从rewarddata文件getreward率
       const fs = await import('fs');
       const path = await import('path');
       const rewardsDir = path.default.join(__dirname, '../../data/rewards');
@@ -1592,11 +1592,11 @@ class SystemMonitor {
   // Collect rate limit metrics
   async collectRateLimitMetrics() {
     try {
-      // 从速率限制器get真实统计数据
+      // 从速率限制器get真实统计data
       const rateLimiter = (await import('../utils/rateLimiter.js')).default;
       const stats = rateLimiter.getStats();
-      // 计算触发次数（简化计算）
-      const rateLimitTriggered = Math.floor(Math.random() * 5); // 临时使用模拟数据，待集成真实触发计数
+      // Calculate触发次数(简化Calculate)
+      const rateLimitTriggered = Math.floor(Math.random() * 5); // 临时usingSimulationdata, 待集成真实触发count
       this.recordMetric(METRIC_TYPES.RATE_LIMIT_TRIGGERED, rateLimitTriggered);
     } catch (error) {
       console.error('[SystemMonitor] Collect rate limit metricsFailed:', error);
@@ -1607,13 +1607,13 @@ class SystemMonitor {
   // Collect cache metrics
   async collectCacheMetrics() {
     try {
-      // 从缓存get真实统计数据
+      // 从缓存get真实统计data
       const cache = (await import('../utils/cache.js')).default;
       const stats = cache.getStats();
       this.recordMetric(METRIC_TYPES.CACHE_HIT_RATE, stats.hitRate);
       this.recordMetric(METRIC_TYPES.CACHE_SIZE, stats.size);
       
-      // 收集API response时间（Simulated data）
+      // 收集API response时间(Simulated data)
       const apiResponseTime = Math.random() * 500 + 100; // 100-600ms
       this.recordMetric(METRIC_TYPES.API_RESPONSE_TIME, apiResponseTime);
     } catch (error) {
@@ -1627,7 +1627,7 @@ class SystemMonitor {
   // Collect agent registration rate metrics
   async collectAgentRegistrationMetrics() {
     try {
-      // 从agent数据目录get注册率
+      // 从agentData directorygetRegister率
       const fs = await import('fs');
       const path = await import('path');
       const agentsDir = path.default.join(__dirname, '../../data/agents');
@@ -1682,10 +1682,10 @@ class SystemMonitor {
         paramChanges = proposals.filter(p => p.type === 'param_change' && p.status === 'completed' && p.result === 'passed').length;
       }
       
-      // 计算提案通过率
+      // CalculateProposalvia率
       const passRate = completedProposals > 0 ? (passedProposals / completedProposals) * 100 : 0;
       
-      // 从投票数据文件get投票参与率
+      // 从Votedata文件getVoteparticipation rate
       const votesPath = path.join(governanceDir, 'votes.json');
       let totalVotes = 0;
       let uniqueVoters = new Set();
@@ -1699,7 +1699,7 @@ class SystemMonitor {
         }
       }
       
-      // 从治理参数get注册选民总数
+      // 从Governance parametersgetRegister选民total
       const paramsPath = path.join(governanceDir, 'params.json');
       let eligibleVoters = uniqueVoters.size;
       if (fs.existsSync(paramsPath)) {
@@ -1708,19 +1708,19 @@ class SystemMonitor {
           eligibleVoters = Math.max(eligibleVoters, paramsData.eligibleVoters || paramsData.totalVoters);
         }
       }
-      // 如果无法get实际选民数，使用唯一投票者数量作为下限估计
+      // 如果无法get实际选民数, using唯一Vote者数量作为下限估计
       if (eligibleVoters === 0 && uniqueVoters.size > 0) {
         eligibleVoters = uniqueVoters.size;
       }
       
-      // 投票参与率 = 唯一投票者数 / 合格选民数
+      // Voteparticipation rate = 唯一Vote者数 / 合格选民数
       const voterParticipation = eligibleVoters > 0 ? Math.min(100, (uniqueVoters.size / eligibleVoters) * 100) : 0;
-      // 投票轮次率 = 总投票数 / (提案数 * 合格选民数)
+      // Vote轮次率 = 总Vote数 / (Proposal数 * 合格选民数)
       const voteTurnout = (proposalCount > 0 && eligibleVoters > 0) 
         ? Math.min(100, (totalVotes / (proposalCount * eligibleVoters)) * 100) 
         : voterParticipation;
       
-      // 提案验证通过率：从提案中统计实际被验证通过的比率
+      // ProposalVerifyvia率: 从Proposal中统计实际被Verifyvia的比率
       let validatedProposals = 0;
       let approvedValidations = 0;
       if (fs.existsSync(proposalsPath)) {
@@ -1739,7 +1739,7 @@ class SystemMonitor {
         ? (approvedValidations / validatedProposals) * 100 
         : (proposalCount > 0 ? 100 : 0);
       
-      // Reward distribution（从实际奖励数据读取）
+      // Reward distribution(从实际rewarddata读取)
       const rewardsPath = path.join(governanceDir, 'rewards.json');
       let rewardDistribution;
       if (fs.existsSync(rewardsPath)) {
@@ -1815,7 +1815,7 @@ class SystemMonitor {
       case METRIC_TYPES.GOVERNANCE_PARAM_CHANGES:
         return 0;
       case METRIC_TYPES.TASK_QUALITY_SCORE:
-        return 5; // 默认中等质量分数
+        return 5; // Default中etc.质量分数
       case METRIC_TYPES.AGENT_CAPABILITY_MATCH_RATE:
       case METRIC_TYPES.TEAM_COLLABORATION_RATE:
       case METRIC_TYPES.TASK_DEPENDENCY_FULFILLMENT:
@@ -1823,7 +1823,7 @@ class SystemMonitor {
       case METRIC_TYPES.GOVERNANCE_PASS_RATE:
       case METRIC_TYPES.GOVERNANCE_VOTE_TURNOUT:
       case METRIC_TYPES.GOVERNANCE_PROPOSAL_VALIDATION_RATE:
-        return 0.7; // 默认70%匹配率或参与率
+        return 0.7; // Default70%匹配率或participation rate
       case METRIC_TYPES.REWARD_DISTRIBUTION:
       case METRIC_TYPES.GOVERNANCE_REWARD_DISTRIBUTION:
         return {

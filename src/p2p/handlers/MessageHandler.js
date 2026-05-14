@@ -1,6 +1,6 @@
 /**
- * MessageHandler基类
- * 所有MessageHandler都应该继承此类
+ * MessageHandler基class
+ * 所有MessageHandler都should继承此class
  */
 export class MessageHandler {
   constructor(p2pServer) {
@@ -11,14 +11,14 @@ export class MessageHandler {
    * ProcessingMessage
    * @param {string} peerId - Peer nodes ID
    * @param {object} msg - Message对象
-   * @returns {Promise<boolean>} 是否成功Processing
+   * @returns {Promise<boolean>} 是否successProcessing
    */
   async handle(peerId, msg) {
     throw new Error('handle method must be implemented by subclass');
   }
 
   /**
-   * 验证Message格式
+   * VerifyMessage格式
    * @param {object} msg - Message对象
    * @returns {boolean} 是否有效
    */
@@ -27,7 +27,7 @@ export class MessageHandler {
   }
 
   /**
-   * 检查是否需要节点验证
+   * Check是否requiresnodeVerify
    * @returns {boolean}
    */
   requiresVerification() {

@@ -12,7 +12,7 @@ import { AgentEcosystem } from '../ai/agentEcosystem.js';
 
 const PORT = 9860;
 
-// 获取当前文件和目录信息
+// GetCurrent文件和目录info
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -48,7 +48,7 @@ const monitoringData = {
   recentEvents: []
 };
 
-// 检查服务状态
+// Checkservicestatus
 function checkServiceStatus() {
   return new Promise((resolve) => {
     // Actual service status check logic can be implemented here
@@ -65,14 +65,14 @@ function collectAgentActivity() {
   const agents = AgentEcosystem.getAllAgents();
   const tasks = AgentEcosystem.getAllTasks();
   
-  // 计算智能体状态统计
+  // CalculateAgentstatus统计
   const agentStatusCount = {
     active: 0,
     idle: 0,
     offline: 0
   };
   
-  // 计算智能体能力统计
+  // CalculateAgent能力统计
   const agentCapabilityCount = {};
   
   agents.forEach(agent => {
@@ -85,7 +85,7 @@ function collectAgentActivity() {
       agentStatusCount.offline++;
     }
     
-    // 统计智能体能力
+    // 统计Agent能力
     if (agent.capabilities && agent.capabilities.length > 0) {
       agent.capabilities.forEach(capability => {
         agentCapabilityCount[capability] = (agentCapabilityCount[capability] || 0) + 1;
@@ -128,7 +128,7 @@ function collectAgentActivity() {
   return activity;
 }
 
-// 生成系统警报
+// Generate系统警报
 function generateAlerts() {
   const alerts = [];
   const agents = AgentEcosystem.getAllAgents();
@@ -167,7 +167,7 @@ function generateAlerts() {
     }
   });
   
-  // 添加新警报到监控数据
+  // 添加新警报到monitordata
   alerts.forEach(alert => {
     monitoringData.alerts.push(alert);
   });
@@ -180,7 +180,7 @@ function generateAlerts() {
   return alerts;
 }
 
-// 收集性能数据
+// 收集性能data
 function collectPerformanceData() {
   const performance = {
     timestamp: Date.now(),
@@ -208,7 +208,7 @@ function startMonitoring() {
   }, 60000); // Collect data every 60 seconds
 }
 
-// 创建监控服务器
+// Createmonitorservice器
 const server = http.createServer((req, res) => {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -223,7 +223,7 @@ const server = http.createServer((req, res) => {
 
   const url = new URL(req.url, `http://localhost:${PORT}`);
 
-  // 静态文件服务
+  // 静态文件service
   if (url.pathname === '/' || url.pathname === '/dashboard.html') {
     const filePath = path.join(__dirname, 'dashboard.html');
     
@@ -251,7 +251,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 获取系统状态
+  // Get系统status
   if (url.pathname === '/status') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
@@ -271,7 +271,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 获取系统警报
+  // Get系统警报
   if (url.pathname === '/alerts') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
@@ -281,7 +281,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 获取性能数据
+  // Get性能data
   if (url.pathname === '/performance') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
@@ -291,7 +291,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 获取智能体统计数据
+  // GetAgent统计data
   if (url.pathname === '/agent-stats') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
@@ -311,7 +311,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 获取网络统计数据
+  // Getnetwork统计data
   if (url.pathname === '/network-stats') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
@@ -366,7 +366,7 @@ const server = http.createServer((req, res) => {
   res.end(JSON.stringify({ error: 'Not found' }));
 });
 
-// 启动监控服务
+// Startmonitorservice
 function startMonitoringService() {
   server.listen(PORT, () => {
     console.log(`
@@ -389,7 +389,7 @@ function startMonitoringService() {
 ╚══════════════════════════════════════════════════╝
     `);
     
-    // 开始定期监控
+    // 开始定期monitor
     startMonitoring();
     
     // Initial data collection
@@ -402,5 +402,5 @@ function startMonitoringService() {
 
 export { startMonitoringService };
 
-// 启动监控服务
+// Startmonitorservice
 startMonitoringService();

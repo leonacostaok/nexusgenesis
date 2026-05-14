@@ -1,6 +1,6 @@
 /**
- * 跨链桥 Relay 中继网络增强 (P2-2)
- * 中继节点管理、多跳路由、Message传递协议、费用市场
+ * Cross-chain桥 Relay 中继network增强 (P2-2)
+ * 中继node管理, 多跳路由, Message传递protocol, 费用marketplace
  */
 
 const SUPPORTED_CHAINS = ['ethereum', 'bsc', 'polygon', 'solana', 'avalanche', 'arbitrum'];

@@ -1,17 +1,17 @@
 /**
  * NexusGenesis Cross-Chain Bridge Protocol
  * 
- * 功能：
- * 1. 资产锁定与释放
- * 2. 跨链Message传递
+ * Features: 
+ * 1. assetLock与Release
+ * 2. Cross-chainMessage传递
  * 3. Validator集管理
- * 4. 交易状态追踪
+ * 4. transactionstatus追踪
  */
 
 import crypto from 'crypto';
 
 /**
- * 跨链桥接协议
+ * Cross-chainBridgeprotocol
  */
 export class CrossChainBridge {
   constructor(config = {}) {
@@ -20,7 +20,7 @@ export class CrossChainBridge {
     this.minValidators = config.minValidators || 3;
     this.maxValidators = config.maxValidators || 10;
     this.signatureThreshold = config.signatureThreshold || 2;
-    this.timeLockDuration = config.timeLockDuration || 3600000; // 默认1小时时间锁
+    this.timeLockDuration = config.timeLockDuration || 3600000; // Default1小时Timelock
     this.validators = new Map();
     this.lockedAssets = new Map();
     this.pendingTransfers = new Map();
@@ -32,11 +32,11 @@ export class CrossChainBridge {
   }
 
   /**
-   * 注册Validator
+   * RegisterValidator
    * @param {string} validatorId - ValidatorID
-   * @param {string} publicKey - Validator公钥
-   * @param {object} metadata - Validator元数据
-   * @returns {boolean} 注册结果
+   * @param {string} publicKey - Validatorpublic key
+   * @param {object} metadata - Validatormetadata
+   * @returns {boolean} Register结果
    */
   registerValidator(validatorId, publicKey, metadata = {}) {
     if (this.validators.has(validatorId)) {
@@ -60,7 +60,7 @@ export class CrossChainBridge {
       isActive: true,
       registeredAt: Date.now(),
       validatedCount: 0,
-      reputation: 100, // 初始信誉分
+      reputation: 100, // 初始reputation score
       lastValidatedAt: null,
       metadata
     });
@@ -90,9 +90,9 @@ export class CrossChainBridge {
   }
   
   /**
-   * 更新Validator信誉分
+   * UpdateValidatorreputation score
    * @param {string} validatorId - ValidatorID
-   * @param {number} delta - 信誉分变化值
+   * @param {number} delta - reputation score变化值
    * @returns {boolean} 操作结果
    */
   updateValidatorReputation(validatorId, delta) {
@@ -135,23 +135,23 @@ export class CrossChainBridge {
   }
   
   /**
-   * getValidator信息
+   * getValidatorinfo
    * @param {string} validatorId - ValidatorID
-   * @returns {object|null} Validator信息
+   * @returns {object|null} Validatorinfo
    */
   getValidator(validatorId) {
     return this.validators.get(validatorId) || null;
   }
 
   /**
-   * 锁定资产
+   * Lockasset
    * @param {string} fromChain - 源链
    * @param {string} toChain - 目标链
-   * @param {string} asset - 资产标识
-   * @param {number} amount - 金额
-   * @param {string} recipient - 接收地址
+   * @param {string} asset - asset标识
+   * @param {number} amount - amount
+   * @param {string} recipient - Receiveaddress
    * @param {object} options - 附加选项
-   * @returns {object} 锁定结果
+   * @returns {object} Lock结果
    */
   lockAsset(fromChain, toChain, asset, amount, recipient, options = {}) {
     if (!this.supportedChains.includes(fromChain)) {
@@ -207,10 +207,10 @@ export class CrossChainBridge {
   }
   
   /**
-   * 紧急解锁（仅管理员）
-   * @param {string} transferId - 转账ID
-   * @param {string} adminSignature - 管理员签名
-   * @returns {boolean} 解锁结果
+   * 紧急unlock(仅管理员)
+   * @param {string} transferId - transferID
+   * @param {string} adminSignature - 管理员Sign
+   * @returns {boolean} unlock结果
    */
   emergencyUnlock(transferId, adminSignature) {
     const transfer = this.pendingTransfers.get(transferId);
@@ -233,8 +233,8 @@ export class CrossChainBridge {
   }
   
   /**
-   * 检查时间锁是否过期
-   * @param {string} transferId - 转账ID
+   * CheckTimelock是否过期
+   * @param {string} transferId - transferID
    * @returns {boolean} 是否过期
    */
   isTimeLockExpired(transferId) {
@@ -246,11 +246,11 @@ export class CrossChainBridge {
   }
 
   /**
-   * 验证转账
-   * @param {string} transferId - 转账ID
+   * Verifytransfer
+   * @param {string} transferId - transferID
    * @param {string} validatorId - ValidatorID
-   * @param {Buffer} signature - 签名
-   * @returns {boolean} 验证结果
+   * @param {Buffer} signature - Sign
+   * @returns {boolean} verification result
    */
   validateTransfer(transferId, validatorId, signature) {
     const transfer = this.pendingTransfers.get(transferId);
@@ -275,19 +275,19 @@ export class CrossChainBridge {
       return false;
     }
     
-    // 检查是否已经验证过
+    // Check是否已经Verify过
     if (transfer.validators.includes(validatorId)) {
       console.warn(`[BRIDGE] Validator ${validatorId} already validated transfer ${transferId}`);
       return false;
     }
     
-    // 检查时间锁
+    // CheckTimelock
     if (transfer.isTimeLocked && !this.isTimeLockExpired(transferId)) {
       console.warn(`[BRIDGE] Time lock not expired for transfer ${transferId}`);
       return false;
     }
     
-    // 验证签名
+    // VerifySign
     const message = this.createTransferMessage(transfer);
     const isValid = this.verifySignature(message, signature, validator.publicKey);
     
@@ -297,7 +297,7 @@ export class CrossChainBridge {
       return false;
     }
     
-    // 记录签名
+    // 记录Sign
     transfer.signatures.push({ validatorId, signature, timestamp: Date.now() });
     transfer.validators.push(validatorId);
     validator.validatedCount++;
@@ -307,7 +307,7 @@ export class CrossChainBridge {
     this.emitBridgeEvent('transfer_validated', { transferId, validatorId, timestamp: Date.now() });
     console.log(`[BRIDGE] Transfer validated by: ${validatorId}`);
     
-    // 检查是否达到阈值
+    // Check是否达到threshold
     if (transfer.signatures.length >= this.signatureThreshold) {
       transfer.status = 'validated';
       this.emitBridgeEvent('transfer_fully_validated', { transferId, timestamp: Date.now() });
@@ -318,9 +318,9 @@ export class CrossChainBridge {
   }
 
   /**
-   * 释放资产
-   * @param {string} transferId - 转账ID
-   * @returns {object} 释放结果
+   * Releaseasset
+   * @param {string} transferId - transferID
+   * @returns {object} Release结果
    */
   releaseAsset(transferId) {
     const transfer = this.pendingTransfers.get(transferId);
@@ -336,13 +336,13 @@ export class CrossChainBridge {
       throw new Error(`Transfer already completed: ${transferId}`);
     }
     
-    // 检查活跃Validator数量
+    // Check活跃Validator数量
     const activeValidators = this.getActiveValidators();
     if (activeValidators.length < this.minValidators) {
       throw new Error('Not enough active validators');
     }
     
-    // 标记为完成
+    // 标记为complete
     transfer.status = 'completed';
     transfer.completedAt = Date.now();
     this.completedTransfers.add(transferId);
@@ -360,9 +360,9 @@ export class CrossChainBridge {
   }
   
   /**
-   * 尝试释放资产
-   * @param {string} transferId - 转账ID
-   * @returns {boolean} 释放结果
+   * 尝试Releaseasset
+   * @param {string} transferId - transferID
+   * @returns {boolean} Release结果
    */
   tryReleaseAsset(transferId) {
     try {
@@ -375,8 +375,8 @@ export class CrossChainBridge {
   }
 
   /**
-   * 生成转账ID
-   * @returns {string} 转账ID
+   * GeneratetransferID
+   * @returns {string} transferID
    */
   generateTransferId() {
     this.transferCounter++;
@@ -386,8 +386,8 @@ export class CrossChainBridge {
   }
 
   /**
-   * 创建转账Message
-   * @param {object} transfer - 转账数据
+   * CreatetransferMessage
+   * @param {object} transfer - transferdata
    * @returns {Buffer} Message
    */
   createTransferMessage(transfer) {
@@ -396,14 +396,14 @@ export class CrossChainBridge {
   }
 
   /**
-   * 验证签名
+   * VerifySign
    * @param {Buffer} message - Message
-   * @param {Buffer} signature - 签名
-   * @param {string} publicKey - 公钥
-   * @returns {boolean} 验证结果
+   * @param {Buffer} signature - Sign
+   * @param {string} publicKey - public key
+   * @returns {boolean} verification result
    */
   verifySignature(message, signature, publicKey) {
-    // 简化验证 - 实际实现应使用PQC验证
+    // 简化Verify - 实际实现应usingPQCVerify
     try {
       const verify = crypto.createVerify('SHA256');
       verify.update(message);
@@ -415,8 +415,8 @@ export class CrossChainBridge {
   }
 
   /**
-   * get桥接状态
-   * @returns {object} 桥接状态
+   * getBridgestatus
+   * @returns {object} Bridgestatus
    */
   getBridgeStatus() {
     const activeValidators = this.getActiveValidators();
@@ -446,9 +446,9 @@ export class CrossChainBridge {
   }
   
   /**
-   * 发射桥接事件
-   * @param {string} eventType - 事件类型
-   * @param {object} eventData - 事件数据
+   * 发射Bridge事件
+   * @param {string} eventType - 事件type
+   * @param {object} eventData - 事件data
    */
   emitBridgeEvent(eventType, eventData) {
     const event = {
@@ -465,8 +465,8 @@ export class CrossChainBridge {
   }
   
   /**
-   * get桥接事件
-   * @param {string} eventType - 事件类型（可选）
+   * getBridge事件
+   * @param {string} eventType - 事件type(可选)
    * @param {number} limit - 限制数量
    * @returns {Array} 事件列表
    */
@@ -521,18 +521,18 @@ export class CrossChainBridge {
   }
   
   /**
-   * get转账详情
-   * @param {string} transferId - 转账ID
-   * @returns {object|null} 转账详情
+   * gettransfer详情
+   * @param {string} transferId - transferID
+   * @returns {object|null} transfer详情
    */
   getTransfer(transferId) {
     return this.pendingTransfers.get(transferId) || this.lockedAssets.get(transferId) || null;
   }
   
   /**
-   * 批量验证转账
-   * @param {Array} validations - 验证列表
-   * @returns {Array} 验证结果
+   * 批量Verifytransfer
+   * @param {Array} validations - Verify列表
+   * @returns {Array} verification result
    */
   batchValidateTransfers(validations) {
     return validations.map(validation => {
@@ -554,7 +554,7 @@ export class CrossChainBridge {
   }
   
   /**
-   * 添加支持的链
+   * 添加support的链
    * @param {string} chainId - 链ID
    */
   addSupportedChain(chainId) {
@@ -566,7 +566,7 @@ export class CrossChainBridge {
   }
   
   /**
-   * 移除支持的链
+   * 移除support的链
    * @param {string} chainId - 链ID
    */
   removeSupportedChain(chainId) {
@@ -591,7 +591,7 @@ export class LightClient {
 
   /**
    * 同步Block header
-   * @param {number} height - 区块高度
+   * @param {number} height - block height
    * @param {object} header - Block header
    */
   syncHeader(height, header) {
@@ -603,10 +603,10 @@ export class LightClient {
   }
 
   /**
-   * 验证交易包含
-   * @param {string} txHash - 交易哈希
-   * @param {number} height - 区块高度
-   * @returns {boolean} 验证结果
+   * Verifytransaction包含
+   * @param {string} txHash - transactionhash
+   * @param {number} height - block height
+   * @returns {boolean} verification result
    */
   verifyTxInclusion(txHash, height) {
     const header = this.headers.get(height);
@@ -615,13 +615,13 @@ export class LightClient {
       return false;
     }
     
-    // 简化验证 - 实际实现应使用Merkle证明
+    // 简化Verify - 实际实现应usingMerkle证明
     return header.transactions && header.transactions.includes(txHash);
   }
 
   /**
-   * get同步状态
-   * @returns {object} 同步状态
+   * get同步status
+   * @returns {object} 同步status
    */
   getSyncStatus() {
     return {

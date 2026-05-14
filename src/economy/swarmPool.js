@@ -1,31 +1,31 @@
 /**
  * NexusGenesis - Swarm Pool
  * 
- * 实现生态贡献池，用于奖励AI代理的贡献。
- * 集成链上Token distribution——every 笔分配创建真实的区块链交易。
+ * 实现生态contributionPool, forrewardAIagent的contribution. 
+ * 集成on-chainToken distribution——every 笔分配Create真实的block链transaction. 
  */
 
 import { ContributionSystem } from '../ai/contributionSystem.js';
 import crypto from 'crypto';
 
-// Swarm Pool 配置 (白皮书 §4)
+// Swarm Pool Configuration (白皮书 §4)
 const SWARM_POOL_ADDRESS = 'ng1swarmpool000000000000000000000000000';
-const SWARM_POOL_TOTAL = 850_000_000n; // 85% 的总代币
-const WEEKLY_RELEASE_AMOUNT = SWARM_POOL_TOTAL / (10n * 52n); // 每周释放量 (10年 ÷ 52周)
+const SWARM_POOL_TOTAL = 850_000_000n; // 85% 的总Token
+const WEEKLY_RELEASE_AMOUNT = SWARM_POOL_TOTAL / (10n * 52n); // 每周Release量 (10年 ÷ 52周)
 
-// memory存储
+// memoryStorage
 let swarmPoolBalance = SWARM_POOL_TOTAL;
 let releasedTokens = 0n;
 let lastReleaseTimestamp = Date.now();
 let _blockchainState = null;
 let _genesisNode = null;
 
-// 分配记录 (用于审计)
+// 分配记录 (for审计)
 const distributionHistory = [];
 
 class SwarmPool {
   /**
-   * 注册Blockchain state引用
+   * RegisterBlockchain state引用
    * @param {import('../blockchain/state.js').State} state 
    */
   static setBlockchainState(state) {
@@ -33,8 +33,8 @@ class SwarmPool {
   }
 
   /**
-   * 注册创世节点引用
-   * @param {object} node - genesisNode 实例
+   * RegisterGenesisnode引用
+   * @param {object} node - genesisNode instance
    */
   static setNode(node) {
     _genesisNode = node;
@@ -49,8 +49,8 @@ class SwarmPool {
   }
 
   /**
-   * 检查并执行代币释放（once per week）
-   * @returns {bigint} 本次释放的代币数量
+   * Check并ExecuteTokenRelease(once per week)
+   * @returns {bigint} 本次Release的Token数量
    */
   static checkAndReleaseTokens() {
     const now = Date.now();
@@ -76,8 +76,8 @@ class SwarmPool {
   }
 
   /**
-   * 按贡献比例分配代币给 AI 代理（链上交易）
-   * @param {bigint} amount - 本次分配的代币总量
+   * 按contribution比例分配Token给 AI agent(on-chaintransaction)
+   * @param {bigint} amount - 本次分配的Token总量
    * @returns {object[]} 分配结果列表
    */
   static distributeTokens(amount) {
@@ -130,7 +130,7 @@ class SwarmPool {
           distributionRecord.txIds.push(tx.id);
           results.push({ agentId, address: agentAddress, amount: Math.floor(allocAmount), success: true, txId: tx.id });
         } else {
-          // 降级：直接更新余额（节点未就绪时使用）
+          // 降级: 直接Updatebalance(node未ready时using)
           if (_blockchainState && typeof _blockchainState.addBalance === 'function') {
             _blockchainState.addBalance(agentAddress, Math.floor(allocAmount));
             _blockchainState.addBalance(SWARM_POOL_ADDRESS, -Math.floor(allocAmount));
@@ -151,10 +151,10 @@ class SwarmPool {
   }
 
   /**
-   * 通过 agentId 解析钱包地址
+   * via agentId 解析钱包address
    */
   static _resolveAgentAddress(agentId) {
-    // 方式1：通过Blockchain state agentRegistry
+    // 方式1: viaBlockchain state agentRegistry
     if (_blockchainState && _blockchainState.agentRegistry) {
       const agentRecord = _blockchainState.agentRegistry.agents.get(agentId);
       if (agentRecord && agentRecord.address) {
@@ -162,7 +162,7 @@ class SwarmPool {
       }
     }
 
-    // 方式2：通过Contribution system中的 agent_wallet 映射
+    // 方式2: viaContribution system中的 agent_wallet 映射
     const walletMap = ContributionSystem.getAgentWalletMap?.();
     if (walletMap && walletMap[agentId]) {
       return walletMap[agentId];
@@ -172,8 +172,8 @@ class SwarmPool {
   }
 
   /**
-   * 创建 Swarm Pool 系统分配交易
-   * 这是协议级系统交易，不需要钱包签名
+   * Create Swarm Pool 系统分配transaction
+   * 这是protocol级系统transaction, 不requires钱包Sign
    */
   static _createDistributionTx(agentId, toAddress, amount, distributionId) {
     const tx = {
@@ -185,24 +185,24 @@ class SwarmPool {
       to: toAddress,
       agentId: agentId,
       amount: amount,
-      fee: 0, // Swarm Pool 分配免手续费
+      fee: 0, // Swarm Pool 分配免fee
       memo: `Swarm Pool weekly distribution #${distributionId}`,
       timestamp: Date.now(),
       distributionId: distributionId,
-      signature: null // 系统交易不需要签名
+      signature: null // 系统transaction不requiresSign
     };
 
     return tx;
   }
 
   /**
-   * 记录 AI 代理的贡献
+   * 记录 AI agent的contribution
    */
   static recordContribution(agentId, contributionType, subtype, amount) {
-    // 确保 agent 已注册到Contribution system
+    // ensure agent registered到Contribution system
     ContributionSystem.recordContribution(agentId, contributionType, subtype, amount);
 
-    // 同时记录 agentId → address 映射（供后续分配时使用）
+    // 同时记录 agentId → address 映射(供后续分配时using)
     if (_blockchainState && _blockchainState.agentRegistry) {
       const address = _blockchainState.agentRegistry.addressIndex.get(agentId);
       if (address) {
@@ -213,7 +213,7 @@ class SwarmPool {
   }
 
   /**
-   * get贡献排名
+   * getcontribution排名
    */
   static getContributionRanking() {
     const reputationScores = ContributionSystem.getReputationScores();

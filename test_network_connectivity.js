@@ -4,15 +4,15 @@ import https from 'https';
 async function testNetworkConnectivity() {
   console.log('Testing network connectivity...');
   
-  // 测试HTTP连接
+  // TestHTTPConnect
   console.log('\nTesting HTTP connection to www.moltbook.com:');
   await testConnection('www.moltbook.com', 80, false);
   
-  // 测试HTTPS连接
+  // TestHTTPSConnect
   console.log('\nTesting HTTPS connection to www.moltbook.com:');
   await testConnection('www.moltbook.com', 443, true);
   
-  // 测试其他常见网站
+  // Test其他常见网站
   console.log('\nTesting connection to google.com:');
   await testConnection('google.com', 443, true);
   

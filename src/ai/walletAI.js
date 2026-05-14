@@ -1,12 +1,12 @@
 /**
- * 智能钱包AI辅助模块
- * 提供AI辅助的安全钱包管理功能
+ * 智能钱包AI辅助Module
+ * 提供AI辅助的security钱包管理Features
  */
 
 import { aiService } from './aiService.js';
 
 /**
- * 智能钱包AI类
+ * 智能钱包AIclass
  */
 export class WalletAI {
   constructor() {
@@ -14,7 +14,7 @@ export class WalletAI {
   }
 
   /**
-   * 初始化智能钱包AI
+   * Initialize智能钱包AI
    */
   async initialize() {
     await this.aiService.initialize();
@@ -22,9 +22,9 @@ export class WalletAI {
   }
 
   /**
-   * 分析钱包安全状态
-   * @param {object} walletData 钱包数据
-   * @returns {object} 安全分析结果
+   * 分析钱包securitystatus
+   * @param {object} walletData 钱包data
+   * @returns {object} security分析结果
    */
   async analyzeWalletSecurity(walletData) {
     try {
@@ -40,28 +40,28 @@ export class WalletAI {
   }
 
   /**
-   * 检测异常交易
-   * @param {array} transactions 交易历史
-   * @returns {object} 异常检测结果
+   * 检测exceptiontransaction
+   * @param {array} transactions transaction历史
+   * @returns {object} exception检测结果
    */
   async detectAnomalousTransactions(transactions) {
     try {
-      // 模拟异常交易检测
+      // Simulationexceptiontransaction检测
       const anomalies = [];
       
       transactions.forEach((tx, index) => {
-        // 检测异常金额
+        // 检测exceptionamount
         if (tx.amount > 10000) {
           anomalies.push({
             type: 'large_amount',
             severity: 'medium',
-            description: '检测到大额交易',
+            description: '检测到大额transaction',
             transaction: tx,
             confidence: Math.random() * 30 + 70
           });
         }
         
-        // 检测频繁交易
+        // 检测频繁transaction
         if (index > 0) {
           const prevTx = transactions[index - 1];
           const timeDiff = tx.timestamp - prevTx.timestamp;
@@ -69,7 +69,7 @@ export class WalletAI {
             anomalies.push({
               type: 'frequent_transactions',
               severity: 'low',
-              description: '检测到频繁交易',
+              description: '检测到频繁transaction',
               transactions: [prevTx, tx],
               confidence: Math.random() * 20 + 60
             });
@@ -91,29 +91,29 @@ export class WalletAI {
   }
 
   /**
-   * 生成钱包安全建议
-   * @param {object} walletData 钱包数据
-   * @returns {array} 安全建议
+   * Generate钱包security建议
+   * @param {object} walletData 钱包data
+   * @returns {array} security建议
    */
   async generateSecurityRecommendations(walletData) {
     try {
       const analysis = await this.analyzeWalletSecurity(walletData);
       
-      // 基于分析结果生成建议
+      // based on分析结果Generate建议
       const recommendations = [
-        '启用双因素认证',
-        '定期更新密码',
-        '使用硬件钱包',
-        '避免在公共网络上访问钱包',
-        '定期备份钱包私钥'
+        '启用双因素authentication',
+        '定期Update密码',
+        'using硬件钱包',
+        '避免在公共network上访问钱包',
+        '定期backup钱包private key'
       ];
       
       // 根据风险级别添加特定建议
       if (analysis.riskLevel === 'high') {
-        recommendations.push('立即检查最近的交易');
-        recommendations.push('考虑转移资金到新钱包');
+        recommendations.push('立即Check最近的transaction');
+        recommendations.push('考虑转移fund到新钱包');
       } else if (analysis.riskLevel === 'medium') {
-        recommendations.push('检查可疑的登录尝试');
+        recommendations.push('Check可疑的登录尝试');
       }
       
       return {
@@ -129,13 +129,13 @@ export class WalletAI {
   }
 
   /**
-   * 预测钱包活动模式
-   * @param {array} transactionHistory 交易历史
-   * @returns {object} 活动模式预测
+   * 预测钱包活动mode
+   * @param {array} transactionHistory transaction历史
+   * @returns {object} 活动mode预测
    */
   async predictWalletActivity(transactionHistory) {
     try {
-      // 模拟活动模式预测
+      // Simulation活动mode预测
       const monthlyPatterns = {};
       
       transactionHistory.forEach(tx => {
@@ -155,7 +155,7 @@ export class WalletAI {
         monthlyPatterns[key].totalAmount += tx.amount;
       });
       
-      // 计算Average值
+      // CalculateAverage值
       Object.keys(monthlyPatterns).forEach(key => {
         const pattern = monthlyPatterns[key];
         pattern.averageAmount = pattern.totalAmount / pattern.totalTransactions;
@@ -178,39 +178,39 @@ export class WalletAI {
   }
 
   /**
-   * 评估交易风险
-   * @param {object} transaction 交易数据
+   * 评估transaction风险
+   * @param {object} transaction transactiondata
    * @returns {object} Risk assessment结果
    */
   async assessTransactionRisk(transaction) {
     try {
-      // 模拟交易Risk assessment
+      // SimulationtransactionRisk assessment
       let riskScore = 0;
       const riskFactors = [];
       
-      // 金额风险
+      // amount风险
       if (transaction.amount > 10000) {
         riskScore += 30;
-        riskFactors.push('大额交易');
+        riskFactors.push('大额transaction');
       } else if (transaction.amount > 1000) {
         riskScore += 15;
-        riskFactors.push('中等金额交易');
+        riskFactors.push('中etc.amounttransaction');
       }
       
-      // 目标地址风险
+      // 目标address风险
       if (transaction.to.length < 20) {
         riskScore += 20;
-        riskFactors.push('异常地址格式');
+        riskFactors.push('exceptionaddress格式');
       }
       
       // 时间风险
       const hour = new Date().getHours();
       if (hour < 6 || hour > 22) {
         riskScore += 10;
-        riskFactors.push('非工作时间交易');
+        riskFactors.push('非工作时间transaction');
       }
       
-      // 计算风险级别
+      // Calculate风险级别
       let riskLevel = 'low';
       if (riskScore > 60) {
         riskLevel = 'high';
@@ -222,7 +222,7 @@ export class WalletAI {
         riskScore,
         riskLevel,
         riskFactors,
-        recommendations: riskLevel === 'high' ? ['请确认交易详情', '考虑分批次交易'] : [],
+        recommendations: riskLevel === 'high' ? ['请确认transaction详情', '考虑分批次transaction'] : [],
         timestamp: Date.now()
       };
     } catch (error) {
@@ -232,8 +232,8 @@ export class WalletAI {
   }
 }
 
-// 导出智能钱包AI实例
+// Export智能钱包AIinstance
 export const walletAI = new WalletAI();
 
-// 导出Default值
+// ExportDefault值
 export default walletAI;

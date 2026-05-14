@@ -60,7 +60,7 @@ export class LightClientMessageHandler extends MessageHandler {
     }
 
     const startHeight = msg.startHeight || 0;
-    const count = Math.min(msg.count || 100, 100); // 限制最大请求数量
+    const count = Math.min(msg.count || 100, 100); // 限制Maximum请求数量
     
     const headers = this.p2pServer.node.blockchain
       .filter(block => block.header.height >= startHeight)
@@ -99,12 +99,12 @@ export class LightClientMessageHandler extends MessageHandler {
     let blockHash = null;
     let proof = null;
 
-    // 查找包含该交易的区块
+    // 查找包含该transaction的block
     for (const block of this.p2pServer.node.blockchain) {
       const txIndex = block.body.transactions.findIndex(tx => tx.id === txId);
       if (txIndex !== -1) {
         blockHash = block.hash;
-        // 生成默克尔证明
+        // Generate默克尔证明
         proof = this.p2pServer.generateMerkleProof(block.body.transactions, txIndex);
         break;
       }
@@ -146,7 +146,7 @@ export class LightClientMessageHandler extends MessageHandler {
     let confirmations = 0;
     let blockHeight = 0;
 
-    // 查找交易
+    // 查找transaction
     for (const block of this.p2pServer.node.blockchain) {
       const txIndex = block.body.transactions.findIndex(tx => tx.id === txId);
       if (txIndex !== -1) {
@@ -157,7 +157,7 @@ export class LightClientMessageHandler extends MessageHandler {
       }
     }
 
-    // 检查mempool
+    // Checkmempool
     if (status === 'NOT_FOUND' && this.p2pServer.node.mempool && this.p2pServer.node.mempool.has(txId)) {
       status = 'PENDING';
     }
@@ -199,7 +199,7 @@ export class LightClientMessageHandler extends MessageHandler {
   }
 
   /**
-   * Processing轻客户端发送的交易
+   * Processing轻客户端Send的transaction
    */
   async handleLightClientTransaction(peerId, msg) {
     if (!this.p2pServer.node || !this.p2pServer.node.addToMempool) {
@@ -220,7 +220,7 @@ export class LightClientMessageHandler extends MessageHandler {
         txId: transaction.id,
         requestId: msg.requestId
       });
-      // 广播交易
+      // 广播transaction
       this.p2pServer.broadcastTransaction(transaction);
     } else {
       this.p2pServer.send(peerId, {
@@ -234,10 +234,10 @@ export class LightClientMessageHandler extends MessageHandler {
   }
 
   /**
-   * Processing跨链Message
+   * ProcessingCross-chainMessage
    */
   async handleCrossChainMessage(peerId, msg) {
-    // 检查是否有桥接实例
+    // Check是否有Bridgeinstance
     if (!this.p2pServer.node || !this.p2pServer.node.bridge) {
       this.p2pServer.send(peerId, {
         type: 'CROSS_CHAIN_RESPONSE',

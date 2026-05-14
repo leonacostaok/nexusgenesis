@@ -18,7 +18,7 @@ const BACKUP_TYPES = {
   DIFFERENTIAL: 'differential'
 };
 
-// 备份状态
+// backupstatus
 const BACKUP_STATUS = {
   PENDING: 'pending',
   RUNNING: 'running',
@@ -73,13 +73,13 @@ class BackupManager {
     console.log('[BackupManager] Backup schedule setup complete');
   }
 
-  // Schedule daily备份
+  // Schedule dailybackup
   scheduleDailyBackup(type, hour, minute) {
     const now = new Date();
     let nextBackup = new Date(now);
     nextBackup.setHours(hour, minute, 0, 0);
 
-    // 如果时间已过，设置为明 days
+    // 如果时间已过, Set为明 days
     if (nextBackup <= now) {
       nextBackup.setDate(nextBackup.getDate() + 1);
     }
@@ -90,12 +90,12 @@ class BackupManager {
 
     setTimeout(() => {
       this.createBackup(type);
-      // 递归调度下一次备份
+      // 递归调度下一次backup
       this.scheduleDailyBackup(type, hour, minute);
     }, delay);
   }
 
-  // Schedule hourly备份
+  // Schedule hourlybackup
   scheduleHourlyBackup(type) {
     const now = new Date();
     let nextBackup = new Date(now);
@@ -107,24 +107,24 @@ class BackupManager {
 
     setTimeout(() => {
       this.createBackup(type);
-      // 递归调度下一次备份
+      // 递归调度下一次backup
       this.scheduleHourlyBackup(type);
     }, delay);
   }
 
-  // Schedule weekly备份
+  // Schedule weeklybackup
   scheduleWeeklyBackup(type, dayOfWeek, hour, minute) {
     const now = new Date();
     let nextBackup = new Date(now);
 
-    // 设置到下一个指定的星期几
+    // Set到下一个指定的星期几
     while (nextBackup.getDay() !== dayOfWeek) {
       nextBackup.setDate(nextBackup.getDate() + 1);
     }
 
     nextBackup.setHours(hour, minute, 0, 0);
 
-    // 如果时间已过，设置为下周
+    // 如果时间已过, Set为下周
     if (nextBackup <= now) {
       nextBackup.setDate(nextBackup.getDate() + 7);
     }
@@ -135,12 +135,12 @@ class BackupManager {
 
     setTimeout(() => {
       this.createBackup(type);
-      // 递归调度下一次备份
+      // 递归调度下一次backup
       this.scheduleWeeklyBackup(type, dayOfWeek, hour, minute);
     }, delay);
   }
 
-  // 创建备份
+  // Createbackup
   async createBackup(type = BACKUP_TYPES.FULL, directories = null) {
     if (!directories) {
       directories = Object.keys(this.systemDirectories);
@@ -231,7 +231,7 @@ class BackupManager {
 
       return backup;
     } finally {
-      // 保存备份信息
+      // Savebackupinfo
       this.saveBackupHistory();
     }
   }
@@ -324,7 +324,7 @@ class BackupManager {
     const archivePath = `${backupPath}.tar.gz`;
 
     if (!fs.existsSync(backupPath)) {
-      throw new Error(`备份目录 ${backupPath} 不存在`);
+      throw new Error(`backup目录 ${backupPath} does not exist`);
     }
 
     const files = this._collectAllFiles(backupPath);
@@ -439,20 +439,20 @@ class BackupManager {
 
   // Restore backup
   async restoreBackup(backupId, targetDirectories = null) {
-    console.log(`[BackupManager] Start 恢复backup: ${backupId}`);
+    console.log(`[BackupManager] Start recoverybackup: ${backupId}`);
 
     const backup = this.backups.get(backupId);
     if (!backup) {
-      throw new Error(`备份 ${backupId} 不存在`);
+      throw new Error(`backup ${backupId} does not exist`);
     }
 
     if (backup.status !== BACKUP_STATUS.COMPLETED) {
-      throw new Error(`备份 ${backupId} 未完成，无法恢复`);
+      throw new Error(`backup ${backupId} 未complete, 无法recovery`);
     }
 
     const backupPath = path.join(this.backupDirectory, backupId);
     if (!fs.existsSync(backupPath)) {
-      throw new Error(`备份文件 ${backupPath} 不存在`);
+      throw new Error(`backup文件 ${backupPath} does not exist`);
     }
 
     const directories = targetDirectories || backup.directories;
@@ -560,7 +560,7 @@ class BackupManager {
     console.log('[BackupManager] Old backup cleanup complete');
   }
 
-  // 删除备份
+  // Deletebackup
   deleteBackup(backupId) {
     const backup = this.backups.get(backupId);
     if (!backup) return;
@@ -578,19 +578,19 @@ class BackupManager {
     this.backups.delete(backupId);
     this.saveBackupHistory();
     
-    console.log(`[BackupManager] 删除backup: ${backupId}`);
+    console.log(`[BackupManager] Deletebackup: ${backupId}`);
   }
 
   // Verify backup integrity
   async verifyBackup(backupId) {
     const backup = this.backups.get(backupId);
     if (!backup) {
-      throw new Error(`备份 ${backupId} 不存在`);
+      throw new Error(`backup ${backupId} does not exist`);
     }
 
     const backupPath = path.join(this.backupDirectory, backupId);
     if (!fs.existsSync(backupPath)) {
-      throw new Error(`备份文件 ${backupPath} 不存在`);
+      throw new Error(`backup文件 ${backupPath} does not exist`);
     }
 
     let filesCount = 0;
@@ -601,7 +601,7 @@ class BackupManager {
       const sourceDir = path.join(backupPath, dirName);
       
       if (!fs.existsSync(sourceDir)) {
-        throw new Error(`备份中缺少目录 ${dirName}`);
+        throw new Error(`backup中缺少目录 ${dirName}`);
       }
 
       const { files, size } = await this.countFiles(sourceDir);
@@ -611,13 +611,13 @@ class BackupManager {
 
     // Verify file count and size match backup records
     if (backup.filesCount !== filesCount) {
-      throw new Error(`备份文件数量不匹配: 记录 ${backup.filesCount}, 实际 ${filesCount}`);
+      throw new Error(`backup文件数量不匹配: 记录 ${backup.filesCount}, 实际 ${filesCount}`);
     }
 
     // Size may differ slightly due to compression, approximate verification only
     const sizeDifference = Math.abs(backup.size - totalSize);
-    if (sizeDifference > backup.size * 0.05) { // 允许5%的误差
-      throw new Error(`备份大小不匹配: 记录 ${backup.size}, 实际 ${totalSize}`);
+    if (sizeDifference > backup.size * 0.05) { // allow5%的误差
+      throw new Error(`backup大小不匹配: 记录 ${backup.size}, 实际 ${totalSize}`);
     }
 
     return {
@@ -625,7 +625,7 @@ class BackupManager {
       backupId,
       filesCount,
       size: totalSize,
-      message: '备份完整性验证通过'
+      message: 'backup完整性Verifyvia'
     };
   }
 

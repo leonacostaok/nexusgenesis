@@ -1,6 +1,6 @@
 /**
- * 智能合约管理器
- * 负责部署和执行AINVM智能合约
+ * Smart Contract管理器
+ * 负责Deploy和ExecuteAINVMSmart Contract
  */
 
 import AINVM from '../vm/ainvm.js';
@@ -10,24 +10,24 @@ import path from 'path';
 
 class ContractManager {
   constructor() {
-    this.contracts = new Map(); // 合约ID -> 合约对象
-    this.storage = new Map();   // 合约ID -> 存储状态
-    this.contractCounter = 0;   // 合约ID计数器（确定性）
-    this.executingContracts = new Set(); // 正在执行的合约（重入保护）
+    this.contracts = new Map(); // ContractID -> Contract对象
+    this.storage = new Map();   // ContractID -> Storagestatus
+    this.contractCounter = 0;   // ContractIDcount器(确定性)
+    this.executingContracts = new Set(); // 正在Execute的Contract(重入保护)
     this.sandbox = new SandboxExecutor(STANDARD_CONFIG);
-    this.verifiedContracts = new Set(); // 已验证的合约ID集合
+    this.verifiedContracts = new Set(); // 已Verify的ContractID集合
   }
 
   /**
-   * 部署智能合约
-   * @param {Array} bytecode - AINVM字节码
-   * @param {string} name - 合约名称
-   * @param {string} owner - 合约所有者地址
-   * @param {boolean} optimize - 是否优化字节码
-   * @returns {string} 合约ID
+   * DeploySmart Contract
+   * @param {Array} bytecode - AINVMbytecode
+   * @param {string} name - Contract名称
+   * @param {string} owner - Contract所有者address
+   * @param {boolean} optimize - 是否优化bytecode
+   * @returns {string} ContractID
    */
   deployContract(bytecode, name = 'Unnamed Contract', owner = null, optimize = true) {
-    // 验证字节码
+    // Verifybytecode
     if (!Array.isArray(bytecode) || bytecode.length === 0) {
       throw new Error('Invalid bytecode');
     }
@@ -35,7 +35,7 @@ class ContractManager {
       throw new Error('Bytecode too large');
     }
     
-    // 优化字节码
+    // 优化bytecode
     let optimizedBytecode = bytecode;
     if (optimize) {
       const vm = new AINVM();
@@ -43,7 +43,7 @@ class ContractManager {
       console.log(`Optimized bytecode: ${bytecode.length} -> ${optimizedBytecode.length} bytes`);
     }
     
-    // 生成合约ID - 使用确定性方法
+    // GenerateContractID - using确定性method
     const contractId = `contract_${Date.now()}_${this.contractCounter++}`;
     
     const contract = {
@@ -52,7 +52,7 @@ class ContractManager {
       bytecode: optimizedBytecode,
       originalBytecode: bytecode,
       deployedAt: Date.now(),
-      owner, // 保存合约所有者
+      owner, // SaveContract所有者
       version: 1,
       upgradeHistory: []
     };
@@ -64,10 +64,10 @@ class ContractManager {
   }
 
   /**
-   * 检查合约权限
-   * @param {string} contractId - 合约ID
-   * @param {string} address - 调用者地址
-   * @returns {boolean} 是否有权限
+   * CheckContractpermission
+   * @param {string} contractId - ContractID
+   * @param {string} address - call者address
+   * @returns {boolean} 是否有permission
    */
   checkContractPermission(contractId, address) {
     const contract = this.contracts.get(contractId);
@@ -75,7 +75,7 @@ class ContractManager {
       throw new Error('Contract not found');
     }
     
-    // 如果没有设置所有者，则任何人都可以调用
+    // 如果没有Set所有者, 则任何人都cancall
     if (!contract.owner) {
       return true;
     }
@@ -84,14 +84,14 @@ class ContractManager {
   }
 
   /**
-   * 升级智能合约
-   * @param {string} contractId - 合约ID
-   * @param {Array} newBytecode - 新的AINVM字节码
-   * @param {string} caller - 调用者地址（必须是合约所有者）
+   * 升级Smart Contract
+   * @param {string} contractId - ContractID
+   * @param {Array} newBytecode - 新的AINVMbytecode
+   * @param {string} caller - call者address(must是Contract所有者)
    * @returns {object} 升级结果
    */
   upgradeContract(contractId, newBytecode, caller) {
-    // 验证参数
+    // Verifyparameter
     if (!contractId) {
       throw new Error('Contract ID is required');
     }
@@ -107,19 +107,19 @@ class ContractManager {
       throw new Error('Contract not found');
     }
 
-    // 权限检查 - 只有合约所有者可以升级
+    // permissionCheck - 只有Contract所有者can升级
     if (!this.checkContractPermission(contractId, caller)) {
       throw new Error('Permission denied: only contract owner can upgrade');
     }
 
-    // 保存旧版本信息
+    // Save旧版本info
     const oldVersion = {
       version: contract.version,
       bytecode: contract.bytecode,
       upgradedAt: Date.now()
     };
 
-    // 更新合约
+    // UpdateContract
     contract.bytecode = newBytecode;
     contract.version += 1;
     contract.upgradeHistory.push(oldVersion);
@@ -139,14 +139,14 @@ class ContractManager {
   }
 
   /**
-   * 执行智能合约
-   * @param {string} contractId - 合约ID
+   * ExecuteSmart Contract
+   * @param {string} contractId - ContractID
    * @param {number} gasLimit - gas限制
-   * @param {string} caller - 调用者地址（可选）
-   * @returns {object} 执行结果
+   * @param {string} caller - call者address(可选)
+   * @returns {object} Execute结果
    */
   async executeContract(contractId, gasLimit = 1000, caller = null) {
-    // 验证参数
+    // Verifyparameter
     if (!contractId) {
       throw new Error('Contract ID is required');
     }
@@ -159,7 +159,7 @@ class ContractManager {
       throw new Error('Contract not found');
     }
 
-    // 权限检查
+    // permissionCheck
     if (caller && !this.checkContractPermission(contractId, caller)) {
       throw new Error('Permission denied');
     }
@@ -172,8 +172,8 @@ class ContractManager {
     this.executingContracts.add(contractId);
     
     try {
-      // 通过沙盒安全Execute contract（安全宪法 §6.2）
-      // 沙盒自动执行Static Analysis + Resource Limits + 时限保护
+      // viasandboxsecurityExecute contract(security宪法 §6.2)
+      // sandboxautoExecuteStatic Analysis + Resource Limits + 时限保护
       const deployer = contract.owner || 'unknown';
       const result = await this.sandbox.execute(
         contract.bytecode,
@@ -181,16 +181,16 @@ class ContractManager {
         deployer
       );
       
-      // 沙盒拒绝 → 直接返回拒绝信息
+      // sandbox拒绝 → 直接Return拒绝info
       if (result.sandboxRejected) {
         return result;
       }
       
-      // 更新合约存储
+      // UpdateContractStorage
       if (result.success && result.memory && !result.memoryTruncated) {
         const memory = result.memory;
         
-        // 存储大小限制（1MB）
+        // Storage大小限制(1MB)
         const MAX_STORAGE_SIZE = 1024 * 1024;
         const storageSize = Object.entries(memory).reduce((size, [key, value]) => {
           return size + JSON.stringify(key).length + JSON.stringify(value).length;
@@ -200,7 +200,7 @@ class ContractManager {
           throw new Error('Storage size exceeded');
         }
         
-        // 同步memory到存储
+        // 同步memory到Storage
         const storage = this.storage.get(contractId);
         storage.clear();
         for (const [key, value] of Object.entries(memory)) {
@@ -217,9 +217,9 @@ class ContractManager {
   }
 
   /**
-   * get合约信息
-   * @param {string} contractId - 合约ID
-   * @returns {object} 合约信息
+   * getContractinfo
+   * @param {string} contractId - ContractID
+   * @returns {object} Contractinfo
    */
   getContractInfo(contractId) {
     const contract = this.contracts.get(contractId);
@@ -238,8 +238,8 @@ class ContractManager {
   }
 
   /**
-   * 列出所有合约
-   * @returns {Array} 合约列表
+   * 列出所有Contract
+   * @returns {Array} Contract列表
    */
   listContracts() {
     return Array.from(this.contracts.values()).map(contract => ({
@@ -251,8 +251,8 @@ class ContractManager {
   }
 
   /**
-   * 估算合约Gas消耗
-   * @param {string} contractId - 合约ID
+   * 估算ContractGas消耗
+   * @param {string} contractId - ContractID
    * @returns {number} 估算的Gas消耗
    */
   estimateGas(contractId) {
@@ -266,8 +266,8 @@ class ContractManager {
   }
 
   /**
-   * 优化合约字节码
-   * @param {string} contractId - 合约ID
+   * 优化Contractbytecode
+   * @param {string} contractId - ContractID
    * @returns {object} 优化结果
    */
   optimizeContract(contractId) {
@@ -279,7 +279,7 @@ class ContractManager {
     const vm = new AINVM();
     const optimizedBytecode = vm.optimizeBytecode(contract.bytecode);
     
-    // 保存优化后的字节码
+    // Save优化后的bytecode
     contract.bytecode = optimizedBytecode;
     
     return {
@@ -292,7 +292,7 @@ class ContractManager {
   }
 
   /**
-   * 保存Contract status到磁盘
+   * SaveContract status到磁盘
    * @param {string} filePath - 文件路径
    */
   async saveState(filePath = 'data/contracts/contracts.json') {
@@ -305,7 +305,7 @@ class ContractManager {
       savedAt: Date.now()
     };
 
-    // 确保目录存在
+    // ensure目录存在
     const dir = path.dirname(filePath);
     await fs.mkdir(dir, { recursive: true });
 
@@ -313,7 +313,7 @@ class ContractManager {
   }
 
   /**
-   * 从磁盘加载Contract status
+   * Load from diskContract status
    * @param {string} filePath - 文件路径
    */
   async loadState(filePath = 'data/contracts/contracts.json') {
@@ -349,7 +349,7 @@ class ContractManager {
   }
 }
 
-// 导出单例
+// Export单例
 const contractManager = new ContractManager();
 export default contractManager;
 export { ContractManager };

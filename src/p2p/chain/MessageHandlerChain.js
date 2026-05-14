@@ -1,5 +1,5 @@
 /**
- * MessageProcessing职责链基类
+ * MessageProcessing职责链基class
  * 定义了职责链的基本接口和实现
  */
 class MessageHandlerChain {
@@ -8,9 +8,9 @@ class MessageHandlerChain {
   }
 
   /**
-   * 设置下一个Handler
+   * Set下一个Handler
    * @param {MessageHandlerChain} nextHandler - 下一个Handler
-   * @returns {MessageHandlerChain} 下一个Handler，支持链式调用
+   * @returns {MessageHandlerChain} 下一个Handler, support链式call
    */
   setNext(nextHandler) {
     this.nextHandler = nextHandler;
@@ -22,10 +22,10 @@ class MessageHandlerChain {
    * @param {string} peerId - Peer nodesID
    * @param {object} message - Message对象
    * @param {object} context - Processing上下文
-   * @returns {Promise<boolean>} Processing是否成功
+   * @returns {Promise<boolean>} Processing是否success
    */
   async handle(peerId, message, context) {
-    // 子类实现具体的Processing逻辑
+    // 子class实现具体的ProcessingLogic
     if (this.nextHandler) {
       return await this.nextHandler.handle(peerId, message, context);
     }

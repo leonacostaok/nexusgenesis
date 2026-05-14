@@ -1,23 +1,23 @@
-// 测试Node.js基本功能
+// TestNode.js基本Features
 const fs = require('fs');
 
 console.log('Node.js版本:', process.version);
-console.log('当前目录:', __dirname);
+console.log('Current目录:', __dirname);
 
-// 测试文件写入
+// Test文件写入
 try {
-  fs.writeFileSync('test_output.txt', '测试文件写入成功！');
-  console.log('文件写入成功');
+  fs.writeFileSync('test_output.txt', 'Test文件写入success！');
+  console.log('文件写入success');
   
-  // 测试文件读取
+  // Test文件读取
   const content = fs.readFileSync('test_output.txt', 'utf8');
   console.log('文件内容:', content);
   
-  // 测试API密钥读取
+  // TestAPIkey读取
   const apiKey = fs.readFileSync('instreet_api_key.txt', 'utf8').trim();
-  console.log('API密钥读取成功:', apiKey.substring(0, 5) + '...' + apiKey.substring(apiKey.length - 5));
+  console.log('APIkey读取success:', apiKey.substring(0, 5) + '...' + apiKey.substring(apiKey.length - 5));
   
 } catch (error) {
-  console.error('错误:', error.message);
-  console.error('错误详情:', error);
+  console.error('error:', error.message);
+  console.error('error详情:', error);
 }

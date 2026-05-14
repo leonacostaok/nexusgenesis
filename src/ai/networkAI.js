@@ -1,12 +1,12 @@
 /**
- * 网络监控AI模块
- * 提供AI监控网络健康状态的功能
+ * networkmonitorAIModule
+ * 提供AImonitornetwork健康status的Features
  */
 
 import { aiService } from './aiService.js';
 
 /**
- * 网络监控AI类
+ * networkmonitorAIclass
  */
 export class NetworkAI {
   constructor() {
@@ -15,7 +15,7 @@ export class NetworkAI {
   }
 
   /**
-   * 初始化网络监控AI
+   * InitializenetworkmonitorAI
    */
   async initialize() {
     await this.aiService.initialize();
@@ -23,9 +23,9 @@ export class NetworkAI {
   }
 
   /**
-   * 监控网络健康状态
-   * @param {object} networkData 网络数据
-   * @returns {object} 网络健康Status report
+   * monitornetwork健康status
+   * @param {object} networkData networkdata
+   * @returns {object} network健康Status report
    */
   async monitorNetworkHealth(networkData) {
     try {
@@ -41,13 +41,13 @@ export class NetworkAI {
   }
 
   /**
-   * 分析网络性能
-   * @param {object} performanceData 性能数据
-   * @returns {object} 网络性能分析结果
+   * 分析network性能
+   * @param {object} performanceData 性能data
+   * @returns {object} network性能分析结果
    */
   async analyzeNetworkPerformance(performanceData) {
     try {
-      // 模拟网络性能分析
+      // Simulationnetwork性能分析
       const metrics = {
         latency: this.analyzeLatency(performanceData.latency),
         throughput: this.analyzeThroughput(performanceData.throughput),
@@ -55,7 +55,7 @@ export class NetworkAI {
         reliability: this.analyzeReliability(performanceData.reliability)
       };
       
-      // 计算整体性能分数
+      // Calculate整体性能分数
       const performanceScore = this.calculatePerformanceScore(metrics);
       
       return {
@@ -73,7 +73,7 @@ export class NetworkAI {
 
   /**
    * 分析延迟
-   * @param {array} latencyData 延迟数据
+   * @param {array} latencyData 延迟data
    * @returns {object} 延迟分析结果
    */
   analyzeLatency(latencyData) {
@@ -108,7 +108,7 @@ export class NetworkAI {
 
   /**
    * 分析吞吐量
-   * @param {array} throughputData 吞吐量数据
+   * @param {array} throughputData 吞吐量data
    * @returns {object} 吞吐量分析结果
    */
   analyzeThroughput(throughputData) {
@@ -136,7 +136,7 @@ export class NetworkAI {
 
   /**
    * 分析可用性
-   * @param {array} availabilityData 可用性数据
+   * @param {array} availabilityData 可用性data
    * @returns {object} 可用性分析结果
    */
   analyzeAvailability(availabilityData) {
@@ -165,7 +165,7 @@ export class NetworkAI {
 
   /**
    * 分析可靠性
-   * @param {array} reliabilityData 可靠性数据
+   * @param {array} reliabilityData 可靠性data
    * @returns {object} 可靠性分析结果
    */
   analyzeReliability(reliabilityData) {
@@ -193,14 +193,14 @@ export class NetworkAI {
   }
 
   /**
-   * 计算性能分数
-   * @param {object} metrics 网络指标
+   * Calculate性能分数
+   * @param {object} metrics network指标
    * @returns {number} 性能分数
    */
   calculatePerformanceScore(metrics) {
     let score = 0;
     
-    // 基于各项指标计算分数
+    // based on各项指标Calculate分数
     const latencyScore = metrics.latency.status === 'good' ? 25 : metrics.latency.status === 'fair' ? 15 : 5;
     const throughputScore = metrics.throughput.status === 'good' ? 25 : metrics.throughput.status === 'fair' ? 15 : 5;
     const availabilityScore = metrics.availability.status === 'good' ? 25 : metrics.availability.status === 'fair' ? 15 : 5;
@@ -223,50 +223,50 @@ export class NetworkAI {
   }
 
   /**
-   * 生成性能建议
-   * @param {object} metrics 网络指标
+   * Generate性能建议
+   * @param {object} metrics network指标
    * @returns {array} 性能建议
    */
   generatePerformanceRecommendations(metrics) {
     const recommendations = [];
     
     if (metrics.latency.status === 'poor') {
-      recommendations.push('优化网络路由');
-      recommendations.push('减少节点间距离');
+      recommendations.push('优化network路由');
+      recommendations.push('减少node间距离');
     }
     
     if (metrics.throughput.status === 'poor') {
       recommendations.push('增加带宽');
-      recommendations.push('优化数据传输协议');
+      recommendations.push('优化data传输protocol');
     }
     
     if (metrics.availability.status === 'poor') {
-      recommendations.push('增加节点冗余');
-      recommendations.push('改进故障恢复机制');
+      recommendations.push('增加node冗余');
+      recommendations.push('改进故障recovery机制');
     }
     
     if (metrics.reliability.status === 'poor') {
-      recommendations.push('增强错误处理');
+      recommendations.push('增强errorProcess');
       recommendations.push('提高系统稳定性');
     }
     
     if (recommendations.length === 0) {
-      recommendations.push('网络性能良好，保持当前配置');
+      recommendations.push('network性能良好, 保持CurrentConfiguration');
     }
     
     return recommendations;
   }
 
   /**
-   * 检测网络异常
-   * @param {object} networkData 网络数据
-   * @returns {object} 异常检测结果
+   * 检测networkexception
+   * @param {object} networkData networkdata
+   * @returns {object} exception检测结果
    */
   async detectNetworkAnomalies(networkData) {
     try {
       const anomalies = [];
       
-      // 检测延迟异常
+      // 检测延迟exception
       if (networkData.latency) {
         const avgLatency = networkData.latency.reduce((sum, val) => sum + val, 0) / networkData.latency.length;
         networkData.latency.forEach((latency, index) => {
@@ -284,14 +284,14 @@ export class NetworkAI {
         });
       }
       
-      // 检测节点故障
+      // 检测node故障
       if (networkData.nodeStatus) {
         Object.entries(networkData.nodeStatus).forEach(([node, status]) => {
           if (status === 'offline') {
             anomalies.push({
               type: 'node_failure',
               severity: 'high',
-              description: `节点 ${node} 离线`,
+              description: `node ${node} 离线`,
               node,
               timestamp: Date.now(),
               confidence: Math.random() * 20 + 80
@@ -300,7 +300,7 @@ export class NetworkAI {
         });
       }
       
-      // 检测吞吐量异常
+      // 检测吞吐量exception
       if (networkData.throughput) {
         const avgThroughput = networkData.throughput.reduce((sum, val) => sum + val, 0) / networkData.throughput.length;
         networkData.throughput.forEach((throughput, index) => {
@@ -331,13 +331,13 @@ export class NetworkAI {
   }
 
   /**
-   * 预测网络负载
-   * @param {object} historicalData 历史数据
+   * 预测network负载
+   * @param {object} historicalData 历史data
    * @returns {object} 负载预测结果
    */
   async predictNetworkLoad(historicalData) {
     try {
-      // 模拟网络负载预测
+      // Simulationnetwork负载预测
       const predictions = {
         nextHour: {
           load: (Math.random() * 50 + 50).toFixed(2),
@@ -353,14 +353,14 @@ export class NetworkAI {
         }
       };
       
-      // 生成负载趋势
+      // Generate负载趋势
       const trend = Math.random() > 0.5 ? 'increasing' : 'stable';
       
       return {
         predictions,
         trend,
         peakHours: [8, 12, 18], // 预测的峰值小时
-        recommendations: trend === 'increasing' ? ['增加网络容量', '优化资源分配'] : ['保持当前配置'],
+        recommendations: trend === 'increasing' ? ['增加network容量', '优化资源分配'] : ['保持CurrentConfiguration'],
         timestamp: Date.now()
       };
     } catch (error) {
@@ -370,8 +370,8 @@ export class NetworkAI {
   }
 
   /**
-   * 生成网络优化建议
-   * @param {object} networkData 网络数据
+   * Generatenetwork优化建议
+   * @param {object} networkData networkdata
    * @returns {object} 优化建议
    */
   async generateNetworkOptimizationRecommendations(networkData) {
@@ -380,25 +380,25 @@ export class NetworkAI {
       const anomalies = await this.detectNetworkAnomalies(networkData);
       const loadPrediction = await this.predictNetworkLoad(networkData);
       
-      // 综合生成建议
+      // 综合Generate建议
       const recommendations = [
         ...performance.recommendations,
         ...loadPrediction.recommendations
       ];
       
-      // 添加特定异常的建议
+      // 添加特定exception的建议
       anomalies.anomalies.forEach(anomaly => {
         switch (anomaly.type) {
           case 'latency_spike':
-            recommendations.push('优化网络路径');
+            recommendations.push('优化network路径');
             break;
           case 'node_failure':
-            recommendations.push('检查节点硬件');
-            recommendations.push('增强节点监控');
+            recommendations.push('Checknode硬件');
+            recommendations.push('增强nodemonitor');
             break;
           case 'throughput_drop':
-            recommendations.push('检查网络带宽');
-            recommendations.push('优化数据压缩');
+            recommendations.push('Checknetwork带宽');
+            recommendations.push('优化data压缩');
             break;
         }
       });
@@ -422,8 +422,8 @@ export class NetworkAI {
 
   /**
    * 记录Node status历史
-   * @param {string} nodeId 节点ID
-   * @param {object} status 状态数据
+   * @param {string} nodeId nodeID
+   * @param {object} status statusdata
    */
   recordNodeStatus(nodeId, status) {
     if (!this.nodeStatusHistory.has(nodeId)) {
@@ -446,16 +446,16 @@ export class NetworkAI {
 
   /**
    * getNode status历史
-   * @param {string} nodeId 节点ID
-   * @returns {array} 状态历史
+   * @param {string} nodeId nodeID
+   * @returns {array} status历史
    */
   getNodeStatusHistory(nodeId) {
     return this.nodeStatusHistory.get(nodeId) || [];
   }
 }
 
-// 导出网络监控AI实例
+// ExportnetworkmonitorAIinstance
 export const networkAI = new NetworkAI();
 
-// 导出Default值
+// ExportDefault值
 export default networkAI;

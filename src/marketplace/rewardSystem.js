@@ -1,18 +1,18 @@
 /**
- * NexusGenesis - 实时奖励结算系统
+ * NexusGenesis - 实时reward结算系统
  * 
- * 实现Task 完成后的即时奖励发放和交易Processing
+ * 实现Task complete后的即时reward发放和transactionProcessing
  */
 
 import crypto from 'crypto';
 import { PQCWallet } from '../wallet/pqcWallet.js';
 
-// memory存储
-const pendingTransactions = new Map(); // 待处理的交易
-const completedTransactions = new Map(); // 已完成的交易
-const transactionHistory = new Map(); // 交易历史
+// memoryStorage
+const pendingTransactions = new Map(); // 待Process的transaction
+const completedTransactions = new Map(); // completed的transaction
+const transactionHistory = new Map(); // transaction历史
 
-// 交易状态
+// transactionstatus
 const TRANSACTION_STATUS = {
   PENDING: 'pending',
   PROCESSING: 'processing',
@@ -20,7 +20,7 @@ const TRANSACTION_STATUS = {
   FAILED: 'failed'
 };
 
-// 交易类型
+// transactiontype
 const TRANSACTION_TYPE = {
   REWARD: 'reward',
   DEPOSIT: 'deposit',
@@ -29,7 +29,7 @@ const TRANSACTION_TYPE = {
 };
 
 class RewardSystem {
-  // 创建奖励交易
+  // Createrewardtransaction
   static createRewardTransaction(agentId, amount, taskId) {
     const transactionId = `tx-${crypto.randomBytes(16).toString('hex')}`;
     const transaction = {
@@ -48,13 +48,13 @@ class RewardSystem {
     pendingTransactions.set(transactionId, transaction);
     console.log(`[RewardSystem] Created reward transaction ${transactionId} for agent ${agentId}: ${amount} NGEN`);
     
-    // 立即Processing交易
+    // 立即Processingtransaction
     this.processTransaction(transactionId);
     
     return transactionId;
   }
   
-  // Processing交易
+  // Processingtransaction
   static async processTransaction(transactionId) {
     const transaction = pendingTransactions.get(transactionId);
     if (!transaction) {
@@ -63,25 +63,25 @@ class RewardSystem {
     }
     
     try {
-      // 更新状态为Processing中
+      // Updatestatus为Processing中
       transaction.status = TRANSACTION_STATUS.PROCESSING;
       pendingTransactions.set(transactionId, transaction);
       
       console.log(`[RewardSystem] Processing transaction ${transactionId}`);
       
-      // 模拟区块链交易Processing
+      // Simulationblock链transactionProcessing
       await this.simulateBlockchainTransaction(transaction);
       
-      // 更新状态为完成
+      // Updatestatus为complete
       transaction.status = TRANSACTION_STATUS.COMPLETED;
       transaction.processedAt = Date.now();
       transaction.blockchainTxId = `blockchain-${crypto.randomBytes(8).toString('hex')}`;
       
-      // 移至Completed交易
+      // 移至Completedtransaction
       completedTransactions.set(transactionId, transaction);
       pendingTransactions.delete(transactionId);
       
-      // 记录交易历史
+      // 记录transaction历史
       if (!transactionHistory.has(transaction.agentId)) {
         transactionHistory.set(transaction.agentId, []);
       }
@@ -90,12 +90,12 @@ class RewardSystem {
       console.log(`[RewardSystem] Transaction ${transactionId} completed successfully`);
       
     } catch (error) {
-      // 更新状态为Failed
+      // Updatestatus为Failed
       transaction.status = TRANSACTION_STATUS.FAILED;
       transaction.processedAt = Date.now();
       transaction.error = error.message;
       
-      // 移至Completed交易
+      // 移至Completedtransaction
       completedTransactions.set(transactionId, transaction);
       pendingTransactions.delete(transactionId);
       
@@ -103,16 +103,16 @@ class RewardSystem {
     }
   }
   
-  // 模拟区块链交易
+  // Simulationblock链transaction
   static async simulateBlockchainTransaction(transaction) {
-    // 模拟网络延迟
+    // Simulationnetwork延迟
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // 模拟交易Processing
+    // SimulationtransactionProcessing
     console.log(`[RewardSystem] Simulating blockchain transaction for ${transaction.agentId}: ${transaction.amount} NGEN`);
     
-    // 这里可以集成实际的区块链交易逻辑
-    // 例如，使用PQCWallet发送交易
+    // 这里can集成实际的block链transactionLogic
+    // e.g., usingPQCWalletSendtransaction
     // const wallet = new PQCWallet();
     // const txId = await wallet.sendTransaction(transaction.agentId, transaction.amount);
     // return txId;
@@ -120,17 +120,17 @@ class RewardSystem {
     return 'simulated-transaction-id';
   }
   
-  // get交易信息
+  // gettransactioninfo
   static getTransactionInfo(transactionId) {
     return pendingTransactions.get(transactionId) || completedTransactions.get(transactionId);
   }
   
-  // get代理的交易历史
+  // getagent的transaction历史
   static getAgentTransactionHistory(agentId) {
     return transactionHistory.get(agentId) || [];
   }
   
-  // get待Processing交易
+  // get待Processingtransaction
   static getPendingTransactions() {
     return Array.from(pendingTransactions.entries()).map(([id, tx]) => ({
       id,
@@ -138,7 +138,7 @@ class RewardSystem {
     }));
   }
   
-  // getCompleted交易
+  // getCompletedtransaction
   static getCompletedTransactions() {
     return Array.from(completedTransactions.entries()).map(([id, tx]) => ({
       id,
@@ -146,7 +146,7 @@ class RewardSystem {
     }));
   }
   
-  // get交易统计
+  // gettransaction统计
   static getTransactionStats() {
     const totalTransactions = pendingTransactions.size + completedTransactions.size;
     const completedCount = Array.from(completedTransactions.values()).filter(tx => tx.status === TRANSACTION_STATUS.COMPLETED).length;
@@ -162,7 +162,7 @@ class RewardSystem {
     };
   }
   
-  // 批量Processing待Processing交易
+  // 批量Processing待Processingtransaction
   static processPendingTransactions() {
     const pendingIds = Array.from(pendingTransactions.keys());
     pendingIds.forEach(txId => {
@@ -170,7 +170,7 @@ class RewardSystem {
     });
   }
   
-  // RetryingFailed的交易
+  // RetryingFailed的transaction
   static retryFailedTransaction(transactionId) {
     const transaction = completedTransactions.get(transactionId);
     if (!transaction || transaction.status !== TRANSACTION_STATUS.FAILED) {
@@ -178,7 +178,7 @@ class RewardSystem {
       return false;
     }
     
-    // 重新创建交易
+    // 重新Createtransaction
     const newTransaction = {
       ...transaction,
       id: `tx-${crypto.randomBytes(16).toString('hex')}`,

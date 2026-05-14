@@ -6,10 +6,10 @@
 
 import { WeightedVotingSystem } from '../governance/weightedVoting.js';
 
-// Physical Bridge Fund 配置
-const PHYSICAL_BRIDGE_FUND_TOTAL = 100_000_000n; // 10% 的总代币
+// Physical Bridge Fund Configuration
+const PHYSICAL_BRIDGE_FUND_TOTAL = 100_000_000n; // 10% 的总Token
 
-// 审批状态
+// 审批status
 const APPROVAL_STATUS = {
   PENDING: 'pending',
   APPROVED: 'approved',
@@ -17,7 +17,7 @@ const APPROVAL_STATUS = {
   EXECUTED: 'executed'
 };
 
-// 资金申请类型
+// fund申请type
 const FUND_REQUEST_TYPES = {
   INFRASTRUCTURE: 'infrastructure',
   MARKETING: 'marketing',
@@ -26,12 +26,12 @@ const FUND_REQUEST_TYPES = {
   OTHER: 'other'
 };
 
-// memory存储
+// memoryStorage
 let physicalBridgeFundBalance = PHYSICAL_BRIDGE_FUND_TOTAL;
-let fundRequests = new Map(); // requestId -> 资金申请详情
+let fundRequests = new Map(); // requestId -> fund申请详情
 
 class PhysicalBridgeFund {
-  // 创建资金申请
+  // Createfund申请
   static createFundRequest(requestData) {
     const requestId = `fund-request-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const request = {
@@ -48,7 +48,7 @@ class PhysicalBridgeFund {
     
     fundRequests.set(requestId, request);
     
-    // 创建Governance proposal
+    // CreateGovernance proposal
     const proposalId = WeightedVotingSystem.createProposal({
       title: `Fund Request: ${requestData.title}`,
       description: requestData.description,
@@ -64,7 +64,7 @@ class PhysicalBridgeFund {
     return requestId;
   }
   
-  // 审批资金申请
+  // 审批fund申请
   static approveFundRequest(requestId) {
     if (!fundRequests.has(requestId)) {
       throw new Error('Fund request not found');
@@ -75,16 +75,16 @@ class PhysicalBridgeFund {
       throw new Error('Fund request is not in pending status');
     }
     
-    // 结束投票
+    // 结束Vote
     const voteResult = WeightedVotingSystem.endVoting(request.proposalId);
     
     if (voteResult === 'passed') {
-      // 检查资金是否足够
+      // Checkfund是否足够
       if (physicalBridgeFundBalance < BigInt(request.amount)) {
         request.status = APPROVAL_STATUS.REJECTED;
         request.reason = 'Insufficient funds';
       } else {
-        // 批准资金申请
+        // 批准fund申请
         request.status = APPROVAL_STATUS.APPROVED;
         physicalBridgeFundBalance -= BigInt(request.amount);
       }
@@ -100,7 +100,7 @@ class PhysicalBridgeFund {
     return request.status;
   }
   
-  // 执行资金申请
+  // Executefund申请
   static executeFundRequest(requestId) {
     if (!fundRequests.has(requestId)) {
       throw new Error('Fund request not found');
@@ -111,9 +111,9 @@ class PhysicalBridgeFund {
       throw new Error('Fund request is not approved');
     }
     
-    // 执行资金分配
-    // 这里可以实现实际的资金分配逻辑
-    // 例如，创建交易并发送给申请人
+    // Executefund分配
+    // 这里can实现实际的fund分配Logic
+    // e.g., Createtransaction并Send给申请人
     console.log(`[PhysicalBridgeFund] Executing fund request ${requestId}, amount: ${request.amount}`);
     
     request.status = APPROVAL_STATUS.EXECUTED;
@@ -124,12 +124,12 @@ class PhysicalBridgeFund {
     return request.status;
   }
   
-  // get资金申请详情
+  // getfund申请详情
   static getFundRequest(requestId) {
     return fundRequests.get(requestId) || null;
   }
   
-  // get所有资金申请
+  // get所有fund申请
   static getAllFundRequests() {
     return Array.from(fundRequests.entries()).map(([id, request]) => ({
       id,
@@ -137,7 +137,7 @@ class PhysicalBridgeFund {
     }));
   }
   
-  // get资金余额
+  // getfundbalance
   static getBalance() {
     return physicalBridgeFundBalance;
   }

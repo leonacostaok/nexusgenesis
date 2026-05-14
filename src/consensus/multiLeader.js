@@ -1,8 +1,8 @@
 /**
- * Multi-Leader Consensus - 多领导者共识原型
+ * Multi-Leader Consensus - Multi-LeaderConsensus原型
  * 
- * 功能：
- * 1. 领导者选举（基于声誉和随机性）
+ * Features: 
+ * 1. 领导者选举(based on声誉和随机性)
  * 2. 轮值出块
  * 3. Block validation和确认
  * 4. 容错Processing
@@ -11,23 +11,23 @@
 import crypto from 'crypto';
 
 /**
- * 多领导者共识类
+ * Multi-LeaderConsensusclass
  */
 export class MultiLeaderConsensus {
   constructor() {
     this.leaders = new Map();        // 领导者列表
-    this.currentRound = 0;            // 当前轮次
-    this.roundLeader = null;          // 当前轮次的领导者
-    this.blockConfirmations = new Map(); // 区块确认
-    this.minConfirmations = 3;        // 最小确认数
-    this.leaderRotationInterval = 10; // 领导者轮换间隔（区块数）
-    this.blocksSinceRotation = 0;     // 自轮换以来的区块数
+    this.currentRound = 0;            // Current轮次
+    this.roundLeader = null;          // Current轮次的领导者
+    this.blockConfirmations = new Map(); // block确认
+    this.minConfirmations = 3;        // Minimum确认数
+    this.leaderRotationInterval = 10; // 领导者轮换间隔(block数)
+    this.blocksSinceRotation = 0;     // 自轮换以来的block数
   }
 
   /**
-   * 注册领导者
-   * @param {string} nodeId - 节点ID
-   * @param {string} address - 节点地址
+   * Register领导者
+   * @param {string} nodeId - nodeID
+   * @param {string} address - nodeaddress
    * @param {number} reputation - 声誉值
    */
   registerLeader(nodeId, address, reputation = 1) {
@@ -44,7 +44,7 @@ export class MultiLeaderConsensus {
 
   /**
    * 移除领导者
-   * @param {string} nodeId - 节点ID
+   * @param {string} nodeId - nodeID
    */
   removeLeader(nodeId) {
     const leader = this.leaders.get(nodeId);
@@ -56,7 +56,7 @@ export class MultiLeaderConsensus {
 
   /**
    * 选举下一轮领导者
-   * 基于声誉加权的随机选择
+   * based on声誉加权的随机选择
    */
   electLeader() {
     const activeLeaders = Array.from(this.leaders.values()).filter(l => l.isActive);
@@ -71,10 +71,10 @@ export class MultiLeaderConsensus {
       return this.roundLeader;
     }
 
-    // 计算总声誉权重
+    // Calculate总声誉权重
     const totalReputation = activeLeaders.reduce((sum, l) => sum + l.reputation, 0);
     
-    // 使用确定性随机数（基于当前轮次和区块哈希）
+    // using确定性random bytes(based onCurrent轮次和block hash)
     const seed = crypto.createHash('sha256')
       .update(`round-${this.currentRound}-${Date.now()}`)
       .digest('hex');
@@ -100,14 +100,14 @@ export class MultiLeaderConsensus {
   }
 
   /**
-   * 检查是否需要轮换领导者
+   * Check是否requires轮换领导者
    */
   shouldRotateLeader() {
     return this.blocksSinceRotation >= this.leaderRotationInterval;
   }
 
   /**
-   * 强制轮换领导者（用于测试网）
+   * 强制轮换领导者(forTest网)
    */
   forceRotateLeader() {
     this.blocksSinceRotation = this.leaderRotationInterval;
@@ -115,7 +115,7 @@ export class MultiLeaderConsensus {
   }
 
   /**
-   * get当前领导者
+   * getCurrent领导者
    */
   getCurrentLeader() {
     if (!this.roundLeader || this.shouldRotateLeader()) {
@@ -125,8 +125,8 @@ export class MultiLeaderConsensus {
   }
 
   /**
-   * 提议区块
-   * @param {object} block - 区块数据
+   * 提议block
+   * @param {object} block - blockdata
    * @param {string} proposerId - 提议者ID
    */
   proposeBlock(block, proposerId) {
@@ -141,7 +141,7 @@ export class MultiLeaderConsensus {
       return false;
     }
 
-    // 初始化区块确认
+    // Initializeblock确认
     this.blockConfirmations.set(block.hash, {
       block,
       proposer: proposerId,
@@ -158,8 +158,8 @@ export class MultiLeaderConsensus {
   }
 
   /**
-   * 确认区块
-   * @param {string} blockHash - 区块哈希
+   * 确认block
+   * @param {string} blockHash - block hash
    * @param {string} validatorId - ValidatorID
    */
   confirmBlock(blockHash, validatorId) {
@@ -179,7 +179,7 @@ export class MultiLeaderConsensus {
     
     console.log(`[CONSENSUS] Block confirmed by ${validatorId}: ${blockHash} (${blockInfo.confirmations.size}/${this.minConfirmations})`);
 
-    // 检查是否达到确认阈值
+    // Check是否达到确认threshold
     if (blockInfo.confirmations.size >= this.minConfirmations) {
       blockInfo.status = 'CONFIRMED';
       console.log(`[CONSENSUS] Block confirmed: ${blockHash}`);
@@ -190,8 +190,8 @@ export class MultiLeaderConsensus {
   }
 
   /**
-   * get区块状态
-   * @param {string} blockHash - 区块哈希
+   * getblockstatus
+   * @param {string} blockHash - block hash
    */
   getBlockStatus(blockHash) {
     const blockInfo = this.blockConfirmations.get(blockHash);
@@ -207,7 +207,7 @@ export class MultiLeaderConsensus {
   }
 
   /**
-   * get共识统计
+   * getConsensus统计
    */
   getStats() {
     const activeLeaders = Array.from(this.leaders.values()).filter(l => l.isActive);

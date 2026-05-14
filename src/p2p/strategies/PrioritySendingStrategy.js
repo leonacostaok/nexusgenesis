@@ -1,6 +1,6 @@
 /**
- * 优先级发送策略
- * 根据Message的优先级决定发送方式，确保高优先级Message优先Processing
+ * 优先级Send策略
+ * 根据Message的优先级决定Send方式, ensure高优先级Message优先Processing
  */
 import MessageSendingStrategy from './MessageSendingStrategy.js';
 import DirectSendingStrategy from './DirectSendingStrategy.js';
@@ -12,7 +12,7 @@ const PRIORITY_LEVELS = {
   LOW: 'low'
 };
 
-// 不同Message类型的优先级映射
+// 不同Messagetype的优先级映射
 const MESSAGE_PRIORITIES = {
   PING: PRIORITY_LEVELS.HIGH,
   PONG: PRIORITY_LEVELS.HIGH,
@@ -36,17 +36,17 @@ class PrioritySendingStrategy extends MessageSendingStrategy {
   }
 
   async send(peerId, message, connection) {
-    // 根据Message优先级选择合适的发送策略
+    // 根据Message优先级选择合适的Send策略
     const priority = this._getMessagePriority(message);
     
     switch (priority) {
       case PRIORITY_LEVELS.HIGH:
-        // 高优先级Message，使用直接发送策略
+        // 高优先级Message, using直接Send策略
         return await this.directStrategy.send(peerId, message, connection);
       case PRIORITY_LEVELS.MEDIUM:
       case PRIORITY_LEVELS.LOW:
       default:
-        // 中低优先级Message，使用批Processing发送策略
+        // 中低优先级Message, using批ProcessingSend策略
         return await this.batchStrategy.send(peerId, message, connection);
     }
   }
@@ -70,8 +70,8 @@ class PrioritySendingStrategy extends MessageSendingStrategy {
   }
 
   shouldUse(message) {
-    // 优先级策略适用于所有Message
-    // 它会根据Message的优先级within部选择合适的发送策略
+    // 优先级策略适for所有Message
+    // 它会根据Message的优先级within部选择合适的Send策略
     return true;
   }
 }

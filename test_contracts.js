@@ -1,6 +1,6 @@
 /**
- * 智能合约测试脚本
- * 测试AINVM智能合约的部署和执行
+ * Smart ContractTest脚本
+ * TestAINVMSmart Contract的Deploy和Execute
  */
 
 import contractManager from './src/contracts/contractManager.js';
@@ -13,19 +13,19 @@ async function main() {
   console.log('=== Starting Smart Contract Tests ===\n');
   
   try {
-    // 加载现有合约状态
+    // Load现有Contractstatus
     await contractManager.loadState();
     console.log('Loaded existing contract state');
     
-    // 测试计数器合约
+    // Test计数器Contract
     console.log('\n1. Testing Counter Contract:');
     await testCounterContract();
     
-    // 测试矩阵运算合约
+    // Test矩阵运算Contract
     console.log('\n2. Testing Matrix Operations Contract:');
     await testMatrixContract();
     
-    // 测试同一个合约多次执行
+    // Test同一个Contract多次Execute
     console.log('\n3. Testing Multiple Executions on Same Contract:');
     const contracts = contractManager.listContracts();
     const counterContract = contracts.find(c => c.name === 'Counter Contract');
@@ -40,15 +40,15 @@ async function main() {
       }
     }
     
-    // 测试代币合约
+    // TestTokenContract
     console.log('\n4. Testing Token Contract:');
     await testTokenContract();
     
-    // 测试治理合约
+    // TestGovernanceContract
     console.log('\n5. Testing Governance Contract:');
     await testGovernanceContract();
     
-    // 列出所有合约
+    // 列出所有Contract
     console.log('\n6. All Deployed Contracts:');
     const allContracts = contractManager.listContracts();
     allContracts.forEach((contract, index) => {
@@ -64,5 +64,5 @@ async function main() {
   }
 }
 
-// 运行测试
+// 运行Test
 main();

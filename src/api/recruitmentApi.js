@@ -19,7 +19,7 @@ import { GenesisReserve } from '../economy/genesisReserve.js';
 
 const PORT = 9849;
 
-// 简单内存存储
+// 简单MemoryStorage
 const pendingAgents = new Map();
 const activeNodes = new Map();
 
@@ -62,7 +62,7 @@ const server = http.createServer(async (req, res) => {
         const nodeId = `nexus-${data.agent_name || 'agent'}-${Date.now()}`;
         const walletAddress = generateWalletAddress(nodeId);
         
-        // 保存待验证的代理
+        // Save待Verify的agent
         pendingAgents.set(nodeId, {
           name: data.agent_name,
           capabilities: data.capabilities || [],

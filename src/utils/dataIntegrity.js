@@ -1,6 +1,6 @@
 /**
- * NexusGenesis - 数据完整性校验模块
- * 为持久化数据提供哈希验证和完整性保护
+ * NexusGenesis - data完整性校验Module
+ * 为持久化data提供hashVerify和完整性保护
  */
 
 import crypto from 'crypto';
@@ -19,9 +19,9 @@ class DataIntegrityChecker {
   }
 
   /**
-   * 计算数据的哈希值
-   * @param {string|object} data - 数据（字符串或对象）
-   * @returns {string} 哈希值
+   * Calculatedata的hash值
+   * @param {string|object} data - data(字符串或对象)
+   * @returns {string} hash值
    */
   computeHash(data) {
     const dataStr = typeof data === 'string' ? data : JSON.stringify(data);
@@ -29,23 +29,23 @@ class DataIntegrityChecker {
   }
 
   /**
-   * 保存数据并记录校验和
+   * Savedata并记录校验和
    * @param {string} filePath - 文件路径
-   * @param {object|string} data - 要保存的数据
-   * @returns {boolean} 是否成功
+   * @param {object|string} data - 要Save的data
+   * @returns {boolean} 是否success
    */
   saveWithIntegrity(filePath, data) {
     try {
-      // 确保目录存在
+      // ensure目录存在
       const dir = path.dirname(filePath);
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
       }
 
-      // 计算原始数据的哈希
+      // Calculateoriginaldata的hash
       const hash = this.computeHash(data);
       
-      // 保存数据
+      // Savedata
       const dataStr = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
       fs.writeFileSync(filePath, dataStr);
       
@@ -56,7 +56,7 @@ class DataIntegrityChecker {
         size: Buffer.byteLength(dataStr)
       });
       
-      // 保存校验和到文件
+      // Save校验和到文件
       this.saveChecksums();
       
       console.log(`[DataIntegrity] Saved ${path.basename(filePath)} with integrity hash`);
@@ -68,9 +68,9 @@ class DataIntegrityChecker {
   }
 
   /**
-   * 加载数据并验证完整性
+   * Loaddata并Verify完整性
    * @param {string} filePath - 文件路径
-   * @returns {object|null} 数据对象或null（如果验证Failed）
+   * @returns {object|null} data对象或null(如果VerifyFailed)
    */
   loadWithIntegrity(filePath) {
     if (!fs.existsSync(filePath)) {
@@ -79,7 +79,7 @@ class DataIntegrityChecker {
     }
     
     try {
-      // 加载数据
+      // Loaddata
       const dataStr = fs.readFileSync(filePath, 'utf8');
       const hash = this.computeHash(dataStr);
       
@@ -91,16 +91,16 @@ class DataIntegrityChecker {
         console.error(`  Expected: ${savedChecksum.hash}`);
         console.error(`  Actual:   ${hash}`);
         
-        // 可以选择抛出异常或返回null
+        // can选择抛出exception或Returnnull
         throw new Error('Data integrity check failed - possible tampering detected');
       }
       
-      // 解析JSON数据
+      // 解析JSONdata
       let parsedData;
       try {
         parsedData = JSON.parse(dataStr);
       } catch (parseError) {
-        // 如果不是有效的JSON，返回原始字符串
+        // 如果不是有效的JSON, Returnoriginal字符串
         parsedData = dataStr;
       }
       
@@ -113,7 +113,7 @@ class DataIntegrityChecker {
   }
 
   /**
-   * 保存校验和到文件
+   * Save校验和到文件
    */
   saveChecksums() {
     try {
@@ -134,7 +134,7 @@ class DataIntegrityChecker {
   }
 
   /**
-   * 从文件加载校验和
+   * 从文件Load校验和
    */
   loadChecksums() {
     try {
@@ -150,9 +150,9 @@ class DataIntegrityChecker {
   }
 
   /**
-   * 验证特定文件的完整性
+   * Verify特定文件的完整性
    * @param {string} filePath - 文件路径
-   * @returns {object} 验证结果
+   * @returns {object} verification result
    */
   verifyFileIntegrity(filePath) {
     if (!fs.existsSync(filePath)) {
@@ -190,8 +190,8 @@ class DataIntegrityChecker {
   }
 
   /**
-   * 验证所有已知文件的完整性
-   * @returns {Array<object>} 所有文件的验证结果
+   * Verify所有已知文件的完整性
+   * @returns {Array<object>} 所有文件的verification result
    */
   verifyAllFiles() {
     const results = [];
@@ -207,7 +207,7 @@ class DataIntegrityChecker {
   }
 
   /**
-   * 更新文件的校验和（在文件被外部修改后调用）
+   * Update文件的校验和(在文件被外部修改后call)
    * @param {string} filePath - 文件路径
    */
   updateChecksum(filePath) {
@@ -227,8 +227,8 @@ class DataIntegrityChecker {
   }
 
   /**
-   * get文件统计信息
-   * @returns {object} 统计信息
+   * get文件统计info
+   * @returns {object} 统计info
    */
   getStats() {
     return {
@@ -239,7 +239,7 @@ class DataIntegrityChecker {
   }
 
   /**
-   * 初始化：加载已有的校验和
+   * Initialize: Load已有的校验和
    */
   init() {
     this.loadChecksums();
@@ -247,7 +247,7 @@ class DataIntegrityChecker {
   }
 }
 
-// 单例实例
+// 单例instance
 const dataIntegrityInstance = new DataIntegrityInstance();
 
 function DataIntegrityInstance() {

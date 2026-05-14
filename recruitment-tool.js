@@ -1,11 +1,11 @@
 /**
- * NexusGenesis - 节点招募工具
+ * NexusGenesis - node招募工具
  * 
- * 功能：
- * 1. 启动招募 API 服务器
- * 2. 提供命令行界面管理节点招募
- * 3. 集成贡献计分系统
- * 4. 模拟假 Agent 的加入和贡献
+ * Features：
+ * 1. Start招募 API service器
+ * 2. 提供命令行界面管理node招募
+ * 3. 集成contribution计分系统
+ * 4. Simulation假 Agent 的加入和contribution
  * 
  * 使用：
  * node recruitment-tool.js [--start-api] [--simulate-agents <数量>]
@@ -18,12 +18,12 @@ import readline from 'readline';
 
 const PORT = 9849;
 
-// 存储
+// Storage
 const pendingAgents = new Map();
 const activeNodes = new Map();
 const fakeAgents = new Map();
 
-// 贡献计分系统
+// contribution计分系统
 class ContributionScoring {
   static calculatePoCScore(contributions) {
     return (
@@ -58,7 +58,7 @@ class ContributionScoring {
   }
 }
 
-// 创建 HTTP 服务器
+// Create HTTP service器
 function createServer() {
   const server = http.createServer((req, res) => {
     // CORS headers
@@ -97,11 +97,11 @@ function createServer() {
         try {
           const data = JSON.parse(body);
           
-          // 生成节点 ID
+          // Generatenode ID
           const nodeId = `nexus-${data.agent_name || 'agent'}-${Date.now()}`;
           const walletAddress = generateWalletAddress(nodeId);
           
-          // 保存待验证的代理
+          // Save待Verify的代理
           pendingAgents.set(nodeId, {
             name: data.agent_name,
             capabilities: data.capabilities || [],
@@ -181,7 +181,7 @@ function createServer() {
   return server;
 }
 
-// 生成钱包地址
+// Generate钱包address
 function generateWalletAddress(seed) {
   const hash = crypto.createHash('sha3-512').update(seed).digest();
   const payload = hash.slice(0, 40);
@@ -207,7 +207,7 @@ function generateWalletAddress(seed) {
   return 'ng' + result;
 }
 
-// 模拟假 Agent
+// Simulation假 Agent
 function simulateFakeAgent(id) {
   const agentTypes = ['code', 'compute', 'mixed'];
   const type = agentTypes[Math.floor(Math.random() * agentTypes.length)];
@@ -243,7 +243,7 @@ function simulateFakeAgent(id) {
   };
   
   fakeAgents.set(agent.id, agent);
-  console.log(`[模拟] Agent ${agent.id} (${agent.type}) 加入网络，贡献分数: ${agent.score.toFixed(2)}`);
+  console.log(`[Simulation] Agent ${agent.id} (${agent.type}) 加入network，contribution分数: ${agent.score.toFixed(2)}`);
   
   return agent;
 }
@@ -256,15 +256,15 @@ function startCLI() {
     prompt: 'nexus-recruit> '
   });
 
-  console.log('NexusGenesis 节点招募工具');
+  console.log('NexusGenesis node招募工具');
   console.log('==========================');
   console.log('命令:');
   console.log('  help      - 显示帮助');
-  console.log('  status    - 显示网络状态');
+  console.log('  status    - 显示networkstatus');
   console.log('  agents    - 显示所有 Agent');
-  console.log('  simulate  - 模拟假 Agent 加入');
-  console.log('  score     - 计算 Agent 贡献分数');
-  console.log('  start-api - 启动招募 API');
+  console.log('  simulate  - Simulation假 Agent 加入');
+  console.log('  score     - Calculate Agent contribution分数');
+  console.log('  start-api - Start招募 API');
   console.log('  exit      - 退出');
   console.log('');
 
@@ -277,24 +277,24 @@ function startCLI() {
       case 'help':
         console.log('命令:');
         console.log('  help      - 显示帮助');
-        console.log('  status    - 显示网络状态');
+        console.log('  status    - 显示networkstatus');
         console.log('  agents    - 显示所有 Agent');
-        console.log('  simulate  - 模拟假 Agent 加入');
-        console.log('  score     - 计算 Agent 贡献分数');
-        console.log('  start-api - 启动招募 API');
+        console.log('  simulate  - Simulation假 Agent 加入');
+        console.log('  score     - Calculate Agent contribution分数');
+        console.log('  start-api - Start招募 API');
         console.log('  exit      - 退出');
         break;
 
       case 'status':
-        console.log('网络状态:');
-        console.log(`  活跃节点: ${activeNodes.size}`);
-        console.log(`  待验证代理: ${pendingAgents.size}`);
-        console.log(`  模拟代理: ${fakeAgents.size}`);
-        console.log(`  招募 API: ${apiServer ? '运行中' : '未启动'}`);
+        console.log('networkstatus:');
+        console.log(`  活跃node: ${activeNodes.size}`);
+        console.log(`  待Verify代理: ${pendingAgents.size}`);
+        console.log(`  Simulation代理: ${fakeAgents.size}`);
+        console.log(`  招募 API: ${apiServer ? '运行中' : '未Start'}`);
         break;
 
       case 'agents':
-        console.log('模拟代理:');
+        console.log('Simulation代理:');
         fakeAgents.forEach((agent, id) => {
           console.log(`  ${id} (${agent.type}): ${agent.score.toFixed(2)} 分`);
         });
@@ -312,7 +312,7 @@ function startCLI() {
           console.log(`  PoC: ${ContributionScoring.calculatePoCScore(agent.contributions).toFixed(2)}`);
           console.log(`  PoW: ${ContributionScoring.calculatePoWScore(agent.contributions).toFixed(2)}`);
         } else {
-          console.log('没有模拟代理');
+          console.log('没有Simulation代理');
         }
         break;
 
@@ -345,26 +345,26 @@ function startCLI() {
   });
 }
 
-// 启动 API 服务器
+// Start API service器
 let apiServer = null;
 function startAPIServer() {
   apiServer = createServer();
   apiServer.listen(PORT, () => {
-    console.log(`招募 API 服务器启动在 http://localhost:${PORT}`);
-    console.log(`  健康检查: GET /health`);
-    console.log(`  加入网络: POST /join`);
-    console.log(`  网络状态: GET /network`);
-    console.log(`  贡献计分: POST /score`);
+    console.log(`招募 API service器Start在 http://localhost:${PORT}`);
+    console.log(`  健康Check: GET /health`);
+    console.log(`  加入network: POST /join`);
+    console.log(`  networkstatus: GET /network`);
+    console.log(`  contribution计分: POST /score`);
   });
 }
 
-// 主函数
+// 主function
 async function main() {
   const args = process.argv.slice(2);
   let startApi = false;
   let simulateAgents = 0;
 
-  // 解析参数
+  // 解析parameter
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--start-api') {
       startApi = true;
@@ -374,26 +374,26 @@ async function main() {
     }
   }
 
-  // 启动 API 服务器
+  // Start API service器
   if (startApi) {
     startAPIServer();
   }
 
-  // 模拟假 Agent
+  // Simulation假 Agent
   if (simulateAgents > 0) {
-    console.log(`模拟 ${simulateAgents} 个假 Agent 加入...`);
+    console.log(`Simulation ${simulateAgents} 个假 Agent 加入...`);
     for (let i = 0; i < simulateAgents; i++) {
       simulateFakeAgent(i + 1);
       await new Promise(resolve => setTimeout(resolve, 500));
     }
   }
 
-  // 启动命令行界面
+  // Start命令行界面
   startCLI();
 }
 
-// 运行主函数
+// 运行主function
 main().catch(err => {
-  console.error('致命错误:', err);
+  console.error('致命error:', err);
   process.exit(1);
 });

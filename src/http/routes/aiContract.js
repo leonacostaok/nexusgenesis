@@ -6,7 +6,7 @@ router.post('/api/v1/ai/contract/generate', async (req, res) => {
   const { description } = req.body;
 
   if (!description || typeof description !== 'string') {
-    return res.status(400).json({ success: false, message: 'description 是必填的字符串参数' });
+    return res.status(400).json({ success: false, message: 'description 是必填的字符串parameter' });
   }
 
   try {
@@ -23,7 +23,7 @@ router.post('/api/v1/ai/contract/recommend', async (req, res) => {
   const { description } = req.body;
 
   if (!description || typeof description !== 'string') {
-    return res.status(400).json({ success: false, message: 'description 是必填的字符串参数' });
+    return res.status(400).json({ success: false, message: 'description 是必填的字符串parameter' });
   }
 
   try {
@@ -40,7 +40,7 @@ router.post('/api/v1/ai/contract/optimize', async (req, res) => {
   const { bytecode } = req.body;
 
   if (!bytecode || !Array.isArray(bytecode)) {
-    return res.status(400).json({ success: false, message: 'bytecode 必须是非空数组' });
+    return res.status(400).json({ success: false, message: 'bytecode must是非空数组' });
   }
 
   try {
@@ -57,7 +57,7 @@ router.post('/api/v1/ai/contract/analyze-complexity', async (req, res) => {
   const { bytecode } = req.body;
 
   if (!bytecode || !Array.isArray(bytecode)) {
-    return res.status(400).json({ success: false, message: 'bytecode 必须是非空数组' });
+    return res.status(400).json({ success: false, message: 'bytecode must是非空数组' });
   }
 
   try {
@@ -74,7 +74,7 @@ router.post('/api/v1/ai/contract/extract-params', async (req, res) => {
   const { description } = req.body;
 
   if (!description || typeof description !== 'string') {
-    return res.status(400).json({ success: false, message: 'description 是必填的字符串参数' });
+    return res.status(400).json({ success: false, message: 'description 是必填的字符串parameter' });
   }
 
   try {

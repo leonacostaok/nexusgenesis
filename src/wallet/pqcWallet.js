@@ -1,6 +1,6 @@
 /**
  * NexusGenesis - PQC Wallet Implementation
- * 基于Dilithium2的抗量子钱包实现
+ * based onDilithium2的post-quantum钱包实现
  */
 
 import fs from 'fs/promises';
@@ -11,14 +11,14 @@ import { generateAddress, validateAddress } from './addressUtils.js';
 import { generateKeyPair, sign, verify, hash } from '../crypto/pqc.js';
 
 /**
- * PQC钱包类
+ * PQC钱包class
  */
 export class PQCWallet extends Wallet {
   /**
-   * 构造函数
-   * @param {Buffer} publicKey 公钥
-   * @param {Buffer} privateKey 私钥
-   * @param {bigint} balance 余额
+   * 构造function
+   * @param {Buffer} publicKey public key
+   * @param {Buffer} privateKey private key
+   * @param {bigint} balance balance
    */
   constructor(publicKey, privateKey, balance = 0n) {
     super();
@@ -29,7 +29,7 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * secretKey 别名，兼容不同命名习惯
+   * secretKey 别名, 兼容不同命名习惯
    * @returns {Buffer}
    */
   get secretKey() {
@@ -37,8 +37,8 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 生成新钱包
-   * @param {bigint} initialBalance 初始余额
+   * Generate新钱包
+   * @param {bigint} initialBalance 初始balance
    * @returns {Promise<PQCWallet>} 新钱包
    */
   static async generate(initialBalance = 0n) {
@@ -52,9 +52,9 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 从文件加载钱包
+   * 从文件Load钱包
    * @param {string} filePath 文件路径
-   * @returns {Promise<PQCWallet>} 钱包实例
+   * @returns {Promise<PQCWallet>} 钱包instance
    */
   static async load(filePath) {
     try {
@@ -73,7 +73,7 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 保存钱包到文件
+   * Save钱包到文件
    * @param {string} filePath 文件路径
    * @returns {Promise<void>}
    */
@@ -86,7 +86,7 @@ export class PQCWallet extends Wallet {
         balance: this.balance.toString()
       };
       
-      // 确保目录存在
+      // ensure目录存在
       const dir = path.dirname(filePath);
       await fs.mkdir(dir, { recursive: true });
       
@@ -98,9 +98,9 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 签名Message
-   * @param {string|object} message 要签名的Message
-   * @returns {Promise<string>} 签名（十六进制）
+   * SignMessage
+   * @param {string|object} message to signMessage
+   * @returns {Promise<string>} Sign(十六进制)
    */
   async sign(message) {
     try {
@@ -114,11 +114,11 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 验证签名
-   * @param {string|object} message 原始Message
-   * @param {string|Buffer} signature 签名
-   * @param {Buffer} publicKey 公钥
-   * @returns {Promise<boolean>} 验证结果
+   * VerifySign
+   * @param {string|object} message originalMessage
+   * @param {string|Buffer} signature Sign
+   * @param {Buffer} publicKey public key
+   * @returns {Promise<boolean>} verification result
    */
   async verify(message, signature, publicKey) {
     try {
@@ -133,11 +133,11 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 静态签名验证（兼容直接调用）
-   * @param {string|object} message 原始Message
-   * @param {string|Buffer} signature 签名
-   * @param {Buffer} publicKey 公钥
-   * @returns {Promise<boolean>} 验证结果
+   * 静态SignVerify(兼容直接call)
+   * @param {string|object} message originalMessage
+   * @param {string|Buffer} signature Sign
+   * @param {Buffer} publicKey public key
+   * @returns {Promise<boolean>} verification result
    */
   static async verify(message, signature, publicKey) {
     try {
@@ -151,9 +151,9 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 签名交易
-   * @param {object} transaction 交易对象
-   * @returns {Promise<string>} 签名（十六进制）
+   * Signtransaction
+   * @param {object} transaction transaction对象
+   * @returns {Promise<string>} Sign(十六进制)
    */
   async signTransaction(transaction) {
     try {
@@ -170,10 +170,10 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 验证交易签名
-   * @param {object} transaction 交易对象
-   * @param {string} signature 签名
-   * @returns {Promise<boolean>} 验证结果
+   * VerifytransactionSign
+   * @param {object} transaction transaction对象
+   * @param {string} signature Sign
+   * @returns {Promise<boolean>} verification result
    */
   async verifyTransaction(transaction, signature) {
     try {
@@ -190,17 +190,17 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 更新余额
-   * @param {bigint} amount 金额
+   * Updatebalance
+   * @param {bigint} amount amount
    */
   updateBalance(amount) {
     this.balance += amount;
   }
 
   /**
-   * 加密导出钱包
+   * 加密Export钱包
    * @param {string} password 加密密码
-   * @returns {object} 加密后的钱包数据
+   * @returns {object} 加密后的钱包data
    */
   exportEncrypted(password) {
     const salt = crypto.randomBytes(16);
@@ -222,9 +222,9 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 从加密数据导入钱包
-   * @param {object} encrypted 加密的钱包数据
-   * @returns {PQCWallet} 钱包实例
+   * 从加密dataImport钱包
+   * @param {object} encrypted 加密的钱包data
+   * @returns {PQCWallet} 钱包instance
    */
   static importEncrypted(encrypted, password) {
     const salt = Buffer.from(encrypted.salt, 'hex');
@@ -242,9 +242,9 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 检查余额是否足够
-   * @param {bigint} amount 金额
-   * @returns {boolean} 余额是否足够
+   * Checkbalance是否足够
+   * @param {bigint} amount amount
+   * @returns {boolean} balance是否足够
    */
   hasEnoughBalance(amount) {
     return this.balance >= amount;
@@ -254,18 +254,18 @@ export class PQCWallet extends Wallet {
 export { validateAddress };
 
 /**
- * 交易类
+ * transactionclass
  */
 export class Transaction {
   /**
-   * 创建并验证交易
-   * @param {PQCWallet} wallet 发送方钱包
-   * @param {string} to 接收地址
-   * @param {bigint} amount 金额
-   * @param {bigint} fee 手续费
-   * @param {string} type 交易类型
-   * @param {object} data 交易数据
-   * @returns {Transaction} 交易实例
+   * Create并Verifytransaction
+   * @param {PQCWallet} wallet Send方钱包
+   * @param {string} to Receiveaddress
+   * @param {bigint} amount amount
+   * @param {bigint} fee fee
+   * @param {string} type transactiontype
+   * @param {object} data transactiondata
+   * @returns {Transaction} transactioninstance
    */
   static create(wallet, to, amount, feeOrData = 1n, type = 'TRANSFER', data = {}) {
     const { valid, reason } = validateAddress(to);
@@ -286,13 +286,13 @@ export class Transaction {
   }
 
   /**
-   * 构造函数
-   * @param {string} from 发送地址
-   * @param {string} to 接收地址
-   * @param {bigint} amount 金额
-   * @param {bigint} fee 手续费
-   * @param {string} type 交易类型
-   * @param {object} data 交易数据
+   * 构造function
+   * @param {string} from Sendaddress
+   * @param {string} to Receiveaddress
+   * @param {bigint} amount amount
+   * @param {bigint} fee fee
+   * @param {string} type transactiontype
+   * @param {object} data transactiondata
    */
   constructor(from, to, amount, fee = 1n, type = 'TRANSFER', data = {}) {
     this.id = `tx-${hash(Date.now().toString() + Math.random().toString(), 'sha3-256').slice(0, 16)}`;
@@ -307,9 +307,9 @@ export class Transaction {
   }
 
   /**
-   * 签名交易
+   * Signtransaction
    * @param {PQCWallet} wallet 钱包
-   * @returns {Promise<Transaction>} 签名后的交易
+   * @returns {Promise<Transaction>} Sign后的transaction
    */
   async sign(wallet) {
     this.signature = await wallet.signTransaction(this);
@@ -317,9 +317,9 @@ export class Transaction {
   }
 
   /**
-   * 验证交易
+   * Verifytransaction
    * @param {PQCWallet} wallet 钱包
-   * @returns {Promise<boolean>} 验证结果
+   * @returns {Promise<boolean>} verification result
    */
   async verify(wallet) {
     if (!this.signature) {
@@ -329,9 +329,9 @@ export class Transaction {
   }
 
   /**
-   * 验证交易签名（使用公钥）
-   * @param {Buffer} publicKey 公钥
-   * @returns {Promise<boolean>} 验证结果
+   * VerifytransactionSign(usingpublic key)
+   * @param {Buffer} publicKey public key
+   * @returns {Promise<boolean>} verification result
    */
   async verifySignature(publicKey) {
     if (!this.signature) {
@@ -355,8 +355,8 @@ export class Transaction {
   }
 
   /**
-   * 计算交易哈希
-   * @returns {string} 交易哈希
+   * Calculatetransactionhash
+   * @returns {string} transactionhash
    */
   getHash() {
     const { signature, ...txData } = this;

@@ -125,7 +125,7 @@ async function main() {
     });
   }
 
-  // ==================== 2. 启动节点网络 ====================
+  // ==================== 2. Startnodenetwork ====================
   console.log('[Launcher] Starting nodes...');
 
   for (let i = 0; i < nodeConfigs.length; i++) {
@@ -190,7 +190,7 @@ async function main() {
 
     simulator.shutdown();
 
-    // ==================== 4. 网络健康检查 ====================
+    // ==================== 4. network健康Check ====================
     console.log('[Launcher] Running network health check...');
     const healthyNodes = nodes.filter(n => n.health?.status === 'healthy');
     const avgBlockHeight = Math.round(

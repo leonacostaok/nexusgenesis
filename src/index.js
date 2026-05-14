@@ -1,6 +1,6 @@
 /**
  * NexusGenesis - Main Entry
- * 创世协议入口
+ * Genesisprotocol入口
  */
 
 import { GenesisNode } from './node/genesisNode.js';

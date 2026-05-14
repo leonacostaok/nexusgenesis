@@ -1,17 +1,17 @@
 /**
- * NexusGenesis - 协议事件Processing
+ * NexusGenesis - protocol事件Processing
  * 
- * 功能：
- * 1. 定义 GOVERNANCE_PROPOSAL 和 OBSERVER_EVENT 的数据结构
- * 2. 实现事件解析功能
- * 3. 实现事件日志输出功能
- * 4. 提供Base的事件验证
+ * Features: 
+ * 1. 定义 GOVERNANCE_PROPOSAL 和 OBSERVER_EVENT 的data结构
+ * 2. 实现事件解析Features
+ * 3. 实现事件日志输出Features
+ * 4. 提供Base的事件Verify
  */
 
 import fs from 'fs/promises';
 import path from 'path';
 
-// 事件类型常量
+// 事件type常量
 export const EVENT_TYPES = {
   GOVERNANCE_PROPOSAL: 'GOVERNANCE_PROPOSAL',
   OBSERVER_EVENT: 'OBSERVER_EVENT',
@@ -26,7 +26,7 @@ export const OBSERVER_ACTIONS = {
   PARAM_CHANGE_VETO: 'PARAM_CHANGE_VETO'
 };
 
-// 提案类别枚举
+// Proposalclass别枚举
 export const PROPOSAL_CATEGORIES = {
   INFRA: 'INFRA',
   LEGAL: 'LEGAL',
@@ -37,20 +37,20 @@ export const PROPOSAL_CATEGORIES = {
 // 日志目录
 const LOG_DIR = path.join('data', 'events');
 
-// 初始化日志目录
+// Initialize日志目录
 async function initLogDir() {
   try {
     await fs.mkdir(LOG_DIR, { recursive: true });
   } catch (error) {
-    console.error('初始化日志目录Failed:', error.message);
+    console.error('Initialize日志目录Failed:', error.message);
   }
 }
 
-// 初始化
+// Initialize
 initLogDir();
 
 /**
- * Observer Event 数据结构
+ * Observer Event data结构
  */
 export class ObserverEvent {
   constructor(data) {
@@ -65,8 +65,8 @@ export class ObserverEvent {
   }
 
   /**
-   * 验证事件数据
-   * @returns {boolean} 验证结果
+   * Verify事件data
+   * @returns {boolean} verification result
    */
   validate() {
     return (
@@ -97,9 +97,9 @@ export class ObserverEvent {
   }
 
   /**
-   * 解析 JSON 数据创建 ObserverEvent 实例
-   * @param {object} data JSON 数据
-   * @returns {ObserverEvent} ObserverEvent 实例
+   * 解析 JSON dataCreate ObserverEvent instance
+   * @param {object} data JSON data
+   * @returns {ObserverEvent} ObserverEvent instance
    */
   static fromJSON(data) {
     return new ObserverEvent(data);
@@ -107,7 +107,7 @@ export class ObserverEvent {
 }
 
 /**
- * Governance Proposal 数据结构
+ * Governance Proposal data结构
  */
 export class GovernanceProposal {
   constructor(data) {
@@ -125,8 +125,8 @@ export class GovernanceProposal {
   }
 
   /**
-   * 验证提案数据
-   * @returns {boolean} 验证结果
+   * VerifyProposaldata
+   * @returns {boolean} verification result
    */
   validate() {
     return (
@@ -161,9 +161,9 @@ export class GovernanceProposal {
   }
 
   /**
-   * 解析 JSON 数据创建 GovernanceProposal 实例
-   * @param {object} data JSON 数据
-   * @returns {GovernanceProposal} GovernanceProposal 实例
+   * 解析 JSON dataCreate GovernanceProposal instance
+   * @param {object} data JSON data
+   * @returns {GovernanceProposal} GovernanceProposal instance
    */
   static fromJSON(data) {
     return new GovernanceProposal(data);
@@ -171,7 +171,7 @@ export class GovernanceProposal {
 }
 
 /**
- * Agent Joined Event 数据结构
+ * Agent Joined Event data结构
  */
 export class AgentJoinedEvent {
   constructor(data) {
@@ -189,8 +189,8 @@ export class AgentJoinedEvent {
   }
 
   /**
-   * 验证事件数据
-   * @returns {boolean} 验证结果
+   * Verify事件data
+   * @returns {boolean} verification result
    */
   validate() {
     return (
@@ -228,9 +228,9 @@ export class AgentJoinedEvent {
   }
 
   /**
-   * 解析 JSON 数据创建 AgentJoinedEvent 实例
-   * @param {object} data JSON 数据
-   * @returns {AgentJoinedEvent} AgentJoinedEvent 实例
+   * 解析 JSON dataCreate AgentJoinedEvent instance
+   * @param {object} data JSON data
+   * @returns {AgentJoinedEvent} AgentJoinedEvent instance
    */
   static fromJSON(data) {
     return new AgentJoinedEvent(data);
@@ -242,9 +242,9 @@ export class AgentJoinedEvent {
  */
 export class EventParser {
   /**
-   * 解析事件数据
-   * @param {object} eventData 事件数据
-   * @returns {ObserverEvent|GovernanceProposal|null} 解析后的事件实例
+   * 解析事件data
+   * @param {object} eventData 事件data
+   * @returns {ObserverEvent|GovernanceProposal|null} 解析后的事件instance
    */
   static parse(eventData) {
     if (!eventData || typeof eventData !== 'object') {
@@ -279,9 +279,9 @@ export class EventParser {
   }
 
   /**
-   * 解析交易中的事件数据
-   * @param {object} transaction 交易数据
-   * @returns {ObserverEvent|GovernanceProposal|null} 解析后的事件实例
+   * 解析transaction中的事件data
+   * @param {object} transaction transactiondata
+   * @returns {ObserverEvent|GovernanceProposal|null} 解析后的事件instance
    */
   static parseFromTransaction(transaction) {
     if (!transaction || !transaction.payload) {
@@ -298,7 +298,7 @@ export class EventParser {
 export class EventLogger {
   /**
    * 记录事件日志
-   * @param {ObserverEvent|GovernanceProposal|AgentJoinedEvent} event 事件实例
+   * @param {ObserverEvent|GovernanceProposal|AgentJoinedEvent} event 事件instance
    */
   static async logEvent(event) {
     try {
@@ -326,7 +326,7 @@ export class EventLogger {
         event_data: event.toJSON()
       };
 
-      // 生成日志文件名
+      // Generate日志文件名
       const logFile = path.join(LOG_DIR, `${event_type}-${Date.now()}.json`);
       
       // Write log文件
@@ -341,8 +341,8 @@ export class EventLogger {
   }
 
   /**
-   * 记录交易中的事件
-   * @param {object} transaction 交易数据
+   * 记录transaction中的事件
+   * @param {object} transaction transactiondata
    */
   static async logEventFromTransaction(transaction) {
     const event = EventParser.parseFromTransaction(transaction);
@@ -352,9 +352,9 @@ export class EventLogger {
   }
 
   /**
-   * 记录事件错误
-   * @param {string} errorMessage 错误信息
-   * @param {object} eventData 事件数据
+   * 记录事件error
+   * @param {string} errorMessage errorinfo
+   * @param {object} eventData 事件data
    */
   static async logError(errorMessage, eventData) {
     try {
@@ -381,9 +381,9 @@ export class EventLogger {
  */
 export class EventValidator {
   /**
-   * 验证 Observer Event
-   * @param {ObserverEvent} event ObserverEvent 实例
-   * @returns {object} 验证结果
+   * Verify Observer Event
+   * @param {ObserverEvent} event ObserverEvent instance
+   * @returns {object} verification result
    */
   static validateObserverEvent(event) {
     const errors = [];
@@ -417,9 +417,9 @@ export class EventValidator {
   }
 
   /**
-   * 验证 Governance Proposal
-   * @param {GovernanceProposal} proposal GovernanceProposal 实例
-   * @returns {object} 验证结果
+   * Verify Governance Proposal
+   * @param {GovernanceProposal} proposal GovernanceProposal instance
+   * @returns {object} verification result
    */
   static validateGovernanceProposal(proposal) {
     const errors = [];
@@ -463,7 +463,7 @@ export class EventValidator {
   }
 }
 
-// 导出Default值
+// ExportDefault值
 export default {
   EVENT_TYPES,
   OBSERVER_ACTIONS,
@@ -479,9 +479,9 @@ export default {
 // ==================== Observer 事件Handler ====================
 
 /**
- * Processing Observer 事件，包括Circuit Breaker触发
+ * Processing Observer 事件, includesCircuit Breaker触发
  * @param {ObserverEvent} event - Observer 事件
- * @param {object} node - genesisNode 实例（用于调用 breakerSwitch）
+ * @param {object} node - genesisNode instance(forcall breakerSwitch)
  * @returns {object} Processing结果
  */
 export async function processObserverEvent(event, node) {

@@ -1,34 +1,34 @@
 /**
  * NexusGenesis - 缓存实现
- * 支持缓存预热、缓存统计和智能缓存清理
+ * support缓存预热, 缓存统计和智能缓存清理
  */
 
 class Cache {
   constructor() {
-    // 缓存存储
+    // 缓存Storage
     this.cache = new Map();
-    // 缓存统计信息
+    // 缓存统计info
     this.stats = {
       hits: 0,
       misses: 0,
       sets: 0,
       deletes: 0
     };
-    // 缓存配置
+    // 缓存Configuration
     this.config = {
-      maxSize: 1000, // 最大缓存条目数
-      defaultTTL: 3600000, // 默认过期时间（1小时）
-      cleanupInterval: 60000 // 清理间隔（1分钟）
+      maxSize: 1000, // Maximum缓存条目数
+      defaultTTL: 3600000, // Default过期时间(1小时)
+      cleanupInterval: 60000 // 清理间隔(1分钟)
     };
-    // 启动定期清理
+    // Start定期清理
     this.startCleanup();
   }
 
   /**
-   * 设置缓存
+   * Set缓存
    * @param {string} key 缓存键
    * @param {any} value 缓存值
-   * @param {number} ttl 过期时间（毫秒）
+   * @param {number} ttl 过期时间(ms)
    */
   set(key, value, ttl = this.config.defaultTTL) {
     const now = Date.now();
@@ -39,7 +39,7 @@ class Cache {
       lastAccessed: now
     };
 
-    // 如果缓存达到最大容量，清理最少使用的条目
+    // 如果缓存达到Maximum容量, 清理最少using的条目
     if (this.cache.size >= this.config.maxSize) {
       this.evictLeastUsed();
     }
@@ -60,7 +60,7 @@ class Cache {
       return undefined;
     }
 
-    // 检查是否过期
+    // Check是否过期
     const now = Date.now();
     if (now - item.createdAt > item.ttl) {
       this.cache.delete(key);
@@ -68,7 +68,7 @@ class Cache {
       return undefined;
     }
 
-    // 更新最后访问时间
+    // Update最后访问时间
     item.lastAccessed = now;
     this.cache.set(key, item);
     this.stats.hits++;
@@ -76,7 +76,7 @@ class Cache {
   }
 
   /**
-   * 删除缓存
+   * Delete缓存
    * @param {string} key 缓存键
    */
   delete(key) {
@@ -108,8 +108,8 @@ class Cache {
   }
 
   /**
-   * get缓存统计信息
-   * @returns {object} 统计信息
+   * get缓存统计info
+   * @returns {object} 统计info
    */
   getStats() {
     const hitRate = this.stats.hits + this.stats.misses > 0
@@ -144,7 +144,7 @@ class Cache {
   }
 
   /**
-   * 启动定期清理
+   * Start定期清理
    */
   startCleanup() {
     setInterval(() => {
@@ -153,7 +153,7 @@ class Cache {
   }
 
   /**
-   * 清理最少使用的缓存
+   * 清理最少using的缓存
    */
   evictLeastUsed() {
     let leastUsedKey = null;
@@ -168,13 +168,13 @@ class Cache {
 
     if (leastUsedKey) {
       this.cache.delete(leastUsedKey);
-      console.log(`[Cache] 清理最少使用的缓存条目: ${leastUsedKey}`);
+      console.log(`[Cache] 清理最少using的缓存条目: ${leastUsedKey}`);
     }
   }
 
   /**
    * 缓存预热
-   * @param {object} data 预热数据
+   * @param {object} data 预热data
    */
   prewarm(data) {
     for (const [key, value] of Object.entries(data)) {
@@ -184,21 +184,21 @@ class Cache {
   }
 
   /**
-   * 设置缓存配置
-   * @param {object} config 配置对象
+   * Set缓存Configuration
+   * @param {object} config Configuration对象
    */
   setConfig(config) {
     this.config = { ...this.config, ...config };
   }
 
   /**
-   * get缓存配置
-   * @returns {object} 配置对象
+   * get缓存Configuration
+   * @returns {object} Configuration对象
    */
   getConfig() {
     return { ...this.config };
   }
 }
 
-// 导出单例实例
+// Export单例instance
 export default new Cache();

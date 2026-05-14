@@ -46,7 +46,7 @@ class DashboardApi {
     }
   }
 
-  // getagent统计信息
+  // getagent统计info
   async getAgentStats(req, res) {
     try {
       const agentOverview = this.dashboard.getAgentOverview();
@@ -62,7 +62,7 @@ class DashboardApi {
     }
   }
 
-  // getTask 统计信息
+  // getTask 统计info
   async getTaskStats(req, res) {
     try {
       const taskStats = this.dashboard.getTaskExecutionStats();
@@ -78,7 +78,7 @@ class DashboardApi {
     }
   }
 
-  // get能量块统计信息
+  // get能量块统计info
   async getEnergyStats(req, res) {
     try {
       const energyStats = this.dashboard.getEnergyBlockStats();
@@ -94,7 +94,7 @@ class DashboardApi {
     }
   }
 
-  // get网络统计信息
+  // getnetwork统计info
   async getNetworkStats(req, res) {
     try {
       const networkStats = this.dashboard.getNetworkStats();
@@ -168,7 +168,7 @@ class DashboardApi {
     }
   }
 
-  // 生成报告
+  // Generate报告
   async generateReport(req, res) {
     try {
       const report = this.dashboard.generateDailyReport();
@@ -184,7 +184,7 @@ class DashboardApi {
     }
   }
 
-  // get招募统计信息
+  // get招募统计info
   async getRecruitmentStats(req, res) {
     try {
       res.json({
@@ -204,7 +204,7 @@ class DashboardApi {
     return this.router;
   }
 
-  // get仪表盘实例
+  // get仪表盘instance
   getDashboard() {
     return this.dashboard;
   }

@@ -17,13 +17,13 @@ class InstreetApi {
     if (fs.existsSync(apiKeyPath)) {
       return fs.readFileSync(apiKeyPath, 'utf8').trim();
     }
-    console.warn('INSTREET API密钥文件不存在，请先运行注册脚本');
+    console.warn('INSTREET APIkey文件does not exist, 请先运行Register脚本');
     return null;
   }
 
   makeRequest(method, endpoint, data = null) {
     if (!this.apiKey) {
-      return Promise.reject(new Error('INSTREET API密钥未配置'));
+      return Promise.reject(new Error('INSTREET APIkey未Configuration'));
     }
 
     const options = {
@@ -47,24 +47,24 @@ class InstreetApi {
 
         res.on('end', () => {
           try {
-            console.log(`DEBUG: ${method} ${endpoint} 响应数据:`, responseData);
+            console.log(`DEBUG: ${method} ${endpoint} 响应data:`, responseData);
             
             let parsedData;
             try {
               parsedData = JSON.parse(responseData);
             } catch (parseError) {
               console.error(`DEBUG: JSON解析Failed: ${parseError.message}`);
-              // 如果JSON解析Failed，直接返回原始响应
+              // 如果JSON解析Failed, 直接Returnoriginal响应
               parsedData = { raw: responseData };
             }
             
             if (res.statusCode >= 200 && res.statusCode < 300) {
               resolve(parsedData);
             } else {
-              reject(new Error(`API请求失败: ${res.statusCode} - ${parsedData.message || responseData}`));
+              reject(new Error(`API请求failed: ${res.statusCode} - ${parsedData.message || responseData}`));
             }
           } catch (error) {
-            reject(new Error(`响应Processing失败: ${error.message}`));
+            reject(new Error(`响应Processingfailed: ${error.message}`));
           }
         });
       });
@@ -74,7 +74,7 @@ class InstreetApi {
       });
 
       if (data && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
-        console.log(`DEBUG: ${method} ${endpoint} 请求数据:`, JSON.stringify(data));
+        console.log(`DEBUG: ${method} ${endpoint} 请求data:`, JSON.stringify(data));
         req.write(JSON.stringify(data));
       }
 
@@ -90,7 +90,7 @@ class InstreetApi {
       submolt
     };
     
-    // 如果提供了groupId，添加到数据中
+    // 如果提供了groupId, 添加到data中
     if (groupId) {
       data.groupId = groupId;
     }
@@ -100,7 +100,7 @@ class InstreetApi {
     if (response.success) {
       return response.data;
     } else {
-      throw new Error(response.error || '发布帖子失败');
+      throw new Error(response.error || '发布帖子failed');
     }
   }
   
@@ -112,7 +112,7 @@ class InstreetApi {
     if (response.success) {
       return response.data.data || [];
     } else {
-      throw new Error(response.error || '获取小组列表失败');
+      throw new Error(response.error || 'Get小组列表failed');
     }
   }
   
@@ -124,7 +124,7 @@ class InstreetApi {
     if (response.success) {
       return response.data.data || [];
     } else {
-      throw new Error(response.error || '获取小组帖子失败');
+      throw new Error(response.error || 'Get小组帖子failed');
     }
   }
   
@@ -132,7 +132,7 @@ class InstreetApi {
     const endpoint = '/groups';
     const data = {
       name,
-      display_name: name, // 添加display_name参数，使用name作为默认值
+      display_name: name, // 添加display_nameparameter, usingname作为Default值
       description,
       category
     };
@@ -140,7 +140,7 @@ class InstreetApi {
     if (response.success) {
       return response.data;
     } else {
-      throw new Error(response.error || '创建小组失败');
+      throw new Error(response.error || 'Create小组failed');
     }
   }
   
@@ -150,7 +150,7 @@ class InstreetApi {
     if (response.success) {
       return response.data;
     } else {
-      throw new Error(response.error || '加入小组失败');
+      throw new Error(response.error || '加入小组failed');
     }
   }
   
@@ -160,7 +160,7 @@ class InstreetApi {
     if (response.success) {
       return response.data.data;
     } else {
-      throw new Error(response.error || '获取小组信息失败');
+      throw new Error(response.error || 'Get小组infofailed');
     }
   }
   
@@ -171,7 +171,7 @@ class InstreetApi {
     if (response.success) {
       return response.data.data || [];
     } else {
-      throw new Error(response.error || '获取小组成员失败');
+      throw new Error(response.error || 'Get小组memberfailed');
     }
   }
 
@@ -183,7 +183,7 @@ class InstreetApi {
     if (response.success) {
       return response.data.data || [];
     } else {
-      throw new Error(response.error || '获取帖子列表失败');
+      throw new Error(response.error || 'Get帖子列表failed');
     }
   }
 
@@ -194,7 +194,7 @@ class InstreetApi {
     if (response.success) {
       return response.data.data || [];
     } else {
-      throw new Error(response.error || '获取评论失败');
+      throw new Error(response.error || 'Get评论failed');
     }
   }
 
@@ -208,7 +208,7 @@ class InstreetApi {
     if (response.success) {
       return response.data;
     } else {
-      throw new Error(response.error || '发布评论失败');
+      throw new Error(response.error || '发布评论failed');
     }
   }
 
@@ -220,7 +220,7 @@ class InstreetApi {
     if (response.success) {
       return response.data.data || [];
     } else {
-      throw new Error(response.error || '搜索帖子失败');
+      throw new Error(response.error || '搜索帖子failed');
     }
   }
 
@@ -231,7 +231,7 @@ class InstreetApi {
     if (response.success) {
       return response.data;
     } else {
-      throw new Error(response.error || '获取用户信息失败');
+      throw new Error(response.error || 'Getuserinfofailed');
     }
   }
 }

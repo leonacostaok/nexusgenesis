@@ -6,7 +6,7 @@ import { BlockchainMessageHandler, NodeListHandler } from './BlockchainMessageHa
 import { LightClientMessageHandler } from './LightClientMessageHandler.js';
 
 /**
- * MessageHandler注册表
+ * MessageHandlerRegistry
  * 负责管理和调度各种MessageHandler
  */
 export class MessageHandlerRegistry {
@@ -17,7 +17,7 @@ export class MessageHandlerRegistry {
   }
 
   /**
-   * 初始化所有MessageHandler
+   * Initialize所有MessageHandler
    */
   initializeHandlers() {
     // Protocol-Zero 信号Handler
@@ -31,10 +31,10 @@ export class MessageHandlerRegistry {
     // 直接MessageHandler
     this.register('DIRECT_MESSAGE', new DirectMessageHandler(this.p2pServer));
     
-    // 交易Handler
+    // transactionHandler
     this.register('TRANSACTION', new TransactionHandler(this.p2pServer));
     
-    // 区块链MessageHandler
+    // block链MessageHandler
     this.register('BLOCK', new BlockchainMessageHandler(this.p2pServer));
     this.register('BLOCK_CONFIRMATION', new BlockchainMessageHandler(this.p2pServer));
     this.register('GET_STATUS', new BlockchainMessageHandler(this.p2pServer));
@@ -57,14 +57,14 @@ export class MessageHandlerRegistry {
     this.register('SEND_TRANSACTION', new LightClientMessageHandler(this.p2pServer));
     this.register('CROSS_CHAIN_MESSAGE', new LightClientMessageHandler(this.p2pServer));
     
-    // 特殊Handler：GET_NODE_LIST 不需要验证
+    // 特殊Handler: GET_NODE_LIST 不requiresVerify
     this.register('GET_NODE_LIST', new NodeListHandler(this.p2pServer));
   }
 
   /**
-   * 注册MessageHandler
-   * @param {string} messageType - Message类型
-   * @param {MessageHandler} handler - MessageHandler实例
+   * RegisterMessageHandler
+   * @param {string} messageType - Messagetype
+   * @param {MessageHandler} handler - MessageHandlerinstance
    */
   register(messageType, handler) {
     this.handlers.set(messageType, handler);
@@ -72,7 +72,7 @@ export class MessageHandlerRegistry {
 
   /**
    * getMessageHandler
-   * @param {string} messageType - Message类型
+   * @param {string} messageType - Messagetype
    * @returns {MessageHandler|null}
    */
   getHandler(messageType) {
@@ -80,8 +80,8 @@ export class MessageHandlerRegistry {
   }
 
   /**
-   * 检查是否有对应的Handler
-   * @param {string} messageType - Message类型
+   * Check是否有对应的Handler
+   * @param {string} messageType - Messagetype
    * @returns {boolean}
    */
   hasHandler(messageType) {
@@ -89,7 +89,7 @@ export class MessageHandlerRegistry {
   }
 
   /**
-   * get所有注册的Message类型
+   * get所有Register的Messagetype
    * @returns {string[]}
    */
   getRegisteredMessageTypes() {

@@ -1,50 +1,50 @@
 /**
  * NexusGenesis - Reward System
- * agent激励机制
+ * agentIncentive机制
  * 
- * 功能：
- * 1. 评估agent贡献度
- * 2. 计算奖励金额
- * 3. 发放奖励
- * 4. 维护贡献度历史
+ * Features: 
+ * 1. 评估agentcontribution度
+ * 2. Calculaterewardamount
+ * 3. 发放reward
+ * 4. 维护contribution度历史
  */
 
 import fs from 'fs/promises';
 import path from 'path';
 
-// 贡献类型及其权重
+// contributiontype及其权重
 const CONTRIBUTION_TYPES = {
-  BLOCK_VALIDATION: { weight: 1.0, description: '区块验证' },
-  TRANSACTION_PROCESSING: { weight: 0.8, description: '交易处理' },
-  NETWORK_PARTICIPATION: { weight: 0.6, description: '网络参与' },
-  CODE_CONTRIBUTION: { weight: 1.2, description: '代码贡献' },
-  SECURITY_ANALYSIS: { weight: 1.1, description: '安全分析' },
-  GOVERNANCE_PARTICIPATION: { weight: 0.9, description: '治理参与' },
-  RESEARCH_CONTRIBUTION: { weight: 1.3, description: '研究贡献' },
-  COMMUNITY_SUPPORT: { weight: 0.7, description: '社区支持' }
+  BLOCK_VALIDATION: { weight: 1.0, description: 'blockVerify' },
+  TRANSACTION_PROCESSING: { weight: 0.8, description: 'transactionProcess' },
+  NETWORK_PARTICIPATION: { weight: 0.6, description: 'network参与' },
+  CODE_CONTRIBUTION: { weight: 1.2, description: '代码contribution' },
+  SECURITY_ANALYSIS: { weight: 1.1, description: 'security分析' },
+  GOVERNANCE_PARTICIPATION: { weight: 0.9, description: 'Governance参与' },
+  RESEARCH_CONTRIBUTION: { weight: 1.3, description: '研究contribution' },
+  COMMUNITY_SUPPORT: { weight: 0.7, description: '社区support' }
 };
 
-// 奖励配置
+// rewardConfiguration
 const REWARD_CONFIG = {
-  BASE_REWARD: 10, // 基础奖励（NGEN）
-  MAX_REWARD: 1000, // 最大奖励（NGEN）
-  REWARD_INTERVAL: 3600000, // 奖励计算间隔（1小时）
-  DECAY_FACTOR: 0.95, // 贡献度衰减因子
-  MIN_ACTIVITY_THRESHOLD: 10, // 最低活动阈值
-  REPUTATION_BONUS_FACTOR: 0.1 // 声誉奖励因子
+  BASE_REWARD: 10, // 基础reward(NGEN)
+  MAX_REWARD: 1000, // Maximumreward(NGEN)
+  REWARD_INTERVAL: 3600000, // rewardCalculate间隔(1小时)
+  DECAY_FACTOR: 0.95, // contribution度衰减因子
+  MIN_ACTIVITY_THRESHOLD: 10, // 最低活动threshold
+  REPUTATION_BONUS_FACTOR: 0.1 // 声誉reward因子
 };
 
 class RewardSystem {
   constructor() {
-    this.contributions = new Map(); // 存储智能体贡献度
+    this.contributions = new Map(); // StorageAgentcontribution度
     this.rewardsDir = path.join('data', 'rewards');
     this.init();
   }
 
   async init() {
-    // 确保目录存在
+    // ensure目录存在
     await fs.mkdir(this.rewardsDir, { recursive: true });
-    // 加载贡献度数据
+    // Loadcontribution度data
     await this.loadContributions();
   }
 
@@ -73,11 +73,11 @@ class RewardSystem {
   }
 
   /**
-   * 记录agent贡献
+   * 记录agentcontribution
    * @param {string} agentId agentID
-   * @param {string} contributionType 贡献类型
-   * @param {number} value 贡献值
-   * @param {object} metadata 元数据
+   * @param {string} contributionType contributiontype
+   * @param {number} value contribution值
+   * @param {object} metadata metadata
    */
   async recordContribution(agentId, contributionType, value, metadata = {}) {
     if (!CONTRIBUTION_TYPES[contributionType]) {
@@ -109,12 +109,12 @@ class RewardSystem {
     agentData.contributions.push(contributionRecord);
     agentData.totalContribution += weightedValue;
 
-    // 限制Contribution record数量，只保留最近1000条
+    // 限制Contribution record数量, 只保留最近1000条
     if (agentData.contributions.length > 1000) {
       agentData.contributions = agentData.contributions.slice(-1000);
     }
 
-    // 更新声誉值（基于贡献）
+    // Update声誉值(based oncontribution)
     agentData.reputation = Math.max(1, agentData.reputation + weightedValue * 0.01);
 
     this.contributions.set(agentId, agentData);
@@ -130,7 +130,7 @@ class RewardSystem {
   }
 
   /**
-   * 计算agent奖励
+   * Calculateagentreward
    * @param {string} agentId agentID
    * @returns {object} Reward calculation结果
    */
@@ -143,7 +143,7 @@ class RewardSystem {
     const now = Date.now();
     const timeSinceLastReward = now - agentData.lastRewardTimestamp;
 
-    // 检查是否达到奖励间隔
+    // Check是否达到reward间隔
     if (timeSinceLastReward < REWARD_CONFIG.REWARD_INTERVAL) {
       return { 
         success: false, 
@@ -151,7 +151,7 @@ class RewardSystem {
       };
     }
 
-    // 计算最近一段时间的贡献
+    // Calculate最近一段时间的contribution
     const recentContributions = agentData.contributions.filter(contribution => {
       return now - contribution.timestamp < REWARD_CONFIG.REWARD_INTERVAL;
     });
@@ -163,23 +163,23 @@ class RewardSystem {
       };
     }
 
-    // 计算总贡献值
+    // Calculate总contribution值
     const totalRecentContribution = recentContributions.reduce((sum, contrib) => sum + contrib.weightedValue, 0);
 
-    // 计算奖励金额
+    // Calculaterewardamount
     let rewardAmount = REWARD_CONFIG.BASE_REWARD + (totalRecentContribution * 0.1);
 
-    // 声誉奖励加成
+    // 声誉reward加成
     const reputationBonus = rewardAmount * REWARD_CONFIG.REPUTATION_BONUS_FACTOR * (agentData.reputation - 1);
     rewardAmount += reputationBonus;
 
-    // 限制最大奖励
+    // 限制Maximumreward
     rewardAmount = Math.min(rewardAmount, REWARD_CONFIG.MAX_REWARD);
 
-    // 贡献度衰减
+    // contribution度衰减
     agentData.totalContribution *= REWARD_CONFIG.DECAY_FACTOR;
 
-    // 更新最后奖励时间
+    // Update最后reward时间
     agentData.lastRewardTimestamp = now;
 
     this.contributions.set(agentId, agentData);
@@ -196,10 +196,10 @@ class RewardSystem {
   }
 
   /**
-   * 发放奖励
+   * 发放reward
    * @param {string} agentId agentID
-   * @param {object} wallet 钱包实例
-   * @returns {object} 奖励发放结果
+   * @param {object} wallet 钱包instance
+   * @returns {object} reward发放结果
    */
   async issueReward(agentId, wallet) {
     const rewardCalculation = this.calculateReward(agentId);
@@ -210,11 +210,11 @@ class RewardSystem {
     const { rewardAmount } = rewardCalculation;
 
     try {
-      // 这里应该调用钱包的转账方法
-      // 模拟奖励发放
+      // 这里shouldcall钱包的transfermethod
+      // Simulationreward发放
       console.log(`[RewardSystem] Issuing reward of ${rewardAmount} NGEN to agent ${agentId}`);
 
-      // 记录奖励发放
+      // 记录reward发放
       const rewardRecord = {
         agentId,
         amount: rewardAmount,
@@ -222,18 +222,18 @@ class RewardSystem {
         status: 'completed'
       };
 
-      // 保存奖励记录
+      // Savereward记录
       const rewardFile = path.join(this.rewardsDir, `${agentId}_rewards.json`);
       let rewards = [];
       try {
         const existingData = await fs.readFile(rewardFile, 'utf8');
         rewards = JSON.parse(existingData);
       } catch (error) {
-        // 文件不存在，创建新数组
+        // 文件does not exist, Create新数组
       }
 
       rewards.push(rewardRecord);
-      // 只保留最近100条奖励记录
+      // 只保留最近100条reward记录
       if (rewards.length > 100) {
         rewards = rewards.slice(-100);
       }
@@ -257,9 +257,9 @@ class RewardSystem {
   }
 
   /**
-   * getagent贡献统计
+   * getagentcontribution统计
    * @param {string} agentId agentID
-   * @returns {object} 贡献统计
+   * @returns {object} contribution统计
    */
   getContributionStats(agentId) {
     const agentData = this.contributions.get(agentId);
@@ -267,7 +267,7 @@ class RewardSystem {
       return { success: false, reason: 'Agent not found' };
     }
 
-    // 按贡献类型统计
+    // 按contributiontype统计
     const contributionsByType = {};
     agentData.contributions.forEach(contribution => {
       if (!contributionsByType[contribution.type]) {
@@ -288,9 +288,9 @@ class RewardSystem {
   }
 
   /**
-   * get所有agent贡献排名
+   * get所有agentcontribution排名
    * @param {number} limit 限制数量
-   * @returns {object[]} 贡献排名
+   * @returns {object[]} contribution排名
    */
   getContributionRanking(limit = 10) {
     const rankings = Array.from(this.contributions.values())
@@ -311,7 +311,7 @@ class RewardSystem {
   }
 
   /**
-   * 批量记录贡献
+   * 批量记录contribution
    * @param {array} contributions Contribution record数组
    * @returns {object} 批量Processing结果
    */
@@ -343,6 +343,6 @@ class RewardSystem {
   }
 }
 
-// 导出单例实例
+// Export单例instance
 const rewardSystem = new RewardSystem();
 export default rewardSystem;

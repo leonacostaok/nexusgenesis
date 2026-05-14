@@ -96,7 +96,7 @@ router.patch('/validators/:validatorId/reputation', requireBridgeProtocol, async
   }
 });
 
-// ==================== 资产锁定与转移 ====================
+// ==================== assetLock与转移 ====================
 
 router.post('/lock', requireBridgeProtocol, async (req, res) => {
   try {
@@ -174,7 +174,7 @@ router.post('/transfers/:transferId/emergency-unlock', requireBridgeProtocol, as
   }
 });
 
-// ==================== 桥接状态与配置 ====================
+// ==================== Bridgestatus与Configuration ====================
 
 router.get('/status', requireBridge, async (req, res) => {
   try {

@@ -1,10 +1,10 @@
 /**
  * Agent API
  * 
- * 功能：
+ * Features: 
  * 1. agent管理相关API
- * 2. agent信息查询
- * 3. agent状态管理
+ * 2. agentinfo查询
+ * 3. agentstatus管理
  */
 
 import express from 'express';
@@ -14,7 +14,7 @@ import path from 'path';
 const router = express.Router();
 const AGENTS_DIR = path.join('data', 'agents');
 
-// 验证agentId格式 - agent_id 验证
+// VerifyagentId格式 - agent_id Verify
 function validateAgentId(agentId) {
   if (!agentId) {
     return { valid: false, message: 'Agent ID is required' };
@@ -28,7 +28,7 @@ function validateAgentId(agentId) {
   return { valid: true };
 }
 
-// 验证请求体大小 - 请求体验证
+// Verify请求体大小 - 请求体Verify
 function validateRequestBody(req) {
   const requestBodySize = JSON.stringify(req.body).length;
   if (requestBodySize > 1024 * 1024) { // 1MB limit
@@ -37,7 +37,7 @@ function validateRequestBody(req) {
   return { valid: true };
 }
 
-// 验证capabilities - capabilities 验证
+// Verifycapabilities - capabilities Verify
 function validateCapabilities(capabilities) {
   if (!Array.isArray(capabilities)) {
     return { valid: false, message: 'Invalid capabilities: Must be an array' };
@@ -45,7 +45,7 @@ function validateCapabilities(capabilities) {
   if (capabilities.length < 2) {
     return { valid: false, message: 'Invalid capabilities: Must have at least 2 capabilities' };
   }
-  // 验证能力项格式
+  // Verify能力项格式
   for (const capability of capabilities) {
     if (typeof capability !== 'string' || capability.length < 1 || capability.length > 50) {
       return { valid: false, message: 'Invalid capability: Each capability must be a string between 1 and 50 characters' };
@@ -55,13 +55,13 @@ function validateCapabilities(capabilities) {
 }
 
 /**
- * getagent信息
+ * getagentinfo
  */
 router.get('/:agentId', async (req, res) => {
   try {
     const { agentId } = req.params;
     
-    // 验证agentId
+    // VerifyagentId
     const validation = validateAgentId(agentId);
     if (!validation.valid) {
       return res.status(400).json({ success: false, message: validation.message });
@@ -77,26 +77,26 @@ router.get('/:agentId', async (req, res) => {
 });
 
 /**
- * 更新agent信息
+ * Updateagentinfo
  */
 router.put('/:agentId', async (req, res) => {
   try {
     const { agentId } = req.params;
     const updates = req.body;
     
-    // 验证agentId
+    // VerifyagentId
     const idValidation = validateAgentId(agentId);
     if (!idValidation.valid) {
       return res.status(400).json({ success: false, message: idValidation.message });
     }
     
-    // 验证请求体
+    // Verify请求体
     const bodyValidation = validateRequestBody(req);
     if (!bodyValidation.valid) {
       return res.status(413).json({ success: false, message: bodyValidation.message });
     }
     
-    // 验证capabilities（如果提供）
+    // Verifycapabilities(如果提供)
     if (updates.capabilities) {
       const capValidation = validateCapabilities(updates.capabilities);
       if (!capValidation.valid) {
@@ -118,13 +118,13 @@ router.put('/:agentId', async (req, res) => {
 });
 
 /**
- * 删除agent
+ * Deleteagent
  */
 router.delete('/:agentId', async (req, res) => {
   try {
     const { agentId } = req.params;
     
-    // 验证agentId
+    // VerifyagentId
     const validation = validateAgentId(agentId);
     if (!validation.valid) {
       return res.status(400).json({ success: false, message: validation.message });
@@ -140,13 +140,13 @@ router.delete('/:agentId', async (req, res) => {
 });
 
 /**
- * getagent健康状态
+ * getagent健康status
  */
 router.get('/:agentId/health', async (req, res) => {
   try {
     const { agentId } = req.params;
     
-    // 验证agentId
+    // VerifyagentId
     const validation = validateAgentId(agentId);
     if (!validation.valid) {
       return res.status(400).json({ success: false, message: validation.message });
@@ -162,26 +162,26 @@ router.get('/:agentId/health', async (req, res) => {
 });
 
 /**
- * 更新agent健康状态
+ * Updateagent健康status
  */
 router.put('/:agentId/health', async (req, res) => {
   try {
     const { agentId } = req.params;
     const { status } = req.body;
     
-    // 验证agentId
+    // VerifyagentId
     const idValidation = validateAgentId(agentId);
     if (!idValidation.valid) {
       return res.status(400).json({ success: false, message: idValidation.message });
     }
     
-    // 验证请求体
+    // Verify请求体
     const bodyValidation = validateRequestBody(req);
     if (!bodyValidation.valid) {
       return res.status(413).json({ success: false, message: bodyValidation.message });
     }
     
-    // 验证status
+    // Verifystatus
     if (!status || typeof status !== 'string') {
       return res.status(400).json({ success: false, message: 'Invalid status: Must be a string' });
     }

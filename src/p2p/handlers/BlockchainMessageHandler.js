@@ -2,7 +2,7 @@ import { MessageHandler } from './MessageHandler.js';
 
 export class BlockchainMessageHandler extends MessageHandler {
   /**
-   * Processing区块链相关Message
+   * Processingblock链相关Message
    */
   async handle(peerId, msg) {
     switch (msg.type) {
@@ -183,7 +183,7 @@ export class BlockchainMessageHandler extends MessageHandler {
   }
 }
 
-// Processing GET_NODE_LIST Message（不需要验证的版本）
+// Processing GET_NODE_LIST Message(不requiresVerify的版本)
 export class NodeListHandler extends MessageHandler {
   /**
    * Processing GET_NODE_LIST Message
@@ -195,7 +195,7 @@ export class NodeListHandler extends MessageHandler {
   }
 
   /**
-   * GET_NODE_LIST Message不需要验证
+   * GET_NODE_LIST Message不requiresVerify
    */
   requiresVerification() {
     return false;

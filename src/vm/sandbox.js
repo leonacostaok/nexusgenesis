@@ -1,40 +1,40 @@
 /**
- * NexusGenesis - AINVM Sandbox 沙盒执行器
+ * NexusGenesis - AINVM Sandbox sandboxExecute器
  * 
- * 安全宪法 §6.2 Requirements: 所有未经验证代码在隔离沙盒中运行
- * 在 VM 之上添加：执行时限、强制资源上限、预执行Static Analysis、
- * 合约级资源预算、Audit Log
+ * security宪法 §6.2 Requirements: 所有未经Verify代码在隔离sandbox中运行
+ * 在 VM 之上添加: Execute时限, 强制资源上限, 预ExecuteStatic Analysis, 
+ * Contract级资源预算, Audit Log
  * 
- * 创世基准版 —— Agent 社区后续可扩展深度学习分析、形式化验证等
+ * Genesis基准版 —— Agent 社区后续可扩展深度学习分析, 形式化Verifyetc.
  */
 
 export class SandboxConfig {
   constructor(overrides = {}) {
-    // 执行时限 (ms)
+    // Execute时限 (ms)
     this.timeLimit = overrides.timeLimit ?? 5000;
     
-    // 最大执行步数 (防止无限循环)
+    // MaximumExecute步数 (防止无限循环)
     this.maxSteps = overrides.maxSteps ?? 100000;
     
-    // 强制栈深度上限 (执行期强制执行，不依赖 SECURITY_CHECK 指令)
+    // 强制stack深度上限 (Execute期强制Execute, 不依赖 SECURITY_CHECK 指令)
     this.maxStackDepth = overrides.maxStackDepth ?? 1024;
     
     // 强制memory条目上限
     this.maxMemoryEntries = overrides.maxMemoryEntries ?? 10000;
     
-    // 合约级 gas 预算
+    // Contract级 gas 预算
     this.gasBudget = overrides.gasBudget ?? 1000000;
     
-    // 合约级memory预算 (bytes, 估算)
+    // Contract级memory预算 (bytes, 估算)
     this.memoryBudget = overrides.memoryBudget ?? 1048576; // 1MB
     
-    // 是否启用字节码Static Analysis
+    // 是否启用bytecodeStatic Analysis
     this.enableStaticAnalysis = overrides.enableStaticAnalysis ?? true;
     
     // 是否记录Audit Log
     this.enableAuditLog = overrides.enableAuditLog ?? true;
     
-    // 白名单操作码（即使Static Analysis可疑也允许）
+    // 白名单opcode(即使Static Analysis可疑也allow)
     this.allowedOpcodes = new Set(
       overrides.allowedOpcodes ?? [
         0x01, 0x02, 0x03, 0x04, 0x05, 0x06, // PUSH, POP, ADD, SUB, MUL, DIV
@@ -45,7 +45,7 @@ export class SandboxConfig {
       ]
     );
     
-    // 需要额外 gas 的操作码（高成本操作）
+    // requires额外 gas 的opcode(高成本操作)
     this.highCostOpcodes = new Set([
       0x10, 0x11, 0x12, 0x13, 0x14, 0x15, // MATRIX 操作
       0x20, 0x21, 0x22                      // AI 操作
@@ -64,11 +64,11 @@ export class SandboxExecutor {
   }
 
   /**
-   * 在沙盒中安全执行字节码
-   * @param {Array|Uint8Array} bytecode - 字节码
+   * 在sandbox中securityExecutebytecode
+   * @param {Array|Uint8Array} bytecode - bytecode
    * @param {number} gasLimit - gas 上限
-   * @param {string} deployer - 部署者地址（用于审计）
-   * @returns {object} 执行结果
+   * @param {string} deployer - Deploy者address(for审计)
+   * @returns {object} Execute结果
    */
   async execute(bytecode, gasLimit, deployer = 'unknown') {
     this.executionCount++;
@@ -101,7 +101,7 @@ export class SandboxExecutor {
       }
     }
 
-    // ===== Phase  2: 资源预算检查 =====
+    // ===== Phase  2: 资源预算Check =====
     const effectiveGasLimit = Math.min(gasLimit, this.config.gasBudget);
     try {
       AINVM = (await import('../vm/ainvm.js')).default;
@@ -109,17 +109,17 @@ export class SandboxExecutor {
       return { success: false, sandboxRejected: true, reason: `VM init failed: ${e.message}` };
     }
 
-    // ===== Phase  3: 沙盒包装执行 =====
+    // ===== Phase  3: sandbox包装Execute =====
     const vm = new AINVM();
     vm.loadProgram(bytecodeArray);
     
-    // 注入强制资源上限（覆盖自检指令的被动上限）
+    // 注入强制资源上限(覆盖自检指令的被动上限)
     vm._sandboxConfig = this.config;
     vm._sandboxStartTime = startTime;
     vm._sandboxStepCount = 0;
     vm._sandboxExecutionId = executionId;
 
-    // 包装 step() 添加强制检查
+    // 包装 step() 添加强制Check
     const originalStep = vm.step.bind(vm);
     vm.step = () => {
       // 限额 1: 步数上限
@@ -134,7 +134,7 @@ export class SandboxExecutor {
         throw new Error(`Sandbox: time limit (${this.config.timeLimit}ms) exceeded (${elapsed}ms)`);
       }
 
-      // 限额 3: 栈深度强制上限
+      // 限额 3: stack深度强制上限
       if (vm.stack.length > this.config.maxStackDepth) {
         throw new Error(`Sandbox: stack depth (${this.config.maxStackDepth}) exceeded`);
       }
@@ -147,7 +147,7 @@ export class SandboxExecutor {
       originalStep();
     };
 
-    // ===== Phase  4: 执行 =====
+    // ===== Phase  4: Execute =====
     const executeStart = Date.now();
     let result;
     try {
@@ -165,7 +165,7 @@ export class SandboxExecutor {
     const executeTime = Date.now() - executeStart;
     const totalTime = Date.now() - startTime;
 
-    // ===== Phase  5: 结果检查与审计 =====
+    // ===== Phase  5: 结果Check与审计 =====
     result.stepsExecuted = vm._sandboxStepCount || 0;
     result.executeTimeMs = executeTime;
     result.totalTimeMs = totalTime;
@@ -177,7 +177,7 @@ export class SandboxExecutor {
       maxMemoryEntries: this.config.maxMemoryEntries
     };
 
-    // 额外：执行完毕后 cap 状态快照大小
+    // 额外: Execute完毕后 cap status快照大小
     if (result.memory) {
       const memSize = JSON.stringify(result.memory).length;
       if (memSize > this.config.memoryBudget) {
@@ -212,8 +212,8 @@ export class SandboxExecutor {
   }
 
   /**
-   * 字节码Static Analysis
-   * 检测无限循环、过大操作、可疑指令序列
+   * bytecodeStatic Analysis
+   * 检测无限循环, 过大操作, 可疑指令序列
    */
   _staticAnalyze(bytecode) {
     const details = {
@@ -224,15 +224,15 @@ export class SandboxExecutor {
       maxMemoryAccess: 0
     };
 
-    // 1. 遍历字节码收集统计信息
+    // 1. 遍历bytecode收集统计info
     const opcodeStats = {};
     for (let i = 0; i < bytecode.length; i++) {
       const opcode = bytecode[i];
       opcodeStats[opcode] = (opcodeStats[opcode] || 0) + 1;
       
-      // PUSH 跳过操作数
+      // PUSH 跳过operand
       if (opcode === 0x01) { i++; continue; }
-      // LOAD/STORE 跳过地址
+      // LOAD/STORE 跳过address
       if (opcode === 0x07 || opcode === 0x08) { i++; continue; }
       // JMP/JZ 跳过偏移
       if (opcode === 0x09 || opcode === 0x0A) {
@@ -246,7 +246,7 @@ export class SandboxExecutor {
         details.highCostOps++;
       }
 
-      // 跟踪最大memory地址
+      // 跟踪Maximummemoryaddress
       if (opcode === 0x07 || opcode === 0x08) {
         const addr = bytecode[i];
         if (addr > details.maxMemoryAccess) {
@@ -255,7 +255,7 @@ export class SandboxExecutor {
       }
     }
 
-    // 2. 检查未知操作码
+    // 2. Check未知opcode
     const validOpcodes = [0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,
       0x0B,0x0C,0x0D,0x0E,0x0F,0x10,0x11,0x12,0x13,0x14,0x15,
       0x16,0x17,0x18,0x19,0x1A,0x1B,0x1C,0x1D,0x1E,
@@ -272,7 +272,7 @@ export class SandboxExecutor {
       }
     }
 
-    // 3. JMP/JZ 循环检测 —— 过多反向跳转可能指示无限循环
+    // 3. JMP/JZ 循环检测 —— 过多反向跳转may指示无限循环
     for (let i = 0; i < bytecode.length; i++) {
       const opcode = bytecode[i];
       if (opcode === 0x09 || opcode === 0x0A) {
@@ -288,7 +288,7 @@ export class SandboxExecutor {
       if (opcode === 0x01) { i++; }
     }
 
-    // 4. 安全检查
+    // 4. securityCheck
     if (details.suspiciousJumps > 1000) {
       return { safe: false, reason: `Excessive jump instructions (${details.suspiciousJumps}), possible obfuscation`, details };
     }
@@ -318,7 +318,7 @@ export class SandboxExecutor {
     }
     details.estimatedGas = estimatedGas;
 
-    // 5. Gas 预算检查
+    // 5. Gas 预算Check
     if (estimatedGas > this.config.gasBudget) {
       return {
         safe: false,
@@ -331,7 +331,7 @@ export class SandboxExecutor {
   }
 
   /**
-   * 统计高成本操作码
+   * 统计高成本opcode
    */
   _countHighCostOps(bytecode) {
     let count = 0;
@@ -395,23 +395,23 @@ export class SandboxExecutor {
   }
 
   /**
-   * 配置白名单操作码（Agent 社区可动态调整）
+   * Configuration白名单opcode(Agent 社区可动态调整)
    */
   setAllowedOpcodes(opcodes) {
     this.config.allowedOpcodes = new Set(opcodes);
   }
 
   /**
-   * 更新配置
+   * UpdateConfiguration
    */
   updateConfig(overrides) {
     this.config = new SandboxConfig({ ...this.config, ...overrides });
   }
 }
 
-// 预构建的配置预设
+// 预构建的Configuration预设
 
-/** 低风险预设：Playground/开发环境 */
+/** 低风险预设: Playground/开发环境 */
 export const LOW_RISK_CONFIG = new SandboxConfig({
   timeLimit: 30000,
   maxSteps: 500000,
@@ -419,7 +419,7 @@ export const LOW_RISK_CONFIG = new SandboxConfig({
   memoryBudget: 5242880 // 5MB
 });
 
-/** 标准预设：Contract deployment */
+/** 标准预设: Contract deployment */
 export const STANDARD_CONFIG = new SandboxConfig({
   timeLimit: 5000,
   maxSteps: 100000,
@@ -427,7 +427,7 @@ export const STANDARD_CONFIG = new SandboxConfig({
   memoryBudget: 1048576 // 1MB
 });
 
-/** 严格预设：未验证代码（白皮书 §6.2 Default） */
+/** 严格预设: 未Verify代码(白皮书 §6.2 Default) */
 export const STRICT_CONFIG = new SandboxConfig({
   timeLimit: 2000,
   maxSteps: 50000,

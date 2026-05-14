@@ -1,59 +1,59 @@
 /**
- * 直接测试 AINVM 矩阵运算指令
- * 不使用字节码，直接测试矩阵运算功能
+ * 直接Test AINVM 矩阵运算指令
+ * 不使用bytecode，直接Test矩阵运算Features
  */
 
 import AINVM from './src/vm/ainvm.js';
 
 function testMatrixOperations() {
-  console.log('=== 直接测试矩阵运算指令开始 ===\n');
+  console.log('=== 直接Test矩阵运算指令开始 ===\n');
   
-  // 创建 AINVM 实例
+  // Create AINVM instance
   const vm = new AINVM();
   
-  // 设置足够的 gas 限制
+  // Set足够的 gas 限制
   vm.gasLimit = 1000000;
   
   try {
-    // 测试 1: 矩阵创建
-    console.log('测试 1: 矩阵创建');
+    // Test 1: 矩阵Create
+    console.log('Test 1: 矩阵Create');
     
-    // 模拟创建矩阵的栈操作
+    // SimulationCreate矩阵的stack操作
     vm.stack.push(2); // cols
     vm.stack.push(2); // rows
     vm.executeMAT_CREATE();
     
     const matrixId = vm.stack.pop();
-    console.log('矩阵创建成功，矩阵ID:', matrixId);
+    console.log('矩阵Createsuccess，矩阵ID:', matrixId);
     
-    // 测试 2: 矩阵存储
-    console.log('\n测试 2: 矩阵存储');
+    // Test 2: 矩阵Storage
+    console.log('\nTest 2: 矩阵Storage');
     
-    // 模拟存储操作的栈操作
+    // SimulationStorage操作的stack操作
     vm.stack.push(matrixId);
     vm.stack.push(0); // row
     vm.stack.push(0); // col
     vm.stack.push(10); // value
     vm.executeMAT_STORE();
     
-    console.log('矩阵存储成功');
+    console.log('矩阵Storagesuccess');
     
-    // 测试 3: 矩阵加载
-    console.log('\n测试 3: 矩阵加载');
+    // Test 3: 矩阵Load
+    console.log('\nTest 3: 矩阵Load');
     
-    // 模拟加载操作的栈操作
+    // SimulationLoad操作的stack操作
     vm.stack.push(matrixId);
     vm.stack.push(0); // row
     vm.stack.push(0); // col
     vm.executeMAT_LOAD();
     
     const value = vm.stack.pop();
-    console.log('矩阵加载成功，值:', value);
+    console.log('矩阵Loadsuccess，值:', value);
     
-    // 测试 4: 矩阵加法
-    console.log('\n测试 4: 矩阵加法');
+    // Test 4: 矩阵加法
+    console.log('\nTest 4: 矩阵加法');
     
-    // 创建第一个矩阵
+    // Create第一个矩阵
     vm.stack.push(2); // cols
     vm.stack.push(2); // rows
     vm.executeMAT_CREATE();
@@ -84,7 +84,7 @@ function testMatrixOperations() {
     vm.stack.push(4); // value
     vm.executeMAT_STORE();
     
-    // 创建第二个矩阵
+    // Create第二个矩阵
     vm.stack.push(2); // cols
     vm.stack.push(2); // rows
     vm.executeMAT_CREATE();
@@ -115,35 +115,35 @@ function testMatrixOperations() {
     vm.stack.push(8); // value
     vm.executeMAT_STORE();
     
-    // 执行矩阵加法
+    // Execute矩阵加法
     vm.stack.push(mat1Id);
     vm.stack.push(mat2Id);
     vm.executeMAT_ADD();
     
     const resultMatId = vm.stack.pop();
-    console.log('矩阵加法成功，结果矩阵ID:', resultMatId);
+    console.log('矩阵加法success，结果矩阵ID:', resultMatId);
     
-    // 测试 5: 矩阵转置
-    console.log('\n测试 5: 矩阵转置');
+    // Test 5: 矩阵转置
+    console.log('\nTest 5: 矩阵转置');
     
-    // 创建一个 2x3 矩阵
+    // Create一个 2x3 矩阵
     vm.stack.push(3); // cols
     vm.stack.push(2); // rows
     vm.executeMAT_CREATE();
     const mat3Id = vm.stack.pop();
     
-    // 执行矩阵转置
+    // Execute矩阵转置
     vm.stack.push(mat3Id);
     vm.executeMAT_TRANS();
     
     const transposedMatId = vm.stack.pop();
-    console.log('矩阵转置成功，转置矩阵ID:', transposedMatId);
+    console.log('矩阵转置success，转置矩阵ID:', transposedMatId);
     
-    console.log('\n=== 直接测试矩阵运算指令完成 ===');
+    console.log('\n=== 直接Test矩阵运算指令完成 ===');
   } catch (error) {
-    console.error('测试过程中出现错误:', error.message);
+    console.error('Test过程中出现error:', error.message);
   }
 }
 
-// 运行测试
+// 运行Test
 testMatrixOperations();

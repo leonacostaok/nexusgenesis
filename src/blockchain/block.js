@@ -1,18 +1,18 @@
 /**
- * NexusGenesis - 区块数据结构
+ * NexusGenesis - blockdata结构
  * 
- * 功能：
- * 1. 定义区块结构
- * 2. 实现区块创建和验证
- * 3. 计算区块哈希
+ * Features: 
+ * 1. 定义block结构
+ * 2. 实现blockCreate和Verify
+ * 3. Calculateblock hash
  */
 
 import crypto from 'crypto';
 
 /**
- * 计算数据的 SHA-256 哈希
- * @param {any} data 要哈希的数据
- * @returns {string} 哈希值（十六进制字符串）
+ * Calculatedata的 SHA-256 hash
+ * @param {any} data 要hash的data
+ * @returns {string} hash值(十六进制字符串)
  */
 function calculateHash(data) {
   const jsonString = JSON.stringify(data);
@@ -20,18 +20,18 @@ function calculateHash(data) {
 }
 
 /**
- * 区块类
+ * blockclass
  */
 export class Block {
   /**
-   * 创建一个新的区块
-   * @param {string} parentHash 上一个区块的哈希
-   * @param {number} height 区块高度
-   * @param {number} timestamp 时间戳
-   * @param {Array} transactions 交易列表
+   * Create一个新的block
+   * @param {string} parentHash 上一个block的hash
+   * @param {number} height block height
+   * @param {number} timestamp timestamp
+   * @param {Array} transactions transaction列表
    */
   constructor(parentHash, height, timestamp, transactions) {
-    // 计算交易哈希
+    // Calculatetransactionhash
     const txsHash = calculateHash(transactions);
     
     // Block header
@@ -42,35 +42,35 @@ export class Block {
       txs_hash: txsHash
     };
     
-    // 区块体
+    // block体
     this.body = {
       transactions: transactions
     };
     
-    // 计算区块哈希
+    // Calculateblock hash
     this.hash = this.calculateBlockHash();
   }
   
   /**
-   * 计算区块哈希
-   * @returns {string} 区块哈希
+   * Calculateblock hash
+   * @returns {string} block hash
    */
   calculateBlockHash() {
     return calculateHash(this.header);
   }
   
   /**
-   * 验证区块
-   * @returns {boolean} 验证结果
+   * Verifyblock
+   * @returns {boolean} verification result
    */
   validate() {
-    // 验证交易哈希
+    // Verifytransactionhash
     const calculatedTxsHash = calculateHash(this.body.transactions);
     if (calculatedTxsHash !== this.header.txs_hash) {
       return false;
     }
     
-    // 验证区块哈希
+    // Verifyblock hash
     const calculatedBlockHash = this.calculateBlockHash();
     if (calculatedBlockHash !== this.hash) {
       return false;
@@ -80,7 +80,7 @@ export class Block {
   }
   
   /**
-   * 将区块转换为 JSON 对象
+   * 将block转换为 JSON 对象
    * @returns {object} JSON 对象
    */
   toJSON() {
@@ -92,9 +92,9 @@ export class Block {
   }
   
   /**
-   * 从 JSON 对象创建区块
+   * 从 JSON 对象Createblock
    * @param {object} json JSON 对象
-   * @returns {Block} 区块实例
+   * @returns {Block} blockinstance
    */
   static fromJSON(json) {
     const block = new Block(
@@ -109,8 +109,8 @@ export class Block {
 }
 
 /**
- * 创建创世区块
- * @returns {Block} 创世区块
+ * Creategenesis block
+ * @returns {Block} genesis block
  */
 export function createGenesisBlock() {
   const genesisTransactions = [];
@@ -124,9 +124,9 @@ export function createGenesisBlock() {
 }
 
 /**
- * 从交易创建New block
- * @param {Block} previousBlock 上一个区块
- * @param {Array} transactions 交易列表
+ * 从transactionCreateNew block
+ * @param {Block} previousBlock 上一个block
+ * @param {Array} transactions transaction列表
  * @returns {Block} New block
  */
 export function createBlock(previousBlock, transactions) {
@@ -138,7 +138,7 @@ export function createBlock(previousBlock, transactions) {
   );
 }
 
-// 导出Default值
+// ExportDefault值
 export default {
   Block,
   createGenesisBlock,

@@ -1,6 +1,6 @@
 /**
  * NexusGenesis - Base Wallet Class
- * 钱包基类实现
+ * 钱包基class实现
  */
 
 import crypto from 'crypto';
@@ -8,7 +8,7 @@ import { hash, randomBytes } from '../crypto/pqc.js';
 import { generateAddress } from './addressUtils.js';
 
 /**
- * 钱包基类
+ * 钱包基class
  */
 export class Wallet {
   constructor() {
@@ -19,9 +19,9 @@ export class Wallet {
   }
 
   /**
-   * 生成钱包地址 (委托 addressUtils.js)
-   * @param {Buffer} publicKey 公钥
-   * @returns {string} 钱包地址
+   * Generate钱包address (委托 addressUtils.js)
+   * @param {Buffer} publicKey public key
+   * @returns {string} 钱包address
    */
   static generateAddress(publicKey) {
     return generateAddress(publicKey);
@@ -85,26 +85,26 @@ export class Wallet {
   }
 
   /**
-   * 验证地址格式
-   * @param {string} address 钱包地址
-   * @returns {object} 验证结果
+   * Verifyaddress格式
+   * @param {string} address 钱包address
+   * @returns {object} verification result
    */
   static validateAddress(address) {
     try {
-      // 检查前缀
+      // Check前缀
       if (!address.startsWith('ng1')) {
         return { valid: false, reason: 'Invalid address prefix' };
       }
       
-      // 解码地址
+      // 解码address
       const decoded = this.base58Decode(address.substring(3));
       
-      // 检查长度：1 版本 + 20 公钥哈希 + 4 校验和 = 25
+      // Checklength: 1 版本 + 20 public keyhash + 4 校验和 = 25
       if (decoded.length !== 25) {
         return { valid: false, reason: `Invalid address length: expected 25, got ${decoded.length}` };
       }
       
-      // 检查版本
+      // Check版本
       if (decoded[0] !== 0x00) {
         return { valid: false, reason: 'Invalid address version' };
       }
@@ -113,7 +113,7 @@ export class Wallet {
       const versionedPayload = decoded.slice(0, 21);
       const checksum = decoded.slice(21);
       
-      // 验证校验和
+      // Verify校验和
       const expectedChecksum = Buffer.from(hash(versionedPayload, 'sha3-256'), 'hex').slice(0, 4);
       if (!checksum.equals(expectedChecksum)) {
         return { valid: false, reason: 'Invalid address checksum' };
@@ -126,27 +126,27 @@ export class Wallet {
   }
 
   /**
-   * 签名交易
-   * @param {object} transaction 交易对象
-   * @returns {Promise<Buffer>} 签名
+   * Signtransaction
+   * @param {object} transaction transaction对象
+   * @returns {Promise<Buffer>} Sign
    */
   async signTransaction(transaction) {
     throw new Error('signTransaction must be implemented by subclass');
   }
 
   /**
-   * 验证交易签名
-   * @param {object} transaction 交易对象
-   * @param {Buffer} signature 签名
-   * @returns {Promise<boolean>} 验证结果
+   * VerifytransactionSign
+   * @param {object} transaction transaction对象
+   * @param {Buffer} signature Sign
+   * @returns {Promise<boolean>} verification result
    */
   async verifyTransaction(transaction, signature) {
     throw new Error('verifyTransaction must be implemented by subclass');
   }
 
   /**
-   * get钱包信息
-   * @returns {object} 钱包信息
+   * get钱包info
+   * @returns {object} 钱包info
    */
   getInfo() {
     return {
@@ -157,7 +157,7 @@ export class Wallet {
   }
 
   /**
-   * 保存钱包到文件
+   * Save钱包到文件
    * @param {string} filePath 文件路径
    * @returns {Promise<void>}
    */
@@ -166,7 +166,7 @@ export class Wallet {
   }
 
   /**
-   * 从文件加载钱包
+   * 从文件Load钱包
    * @param {string} filePath 文件路径
    * @returns {Promise<Wallet>}
    */

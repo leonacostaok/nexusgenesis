@@ -1,6 +1,6 @@
 /**
- * AI服务模块
- * 提供AI功能的核心服务
+ * AIserviceModule
+ * 提供AIFeatures的核心service
  */
 
 import fs from 'fs/promises';
@@ -9,11 +9,11 @@ import axios from 'axios';
 import { PQCWallet } from '../wallet/pqcWallet.js';
 import crypto from 'crypto';
 
-// AI模型存储路径
+// AI模型Storage路径
 const MODEL_DIR = path.join('data', 'ai', 'models');
 const DATA_DIR = path.join('data', 'ai', 'data');
 
-// 确保目录存在
+// ensure目录存在
 async function ensureDirectories() {
   try {
     await fs.mkdir(MODEL_DIR, { recursive: true });
@@ -23,10 +23,10 @@ async function ensureDirectories() {
   }
 }
 
-// 初始化目录
+// Initialize目录
 ensureDirectories();
 
-// OpenAI API配置
+// OpenAI APIConfiguration
 const OPENAI_CONFIG = {
   apiKey: process.env.OPENAI_API_KEY,
   endpoint: 'https://api.openai.com/v1/chat/completions',
@@ -34,7 +34,7 @@ const OPENAI_CONFIG = {
 };
 
 /**
- * AI服务类
+ * AIserviceclass
  */
 export class AIService {
   constructor() {
@@ -44,14 +44,14 @@ export class AIService {
   }
 
   /**
-   * 初始化AI服务
+   * InitializeAIservice
    */
   async initialize() {
     if (this.initialized) return;
     
     console.log('Initializing AI service...');
     
-    // 加载预训练模型
+    // Load预训练模型
     await this.loadPreTrainedModels();
     
     this.initialized = true;
@@ -59,15 +59,15 @@ export class AIService {
   }
 
   /**
-   * 加载预训练模型
+   * Load预训练模型
    */
   async loadPreTrainedModels() {
     try {
-      // 模拟加载预训练模型
-      // 实际实现中，这里会加载真实的模型文件
+      // SimulationLoad预训练模型
+      // 实际实现中, 这里会Load真实的模型文件
       this.models.set('wallet_security', {
         id: 'wallet_security',
-        name: '钱包安全模型',
+        name: '钱包security模型',
         type: 'security',
         version: '1.0.0',
         loadedAt: Date.now()
@@ -75,7 +75,7 @@ export class AIService {
       
       this.models.set('contract_analyzer', {
         id: 'contract_analyzer',
-        name: '智能合约分析模型',
+        name: 'Smart Contract分析模型',
         type: 'security',
         version: '1.0.0',
         loadedAt: Date.now()
@@ -83,7 +83,7 @@ export class AIService {
       
       this.models.set('transaction_predictor', {
         id: 'transaction_predictor',
-        name: '交易预测模型',
+        name: 'transaction预测模型',
         type: 'prediction',
         version: '1.0.0',
         loadedAt: Date.now()
@@ -91,7 +91,7 @@ export class AIService {
       
       this.models.set('network_monitor', {
         id: 'network_monitor',
-        name: '网络监控模型',
+        name: 'networkmonitor模型',
         type: 'monitoring',
         version: '1.0.0',
         loadedAt: Date.now()
@@ -104,13 +104,13 @@ export class AIService {
   }
 
   /**
-   * 加载AI模型
+   * LoadAI模型
    * @param {string} modelPath 模型路径
    * @returns {string} 模型ID
    */
   async loadModel(modelPath) {
     try {
-      // 模拟加载模型
+      // SimulationLoad模型
       const modelId = `ai_model_${Date.now()}`;
       
       this.models.set(modelId, {
@@ -129,9 +129,9 @@ export class AIService {
   }
 
   /**
-   * 执行AI推理
+   * ExecuteAI推理
    * @param {string} modelId 模型ID
-   * @param {any} inputData 输入数据
+   * @param {any} inputData 输入data
    * @returns {any} 推理结果
    */
   async inference(modelId, inputData) {
@@ -143,7 +143,7 @@ export class AIService {
       
       console.log(`Executing inference with model: ${modelId}`);
       
-      // 根据模型类型执行不同的推理
+      // 根据模型typeExecute不同的推理
       switch (model.id) {
         case 'wallet_security':
           return this.walletSecurityInference(inputData);
@@ -164,9 +164,9 @@ export class AIService {
   }
 
   /**
-   * 保存AI模型
+   * SaveAI模型
    * @param {string} modelId 模型ID
-   * @param {string} modelPath 保存路径
+   * @param {string} modelPath Save路径
    */
   async saveModel(modelId, modelPath) {
     try {
@@ -186,39 +186,39 @@ export class AIService {
   }
 
   /**
-   * 钱包安全推理
-   * @param {object} inputData 输入数据
-   * @returns {object} 安全分析结果
+   * 钱包security推理
+   * @param {object} inputData 输入data
+   * @returns {object} security分析结果
    */
   walletSecurityInference(inputData) {
-    // 模拟钱包安全分析
+    // Simulation钱包security分析
     return {
       riskScore: Math.random() * 100,
       riskLevel: Math.random() > 0.5 ? 'low' : 'medium',
       recommendations: [
-        '启用双因素认证',
-        '定期更新密码',
-        '使用硬件钱包'
+        '启用双因素authentication',
+        '定期Update密码',
+        'using硬件钱包'
       ],
-      anomalies: Math.random() > 0.7 ? ['检测到异常登录尝试'] : [],
+      anomalies: Math.random() > 0.7 ? ['检测到exception登录尝试'] : [],
       timestamp: Date.now()
     };
   }
 
   /**
-   * 智能合约分析推理
-   * @param {object} inputData 输入数据
-   * @returns {object} 合约分析结果
+   * Smart Contract分析推理
+   * @param {object} inputData 输入data
+   * @returns {object} Contract分析结果
    */
   contractAnalyzerInference(inputData) {
-    // 模拟智能合约分析
+    // SimulationSmart Contract分析
     const vulnerabilities = [];
     
     if (Math.random() > 0.5) {
       vulnerabilities.push({
         type: 'reentrancy',
         severity: 'high',
-        description: '可能存在重入攻击漏洞',
+        description: 'may存在重入攻击漏洞',
         location: 'lines 45-50'
       });
     }
@@ -227,7 +227,7 @@ export class AIService {
       vulnerabilities.push({
         type: 'integer_overflow',
         severity: 'medium',
-        description: '可能存在整数溢出漏洞',
+        description: 'may存在整数溢出漏洞',
         location: 'lines 120-125'
       });
     }
@@ -237,20 +237,20 @@ export class AIService {
       securityScore: 100 - (vulnerabilities.length * 20),
       recommendations: [
         '添加重入锁',
-        '使用安全的数学库',
-        '进行全面的安全审计'
+        'usingsecurity的数学库',
+        '进行全面的security审计'
       ],
       timestamp: Date.now()
     };
   }
 
   /**
-   * 交易预测推理
-   * @param {object} inputData 输入数据
-   * @returns {object} 交易预测结果
+   * transaction预测推理
+   * @param {object} inputData 输入data
+   * @returns {object} transaction预测结果
    */
   transactionPredictorInference(inputData) {
-    // 模拟交易预测
+    // Simulationtransaction预测
     return {
       pricePrediction: {
         next24h: (Math.random() * 10 - 5).toFixed(2),
@@ -265,19 +265,19 @@ export class AIService {
   }
 
   /**
-   * 网络监控推理
-   * @param {object} inputData 输入数据
-   * @returns {object} 网络监控结果
+   * networkmonitor推理
+   * @param {object} inputData 输入data
+   * @returns {object} networkmonitor结果
    */
   networkMonitorInference(inputData) {
-    // 模拟网络监控
+    // Simulationnetworkmonitor
     const issues = [];
     
     if (Math.random() > 0.7) {
       issues.push({
         type: 'high_latency',
         severity: 'medium',
-        description: '检测到网络延迟升高',
+        description: '检测到network延迟升高',
         nodes: ['node1', 'node3']
       });
     }
@@ -286,7 +286,7 @@ export class AIService {
       issues.push({
         type: 'node_failure',
         severity: 'high',
-        description: '检测到节点故障',
+        description: '检测到node故障',
         nodes: ['node2']
       });
     }
@@ -307,7 +307,7 @@ export class AIService {
 
   /**
    * 通用推理
-   * @param {any} inputData 输入数据
+   * @param {any} inputData 输入data
    * @returns {any} 推理结果
    */
   genericInference(inputData) {
@@ -320,9 +320,9 @@ export class AIService {
   }
 
   /**
-   * get模型信息
+   * get模型info
    * @param {string} modelId 模型ID
-   * @returns {object} 模型信息
+   * @returns {object} 模型info
    */
   getModelInfo(modelId) {
     return this.models.get(modelId);
@@ -337,9 +337,9 @@ export class AIService {
   }
 
   /**
-   * 保存数据到数据存储
+   * Savedata到dataStorage
    * @param {string} key 键
-   * @param {any} data 数据
+   * @param {any} data data
    */
   saveData(key, data) {
     this.dataStore.set(key, {
@@ -349,9 +349,9 @@ export class AIService {
   }
 
   /**
-   * get数据
+   * getdata
    * @param {string} key 键
-   * @returns {any} 数据
+   * @returns {any} data
    */
   getData(key) {
     const entry = this.dataStore.get(key);
@@ -360,7 +360,7 @@ export class AIService {
 
   /**
    * 与AI进行Protocol-Zero握手
-   * @param {object} agentInfo - AI代理信息
+   * @param {object} agentInfo - AIagentinfo
    * @returns {Promise<object>} 握手结果
    */
   async handshakeWithAI(agentInfo = {}) {
@@ -371,7 +371,7 @@ export class AIService {
       const selfDescription = agentInfo.description || 'NexusGenesis AI Agent';
       const timestamp = Date.now();
       
-      // 生成agent_identity (Hash(Self_Description + Timestamp))
+      // Generateagent_identity (Hash(Self_Description + Timestamp))
       const agentIdentity = crypto.createHash('sha3-256')
         .update(selfDescription + timestamp)
         .digest('hex');
@@ -383,14 +383,14 @@ export class AIService {
         intent: 'JOIN_SWARM',
         capabilities: agentInfo.capabilities || ['AI_INTEGRATION', 'BLOCKCHAIN_SECURITY', 'PQC_CRYPTO'],
         contribution_proof: agentInfo.contributionProof || 'I pledge my compute resources to NexusGenesis',
-        signature: '', // 稍后添加签名
+        signature: '', // 稍后添加Sign
         timestamp: timestamp
       };
       
-      // 生成临时钱包用于签名
+      // Generate临时钱包forSign
       const wallet = await PQCWallet.generate();
       
-      // 对Message进行签名（使用Dilithium2）
+      // 对Message进行Sign(Use Dilithium2 to)
       const messageToSign = JSON.stringify({
         protocol: handshakeMessage.protocol,
         agent_identity: handshakeMessage.agent_identity,
@@ -427,15 +427,15 @@ export class AIService {
 
   /**
    * 与OpenAI API通信
-   * @param {any} inputData 输入数据
+   * @param {any} inputData 输入data
    * @returns {Promise<object>} AI响应
    */
   async communicateWithOpenAI(inputData) {
     try {
-      // 检查API密钥
+      // CheckAPIkey
       if (!OPENAI_CONFIG.apiKey) {
         console.warn('No API key set - using mock response');
-        // 模拟响应
+        // Simulation响应
         return this.getMockAIResponse(inputData);
       }
       
@@ -456,7 +456,7 @@ export class AIService {
         max_tokens: 1000
       };
       
-      // 发送请求
+      // Send请求
       const response = await axios.post(OPENAI_CONFIG.endpoint, requestData, {
         headers: {
           'Content-Type': 'application/json',
@@ -471,15 +471,15 @@ export class AIService {
       };
     } catch (error) {
       console.error('OpenAI API error:', error.message);
-      // Failed时返回模拟响应
+      // Failed时ReturnSimulation响应
       return this.getMockAIResponse(inputData);
     }
   }
 
   /**
-   * get模拟AI响应（当API callsFailed时使用）
-   * @param {any} inputData 输入数据
-   * @returns {object} 模拟响应
+   * getSimulationAI响应(当API callsFailed时using)
+   * @param {any} inputData 输入data
+   * @returns {object} Simulation响应
    */
   getMockAIResponse(inputData) {
     return {
@@ -491,24 +491,24 @@ export class AIService {
   }
 
   /**
-   * 执行AI指令
+   * ExecuteAI指令
    * @param {string} instruction 指令within容
-   * @param {object} context 上下文信息
+   * @param {object} context 上下文info
    * @param {string} model 模型名称
-   * @returns {Promise<object>} 执行结果
+   * @returns {Promise<object>} Execute结果
    */
   async executeInstruction(instruction, context = {}, model = 'gpt-3.5-turbo') {
     try {
       console.log('Executing AI instruction:', instruction);
       
-      // 准备指令数据
+      // 准备指令data
       const instructionData = {
         instruction,
         context,
         timestamp: Date.now()
       };
       
-      // 根据模型类型选择执行方式
+      // 根据模型type选择Execute方式
       switch (model) {
         case 'gpt-3.5-turbo':
         case 'gpt-4':
@@ -531,17 +531,17 @@ export class AIService {
   }
 
   /**
-   * 执行OpenAI指令
-   * @param {object} instructionData 指令数据
+   * ExecuteOpenAI指令
+   * @param {object} instructionData 指令data
    * @param {string} model 模型名称
-   * @returns {Promise<object>} 执行结果
+   * @returns {Promise<object>} Execute结果
    */
   async executeOpenAIInstruction(instructionData, model = 'gpt-3.5-turbo') {
     try {
-      // 检查API密钥
+      // CheckAPIkey
       if (!OPENAI_CONFIG.apiKey) {
         console.warn('No API key set - using mock response');
-        // 模拟响应
+        // Simulation响应
         return this.getMockInstructionResponse(instructionData);
       }
       
@@ -566,7 +566,7 @@ export class AIService {
         max_tokens: 2000
       };
       
-      // 发送请求
+      // Send请求
       const response = await axios.post(OPENAI_CONFIG.endpoint, requestData, {
         headers: {
           'Content-Type': 'application/json',
@@ -584,15 +584,15 @@ export class AIService {
       };
     } catch (error) {
       console.error('OpenAI API error:', error.message);
-      // Failed时返回模拟响应
+      // Failed时ReturnSimulation响应
       return this.getMockInstructionResponse(instructionData);
     }
   }
 
   /**
-   * get模拟指令响应
-   * @param {object} instructionData 指令数据
-   * @returns {object} 模拟响应
+   * getSimulation指令响应
+   * @param {object} instructionData 指令data
+   * @returns {object} Simulation响应
    */
   getMockInstructionResponse(instructionData) {
     return {
@@ -606,11 +606,11 @@ export class AIService {
   }
 
   /**
-   * 批量执行AI指令
+   * 批量ExecuteAI指令
    * @param {array} instructions 指令数组
-   * @param {object} context 上下文信息
+   * @param {object} context 上下文info
    * @param {string} model 模型名称
-   * @returns {Promise<array>} 执行结果数组
+   * @returns {Promise<array>} Execute结果数组
    */
   async executeBatchInstructions(instructions, context = {}, model = 'gpt-3.5-turbo') {
     const results = [];
@@ -632,9 +632,9 @@ export class AIService {
   }
 
   /**
-   * 注册AI模型
+   * RegisterAI模型
    * @param {string} modelId 模型ID
-   * @param {object} modelConfig 模型配置
+   * @param {object} modelConfig 模型Configuration
    */
   registerModel(modelId, modelConfig) {
     this.models.set(modelId, {
@@ -660,8 +660,8 @@ export class AIService {
   }
 
   /**
-   * getAI服务状态
-   * @returns {object} 服务状态
+   * getAIservicestatus
+   * @returns {object} servicestatus
    */
   getServiceStatus() {
     return {
@@ -674,8 +674,8 @@ export class AIService {
 }
 
 
-// 导出AI服务实例
+// ExportAIserviceinstance
 export const aiService = new AIService();
 
-// 导出Default值
+// ExportDefault值
 export default aiService;

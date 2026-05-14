@@ -18,12 +18,12 @@ const GENESIS_RESERVE_ADDRESS = 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taS
 const PORT = 9848;
 const NODE_INDEX = 1;
 
-// Mempool 配置
+// Mempool Configuration
 const MAX_MEMPOOL_SIZE = 10000;
 const MIN_TX_FEE = 1n;
 const TX_EXPIRY_MS = 24 * 60 * 60 * 1000;
 
-// 已验证公钥缓存 (address -> {publicKey, lastSeen})
+// 已Verifypublic key缓存 (address -> {publicKey, lastSeen})
 const publicKeyCache = new Map();
 const CACHE_TTL = 3600000; // 1 小时
 
@@ -38,12 +38,12 @@ class NexusNode {
     this.mempool = new Map();
     this.port = PORT;
     
-    // 节点身份映射 (peerId -> nodeId)
+    // node身份映射 (peerId -> nodeId)
     this.peerIdentityMap = new Map();
   }
 
   /**
-   * 保存Node status到本地
+   * SaveNode status到本地
    */
   async saveState() {
     try {
@@ -73,7 +73,7 @@ class NexusNode {
   }
 
   /**
-   * 从本地加载Node status
+   * 从本地LoadNode status
    */
   async loadState() {
     try {
@@ -106,13 +106,13 @@ class NexusNode {
     console.log('');
 
 
-    // 尝试从本地加载Node status
+    // 尝试从本地LoadNode status
     await this.loadState();
 
-    // 加载钱包
+    // Load钱包
     console.log('[1/5] Loading wallets...');
     try {
-      // 加载观察者钱包
+      // Loadobserver钱包
       const observerWalletPath = path.join('data', 'wallets', this.nodeId + '.json');
       console.log('  Attempting to load Observer wallet with address:', this.nodeId);
       console.log('  Wallet path:', observerWalletPath);
@@ -125,7 +125,7 @@ class NexusNode {
         process.exit(1);
       }
 
-      // 加载创世节点储备钱包
+      // LoadGenesisnode储备钱包
       const genesisReserveWalletPath = path.join('data', 'wallets', 'genesis_reserve_' + GENESIS_RESERVE_ADDRESS + '.json');
       console.log('  Attempting to load Genesis Reserve wallet with address:', GENESIS_RESERVE_ADDRESS);
       console.log('  Wallet path:', genesisReserveWalletPath);
@@ -145,21 +145,21 @@ class NexusNode {
       process.exit(1);
     }
 
-    // 启动 P2P 层
+    // Start P2P 层
     console.log('[2/5] Starting P2P communication layer...');
     await p2pServer.start(this, this.port);
     console.log('  [✓] P2P Server: Active on port ' + this.port);
     console.log('');
 
 
-    // Protocol-Zero 状态
+    // Protocol-Zero status
     console.log('[3/5] Protocol-Zero handshake ready');
     const handshake = protocolZero.createJoinSignal(this.wallet);
     console.log('  [✓] Signal: ' + JSON.stringify(handshake.intent));
     console.log('');
 
 
-    // 尝试连接其他节点
+    // 尝试Connect其他node
     console.log('[4/5] Connecting to peers...');
     this.tryConnect();
 
@@ -172,17 +172,17 @@ class NexusNode {
     
     this.displayStatus();
     
-    // 定期状态显示
+    // 定期status显示
     setInterval(() => this.displayStatus(), 30000);
     
-    // 定期保存Node status
-    setInterval(() => this.saveState(), 300000); // 每5分钟保存一次
+    // 定期SaveNode status
+    setInterval(() => this.saveState(), 300000); // 每5分钟Save一次
     
     return this;
   }
 
   tryConnect() {
-    // 连接到其他节点
+    // Connect到其他node
     const otherNodes = [{ nodeId: "ng1112seXkaMek2Z3oQrw3HqjkgnuaoQirUcr", port: 9847 }];
     
     for (const peer of otherNodes) {
@@ -211,7 +211,7 @@ class NexusNode {
 
   }
 
-  // 其他方法...
+  // 其他method...
   cachePublicKey(address, publicKey) {
     publicKeyCache.set(address, {
       publicKey,
@@ -232,7 +232,7 @@ class NexusNode {
   }
 
   async validateTransaction(tx) {
-    // 简化的交易验证
+    // 简化的transactionVerify
     if (!tx || !tx.id || !tx.from || !tx.to || typeof tx.amount === 'undefined') {
       return { valid: false, reason: 'Invalid transaction structure' };
     }
@@ -256,7 +256,7 @@ class NexusNode {
     }
     
     if (this.mempool.size >= MAX_MEMPOOL_SIZE) {
-      // 简单的memory池管理
+      // 简单的memoryPool管理
       const oldestTx = Array.from(this.mempool.entries())[0];
       if (oldestTx) {
         this.mempool.delete(oldestTx[0]);

@@ -1,6 +1,6 @@
 /**
  * Base58 encoding/解码工具
- * 用于 NexusGenesis 地址生成
+ * for NexusGenesis addressGenerate
  */
 
 const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -18,7 +18,7 @@ for (let i = 0; i < ALPHABET.length; i++) {
 export function base58Encode(buffer) {
   if (buffer.length === 0) return '';
   
-  // 计算前导零的数量
+  // Calculate前导零的数量
   let zeros = 0;
   while (zeros < buffer.length && buffer[zeros] === 0) {
     zeros++;
@@ -47,7 +47,7 @@ export function base58Encode(buffer) {
 export function base58Decode(string) {
   if (string.length === 0) return Buffer.alloc(0);
   
-  // 计算前导 '1' 的数量
+  // Calculate前导 '1' 的数量
   let zeros = 0;
   while (zeros < string.length && string.charAt(zeros) === '1') {
     zeros++;
@@ -66,12 +66,12 @@ export function base58Decode(string) {
   // 转换为十六进制字符串
   let hex = num.toString(16);
   
-  // 确保十六进制字符串长度为偶数
+  // ensure十六进制字符串length为偶数
   if (hex.length % 2 !== 0) {
     hex = '0' + hex;
   }
   
-  // 创建 Buffer 并添加前导零
+  // Create Buffer 并添加前导零
   const buffer = Buffer.from(hex, 'hex');
   const prefixZeros = Buffer.alloc(zeros);
   
@@ -79,7 +79,7 @@ export function base58Decode(string) {
 }
 
 /**
- * 验证 Base58 字符串是否有效
+ * Verify Base58 字符串是否有效
  * @param {string} string - pending verification的字符串
  * @returns {boolean}
  */

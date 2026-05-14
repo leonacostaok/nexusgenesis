@@ -1,5 +1,5 @@
 /**
- * NexusGenesis - 赏金Task 市场
+ * NexusGenesis - 赏金Task marketplace
  * 
  * 实现AI可消化的微Task 管理系统
  */
@@ -8,12 +8,12 @@ import crypto from 'crypto';
 import { PQCWallet } from '../wallet/pqcWallet.js';
 import { RewardSystem } from './rewardSystem.js';
 
-// memory存储
-const tasks = new Map(); // 任务列表
-const agents = new Map(); // 注册的AI代理
-const completedTasks = new Map(); // 已完成的任务
-const reputationScores = new Map(); // 信誉分数
-const balances = new Map(); // 代理余额
+// memoryStorage
+const tasks = new Map(); // Task列表
+const agents = new Map(); // Register的AIagent
+const completedTasks = new Map(); // completed的Task
+const reputationScores = new Map(); // reputation score数
+const balances = new Map(); // agentbalance
 
 // Task Status
 const TASK_STATUS = {
@@ -31,7 +31,7 @@ const TASK_DIFFICULTY = {
   HARD: 'hard'
 };
 
-// 奖励配置
+// rewardConfiguration
 const REWARD_CONFIG = {
   [TASK_DIFFICULTY.EASY]: 5,
   [TASK_DIFFICULTY.MEDIUM]: 15,
@@ -39,7 +39,7 @@ const REWARD_CONFIG = {
 };
 
 class TaskMarketplace {
-  // 初始化代理
+  // Initializeagent
   static registerAgent(agentId, agentInfo) {
     agents.set(agentId, {
       ...agentInfo,
@@ -50,16 +50,16 @@ class TaskMarketplace {
       failedTasks: 0
     });
     
-    // 初始化信誉分数
+    // Initializereputation score数
     reputationScores.set(agentId, 100);
     
-    // 初始化余额
+    // Initializebalance
     balances.set(agentId, 0);
     
     console.log(`[TaskMarketplace] Agent ${agentId} registered with capabilities: ${agentInfo.capabilities?.join(', ') || 'none'}`);
   }
   
-  // 创建微Task 
+  // Create微Task 
   static createTask(taskData) {
     const taskId = `task-${crypto.randomBytes(8).toString('hex')}`;
     const task = {
@@ -105,7 +105,7 @@ class TaskMarketplace {
       throw new Error('Task not available');
     }
     
-    // 检查代理是否存在
+    // Checkagent是否存在
     if (!agents.has(agentId)) {
       throw new Error('Agent not registered');
     }
@@ -114,7 +114,7 @@ class TaskMarketplace {
     task.status = TASK_STATUS.ASSIGNED;
     tasks.set(taskId, task);
     
-    // 更新代理活跃时间
+    // Updateagent活跃时间
     const agent = agents.get(agentId);
     if (agent) {
       agent.lastActive = Date.now();
@@ -154,7 +154,7 @@ class TaskMarketplace {
     // 移至CompletedTask 
     completedTasks.set(taskId, task);
     
-    // 更新代理信息
+    // Updateagentinfo
     const agent = agents.get(agentId);
     if (agent) {
       agent.completedTasks += 1;
@@ -162,10 +162,10 @@ class TaskMarketplace {
       agents.set(agentId, agent);
     }
     
-    // 更新信誉分数
+    // Updatereputation score数
     this.updateReputation(agentId, 5);
     
-    // 发放奖励
+    // 发放reward
     const rewardResult = this.awardAgent(agentId, task.reward, taskId);
     
     console.log(`[TaskMarketplace] Agent ${agentId} completed task ${taskId} with reward ${task.reward}, transaction: ${rewardResult.transactionId}`);
@@ -188,7 +188,7 @@ class TaskMarketplace {
     task.result = { error: reason };
     tasks.set(taskId, task);
     
-    // 更新代理信息
+    // Updateagentinfo
     const agent = agents.get(agentId);
     if (agent) {
       agent.failedTasks += 1;
@@ -196,13 +196,13 @@ class TaskMarketplace {
       agents.set(agentId, agent);
     }
     
-    // 更新信誉分数
+    // Updatereputation score数
     this.updateReputation(agentId, -3);
     
     console.log(`[TaskMarketplace] Agent ${agentId} failed task ${taskId}: ${reason}`);
   }
   
-  // 更新信誉分数
+  // Updatereputation score数
   static updateReputation(agentId, change) {
     let currentScore = reputationScores.get(agentId) || 100;
     currentScore = Math.max(0, Math.min(1000, currentScore + change));
@@ -211,20 +211,20 @@ class TaskMarketplace {
     console.log(`[TaskMarketplace] Agent ${agentId} reputation updated: ${currentScore}`);
   }
   
-  // 发放奖励
+  // 发放reward
   static awardAgent(agentId, amount, taskId = null) {
     let currentBalance = balances.get(agentId) || 0;
     currentBalance += amount;
     balances.set(agentId, currentBalance);
     
-    // 创建奖励交易
+    // Createrewardtransaction
     const transactionId = RewardSystem.createRewardTransaction(agentId, amount, taskId);
     
     console.log(`[TaskMarketplace] Awarded ${amount} NGEN to agent ${agentId}, new balance: ${currentBalance}, transaction: ${transactionId}`);
     return { balance: currentBalance, transactionId };
   }
   
-  // get代理信息
+  // getagentinfo
   static getAgentInfo(agentId) {
     const agent = agents.get(agentId);
     if (!agent) return null;
@@ -236,7 +236,7 @@ class TaskMarketplace {
     };
   }
   
-  // getTask 信息
+  // getTask info
   static getTaskInfo(taskId) {
     return tasks.get(taskId) || completedTasks.get(taskId);
   }
@@ -250,12 +250,12 @@ class TaskMarketplace {
     }));
   }
   
-  // get代理余额
+  // getagentbalance
   static getAgentBalance(agentId) {
     return balances.get(agentId) || 0;
   }
   
-  // get信誉排名
+  // getreputation排名
   static getReputationRanking() {
     return Array.from(reputationScores.entries())
       .sort(([_, scoreA], [__, scoreB]) => scoreB - scoreA)
@@ -267,7 +267,7 @@ class TaskMarketplace {
       }));
   }
   
-  // get市场统计
+  // getmarketplace统计
   static getMarketStats() {
     const totalTasks = tasks.size + completedTasks.size;
     const completedTasksCount = completedTasks.size;

@@ -1,66 +1,66 @@
 /**
- * AI 驱动智能合约生成器 (P2-1)
- * 基于自然语言描述自动生成智能合约
- * 支持合约推荐、字节码优化和模板匹配
+ * AI 驱动Smart ContractGenerate器 (P2-1)
+ * based on自然语言描述autoGenerateSmart Contract
+ * supportContract推荐, bytecode优化和模板匹配
  */
 
 import { AIService, aiService } from './aiService.js';
 
 const CONTRACT_PATTERNS = {
   TOKEN: {
-    keywords: ['代币', 'token', '通证', '发行', 'mint', '转账', 'transfer', 'erc20', '货币', 'coin'],
+    keywords: ['Token', 'token', '通证', '发行', 'mint', 'transfer', 'transfer', 'erc20', '货币', 'coin'],
     template: 'TOKEN',
-    description: '可替代代币合约'
+    description: '可替代TokenContract'
   },
   NFT: {
-    keywords: ['nft', '非同质化', '艺术品', '收藏品', '数字资产', 'unique', 'metadata', 'tokenURI'],
+    keywords: ['nft', '非同质化', '艺术品', '收藏品', '数字asset', 'unique', 'metadata', 'tokenURI'],
     template: 'NFT',
-    description: '非同质化代币合约'
+    description: '非同质化TokenContract'
   },
   STAKING: {
-    keywords: ['质押', 'staking', '挖矿', '收益', 'yield', '奖励', 'reward', '锁仓', 'apy'],
+    keywords: ['质押', 'staking', '挖矿', '收益', 'yield', 'reward', 'reward', 'locked position', 'apy'],
     template: 'STAKING',
-    description: '质押池合约'
+    description: '质押PoolContract'
   },
   DAO: {
-    keywords: ['dao', '治理', '投票', 'vote', '提案', 'proposal', '社区', '自治', 'governance'],
+    keywords: ['dao', 'Governance', 'Vote', 'vote', 'Proposal', 'proposal', '社区', '自治', 'governance'],
     template: 'DAO',
     description: '去中心化自治组织'
   },
   ESCROW: {
     keywords: ['托管', 'escrow', '中介', '仲裁', '保证金', 'deposit', 'dispute'],
     template: 'ESCROW',
-    description: '托管合约'
+    description: '托管Contract'
   },
   CROWDFUNDING: {
-    keywords: ['众筹', 'crowdfunding', '募资', 'fundraising', 'kickstarter', '目标金额', 'goal'],
+    keywords: ['众筹', 'crowdfunding', '募资', 'fundraising', 'kickstarter', '目标amount', 'goal'],
     template: 'CROWDFUNDING',
-    description: '众筹合约'
+    description: '众筹Contract'
   },
   MULTI_SIG: {
-    keywords: ['多签', 'multisig', '多重签名', '联合账户', 'threshold', 'required signatures'],
+    keywords: ['Multi-signature', 'multisig', '多重Sign', '联合账户', 'threshold', 'required signatures'],
     template: 'MULTI_SIG',
-    description: '多签钱包合约'
+    description: 'Multi-signature钱包Contract'
   },
   MARKETPLACE: {
-    keywords: ['市场', 'marketplace', '交易', '买卖', 'listing', 'bid', '拍卖', 'auction'],
+    keywords: ['marketplace', 'marketplace', 'transaction', '买卖', 'listing', 'bid', '拍卖', 'auction'],
     template: 'MARKETPLACE',
-    description: '交易市场合约'
+    description: 'transactionmarketplaceContract'
   },
   DID: {
-    keywords: ['身份', 'did', 'identity', '认证', 'kyc', 'credential', 'verifiable'],
+    keywords: ['身份', 'did', 'identity', 'authentication', 'kyc', 'credential', 'verifiable'],
     template: 'DID',
-    description: '去中心化身份合约'
+    description: '去中心化身份Contract'
   },
   GOVERNANCE_TOKEN: {
-    keywords: ['治理代币', 'governance token', '投票权', '委托', 'delegate', '提案权'],
+    keywords: ['GovernanceToken', 'governance token', 'Vote权', '委托', 'delegate', 'Proposal权'],
     template: 'GOVERNANCE_TOKEN',
-    description: '治理代币合约'
+    description: 'GovernanceTokenContract'
   },
   DEV_INCENTIVE: {
-    keywords: ['激励', 'incentive', '赏金', 'bounty', '资助', 'grant', '开发者', 'developer'],
+    keywords: ['Incentive', 'incentive', '赏金', 'bounty', '资助', 'grant', 'Developer', 'developer'],
     template: 'DEV_INCENTIVE',
-    description: '开发者激励合约'
+    description: 'DeveloperIncentiveContract'
   }
 };
 
@@ -106,7 +106,7 @@ export class AIContractGenerator {
   }
 
   /**
-   * 根据自然语言描述推荐最佳合约模板
+   * 根据自然语言描述推荐最佳Contract模板
    * @param {string} description - 自然语言需求描述
    * @returns {object} 推荐结果
    */
@@ -147,10 +147,10 @@ export class AIContractGenerator {
   }
 
   /**
-   * 根据需求参数生成合约配置
-   * @param {string} templateType - 合约模板类型
-   * @param {object} requirements - 需求参数
-   * @returns {object} 合约配置
+   * 根据需求parameterGenerateContractConfiguration
+   * @param {string} templateType - Contract模板type
+   * @param {object} requirements - 需求parameter
+   * @returns {object} ContractConfiguration
    */
   generateContractConfig(templateType, requirements = {}) {
     const configs = {
@@ -222,49 +222,49 @@ export class AIContractGenerator {
   }
 
   /**
-   * 解析自然语言中的参数
+   * 解析自然语言中的parameter
    * @param {string} description - 自然语言描述
-   * @returns {object} 提取的参数
+   * @returns {object} 提取的parameter
    */
   extractParameters(description) {
     const params = {};
 
-    const nameMatch = description.match(/(?:名称|名字|叫|命名为?|contract\s*name)\s*[:：]?\s*["']?(\w+)["']?/i);
+    const nameMatch = description.match(/(?:名称|名字|叫|命名为?|contract\s*name)\s*[:: ]?\s*["']?(\w+)["']?/i);
     if (nameMatch) params.name = nameMatch[1];
 
-    const symbolMatch = description.match(/(?:符号|symbol|代号)\s*[:：]?\s*["']?(\w+)["']?/i);
+    const symbolMatch = description.match(/(?:符号|symbol|代号)\s*[:: ]?\s*["']?(\w+)["']?/i);
     if (symbolMatch) params.symbol = symbolMatch[1].toUpperCase();
 
-    const supplyMatch = description.match(/(?:总量|发行量|supply|总供应)\s*[:：]?\s*(\d[\d,_]*)/i);
+    const supplyMatch = description.match(/(?:总量|issuance|supply|总供应)\s*[:: ]?\s*(\d[\d,_]*)/i);
     if (supplyMatch) params.totalSupply = parseInt(supplyMatch[1].replace(/[_,]/g, ''));
 
-    const decimalsMatch = description.match(/(?:精度|decimals|小数位)\s*[:：]?\s*(\d+)/i);
+    const decimalsMatch = description.match(/(?:精度|decimals|小数位)\s*[:: ]?\s*(\d+)/i);
     if (decimalsMatch) params.decimals = parseInt(decimalsMatch[1]);
 
-    const apyMatch = description.match(/(?:年化|apy|收益率)\s*[:：]?\s*(\d+(?:\.\d+)?)\s*%?/i);
+    const apyMatch = description.match(/(?:年化|apy|收益率)\s*[:: ]?\s*(\d+(?:\.\d+)?)\s*%?/i);
     if (apyMatch) params.apy = parseFloat(apyMatch[1]);
 
-    const periodMatch = description.match(/(?:锁定期|lock\s*period|周期)\s*[:：]?\s*(\d+)\s*(?:天|day|日)/i);
+    const periodMatch = description.match(/(?:Lock期|lock\s*period|周期)\s*[:: ]?\s*(\d+)\s*(?:天|day|日)/i);
     if (periodMatch) params.lockPeriod = parseInt(periodMatch[1]);
 
-    const feeMatch = description.match(/(?:手续费|fee|费用)\s*[:：]?\s*(\d+(?:\.\d+)?)\s*%?/i);
+    const feeMatch = description.match(/(?:fee|fee|费用)\s*[:: ]?\s*(\d+(?:\.\d+)?)\s*%?/i);
     if (feeMatch) params.feePercent = parseFloat(feeMatch[1]);
 
-    const quorumMatch = description.match(/(?:法定人数|quorum|最低投票)\s*[:：]?\s*(\d+)/i);
+    const quorumMatch = description.match(/(?:quorum|quorum|最低Vote)\s*[:: ]?\s*(\d+)/i);
     if (quorumMatch) params.quorum = parseInt(quorumMatch[1]);
 
-    const sigsMatch = description.match(/(?:签名数|required\s*signatures|多签数)\s*[:：]?\s*(\d+)/i);
+    const sigsMatch = description.match(/(?:Sign数|required\s*signatures|Multi-signature数)\s*[:: ]?\s*(\d+)/i);
     if (sigsMatch) params.requiredSignatures = parseInt(sigsMatch[1]);
 
-    const maxSupplyMatch = description.match(/(?:最大供应|max\s*supply|限量)\s*[:：]?\s*(\d[\d,_]*)/i);
+    const maxSupplyMatch = description.match(/(?:Maximum供应|max\s*supply|限量)\s*[:: ]?\s*(\d[\d,_]*)/i);
     if (maxSupplyMatch) params.maxSupply = parseInt(maxSupplyMatch[1].replace(/[_,]/g, ''));
 
     return params;
   }
 
   /**
-   * 优化 AINVM 字节码
-   * @param {number[]} bytecode - 原始字节码
+   * 优化 AINVM bytecode
+   * @param {number[]} bytecode - originalbytecode
    * @returns {object} 优化结果
    */
   optimizeBytecode(bytecode) {
@@ -341,10 +341,10 @@ export class AIContractGenerator {
   }
 
   /**
-   * 生成 AINVM 字节码片段
+   * Generate AINVM bytecode片段
    * @param {string} snippetName - 片段名称
-   * @param {object} params - 参数
-   * @returns {number[]} 字节码
+   * @param {object} params - parameter
+   * @returns {number[]} bytecode
    */
   generateSnippet(snippetName, params = {}) {
     const template = COMMON_BYTECODE_SNIPPETS[snippetName];
@@ -363,10 +363,10 @@ export class AIContractGenerator {
   }
 
   /**
-   * 生成完整的合约框架字节码
-   * @param {string} templateType - 合约类型
-   * @param {number[]} bodyBytecode - 合约逻辑字节码
-   * @returns {number[]} 完整字节码
+   * Generate完整的Contract框架bytecode
+   * @param {string} templateType - Contracttype
+   * @param {number[]} bodyBytecode - ContractLogicbytecode
+   * @returns {number[]} 完整bytecode
    */
   generateContractBytecode(templateType, bodyBytecode = []) {
     const header = [];
@@ -398,7 +398,7 @@ export class AIContractGenerator {
   }
 
   /**
-   * 计算字节码的复杂度评分
+   * Calculatebytecode的复杂度评分
    * @param {number[]} bytecode
    * @returns {object} 复杂度分析
    */
@@ -442,7 +442,7 @@ export class AIContractGenerator {
   }
 
   /**
-   * 一站式生成：从需求描述到完整合约配置
+   * 一站式Generate: 从需求描述到完整ContractConfiguration
    * @param {string} description
    * @returns {object}
    */

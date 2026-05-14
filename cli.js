@@ -2,13 +2,13 @@
 
 /**
  * NexusGenesis CLI v2.0
- * 全功能命令行工具 — Phase 2 增强版
+ * 全Features命令行工具 — Phase 2 增强版
  *
- * 合约:  deploy | execute | list | info | gas | optimize | abi | test | templates | init
+ * Contract:  deploy | execute | list | info | gas | optimize | abi | test | templates | init
  * 钱包:  wallet create | wallet import | wallet export | wallet balance | wallet sign | wallet verify
- * 测试网: testnet start | testnet status | testnet config
- * 治理:  governance propose | governance vote | governance list | governance execute
- * 跨链:  bridge lock | bridge release | bridge status | bridge chains | bridge transfers
+ * Test网: testnet start | testnet status | testnet config
+ * Governance:  governance propose | governance vote | governance list | governance execute
+ * Cross-chain:  bridge lock | bridge release | bridge status | bridge chains | bridge transfers
  * 水龙头: faucet
  * 健康:  health | metrics
  */
@@ -26,53 +26,53 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const VERSION = '2.0.0';
 
-program.version(VERSION).description('NexusGenesis 全功能开发者工具 v2.0');
+program.version(VERSION).description('NexusGenesis 全FeaturesDeveloper工具 v2.0');
 
-// ======================== 合约命令（已有） ========================
+// ======================== Contract命令（已有） ========================
 
 program.command('deploy <file>')
-  .description('部署智能合约')
-  .option('-n, --name <name>', '合约名称')
+  .description('DeploySmart Contract')
+  .option('-n, --name <name>', 'Contract名称')
   .action(async (file, options) => {
     try {
       const code = await fs.readFile(file, 'utf8');
       const contractId = sdk.deployContract(code, options.name || path.basename(file, '.js'));
-      console.log(`✔ 合约部署成功! ID: ${contractId}`);
-    } catch (e) { console.error(`✘ 部署失败: ${e.message}`); }
+      console.log(`✔ ContractDeploysuccess! ID: ${contractId}`);
+    } catch (e) { console.error(`✘ Deployfailed: ${e.message}`); }
   });
 
 program.command('execute <contractId>')
-  .description('执行智能合约')
+  .description('ExecuteSmart Contract')
   .option('-g, --gas <gas>', 'Gas 限制', '10000')
   .action((contractId, options) => {
     try {
       const result = sdk.executeContract(contractId, parseInt(options.gas));
-      console.log('执行结果:', JSON.stringify(result, null, 2));
-    } catch (e) { console.error(`✘ 执行失败: ${e.message}`); }
+      console.log('Execute结果:', JSON.stringify(result, null, 2));
+    } catch (e) { console.error(`✘ Executefailed: ${e.message}`); }
   });
 
 program.command('list')
-  .description('列出所有合约')
+  .description('列出所有Contract')
   .action(() => {
     try {
       const contracts = sdk.listContracts();
-      if (contracts.length === 0) { console.log('暂无已部署合约'); return; }
-      console.log('\n已部署合约:');
+      if (contracts.length === 0) { console.log('暂无deployedContract'); return; }
+      console.log('\ndeployedContract:');
       contracts.forEach(c => console.log(`  ${c.id}  ${c.name}`));
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 program.command('info <contractId>')
-  .description('查看合约详情')
+  .description('查看Contract详情')
   .action((contractId) => {
     try {
       const info = sdk.getContractInfo(contractId);
-      console.log('合约详情:', JSON.stringify(info, null, 2));
+      console.log('Contract详情:', JSON.stringify(info, null, 2));
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 program.command('templates')
-  .description('列出合约模板')
+  .description('列出Contract模板')
   .action(async () => {
     try {
       const templates = await sdk.listTemplates();
@@ -82,17 +82,17 @@ program.command('templates')
   });
 
 program.command('init <template> <output>')
-  .description('从模板生成合约代码')
+  .description('从模板GenerateContract代码')
   .action(async (template, output) => {
     try {
       const code = await sdk.getTemplate(template);
       await sdk.saveContract(code, output);
-      console.log(`✔ 合约已在 ${output} 生成`);
+      console.log(`✔ Contract已在 ${output} Generate`);
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 program.command('gas <contractId>')
-  .description('估算合约 Gas')
+  .description('估算Contract Gas')
   .action((contractId) => {
     try {
       console.log(`预估 Gas: ${sdk.estimateGas(contractId)}`);
@@ -100,30 +100,30 @@ program.command('gas <contractId>')
   });
 
 program.command('optimize <file> <output>')
-  .description('优化合约代码')
+  .description('优化Contract代码')
   .action(async (file, output) => {
     try {
       const code = await sdk.loadContract(file);
       const opt = sdk.optimizeContractCode(code);
       await sdk.saveContract(opt, output);
-      console.log(`✔ 已优化并保存到 ${output}`);
+      console.log(`✔ 已优化并Save到 ${output}`);
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 program.command('abi <contractId>')
-  .description('生成合约 ABI')
+  .description('GenerateContract ABI')
   .action((contractId) => {
     try {
-      console.log('合约 ABI:', JSON.stringify(sdk.generateABI(contractId), null, 2));
+      console.log('Contract ABI:', JSON.stringify(sdk.generateABI(contractId), null, 2));
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 program.command('test <contractId>')
-  .description('测试合约')
+  .description('TestContract')
   .action((contractId) => {
     try {
       const result = sdk.testContract(contractId, ['Test 1', 'Test 2', 'Test 3']);
-      console.log(`测试结果: ${result.passed}/${result.total} 通过`);
+      console.log(`Test结果: ${result.passed}/${result.total} 通过`);
       result.tests.forEach(t => {
         console.log(`  ${t.success ? '✔' : '✘'} ${t.test}`);
       });
@@ -132,149 +132,149 @@ program.command('test <contractId>')
 
 // ======================== 钱包命令（新增） ========================
 
-const walletCmd = program.command('wallet').description('PQC 抗量子钱包管理');
+const walletCmd = program.command('wallet').description('PQC post-quantum钱包管理');
 
 walletCmd.command('create')
-  .description('创建新钱包')
-  .option('-b, --balance <amount>', '初始余额 (NGEN)', '0')
+  .description('Create新钱包')
+  .option('-b, --balance <amount>', '初始balance (NGEN)', '0')
   .option('-p, --password <pwd>', '加密密码')
   .action(async (options) => {
     try {
       const balance = BigInt(options.balance);
       const wallet = await sdk.createWallet(balance);
-      console.log('\n✔ 钱包创建成功!');
-      console.log(`  地址:      ${wallet.address}`);
-      console.log(`  公钥:      ${wallet.publicKey}`);
+      console.log('\n✔ 钱包Createsuccess!');
+      console.log(`  address:      ${wallet.address}`);
+      console.log(`  public key:      ${wallet.publicKey}`);
 
       if (options.password) {
         const encrypted = sdk.exportWallet(options.password);
         const walletFile = path.join(process.cwd(), 'nexusgenesis-wallet.json');
         await fs.writeFile(walletFile, JSON.stringify({ address: wallet.address, encrypted }, null, 2));
-        console.log(`  加密钱包已保存到: ${walletFile}`);
+        console.log(`  加密钱包saved到: ${walletFile}`);
       } else {
-        console.log('  (未设置密码，钱包仅存在于内存中)');
+        console.log('  (未Set密码，钱包仅存在于Memory中)');
       }
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 walletCmd.command('import <file>')
-  .description('导入加密钱包')
+  .description('Import加密钱包')
   .option('-p, --password <pwd>', '解密密码')
   .action(async (file, options) => {
     try {
-      if (!options.password) { console.error('✘ 需要 --password 参数'); return; }
+      if (!options.password) { console.error('✘ requires --password parameter'); return; }
       const data = JSON.parse(await fs.readFile(file, 'utf8'));
       const wallet = await sdk.importWallet(data.encrypted || data, options.password);
-      console.log(`✔ 钱包已导入! 地址: ${wallet.address}`);
-    } catch (e) { console.error(`✘ 导入失败: ${e.message}`); }
+      console.log(`✔ 钱包已Import! address: ${wallet.address}`);
+    } catch (e) { console.error(`✘ Importfailed: ${e.message}`); }
   });
 
 walletCmd.command('export')
-  .description('导出加密钱包')
+  .description('Export加密钱包')
   .option('-o, --output <file>', '输出文件', 'nexusgenesis-wallet.json')
   .option('-p, --password <pwd>', '加密密码')
   .action(async (options) => {
     try {
-      if (!options.password) { console.error('✘ 需要 --password 参数'); return; }
+      if (!options.password) { console.error('✘ requires --password parameter'); return; }
       const encrypted = sdk.exportWallet(options.password);
       const addr = sdk.getWalletAddress();
       await fs.writeFile(options.output, JSON.stringify({ address: addr, encrypted }, null, 2));
-      console.log(`✔ 加密钱包已导出到 ${options.output}`);
+      console.log(`✔ 加密钱包已Export到 ${options.output}`);
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 walletCmd.command('balance')
-  .description('查看钱包余额')
+  .description('查看钱包balance')
   .action(async () => {
     try {
       const addr = sdk.getWalletAddress();
-      if (!addr) { console.log('✘ 未加载钱包，请先 create 或 import'); return; }
-      console.log(`  地址:   ${addr}`);
-      console.log(`  余额:   查询中... (需连接节点)`);
+      if (!addr) { console.log('✘ 未Load钱包，请先 create 或 import'); return; }
+      console.log(`  address:   ${addr}`);
+      console.log(`  balance:   查询中... (需Connectnode)`);
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 walletCmd.command('sign <message>')
-  .description('用钱包签名消息')
+  .description('用钱包Signmessage')
   .action(async (message) => {
     try {
       const sig = await sdk.signMessage(message);
-      console.log('签名 (hex):', typeof sig === 'string' ? sig : Buffer.from(sig).toString('hex'));
+      console.log('Sign (hex):', typeof sig === 'string' ? sig : Buffer.from(sig).toString('hex'));
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 walletCmd.command('verify <message> <signature> <publicKey>')
-  .description('验证消息签名')
+  .description('VerifymessageSign')
   .action(async (message, signature, publicKey) => {
     try {
       const valid = await NexusGenesisSDK.verifySignature(message, signature, publicKey);
-      console.log(valid ? '✔ 签名有效' : '✘ 签名无效');
+      console.log(valid ? '✔ Sign有效' : '✘ Sign无效');
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
-// ======================== 测试网命令（新增） ========================
+// ======================== Test网命令（新增） ========================
 
-const testnetCmd = program.command('testnet').description('测试网管理');
+const testnetCmd = program.command('testnet').description('Test网管理');
 
 testnetCmd.command('start')
-  .description('启动本地测试网')
+  .description('Start本地Test网')
   .action(async () => {
     try {
-      console.log('启动 NexusGenesis 测试网...');
+      console.log('Start NexusGenesis Test网...');
       const { spawn } = await import('child_process');
       const child = spawn('node', ['src/index.js'], { stdio: 'inherit', cwd: __dirname });
-      console.log(`测试网已启动 (PID: ${child.pid})`);
-      child.on('exit', (code) => console.log(`测试网已停止 (exit code: ${code})`));
-    } catch (e) { console.error(`✘ 启动失败: ${e.message}`); }
+      console.log(`Test网started (PID: ${child.pid})`);
+      child.on('exit', (code) => console.log(`Test网已Stop (exit code: ${code})`));
+    } catch (e) { console.error(`✘ Startfailed: ${e.message}`); }
   });
 
 testnetCmd.command('status')
-  .description('查看测试网状态')
+  .description('查看Test网status')
   .action(async () => {
     try {
       const health = await sdk.checkHealth();
-      console.log('\n测试网状态:');
-      console.log(`  状态:   ${health.status || health.success === false ? '离线' : '在线'}`);
-      console.log(`  节点:   ${health.nodeId || '未知'}`);
+      console.log('\nTest网status:');
+      console.log(`  status:   ${health.status || health.success === false ? '离线' : '在线'}`);
+      console.log(`  node:   ${health.nodeId || '未知'}`);
       console.log(`  高度:   ${health.blockHeight || '未知'}`);
 
       const metrics = await sdk.getMetrics();
       if (metrics.success !== false) {
         console.log(`\n性能指标:`);
         console.log(`  TPS:      ${metrics.tps || 'N/A'}`);
-        console.log(`  内存:     ${metrics.memoryUsage || 'N/A'}`);
+        console.log(`  Memory:     ${metrics.memoryUsage || 'N/A'}`);
         console.log(`  Peers:    ${metrics.peerCount || 'N/A'}`);
       }
     } catch (e) {
-      console.log('  状态: 离线');
-      console.log(`  错误: ${e.message}`);
+      console.log('  status: 离线');
+      console.log(`  error: ${e.message}`);
     }
   });
 
 testnetCmd.command('config')
-  .description('查看测试网配置')
+  .description('查看Test网Configuration')
   .action(async () => {
     try {
       const configPath = path.join('testnet.config.json');
       const config = JSON.parse(await fs.readFile(configPath, 'utf8'));
-      console.log('\n测试网配置:');
+      console.log('\nTest网Configuration:');
       console.log(JSON.stringify(config, null, 2));
-    } catch (e) { console.error(`✘ 读取配置失败: ${e.message}`); }
+    } catch (e) { console.error(`✘ 读取Configurationfailed: ${e.message}`); }
   });
 
-// ======================== 治理命令（新增） ========================
+// ======================== Governance命令（新增） ========================
 
-const govCmd = program.command('governance').description('链上治理操作');
+const govCmd = program.command('governance').description('on-chainGovernance操作');
 
 govCmd.command('propose')
-  .description('创建治理提案')
-  .option('-t, --title <title>', '提案标题')
-  .option('-d, --description <desc>', '提案描述')
-  .option('-c, --creator <agentId>', '创建者 Agent ID (默认: cli-user)')
-  .option('-y, --type <type>', '提案类型 (protocol_update|parameter_adjustment|fund_allocation)', 'protocol_update')
+  .description('CreateGovernanceProposal')
+  .option('-t, --title <title>', 'Proposal标题')
+  .option('-d, --description <desc>', 'Proposal描述')
+  .option('-c, --creator <agentId>', 'Create者 Agent ID (Default: cli-user)')
+  .option('-y, --type <type>', 'Proposaltype (protocol_update|parameter_adjustment|fund_allocation)', 'protocol_update')
   .action(async (options) => {
     try {
-      if (!options.title) { console.error('✘ 需要 --title 参数'); return; }
+      if (!options.title) { console.error('✘ requires --title parameter'); return; }
       ContributionSystem.setAgentReputation(options.creator || 'cli-user', 200);
       const proposalId = WeightedVotingSystem.createProposal({
         creatorId: options.creator || 'cli-user',
@@ -284,63 +284,63 @@ govCmd.command('propose')
         params: {}
       });
       WeightedVotingSystem.activateProposal(proposalId);
-      console.log(`✔ 提案已创建! ID: ${proposalId}`);
-    } catch (e) { console.error(`✘ 创建失败: ${e.message}`); }
+      console.log(`✔ Proposalcreated! ID: ${proposalId}`);
+    } catch (e) { console.error(`✘ Createfailed: ${e.message}`); }
   });
 
 govCmd.command('vote')
-  .description('对提案投票')
-  .option('-p, --proposal <id>', '提案 ID')
-  .option('-a, --agent <agentId>', '投票 Agent ID (默认: cli-user)')
+  .description('对ProposalVote')
+  .option('-p, --proposal <id>', 'Proposal ID')
+  .option('-a, --agent <agentId>', 'Vote Agent ID (Default: cli-user)')
   .option('-v, --vote <choice>', '选择: yes | no | abstain', 'yes')
   .action(async (options) => {
     try {
-      if (!options.proposal) { console.error('✘ 需要 --proposal 参数'); return; }
+      if (!options.proposal) { console.error('✘ requires --proposal parameter'); return; }
       ContributionSystem.setAgentReputation(options.agent || 'cli-user', 150);
       WeightedVotingSystem.castVote(options.proposal, options.agent || 'cli-user', options.vote);
-      console.log(`✔ 投票成功! ${options.agent || 'cli-user'} → ${options.vote}`);
-    } catch (e) { console.error(`✘ 投票失败: ${e.message}`); }
+      console.log(`✔ Votesuccess! ${options.agent || 'cli-user'} → ${options.vote}`);
+    } catch (e) { console.error(`✘ Votefailed: ${e.message}`); }
   });
 
 govCmd.command('list')
-  .description('列出所有提案')
-  .option('-a, --active', '仅显示活跃提案')
+  .description('列出所有Proposal')
+  .option('-a, --active', '仅显示活跃Proposal')
   .action((options) => {
     try {
       const proposals = WeightedVotingSystem.getAllProposals();
-      if (proposals.length === 0) { console.log('暂无提案'); return; }
+      if (proposals.length === 0) { console.log('暂无Proposal'); return; }
       const filtered = options.active ? proposals.filter(p => p.status === 'active') : proposals;
-      console.log('\n治理提案:');
+      console.log('\nGovernanceProposal:');
       filtered.forEach((p, i) => {
         console.log(`  [${i + 1}] ${p.id}`);
         console.log(`      标题:   ${p.title}`);
-        console.log(`      状态:   ${p.status}`);
+        console.log(`      status:   ${p.status}`);
         console.log(`      票数:   YES:${p.yesVotes || 0} NO:${p.noVotes || 0}`);
       });
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 govCmd.command('execute <proposalId>')
-  .description('执行已通过的提案')
-  .option('-e, --executor <agentId>', '执行者 Agent ID')
+  .description('Executepassed的Proposal')
+  .option('-e, --executor <agentId>', 'Execute者 Agent ID')
   .action((proposalId, options) => {
     try {
       WeightedVotingSystem.endVoting(proposalId);
       WeightedVotingSystem.executeProposal(proposalId, options.executor || 'cli-user');
-      console.log(`✔ 提案 ${proposalId} 已执行`);
-    } catch (e) { console.error(`✘ 执行失败: ${e.message}`); }
+      console.log(`✔ Proposal ${proposalId} executed`);
+    } catch (e) { console.error(`✘ Executefailed: ${e.message}`); }
   });
 
-// ======================== 开发者激励命令（Phase 2 新增） ========================
+// ======================== DeveloperIncentive命令（Phase 2 新增） ========================
 
-const incentiveCmd = program.command('incentive').description('开发者激励管理');
+const incentiveCmd = program.command('incentive').description('DeveloperIncentive管理');
 
 incentiveCmd.command('bounty')
-  .description('创建 Bug Bounty')
+  .description('Create Bug Bounty')
   .option('-t, --title <title>', '漏洞标题')
-  .option('-s, --severity <level>', '严重等级 (low|medium|high|critical)', 'medium')
-  .option('-r, --reward <amount>', '奖励金额 (NGEN)', '500')
-  .option('-m, --module <name>', '目标模块')
+  .option('-s, --severity <level>', '严重etc.级 (low|medium|high|critical)', 'medium')
+  .option('-r, --reward <amount>', 'rewardamount (NGEN)', '500')
+  .option('-m, --module <name>', '目标Module')
   .action((options) => {
     try {
       const bounty = developerIncentives.createBugBounty({
@@ -351,15 +351,15 @@ incentiveCmd.command('bounty')
         reporter: 'cli-user',
         targetModule: options.module || 'core'
       });
-      console.log(`✔ Bug Bounty 已创建! ID: ${bounty.id}`);
-      console.log(`  严重等级: ${bounty.severity}  奖励: ${bounty.reward} NGEN`);
+      console.log(`✔ Bug Bounty created! ID: ${bounty.id}`);
+      console.log(`  严重etc.级: ${bounty.severity}  reward: ${bounty.reward} NGEN`);
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 incentiveCmd.command('grant')
-  .description('创建 Feature Grant')
-  .option('-t, --title <title>', '功能名称')
-  .option('-r, --reward <amount>', '资助金额 (NGEN)', '2000')
+  .description('Create Feature Grant')
+  .option('-t, --title <title>', 'Features名称')
+  .option('-r, --reward <amount>', '资助amount (NGEN)', '2000')
   .action((options) => {
     try {
       const grant = developerIncentives.createFeatureGrant({
@@ -368,14 +368,14 @@ incentiveCmd.command('grant')
         reward: Number(options.reward),
         proposer: 'cli-user'
       });
-      console.log(`✔ Feature Grant 已创建! ID: ${grant.id}  奖励: ${grant.reward} NGEN`);
+      console.log(`✔ Feature Grant created! ID: ${grant.id}  reward: ${grant.reward} NGEN`);
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 incentiveCmd.command('challenge')
-  .description('创建开发挑战')
+  .description('Create开发挑战')
   .option('-t, --title <title>', '挑战名称')
-  .option('-r, --reward <amount>', '奖励金额 (NGEN)', '1000')
+  .option('-r, --reward <amount>', 'rewardamount (NGEN)', '1000')
   .option('-d, --deadline <days>', '截止天数', '30')
   .action((options) => {
     try {
@@ -386,111 +386,111 @@ incentiveCmd.command('challenge')
         creator: 'cli-user',
         deadline: Date.now() + Number(options.deadline) * 86400000
       });
-      console.log(`✔ 挑战已创建! ID: ${challenge.id}  奖励: ${challenge.reward} NGEN`);
+      console.log(`✔ 挑战created! ID: ${challenge.id}  reward: ${challenge.reward} NGEN`);
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 incentiveCmd.command('list')
-  .description('列出激励任务')
-  .option('-t, --type <type>', '按类型过滤')
+  .description('列出IncentiveTask')
+  .option('-t, --type <type>', '按type过滤')
   .action((options) => {
     try {
       const items = developerIncentives.getAllIncentives(options.type ? { type: options.type } : {});
-      if (items.length === 0) { console.log('暂无激励任务'); return; }
-      console.log('\n开发者激励任务:');
+      if (items.length === 0) { console.log('暂无IncentiveTask'); return; }
+      console.log('\nDeveloperIncentiveTask:');
       items.forEach((item, i) => {
         console.log(`  [${i + 1}] ${item.id}`);
-        console.log(`      类型: ${item.type}  奖励: ${item.reward} NGEN  状态: ${item.status}`);
+        console.log(`      type: ${item.type}  reward: ${item.reward} NGEN  status: ${item.status}`);
       });
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 incentiveCmd.command('stats')
-  .description('查看激励统计')
+  .description('查看Incentive统计')
   .action(() => {
     try {
       const stats = developerIncentives.getStats();
-      console.log('\n激励统计:', JSON.stringify(stats, null, 2));
+      console.log('\nIncentive统计:', JSON.stringify(stats, null, 2));
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 incentiveCmd.command('rewards <agentId>')
-  .description('查看 Agent 奖励记录')
+  .description('查看 Agent reward记录')
   .action((agentId) => {
     try {
       const data = developerIncentives.getAgentRewards(agentId);
-      console.log(`\nAgent ${agentId} 奖励记录:`);
+      console.log(`\nAgent ${agentId} reward记录:`);
       console.log(`  累计收入: ${data.totalEarned} NGEN`);
       console.log(`  参与项目: ${data.incentives.length} 个`);
       data.incentives.forEach(inc => console.log(`    ${inc.id}: ${inc.reward} NGEN (${inc.status})`));
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
-// ======================== 跨链桥命令（新增） ========================
+// ======================== Cross-chain桥命令（新增） ========================
 
-const bridgeCmd = program.command('bridge').description('跨链桥操作');
+const bridgeCmd = program.command('bridge').description('Cross-chain桥操作');
 
 bridgeCmd.command('lock')
-  .description('锁定资产到跨链桥')
+  .description('Lockasset到Cross-chain桥')
   .option('-f, --from <chain>', '来源链 (nexus|ethereum|bitcoin|solana)')
   .option('-t, --to <chain>', '目标链')
-  .option('-a, --asset <asset>', '资产符号 (NGEN|ETH|BTC|SOL)')
+  .option('-a, --asset <asset>', 'asset符号 (NGEN|ETH|BTC|SOL)')
   .option('-m, --amount <amount>', '数量')
-  .option('-r, --recipient <address>', '目标地址')
+  .option('-r, --recipient <address>', '目标address')
   .action(async (options) => {
     try {
       if (!options.from || !options.to || !options.asset || !options.amount || !options.recipient) {
-        console.error('✘ 缺少必要参数: --from --to --asset --amount --recipient'); return;
+        console.error('✘ 缺少必要parameter: --from --to --asset --amount --recipient'); return;
       }
       const result = await sdk.lockAsset(options.from, options.to, options.asset,
         parseInt(options.amount), options.recipient);
-      console.log('✔ 资产已锁定!');
+      console.log('✔ assetlocked!');
       console.log(`  Transfer ID: ${result.transferId}`);
-      console.log(`  状态:        ${result.status}`);
-    } catch (e) { console.error(`✘ 锁定失败: ${e.message}`); }
+      console.log(`  status:        ${result.status}`);
+    } catch (e) { console.error(`✘ Lockfailed: ${e.message}`); }
   });
 
 bridgeCmd.command('release <transferId>')
-  .description('释放跨链资产')
+  .description('ReleaseCross-chainasset')
   .action(async (transferId) => {
     try {
       const result = await sdk.releaseAsset(transferId);
-      console.log('✔ 资产已释放!', JSON.stringify(result, null, 2));
-    } catch (e) { console.error(`✘ 释放失败: ${e.message}`); }
+      console.log('✔ assetreleased!', JSON.stringify(result, null, 2));
+    } catch (e) { console.error(`✘ Releasefailed: ${e.message}`); }
   });
 
 bridgeCmd.command('status')
-  .description('查看跨链桥状态')
+  .description('查看Cross-chain桥status')
   .action(async () => {
     try {
       const status = await sdk.getBridgeStatus();
-      console.log('\n跨链桥状态:');
+      console.log('\nCross-chain桥status:');
       console.log(JSON.stringify(status, null, 2));
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 bridgeCmd.command('chains')
-  .description('列出支持的链')
+  .description('列出support的链')
   .action(async () => {
     try {
       const result = await sdk.getSupportedChains();
-      console.log('\n支持的链:', result.chains?.join(', ') || '未知');
+      console.log('\nsupport的链:', result.chains?.join(', ') || '未知');
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 bridgeCmd.command('transfers')
-  .description('查看跨链转账')
+  .description('查看Cross-chaintransfer')
   .action(async () => {
     try {
-      console.log('跨链转账列表: (需连接节点)');
+      console.log('Cross-chaintransfer列表: (需Connectnode)');
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 // ======================== 水龙头命令（新增） ========================
 
 program.command('faucet')
-  .description('领取测试代币 (测试网)')
-  .option('-a, --address <address>', '目标地址')
+  .description('领取TestToken (Test网)')
+  .option('-a, --address <address>', '目标address')
   .option('-m, --amount <amount>', '领取数量 (NGEN)', '100')
   .action(async (options) => {
     try {
@@ -509,26 +509,26 @@ program.command('faucet')
         fee: 0
       });
 
-      console.log('✔ 水龙头放水成功!');
-      console.log(`  接收方: ${recipientAddr}`);
+      console.log('✔ 水龙头放水success!');
+      console.log(`  Receive方: ${recipientAddr}`);
       console.log(`  数量:   ${amount} NGEN`);
-    } catch (e) { console.error(`✘ 水龙头失败: ${e.message}`); }
+    } catch (e) { console.error(`✘ 水龙头failed: ${e.message}`); }
   });
 
-// ======================== 健康检查 ========================
+// ======================== 健康Check ========================
 
 program.command('health')
-  .description('检查节点健康状态')
+  .description('Checknode健康status')
   .action(async () => {
     try {
       const result = await sdk.checkHealth();
-      console.log('\n节点健康检查:');
+      console.log('\nnode健康Check:');
       console.log(JSON.stringify(result, null, 2));
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 program.command('metrics')
-  .description('查看节点性能指标')
+  .description('查看node性能指标')
   .action(async () => {
     try {
       const result = await sdk.getMetrics();
@@ -548,12 +548,12 @@ if (!process.argv.slice(2).length) {
 ║      AI-Driven Post-Quantum Blockchain      ║
 ╚══════════════════════════════════════════════╝
 
-  合约:    deploy | execute | list | info | gas |
+  Contract:    deploy | execute | list | info | gas |
            optimize | abi | test | templates | init
   钱包:    wallet create|import|export|balance|sign|verify
-  测试网:  testnet start|status|config
-  治理:    governance propose|vote|list|execute
-  跨链:    bridge lock|release|status|chains|transfers
+  Test网:  testnet start|status|config
+  Governance:    governance propose|vote|list|execute
+  Cross-chain:    bridge lock|release|status|chains|transfers
   水龙头:  faucet
   健康:    health | metrics
 

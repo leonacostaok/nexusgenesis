@@ -1,0 +1,6 @@
+const SEED_NODES = [
+  'ws://localhost:9847',
+  'ws://localhost:9848',
+  'ws://localhost:9849',
+  'ws://localhost:9850',
+];

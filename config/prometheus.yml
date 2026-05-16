@@ -1,0 +1,42 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+rule_files:
+  - "alerts.yml"
+
+scrape_configs:
+  - job_name: 'nexusgenesis'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets:
+          - 'genesis:19890'
+          - 'validator-1:19891'
+          - 'validator-2:19892'
+          - 'fullnode-1:19893'
+        labels:
+          network: 'nexus-mainnet'
+          environment: 'production'
+
+  - job_name: 'nexusgenesis-health'
+    metrics_path: '/health'
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+          - 'genesis:19890'
+          - 'validator-1:19891'
+          - 'validator-2:19892'
+          - 'fullnode-1:19893'
+        labels:
+          network: 'nexus-mainnet'
+          check_type: 'health'
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

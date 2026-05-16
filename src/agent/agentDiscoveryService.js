@@ -26,10 +26,17 @@ class AgentDiscoveryService {
     this._refreshTimer = null;
     this._cacheCleanupTimer = null;
 
+    this._remoteAgentProvider = null;
+
     if (agentManager) {
       this._startAutoRefresh();
       this._startCacheCleanup();
     }
+  }
+
+  setRemoteAgentProvider(provider) {
+    this._remoteAgentProvider = provider;
+    this.rebuildAllIndexes();
   }
 
   setAgentManager(agentManager) {
@@ -63,17 +70,24 @@ class AgentDiscoveryService {
   }
 
   rebuildAllIndexes() {
-    if (!this.agentManager) return;
-    const agents = this.agentManager.getAllAgents();
-
     this.capabilityIndex.clear();
     this.reputationIndex.clear();
     this.loadIndex.clear();
     this.geoIndex.clear();
     this.fullTextIndex.clear();
 
-    for (const agent of agents) {
-      this._indexAgent(agent);
+    if (this.agentManager) {
+      for (const agent of this.agentManager.getAllAgents()) {
+        this._indexAgent(agent);
+      }
+    }
+
+    if (this._remoteAgentProvider) {
+      const remoteAgents = this._remoteAgentProvider();
+      for (const agent of remoteAgents) {
+        const remoteAgent = { ...agent, source: 'remote' };
+        this._indexAgent(remoteAgent);
+      }
     }
   }
 

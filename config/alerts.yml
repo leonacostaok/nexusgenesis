@@ -1,0 +1,111 @@
+groups:
+  - name: nexusgenesis_alerts
+    interval: 30s
+    rules:
+      - alert: HighCPUUsage
+        expr: nexus_system_cpu_percent > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }}"
+          description: "CPU usage is {{ $value }}%"
+
+      - alert: CriticalCPUUsage
+        expr: nexus_system_cpu_percent > 95
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical CPU usage on {{ $labels.instance }}"
+          description: "CPU usage is {{ $value }}%"
+
+      - alert: HighMemoryUsage
+        expr: nexus_system_memory_percent > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage on {{ $labels.instance }}"
+          description: "Memory usage is {{ $value }}%"
+
+      - alert: HighDiskUsage
+        expr: nexus_system_disk_percent > 90
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High disk usage on {{ $labels.instance }}"
+          description: "Disk usage is {{ $value }}%"
+
+      - alert: LowPeerCount
+        expr: nexus_p2p_peer_count < 3
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Low peer count on {{ $labels.instance }}"
+          description: "Only {{ $value }} peers connected"
+
+      - alert: BlockProductionStalled
+        expr: rate(nexus_blockchain_height[5m]) == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Block production stalled on {{ $labels.instance }}"
+          description: "No new blocks in 5 minutes"
+
+      - alert: HighBlockTimeDeviation
+        expr: nexus_blockchain_block_time_seconds > 15
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Block time deviation on {{ $labels.instance }}"
+          description: "Block time is {{ $value }}s"
+
+      - alert: ConsensusStall
+        expr: time() - nexus_consensus_last_block_timestamp > 60
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Consensus stall detected"
+          description: "No consensus activity for 60+ seconds"
+
+      - alert: LowAgentHealth
+        expr: nexus_agent_healthy_count / nexus_agent_total_count < 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low agent health ratio"
+          description: "Only {{ $value | humanizePercentage }} agents are healthy"
+
+      - alert: HighAPILatency
+        expr: nexus_http_request_duration_seconds > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High API latency on {{ $labels.instance }}"
+          description: "Average response time is {{ $value }}s"
+
+      - alert: HighRateLimiting
+        expr: rate(nexus_rate_limit_triggers_total[1m]) > 10
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High rate limit triggers on {{ $labels.instance }}"
+          description: "Rate limit triggered {{ $value }} times per minute"
+
+      - alert: InstanceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance {{ $labels.instance }} is down"
+          description: "Instance has been down for more than 1 minute"

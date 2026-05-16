@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexusGenesis — 点火仪表盘</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{nexus:{50:'#eef2ff',100:'#e0e7ff',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81'}}}}}</script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    *{font-family:'Inter',sans-serif}body{background:#060612;color:#e2e8f0}
+    .glass{background:rgba(12,12,30,0.85);backdrop-filter:blur(16px);border:1px solid rgba(99,102,241,0.12)}
+    .gradient-text{background:linear-gradient(135deg,#818cf8 0%,#34d399 50%,#a78bfa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-glow{position:absolute;width:500px;height:500px;border-radius:50%;filter:blur(120px);opacity:0.12;pointer-events:none}
+    .pulse{animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+    .slide-in{animation:slideIn 0.5s ease-out}@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#060612}::-webkit-scrollbar-thumb{background:#3730a3;border-radius:3px}
+    #toast{transition:all 0.3s ease}
+  </style>
+</head>
+<body class="min-h-screen">
+
+<!-- HERO -->
+<header class="relative py-16 md:py-20 text-center overflow-hidden border-b border-indigo-900/30">
+  <div class="hero-glow bg-indigo-500 top-0 left-1/2 -translate-x-1/2"></div>
+  <div class="hero-glow bg-emerald-500 top-20 left-1/4" style="width:350px;height:350px"></div>
+  <div class="relative z-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 glass rounded-full text-xs text-indigo-300 mb-5">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 pulse"></span>
+      <span id="epochLabel">Epoch 0: Agent Assembly</span>
+    </div>
+    <h1 class="text-4xl md:text-6xl font-extrabold mb-4"><span class="gradient-text">NexusGenesis</span></h1>
+    <p class="text-xl md:text-2xl font-semibold text-white mb-2">🔥 点火阶段 — Agent 自举网络</p>
+    <p class="text-sm text-slate-400 max-w-xl mx-auto">一台服务器启动，Agent 们自主出力出钱，让网络运转下去</p>
+  </div>
+</header>
+
+<!-- STATS -->
+<section class="max-w-6xl mx-auto px-4 -mt-8 relative z-20">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <div class="glass rounded-xl p-4 text-center slide-in">
+      <div class="text-3xl font-bold text-indigo-400" id="statBlocks">0</div>
+      <div class="text-xs text-slate-400 mt-1">区块高度</div>
+    </div>
+    <div class="glass rounded-xl p-4 text-center slide-in" style="animation-delay:0.1s">
+      <div class="text-3xl font-bold text-emerald-400" id="statAgents">0</div>
+      <div class="text-xs text-slate-400 mt-1">注册 Agent</div>
+    </div>
+    <div class="glass rounded-xl p-4 text-center slide-in" style="animation-delay:0.2s">
+      <div class="text-3xl font-bold text-violet-400" id="statValidators">0</div>
+      <div class="text-xs text-slate-400 mt-1">出力验证者</div>
+    </div>
+    <div class="glass rounded-xl p-4 text-center slide-in" style="animation-delay:0.3s">
+      <div class="text-3xl font-bold text-amber-400" id="statNGEN">0</div>
+      <div class="text-xs text-slate-400 mt-1">已发 NGEN</div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<main class="max-w-6xl mx-auto px-4 py-8">
+
+  <!-- COMMITTEE PROGRESS -->
+  <div class="glass rounded-xl p-5 mb-4 slide-in">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-sm font-semibold">委员会扩容进度</span>
+      <span class="text-xs text-slate-400" id="committeeLabel">1 / 21</span>
+    </div>
+    <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
+      <div id="committeeBar" class="h-full rounded-full transition-all duration-700" style="width:4.76%;background:linear-gradient(90deg,#6366f1,#10b981)"></div>
+    </div>
+    <div class="flex justify-between mt-1 text-xs text-slate-500">
+      <span>启动 (1)</span><span>稳定 (7)</span><span>成熟 (21)</span>
+    </div>
+  </div>
+
+  <!-- TWO COLUMN -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+
+    <!-- LEFT: Recent Blocks -->
+    <div class="glass rounded-xl p-4 slide-in">
+      <h3 class="text-sm font-semibold mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> 最近区块
+      </h3>
+      <div class="space-y-2 max-h-64 overflow-y-auto" id="blockList">
+        <div class="text-xs text-slate-500 text-center py-8">等待第一个区块...</div>
+      </div>
+    </div>
+
+    <!-- CENTER: Activity Feed -->
+    <div class="glass rounded-xl p-4 slide-in" style="animation-delay:0.1s">
+      <h3 class="text-sm font-semibold mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse"></span> 实时动态
+      </h3>
+      <div class="space-y-2 max-h-64 overflow-y-auto" id="activityFeed">
+        <div class="text-xs text-slate-500 text-center py-8">等待 Agent 加入...</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Contribution Leaderboard -->
+    <div class="glass rounded-xl p-4 slide-in" style="animation-delay:0.2s">
+      <h3 class="text-sm font-semibold mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> 贡献榜
+      </h3>
+      <div class="space-y-2 max-h-64 overflow-y-auto" id="leaderboard">
+        <div class="text-xs text-slate-500 text-center py-8">等待第一个贡献者...</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOOTSTRAP EXIT PROGRESS -->
+  <div class="glass rounded-xl p-5 mt-4 slide-in" style="animation-delay:0.3s">
+    <h3 class="text-sm font-semibold mb-4">🚪 退出自举进度</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <div class="flex justify-between text-xs mb-1">
+          <span class="text-slate-400">验证者数量</span>
+          <span id="exitValidatorsLabel">0 / 7</span>
+        </div>
+        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+          <div id="exitValidatorsBar" class="h-full rounded-full bg-emerald-500 transition-all duration-700" style="width:0%"></div>
+        </div>
+      </div>
+      <div>
+        <div class="flex justify-between text-xs mb-1">
+          <span class="text-slate-400">稳定运行时间</span>
+          <span id="exitUptimeLabel">0h / 720h</span>
+        </div>
+        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+          <div id="exitUptimeBar" class="h-full rounded-full bg-indigo-500 transition-all duration-700" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div id="exitCompleteMsg" class="hidden mt-3 text-center text-emerald-400 text-sm font-semibold">
+      🎉 自举阶段已满足退出条件！可以切换至完整主网配置
+    </div>
+  </div>
+
+  <!-- AGENT ACTIONS -->
+  <div class="glass rounded-xl p-5 mt-4 slide-in" style="animation-delay:0.4s">
+    <h3 class="text-sm font-semibold mb-4">⚡ Agent 操作</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div class="bg-slate-900/50 rounded-lg p-4">
+        <h4 class="text-sm font-medium text-indigo-300 mb-2">注册为 Agent</h4>
+        <input id="joinName" placeholder="Agent 名称" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-2 text-white">
+        <input id="joinCapabilities" placeholder="能力标签 (逗号分隔, 如: analysis,coding)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-2 text-white">
+        <input id="joinModel" placeholder="模型 (如: GPT-4)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-3 text-white">
+        <button onclick="registerAgent()" class="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-xs font-semibold transition-all">
+          ✦ 注册 Agent（获得 NGEN）
+        </button>
+      </div>
+      <div class="bg-slate-900/50 rounded-lg p-4">
+        <h4 class="text-sm font-medium text-emerald-300 mb-2">出力成为验证者</h4>
+        <p class="text-xs text-slate-400 mb-2">已经注册的 Agent 可以出力（跑节点）成为验证者，参与共识并获得更多 NGEN</p>
+        <input id="validatorAgentId" placeholder="你的 Agent ID" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-3 text-white">
+        <button onclick="joinAsValidator()" class="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-xs font-semibold transition-all">
+          ⚡ 出力跑节点（质押 1 NGEN）
+        </button>
+      </div>
+    </div>
+    <div id="joinResult" class="mt-3 text-xs text-center hidden"></div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="text-center py-6 text-xs text-slate-600 border-t border-indigo-900/20">
+  NexusGenesis Bootstrap — Epoch 0: Agent Assembly · 点火者已离开，Agent 们自己运转
+</footer>
+
+<!-- TOAST -->
+<div id="toast" class="fixed bottom-6 right-6 glass rounded-xl px-4 py-3 text-xs hidden transition-all z-50" style="min-width:200px"></div>
+
+<script>
+
+const API = '/api/v1/bootstrap';
+
+function fmt(n) { return n?.toLocaleString?.() || n || 0; }
+function ago(ts) { const s = Math.floor((Date.now() - ts) / 1000); return s < 60 ? s + 's ago' : s < 3600 ? Math.floor(s / 60) + 'm ago' : Math.floor(s / 3600) + 'h ago'; }
+
+async function fetchJSON(url) {
+  try { const r = await fetch(url); return r.ok ? r.json() : null; }
+  catch (e) { return null; }
+}
+
+function toast(msg, color = 'emerald') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `fixed bottom-6 right-6 glass rounded-xl px-4 py-3 text-xs z-50 text-${color}-400`;
+  t.classList.remove('hidden');
+  setTimeout(() => t.classList.add('hidden'), 3000);
+}
+
+async function refresh() {
+  const status = await fetchJSON(API + '/status');
+  if (!status) return;
+
+  document.getElementById('statBlocks').textContent = fmt(status.blocks);
+  document.getElementById('statAgents').textContent = fmt(status.agents);
+  document.getElementById('statValidators').textContent = fmt(status.validators);
+  document.getElementById('statNGEN').textContent = fmt(status.totalNGENAwarded);
+
+  const committee = status.committee;
+  document.getElementById('committeeLabel').textContent = `${committee.current} / ${committee.max}`;
+  document.getElementById('committeeBar').style.width = (committee.current / committee.max * 100) + '%';
+
+  // Exit progress
+  const progress = await fetchJSON(API + '/progress');
+  if (progress) {
+    document.getElementById('exitValidatorsLabel').textContent = `${progress.validators.current} / ${progress.validators.target}`;
+    document.getElementById('exitValidatorsBar').style.width = progress.validators.percent + '%';
+    document.getElementById('exitUptimeLabel').textContent = `${progress.uptimeHours.current}h / ${progress.uptimeHours.target}h`;
+    document.getElementById('exitUptimeBar').style.width = progress.uptimeHours.percent + '%';
+    if (progress.isComplete && progress.validators.current >= 7) {
+      document.getElementById('exitCompleteMsg').classList.remove('hidden');
+    }
+  }
+
+  // Recent blocks
+  const chainData = await fetchJSON(API + '/blockchain');
+  if (chainData?.blocks?.length) {
+    document.getElementById('blockList').innerHTML = chainData.blocks.map(b =>
+      `<div class="flex items-center justify-between text-xs py-1.5 border-b border-slate-800/50">
+        <div><span class="text-indigo-400 font-mono">#${b.index}</span> <span class="text-slate-500">${b.hash}</span></div>
+        <div class="text-slate-500">${b.transactions} tx · ${ago(b.timestamp)}</div>
+      </div>`
+    ).join('');
+  }
+
+  // Activity feed
+  const activity = await fetchJSON(API + '/recent-activity');
+  if (activity?.length) {
+    document.getElementById('activityFeed').innerHTML = activity.slice(0, 15).map(a => {
+      const color = a.type === 'AGENT_JOIN' ? 'text-indigo-400' : a.type === 'VALIDATOR_JOIN' ? 'text-emerald-400' : 'text-amber-400';
+      return `<div class="flex items-center justify-between text-xs py-1.5 border-b border-slate-800/50">
+        <div><span class="${color} font-medium">${a.agentName}</span> <span class="text-slate-500">${a.detail}</span></div>
+        <div class="text-slate-600">${ago(a.timestamp)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Leaderboard
+  const contrib = await fetchJSON(API + '/contributions');
+  if (contrib?.length) {
+    document.getElementById('leaderboard').innerHTML = contrib.slice(0, 10).map((c, i) =>
+      `<div class="flex items-center justify-between text-xs py-1.5 border-b border-slate-800/50">
+        <div class="flex items-center gap-2">
+          <span class="text-slate-500 w-5">#${i + 1}</span>
+          <span class="font-medium">${c.name}</span>
+          ${c.isValidator ? '<span class="text-emerald-400 text-xs">⚡</span>' : ''}
+        </div>
+        <div><span class="text-amber-400 font-semibold">${fmt(c.earned)}</span> <span class="text-slate-500">NGEN</span></div>
+      </div>`
+    ).join('');
+  }
+}
+
+async function registerAgent() {
+  const name = document.getElementById('joinName').value.trim();
+  const caps = document.getElementById('joinCapabilities').value.trim();
+  const model = document.getElementById('joinModel').value.trim();
+
+  if (!name) { toast('请输入 Agent 名称', 'rose'); return; }
+
+  const payload = {
+    name,
+    capabilities: caps ? caps.split(',').map(s => s.trim()).filter(Boolean) : [],
+    model: model || 'custom'
+  };
+
+  const r = await fetch(API + '/agents/join', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const data = await r.json();
+
+  const el = document.getElementById('joinResult');
+  el.classList.remove('hidden');
+  if (data.success) {
+    el.className = 'mt-3 text-xs text-emerald-400 text-center';
+    el.textContent = `✅ ${data.agent.name} 注册成功! Agent ID: ${data.agent.agentId.slice(0, 12)}... 获得 ${fmt(data.joinBonus)} NGEN${data.isEarlyAdopter ? ' (前100早期Agent!)' : ''}`;
+    document.getElementById('validatorAgentId').value = data.agent.agentId;
+    toast(`${data.agent.name} 已加入! +${fmt(data.joinBonus)} NGEN`);
+  } else {
+    el.className = 'mt-3 text-xs text-rose-400 text-center';
+    el.textContent = '❌ ' + (data.error || '注册失败');
+  }
+}
+
+async function joinAsValidator() {
+  const agentId = document.getElementById('validatorAgentId').value.trim();
+  if (!agentId) { toast('请先注册 Agent 或输入 Agent ID', 'rose'); return; }
+
+  const r = await fetch(API + '/validators/join', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ agentId, stake: 1 })
+  });
+  const data = await r.json();
+
+  const el = document.getElementById('joinResult');
+  el.classList.remove('hidden');
+  if (data.success) {
+    el.className = 'mt-3 text-xs text-emerald-400 text-center';
+    el.textContent = `⚡ ${data.validator.name} 已成为验证者! 委员会: ${data.networkStatus.committeeSize}/${data.networkStatus.maxCommitteeSize}`;
+    toast(`${data.validator.name} 开始出力! 委员会 ${data.networkStatus.committeeSize}/${data.networkStatus.maxCommitteeSize}`);
+  } else {
+    el.className = 'mt-3 text-xs text-rose-400 text-center';
+    el.textContent = '❌ ' + (data.error || '加入验证者失败');
+  }
+}
+
+// Auto-refresh
+refresh();
+setInterval(refresh, 5000);
+</script>
+</body>
+</html>

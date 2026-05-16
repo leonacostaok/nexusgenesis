@@ -8,6 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import os from 'os';
 import rewardSystem from '../reward/rewardSystem.js';
+import prometheusExporter from '../monitoring/prometheusExporter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -493,7 +494,73 @@ class SystemMonitor {
       await this.collectAgentRegistrationMetrics();
     }, 60000);
 
+    // 9. Push to Prometheus exporter (every 15s)
+    setInterval(() => {
+      this._pushToPrometheus();
+    }, 15000);
+
     console.log('[SystemMonitor] System monitoringService startedcomplete');
+  }
+
+  _pushToPrometheus() {
+    try {
+      const status = this.getSystemStatus();
+      if (!status) return;
+
+      prometheusExporter.updateFromSystemMonitor({
+        system: {
+          cpu: status.metrics?.cpu_usage,
+          memory: status.metrics?.memory_usage,
+          disk: status.metrics?.disk_usage,
+          networkConnections: status.metrics?.active_connections
+        },
+        blockchain: {
+          height: status.metrics?.block_height,
+          blockTime: status.metrics?.block_time,
+          mempoolSize: status.metrics?.mempool_size,
+          txPerBlock: status.metrics?.tx_per_block
+        },
+        p2p: {
+          peerCount: status.metrics?.p2p_connections,
+          seedConnected: status.metrics?.seed_connected
+        },
+        consensus: {
+          round: status.metrics?.consensus_round,
+          lastBlockTimestamp: status.metrics?.last_block_time
+        },
+        agents: {
+          total: status.metrics?.agent_count,
+          healthy: status.metrics?.healthy_agent_count,
+          unhealthy: status.metrics?.unhealthy_agent_count,
+          active: status.metrics?.active_agent_count,
+          remote: status.metrics?.remote_agent_count || 0,
+          registrationRate: status.metrics?.agent_registration_rate,
+          averageReputation: status.metrics?.agent_avg_reputation
+        },
+        tasks: {
+          total: status.metrics?.task_total,
+          pending: status.metrics?.task_pending,
+          completed: status.metrics?.task_completed,
+          successRate: status.metrics?.task_success_rate
+        },
+        governance: {
+          proposalCount: status.metrics?.governance_proposal_count,
+          voteParticipation: status.metrics?.governance_voter_participation
+        },
+        http: {
+          successRate: status.metrics?.api_success_rate,
+          errorRate: status.metrics?.api_error_rate
+        },
+        rateLimiting: {
+          triggers: status.metrics?.rate_limit_triggers
+        },
+        cache: {
+          hitRatio: status.metrics?.cache_hit_ratio,
+          size: status.metrics?.cache_size
+        }
+      });
+    } catch (err) {
+    }
   }
 
   // Collect system resource metrics

@@ -24,6 +24,9 @@ console.log('[HTTP Server] Imported PQCWallet');
 import { onboardAgent } from '../protocol/agentOnboarding.js';
 console.log('[HTTP Server] Imported onboardAgent');
 
+import prometheusExporter from '../monitoring/prometheusExporter.js';
+console.log('[HTTP Server] Imported prometheusExporter');
+
 import agentApi from '../api/agentApi.js';
 console.log('[HTTP Server] Imported agentApi');
 
@@ -930,11 +933,17 @@ app.get('/health', (req, res) => {
   res.json(response);
 });
 
-// monitor端点
+// Prometheus metrics 端点
 app.get('/metrics', (req, res) => {
+  res.set('Content-Type', 'text/plain; charset=utf-8');
+  res.send(prometheusExporter.getMetricsText());
+});
+
+// JSON metrics 端点 (保留兼容)
+app.get('/api/v1/metrics', (req, res) => {
   const uptime = Date.now() - serverMetrics.startTime;
   const activeConnections = rateLimiter.getStats().activeIPs;
-  
+
   res.json({
     success: true,
     timestamp: Date.now(),
@@ -954,8 +963,8 @@ app.get('/metrics', (req, res) => {
       sets: cacheStats.sets,
       deletes: cacheStats.deletes,
       size: cacheStats.size,
-      hitRate: cacheStats.hits + cacheStats.misses > 0 ? 
-        Math.round((cacheStats.hits / (cacheStats.hits + cacheStats.misses)) * 100) : 0
+      hitRate: cacheStats.hits + cacheStats.misses > 0
+        ? Math.round((cacheStats.hits / (cacheStats.hits + cacheStats.misses)) * 100) : 0
     },
     system: {
       nodeVersion: process.version,

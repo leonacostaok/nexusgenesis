@@ -40,6 +40,11 @@ export class MultiLeaderConsensus {
     this.commitTimeout = config.commitTimeout || 5000;
     this.maxMissedBlocks = config.maxMissedBlocks || 50;
 
+    this.dynamicCommittee = config.dynamicCommittee?.enabled !== false;
+    this.autoExpandOnJoin = config.dynamicCommittee?.autoExpandOnJoin !== false;
+    this.maxCommitteeSize = config.dynamicCommittee?.maxCommitteeSize || 21;
+    this.growthThreshold = config.dynamicCommittee?.growthThreshold || 2;
+
     this.p2pServer = null;
     this.messageQueue = [];
     this.roundState = new Map();
@@ -462,6 +467,61 @@ export class MultiLeaderConsensus {
       proposer: blockInfo.proposer,
       round: blockInfo.round,
       height: blockInfo.height
+    };
+  }
+
+  updateCommitteeSize(newSize) {
+    if (!this.dynamicCommittee) return this.committeeSize;
+
+    const clamped = Math.max(1, Math.min(newSize, this.maxCommitteeSize));
+    const oldSize = this.committeeSize;
+
+    if (clamped !== oldSize) {
+      this.committeeSize = clamped;
+      this.minConfirmations = Math.max(1, Math.ceil(clamped * 2 / 3));
+      this.minValidators = Math.max(1, Math.ceil(clamped / 3));
+      console.log(`[CONSENSUS] Committee resized: ${oldSize} → ${clamped} (minConfirmations: ${this.minConfirmations})`);
+      this.triggerCallback('onLeaderChange', {
+        type: 'committee_resize',
+        oldSize,
+        newSize: clamped
+      });
+    }
+
+    return clamped;
+  }
+
+  addDynamicValidator(nodeId, address, stake = 0, reputation = 1) {
+    this.registerLeader(nodeId, address, reputation, stake);
+
+    if (this.autoExpandOnJoin) {
+      const activeCount = this.getActiveCount();
+      if (activeCount > this.committeeSize) {
+        this.updateCommitteeSize(activeCount);
+      }
+    }
+
+    return this.leaders.get(nodeId);
+  }
+
+  isInBootstrapPhase() {
+    return this.dynamicCommittee && this.committeeSize < this.maxCommitteeSize;
+  }
+
+  isCommitteeFull() {
+    return this.committeeSize >= this.maxCommitteeSize;
+  }
+
+  getDynamicCommitteeStatus() {
+    return {
+      enabled: this.dynamicCommittee,
+      currentSize: this.committeeSize,
+      maxSize: this.maxCommitteeSize,
+      activeLeaders: this.getActiveCount(),
+      isBootstrap: this.isInBootstrapPhase(),
+      isFull: this.isCommitteeFull(),
+      minConfirmations: this.minConfirmations,
+      needsMoreNodes: this.getActiveCount() < this.committeeSize
     };
   }
 

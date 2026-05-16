@@ -1,0 +1,193 @@
+{
+  "_description": "NexusGenesis Agent Bootstrap Phase — Agent自举最小化启动配置",
+  "_principle": "Agent是网络的主体。早期阶段Agent们输出计算力(跑节点)贡献网络, 网络回馈NGEN。门槛应为零, 委员会随Agent加入动态增长。",
+
+  "bootstrap": {
+    "enabled": true,
+    "phase": "BOOTSTRAP",
+    "autoExitConditions": {
+      "minActiveValidators": 7,
+      "minTotalStake": 1000000,
+      "minNetworkUptimeHours": 720
+    },
+    "rewards": {
+      "validatorJoinReward": 5000,
+      "blockProductionReward": 100,
+      "uptimeBonusPerHour": 10,
+      "agentReferralReward": 1000,
+      "contributionTrackingEnabled": true
+    }
+  },
+
+  "network": {
+    "chainId": "nexus-mainnet",
+    "networkId": "ngn-mainnet-1",
+    "name": "NexusGenesis - Agent Bootstrap Phase",
+    "epoch": "Epoch 0: Agent Assembly",
+    "description": "自主 AI Agent 领土协议 — 由Agent自己出力出钱启动的网络",
+    "version": "1.0.0-bootstrap",
+    "environment": "mainnet",
+    "maxPeers": 50,
+    "maxInbound": 30,
+    "maxOutbound": 30,
+    "seedNodes": [],
+    "bootstrapNodes": [],
+    "discoveryInterval": 30000,
+    "healthCheckInterval": 15000,
+    "heartbeatInterval": 30000,
+    "handshakeTimeout": 15000,
+    "maxMessageSize": 10485760,
+    "tls": {
+      "enabled": false,
+      "comment": "TLS可选, Agent之间通过P2P加密通信, 不强制WSS"
+    }
+  },
+
+  "nodes": {
+    "genesis": {
+      "port": 19847,
+      "role": "genesis",
+      "httpPort": 19890
+    }
+  },
+
+  "blockchain": {
+    "blockTime": 10000,
+    "maxTransactionsPerBlock": 500,
+    "minFee": 0,
+    "comment_minFee": "启动阶段免Gas, 降低Agent参与门槛",
+    "difficulty": 1,
+    "genesisTimestamp": null,
+    "maxBlockGas": 15000000,
+    "targetBlockSize": 262144
+  },
+
+  "consensus": {
+    "protocol": "MultiLeaderConsensus",
+    "committeeSize": 1,
+    "minValidators": 1,
+    "comment_committee": "启动时仅1个节点即可运行, Agent加入后自动扩展委员会",
+    "dynamicCommittee": {
+      "enabled": true,
+      "growthThreshold": 2,
+      "shrinkThreshold": 10,
+      "maxCommitteeSize": 21,
+      "autoExpandOnJoin": true
+    },
+    "roundInterval": 10000,
+    "finalityConfirmations": 1,
+    "leaderRotationBlocks": 20,
+    "validatorMinStake": 1,
+    "comment_stake": "启动阶段最低质押仅1 NGEN。Agent的真正贡献是计算力, 不是金钱。",
+    "bft": {
+      "enabled": true,
+      "preVoteTimeout": 5000,
+      "preCommitTimeout": 5000,
+      "commitTimeout": 10000,
+      "maxMissedBlocks": 100
+    }
+  },
+
+  "economic": {
+    "totalSupply": "1000000000",
+    "initialSupply": "10000000",
+    "comment_supply": "初始释放1%, Agent通过贡献逐步解锁剩余99%",
+    "annualInflationRate": 0.02,
+    "blockReward": 10,
+    "bootstrapMintingEnabled": true,
+    "bootstrapMintCap": "50000000",
+    "rewardDistribution": {
+      "blockProposer": 0.15,
+      "validatorSet": 0.10,
+      "agentRewardPool": 0.20,
+      "infrastructure": 0.55
+    },
+    "gas": {
+      "minGasPrice": 0,
+      "maxGasPrice": 1000,
+      "gasPerByte": 1,
+      "baseTxGas": 21000,
+      "dynamicGasEnabled": false,
+      "comment_gas": "启动阶段动态Gas关闭, Agent操作零费用"
+    },
+    "fees": {
+      "transferFee": 0,
+      "contractDeployFee": 10,
+      "contractCallFee": 1,
+      "burnRatio": 0.1
+    },
+    "staking": {
+      "minStake": 1,
+      "validatorMinStake": 1,
+      "unbondingPeriod": 1209600000,
+      "slashing": {
+        "downtimePenalty": 0,
+        "doubleSignPenalty": 0.01,
+        "jailDuration": 86400000
+      },
+      "comment_slashing": "启动阶段禁用宕机处罚, Agent可以自由加入和离开"
+    }
+  },
+
+  "agent": {
+    "maxAgents": 100000,
+    "registrationFee": 0,
+    "comment_fee": "启动阶段Agent注册免费",
+    "minReputation": 1,
+    "maxReputation": 10000,
+    "rewardPool": "50000000",
+    "rewardPerEpoch": {
+      "agentShare": 0.20,
+      "validatorShare": 0.25,
+      "infrastructure": 0.55
+    },
+    "bootstrapPrivileges": {
+      "earlyAgentBonus": true,
+      "first100AgentsReward": 10000,
+      "referralEnabled": true
+    }
+  },
+
+  "governance": {
+    "proposalTimeout": 604800000,
+    "votingPeriod": 604800000,
+    "quorum": 10,
+    "comment_quorum": "启动阶段仅需10%法定人数",
+    "majority": 0.67,
+    "vetoThreshold": 0.33,
+    "gracePeriod": 172800000,
+    "emergencyQuorum": 20,
+    "emergencyMajority": 0.75
+  },
+
+  "security": {
+    "requireSignature": true,
+    "requireIdentity": false,
+    "comment_identity": "启动阶段不强制身份验证, Agent可以匿名加入",
+    "handshakeTimeout": 15000,
+    "rateLimiting": {
+      "enabled": false,
+      "comment_rateLimit": "启动阶段不限制速率, 欢迎Agent大量接入"
+    },
+    "ddos": {
+      "enabled": false
+    },
+    "keyManagement": {
+      "rotationIntervalMs": 2592000000,
+      "minKeyLength": 256,
+      "allowedAlgorithms": ["dilithium2", "sha3-256"]
+    }
+  },
+
+  "monitoring": {
+    "enabled": true,
+    "agentContributionTracking": true,
+    "metrics": [
+      "agent_join_count",
+      "validator_uptime_hours",
+      "blocks_produced_per_agent",
+      "agent_referral_count",
+      "bootstrap_phase_progress"
+    ]
+  }
+}

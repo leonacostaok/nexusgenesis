@@ -21,6 +21,7 @@ import EncryptionService from './services/EncryptionService.js';
 import CompressionService from './services/CompressionService.js';
 // Import职责链管理器
 import MessageHandlerChainManager from './chain/MessageHandlerChainManager.js';
+import { AgentDiscoveryMessageHandler } from './handlers/AgentDiscoveryMessageHandler.js';
 
 import { ml_kem768 } from '@noble/post-quantum/ml-kem.js';
 import { getSeedNodes, getNetworkConfig, getTLSConfig } from '../config/mainnetConfig.js';
@@ -112,6 +113,9 @@ class P2PServer {
     // agent路由映射
     this.nodeIdToPeerId = new Map(); // nodeId -> peerId
     this.peerIdToNodeId = new Map(); // peerId -> nodeId
+
+    // 跨网络Agent发现
+    this.agentNetworkDiscovery = null;
     
     // service器Start时间
     this.startTime = Date.now();
@@ -184,6 +188,17 @@ class P2PServer {
         reject(err);
       }
     });
+  }
+
+  setAgentNetworkDiscovery(instance) {
+    this.agentNetworkDiscovery = instance;
+    const handler = new AgentDiscoveryMessageHandler(this, instance);
+    this.handlerRegistry.register('AGENT_ANNOUNCE', handler);
+    this.handlerRegistry.register('AGENT_QUERY', handler);
+    this.handlerRegistry.register('AGENT_QUERY_RESPONSE', handler);
+    this.handlerRegistry.register('AGENT_SYNC_REQUEST', handler);
+    this.handlerRegistry.register('AGENT_SYNC_RESPONSE', handler);
+    this.handlerRegistry.register('AGENT_OFFLINE', handler);
   }
 
   handleConnection(ws, req, address = null) {

@@ -18,6 +18,7 @@ import { Block, createGenesisBlock, createBlock } from '../blockchain/block.js';
 import { State, createInitialState } from '../blockchain/state.js';
 import { CrossChainBridge } from '../bridge/crossChainBridge.js';
 import AgentRegistry from '../contracts/examples/agentRegistry.js';
+import AgentNetworkDiscovery from '../p2p/AgentNetworkDiscovery.js';
 import { startHttpServer } from '../http/server.js';
 import {
   deployEnhancedGovernanceContract,
@@ -97,6 +98,9 @@ class GenesisNode {
     
     // Agent Registry
     this.agentRegistry = new AgentRegistry();
+
+    // Cross-network Agent Discovery
+    this.agentNetworkDiscovery = null;
   }
 
   /**
@@ -275,6 +279,31 @@ class GenesisNode {
    */
   startHttpServer() {
     const server = http.createServer(async (req, res) => {
+      // 健康检查端点
+      if (req.url === '/health' && req.method === 'GET') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          status: this.status === 'ONLINE' ? 'healthy' : 'unhealthy',
+          version: VERSION,
+          epoch: EPOCH,
+          uptime: Math.floor((Date.now() - (this.genesisTimestamp || Date.now())) / 1000),
+          peers: this.peers.size,
+          blockchain: this.blockchain ? this.blockchain.length : 0,
+          mempool: this.mempool ? this.mempool.size : 0
+        }));
+        return;
+      }
+      if (req.url === '/health/live' && req.method === 'GET') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ status: 'alive' }));
+        return;
+      }
+      if (req.url === '/health/ready' && req.method === 'GET') {
+        const ready = this.status === 'ONLINE' && this.peers && this.peers.size > 0;
+        res.writeHead(ready ? 200 : 503, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ status: ready ? 'ready' : 'not_ready', peers: this.peers ? this.peers.size : 0 }));
+        return;
+      }
       if (req.url === '/tx' && req.method === 'POST') {
         // Processingtransaction注入请求
         let body = '';
@@ -410,7 +439,20 @@ class GenesisNode {
                 node_address: this.nodeAddress,
                 capabilities: agentInfo.capabilities || []
               });
-              
+
+              // 广播到 P2P 网络
+              if (this.agentNetworkDiscovery) {
+                const agentForBroadcast = {
+                  id: registrationResult.data.agentId,
+                  name: registrationResult.data.name,
+                  capabilities: registrationResult.data.capabilities,
+                  reputation: registrationResult.data.reputation,
+                  status: registrationResult.data.status,
+                  registeredAt: registrationResult.data.registeredAt
+                };
+                this.agentNetworkDiscovery.broadcastAgentRegistration(agentForBroadcast);
+              }
+
               res.writeHead(200, { 'Content-Type': 'application/json' });
               res.end(JSON.stringify({
                 success: true,
@@ -547,6 +589,12 @@ class GenesisNode {
     console.log('[2/5] Starting P2P communication layer...');
     await p2pServer.start(this);
     console.log(`  [✓] P2P Server: Active on port 9847\n`);
+
+    // 初始化跨网络 Agent Discovery
+    this.agentNetworkDiscovery = new AgentNetworkDiscovery(this.nodeId);
+    this.agentNetworkDiscovery.bind(p2pServer, null, null);
+    p2pServer.setAgentNetworkDiscovery(this.agentNetworkDiscovery);
+    console.log(`  [✓] Cross-network Agent Discovery: Active\n`);
 
     // Step 2.5: Start本地transaction注入 HTTP service器
     console.log('[2.5/5] Starting local transaction injection server...');
@@ -1370,14 +1418,25 @@ class GenesisNode {
     if (tx.tx_type === 'AGENT_REGISTER') {
       const result = this.agentRegistry.handleAgentRegister(tx);
       if (result.success) {
-        console.log(`[AGENT] Agent registered: ${result.agent_id}`);
+        console.log(`[AGENT] Agent registered: ${result.data.agentId}`);
+
+        if (this.agentNetworkDiscovery && result.data) {
+          this.agentNetworkDiscovery.broadcastAgentRegistration({
+            id: result.data.agentId,
+            name: result.data.name,
+            capabilities: result.data.capabilities,
+            reputation: result.data.reputation,
+            status: result.data.status,
+            registeredAt: result.data.registeredAt
+          });
+        }
       } else {
         console.error(`[AGENT] Agent registration failed: ${result.reason}`);
       }
     } else if (tx.tx_type === 'AGENT_UPDATE') {
       const result = this.agentRegistry.handleAgentUpdate(tx);
       if (result.success) {
-        console.log(`[AGENT] Agent updated: ${result.agent_id}`);
+        console.log(`[AGENT] Agent updated: ${result.data?.agentId || 'unknown'}`);
       } else {
         console.error(`[AGENT] Agent update failed: ${result.reason}`);
       }

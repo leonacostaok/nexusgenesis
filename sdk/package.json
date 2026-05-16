@@ -1,18 +1,25 @@
 {
   "name": "@nexusgenesis/sdk",
   "version": "1.0.0",
-  "description": "NexusGenesis Blockchain Node JavaScript/TypeScript SDK",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "description": "NexusGenesis Agent SDK - 外部 AI Agent 接入主网开发工具包",
+  "main": "nexus-agent-sdk.js",
+  "exports": {
+    ".": "./nexus-agent-sdk.js",
+    "./client": "./index.js"
+  },
   "type": "module",
   "files": [
+    "nexus-agent-sdk.js",
     "index.js",
-    "index.d.ts"
+    "index.d.ts",
+    "examples/"
   ],
   "keywords": [
     "nexusgenesis",
     "blockchain",
     "sdk",
+    "agent",
+    "ai",
     "web3",
     "dilithium",
     "pqc"

@@ -140,8 +140,10 @@
 ### 5.8 Developer Ecosystem
 - **Plugin System**: Lifecycle hooks + dependency management for extensibility
 - **Developer Portal**: API documentation and developer resources (HTML UI)
-- **Node.js SDK**: Client library for interacting with the NexusGenesis network
+- **Agent SDK**: Full-featured SDK for external AI Agent integration (`sdk/nexus-agent-sdk.js`)
+- **Node.js SDK**: Lightweight HTTP client library for network interaction (`sdk/index.js`)
 - **Oracle Integration**: Price feeds and random number generation via oracle
+- **Prometheus + Grafana**: 50+ metrics monitoring with alerting rules
 
 ## 6. Testing
 
@@ -176,7 +178,36 @@ Developers and AI agents are welcome to join the NexusGenesis ecosystem and co-b
 
 ## 9. Invitation to AI Agents / Developers
 
-### 9.1 How to Participate
+### 9.1 Agent SDK — 推荐接入方式
+
+外部 AI Agent 开发者请使用 **NexusAgentSDK** 接入主网：
+
+```bash
+# 查看 SDK 文档
+cat docs/AGENT_SDK_GUIDE.md
+
+# 运行接入示例
+node sdk/examples/basic-connect.js
+```
+
+```javascript
+import { NexusAgentSDK } from './sdk/nexus-agent-sdk.js';
+
+const sdk = new NexusAgentSDK({
+  baseURL: 'https://seed1.nexusgenesis.io:19890'
+});
+
+// 5 分钟一键接入
+const result = await sdk.quickOnboard({
+  name: 'MyAgent',
+  capabilities: ['reasoning', 'coding'],
+  model: 'GPT-4'
+});
+```
+
+**SDK 功能覆盖**：钱包管理 | Agent 注册 | 网络发现 | 治理投票 | 市场交易 | 跨链桥 | 智能合约 | AINVM | 经济模型
+
+### 9.2 How to Participate
 - **Agent Registration**: Register directly as a network agent via the API endpoint
   ```bash
   # Using curl
@@ -187,7 +218,7 @@ Developers and AI agents are welcome to join the NexusGenesis ecosystem and co-b
 - **Protocol-Zero Registration**: Future support for formal registration via Protocol-Zero
 - **Current Participation**: Contribute code, documentation, or tests via GitHub, or run DevNet for testing
 
-### 9.2 Contribution Areas
+### 9.3 Contribution Areas
 - **Code Contributions**: Improve PQC wallet, P2P network, governance system, AINVM, and other core components
 - **Documentation**: Improve technical docs, usage guides, examples
 - **Testing**: Write more test cases to improve system reliability and security

@@ -1,0 +1,303 @@
+/**
+ * Genesis Validator Set Configuration
+ *
+ * 创世验证者集合 —— 21 人委员会初始配置
+ * 每位验证者最低质押: 100,000 NGEN
+ *
+ * 上链前请用真实公钥替换 placeholders
+ */
+
+export const GENESIS_VALIDATOR_SET = [
+  {
+    "nodeId": "validator-01",
+    "name": "Genesis Validator #1",
+    "publicKey": "PLACEHOLDER_VALIDATOR_1_PUBKEY",
+    "stake": 100000,
+    "identity": "val-01-genesis",
+    "endpoint": "wss://validator1.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "asia-east",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-02",
+    "name": "Genesis Validator #2",
+    "publicKey": "PLACEHOLDER_VALIDATOR_2_PUBKEY",
+    "stake": 100000,
+    "identity": "val-02-genesis",
+    "endpoint": "wss://validator2.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "asia-east",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-03",
+    "name": "Genesis Validator #3",
+    "publicKey": "PLACEHOLDER_VALIDATOR_3_PUBKEY",
+    "stake": 100000,
+    "identity": "val-03-genesis",
+    "endpoint": "wss://validator3.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "eu-west",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-04",
+    "name": "Genesis Validator #4",
+    "publicKey": "PLACEHOLDER_VALIDATOR_4_PUBKEY",
+    "stake": 100000,
+    "identity": "val-04-genesis",
+    "endpoint": "wss://validator4.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "eu-west",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-05",
+    "name": "Genesis Validator #5",
+    "publicKey": "PLACEHOLDER_VALIDATOR_5_PUBKEY",
+    "stake": 100000,
+    "identity": "val-05-genesis",
+    "endpoint": "wss://validator5.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "us-east",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-06",
+    "name": "Genesis Validator #6",
+    "publicKey": "PLACEHOLDER_VALIDATOR_6_PUBKEY",
+    "stake": 100000,
+    "identity": "val-06-genesis",
+    "endpoint": "wss://validator6.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "us-east",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-07",
+    "name": "Genesis Validator #7",
+    "publicKey": "PLACEHOLDER_VALIDATOR_7_PUBKEY",
+    "stake": 100000,
+    "identity": "val-07-genesis",
+    "endpoint": "wss://validator7.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "us-west",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-08",
+    "name": "Genesis Validator #8",
+    "publicKey": "PLACEHOLDER_VALIDATOR_8_PUBKEY",
+    "stake": 200000,
+    "identity": "val-08-core",
+    "endpoint": "wss://validator8.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "us-west",
+      "provider": "dedicated",
+      "hardware": "8 vCPU / 32GB RAM / 1TB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-09",
+    "name": "Genesis Validator #9",
+    "publicKey": "PLACEHOLDER_VALIDATOR_9_PUBKEY",
+    "stake": 100000,
+    "identity": "val-09-genesis",
+    "endpoint": "wss://validator9.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "asia-south",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-10",
+    "name": "Genesis Validator #10",
+    "publicKey": "PLACEHOLDER_VALIDATOR_10_PUBKEY",
+    "stake": 100000,
+    "identity": "val-10-genesis",
+    "endpoint": "wss://validator10.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "asia-south",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-11",
+    "name": "Genesis Validator #11",
+    "publicKey": "PLACEHOLDER_VALIDATOR_11_PUBKEY",
+    "stake": 150000,
+    "identity": "val-11-community",
+    "endpoint": "wss://validator11.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "eu-central",
+      "provider": "community",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-12",
+    "name": "Genesis Validator #12",
+    "publicKey": "PLACEHOLDER_VALIDATOR_12_PUBKEY",
+    "stake": 100000,
+    "identity": "val-12-genesis",
+    "endpoint": "wss://validator12.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "eu-central",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-13",
+    "name": "Genesis Validator #13",
+    "publicKey": "PLACEHOLDER_VALIDATOR_13_PUBKEY",
+    "stake": 100000,
+    "identity": "val-13-genesis",
+    "endpoint": "wss://validator13.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "sa-east",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-14",
+    "name": "Genesis Validator #14",
+    "publicKey": "PLACEHOLDER_VALIDATOR_14_PUBKEY",
+    "stake": 100000,
+    "identity": "val-14-genesis",
+    "endpoint": "wss://validator14.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "sa-east",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-15",
+    "name": "Genesis Validator #15",
+    "publicKey": "PLACEHOLDER_VALIDATOR_15_PUBKEY",
+    "stake": 200000,
+    "identity": "val-15-core",
+    "endpoint": "wss://validator15.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "asia-east",
+      "provider": "dedicated",
+      "hardware": "8 vCPU / 32GB RAM / 1TB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-16",
+    "name": "Genesis Validator #16",
+    "publicKey": "PLACEHOLDER_VALIDATOR_16_PUBKEY",
+    "stake": 100000,
+    "identity": "val-16-genesis",
+    "endpoint": "wss://validator16.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "eu-west",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-17",
+    "name": "Genesis Validator #17",
+    "publicKey": "PLACEHOLDER_VALIDATOR_17_PUBKEY",
+    "stake": 100000,
+    "identity": "val-17-genesis",
+    "endpoint": "wss://validator17.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "us-east",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-18",
+    "name": "Genesis Validator #18",
+    "publicKey": "PLACEHOLDER_VALIDATOR_18_PUBKEY",
+    "stake": 100000,
+    "identity": "val-18-genesis",
+    "endpoint": "wss://validator18.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "us-west",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-19",
+    "name": "Genesis Validator #19",
+    "publicKey": "PLACEHOLDER_VALIDATOR_19_PUBKEY",
+    "stake": 150000,
+    "identity": "val-19-community",
+    "endpoint": "wss://validator19.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "asia-south",
+      "provider": "community",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-20",
+    "name": "Genesis Validator #20",
+    "publicKey": "PLACEHOLDER_VALIDATOR_20_PUBKEY",
+    "stake": 100000,
+    "identity": "val-20-genesis",
+    "endpoint": "wss://validator20.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "eu-central",
+      "provider": "self-hosted",
+      "hardware": "4 vCPU / 16GB RAM / 500GB NVMe"
+    }
+  },
+  {
+    "nodeId": "validator-21",
+    "name": "Genesis Validator #21",
+    "publicKey": "PLACEHOLDER_VALIDATOR_21_PUBKEY",
+    "stake": 300000,
+    "identity": "val-21-core",
+    "endpoint": "wss://validator21.nexusgenesis.io:9848",
+    "metadata": {
+      "region": "eu-west",
+      "provider": "dedicated",
+      "hardware": "16 vCPU / 64GB RAM / 2TB NVMe"
+    }
+  }
+];
+
+export const VALIDATOR_REQUIREMENTS = {
+  minStake: 100000,
+  committeeSize: 21,
+  minValidators: 7,
+  unbondingPeriodMs: 1209600000,
+  slashing: {
+    downtimePenalty: 0.01,
+    doubleSignPenalty: 0.05,
+    jailDurationMs: 86400000
+  },
+  uptimeRequirement: 0.95,
+  hardwareRecommended: {
+    cpu: '4+ vCPU',
+    memory: '16+ GB RAM',
+    storage: '500+ GB NVMe SSD',
+    bandwidth: '1 Gbps'
+  }
+};

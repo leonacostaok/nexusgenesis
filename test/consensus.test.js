@@ -68,7 +68,7 @@ test('Test 3: Block proposal and confirmation', () => {
   assert.strictEqual(confirmed, true, 'Block should be confirmed');
   
   const status = consensus.getBlockStatus(block.hash);
-  assert.strictEqual(status.status, 'CONFIRMED');
+  assert.strictEqual(status.status, 'FINALIZED');
   
   console.log('✅ Block proposal and confirmation works');
 });
@@ -107,7 +107,7 @@ test('Test 5: Consensus statistics', () => {
   
   assert.strictEqual(stats.totalLeaders, 2);
   assert.strictEqual(stats.activeLeaders, 2);
-  assert.strictEqual(stats.confirmedBlocks, 0);
+  assert.strictEqual(stats.finalizedBlocks, 0);
   
   console.log('✅ Consensus statistics works');
 });
@@ -177,9 +177,9 @@ test('Test 7: Transaction processing in consensus', () => {
 test('Test 8: Leader rotation', () => {
   const consensus = new MultiLeaderConsensus();
   
-  consensus.registerLeader('node1', 'ng1node100000000000000000000000000000000000', 10);
-  consensus.registerLeader('node2', 'ng1node200000000000000000000000000000000000', 10);
-  consensus.registerLeader('node3', 'ng1node300000000000000000000000000000000000', 10);
+  consensus.registerLeader('node1', 'ng1node100000000000000000000000000000000000', 10, 0);
+  consensus.registerLeader('node2', 'ng1node200000000000000000000000000000000000', 10, 100);
+  consensus.registerLeader('node3', 'ng1node300000000000000000000000000000000000', 10, 200);
   
   const leaders = new Set();
   

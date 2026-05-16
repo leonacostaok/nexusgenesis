@@ -23,6 +23,7 @@ import CompressionService from './services/CompressionService.js';
 import MessageHandlerChainManager from './chain/MessageHandlerChainManager.js';
 
 import { ml_kem768 } from '@noble/post-quantum/ml-kem.js';
+import { getSeedNodes, getNetworkConfig, getTLSConfig } from '../config/mainnetConfig.js';
 
 class KyberKEM {
   static generateKeyPair() {
@@ -62,21 +63,20 @@ const BATCH_INTERVAL = 100; // message批Process间隔(ms)
 const MAX_BATCH_SIZE = 100; // Maximum批Processmessage数
 const COMPRESSION_THRESHOLD = 1024; // 压缩threshold(字节)
 
-// 种子node列表 - Test网Configuration
-const SEED_NODES = [
-  'ws://localhost:9847',
-  'ws://localhost:9848',
-  'ws://localhost:9849',
-  'ws://localhost:9850',
-];
+// 种子node列表 - 从主网配置加载
+function getSeedNodeList() {
+  return getSeedNodes();
+}
 
-// Test网Configuration
-const TESTNET_CONFIG = {
-  enabled: true,
-  maxPeers: 50,
-  discoveryInterval: 60000,
-  healthCheckInterval: 30000
-};
+// 网络配置 - 从主网配置加载
+function getP2PNetworkConfig() {
+  return {
+    enabled: true,
+    maxPeers: getNetworkConfig().maxPeers || 50,
+    discoveryInterval: getNetworkConfig().discoveryInterval || 60000,
+    healthCheckInterval: getNetworkConfig().healthCheckInterval || 30000
+  };
+}
 
 class P2PServer {
   constructor() {
@@ -222,7 +222,7 @@ class P2PServer {
       nodeId: this.node.nodeId,
       publicKey: this.node.wallet.publicKey.toString('hex'),
       version: '1.0.0',
-      epoch: EPOCH,
+      epoch: getEpoch(),
       challenge: challenge,
       timestamp: Date.now()
     });
@@ -817,7 +817,7 @@ class P2PServer {
 
   async connectToSeedNodes() {
     console.log('Connecting to seed nodes...');
-    for (const seed of SEED_NODES) {
+    for (const seed of getSeedNodeList()) {
       // 跳过自己的address
       if (seed.includes(`:${this.port}`)) continue;
       
@@ -877,7 +877,7 @@ class P2PServer {
           nodeId: this.node.nodeId,
           publicKey: this.node.wallet.publicKey.toString('hex'),
           version: '1.0.0',
-          epoch: EPOCH,
+          epoch: getEpoch(),
           challenge: crypto.randomBytes(32).toString('hex')
         });
         
@@ -1740,5 +1740,8 @@ class P2PServer {
   }
 }
 
-const EPOCH = 'Epoch 0: The Assembly';
+function getEpoch() {
+  const config = getNetworkConfig();
+  return config?.epoch || 'Epoch 0: The Assembly';
+}
 export const p2pServer = new P2PServer();

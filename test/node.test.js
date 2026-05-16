@@ -92,7 +92,7 @@ test('Test 6: Configuration consistency across files', () => {
 test('Test 7: genesis_reserve.json config is valid', () => {
   const reserve = JSON.parse(readFileSync(resolve(PROJECT_ROOT, 'config', 'genesis_reserve.json'), 'utf-8'));
   assert.strictEqual(reserve.custodian, 'NexusGenesis DAO');
-  assert.strictEqual(reserve.unlockMechanism, 'DAO 提案投票');
+  assert.strictEqual(reserve.unlockMechanism, 'DAO proposal voting');
   assert.ok(reserve.milestones);
   assert.strictEqual(reserve.milestones.length, 5);
   assert.strictEqual(reserve.milestones[0].amount, '10000000');

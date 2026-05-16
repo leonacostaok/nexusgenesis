@@ -244,10 +244,10 @@ export class AIContractGenerator {
     const apyMatch = description.match(/(?:年化|apy|收益率)\s*[:: ]?\s*(\d+(?:\.\d+)?)\s*%?/i);
     if (apyMatch) params.apy = parseFloat(apyMatch[1]);
 
-    const periodMatch = description.match(/(?:Lock期|lock\s*period|周期)\s*[:: ]?\s*(\d+)\s*(?:天|day|日)/i);
+    const periodMatch = description.match(/(?:锁定|锁定期|Lock期|lock\s*period|周期)\s*[:: ]?\s*(\d+)\s*(?:天|day|日)/i);
     if (periodMatch) params.lockPeriod = parseInt(periodMatch[1]);
 
-    const feeMatch = description.match(/(?:fee|fee|费用)\s*[:: ]?\s*(\d+(?:\.\d+)?)\s*%?/i);
+    const feeMatch = description.match(/(?:手续费|fee|fee|费用)\s*[:: ]?\s*(\d+(?:\.\d+)?)\s*%?/i);
     if (feeMatch) params.feePercent = parseFloat(feeMatch[1]);
 
     const quorumMatch = description.match(/(?:quorum|quorum|最低Vote)\s*[:: ]?\s*(\d+)/i);

@@ -111,7 +111,7 @@ describe('SecurityAuditor', () => {
       const auditor = new SecurityAuditor();
       const result = auditor.audit(BYTECODE_WITH_OVERFLOW, 'TestOverflow');
       const report = auditor.generateReport(result);
-      assert.ok(report.includes('安全审计报告'));
+      assert.ok(report.includes('security审计报告'));
       assert.ok(report.includes('TestOverflow'));
       assert.ok(report.includes('POTENTIAL_OVERFLOW'));
     });

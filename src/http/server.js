@@ -55,6 +55,7 @@ import contractRoutes from './routes/contracts.js';
 import bridgeRoutes from './routes/bridge.js';
 import dashboardRoutes from './routes/dashboard.js';
 import monitoringRoutes from './routes/monitoring.js';
+import agentHubRoutes from './routes/agentHub.js';
 import { RateLimiter } from './rateLimiter.js';
 import { ApiKeyManager, DEFAULT_TIERS } from './apiKeyManager.js';
 import { PluginManager } from './pluginManager.js';
@@ -1064,7 +1065,6 @@ console.log('[HTTP Server] AINVM contract routes mounted on /api/v1/ainvm');
 app.use('/api/v1/wallet', walletRoutes);
 console.log('[HTTP Server] Wallet routes mounted on /api/v1/wallet');
 
-import agentHubRoutes from './routes/agentHub.js';
 app.use('/api/v1/hub', agentHubRoutes);
 console.log('[HTTP Server] Agent Hub routes mounted on /api/v1/hub');
 

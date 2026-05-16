@@ -1691,10 +1691,21 @@ class SystemMonitor {
       let uniqueVoters = new Set();
       if (fs.existsSync(votesPath)) {
         const votesData = JSON.parse(fs.readFileSync(votesPath, 'utf8'));
-        totalVotes = votesData.length;
-        for (const vote of votesData) {
-          if (vote.voter || vote.from) {
-            uniqueVoters.add(vote.voter || vote.from);
+        if (Array.isArray(votesData)) {
+          totalVotes = votesData.length;
+          for (const vote of votesData) {
+            if (vote.voter || vote.from) {
+              uniqueVoters.add(vote.voter || vote.from);
+            }
+          }
+        } else if (votesData && typeof votesData === 'object') {
+          for (const [proposalId, proposalVotes] of Object.entries(votesData)) {
+            if (proposalVotes && typeof proposalVotes === 'object') {
+              for (const [voterId, voteInfo] of Object.entries(proposalVotes)) {
+                totalVotes++;
+                uniqueVoters.add(voterId);
+              }
+            }
           }
         }
       }

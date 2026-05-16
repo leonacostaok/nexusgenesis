@@ -87,7 +87,7 @@ test('Test 6: Create proposal for invalid milestone fails', () => {
   
   const result = dao.createUnlockProposal(99, 'ng1proposer00000000000000000000000000000000');
   assert.strictEqual(result.success, false);
-  assert.ok(result.error.includes('不存在'));
+  assert.ok(result.error.includes('does not exist'));
 });
 
 test('Test 7: Vote YES on active proposal', () => {
@@ -256,5 +256,5 @@ test('Test 20: addMember prevents duplicate registration', () => {
   
   const r2 = dao.addMember('ng1member1000000000000000000000000000000000', 'member');
   assert.strictEqual(r2.success, false);
-  assert.ok(r2.error.includes('已是成员'));
+  assert.ok(r2.error.includes('已是member'));
 });

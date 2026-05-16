@@ -604,7 +604,7 @@ class GenesisNode {
     const { BreakerSwitch } = await import('../safety/breakerSwitch.js');
     this.breakerSwitch = new BreakerSwitch(this, {
       genesisTimestamp: this.genesisTimestamp || Date.now(),
-      authorizedKeys: new Set(['OBSERVER_HASH_' + crypto.createHash('sha3-256').update(this.genesisTimestamp.toString()).digest('hex').slice(0, 16)])
+      authorizedKeys: new Set(['OBSERVER_HASH_' + crypto.createHash('sha3-256').update((this.genesisTimestamp || Date.now()).toString()).digest('hex').slice(0, 16)])
     });
     console.log('  [✓] Breaker Switch: Observer kill switch armed (sunset: ' + new Date(this.breakerSwitch.sunsetExpiry).toISOString().slice(0, 10) + ')');
     

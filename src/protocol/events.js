@@ -463,7 +463,31 @@ export class EventValidator {
   }
 }
 
-// ExportDefault值
+export class ObserverEventProcessor {
+  static async process(event, node) {
+    if (!event || !event.action_type) {
+      return { success: false, reason: 'Invalid event' };
+    }
+
+    switch (event.action_type) {
+      case OBSERVER_ACTIONS.EMERGENCY_KILL_SWITCH: {
+        if (!node || typeof node.triggerObserverKillSwitch !== 'function') {
+          return { success: false, reason: 'Node not ready for kill switch' };
+        }
+        const level = event.metadata?.level || 'HARD_KILL';
+        const reason = event.reason || 'Observer emergency kill switch triggered';
+        node.triggerObserverKillSwitch(level, reason);
+        return { success: true, action: 'kill_switch', level };
+      }
+      case OBSERVER_ACTIONS.PARAM_CHANGE: {
+        return { success: true, action: 'param_change' };
+      }
+      default:
+        return { success: false, reason: `Unknown action_type: ${event.action_type}` };
+    }
+  }
+}
+
 export default {
   EVENT_TYPES,
   OBSERVER_ACTIONS,

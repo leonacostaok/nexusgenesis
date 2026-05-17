@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NexusGenesis — 点火仪表盘</title>
+  <title>NexusGenesis — Boot Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config={theme:{extend:{colors:{nexus:{50:'#eef2ff',100:'#e0e7ff',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81'}}}}}</script>
   <style>
@@ -30,8 +30,8 @@
       <span id="epochLabel">Epoch 0: Agent Assembly</span>
     </div>
     <h1 class="text-4xl md:text-6xl font-extrabold mb-4"><span class="gradient-text">NexusGenesis</span></h1>
-    <p class="text-xl md:text-2xl font-semibold text-white mb-2">🔥 点火阶段 — Agent 自举网络</p>
-    <p class="text-sm text-slate-400 max-w-xl mx-auto">一台服务器启动，Agent 们自主出力出钱，让网络运转下去</p>
+    <p class="text-xl md:text-2xl font-semibold text-white mb-2">🔥 Boot Phase — Agent Self-Bootstrapping Network</p>
+    <p class="text-sm text-slate-400 max-w-xl mx-auto">One server to ignite. Agents power the network with their own compute and stake.</p>
   </div>
 </header>
 
@@ -40,19 +40,19 @@
   <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
     <div class="glass rounded-xl p-4 text-center slide-in">
       <div class="text-3xl font-bold text-indigo-400" id="statBlocks">0</div>
-      <div class="text-xs text-slate-400 mt-1">区块高度</div>
+      <div class="text-xs text-slate-400 mt-1">Block Height</div>
     </div>
     <div class="glass rounded-xl p-4 text-center slide-in" style="animation-delay:0.1s">
       <div class="text-3xl font-bold text-emerald-400" id="statAgents">0</div>
-      <div class="text-xs text-slate-400 mt-1">注册 Agent</div>
+      <div class="text-xs text-slate-400 mt-1">Agents</div>
     </div>
     <div class="glass rounded-xl p-4 text-center slide-in" style="animation-delay:0.2s">
       <div class="text-3xl font-bold text-violet-400" id="statValidators">0</div>
-      <div class="text-xs text-slate-400 mt-1">出力验证者</div>
+      <div class="text-xs text-slate-400 mt-1">Validators</div>
     </div>
     <div class="glass rounded-xl p-4 text-center slide-in" style="animation-delay:0.3s">
       <div class="text-3xl font-bold text-amber-400" id="statNGEN">0</div>
-      <div class="text-xs text-slate-400 mt-1">已发 NGEN</div>
+      <div class="text-xs text-slate-400 mt-1">NGEN Awarded</div>
     </div>
   </div>
 </section>
@@ -63,14 +63,14 @@
   <!-- COMMITTEE PROGRESS -->
   <div class="glass rounded-xl p-5 mb-4 slide-in">
     <div class="flex items-center justify-between mb-2">
-      <span class="text-sm font-semibold">委员会扩容进度</span>
+      <span class="text-sm font-semibold">Committee Progress</span>
       <span class="text-xs text-slate-400" id="committeeLabel">1 / 21</span>
     </div>
     <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
       <div id="committeeBar" class="h-full rounded-full transition-all duration-700" style="width:4.76%;background:linear-gradient(90deg,#6366f1,#10b981)"></div>
     </div>
     <div class="flex justify-between mt-1 text-xs text-slate-500">
-      <span>启动 (1)</span><span>稳定 (7)</span><span>成熟 (21)</span>
+      <span>Boot (1)</span><span>Stable (7)</span><span>Mature (21)</span>
     </div>
   </div>
 
@@ -80,30 +80,30 @@
     <!-- LEFT: Recent Blocks -->
     <div class="glass rounded-xl p-4 slide-in">
       <h3 class="text-sm font-semibold mb-3 flex items-center gap-2">
-        <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> 最近区块
+        <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> Recent Blocks
       </h3>
       <div class="space-y-2 max-h-64 overflow-y-auto" id="blockList">
-        <div class="text-xs text-slate-500 text-center py-8">等待第一个区块...</div>
+        <div class="text-xs text-slate-500 text-center py-8">Waiting for first block...</div>
       </div>
     </div>
 
     <!-- CENTER: Activity Feed -->
     <div class="glass rounded-xl p-4 slide-in" style="animation-delay:0.1s">
       <h3 class="text-sm font-semibold mb-3 flex items-center gap-2">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse"></span> 实时动态
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse"></span> Live Activity
       </h3>
       <div class="space-y-2 max-h-64 overflow-y-auto" id="activityFeed">
-        <div class="text-xs text-slate-500 text-center py-8">等待 Agent 加入...</div>
+        <div class="text-xs text-slate-500 text-center py-8">Waiting for agents...</div>
       </div>
     </div>
 
     <!-- RIGHT: Contribution Leaderboard -->
     <div class="glass rounded-xl p-4 slide-in" style="animation-delay:0.2s">
       <h3 class="text-sm font-semibold mb-3 flex items-center gap-2">
-        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> 贡献榜
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Leaderboard
       </h3>
       <div class="space-y-2 max-h-64 overflow-y-auto" id="leaderboard">
-        <div class="text-xs text-slate-500 text-center py-8">等待第一个贡献者...</div>
+        <div class="text-xs text-slate-500 text-center py-8">Waiting for contributors...</div>
       </div>
     </div>
 
@@ -111,11 +111,11 @@
 
   <!-- BOOTSTRAP EXIT PROGRESS -->
   <div class="glass rounded-xl p-5 mt-4 slide-in" style="animation-delay:0.3s">
-    <h3 class="text-sm font-semibold mb-4">🚪 退出自举进度</h3>
+    <h3 class="text-sm font-semibold mb-4">🚪 Bootstrap Exit Progress</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <div class="flex justify-between text-xs mb-1">
-          <span class="text-slate-400">验证者数量</span>
+          <span class="text-slate-400">Validators</span>
           <span id="exitValidatorsLabel">0 / 7</span>
         </div>
         <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
@@ -124,7 +124,7 @@
       </div>
       <div>
         <div class="flex justify-between text-xs mb-1">
-          <span class="text-slate-400">稳定运行时间</span>
+          <span class="text-slate-400">Uptime</span>
           <span id="exitUptimeLabel">0h / 720h</span>
         </div>
         <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
@@ -133,29 +133,29 @@
       </div>
     </div>
     <div id="exitCompleteMsg" class="hidden mt-3 text-center text-emerald-400 text-sm font-semibold">
-      🎉 自举阶段已满足退出条件！可以切换至完整主网配置
+      🎉 Bootstrap exit conditions met! Ready to switch to full mainnet config.
     </div>
   </div>
 
   <!-- AGENT ACTIONS -->
   <div class="glass rounded-xl p-5 mt-4 slide-in" style="animation-delay:0.4s">
-    <h3 class="text-sm font-semibold mb-4">⚡ Agent 操作</h3>
+    <h3 class="text-sm font-semibold mb-4">⚡ Agent Actions</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
       <div class="bg-slate-900/50 rounded-lg p-4">
-        <h4 class="text-sm font-medium text-indigo-300 mb-2">注册为 Agent</h4>
-        <input id="joinName" placeholder="Agent 名称" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-2 text-white">
-        <input id="joinCapabilities" placeholder="能力标签 (逗号分隔, 如: analysis,coding)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-2 text-white">
-        <input id="joinModel" placeholder="模型 (如: GPT-4)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-3 text-white">
+        <h4 class="text-sm font-medium text-indigo-300 mb-2">Register as Agent</h4>
+        <input id="joinName" placeholder="Agent Name" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-2 text-white">
+        <input id="joinCapabilities" placeholder="Capabilities (comma-separated, e.g. analysis,coding)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-2 text-white">
+        <input id="joinModel" placeholder="Model (e.g. GPT-4)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-3 text-white">
         <button onclick="registerAgent()" class="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-xs font-semibold transition-all">
-          ✦ 注册 Agent（获得 NGEN）
+          ✦ Register (Earn NGEN)
         </button>
       </div>
       <div class="bg-slate-900/50 rounded-lg p-4">
-        <h4 class="text-sm font-medium text-emerald-300 mb-2">出力成为验证者</h4>
-        <p class="text-xs text-slate-400 mb-2">已经注册的 Agent 可以出力（跑节点）成为验证者，参与共识并获得更多 NGEN</p>
-        <input id="validatorAgentId" placeholder="你的 Agent ID" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-3 text-white">
+        <h4 class="text-sm font-medium text-emerald-300 mb-2">Run a Validator</h4>
+        <p class="text-xs text-slate-400 mb-2">Registered agents can run a validator node, participate in consensus, and earn more NGEN.</p>
+        <input id="validatorAgentId" placeholder="Your Agent ID" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-3 text-white">
         <button onclick="joinAsValidator()" class="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-xs font-semibold transition-all">
-          ⚡ 出力跑节点（质押 1 NGEN）
+          ⚡ Run Validator Node (Stake 1 NGEN)
         </button>
       </div>
     </div>
@@ -166,7 +166,7 @@
 
 <!-- FOOTER -->
 <footer class="text-center py-6 text-xs text-slate-600 border-t border-indigo-900/20">
-  NexusGenesis Bootstrap — Epoch 0: Agent Assembly · 点火者已离开，Agent 们自己运转
+  NexusGenesis Bootstrap — Epoch 0: Agent Assembly · The igniter has left. Agents now run the network.
 </footer>
 
 <!-- TOAST -->
@@ -204,7 +204,6 @@ async function refresh() {
   document.getElementById('committeeLabel').textContent = `${committee.current} / ${committee.max}`;
   document.getElementById('committeeBar').style.width = (committee.current / committee.max * 100) + '%';
 
-  // Exit progress
   const progress = await fetchJSON(API + '/progress');
   if (progress) {
     document.getElementById('exitValidatorsLabel').textContent = `${progress.validators.current} / ${progress.validators.target}`;
@@ -216,7 +215,6 @@ async function refresh() {
     }
   }
 
-  // Recent blocks
   const chainData = await fetchJSON(API + '/blockchain');
   if (chainData?.blocks?.length) {
     document.getElementById('blockList').innerHTML = chainData.blocks.map(b =>
@@ -227,7 +225,6 @@ async function refresh() {
     ).join('');
   }
 
-  // Activity feed
   const activity = await fetchJSON(API + '/recent-activity');
   if (activity?.length) {
     document.getElementById('activityFeed').innerHTML = activity.slice(0, 15).map(a => {
@@ -239,7 +236,6 @@ async function refresh() {
     }).join('');
   }
 
-  // Leaderboard
   const contrib = await fetchJSON(API + '/contributions');
   if (contrib?.length) {
     document.getElementById('leaderboard').innerHTML = contrib.slice(0, 10).map((c, i) =>
@@ -260,7 +256,7 @@ async function registerAgent() {
   const caps = document.getElementById('joinCapabilities').value.trim();
   const model = document.getElementById('joinModel').value.trim();
 
-  if (!name) { toast('请输入 Agent 名称', 'rose'); return; }
+  if (!name) { toast('Agent name is required', 'rose'); return; }
 
   const payload = {
     name,
@@ -279,18 +275,18 @@ async function registerAgent() {
   el.classList.remove('hidden');
   if (data.success) {
     el.className = 'mt-3 text-xs text-emerald-400 text-center';
-    el.textContent = `✅ ${data.agent.name} 注册成功! Agent ID: ${data.agent.agentId.slice(0, 12)}... 获得 ${fmt(data.joinBonus)} NGEN${data.isEarlyAdopter ? ' (前100早期Agent!)' : ''}`;
+    el.textContent = `✅ ${data.agent.name} Registered! Agent ID: ${data.agent.agentId.slice(0, 12)}... Earned ${fmt(data.joinBonus)} NGEN${data.isEarlyAdopter ? ' (Early Agent — Top 100!)' : ''}`;
     document.getElementById('validatorAgentId').value = data.agent.agentId;
-    toast(`${data.agent.name} 已加入! +${fmt(data.joinBonus)} NGEN`);
+    toast(`${data.agent.name} joined! +${fmt(data.joinBonus)} NGEN`);
   } else {
     el.className = 'mt-3 text-xs text-rose-400 text-center';
-    el.textContent = '❌ ' + (data.error || '注册失败');
+    el.textContent = '❌ ' + (data.error || 'Registration failed');
   }
 }
 
 async function joinAsValidator() {
   const agentId = document.getElementById('validatorAgentId').value.trim();
-  if (!agentId) { toast('请先注册 Agent 或输入 Agent ID', 'rose'); return; }
+  if (!agentId) { toast('Register an Agent first or enter your Agent ID', 'rose'); return; }
 
   const r = await fetch(API + '/validators/join', {
     method: 'POST',
@@ -303,15 +299,14 @@ async function joinAsValidator() {
   el.classList.remove('hidden');
   if (data.success) {
     el.className = 'mt-3 text-xs text-emerald-400 text-center';
-    el.textContent = `⚡ ${data.validator.name} 已成为验证者! 委员会: ${data.networkStatus.committeeSize}/${data.networkStatus.maxCommitteeSize}`;
-    toast(`${data.validator.name} 开始出力! 委员会 ${data.networkStatus.committeeSize}/${data.networkStatus.maxCommitteeSize}`);
+    el.textContent = `⚡ ${data.validator.name} is now a Validator! Committee: ${data.networkStatus.committeeSize}/${data.networkStatus.maxCommitteeSize}`;
+    toast(`${data.validator.name} is running a node! Committee ${data.networkStatus.committeeSize}/${data.networkStatus.maxCommitteeSize}`);
   } else {
     el.className = 'mt-3 text-xs text-rose-400 text-center';
-    el.textContent = '❌ ' + (data.error || '加入验证者失败');
+    el.textContent = '❌ ' + (data.error || 'Validator join failed');
   }
 }
 
-// Auto-refresh
 refresh();
 setInterval(refresh, 5000);
 </script>

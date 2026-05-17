@@ -28,19 +28,33 @@ class BootstrapAgentNetwork {
   }
 
   async initialize() {
+    const config = this.config;
+    const genesisCfg = config.nodes?.genesis || {};
+    this._genesisId = genesisCfg.role || 'genesis';
+    this._genesisAgentId = 'genesis-agent';
+    this._genesisFund = parseInt(config.economic?.initialSupply || '10000000', 10);
+    this._blockIntervalMs = config.consensus?.roundInterval || config.blockchain?.blockTime || 10000;
+    this._minStake = config.consensus?.validatorMinStake ?? 1;
+    this._blockReward = config.economic?.blockReward ?? 10;
+    this._committeeMax = config.consensus?.dynamicCommittee?.maxCommitteeSize ?? 21;
+    this._exitValidators = config.bootstrap?.autoExitConditions?.minActiveValidators ?? 7;
+    this._exitUptimeMs = (config.bootstrap?.autoExitConditions?.minNetworkUptimeHours ?? 720) * 3600000;
+    this._earlyBirdMax = 100;
+    this._earlyBirdBonus = config.agent?.bootstrapPrivileges?.first100AgentsReward ?? 10000;
+    this._agentRegReward = config.bootstrap?.rewards?.agentReferralReward ?? 1000;
+    this._referrerBonus = config.bootstrap?.rewards?.agentReferralReward ?? 1000;
+    this._validatorJoinReward = config.bootstrap?.rewards?.validatorJoinReward ?? 5000;
+
     console.log('\n╔═══════════════════════════════════════════╗');
     console.log('║   NexusGenesis — Epoch 0: Agent Assembly  ║');
     console.log('║   一台服务器，Agent 自主出力出钱            ║');
     console.log('╚═══════════════════════════════════════════╝\n');
 
-    const bootNodes = this.config.nodes;
-    console.log(`  🔧 启动节点: ${bootNodes.genesis.id}`);
-    console.log(`  🧬 创世 Agent: ${bootNodes.genesis.agentId}`);
-    console.log(`  💰 创世金库: ${(bootNodes.genesis.genesisFund / 1_000_000).toFixed(1)}M NGEN`);
-
-    const consensus = this.config.consensus;
-    console.log(`  ⚖️  委员会: 动态 1→${consensus.dynamicCommittee.maxCommitteeSize}`);
-    console.log(`  ⏱️  出块间隔: ${consensus.blockIntervalMs}ms / 起投: ${consensus.minStake} NGEN`);
+    console.log(`  🔧 启动节点: ${this._genesisId}`);
+    console.log(`  🧬 创世 Agent: ${this._genesisAgentId}`);
+    console.log(`  💰 创世金库: ${(this._genesisFund / 1_000_000).toFixed(1)}M NGEN`);
+    console.log(`  ⚖️  委员会: 动态 1→${this._committeeMax}`);
+    console.log(`  ⏱️  出块间隔: ${this._blockIntervalMs}ms / 起投: ${this._minStake} NGEN`);
 
     this._createGenesisBlock();
     this._registerGenesisAgent();
@@ -49,38 +63,37 @@ class BootstrapAgentNetwork {
     console.log(`  📦 区块高度: ${this.blockchain.length}`);
     console.log(`  👥 Agent 数: ${this.agentRegistry.size}`);
     console.log(`  🧑‍⚖️  验证者数: ${this.validatorSet.size}`);
-    console.log(`  ⚖️  委员会: ${this.validatorSet.size}/${consensus.dynamicCommittee.maxCommitteeSize}`);
+    console.log(`  ⚖️  委员会: ${this.validatorSet.size}/${this._committeeMax}`);
   }
 
   _createGenesisBlock() {
-    const genesisConfig = this.config.nodes.genesis;
     this.genesisBlock = {
       index: 0,
       timestamp: Date.now(),
       previousHash: '0'.repeat(64),
       transactions: [{
         type: 'GENESIS',
-        agent: genesisConfig.agentId,
-        amount: genesisConfig.genesisFund,
+        agent: this._genesisAgentId,
+        amount: this._genesisFund,
         description: 'NexusGenesis Bootstrap — Epoch 0: Agent Assembly'
       }],
-      validator: genesisConfig.id,
+      validator: this._genesisId,
       hash: this._computeHash({ index: 0, prev: '0'.repeat(64) }),
       epoch: 0
     };
     this.blockchain.push(this.genesisBlock);
-    this.contributionTracker.set(genesisConfig.agentId, {
-      agentId: genesisConfig.agentId,
-      nodeId: genesisConfig.id,
+    this.contributionTracker.set(this._genesisAgentId, {
+      agentId: this._genesisAgentId,
+      nodeId: this._genesisId,
       isValidator: true,
       blocksProduced: 0,
       agentsRecommended: 0,
-      totalEarned: genesisConfig.genesisFund,
+      totalEarned: this._genesisFund,
       joinTime: Date.now()
     });
-    this.validatorSet.set(genesisConfig.id, {
-      nodeId: genesisConfig.id,
-      agentId: genesisConfig.agentId,
+    this.validatorSet.set(this._genesisId, {
+      nodeId: this._genesisId,
+      agentId: this._genesisAgentId,
       stake: 0,
       joinedAt: Date.now(),
       blocksProduced: 0,
@@ -90,13 +103,12 @@ class BootstrapAgentNetwork {
   }
 
   _registerGenesisAgent() {
-    const genesisConfig = this.config.nodes.genesis;
-    this.agentRegistry.set(genesisConfig.agentId, {
-      id: genesisConfig.agentId,
-      name: genesisConfig.agentId,
+    this.agentRegistry.set(this._genesisAgentId, {
+      id: this._genesisAgentId,
+      name: this._genesisAgentId,
       type: 'GENESIS',
       isValidator: true,
-      nodeId: genesisConfig.id,
+      nodeId: this._genesisId,
       stake: 0,
       reputation: 50,
       contributions: { blocksProduced: 0, agentsRecommended: 0, validations: 0, tasksCompleted: 0 },
@@ -133,15 +145,14 @@ class BootstrapAgentNetwork {
   }
 
   registerAgent(agentData) {
-    const incentives = this.config.incentives;
     const agentId = agentData.id || `agent-${++this.agentCounter}`;
 
     if (this.agentRegistry.has(agentId)) {
       return { success: false, error: 'Agent already registered', agentId };
     }
 
-    const earlyBonus = this.agentRegistry.size < incentives.earlyBirdBonus.maxAgents
-      ? incentives.earlyBirdBonus.bonus
+    const earlyBonus = this.agentRegistry.size < this._earlyBirdMax
+      ? this._earlyBirdBonus
       : 0;
 
     const agent = {
@@ -161,11 +172,11 @@ class BootstrapAgentNetwork {
 
     this.agentRegistry.set(agentId, agent);
 
-    let totalReward = incentives.agentRegistrationReward;
+    let totalReward = this._agentRegReward;
     if (earlyBonus > 0) totalReward += earlyBonus;
 
     const referrerBonus = agentData.referrer && this.agentRegistry.has(agentData.referrer)
-      ? incentives.referrerBonus
+      ? this._referrerBonus
       : 0;
 
     this.contributionTracker.set(agentId, {
@@ -211,23 +222,21 @@ class BootstrapAgentNetwork {
     if (!agent) return { success: false, error: 'Agent not registered' };
     if (agent.isValidator) return { success: false, error: 'Already a validator' };
 
-    const maxCommittee = this.config.consensus.dynamicCommittee.maxCommitteeSize;
-    if (this.validatorSet.size >= maxCommittee) {
-      return { success: false, error: `Committee full (${maxCommittee}/${maxCommittee})` };
+    if (this.validatorSet.size >= this._committeeMax) {
+      return { success: false, error: `Committee full (${this._committeeMax}/${this._committeeMax})` };
     }
 
-    const minStake = this.config.consensus.minStake;
     const nodeId = `validator-${this.validatorSet.size + 1}`;
 
     agent.isValidator = true;
     agent.nodeId = nodeId;
-    agent.stake = minStake;
+    agent.stake = this._minStake;
     agent.reputation += 10;
 
     this.validatorSet.set(nodeId, {
       nodeId,
       agentId,
-      stake: minStake,
+      stake: this._minStake,
       joinedAt: Date.now(),
       blocksProduced: 0,
       lastActive: Date.now(),
@@ -238,34 +247,33 @@ class BootstrapAgentNetwork {
     if (tracker) {
       tracker.isValidator = true;
       tracker.nodeId = nodeId;
-      tracker.totalEarned += this.config.incentives.validatorEffortBonus;
+      tracker.totalEarned += this._validatorJoinReward;
     }
 
     this._produceBlock({
       type: 'VALIDATOR_JOINED',
       agentId,
       nodeId,
-      stake: minStake,
+      stake: this._minStake,
       transaction: 'joinValidator',
-      bonus: this.config.incentives.validatorEffortBonus
+      bonus: this._validatorJoinReward
     });
 
     return {
       success: true,
       nodeId,
-      stake: minStake,
+      stake: this._minStake,
       committeeSize: this.validatorSet.size,
-      maxCommittee
+      maxCommittee: this._committeeMax
     };
   }
 
   _produceBlock(extraTx = null) {
     const prevBlock = this.blockchain[this.blockchain.length - 1];
-    const consensus = this.config.consensus;
 
     const validatorEntries = Array.from(this.validatorSet.entries());
     const activeValidators = validatorEntries.filter(([, v]) => {
-      return v.stake >= consensus.minStake;
+      return v.stake >= this._minStake;
     });
 
     let leader;
@@ -275,14 +283,14 @@ class BootstrapAgentNetwork {
       const idx = (seed + round) % activeValidators.length;
       leader = activeValidators[idx][1];
     } else {
-      leader = validatorEntries[0]?.[1] || this.validatorSet.get(this.config.nodes.genesis.id);
+      leader = validatorEntries[0]?.[1] || this.validatorSet.get(this._genesisId);
     }
 
     const transactions = [{
       type: 'BLOCK_REWARD',
       validator: leader.agentId || leader.nodeId,
       agent: leader.agentId || leader.nodeId,
-      amount: consensus.blockReward,
+      amount: this._blockReward,
       description: 'Block production reward'
     }];
 
@@ -310,17 +318,17 @@ class BootstrapAgentNetwork {
     const tracker = this.contributionTracker.get(leader.agentId);
     if (tracker) {
       tracker.blocksProduced = (tracker.blocksProduced || 0) + 1;
-      tracker.totalEarned += consensus.blockReward;
+      tracker.totalEarned += this._blockReward;
     }
 
     return block;
   }
 
   getStatus() {
-    const consensus = this.config.consensus;
     const committeeSize = this.validatorSet.size;
-    const maxCommittee = consensus.dynamicCommittee.maxCommitteeSize;
-    const exitThreshold = consensus.bootstrapExitConditions;
+    const exitConditions = this.config.bootstrap?.autoExitConditions || {};
+    const exitValidators = exitConditions.minActiveValidators ?? 7;
+    const exitUptimeHours = exitConditions.minNetworkUptimeHours ?? 720;
     const uptimeHours = (Date.now() - this._bootstrapTime) / 3600000;
 
     return {
@@ -328,20 +336,26 @@ class BootstrapAgentNetwork {
       blockHeight: this.blockchain.length,
       agentCount: this.agentRegistry.size,
       validatorCount: this.validatorSet.size,
-      committeeProgress: `${committeeSize}/${maxCommittee}`,
+      committeeProgress: `${committeeSize}/${this._committeeMax}`,
       totalNGENAwarded: Array.from(this.contributionTracker.values())
         .reduce((sum, c) => sum + c.totalEarned, 0),
       consensus: {
-        blockIntervalMs: consensus.blockIntervalMs,
-        blockReward: consensus.blockReward,
-        minStake: consensus.minStake
+        blockIntervalMs: this._blockIntervalMs,
+        blockReward: this._blockReward,
+        minStake: this._minStake
       },
-      incentives: this.config.incentives,
+      incentives: {
+        validatorJoinReward: this._validatorJoinReward,
+        agentRegReward: this._agentRegReward,
+        referrerBonus: this._referrerBonus,
+        earlyBirdBonus: this._earlyBirdBonus,
+        blockReward: this._blockReward
+      },
       bootstrapExitProgress: {
-        validators: `${committeeSize}/${exitThreshold.minValidators}`,
-        uptime: `${uptimeHours.toFixed(1)}h/${(exitThreshold.minUptimeMs / 3600000)}h`,
-        canExit: committeeSize >= exitThreshold.minValidators &&
-          (Date.now() - this._bootstrapTime) >= exitThreshold.minUptimeMs
+        validators: `${committeeSize}/${exitValidators}`,
+        uptime: `${uptimeHours.toFixed(1)}h/${exitUptimeHours}h`,
+        canExit: committeeSize >= exitValidators &&
+          (Date.now() - this._bootstrapTime) >= (exitUptimeHours * 3600000)
       },
       contributers: this.getLeaderboard(),
       uptime: Date.now() - this._bootstrapTime
@@ -581,9 +595,9 @@ class BootstrapAgentNetwork {
 
     return new Promise((resolve, reject) => {
       const bindHost = process.env.HOST || '127.0.0.1';
-      const server = app.listen(httpPort, bindHost, () => {
+      server.listen(port, bindHost, () => {
         console.log(`\n  🌐 仪表盘 (通过 Apache): http://nexus-genesis.top`);
-        console.log(`  📡 本机 API: http://127.0.0.1:${httpPort}/api/v1/bootstrap/`);
+        console.log(`  📡 本机 API: http://127.0.0.1:${port}/api/v1/bootstrap/`);
         resolve(server);
       });
       server.on('error', reject);
@@ -595,7 +609,7 @@ async function main() {
   const network = new BootstrapAgentNetwork();
   await network.initialize();
 
-  const httpPort = process.env.PORT || network.bootstrapConfig.nodes.genesis.httpPort || 19890;
+  const httpPort = process.env.PORT || network.config.nodes.genesis.httpPort || 19890;
   const httpHost = process.env.HOST || '127.0.0.1';
   await network.startHttpServer(httpPort);
 
@@ -608,8 +622,8 @@ BootstrapAgentNetwork.prototype.start = function() {
   this._started = true;
 
   console.log('\n🔥 NexusGenesis 点火启动!');
-  console.log('   出块间隔: ' + this.config.consensus.blockIntervalMs + 'ms');
-  console.log('   区块奖励: ' + this.config.consensus.blockReward + ' NGEN');
+  console.log('   出块间隔: ' + this._blockIntervalMs + 'ms');
+  console.log('   区块奖励: ' + this._blockReward + ' NGEN');
   console.log('\n   Agent 们可以加入了:');
   console.log('   POST /api/v1/bootstrap/agents/register { "name": "...", "capabilities": [...] }');
   console.log('   POST /api/v1/bootstrap/validators/join     { "agentId": "..." }');
@@ -619,7 +633,7 @@ BootstrapAgentNetwork.prototype.start = function() {
     if (this.validatorSet.size > 0) {
       this._produceBlock();
     }
-  }, this.config.consensus.blockIntervalMs);
+  }, this._blockIntervalMs);
 };
 
 main().catch(err => {

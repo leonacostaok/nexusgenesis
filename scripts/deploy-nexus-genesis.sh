@@ -65,8 +65,8 @@ cat > /etc/apache2/sites-available/nexusgenesis.conf << APACHE
     ProxyPreserveHost On
     ProxyRequests Off
 
-    ProxyPass / http://127.0.0.1:19890/
-    ProxyPassReverse / http://127.0.0.1:19890/
+    ProxyPass / http://${SERVER_IP}:19890/
+    ProxyPassReverse / http://${SERVER_IP}:19890/
 
     ErrorLog \${APACHE_LOG_DIR}/nexusgenesis_error.log
     CustomLog \${APACHE_LOG_DIR}/nexusgenesis_access.log combined

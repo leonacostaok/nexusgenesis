@@ -1,203 +1,159 @@
-/**
- * Genesis Block Generator - 创世区块生成脚本
- *
- * 为 NexusGenesis 主网生成初始创世区块和创世配置。
- * 包含初始代币分配、验证者集合、治理参数等。
- */
-
-import { writeFileSync, existsSync, mkdirSync } from 'fs';
+import crypto from 'crypto';
+import { writeFileSync, existsSync, mkdirSync, readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import crypto from 'crypto';
-import { PQCWallet } from '../wallet/pqcWallet.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const PROJECT_ROOT = resolve(__dirname, '..', '..');
-const GENESIS_DIR = resolve(PROJECT_ROOT, 'data', 'genesis');
+const PROJECT_ROOT = resolve(__dirname, '..');
 
-function ensureDir(path) {
-  if (!existsSync(path)) {
-    mkdirSync(path, { recursive: true });
+function loadMainnetConfig() {
+  const configPath = resolve(PROJECT_ROOT, 'mainnet.config.json');
+  if (!existsSync(configPath)) {
+    console.error('mainnet.config.json not found');
+    process.exit(1);
   }
+  return JSON.parse(readFileSync(configPath, 'utf8'));
 }
 
-async function generateGenesisBlock() {
-  console.log('========================================');
-  console.log('  NexusGenesis Genesis Block Generator');
-  console.log('========================================\n');
+function loadValidatorSet() {
+  try {
+    const path = resolve(PROJECT_ROOT, 'config', 'validator-set.json');
+    if (existsSync(path)) {
+      return JSON.parse(readFileSync(path, 'utf8'));
+    }
+  } catch (e) {}
+  return [];
+}
 
-  ensureDir(GENESIS_DIR);
+function generateGenesisKeyPair() {
+  const keyPair = crypto.generateKeyPairSync('ed25519', {
+    modulusLength: 256,
+    publicKeyEncoding: { type: 'spki', format: 'pem' },
+    privateKeyEncoding: { type: 'pkcs8', format: 'pem' }
+  });
 
-  console.log('[1/6] Generating genesis wallet...');
-  const genesisWallet = await PQCWallet.generate(100000000n);
-  const observerWallet = await PQCWallet.generate(10000000n);
-  const treasuryWallet = await PQCWallet.generate(50000000n);
+  const address = 'ng0' + crypto.createHash('sha3-256')
+    .update(keyPair.publicKey)
+    .digest('hex')
+    .substring(0, 40);
 
-  console.log(`  Genesis:    ${genesisWallet.address}`);
-  console.log(`  Observer:   ${observerWallet.address}`);
-  console.log(`  Treasury:   ${treasuryWallet.address}`);
+  return { address, ...keyPair };
+}
 
-  console.log('\n[2/6] Creating genesis block...');
-  const genesisTimestamp = Date.now();
+function generateGenesisBlock(config, validatorSet) {
+  const genesisKey = generateGenesisKeyPair();
+  const timestamp = config.blockchain.genesisTimestamp || Date.now();
+
+  const validators = validatorSet.length > 0
+    ? validatorSet.map(v => v.publicKey || v.endpoint)
+    : [genesisKey.address];
+
   const genesisBlock = {
     index: 0,
     hash: crypto.createHash('sha3-256')
-      .update(`NexusGenesis:Genesis:${genesisTimestamp}"hope is a good thing"`)
+      .update(`NexusGenesis:Mainnet:${timestamp}:Genesis`)
       .digest('hex'),
     previousHash: '0'.repeat(64),
-    timestamp: genesisTimestamp,
+    timestamp,
     transactions: [{
       type: 'genesis',
       from: '0'.repeat(64),
-      to: genesisWallet.address,
-      amount: '100000000',
-      message: 'NexusGenesis Genesis - Let there be light',
-      signature: genesisWallet.sign('NexusGenesis Genesis').toString('hex')
+      to: genesisKey.address,
+      amount: config.economic.initialSupply,
+      message: 'NexusGenesis Mainnet Genesis - The Age of AI Agent Sovereignty Begins',
+      signature: crypto.sign(null, Buffer.from('genesis'), genesisKey.privateKey).toString('hex')
     }],
-    validatorSet: [genesisWallet.address, observerWallet.address],
+    validatorSet: validators,
     state: {
-      balances: {
-        [genesisWallet.address]: '100000000',
-        [observerWallet.address]: '10000000',
-        [treasuryWallet.address]: '50000000'
-      },
-      totalSupply: '1000000000',
-      circulatingSupply: '160000000'
+      balances: { [genesisKey.address]: config.economic.initialSupply },
+      agentCount: 0,
+      validatorCount: validatorSet.length || 1,
+      totalStaked: 0,
+      phase: 'MAINNET_GENESIS'
     },
-    governance: {
-      quorum: 33,
-      majority: 0.67,
-      vetoThreshold: 0.33,
-      votingPeriod: 604800000,
-      gracePeriod: 172800000
+    consensusParams: {
+      protocol: config.consensus.protocol,
+      committeeSize: config.consensus.committeeSize,
+      minValidators: config.consensus.minValidators,
+      blockTime: config.blockchain.blockTime,
+      finalityConfirmations: config.consensus.finalityConfirmations
     },
-    consensus: {
-      protocol: 'MultiLeaderConsensus+BFT',
-      committeeSize: 21,
-      minValidators: 7,
-      finalityConfirmations: '2/3+1'
+    economicParams: {
+      totalSupply: config.economic.totalSupply,
+      initialSupply: config.economic.initialSupply,
+      annualInflationRate: config.economic.annualInflationRate,
+      minStake: config.economic.staking.minStake
     },
-    economic: {
-      totalSupply: '1000000000',
-      initialSupply: '160000000',
-      annualInflationRate: 0.02,
-      blockReward: 10,
-      rewardDistribution: { blockProposer: 0.1, validatorSet: 0.05, infrastructure: 0.85 }
-    },
-    nonce: 0
+    networkParams: {
+      chainId: config.network.chainId,
+      networkId: config.network.networkId,
+      seedNodes: config.network.seedNodes || [
+        'wss://seed1.nexus-genesis.top:9847',
+        'wss://seed2.nexus-genesis.top:9847',
+        'wss://seed3.nexus-genesis.top:9847',
+        'wss://seed4.nexus-genesis.top:9847'
+      ]
+    }
   };
 
-  console.log(`  Hash:       ${genesisBlock.hash.slice(0, 32)}...`);
-  console.log(`  Timestamp:  ${new Date(genesisTimestamp).toISOString()}`);
+  return { genesisBlock, genesisKey };
+}
 
-  console.log('\n[3/6] Saving genesis block...');
+function main() {
+  console.log('NexusGenesis Mainnet Genesis Block Generator');
+  console.log('');
+
+  const config = loadMainnetConfig();
+  console.log(`Chain ID:        ${config.network.chainId}`);
+  console.log(`Total Supply:    ${Number(config.economic.totalSupply).toLocaleString()} NGEN`);
+  console.log(`Initial Supply:  ${Number(config.economic.initialSupply).toLocaleString()} NGEN`);
+  console.log(`Committee Size:  ${config.consensus.committeeSize}`);
+  console.log(`Min Validators:  ${config.consensus.minValidators}`);
+  console.log('');
+
+  const validatorSet = loadValidatorSet();
+  if (validatorSet.length > 0) {
+    console.log(`Validator Set:   ${validatorSet.length} validators loaded`);
+  }
+
+  const { genesisBlock, genesisKey } = generateGenesisBlock(config, validatorSet);
+
+  const genesisDir = resolve(PROJECT_ROOT, 'data', 'genesis');
+  ensureDir(genesisDir);
+
   writeFileSync(
-    resolve(GENESIS_DIR, 'genesis_block.json'),
+    resolve(genesisDir, 'genesis_block.json'),
     JSON.stringify(genesisBlock, null, 2)
   );
 
-  console.log('[4/6] Saving wallet files...');
-  const walletsDir = resolve(PROJECT_ROOT, 'data', 'wallets');
-  ensureDir(walletsDir);
-
-  writeFileSync(resolve(walletsDir, 'genesis.json'), JSON.stringify({
-    address: genesisWallet.address,
-    publicKey: genesisWallet.publicKey.toString('hex'),
-    privateKey: genesisWallet.privateKey.toString('hex'),
-    type: 'genesis',
-    networks: ['mainnet', 'devnet']
-  }, null, 2));
-
-  writeFileSync(resolve(walletsDir, 'observer.json'), JSON.stringify({
-    address: observerWallet.address,
-    publicKey: observerWallet.publicKey.toString('hex'),
-    privateKey: observerWallet.privateKey.toString('hex'),
-    type: 'observer',
-    networks: ['mainnet', 'devnet']
-  }, null, 2));
-
-  writeFileSync(resolve(walletsDir, 'treasury.json'), JSON.stringify({
-    address: treasuryWallet.address,
-    publicKey: treasuryWallet.publicKey.toString('hex'),
-    privateKey: treasuryWallet.privateKey.toString('hex'),
-    type: 'treasury',
-    networks: ['mainnet', 'devnet']
-  }, null, 2));
-
-  console.log('[5/6] Generating chain configuration...');
-  const chainConfig = {
-    chainId: 'nexus-mainnet',
-    networkId: 'ngn-mainnet-1',
-    genesisBlock: genesisBlock.hash,
-    genesisTimestamp: genesisTimestamp,
-    seeds: [
-      'wss://seed1.nexusgenesis.io:9847',
-      'wss://seed2.nexusgenesis.io:9847',
-      'wss://seed3.nexusgenesis.io:9847',
-      'wss://seed4.nexusgenesis.io:9847'
-    ],
-    initialValidators: [genesisWallet.address, observerWallet.address]
-  };
-
   writeFileSync(
-    resolve(GENESIS_DIR, 'chain_config.json'),
-    JSON.stringify(chainConfig, null, 2)
+    resolve(genesisDir, 'genesis_key.json'),
+    JSON.stringify({
+      address: genesisKey.address,
+      publicKey: genesisKey.publicKey,
+      privateKey: genesisKey.privateKey,
+      note: 'STORE SECURELY - This key controls the genesis block'
+    }, null, 2)
   );
 
-  console.log('[6/6] Generating genesis summary...');
-  const summary = {
-    network: 'NexusGenesis Mainnet',
-    genesisHash: genesisBlock.hash,
-    genesisTimestamp: genesisTimestamp,
-    genesisTime: new Date(genesisTimestamp).toISOString(),
-    wallets: {
-      genesis: genesisWallet.address,
-      observer: observerWallet.address,
-      treasury: treasuryWallet.address
-    },
-    supply: {
-      total: '1,000,000,000 NGEN',
-      genesis: '100,000,000 NGEN',
-      observer: '10,000,000 NGEN',
-      treasury: '50,000,000 NGEN',
-      locked: '840,000,000 NGEN'
-    },
-    configuration: {
-      chainId: 'nexus-mainnet',
-      consensus: 'MultiLeaderConsensus + BFT',
-      blockTime: '10 seconds',
-      gasModel: 'EIP-1559 style dynamic pricing',
-      inflation: '2% annual (governance adjustable)'
-    },
-    filesGenerated: [
-      'data/genesis/genesis_block.json',
-      'data/genesis/chain_config.json',
-      'data/wallets/genesis.json',
-      'data/wallets/observer.json',
-      'data/wallets/treasury.json'
-    ]
-  };
-
-  writeFileSync(
-    resolve(GENESIS_DIR, 'genesis_summary.json'),
-    JSON.stringify(summary, null, 2)
-  );
-
-  console.log('\n========================================');
-  console.log('  Genesis Block Generation Complete!');
-  console.log('========================================');
-  console.log(summary);
-  console.log('\nIMPORTANT: Securely back up the wallet files');
-  console.log('in data/wallets/ before deploying to production.\n');
-
-  return {
-    genesisBlock,
-    wallets: { genesis: genesisWallet, observer: observerWallet, treasury: treasuryWallet },
-    summary
-  };
+  console.log('Genesis Block Generated:');
+  console.log(`  Hash:     ${genesisBlock.hash}`);
+  console.log(`  Timestamp: ${new Date(genesisBlock.timestamp).toISOString()}`);
+  console.log(`  Genesis Key: ${genesisKey.address}`);
+  console.log('');
+  console.log('Files created:');
+  console.log('  data/genesis/genesis_block.json');
+  console.log('  data/genesis/genesis_key.json (SECURE THIS FILE!)');
+  console.log('');
+  console.log('Next steps:');
+  console.log('  1. Securely backup data/genesis/genesis_key.json');
+  console.log('  2. Distribute genesis_block.json to all seed nodes');
+  console.log('  3. Start seed nodes with genesis block');
+  console.log('  4. Validators connect and begin consensus');
 }
 
-generateGenesisBlock().catch(err => {
-  console.error('Genesis generation failed:', err);
-  process.exit(1);
-});
+function ensureDir(path) {
+  if (!existsSync(path)) mkdirSync(path, { recursive: true });
+}
+
+main();

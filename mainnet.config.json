@@ -11,10 +11,10 @@
     "maxInbound": 100,
     "maxOutbound": 100,
     "seedNodes": [
-      "wss://seed1.nexusgenesis.io:9847",
-      "wss://seed2.nexusgenesis.io:9847",
-      "wss://seed3.nexusgenesis.io:9847",
-      "wss://seed4.nexusgenesis.io:9847"
+      "wss://seed1.nexus-genesis.top:9847",
+      "wss://seed2.nexus-genesis.top:9847",
+      "wss://seed3.nexus-genesis.top:9847",
+      "wss://seed4.nexus-genesis.top:9847"
     ],
     "bootstrapNodes": [],
     "discoveryInterval": 60000,
@@ -29,46 +29,12 @@
       "caPath": "certs/ca.pem"
     }
   },
-  "devnet": {
-    "enabled": false,
-    "name": "NexusGenesis DevNet",
-    "epoch": "Epoch 2: Bloom",
-    "description": "Multi-node development network (4 nodes)",
-    "version": "1.0.0"
-  },
-  "nodes": {
-    "genesis": {
-      "port": 9847,
-      "walletFile": "data/wallets/ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r.json",
-      "script": "src/node/genesisNode.js",
-      "role": "genesis",
-      "httpPort": 19890
-    },
-    "node1": {
-      "port": 9848,
-      "script": "src/node/node1.js",
-      "role": "validator",
-      "stake": 100000
-    },
-    "node2": {
-      "port": 9849,
-      "script": "src/node/node2.js",
-      "role": "validator",
-      "stake": 100000
-    },
-    "node3": {
-      "port": 9850,
-      "script": "src/node/node3.js",
-      "role": "validator",
-      "stake": 100000
-    }
-  },
   "blockchain": {
     "blockTime": 10000,
     "maxTransactionsPerBlock": 500,
     "minFee": 1,
-    "difficulty": 10,
-    "genesisTimestamp": "2025-01-01T00:00:00.000Z",
+    "difficulty": 1,
+    "genesisTimestamp": null,
     "maxBlockGas": 15000000,
     "targetBlockSize": 262144
   },
@@ -77,43 +43,42 @@
     "committeeSize": 21,
     "minValidators": 7,
     "roundInterval": 10000,
-    "finalityConfirmations": "2/3+1",
-    "leaderRotationBlocks": 10,
+    "finalityConfirmations": 2,
+    "leaderRotationBlocks": 20,
     "validatorMinStake": 100000,
     "bft": {
       "enabled": true,
-      "preVoteTimeout": 3000,
-      "preCommitTimeout": 3000,
-      "commitTimeout": 5000,
-      "maxMissedBlocks": 50
+      "preVoteTimeout": 5000,
+      "preCommitTimeout": 5000,
+      "commitTimeout": 10000,
+      "maxMissedBlocks": 100
     }
   },
   "economic": {
     "totalSupply": "1000000000",
-    "initialSupply": "100000000",
+    "initialSupply": "10000000",
     "annualInflationRate": 0.02,
     "blockReward": 10,
     "rewardDistribution": {
-      "blockProposer": 0.1,
-      "validatorSet": 0.05,
-      "infrastructure": 0.85
+      "agentRewardPool": 0.10,
+      "validatorRewardPool": 0.05,
+      "infrastructurePool": 0.85
     },
     "gas": {
       "minGasPrice": 1,
       "maxGasPrice": 1000,
       "gasPerByte": 1,
       "baseTxGas": 21000,
-      "dynamicGasEnabled": true,
-      "congestionMultiplier": 1.5
+      "dynamicGasEnabled": true
     },
     "fees": {
-      "transferFee": 1,
+      "transferFee": 0.01,
       "contractDeployFee": 100,
-      "contractCallFee": 5,
-      "burnRatio": 0.3
+      "contractCallFee": 1,
+      "burnRatio": 0.1
     },
     "staking": {
-      "minStake": 1000,
+      "minStake": 100000,
       "validatorMinStake": 100000,
       "unbondingPeriod": 1209600000,
       "slashing": {
@@ -124,113 +89,74 @@
     }
   },
   "agent": {
-    "maxAgents": 10000,
+    "maxAgents": 100000,
     "registrationFee": 1000,
     "minReputation": 1,
     "maxReputation": 10000,
-    "rewardPool": "10000000",
+    "rewardPool": "50000000",
     "rewardPerEpoch": {
-      "agentShare": 0.1,
-      "metabolismTax": 0.05,
-      "infrastructure": 0.85
+      "agentShare": 0.20,
+      "validatorShare": 0.25,
+      "infrastructure": 0.55
     }
   },
   "governance": {
     "proposalTimeout": 604800000,
     "votingPeriod": 604800000,
-    "quorum": 33,
+    "quorum": 20,
     "majority": 0.67,
     "vetoThreshold": 0.33,
     "gracePeriod": 172800000,
-    "emergencyQuorum": 50,
+    "emergencyQuorum": 30,
     "emergencyMajority": 0.75
   },
   "security": {
     "requireSignature": true,
-    "requireIdentity": true,
+    "requireIdentity": false,
     "handshakeTimeout": 10000,
     "rateLimiting": {
       "enabled": true,
-      "maxRequestsPerSecond": 100,
-      "maxConnectionsPerIP": 10,
-      "banDurationMs": 3600000,
-      "maxSuspiciousBeforeBan": 5
+      "maxRequestsPerMinute": 100,
+      "maxConcurrentConns": 50
     },
     "ddos": {
       "enabled": true,
-      "synFloodLimit": 100,
-      "requestRateLimit": 200,
-      "detectionWindowMs": 10000
+      "synFloodThreshold": 1000,
+      "banDurationMs": 3600000
     },
     "keyManagement": {
       "rotationIntervalMs": 2592000000,
       "minKeyLength": 256,
-      "allowedAlgorithms": ["ml-kem-768", "dilithium2", "sha3-256"],
-      "hsBackupEnabled": false,
-      "coldWalletEnabled": false
+      "allowedAlgorithms": ["dilithium2", "sha3-256"]
     }
   },
-  "wallets": {
-    "genesisReserve": "ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ",
-    "observer": "ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r",
-    "infrastructureFund": null,
-    "treasuryDAO": null
-  },
-  "logging": {
-    "level": "info",
-    "dir": "logs/",
-    "format": "json",
-    "files": {
-      "genesis": "logs/genesis.log",
-      "node1": "logs/node1.log",
-      "node2": "logs/node2.log",
-      "node3": "logs/node3.log",
-      "error": "logs/error.log",
-      "access": "logs/access.log",
-      "audit": "logs/audit.log"
+  "nodes": {
+    "genesis": {
+      "port": 9847,
+      "httpPort": 19890,
+      "role": "genesis"
     },
-    "maxSize": 104857600,
-    "maxFiles": 10,
-    "rotationIntervalMs": 86400000
+    "seed": {
+      "port": 9847,
+      "httpPort": 19890,
+      "role": "seed"
+    },
+    "validator": {
+      "port": 9848,
+      "httpPort": 19891,
+      "role": "validator"
+    },
+    "fullnode": {
+      "port": 9849,
+      "httpPort": 19892,
+      "role": "fullnode"
+    }
   },
   "monitoring": {
     "enabled": true,
-    "prometheus": {
-      "enabled": true,
-      "port": 9090,
-      "path": "/metrics",
-      "scrapeInterval": 15000
-    },
-    "healthCheck": {
-      "path": "/health",
-      "livenessPath": "/health/live",
-      "readinessPath": "/health/ready"
-    },
-    "alerts": {
-      "cpuThreshold": 80,
-      "memoryThreshold": 85,
-      "diskThreshold": 90,
-      "networkLatencyMs": 500,
-      "blockTimeDeviationMs": 5000,
-      "consensusStallThresholdMs": 60000,
-      "peerCountMin": 3,
-      "missedBlocksThreshold": 10
-    }
-  },
-  "bridge": {
-    "supportedChains": ["ethereum", "solana", "polygon", "arbitrum", "optimism", "base"],
-    "lockThreshold": 1000000,
-    "relayerFee": 10,
-    "confirmationBlocks": {
-      "ethereum": 12,
-      "solana": 64,
-      "polygon": 256,
-      "arbitrum": 12,
-      "optimism": 12,
-      "base": 12
-    },
-    "maxPendingTransfers": 1000,
-    "transferTimeoutMs": 3600000,
-    "relayerMinStake": 50000
+    "prometheusPort": 19990,
+    "metricsInterval": 15000,
+    "healthCheckPath": "/health",
+    "metricsPath": "/metrics"
   }
 }

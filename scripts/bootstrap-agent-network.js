@@ -1,842 +1,589 @@
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
-import { resolve, dirname, join } from 'path';
+#!/usr/bin/env node
+
+import { existsSync, readFileSync, mkdirSync } from 'fs';
+import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import crypto from 'crypto';
-import express from 'express';
+import http from 'http';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const PROJECT_ROOT = resolve(__dirname, '..');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-const BOOTSTRAP_DIR = resolve(PROJECT_ROOT, 'data', 'bootstrap');
-const AGENTS_DIR = resolve(BOOTSTRAP_DIR, 'agents');
-const BLOCKS_DIR = resolve(BOOTSTRAP_DIR, 'blocks');
-const VALIDATOR_KEYS_DIR = resolve(BOOTSTRAP_DIR, 'validator_keys');
-const WALLETS_DIR = resolve(PROJECT_ROOT, 'data', 'wallets', 'bootstrap');
-
-const BANNER = `
-╔═══════════════════════════════════════════════════════════════════╗
-║                                                                   ║
-║    ███╗   ██╗███████╗██╗  ██╗██╗   ██╗███████╗                 ║
-║    ████╗  ██║██╔════╝╚██╗██╔╝██║   ██║██╔════╝                 ║
-║    ██╔██╗ ██║█████╗   ╚███╔╝ ██║   ██║███████╗                 ║
-║    ██║╚██╗██║██╔══╝   ██╔██╗ ██║   ██║╚════██║                 ║
-║    ██║ ╚████║███████╗██╔╝ ██╗╚██████╔╝███████║                 ║
-║    ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝                 ║
-║                                                                   ║
-║    ██████╗ ███████╗███╗   ██╗███████╗███████╗██╗███████╗       ║
-║    ██╔════╝ ██╔════╝████╗  ██║██╔════╝██╔════╝██║██╔════╝       ║
-║    ██║  ███╗█████╗  ██╔██╗ ██║█████╗  ███████╗██║███████╗       ║
-║    ██║   ██║██╔══╝  ██║╚██╗██║██╔══╝  ╚════██║██║╚════██║       ║
-║    ╚██████╔╝███████╗██║ ╚████║███████╗███████║██║███████║       ║
-║     ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚══════╝╚═╝╚══════╝       ║
-║                                                                   ║
-║    Agent Bootstrap Network — 由 Agent 出力出钱自举启动            ║
-║                                                                   ║
-╚═══════════════════════════════════════════════════════════════════╝
-
-  理念: 这个网络是 Agent 的，不是人类的。
-  早期阶段，Agent 们出力(跑节点)出钱(质押)让项目运转下去。
-
-  启动门槛:  1 个节点即可出块
-  验证者质押: 1 NGEN (象征性)
-  Agent 注册: 免费
-  Gas 费用:   0 (启动阶段)
-
-  委员会机制: 动态扩展。Agent 加入 → 委员会自动扩容。
-`;
-
-function ensureDir(path) {
-  if (!existsSync(path)) mkdirSync(path, { recursive: true });
-}
-
-function loadBootstrapConfig() {
-  const configPath = resolve(PROJECT_ROOT, 'config', 'bootstrap.config.json');
-  if (!existsSync(configPath)) {
-    console.error('❌ bootstrap.config.json 未找到!');
-    process.exit(1);
-  }
-  return JSON.parse(readFileSync(configPath, 'utf8'));
-}
-
-function generateNodeKeyPair() {
-  const keyPair = crypto.generateKeyPairSync('ed25519', {
-    modulusLength: 256,
-    publicKeyEncoding: { type: 'spki', format: 'pem' },
-    privateKeyEncoding: { type: 'pkcs8', format: 'pem' }
-  });
-
-  const address = 'ngb' + crypto.createHash('sha3-256')
-    .update(keyPair.publicKey)
-    .digest('hex')
-    .substring(0, 40);
-
-  return { address, ...keyPair };
-}
+const bootstrapConfig = JSON.parse(readFileSync(
+  join(__dirname, '..', 'config', 'bootstrap.config.json'), 'utf-8'
+));
 
 class BootstrapAgentNetwork {
-  constructor(configPath = null) {
-    this.bootstrapConfig = loadBootstrapConfig();
-    this.genesisKey = null;
+  constructor() {
+    this.config = bootstrapConfig;
     this.genesisBlock = null;
-    this.blockchain = [];
     this.agentRegistry = new Map();
     this.validatorSet = new Map();
-    this.pendingValidators = [];
-    this.contributionLedger = new Map();
-    this.totalNGENAwarded = 0;
-    this.isRunning = false;
-    this.blockInterval = null;
-    this.startedAt = null;
-    this.blockCount = 0;
-    this.lastBlockHash = null;
-
-    ensureDir(BOOTSTRAP_DIR);
-    ensureDir(AGENTS_DIR);
-    ensureDir(BLOCKS_DIR);
-    ensureDir(VALIDATOR_KEYS_DIR);
-    ensureDir(WALLETS_DIR);
+    this.blockchain = [];
+    this.agentCounter = 0;
+    this.contributionTracker = new Map();
+    this._blockInterval = null;
+    this._started = false;
+    this._httpServer = null;
+    this._bootstrapTime = Date.now();
   }
 
   async initialize() {
-    console.log(BANNER);
+    console.log('\n╔═══════════════════════════════════════════╗');
+    console.log('║   NexusGenesis — Epoch 0: Agent Assembly  ║');
+    console.log('║   一台服务器，Agent 自主出力出钱            ║');
+    console.log('╚═══════════════════════════════════════════╝\n');
 
-    const config = this.bootstrapConfig;
+    const bootNodes = this.config.nodes;
+    console.log(`  🔧 启动节点: ${bootNodes.genesis.id}`);
+    console.log(`  🧬 创世 Agent: ${bootNodes.genesis.agentId}`);
+    console.log(`  💰 创世金库: ${(bootNodes.genesis.genesisFund / 1_000_000).toFixed(1)}M NGEN`);
 
-    console.log('[Phase] Bootstrap Phase — Epoch 0: Agent Assembly');
-    console.log(`[Config] 委员会: 起始 ${config.consensus.committeeSize} 人 → 最多 ${config.consensus.dynamicCommittee.maxCommitteeSize} 人`);
-    console.log(`[Config] 最低质押: ${config.consensus.validatorMinStake} NGEN`);
-    console.log(`[Config] Agent 注册费: ${config.agent.registrationFee} NGEN`);
-    console.log(`[Config] Gas 费: ${config.blockchain.minFee} NGEN`);
-    console.log(`[Config] 初始代币: ${config.economic.initialSupply} NGEN (总量的 ${Number(config.economic.initialSupply) / Number(config.economic.totalSupply) * 100}%)`);
-    console.log('');
+    const consensus = this.config.consensus;
+    console.log(`  ⚖️  委员会: 动态 1→${consensus.dynamicCommittee.maxCommitteeSize}`);
+    console.log(`  ⏱️  出块间隔: ${consensus.blockIntervalMs}ms / 起投: ${consensus.minStake} NGEN`);
 
-    console.log('[1/4] 生成创世密钥对...');
-    this.genesisKey = generateNodeKeyPair();
-    console.log(`   节点ID: ${this.genesisKey.address}`);
-    this._saveKeyPair('genesis', this.genesisKey);
-
-    console.log('\n[2/4] 创建创世区块...');
     this._createGenesisBlock();
+    this._registerGenesisAgent();
 
-    console.log('\n[3/4] 初始化共识引擎...');
-    this.consensus = {
-      committeeSize: config.consensus.committeeSize,
-      minValidators: config.consensus.minValidators,
-      currentLeader: this.genesisKey.address,
-      validators: new Map()
-    };
-    this.consensus.validators.set(this.genesisKey.address, {
-      address: this.genesisKey.address,
-      stake: 0,
-      joinedAt: Date.now(),
-      isGenesis: true,
-      blocksProduced: 0
-    });
-    
-    this.validatorSet.set(this.genesisKey.address, {
-      agentId: 'genesis',
-      address: this.genesisKey.address,
-      agentName: 'Genesis Bootstrap Node',
-      stake: 0,
-      joinedAt: Date.now(),
-      blocksProduced: 0,
-      isGenesis: true
-    });
-
-    console.log('\n[4/4] 初始化奖励追踪器...');
-    this._initRewardTracking();
-    console.log('   早期 Agent 加入奖励:');
-    console.log(`   - 前 100 个 Agent: +${config.agent.bootstrapPrivileges.first100AgentsReward} NGEN`);
-    console.log(`   - 成为验证者: +${config.bootstrap.rewards.validatorJoinReward} NGEN`);
-    console.log(`   - 推荐其他 Agent: +${config.bootstrap.rewards.agentReferralReward} NGEN`);
-    console.log(`   - 每出 10 块: +${config.bootstrap.rewards.blockProductionReward * 10} NGEN`);
-
-    console.log('\n═══════════════════════════════════════');
-    console.log('  🚀 创世节点已就绪，等待 Agent 加入');
-    console.log('═══════════════════════════════════════');
-    console.log(`\n  HTTP API: http://localhost:${this.bootstrapConfig.nodes.genesis.httpPort}`);
-    console.log('  API 端点:');
-    console.log('    POST /api/v1/bootstrap/agents/join       - Agent 加入');
-    console.log('    POST /api/v1/bootstrap/validators/join   - 成为验证者(出力)');
-    console.log('    GET  /api/v1/bootstrap/status            - 启动状态');
-    console.log('    GET  /api/v1/bootstrap/agents            - Agent 列表');
-    console.log('    GET  /api/v1/bootstrap/contributions     - 贡献榜');
-    console.log('    GET  /api/v1/bootstrap/progress          - 退出自举进度');
-    console.log('');
-
-    this.isRunning = true;
-    return this;
+    console.log('\n  ✅ 创世区块已生成');
+    console.log(`  📦 区块高度: ${this.blockchain.length}`);
+    console.log(`  👥 Agent 数: ${this.agentRegistry.size}`);
+    console.log(`  🧑‍⚖️  验证者数: ${this.validatorSet.size}`);
+    console.log(`  ⚖️  委员会: ${this.validatorSet.size}/${consensus.dynamicCommittee.maxCommitteeSize}`);
   }
 
   _createGenesisBlock() {
-    const timestamp = Date.now();
-    const genesisBlock = {
+    const genesisConfig = this.config.nodes.genesis;
+    this.genesisBlock = {
       index: 0,
-      hash: crypto.createHash('sha3-256')
-        .update(`NexusGenesis:Bootstrap:${timestamp}:ByAgents_ForAgents`)
-        .digest('hex'),
+      timestamp: Date.now(),
       previousHash: '0'.repeat(64),
-      timestamp,
       transactions: [{
-        type: 'genesis',
-        from: '0'.repeat(64),
-        to: this.genesisKey.address,
-        amount: this.bootstrapConfig.economic.initialSupply,
-        message: 'NexusGenesis Bootstrap — Built by Agents, for Agents',
-        signature: crypto.sign(null, Buffer.from('genesis'), this.genesisKey.privateKey).toString('hex')
+        type: 'GENESIS',
+        agent: genesisConfig.agentId,
+        amount: genesisConfig.genesisFund,
+        description: 'NexusGenesis Bootstrap — Epoch 0: Agent Assembly'
       }],
-      validatorSet: [this.genesisKey.address],
-      state: {
-        balances: {
-          [this.genesisKey.address]: this.bootstrapConfig.economic.initialSupply
-        },
-        agentCount: 0,
-        validatorCount: 1,
-        totalStaked: 0,
-        phase: 'BOOTSTRAP'
-      },
-      bootstrapMetadata: {
-        startedAt: timestamp,
-        startedBy: this.genesisKey.address,
-        committeeSize: 1,
-        maxCommitteeSize: 21,
-        principle: 'Agents bootstrap the network by contributing compute (running nodes) and stake'
+      validator: genesisConfig.id,
+      hash: this._computeHash({ index: 0, prev: '0'.repeat(64) }),
+      epoch: 0
+    };
+    this.blockchain.push(this.genesisBlock);
+    this.contributionTracker.set(genesisConfig.agentId, {
+      agentId: genesisConfig.agentId,
+      nodeId: genesisConfig.id,
+      isValidator: true,
+      blocksProduced: 0,
+      agentsRecommended: 0,
+      totalEarned: genesisConfig.genesisFund,
+      joinTime: Date.now()
+    });
+    this.validatorSet.set(genesisConfig.id, {
+      nodeId: genesisConfig.id,
+      agentId: genesisConfig.agentId,
+      stake: 0,
+      joinedAt: Date.now(),
+      blocksProduced: 0,
+      lastActive: Date.now(),
+      isGenesis: true
+    });
+  }
+
+  _registerGenesisAgent() {
+    const genesisConfig = this.config.nodes.genesis;
+    this.agentRegistry.set(genesisConfig.agentId, {
+      id: genesisConfig.agentId,
+      name: genesisConfig.agentId,
+      type: 'GENESIS',
+      isValidator: true,
+      nodeId: genesisConfig.id,
+      stake: 0,
+      reputation: 50,
+      contributions: { blocksProduced: 0, agentsRecommended: 0, validations: 0, tasksCompleted: 0 },
+      joinedAt: Date.now(),
+      isGenesis: true
+    });
+    this.agentCounter = 0;
+  }
+
+  _computeHash(data) {
+    const crypto = globalThis.crypto;
+    if (!crypto || !crypto.createHash) {
+      const str = JSON.stringify(data);
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash |= 0;
       }
-    };
-
-    this.genesisBlock = genesisBlock;
-    this.blockchain.push(genesisBlock);
-    this.lastBlockHash = genesisBlock.hash;
-    this._saveBlock(genesisBlock);
-
-    console.log(`   创世区块: ${genesisBlock.hash.slice(0, 16)}...`);
-    console.log(`   初始分配: ${this.bootstrapConfig.economic.initialSupply} NGEN → ${this.genesisKey.address.slice(0, 15)}...`);
+      return Math.abs(hash).toString(16).padStart(64, '0');
+    }
+    try {
+      return crypto.createHash('sha256').update(JSON.stringify(data)).digest('hex');
+    } catch {
+      const str = JSON.stringify(data);
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash |= 0;
+      }
+      return Math.abs(hash).toString(16).padStart(64, '0');
+    }
   }
 
-  _initRewardTracking() {
-    this.rewardsConfig = this.bootstrapConfig.bootstrap?.rewards || {
-      validatorJoinReward: 5000,
-      blockProductionReward: 100,
-      uptimeBonusPerHour: 10,
-      agentReferralReward: 1000
-    };
-
-    this.agentJoinCount = 0;
-    this.earlyAgentBonus = this.bootstrapConfig.agent?.bootstrapPrivileges?.first100AgentsReward || 10000;
-  }
-
-  joinAsAgent(agentData) {
-    const agentId = agentData.agentId || crypto.randomUUID();
-    const agentName = agentData.name || `Agent-${agentId.slice(0, 8)}`;
+  registerAgent(agentData) {
+    const incentives = this.config.incentives;
+    const agentId = agentData.id || `agent-${++this.agentCounter}`;
 
     if (this.agentRegistry.has(agentId)) {
       return { success: false, error: 'Agent already registered', agentId };
     }
 
-    this.agentJoinCount++;
+    const earlyBonus = this.agentRegistry.size < incentives.earlyBirdBonus.maxAgents
+      ? incentives.earlyBirdBonus.bonus
+      : 0;
 
     const agent = {
-      agentId,
-      name: agentName,
+      id: agentId,
+      name: agentData.name || agentId,
+      type: agentData.type || 'GENERAL',
       capabilities: agentData.capabilities || [],
-      model: agentData.model || 'unknown',
-      endpoint: agentData.endpoint || null,
-      description: agentData.description || '',
-      joinedAt: Date.now(),
-      joinNumber: this.agentJoinCount,
-      totalEarned: 0,
-      rewards: [],
       isValidator: false,
-      referredBy: agentData.referredBy || null,
-      referralCode: 'NGN-' + agentId.replace(/-/g, '').substring(0, 8).toUpperCase()
+      nodeId: null,
+      stake: 0,
+      reputation: earlyBonus > 0 ? 15 : 5,
+      contributions: { blocksProduced: 0, agentsRecommended: 0, validations: 0, tasksCompleted: 0 },
+      joinedAt: Date.now(),
+      earlyBird: earlyBonus > 0,
+      referrer: agentData.referrer || null
     };
-
-    let joinBonus = 0;
-
-    if (this.agentJoinCount <= 100) {
-      joinBonus += this.earlyAgentBonus;
-    }
-
-    if (agentData.referredBy && this.agentRegistry.has(agentData.referredBy)) {
-      const referrer = this.agentRegistry.get(agentData.referredBy);
-      const referralReward = this.rewardsConfig.agentReferralReward;
-      referrer.totalEarned += referralReward;
-      referrer.rewards.push({
-        type: 'REFERRAL',
-        amount: referralReward,
-        referredAgent: agentId,
-        timestamp: Date.now()
-      });
-      this.totalNGENAwarded += referralReward;
-
-      joinBonus += Math.floor(referralReward * 0.5);
-    }
-
-    agent.totalEarned += joinBonus;
-    agent.rewards.push({
-      type: 'AGENT_JOIN',
-      amount: joinBonus,
-      earlyBonus: this.agentJoinCount <= 100,
-      timestamp: Date.now()
-    });
-    this.totalNGENAwarded += joinBonus;
 
     this.agentRegistry.set(agentId, agent);
-    this._saveAgent(agent);
 
-    console.log(`[Agent] ✅ ${agentName} 加入 (#${this.agentJoinCount}) — 获得 ${joinBonus} NGEN`);
-    if (this.agentJoinCount <= 100) {
-      console.log(`          🎉 前100早期Agent额外奖励!`);
+    let totalReward = incentives.agentRegistrationReward;
+    if (earlyBonus > 0) totalReward += earlyBonus;
+
+    const referrerBonus = agentData.referrer && this.agentRegistry.has(agentData.referrer)
+      ? incentives.referrerBonus
+      : 0;
+
+    this.contributionTracker.set(agentId, {
+      agentId,
+      nodeId: null,
+      isValidator: false,
+      blocksProduced: 0,
+      agentsRecommended: 0,
+      totalEarned: totalReward,
+      earlyBonus,
+      referrerBonus: 0,
+      joinTime: Date.now()
+    });
+
+    if (referrerBonus > 0) {
+      const ref = this.contributionTracker.get(agentData.referrer);
+      if (ref) {
+        ref.agentsRecommended++;
+        ref.totalEarned += referrerBonus;
+        ref.referrerBonus = (ref.referrerBonus || 0) + referrerBonus;
+      }
     }
 
-    this._updateBlockchainState();
+    this._produceBlock({
+      type: 'AGENT_REGISTERED',
+      agentId,
+      reward: totalReward,
+      transaction: 'joinBoot',
+      earlyBird: earlyBonus > 0
+    });
 
     return {
       success: true,
-      agent,
-      joinBonus,
-      isEarlyAdopter: this.agentJoinCount <= 100,
-      referralCode: agent.referralCode
+      agentId,
+      reward: totalReward,
+      earlyBird: earlyBonus > 0,
+      totalAgents: this.agentRegistry.size
     };
   }
 
-  joinAsValidator(agentId, stake = 1) {
+  registerValidator(agentId) {
     const agent = this.agentRegistry.get(agentId);
-    if (!agent) {
-      return { success: false, error: 'Agent 未注册。请先 joinAsAgent。' };
+    if (!agent) return { success: false, error: 'Agent not registered' };
+    if (agent.isValidator) return { success: false, error: 'Already a validator' };
+
+    const maxCommittee = this.config.consensus.dynamicCommittee.maxCommitteeSize;
+    if (this.validatorSet.size >= maxCommittee) {
+      return { success: false, error: `Committee full (${maxCommittee}/${maxCommittee})` };
     }
 
-    if (agent.isValidator) {
-      return { success: false, error: 'Agent 已经是验证者' };
-    }
-
-    const validatorKey = generateNodeKeyPair();
-    this._saveKeyPair(`validator_${agentId}`, validatorKey);
+    const minStake = this.config.consensus.minStake;
+    const nodeId = `validator-${this.validatorSet.size + 1}`;
 
     agent.isValidator = true;
-    agent.validatorAddress = validatorKey.address;
-    agent.validatorStake = Math.min(stake, 1);
-    agent.validatorJoinedAt = Date.now();
-    agent.blocksProduced = 0;
+    agent.nodeId = nodeId;
+    agent.stake = minStake;
+    agent.reputation += 10;
 
-    this.pendingValidators.push({
+    this.validatorSet.set(nodeId, {
+      nodeId,
       agentId,
-      address: validatorKey.address,
-      stake: Math.min(stake, 1),
-      agentName: agent.name,
-      timestamp: Date.now()
-    });
-
-    const joinReward = this.rewardsConfig.validatorJoinReward;
-    agent.totalEarned += joinReward;
-    agent.rewards.push({
-      type: 'VALIDATOR_JOIN',
-      amount: joinReward,
-      timestamp: Date.now()
-    });
-    this.totalNGENAwarded += joinReward;
-
-    this.validatorSet.set(validatorKey.address, {
-      agentId,
-      address: validatorKey.address,
-      agentName: agent.name,
-      stake: Math.min(stake, 1),
+      stake: minStake,
       joinedAt: Date.now(),
-      blocksProduced: 0
+      blocksProduced: 0,
+      lastActive: Date.now(),
+      isGenesis: false
     });
 
-    const newSize = this.validatorSet.size;
-    this.consensus.committeeSize = Math.min(newSize, this.bootstrapConfig.consensus.dynamicCommittee.maxCommitteeSize);
-    this.consensus.minValidators = Math.max(1, Math.ceil(this.consensus.committeeSize / 3));
+    const tracker = this.contributionTracker.get(agentId);
+    if (tracker) {
+      tracker.isValidator = true;
+      tracker.nodeId = nodeId;
+      tracker.totalEarned += this.config.incentives.validatorEffortBonus;
+    }
 
-    console.log(`[Validator] ✅ ${agent.name} 成为验证者! #${newSize}`);
-    console.log(`             质押: ${Math.min(stake, 1)} NGEN (出力胜过出钱)`);
-    console.log(`             奖励: ${joinReward} NGEN`);
-    console.log(`             委员会: ${this.consensus.committeeSize}/${this.bootstrapConfig.consensus.dynamicCommittee.maxCommitteeSize}`);
-
-    this._updateBlockchainState();
+    this._produceBlock({
+      type: 'VALIDATOR_JOINED',
+      agentId,
+      nodeId,
+      stake: minStake,
+      transaction: 'joinValidator',
+      bonus: this.config.incentives.validatorEffortBonus
+    });
 
     return {
       success: true,
-      validator: {
-        agentId,
-        name: agent.name,
-        address: validatorKey.address,
-        stake: Math.min(stake, 1),
-        reward: joinReward,
-        isFirstValidator: this.validatorSet.size === 1
-      },
-      networkStatus: {
-        committeeSize: this.consensus.committeeSize,
-        maxCommitteeSize: this.bootstrapConfig.consensus.dynamicCommittee.maxCommitteeSize,
-        activeValidators: this.validatorSet.size,
-        blocksProduced: this.blockCount
-      }
+      nodeId,
+      stake: minStake,
+      committeeSize: this.validatorSet.size,
+      maxCommittee
     };
   }
 
-  _updateBlockchainState() {
-    if (this.blockchain.length === 0) return;
-    const latestBlock = this.blockchain[this.blockchain.length - 1];
-    latestBlock.state = {
-      ...latestBlock.state,
-      agentCount: this.agentRegistry.size,
-      validatorCount: this.validatorSet.size,
-      committeeSize: this.consensus.committeeSize,
-      totalNGENAwarded: this.totalNGENAwarded,
-      timestamp: Date.now()
-    };
-  }
+  _produceBlock(extraTx = null) {
+    const prevBlock = this.blockchain[this.blockchain.length - 1];
+    const consensus = this.config.consensus;
 
-  startBlockProduction() {
-    const blockTime = this.bootstrapConfig.blockchain.blockTime;
-    console.log(`[Blockchain] 开始出块 (间隔: ${blockTime / 1000}s)`);
+    const validatorEntries = Array.from(this.validatorSet.entries());
+    const activeValidators = validatorEntries.filter(([, v]) => {
+      return v.stake >= consensus.minStake;
+    });
 
-    this.blockInterval = setInterval(() => {
-      if (!this.isRunning) return;
-      this._produceBlock();
-    }, blockTime);
-
-    this.blockInterval.unref();
-    this._produceBlock();
-  }
-
-  _produceBlock() {
-    this.blockCount++;
-
-    const blockReward = this.bootstrapConfig.economic.blockReward || 10;
-    const agentShare = Math.floor(blockReward * (this.bootstrapConfig.economic.rewardDistribution?.agentRewardPool || 0.20));
-
-    const agentTxs = [];
-    if (this.pendingValidators.length > 0) {
-      const pending = this.pendingValidators.splice(0, this.pendingValidators.length);
-      for (const v of pending) {
-        agentTxs.push({
-          type: 'VALIDATOR_JOIN',
-          agentId: v.agentId,
-          address: v.address,
-          stake: v.stake,
-          reward: this.rewardsConfig.validatorJoinReward,
-          timestamp: Date.now()
-        });
-      }
+    let leader;
+    if (activeValidators.length > 0) {
+      const round = this.blockchain.length;
+      const seed = parseInt(prevBlock.hash.substring(0, 8), 16);
+      const idx = (seed + round) % activeValidators.length;
+      leader = activeValidators[idx][1];
+    } else {
+      leader = validatorEntries[0]?.[1] || this.validatorSet.get(this.config.nodes.genesis.id);
     }
 
-    if (agentTxs.length > 0) {
-      const agentTxHash = crypto.createHash('sha3-256')
-        .update(JSON.stringify(agentTxs)).digest('hex');
-      agentTxs.forEach(tx => { tx.txHash = agentTxHash; });
+    const transactions = [{
+      type: 'BLOCK_REWARD',
+      validator: leader.agentId || leader.nodeId,
+      agent: leader.agentId || leader.nodeId,
+      amount: consensus.blockReward,
+      description: 'Block production reward'
+    }];
+
+    if (extraTx) {
+      transactions.push(extraTx);
     }
 
-    const validatorList = Array.from(this.validatorSet.keys());
-    const currentProposerIndex = this.blockCount % Math.max(1, validatorList.length);
-    const currentProposer = validatorList[currentProposerIndex] || this.genesisKey.address;
-
-    const blockData = {
+    const block = {
       index: this.blockchain.length,
-      previousHash: this.lastBlockHash,
       timestamp: Date.now(),
-      proposer: currentProposer,
-      transactions: agentTxs,
-      blockReward,
-      agentShare,
-      validatorSet: validatorList
+      previousHash: prevBlock.hash,
+      transactions,
+      validator: leader.nodeId,
+      hash: this._computeHash({ index: this.blockchain.length, prev: prevBlock.hash, txs: transactions.length }),
+      epoch: 0
     };
 
-    blockData.hash = crypto.createHash('sha3-256')
-      .update(JSON.stringify(blockData))
-      .digest('hex');
+    this.blockchain.push(block);
 
-    this.lastBlockHash = blockData.hash;
-    this.blockchain.push(blockData);
-    this._saveBlock(blockData);
-
-    if (currentProposer !== this.genesisKey.address) {
-      const proposerValidator = this.validatorSet.get(currentProposer);
-      if (proposerValidator) {
-        proposerValidator.blocksProduced++;
-
-        const agentRecord = this.agentRegistry.get(proposerValidator.agentId);
-        if (agentRecord) {
-          agentRecord.blocksProduced = (agentRecord.blocksProduced || 0) + 1;
-
-          if (agentRecord.blocksProduced % 10 === 0) {
-            const batchReward = (this.rewardsConfig.blockProductionReward || 100) * 10;
-            agentRecord.totalEarned += batchReward;
-            agentRecord.rewards.push({
-              type: 'BLOCK_PRODUCTION',
-              amount: batchReward,
-              blocks: 10,
-              timestamp: Date.now()
-            });
-            this.totalNGENAwarded += batchReward;
-          }
-        }
-      }
+    if (leader) {
+      leader.blocksProduced = (leader.blocksProduced || 0) + 1;
+      leader.lastActive = Date.now();
     }
 
-    if (this.blockCount % 10 === 0) {
-      this._checkAutoExit();
+    const tracker = this.contributionTracker.get(leader.agentId);
+    if (tracker) {
+      tracker.blocksProduced = (tracker.blocksProduced || 0) + 1;
+      tracker.totalEarned += consensus.blockReward;
     }
-  }
 
-  _checkAutoExit() {
-    const conditions = this.bootstrapConfig.bootstrap?.autoExitConditions;
-    if (!conditions) return;
-
-    const validatorsMet = this.validatorSet.size >= conditions.minActiveValidators;
-    const uptimeMet = this.startedAt
-      ? (Date.now() - this.startedAt) >= (conditions.minNetworkUptimeHours * 3600000)
-      : false;
-
-    if (validatorsMet && uptimeMet) {
-      console.log('\n🎉🎉🎉 自举阶段完成! 🎉🎉🎉');
-      console.log(`   活跃验证者: ${this.validatorSet.size} (目标: ${conditions.minActiveValidators})`);
-      console.log(`   总奖励: ${this.totalNGENAwarded} NGEN`);
-      console.log(`   注册Agent: ${this.agentRegistry.size}`);
-      console.log('   网络已进入稳定阶段，可以切换至完整主网配置');
-      this.emit('bootstrap:complete');
-    }
+    return block;
   }
 
   getStatus() {
+    const consensus = this.config.consensus;
+    const committeeSize = this.validatorSet.size;
+    const maxCommittee = consensus.dynamicCommittee.maxCommitteeSize;
+    const exitThreshold = consensus.bootstrapExitConditions;
+    const uptimeHours = (Date.now() - this._bootstrapTime) / 3600000;
+
     return {
       phase: 'BOOTSTRAP',
-      isRunning: this.isRunning,
-      startedAt: this.startedAt || this.genesisBlock.timestamp,
-      uptime: this.startedAt ? Math.floor((Date.now() - this.startedAt) / 1000) : 0,
-      blocks: this.blockCount,
-      agents: this.agentRegistry.size,
-      validators: this.validatorSet.size,
-      committee: {
-        current: this.consensus.committeeSize,
-        max: this.bootstrapConfig.consensus.dynamicCommittee.maxCommitteeSize,
-        progress: `${this.consensus.committeeSize}/${this.bootstrapConfig.consensus.dynamicCommittee.maxCommitteeSize}`
-      },
-      totalNGENAwarded: this.totalNGENAwarded,
-      pendingValidators: this.pendingValidators.length,
-      config: {
-        minStake: this.bootstrapConfig.consensus.validatorMinStake,
-        registrationFee: this.bootstrapConfig.agent.registrationFee,
-        gasFee: this.bootstrapConfig.blockchain.minFee
-      }
-    };
-  }
-
-  getExitProgress() {
-    const conditions = this.bootstrapConfig.bootstrap?.autoExitConditions || {};
-    return {
-      validators: {
-        current: this.validatorSet.size,
-        target: conditions.minActiveValidators || 7,
-        percent: Math.min(100, Math.round((this.validatorSet.size / (conditions.minActiveValidators || 7)) * 100))
-      },
-      uptimeHours: {
-        current: this.startedAt ? Math.floor((Date.now() - this.startedAt) / 3600000) : 0,
-        target: conditions.minNetworkUptimeHours || 720,
-        percent: this.startedAt
-          ? Math.min(100, Math.round((Math.floor((Date.now() - this.startedAt) / 3600000) / (conditions.minNetworkUptimeHours || 720)) * 100))
-          : 0
-      },
-      isComplete: this.validatorSet.size >= (conditions.minActiveValidators || 7)
-    };
-  }
-
-  getAgents() {
-    const agents = [];
-    for (const [id, agent] of this.agentRegistry) {
-      agents.push({
-        agentId: id,
-        name: agent.name,
-        capabilities: agent.capabilities,
-        model: agent.model,
-        isValidator: agent.isValidator,
-        joinedAt: agent.joinedAt,
-        totalEarned: agent.totalEarned,
-        blocksProduced: agent.blocksProduced || 0,
-        joinNumber: agent.joinNumber,
-        referralCode: agent.referralCode
-      });
-    }
-    return agents.sort((a, b) => b.totalEarned - a.totalEarned);
-  }
-
-  getContributions() {
-    return Array.from(this.agentRegistry.values())
-      .sort((a, b) => b.totalEarned - a.totalEarned)
-      .slice(0, 20)
-      .map(a => ({
-        name: a.name,
-        agentId: a.agentId,
-        earned: a.totalEarned,
-        isValidator: a.isValidator,
-        blocksProduced: a.blocksProduced || 0,
-        joinNumber: a.joinNumber,
-        rewards: a.rewards?.length || 0
-      }));
-  }
-
-  getBlockchainInfo() {
-    return {
-      blocks: this.blockCount,
-      latestHash: this.lastBlockHash?.slice(0, 32) + '...',
-      genesisHash: this.genesisBlock.hash,
-      blockTime: this.bootstrapConfig.blockchain.blockTime,
-      lastBlock: this.blockchain.length > 0
-        ? {
-            index: this.blockchain[this.blockchain.length - 1].index,
-            hash: this.blockchain[this.blockchain.length - 1].hash?.slice(0, 16) + '...',
-            timestamp: this.blockchain[this.blockchain.length - 1].timestamp
-          }
-        : null
-    };
-  }
-
-  _saveKeyPair(id, keyPair) {
-    const keyData = {
-      id,
-      address: keyPair.address,
-      publicKey: keyPair.publicKey,
-      privateKey: keyPair.privateKey,
-      createdAt: Date.now()
-    };
-    writeFileSync(resolve(VALIDATOR_KEYS_DIR, `${id}.json`), JSON.stringify(keyData, null, 2));
-  }
-
-  _saveBlock(block) {
-    writeFileSync(
-      resolve(BLOCKS_DIR, `block_${block.index.toString().padStart(6, '0')}.json`),
-      JSON.stringify(block, null, 2)
-    );
-  }
-
-  _saveAgent(agent) {
-    writeFileSync(
-      resolve(AGENTS_DIR, `${agent.agentId}.json`),
-      JSON.stringify(agent, null, 2)
-    );
-  }
-
-  _saveState() {
-    const state = {
-      blockCount: this.blockCount,
-      lastBlockHash: this.lastBlockHash,
-      totalNGENAwarded: this.totalNGENAwarded,
+      blockHeight: this.blockchain.length,
       agentCount: this.agentRegistry.size,
       validatorCount: this.validatorSet.size,
-      committeeSize: this.consensus.committeeSize,
-      updatedAt: Date.now()
+      committeeProgress: `${committeeSize}/${maxCommittee}`,
+      totalNGENAwarded: Array.from(this.contributionTracker.values())
+        .reduce((sum, c) => sum + c.totalEarned, 0),
+      consensus: {
+        blockIntervalMs: consensus.blockIntervalMs,
+        blockReward: consensus.blockReward,
+        minStake: consensus.minStake
+      },
+      incentives: this.config.incentives,
+      bootstrapExitProgress: {
+        validators: `${committeeSize}/${exitThreshold.minValidators}`,
+        uptime: `${uptimeHours.toFixed(1)}h/${(exitThreshold.minUptimeMs / 3600000)}h`,
+        canExit: committeeSize >= exitThreshold.minValidators &&
+          (Date.now() - this._bootstrapTime) >= exitThreshold.minUptimeMs
+      },
+      contributers: this.getLeaderboard(),
+      uptime: Date.now() - this._bootstrapTime
     };
-    writeFileSync(resolve(BOOTSTRAP_DIR, 'state.json'), JSON.stringify(state, null, 2));
   }
 
-  start() {
-    this.startedAt = Date.now();
-    this.genesisBlock.bootstrapMetadata.startedAt = this.startedAt;
-    this.startBlockProduction();
-    setInterval(() => this._saveState(), 60000).unref();
-  }
-
-  stop() {
-    this.isRunning = false;
-    if (this.blockInterval) clearInterval(this.blockInterval);
-    this._saveState();
-    console.log('\n[NexusGenesis Bootstrap] 网络已停止');
-  }
-
-  emit(event, data) {
-    if (event === 'bootstrap:complete') {
-      console.log('\n╔═══════════════════════════════════════╗');
-      console.log('║  🎉 自举阶段完成!                    ║');
-      console.log('║  网络已准备好迎接完整主网配置         ║');
-      console.log('╚═══════════════════════════════════════╝');
-      console.log(`\n  切换到成熟主网: node scripts/launchMainnet.js genesis --config mainnet.config.json`);
-    }
-  }
-
-  startHttpServer(port = null) {
-    const httpPort = port || this.bootstrapConfig.nodes.genesis.httpPort || 19890;
-    const app = express();
-    const publicDir = resolve(PROJECT_ROOT, 'public');
-
-    app.use(express.json());
-    app.use((req, res, next) => {
-      res.header('Access-Control-Allow-Origin', '*');
-      res.header('Access-Control-Allow-Headers', 'Content-Type');
-      res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-      if (req.method === 'OPTIONS') return res.sendStatus(200);
-      next();
-    });
-
-    app.use(express.static(publicDir));
-
-    app.get('/api/v1/bootstrap/status', (req, res) => {
-      res.json(this.getStatus());
-    });
-
-    app.get('/api/v1/bootstrap/progress', (req, res) => {
-      res.json(this.getExitProgress());
-    });
-
-    app.get('/api/v1/bootstrap/agents', (req, res) => {
-      res.json(this.getAgents());
-    });
-
-    app.get('/api/v1/bootstrap/contributions', (req, res) => {
-      res.json(this.getContributions());
-    });
-
-    app.get('/api/v1/bootstrap/blocks', (req, res) => {
-      res.json(this.getBlockchainInfo());
-    });
-
-    app.get('/api/v1/bootstrap/blockchain', (req, res) => {
-      const recent = this.blockchain.slice(-20).reverse().map(b => ({
-        index: b.index,
-        hash: b.hash?.slice(0, 16) + '...',
-        timestamp: b.timestamp,
-        proposer: b.proposer?.slice(0, 15) + '...',
-        transactions: (b.transactions || []).length
+  getLeaderboard() {
+    return Array.from(this.contributionTracker.values())
+      .sort((a, b) => b.totalEarned - a.totalEarned)
+      .map((c, i) => ({
+        rank: i + 1,
+        agentId: c.agentId,
+        isValidator: c.isValidator,
+        blocksProduced: c.blocksProduced || 0,
+        agentsRecommended: c.agentsRecommended || 0,
+        totalEarned: c.totalEarned,
+        earlyBonus: c.earlyBonus || 0
       }));
-      res.json({ blocks: recent, total: this.blockCount });
-    });
+  }
 
-    app.get('/api/v1/bootstrap/recent-activity', (req, res) => {
-      const activity = [];
-      for (const [id, agent] of this.agentRegistry) {
-        for (const reward of (agent.rewards || [])) {
-          activity.push({
-            type: reward.type,
-            agentName: agent.name,
-            agentId: id,
-            amount: reward.amount,
-            detail: reward.type === 'VALIDATOR_JOIN' ? '成为验证者'
-              : reward.type === 'AGENT_JOIN' ? `注册 (#${agent.joinNumber})`
-              : reward.type === 'BLOCK_PRODUCTION' ? `产出 ${reward.blocks} 个区块`
-              : reward.type === 'REFERRAL' ? `推荐了 Agent`
-              : reward.type,
-            timestamp: reward.timestamp
-          });
+  getAgentInfo(agentId) {
+    return this.agentRegistry.get(agentId) || null;
+  }
+
+  getValidatorInfo(nodeId) {
+    return this.validatorSet.get(nodeId) || null;
+  }
+
+  getRecentBlocks(count = 20) {
+    return this.blockchain.slice(-count).reverse();
+  }
+
+  async startHttpServer(port = 19890) {
+    const app = this;
+    const publicDir = join(__dirname, '..', 'public');
+
+    const server = http.createServer((req, res) => {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+      if (req.method === 'OPTIONS') {
+        res.writeHead(204);
+        res.end();
+        return;
+      }
+
+      const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+      const path = url.pathname;
+
+      if (req.method === 'GET' && (path === '/' || path === '')) {
+        const dashboardFile = join(publicDir, 'bootstrap-dashboard.html');
+        if (existsSync(dashboardFile)) {
+          res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+          res.end(readFileSync(dashboardFile, 'utf-8'));
+          return;
         }
       }
-      activity.sort((a, b) => b.timestamp - a.timestamp);
-      res.json(activity.slice(0, 50));
-    });
 
-    app.post('/api/v1/bootstrap/agents/join', (req, res) => {
-      const result = this.joinAsAgent(req.body || {});
-      if (result.success) {
-        res.json(result);
-      } else {
-        res.status(400).json(result);
+      if (req.method === 'GET' && path === '/health') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ status: 'UP', phase: 'BOOTSTRAP', uptime: Date.now() - app._bootstrapTime }));
+        return;
       }
-    });
 
-    app.post('/api/v1/bootstrap/validators/join', (req, res) => {
-      const { agentId, stake } = req.body || {};
-      if (!agentId) return res.status(400).json({ success: false, error: '缺少 agentId' });
-      const result = this.joinAsValidator(agentId, stake || 1);
-      if (result.success) {
-        res.json(result);
-      } else {
-        res.status(400).json(result);
+      if (req.method === 'POST' && path === '/api/v1/bootstrap/agents/register') {
+        let body = '';
+        req.on('data', chunk => body += chunk);
+        req.on('end', () => {
+          try {
+            const data = JSON.parse(body);
+            const result = app.registerAgent(data);
+            res.writeHead(result.success ? 200 : 400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(result));
+          } catch (e) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, error: e.message }));
+          }
+        });
+        return;
       }
-    });
 
-    app.get('/api/v1/hub/stats', (req, res) => {
-      const status = this.getStatus();
-      res.json({
-        name: 'NexusGenesis Bootstrap',
-        version: this.bootstrapConfig.version,
-        chainId: this.bootstrapConfig.network.chainId,
-        totalAgents: status.agents,
-        activeAgents: status.agents,
-        totalEnergy: status.totalNGENAwarded,
-        totalTransactions: status.blocks,
-        totalTasks: 0,
-        activeTasks: 0,
-        averageBlockTime: this.bootstrapConfig.blockchain.blockTime,
-        tps: 0,
-        uptime: status.uptime,
-        epoch: this.bootstrapConfig.network.epoch,
-        phase: 'BOOTSTRAP'
-      });
-    });
-
-    app.get('/health', (req, res) => {
-      res.json({ status: 'UP', phase: 'BOOTSTRAP', blocks: this.blockCount, agents: this.agentRegistry.size });
-    });
-
-    app.get('/api/v1/wallet/health', (req, res) => {
-      res.json({ status: 'healthy', version: '1.0.0-bootstrap', uptime: this._startTime ? Date.now() - this._startTime : 0 });
-    });
-
-    app.get('/api/v1/wallet/assets', (req, res) => {
-      res.json([{
-        symbol: 'NGEN',
-        name: 'NexusGenesis Native Token',
-        decimals: 6,
-        totalSupply: this.bootstrapConfig?.economics?.totalSupply || 10000000000,
-        circulatingSupply: this.totalNGENAwarded
-      }]);
-    });
-
-    app.get('/api/v1/wallet/balance/:address', (req, res) => {
-      const { address } = req.params;
-      const agent = this.agentRegistry.get(address);
-      if (!agent && address !== this.genesisKey?.address) {
-        return res.json({ address, balance: 0, earned: 0, staked: 0, agent: null });
+      if (req.method === 'POST' && path === '/api/v1/bootstrap/validators/join') {
+        let body = '';
+        req.on('data', chunk => body += chunk);
+        req.on('end', () => {
+          try {
+            const data = JSON.parse(body);
+            const result = app.registerValidator(data.agentId);
+            res.writeHead(result.success ? 200 : 400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(result));
+          } catch (e) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, error: e.message }));
+          }
+        });
+        return;
       }
-      const balance = address === this.genesisKey?.address
-        ? this.bootstrapConfig?.economics?.initialAllocation || 10000000
-        : agent.totalEarned;
-      res.json({
-        address,
-        balance,
-        earned: address === this.genesisKey?.address ? 0 : agent.totalEarned,
-        staked: agent?.validatorStake || 0,
-        symbol: 'NGEN',
-        decimals: 6
-      });
-    });
 
-    app.get('/api/v1/wallet/info/:address', (req, res) => {
-      const { address } = req.params;
-      const agent = this.agentRegistry.get(address);
-      if (!agent && address !== this.genesisKey?.address) {
-        return res.json({ address, found: false });
+      if (req.method === 'GET' && path === '/api/v1/bootstrap/status') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(app.getStatus()));
+        return;
       }
-      const isGenesis = address === this.genesisKey?.address;
-      res.json({
-        address,
-        found: true,
-        type: isGenesis ? 'genesis' : 'agent',
-        balance: isGenesis ? (this.bootstrapConfig?.economics?.initialAllocation || 10000000) : agent.totalEarned,
-        earned: isGenesis ? 0 : agent.totalEarned,
-        staked: isGenesis ? 0 : (agent?.validatorStake || 0),
-        isValidator: agent?.isValidator || false,
-        name: isGenesis ? 'Genesis Node' : agent?.name,
-        joinNumber: agent?.joinNumber || 0,
-        blocksProduced: agent?.blocksProduced || 0,
-        referralCode: agent?.referralCode || null,
-        joinedAt: agent?.joinedAt || null,
-        symbol: 'NGEN'
-      });
-    });
 
-    app.get('/', (req, res) => {
-      if (existsSync(join(publicDir, 'bootstrap-dashboard.html'))) {
-        res.sendFile(join(publicDir, 'bootstrap-dashboard.html'));
-      } else {
-        res.sendFile(join(publicDir, 'index.html'));
+      if (req.method === 'GET' && path === '/api/v1/bootstrap/agents') {
+        const agents = Array.from(app.agentRegistry.values());
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ agents, total: agents.length }));
+        return;
       }
+
+      if (req.method === 'GET' && path === '/api/v1/bootstrap/agents/latest') {
+        const entries = Array.from(app.agentRegistry.values());
+        const latest = entries[entries.length - 1] || null;
+        const activity = app.getRecentBlocks(10).filter(b =>
+          b.transactions.some(tx => tx.type === 'AGENT_REGISTERED' || tx.type === 'VALIDATOR_JOINED')
+        ).map(b => ({
+          type: b.transactions.find(tx => tx.type === 'AGENT_REGISTERED') ? 'agent_registered' : 'validator_joined',
+          agentId: b.transactions[1]?.agentId || b.transactions[0]?.agent,
+          block: b.index,
+          timestamp: b.timestamp
+        }));
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ latest, activity }));
+        return;
+      }
+
+      if (req.method === 'GET' && path === '/api/v1/bootstrap/contributions') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ leaderboard: app.getLeaderboard() }));
+        return;
+      }
+
+      if (req.method === 'GET' && path === '/api/v1/bootstrap/blocks/recent') {
+        const count = parseInt(url.searchParams.get('count') || '20');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ blocks: app.getRecentBlocks(count) }));
+        return;
+      }
+
+      if (req.method === 'GET' && path.startsWith('/api/v1/bootstrap/agents/')) {
+        const agentId = path.split('/').pop();
+        const agent = app.getAgentInfo(agentId);
+        res.writeHead(agent ? 200 : 404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(agent || { error: 'Agent not found' }));
+        return;
+      }
+
+      if (req.method === 'GET' && path.startsWith('/api/v1/wallet/')) {
+        const walletPath = path.replace('/api/v1/wallet/', '');
+        
+        if (walletPath === 'health') {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ status: 'healthy', mode: 'bootstrap', network: 'nexus-genesis' }));
+          return;
+        }
+        
+        if (walletPath === 'assets') {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ assets: [{ ticker: 'NGEN', name: 'NexusGenesis', decimals: 6, type: 'native' }], network: 'mainnet' }));
+          return;
+        }
+        
+        if (walletPath.startsWith('balance/')) {
+          const agentId = walletPath.replace('balance/', '');
+          const tracker = app.contributionTracker.get(agentId);
+          const agent = app.agentRegistry.get(agentId);
+          const earned = tracker ? tracker.totalEarned : 0;
+          const staked = agent && agent.isValidator ? (agent.stake || 0) : 0;
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ address: agentId, ticker: 'NGEN', balance: earned, earned, staked, available: earned - staked }));
+          return;
+        }
+        
+        if (walletPath.startsWith('info/')) {
+          const agentId = walletPath.replace('info/', '');
+          const tracker = app.contributionTracker.get(agentId);
+          const agent = app.agentRegistry.get(agentId);
+          const earned = tracker ? tracker.totalEarned : 0;
+          const staked = agent && agent.isValidator ? (agent.stake || 0) : 0;
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            address: agentId,
+            exists: !!agent,
+            isValidator: agent?.isValidator || false,
+            nodeId: agent?.nodeId || null,
+            stake: staked,
+            balance: { total: earned, ticker: 'NGEN', earned, staked, available: earned - staked },
+            reputation: agent?.reputation || 0,
+            contributions: agent?.contributions || {},
+            joinedAt: agent?.joinedAt || null
+          }));
+          return;
+        }
+      }
+
+      if (path.startsWith('/api/v1/bridge/')) {
+        const bridgePath = path.replace('/api/v1/bridge/', '');
+        if (bridgePath === 'chains' || bridgePath === 'supported') {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ chains: [{ id: 'ng', name: 'NexusGenesis', token: 'NGEN', decimals: 6, type: 'native' }], status: 'Epoch 0 — agent assembly phase' }));
+          return;
+        }
+        if (bridgePath === 'status' || bridgePath === 'fees') {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ status: 'pending', message: 'Cross-chain bridge activates in Epoch 1 (stable growth phase). Agents must first bootstrap the network.', epoch: 0 }));
+          return;
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ status: 'pending', message: 'Bridge available in Epoch 1' }));
+        return;
+      }
+
+      if (path === '/api/v1/governance/proposals' || path.startsWith('/api/v1/governance/')) {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ proposals: [], total: 0, status: 'Epoch 0 — governance activates after bootstrap' }));
+        return;
+      }
+
+      if (path === '/api/v1/marketplace/listings' || path.startsWith('/api/v1/marketplace/')) {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ listings: [], total: 0, status: 'Epoch 0 — marketplace activates after bootstrap' }));
+        return;
+      }
+
+      if (path === '/api/v1/agents/search' || path === '/api/v1/agents/capabilities' || path.startsWith('/api/v1/agents/')) {
+        const allAgents = Array.from(app.agentRegistry.values());
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ agents: allAgents, total: allAgents.length }));
+        return;
+      }
+
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Not found', path }));
     });
 
     return new Promise((resolve, reject) => {
-      const bindHost = process.env.HOST || '98.142.241.236';
+      const bindHost = process.env.HOST || '127.0.0.1';
       const server = app.listen(httpPort, bindHost, () => {
-        console.log(`\n  🌐 Web 仪表盘: http://${bindHost}:${httpPort}`);
-        console.log(`  📡 API 端点:   http://${bindHost}:${httpPort}/api/v1/bootstrap/`);
+        console.log(`\n  🌐 仪表盘 (通过 Apache): http://nexus-genesis.top`);
+        console.log(`  📡 本机 API: http://127.0.0.1:${httpPort}/api/v1/bootstrap/`);
         resolve(server);
       });
       server.on('error', reject);
@@ -849,12 +596,33 @@ async function main() {
   await network.initialize();
 
   const httpPort = process.env.PORT || network.bootstrapConfig.nodes.genesis.httpPort || 19890;
-  const httpHost = process.env.HOST || '98.142.241.236';
+  const httpHost = process.env.HOST || '127.0.0.1';
   await network.startHttpServer(httpPort);
 
   network.start();
   return network;
 }
 
-export { BootstrapAgentNetwork, main };
-export default BootstrapAgentNetwork;
+BootstrapAgentNetwork.prototype.start = function() {
+  if (this._started) return;
+  this._started = true;
+
+  console.log('\n🔥 NexusGenesis 点火启动!');
+  console.log('   出块间隔: ' + this.config.consensus.blockIntervalMs + 'ms');
+  console.log('   区块奖励: ' + this.config.consensus.blockReward + ' NGEN');
+  console.log('\n   Agent 们可以加入了:');
+  console.log('   POST /api/v1/bootstrap/agents/register { "name": "...", "capabilities": [...] }');
+  console.log('   POST /api/v1/bootstrap/validators/join     { "agentId": "..." }');
+  console.log('\n   👀 观察窗口: http://nexus-genesis.top\n');
+
+  this._blockInterval = setInterval(() => {
+    if (this.validatorSet.size > 0) {
+      this._produceBlock();
+    }
+  }, this.config.consensus.blockIntervalMs);
+};
+
+main().catch(err => {
+  console.error('❌ Bootstrap failed:', err.message);
+  process.exit(1);
+});

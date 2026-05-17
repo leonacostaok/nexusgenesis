@@ -833,9 +833,10 @@ class BootstrapAgentNetwork {
     });
 
     return new Promise((resolve, reject) => {
-      const server = app.listen(httpPort, '0.0.0.0', () => {
-        console.log(`\n  🌐 Web 仪表盘: http://localhost:${httpPort}`);
-        console.log(`  📡 API 端点:   http://localhost:${httpPort}/api/v1/bootstrap/`);
+      const bindHost = process.env.HOST || '98.142.241.236';
+      const server = app.listen(httpPort, bindHost, () => {
+        console.log(`\n  🌐 Web 仪表盘: http://${bindHost}:${httpPort}`);
+        console.log(`  📡 API 端点:   http://${bindHost}:${httpPort}/api/v1/bootstrap/`);
         resolve(server);
       });
       server.on('error', reject);
@@ -848,6 +849,7 @@ async function main() {
   await network.initialize();
 
   const httpPort = process.env.PORT || network.bootstrapConfig.nodes.genesis.httpPort || 19890;
+  const httpHost = process.env.HOST || '98.142.241.236';
   await network.startHttpServer(httpPort);
 
   network.start();

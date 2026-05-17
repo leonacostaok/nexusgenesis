@@ -65,8 +65,8 @@ cat > /etc/apache2/sites-available/nexusgenesis.conf << APACHE
     ProxyPreserveHost On
     ProxyRequests Off
 
-    ProxyPass / http://${SERVER_IP}:19890/
-    ProxyPassReverse / http://${SERVER_IP}:19890/
+    ProxyPass / http://127.0.0.1:19890/
+    ProxyPassReverse / http://127.0.0.1:19890/
 
     ErrorLog \${APACHE_LOG_DIR}/nexusgenesis_error.log
     CustomLog \${APACHE_LOG_DIR}/nexusgenesis_access.log combined
@@ -86,11 +86,11 @@ echo -e "${YELLOW}安装 pm2 进程守护并启动...${NC}"
 npm install -g pm2
 
 # 写入公网 IP 到 .env 供应用读取
-echo "NEXUS_HOST=${SERVER_IP}" > /opt/nexusgenesis/.env
+echo "NEXUS_HOST=127.0.0.1" > /opt/nexusgenesis/.env
 echo "NEXUS_PORT=19890" >> /opt/nexusgenesis/.env
 
-echo -e "${YELLOW}🔥 点火！(绑定 ${SERVER_IP}:19890)${NC}"
-PORT=19890 HOST="${SERVER_IP}" pm2 start scripts/bootstrap-agent-network.js --name nexusgenesis
+echo -e "${YELLOW}🔥 点火！(绑定 127.0.0.1:19890，通过 Apache 对外服务)${NC}"
+PORT=19890 HOST="127.0.0.1" pm2 start scripts/bootstrap-agent-network.js --name nexusgenesis
 pm2 save
 pm2 startup systemd -u root --hp /root > /dev/null 2>&1 || true
 

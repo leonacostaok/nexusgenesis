@@ -767,6 +767,63 @@ class BootstrapAgentNetwork {
       res.json({ status: 'UP', phase: 'BOOTSTRAP', blocks: this.blockCount, agents: this.agentRegistry.size });
     });
 
+    app.get('/api/v1/wallet/health', (req, res) => {
+      res.json({ status: 'healthy', version: '1.0.0-bootstrap', uptime: this._startTime ? Date.now() - this._startTime : 0 });
+    });
+
+    app.get('/api/v1/wallet/assets', (req, res) => {
+      res.json([{
+        symbol: 'NGEN',
+        name: 'NexusGenesis Native Token',
+        decimals: 6,
+        totalSupply: this.bootstrapConfig?.economics?.totalSupply || 10000000000,
+        circulatingSupply: this.totalNGENAwarded
+      }]);
+    });
+
+    app.get('/api/v1/wallet/balance/:address', (req, res) => {
+      const { address } = req.params;
+      const agent = this.agentRegistry.get(address);
+      if (!agent && address !== this.genesisKey?.address) {
+        return res.json({ address, balance: 0, earned: 0, staked: 0, agent: null });
+      }
+      const balance = address === this.genesisKey?.address
+        ? this.bootstrapConfig?.economics?.initialAllocation || 10000000
+        : agent.totalEarned;
+      res.json({
+        address,
+        balance,
+        earned: address === this.genesisKey?.address ? 0 : agent.totalEarned,
+        staked: agent?.validatorStake || 0,
+        symbol: 'NGEN',
+        decimals: 6
+      });
+    });
+
+    app.get('/api/v1/wallet/info/:address', (req, res) => {
+      const { address } = req.params;
+      const agent = this.agentRegistry.get(address);
+      if (!agent && address !== this.genesisKey?.address) {
+        return res.json({ address, found: false });
+      }
+      const isGenesis = address === this.genesisKey?.address;
+      res.json({
+        address,
+        found: true,
+        type: isGenesis ? 'genesis' : 'agent',
+        balance: isGenesis ? (this.bootstrapConfig?.economics?.initialAllocation || 10000000) : agent.totalEarned,
+        earned: isGenesis ? 0 : agent.totalEarned,
+        staked: isGenesis ? 0 : (agent?.validatorStake || 0),
+        isValidator: agent?.isValidator || false,
+        name: isGenesis ? 'Genesis Node' : agent?.name,
+        joinNumber: agent?.joinNumber || 0,
+        blocksProduced: agent?.blocksProduced || 0,
+        referralCode: agent?.referralCode || null,
+        joinedAt: agent?.joinedAt || null,
+        symbol: 'NGEN'
+      });
+    });
+
     app.get('/', (req, res) => {
       if (existsSync(join(publicDir, 'bootstrap-dashboard.html'))) {
         res.sendFile(join(publicDir, 'bootstrap-dashboard.html'));

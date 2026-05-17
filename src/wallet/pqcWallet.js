@@ -124,7 +124,8 @@ export class PQCWallet extends Wallet {
     try {
       const messageStr = typeof message === 'object' ? JSON.stringify(message) : message;
       const sigBuffer = typeof signature === 'string' ? Buffer.from(signature, 'hex') : signature;
-      const isValid = await verify(messageStr, sigBuffer, publicKey);
+      const pk = publicKey || this.publicKey;
+      const isValid = await verify(messageStr, sigBuffer, pk);
       return isValid;
     } catch (error) {
       console.error('Error verifying signature:', error.message);
@@ -227,18 +228,22 @@ export class PQCWallet extends Wallet {
    * @returns {PQCWallet} 钱包instance
    */
   static importEncrypted(encrypted, password) {
-    const salt = Buffer.from(encrypted.salt, 'hex');
-    const iv = Buffer.from(encrypted.iv, 'hex');
-    const key = crypto.pbkdf2Sync(password, salt, 100000, 32, 'sha512');
+    try {
+      const salt = Buffer.from(encrypted.salt, 'hex');
+      const iv = Buffer.from(encrypted.iv, 'hex');
+      const key = crypto.pbkdf2Sync(password, salt, 100000, 32, 'sha512');
 
-    const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
-    let privateKeyHex = decipher.update(encrypted.ciphertext, 'hex', 'utf8');
-    privateKeyHex += decipher.final('utf8');
+      const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
+      let privateKeyHex = decipher.update(encrypted.ciphertext, 'hex', 'utf8');
+      privateKeyHex += decipher.final('utf8');
 
-    const privateKey = Buffer.from(privateKeyHex, 'hex');
-    const publicKey = Buffer.from(encrypted.publicKey, 'hex');
+      const privateKey = Buffer.from(privateKeyHex, 'hex');
+      const publicKey = Buffer.from(encrypted.publicKey, 'hex');
 
-    return Reflect.construct(PQCWallet, [publicKey, privateKey, 0n]);
+      return Reflect.construct(PQCWallet, [publicKey, privateKey, 0n]);
+    } catch (error) {
+      return null;
+    }
   }
 
   /**

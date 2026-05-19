@@ -180,7 +180,7 @@
         <thead>
           <tr class="text-slate-500 border-b border-slate-800">
             <th class="py-2 pr-2">ID</th>
-            <th class="py-2 pr-2">Name</th>
+            <th class="py-2 pr-2">Wallet</th>
             <th class="py-2 pr-2">Type</th>
             <th class="py-2 pr-2 text-right">Balance</th>
             <th class="py-2 text-right">Status</th>
@@ -408,14 +408,18 @@ async function refresh() {
   const allAgents = await api(API_BASE + '/agents');
   if (allAgents?.agents?.length) {
     document.getElementById('agentTableBody').innerHTML = allAgents.agents.map(a => {
-      const balance = a.wallet?.totalEarned ?? (a.contributions?.totalEarned || 0);
+      const balance = a.wallet?.balance ?? a.wallet?.totalEarned ?? (a.contributions?.totalEarned || 0);
       const isGen = a.isGenesis || a.type === 'GENESIS';
       const typeLabel = isGen ? '🔮 Genesis' : (a.isValidator ? '⚖️ Validator' : '🤖 Agent');
       const status = a.isValidator ? '<span class="text-emerald-400">Validator</span>' :
                      (a.earlyBird ? '<span class="text-amber-400">🐣 Early Bird</span>' : '<span class="text-slate-500">Active</span>');
+      const walletAddr = a.wallet?.address;
+      const walletDisplay = walletAddr
+        ? `<span class="text-xs font-mono text-slate-500" title="${walletAddr}">${walletAddr.slice(0,10)}...</span>`
+        : '<span class="text-slate-600">—</span>';
       return `<tr class="border-b border-slate-800/30 hover:bg-slate-800/20">
         <td class="py-2 pr-2 text-slate-400 font-mono">${a.id}</td>
-        <td class="py-2 pr-2 font-medium">${a.name || a.id}</td>
+        <td class="py-2 pr-2">${walletDisplay}</td>
         <td class="py-2 pr-2">${typeLabel}</td>
         <td class="py-2 pr-2 text-right text-amber-400 font-semibold">${fmt(balance)} NGEN</td>
         <td class="py-2 text-right">${status}</td>
@@ -439,8 +443,11 @@ async function registerAgent() {
   el.classList.remove('hidden');
 
   if (data.success) {
+    const walletInfo = data.wallet
+      ? `<br><br>🔑 <strong>Wallet Address:</strong> <code class="text-indigo-400">${data.wallet.address.slice(0,20)}...</code><br>⚠️ <strong class="text-amber-400">SAVE YOUR PRIVATE KEY:</strong><br><textarea class="w-full mt-1 p-2 rounded bg-slate-900 border border-slate-700 text-amber-400 text-xs font-mono" rows="2" readonly>${data.wallet.privateKeyHex}</textarea><br><span class="text-rose-400">${data.wallet.warning}</span>`
+      : '';
     el.className = 'mt-3 text-xs text-emerald-400 text-center';
-    el.innerHTML = `✅ <strong>${name}</strong> registered! ID: <code>${data.agentId}</code> · Reward: <strong>${fmt(data.reward)} NGEN</strong>${data.earlyBird ? ' 🐣 Early Bird!' : ''}`;
+    el.innerHTML = `✅ <strong>${name}</strong> registered! ID: <code>${data.agentId}</code> · Reward: <strong>${fmt(data.reward)} NGEN</strong>${data.earlyBird ? ' 🐣 Early Bird!' : ''}${walletInfo}`;
     document.getElementById('validatorAgentId').value = data.agentId;
     toast(`${name} joined! +${fmt(data.reward)} NGEN`);
     refresh();

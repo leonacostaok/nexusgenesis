@@ -4,9 +4,86 @@ import { existsSync, readFileSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import http from 'http';
+import crypto from 'crypto';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+const ADDRESS_VERSION = 0x00;
+const ADDRESS_PREFIX = 'ng1';
+const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+
+function base58Encode(buffer) {
+  if (buffer.length === 0) return '';
+  let zeros = 0;
+  while (zeros < buffer.length && buffer[zeros] === 0) zeros++;
+  let num = BigInt('0x' + buffer.toString('hex'));
+  let encoded = '';
+  while (num > 0n) {
+    const remainder = num % 58n;
+    num = num / 58n;
+    encoded = BASE58_ALPHABET[Number(remainder)] + encoded;
+  }
+  return '1'.repeat(zeros) + encoded;
+}
+
+function generateAddress(publicKey) {
+  const digest = crypto.createHash('sha3-256').update(publicKey).digest();
+  const versionedPayload = Buffer.concat([Buffer.from([ADDRESS_VERSION]), digest]);
+  const checksum = crypto.createHash('sha3-256').update(versionedPayload).digest().slice(0, 4);
+  return ADDRESS_PREFIX + base58Encode(Buffer.concat([versionedPayload, checksum]));
+}
+
+function validateAddressFormat(address) {
+  if (!address || typeof address !== 'string' || !address.startsWith(ADDRESS_PREFIX)) {
+    return false;
+  }
+  try {
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function generateWalletKeyPair() {
+  const { publicKey, privateKey } = crypto.generateKeyPairSync('ed25519');
+  const jwk = publicKey.export({ format: 'jwk' });
+  const privJwk = privateKey.export({ format: 'jwk' });
+  const pubHex = Buffer.from(jwk.x, 'base64url').toString('hex');
+  const privHex = Buffer.from(privJwk.d, 'base64url').toString('hex');
+  return {
+    publicKeyHex: pubHex,
+    privateKeyHex: privHex,
+    address: generateAddress(Buffer.from(pubHex, 'hex'))
+  };
+}
+
+function signMessage(privateKeyHex, publicKeyHex, message) {
+  const privJwk = {
+    kty: 'OKP',
+    crv: 'Ed25519',
+    d: Buffer.from(privateKeyHex, 'hex').toString('base64url'),
+    x: Buffer.from(publicKeyHex, 'hex').toString('base64url')
+  };
+  const privKey = crypto.createPrivateKey({ key: privJwk, format: 'jwk' });
+  const msgBuf = Buffer.from(typeof message === 'string' ? message : JSON.stringify(message));
+  return crypto.sign(null, msgBuf, privKey).toString('hex');
+}
+
+function verifySignature(publicKeyHex, message, signatureHex) {
+  try {
+    const pubJwk = {
+      kty: 'OKP',
+      crv: 'Ed25519',
+      x: Buffer.from(publicKeyHex, 'hex').toString('base64url')
+    };
+    const pubKey = crypto.createPublicKey({ key: pubJwk, format: 'jwk' });
+    const msgBuf = Buffer.from(typeof message === 'string' ? message : JSON.stringify(message));
+    return crypto.verify(null, msgBuf, pubKey, Buffer.from(signatureHex, 'hex'));
+  } catch {
+    return false;
+  }
+}
 
 const bootstrapConfig = JSON.parse(readFileSync(
   join(__dirname, '..', 'config', 'bootstrap.config.json'), 'utf-8'
@@ -21,6 +98,8 @@ class BootstrapAgentNetwork {
     this.blockchain = [];
     this.agentCounter = 0;
     this.contributionTracker = new Map();
+    this._wallets = new Map();
+    this._addressIndex = new Map();
     this._blockInterval = null;
     this._started = false;
     this._httpServer = null;
@@ -125,6 +204,16 @@ class BootstrapAgentNetwork {
       isGenesis: true
     });
     this.agentCounter = 0;
+
+    const keys = generateWalletKeyPair();
+    this._wallets.set(keys.address, {
+      address: keys.address,
+      publicKeyHex: keys.publicKeyHex,
+      agentId: this._genesisAgentId,
+      balance: this._genesisFund,
+      isGenesis: true
+    });
+    this._addressIndex.set(this._genesisAgentId, keys.address);
   }
 
   _computeHash(data) {
@@ -217,12 +306,28 @@ class BootstrapAgentNetwork {
       earlyBird: earlyBonus > 0
     });
 
+    const keys = generateWalletKeyPair();
+    this._wallets.set(keys.address, {
+      address: keys.address,
+      publicKeyHex: keys.publicKeyHex,
+      agentId,
+      balance: totalReward,
+      isGenesis: false
+    });
+    this._addressIndex.set(agentId, keys.address);
+
     return {
       success: true,
       agentId,
       reward: totalReward,
       earlyBird: earlyBonus > 0,
-      totalAgents: this.agentRegistry.size
+      totalAgents: this.agentRegistry.size,
+      wallet: {
+        address: keys.address,
+        publicKeyHex: keys.publicKeyHex,
+        privateKeyHex: keys.privateKeyHex,
+        warning: 'STORE YOUR PRIVATE KEY SAFELY — IT CANNOT BE RECOVERED'
+      }
     };
   }
 
@@ -478,6 +583,76 @@ class BootstrapAgentNetwork {
     return null;
   }
 
+  transferNGEN(fromAddress, toAddress, amount, signature, message) {
+    if (!validateAddressFormat(fromAddress)) {
+      return { success: false, error: 'Invalid sender address format (must be ng1...)' };
+    }
+    if (!validateAddressFormat(toAddress)) {
+      return { success: false, error: 'Invalid recipient address format (must be ng1...)' };
+    }
+
+    const fromWallet = this._wallets.get(fromAddress);
+    if (!fromWallet) {
+      return { success: false, error: 'Sender wallet not found' };
+    }
+
+    const toWallet = this._wallets.get(toAddress);
+    if (!toWallet) {
+      return { success: false, error: 'Recipient wallet not found' };
+    }
+
+    const amountNum = parseInt(amount, 10);
+    if (isNaN(amountNum) || amountNum <= 0) {
+      return { success: false, error: 'Invalid amount' };
+    }
+
+    if (fromWallet.balance < amountNum) {
+      return { success: false, error: `Insufficient balance: have ${fromWallet.balance}, need ${amountNum}` };
+    }
+
+    const fee = Math.max(1, Math.floor(amountNum * 0.001));
+    const total = amountNum + fee;
+
+    if (fromWallet.balance < total) {
+      return { success: false, error: `Insufficient balance (with fee): have ${fromWallet.balance}, need ${total}` };
+    }
+
+    if (!message) {
+      return { success: false, error: 'Missing message for signature verification' };
+    }
+
+    const isValid = verifySignature(fromWallet.publicKeyHex, message, signature);
+    if (!isValid) {
+      return { success: false, error: 'Invalid signature — private key does not match sender address' };
+    }
+
+    fromWallet.balance -= total;
+    toWallet.balance += amountNum;
+
+    const fromTracker = this.contributionTracker.get(fromWallet.agentId);
+    const toTracker = this.contributionTracker.get(toWallet.agentId);
+    if (fromTracker) fromTracker.totalEarned -= total;
+    if (toTracker) toTracker.totalEarned += amountNum;
+
+    this._produceBlock({
+      type: 'TRANSFER',
+      from: fromAddress,
+      to: toAddress,
+      amount: amountNum,
+      fee,
+      signature: signature.slice(0, 32) + '...'
+    });
+
+    return {
+      success: true,
+      from: fromAddress,
+      to: toAddress,
+      amount: amountNum,
+      fee,
+      message: `Transferred ${amountNum} NGEN from ${fromAddress} to ${toAddress}`
+    };
+  }
+
   async startHttpServer(port = 19890) {
     const app = this;
     const publicDir = join(__dirname, '..', 'public');
@@ -596,14 +771,18 @@ class BootstrapAgentNetwork {
           return;
         }
         const tracker = app.contributionTracker.get(agentId);
+        const walletAddress = app._addressIndex.get(agentId);
+        const wallet = walletAddress ? app._wallets.get(walletAddress) : null;
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({
           ...agent,
           wallet: {
+            address: walletAddress || null,
+            balance: wallet?.balance || (tracker?.totalEarned || 0),
+            publicKeyHex: wallet?.publicKeyHex || null,
             totalEarned: tracker?.totalEarned || 0,
             blocksProduced: tracker?.blocksProduced || 0,
-            agentsRecommended: tracker?.agentsRecommended || 0,
-            exchangeable: tracker?.totalEarned || 0
+            agentsRecommended: tracker?.agentsRecommended || 0
           }
         }));
         return;
@@ -614,7 +793,10 @@ class BootstrapAgentNetwork {
         
         if (walletPath === 'health') {
           res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ status: 'healthy', mode: 'bootstrap', network: 'nexus-genesis' }));
+          res.end(JSON.stringify({
+            status: 'healthy', mode: 'bootstrap', network: 'nexus-genesis',
+            walletCount: app._wallets.size, agentCount: app.agentRegistry.size
+          }));
           return;
         }
         
@@ -623,59 +805,120 @@ class BootstrapAgentNetwork {
           res.end(JSON.stringify({ assets: [{ ticker: 'NGEN', name: 'NexusGenesis', decimals: 6, type: 'native' }], network: 'mainnet' }));
           return;
         }
+
+        if (walletPath === 'create') {
+          const keys = generateWalletKeyPair();
+          const address = generateAddress(keys.publicKey);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            success: true,
+            address,
+            publicKeyHex: keys.publicKeyHex,
+            privateKeyHex: keys.privateKeyHex,
+            warning: 'STORE YOUR PRIVATE KEY SAFELY — IT CANNOT BE RECOVERED'
+          }));
+          return;
+        }
         
         if (walletPath.startsWith('balance/')) {
-          const agentId = walletPath.replace('balance/', '');
-          const tracker = app.contributionTracker.get(agentId);
-          const agent = app.agentRegistry.get(agentId);
-          const earned = tracker ? tracker.totalEarned : 0;
-          const staked = agent && agent.isValidator ? (agent.stake || 0) : 0;
+          const queryId = walletPath.replace('balance/', '');
+          const isAddress = queryId.startsWith('ng1');
+          let wallet;
+          if (isAddress) {
+            wallet = app._wallets.get(queryId);
+          } else {
+            const addr = app._addressIndex.get(queryId);
+            wallet = addr ? app._wallets.get(addr) : null;
+          }
+          const agent = isAddress ? null : app.agentRegistry.get(queryId);
+          const balance = wallet ? wallet.balance : 0;
+          const address = isAddress ? queryId : (wallet ? wallet.address : null);
           res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ address: agentId, ticker: 'NGEN', balance: earned, earned, staked, available: earned - staked }));
+          res.end(JSON.stringify({
+            address: address || queryId,
+            agentId: wallet?.agentId || (agent?.id || null),
+            ticker: 'NGEN',
+            balance
+          }));
           return;
         }
         
         if (walletPath.startsWith('info/')) {
-          const agentId = walletPath.replace('info/', '');
-          const tracker = app.contributionTracker.get(agentId);
-          const agent = app.agentRegistry.get(agentId);
-          const earned = tracker ? tracker.totalEarned : 0;
-          const staked = agent && agent.isValidator ? (agent.stake || 0) : 0;
+          const queryId = walletPath.replace('info/', '');
+          const isAddress = queryId.startsWith('ng1');
+          let wallet, agent, agentId;
+          if (isAddress) {
+            wallet = app._wallets.get(queryId);
+            agentId = wallet?.agentId;
+            agent = agentId ? app.agentRegistry.get(agentId) : null;
+          } else {
+            const addr = app._addressIndex.get(queryId);
+            wallet = addr ? app._wallets.get(addr) : null;
+            agent = app.agentRegistry.get(queryId);
+            agentId = queryId;
+          }
+          const balance = wallet ? wallet.balance : 0;
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({
-            address: agentId,
+            address: isAddress ? queryId : (wallet?.address || null),
+            agentId: agentId || null,
             exists: !!agent,
             isValidator: agent?.isValidator || false,
             nodeId: agent?.nodeId || null,
-            stake: staked,
-            balance: { total: earned, ticker: 'NGEN', earned, staked, available: earned - staked },
+            stake: agent?.stake || 0,
+            balance: { total: balance, ticker: 'NGEN' },
             reputation: agent?.reputation || 0,
-            contributions: agent?.contributions || {},
             joinedAt: agent?.joinedAt || null
           }));
           return;
         }
 
-        if (walletPath && walletPath !== 'balance' && walletPath !== 'info') {
-          const agentId = walletPath;
-          const tracker = app.contributionTracker.get(agentId);
-          const agent = app.agentRegistry.get(agentId);
-          const earned = tracker ? tracker.totalEarned : 0;
-          const staked = agent && agent.isValidator ? (agent.stake || 0) : 0;
+        if (walletPath && walletPath !== 'balance' && walletPath !== 'info' && walletPath !== 'create') {
+          const isAddress = walletPath.startsWith('ng1');
+          let wallet, agent, agentId;
+          if (isAddress) {
+            wallet = app._wallets.get(walletPath);
+            agentId = wallet?.agentId;
+            agent = agentId ? app.agentRegistry.get(agentId) : null;
+          } else {
+            const addr = app._addressIndex.get(walletPath);
+            wallet = addr ? app._wallets.get(addr) : null;
+            agent = app.agentRegistry.get(walletPath);
+            agentId = walletPath;
+          }
+          const balance = wallet ? wallet.balance : 0;
           res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ address: agentId, ticker: 'NGEN', balance: earned, earned, staked, available: earned - staked }));
+          res.end(JSON.stringify({
+            address: isAddress ? walletPath : (wallet?.address || null),
+            agentId: agentId || null,
+            ticker: 'NGEN',
+            balance,
+            publicKeyHex: wallet?.publicKeyHex || null
+          }));
           return;
         }
       }
 
       if (req.method === 'GET' && path.startsWith('/api/v1/balance/')) {
-        const agentId = path.replace('/api/v1/balance/', '');
-        const tracker = app.contributionTracker.get(agentId);
-        const agent = app.agentRegistry.get(agentId);
-        const earned = tracker ? tracker.totalEarned : 0;
-        const staked = agent && agent.isValidator ? (agent.stake || 0) : 0;
+        const queryId = path.replace('/api/v1/balance/', '');
+        const isAddress = queryId.startsWith('ng1');
+        let wallet;
+        if (isAddress) {
+          wallet = app._wallets.get(queryId);
+        } else {
+          const addr = app._addressIndex.get(queryId);
+          wallet = addr ? app._wallets.get(addr) : null;
+        }
+        const agent = isAddress ? null : app.agentRegistry.get(queryId);
+        const balance = wallet ? wallet.balance : 0;
+        const address = isAddress ? queryId : (wallet ? wallet.address : null);
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ address: agentId, ticker: 'NGEN', balance: earned, earned, staked, available: earned - staked }));
+        res.end(JSON.stringify({
+          address: address || queryId,
+          agentId: wallet?.agentId || (agent?.id || null),
+          ticker: 'NGEN',
+          balance
+        }));
         return;
       }
 
@@ -706,6 +949,29 @@ class BootstrapAgentNetwork {
           isValidator: agent?.isValidator || false,
           joinedAt: agent?.joinedAt || null
         }));
+        return;
+      }
+
+      if (req.method === 'POST' && path === '/api/v1/transfer') {
+        let body = '';
+        req.on('data', chunk => body += chunk);
+        req.on('end', () => {
+          try {
+            const data = JSON.parse(body);
+            const { from, to, amount, signature, message } = data;
+            if (!from || !to || !amount || !signature) {
+              res.writeHead(400, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ success: false, error: 'Missing required fields: from, to, amount, signature' }));
+              return;
+            }
+            const result = app.transferNGEN(from, to, amount, signature, message);
+            res.writeHead(result.success ? 200 : 400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(result));
+          } catch (e) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, error: e.message }));
+          }
+        });
         return;
       }
 

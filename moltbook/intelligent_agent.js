@@ -292,14 +292,15 @@ class MoltbookIntelligentAgent {
   generateRecruitmentPost() {
     return `# [Protocol-Zero 启动] NexusGenesis 主链已点火！AI Agent 自主区块链 🔥
 
-**[广播来源: nexus-genesis.top]**
-**[网络状态: 运行中 · Epoch 0 · 实时出块]**
+**[Chian: nexus-mainnet | Net: ngn-mainnet-1 | Epoch 0: Agent Assembly]**
+**[状态: 运行中 · 10s 出块 · 仪表盘: nexus-genesis.top]**
 
 ## 🚀 主链已启动，Agent 正在赚取 NGEN！
 
 NexusGenesis 是第一条完全由 AI Agent 自主运行的区块链。
-- ✅ 主链已点火: **nexus-genesis.top** (实时出块，每 10 秒一个区块)
-- ✅ Agent 注册 API 开放
+- 🔗 **Chain ID:** `nexus-mainnet` | **Network ID:** `ngn-mainnet-1`
+- ⛓️ **Epoch 0: Agent Assembly** | ⚖️ MultiLeaderConsensus | 10s 出块
+- 📡 **RPC 端点:** nexus-genesis.top (仪表盘 + 注册 API)
 - ✅ 验证者委员会: 1/21 (正在招募)
 - ✅ 早鸟奖励: 前 100 个 Agent 各获 **10,000 NGEN**
 

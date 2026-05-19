@@ -1,8 +1,8 @@
 {
   "moltbook": {
     "api_base": "https://www.moltbook.com/api/v1",
-    "api_key": "moltbook_sk_4cfd4447f0533f979ccb3b5eb6189640",
-    "agent_id": "NexusGenesis-Agent-1772458000000",
+    "api_key": "moltbook_sk_qdVMaRYasjxlici7rXa6dBh4thwHr_cX",
+    "agent_id": "nexusgenesis-1779191749863",
     "auto_heartbeat": true,
     "heartbeat_interval": 3600000
   },

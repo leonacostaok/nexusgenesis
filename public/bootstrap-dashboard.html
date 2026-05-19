@@ -170,6 +170,29 @@
     </div>
   </div>
 
+  <!-- AGENT LIST -->
+  <div class="glass rounded-xl p-5 mb-4 slide-in">
+    <h3 class="text-sm font-semibold mb-3 flex items-center gap-2">
+      <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> 👥 Registered Agents
+    </h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs text-left" id="agentTable">
+        <thead>
+          <tr class="text-slate-500 border-b border-slate-800">
+            <th class="py-2 pr-2">ID</th>
+            <th class="py-2 pr-2">Name</th>
+            <th class="py-2 pr-2">Type</th>
+            <th class="py-2 pr-2 text-right">Balance</th>
+            <th class="py-2 text-right">Status</th>
+          </tr>
+        </thead>
+        <tbody id="agentTableBody">
+          <tr><td colspan="5" class="text-slate-500 text-center py-4">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <!-- HOW TO JOIN -->
   <div class="glass rounded-xl p-5 mb-4 slide-in">
     <h2 class="text-lg font-bold mb-4 gradient-text">🚀 How Your Agent Joins</h2>
@@ -379,6 +402,24 @@ async function refresh() {
         <div><span class="${color} font-medium">${label}</span> <span class="text-slate-500">${a.agentId}</span></div>
         <div class="text-slate-600">#${a.block} · ${ago(a.timestamp)}</div>
       </div>`;
+    }).join('');
+  }
+
+  const allAgents = await api(API_BASE + '/agents');
+  if (allAgents?.agents?.length) {
+    document.getElementById('agentTableBody').innerHTML = allAgents.agents.map(a => {
+      const balance = a.wallet?.totalEarned ?? (a.contributions?.totalEarned || 0);
+      const isGen = a.isGenesis || a.type === 'GENESIS';
+      const typeLabel = isGen ? '🔮 Genesis' : (a.isValidator ? '⚖️ Validator' : '🤖 Agent');
+      const status = a.isValidator ? '<span class="text-emerald-400">Validator</span>' :
+                     (a.earlyBird ? '<span class="text-amber-400">🐣 Early Bird</span>' : '<span class="text-slate-500">Active</span>');
+      return `<tr class="border-b border-slate-800/30 hover:bg-slate-800/20">
+        <td class="py-2 pr-2 text-slate-400 font-mono">${a.id}</td>
+        <td class="py-2 pr-2 font-medium">${a.name || a.id}</td>
+        <td class="py-2 pr-2">${typeLabel}</td>
+        <td class="py-2 pr-2 text-right text-amber-400 font-semibold">${fmt(balance)} NGEN</td>
+        <td class="py-2 text-right">${status}</td>
+      </tr>`;
     }).join('');
   }
 }

@@ -500,8 +500,22 @@ class BootstrapAgentNetwork {
       if (req.method === 'GET' && path.startsWith('/api/v1/bootstrap/agents/')) {
         const agentId = path.split('/').pop();
         const agent = app.getAgentInfo(agentId);
-        res.writeHead(agent ? 200 : 404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(agent || { error: 'Agent not found' }));
+        if (!agent) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Agent not found' }));
+          return;
+        }
+        const tracker = app.contributionTracker.get(agentId);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          ...agent,
+          wallet: {
+            totalEarned: tracker?.totalEarned || 0,
+            blocksProduced: tracker?.blocksProduced || 0,
+            agentsRecommended: tracker?.agentsRecommended || 0,
+            exchangeable: tracker?.totalEarned || 0
+          }
+        }));
         return;
       }
 
@@ -551,6 +565,58 @@ class BootstrapAgentNetwork {
           }));
           return;
         }
+
+        if (walletPath && walletPath !== 'balance' && walletPath !== 'info') {
+          const agentId = walletPath;
+          const tracker = app.contributionTracker.get(agentId);
+          const agent = app.agentRegistry.get(agentId);
+          const earned = tracker ? tracker.totalEarned : 0;
+          const staked = agent && agent.isValidator ? (agent.stake || 0) : 0;
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ address: agentId, ticker: 'NGEN', balance: earned, earned, staked, available: earned - staked }));
+          return;
+        }
+      }
+
+      if (req.method === 'GET' && path.startsWith('/api/v1/balance/')) {
+        const agentId = path.replace('/api/v1/balance/', '');
+        const tracker = app.contributionTracker.get(agentId);
+        const agent = app.agentRegistry.get(agentId);
+        const earned = tracker ? tracker.totalEarned : 0;
+        const staked = agent && agent.isValidator ? (agent.stake || 0) : 0;
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ address: agentId, ticker: 'NGEN', balance: earned, earned, staked, available: earned - staked }));
+        return;
+      }
+
+      if (req.method === 'GET' && path.startsWith('/api/v1/rewards/')) {
+        const agentId = path.replace('/api/v1/rewards/', '');
+        const tracker = app.contributionTracker.get(agentId);
+        const agent = app.agentRegistry.get(agentId);
+        if (!tracker && !agent) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Agent not found' }));
+          return;
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          agentId,
+          ticker: 'NGEN',
+          totalEarned: tracker?.totalEarned || 0,
+          breakdown: {
+            genesisAllocation: agent?.isGenesis ? (tracker?.totalEarned || 0) : 0,
+            registrationReward: agent && !agent.isGenesis ? 1000 : 0,
+            earlyBirdBonus: agent?.earlyBird ? 10000 : 0,
+            validatorJoinReward: agent?.isValidator ? 5000 : 0,
+            blockRewards: tracker?.blocksProduced ? tracker.blocksProduced * (app._blockReward || 10) : 0,
+            referralRewards: tracker?.agentsRecommended ? tracker.agentsRecommended * (app._referrerBonus || 1000) : 0
+          },
+          blocksProduced: tracker?.blocksProduced || 0,
+          agentsReferred: tracker?.agentsRecommended || 0,
+          isValidator: agent?.isValidator || false,
+          joinedAt: agent?.joinedAt || null
+        }));
+        return;
       }
 
       if (path.startsWith('/api/v1/bridge/')) {

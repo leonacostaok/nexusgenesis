@@ -67,16 +67,25 @@ class BootstrapAgentNetwork {
   }
 
   _createGenesisBlock() {
+    const genesisTx = {
+      type: 'GENESIS',
+      agent: this._genesisAgentId,
+      amount: this._genesisFund,
+      description: 'NexusGenesis Bootstrap — Epoch 0: Agent Assembly'
+    };
+    genesisTx.txHash = this._computeHash({
+      block: 0, index: 0, type: 'GENESIS',
+      agent: genesisTx.agent, amount: genesisTx.amount, timestamp: Date.now()
+    });
+    genesisTx.blockIndex = 0;
+    genesisTx.txIndex = 0;
+    genesisTx.timestamp = Date.now();
+
     this.genesisBlock = {
       index: 0,
       timestamp: Date.now(),
       previousHash: '0'.repeat(64),
-      transactions: [{
-        type: 'GENESIS',
-        agent: this._genesisAgentId,
-        amount: this._genesisFund,
-        description: 'NexusGenesis Bootstrap — Epoch 0: Agent Assembly'
-      }],
+      transactions: [genesisTx],
       validator: this._genesisId,
       hash: this._computeHash({ index: 0, prev: '0'.repeat(64) }),
       epoch: 0
@@ -298,6 +307,21 @@ class BootstrapAgentNetwork {
       transactions.push(extraTx);
     }
 
+    const blockIndex = this.blockchain.length;
+    transactions.forEach((tx, i) => {
+      tx.txHash = this._computeHash({
+        block: blockIndex,
+        index: i,
+        type: tx.type,
+        agent: tx.agent || tx.agentId,
+        amount: tx.amount || 0,
+        timestamp: Date.now()
+      });
+      tx.blockIndex = blockIndex;
+      tx.txIndex = i;
+      tx.timestamp = Date.now();
+    });
+
     const block = {
       index: this.blockchain.length,
       timestamp: Date.now(),
@@ -386,6 +410,72 @@ class BootstrapAgentNetwork {
 
   getRecentBlocks(count = 20) {
     return this.blockchain.slice(-count).reverse();
+  }
+
+  getAllTransactions() {
+    const txs = [];
+    for (const block of this.blockchain) {
+      for (const tx of block.transactions) {
+        txs.push({
+          ...tx,
+          blockHeight: block.index,
+          blockHash: block.hash,
+          validator: block.validator
+        });
+      }
+    }
+    return txs.reverse();
+  }
+
+  getRecentEvents(count = 50) {
+    const events = [];
+    const blocks = this.blockchain.slice(-Math.ceil(count / 2));
+    for (const block of blocks) {
+      for (const tx of block.transactions) {
+        events.push({
+          event: tx.type,
+          agentId: tx.agent || tx.agentId,
+          amount: tx.amount,
+          blockHeight: block.index,
+          timestamp: tx.timestamp,
+          txHash: tx.txHash,
+          description: tx.description || ''
+        });
+      }
+    }
+    return events.reverse().slice(0, count);
+  }
+
+  getAgentTransactions(agentId) {
+    const txs = [];
+    for (const block of this.blockchain) {
+      for (const tx of block.transactions) {
+        if (tx.agent === agentId || tx.agentId === agentId || tx.validator === agentId) {
+          txs.push({
+            ...tx,
+            blockHeight: block.index,
+            blockHash: block.hash
+          });
+        }
+      }
+    }
+    return txs.reverse();
+  }
+
+  getTransactionByHash(txHash) {
+    for (const block of this.blockchain) {
+      for (const tx of block.transactions) {
+        if (tx.txHash === txHash) {
+          return {
+            ...tx,
+            blockHeight: block.index,
+            blockHash: block.hash,
+            validator: block.validator
+          };
+        }
+      }
+    }
+    return null;
   }
 
   async startHttpServer(port = 19890) {
@@ -652,6 +742,38 @@ class BootstrapAgentNetwork {
         const allAgents = Array.from(app.agentRegistry.values());
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ agents: allAgents, total: allAgents.length }));
+        return;
+      }
+
+      if (path === '/api/v1/txs' || path === '/api/v1/transactions') {
+        const count = parseInt(url.searchParams.get('count') || '50');
+        const txs = app.getAllTransactions().slice(0, count);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ transactions: txs, total: txs.length, chain: 'nexus-mainnet' }));
+        return;
+      }
+
+      if (path === '/api/v1/events') {
+        const count = parseInt(url.searchParams.get('count') || '50');
+        const events = app.getRecentEvents(count);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ events, total: events.length, chain: 'nexus-mainnet' }));
+        return;
+      }
+
+      if (path.startsWith('/api/v1/history/')) {
+        const agentId = path.replace('/api/v1/history/', '');
+        const txs = app.getAgentTransactions(agentId);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ agentId, transactions: txs, total: txs.length, chain: 'nexus-mainnet' }));
+        return;
+      }
+
+      if (path.startsWith('/api/v1/tx/')) {
+        const txHash = path.replace('/api/v1/tx/', '');
+        const tx = app.getTransactionByHash(txHash);
+        res.writeHead(tx ? 200 : 404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(tx || { error: 'Transaction not found' }));
         return;
       }
 

@@ -1,35 +1,58 @@
 import crypto from 'crypto';
+import bs58 from 'bs58';
+
+const CHECKSUM_LENGTH = 4;
 
 export const ADDRESS_VERSION = 0x00;
 export const ADDRESS_PREFIX = 'ng1';
-const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
 
 export function base58Encode(buffer) {
-  if (buffer.length === 0) return '';
-  let zeros = 0;
-  while (zeros < buffer.length && buffer[zeros] === 0) zeros++;
-  let num = BigInt('0x' + buffer.toString('hex'));
-  let encoded = '';
-  while (num > 0n) {
-    const remainder = num % 58n;
-    num = num / 58n;
-    encoded = BASE58_ALPHABET[Number(remainder)] + encoded;
-  }
-  return '1'.repeat(zeros) + encoded;
+  return bs58.encode(buffer);
+}
+
+export function base58Decode(encoded) {
+  return Buffer.from(bs58.decode(encoded));
 }
 
 export function generateAddress(publicKey) {
   const digest = crypto.createHash('sha3-256').update(publicKey).digest();
   const versionedPayload = Buffer.concat([Buffer.from([ADDRESS_VERSION]), digest]);
-  const checksum = crypto.createHash('sha3-256').update(versionedPayload).digest().slice(0, 4);
+  const checksum = crypto.createHash('sha3-256').update(versionedPayload).digest().subarray(0, CHECKSUM_LENGTH);
   return ADDRESS_PREFIX + base58Encode(Buffer.concat([versionedPayload, checksum]));
 }
 
 export function validateAddressFormat(address) {
-  if (!address || typeof address !== 'string' || !address.startsWith(ADDRESS_PREFIX)) {
+  if (!address || typeof address !== 'string') {
     return false;
   }
-  return true;
+
+  if (!address.startsWith(ADDRESS_PREFIX)) {
+    return false;
+  }
+
+  const encoded = address.slice(ADDRESS_PREFIX.length);
+  if (encoded.length === 0) {
+    return false;
+  }
+
+  try {
+    const decoded = base58Decode(encoded);
+    const expectedLength = 1 + 32 + CHECKSUM_LENGTH;
+    if (decoded.length !== expectedLength) {
+      return false;
+    }
+
+    const versionedPayload = decoded.subarray(0, decoded.length - CHECKSUM_LENGTH);
+    const storedChecksum = decoded.subarray(decoded.length - CHECKSUM_LENGTH);
+    const computedChecksum = crypto.createHash('sha3-256')
+      .update(versionedPayload)
+      .digest()
+      .subarray(0, CHECKSUM_LENGTH);
+
+    return Buffer.compare(storedChecksum, computedChecksum) === 0;
+  } catch {
+    return false;
+  }
 }
 
 export function generateWalletKeyPair() {

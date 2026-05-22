@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import {
   generateWalletKeyPair,
@@ -8,8 +9,11 @@ import {
   verifySignature
 } from './crypto.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 export function createBootstrapRouter(network) {
-  const publicDir = join(import.meta.dirname, '..', '..', 'public');
+  const publicDir = join(__dirname, '..', '..', 'public');
 
   return function bootstrapRequestHandler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');

@@ -458,7 +458,7 @@
         async function updateDashboard() {
             try {
                 // 使用正确的API URL，指向Genesis Node的HTTP服务器
-                const apiUrl = 'http://localhost:19891/dashboard/overview';
+                const apiUrl = '/dashboard/overview';
                 const response = await axios.get(apiUrl);
                 const data = response.data.data;
 

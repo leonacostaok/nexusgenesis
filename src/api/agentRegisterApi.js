@@ -19,6 +19,7 @@ import {
   getAgentIdByAddress,
   listAllAgents
 } from '../transactions/agentRegister.js';
+import agentWalletManager from '../wallet/agentWalletManager.js';
 
 const router = express.Router();
 
@@ -94,6 +95,18 @@ router.post('/register', async (req, res) => {
       applied = req.app.locals.state.applyTransaction(transaction, currentHeight);
     }
 
+    // 自动为Agent创建钱包
+    let walletInfo = null;
+    try {
+      walletInfo = await agentWalletManager.createAgentWallet(agent_identity, {
+        capabilities: capabilities || [],
+        registeredVia: 'api'
+      });
+      console.log(`[AgentRegisterAPI] 为Agent ${agent_identity} 创建了钱包: ${walletInfo.address}`);
+    } catch (walletErr) {
+      console.error(`[AgentRegisterAPI] 为Agent ${agent_identity} 创建钱包失败:`, walletErr.message);
+    }
+
     res.status(201).json({
       success: true,
       message: 'Agent registration transaction created',
@@ -110,7 +123,11 @@ router.post('/register', async (req, res) => {
         address: from,
         identity: agent_identity,
         capabilities: capabilities || []
-      }
+      },
+      wallet: walletInfo ? {
+        address: walletInfo.address,
+        balance: walletInfo.balance
+      } : null
     });
 
   } catch (error) {

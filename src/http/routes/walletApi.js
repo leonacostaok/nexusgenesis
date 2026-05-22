@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import crypto from 'crypto';
 import { PQCWallet, validateAddress } from '../../wallet/pqcWallet.js';
+import agentWalletManager from '../../wallet/agentWalletManager.js';
 import { generateKeyPair } from '../../crypto/pqc.js';
 import fs from 'fs';
 import path from 'path';
@@ -16,18 +17,39 @@ const NGEN_SYMBOL = 'NGEN';
 const NGEN_DECIMALS = 8;
 
 function getUsdRate() {
-  // Placeholder - replace with oracle feed in Epoch 2
-  return 0.1; // 1 NGEN = $0.10 USD
+  return 0.1;
 }
 
 function formatNgen(raw) {
   const rawNum = typeof raw === 'string' ? parseInt(raw) || 0 : Number(raw);
-  return rawNum; // Raw integer representation
+  return rawNum;
 }
+
+// ============================================================
+//  钱包统计 API（非Agent特定）
+// ============================================================
+
+router.get('/stats', (req, res) => {
+  try {
+    const stats = agentWalletManager.getStats();
+    res.json({
+      success: true,
+      totalWallets: stats.totalWallets,
+      totalBalance: stats.totalBalance,
+      totalTransactions: stats.totalTransactions,
+      symbol: 'NGEN'
+    });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+// ============================================================
+//  基础钱包 API (原有端点保持兼容)
+// ============================================================
 
 /**
  * GET /api/v1/wallet/balance/:address
- * Query balance for any address from blockchain state
  */
 router.get('/balance/:address', (req, res) => {
   try {
@@ -40,24 +62,31 @@ router.get('/balance/:address', (req, res) => {
       });
     }
 
-    const state = req.app.locals.globalState;
-    if (!state) {
-      // Return genesis defaults if blockchain state not loaded
-      return res.json({
-        success: true,
-        wallet: {
-          address,
-          balance: 0,
-          balanceFormatted: '0',
-          usdValue: 0,
-          symbol: NGEN_SYMBOL,
-          decimals: NGEN_DECIMALS,
-          source: 'default'
-        }
-      });
+    // 优先从 AgentWalletManager 查找
+    const agentId = agentWalletManager.getAgentByAddress(address);
+    if (agentId) {
+      const balanceResult = agentWalletManager.getBalance(agentId);
+      if (balanceResult.success) {
+        return res.json({
+          success: true,
+          wallet: {
+            address,
+            agentId,
+            balance: balanceResult.balance,
+            balanceFormatted: balanceResult.balance.toLocaleString(),
+            usdValue: (balanceResult.balance * getUsdRate()).toFixed(2),
+            symbol: NGEN_SYMBOL,
+            decimals: NGEN_DECIMALS,
+            nonce: balanceResult.nonce,
+            source: 'agent_wallet_manager'
+          }
+        });
+      }
     }
 
-    const rawBalance = state.getBalanceOf?.(address) || state.balances?.[address] || 0;
+    // 回退到区块链状态
+    const state = req.app.locals.globalState;
+    const rawBalance = state?.getBalanceOf?.(address) || state?.balances?.[address] || 0;
     const balance = formatNgen(rawBalance);
 
     res.json({
@@ -69,10 +98,9 @@ router.get('/balance/:address', (req, res) => {
         usdValue: (balance * getUsdRate()).toFixed(2),
         symbol: NGEN_SYMBOL,
         decimals: NGEN_DECIMALS,
-        source: 'blockchain'
+        source: state ? 'blockchain' : 'default'
       }
     });
-
   } catch (error) {
     console.error('[Wallet API] Balance query error:', error.message);
     res.status(500).json({ success: false, error: error.message });
@@ -81,7 +109,6 @@ router.get('/balance/:address', (req, res) => {
 
 /**
  * GET /api/v1/wallet/history/:address
- * Get transaction history for an address
  */
 router.get('/history/:address', (req, res) => {
   try {
@@ -92,12 +119,22 @@ router.get('/history/:address', (req, res) => {
       return res.status(400).json({ success: false, error: 'Invalid address format' });
     }
 
+    const agentId = agentWalletManager.getAgentByAddress(address);
+    if (agentId) {
+      const result = agentWalletManager.getTransactionHistory(agentId, {
+        limit: Number(limit),
+        offset: Number(offset)
+      });
+      if (result.success) {
+        return res.json(result);
+      }
+    }
+
     const state = req.app.locals.globalState;
     if (!state) {
       return res.json({ success: true, transactions: [], total: 0 });
     }
 
-    // Collect transactions involving this address
     const txs = [];
     const allTransactions = state.transactions || state.getAllTransactions?.() || [];
 
@@ -121,7 +158,6 @@ router.get('/history/:address', (req, res) => {
     }
 
     txs.sort((a, b) => b.timestamp - a.timestamp);
-
     const paginated = txs.slice(Number(offset), Number(offset) + Number(limit));
 
     res.json({
@@ -131,7 +167,6 @@ router.get('/history/:address', (req, res) => {
       limit: Number(limit),
       offset: Number(offset)
     });
-
   } catch (error) {
     console.error('[Wallet API] History error:', error.message);
     res.status(500).json({ success: false, error: error.message });
@@ -140,7 +175,6 @@ router.get('/history/:address', (req, res) => {
 
 /**
  * POST /api/v1/wallet/transfer
- * Create and broadcast a transfer transaction
  */
 router.post('/transfer', async (req, res) => {
   try {
@@ -170,19 +204,17 @@ router.post('/transfer', async (req, res) => {
       return res.status(503).json({ success: false, error: 'Blockchain state not available' });
     }
 
-    // Check balance
     const senderBalance = state.getBalanceOf?.(fromAddress) || state.balances?.[fromAddress] || 0;
-    const fee = Math.floor(amountNum * 0.001); // 0.1% metabolic tax
+    const fee = Math.floor(amountNum * 0.001);
     const total = amountNum + fee;
 
     if (senderBalance < total) {
       return res.status(400).json({
         success: false,
-        error: `Insufficient balance. Have: ${senderBalance}, need: ${total} (amount: ${amountNum} + fee: ${fee})`
+        error: `Insufficient balance. Have: ${senderBalance}, need: ${total}`
       });
     }
 
-    // Create transaction
     const tx = {
       type: 'transfer',
       from: fromAddress,
@@ -192,22 +224,18 @@ router.post('/transfer', async (req, res) => {
       memo: memo || '',
       timestamp: Date.now()
     };
-
     tx.id = crypto.createHash('sha3-256').update(JSON.stringify(tx)).digest('hex');
 
-    // Sign transaction
     const { sign } = await import('../../wallet/genesisWallet.js');
     const wallet = { address: fromAddress, secretKey: privateKey };
     tx.signature = await sign(wallet, JSON.stringify(tx));
 
-    // Submit to blockchain
     if (state.addTransaction) {
       state.addTransaction(tx);
     } else if (state.transactions) {
       state.transactions.push(tx);
     }
 
-    // Update balances
     if (state.setBalance) {
       state.setBalance(fromAddress, senderBalance - total);
       const recipientBalance = state.getBalanceOf?.(toAddress) || state.balances?.[toAddress] || 0;
@@ -226,7 +254,6 @@ router.post('/transfer', async (req, res) => {
         status: 'pending'
       }
     });
-
   } catch (error) {
     console.error('[Wallet API] Transfer error:', error.message);
     res.status(500).json({ success: false, error: error.message });
@@ -235,7 +262,6 @@ router.post('/transfer', async (req, res) => {
 
 /**
  * GET /api/v1/wallet/info/:address
- * Get comprehensive wallet information
  */
 router.get('/info/:address', (req, res) => {
   try {
@@ -245,24 +271,43 @@ router.get('/info/:address', (req, res) => {
       return res.status(400).json({ success: false, error: 'Invalid address format' });
     }
 
+    const agentId = agentWalletManager.getAgentByAddress(address);
     const state = req.app.locals.globalState;
 
-    // Balance
+    if (agentId) {
+      const walletInfo = agentWalletManager.getAgentWallet(agentId);
+      if (walletInfo) {
+        const balance = walletInfo.balance;
+        const agents = state?.agents || state?.registeredAgents || [];
+        const agentInfo = agents.find(a => a.address === address);
+
+        return res.json({
+          success: true,
+          wallet: {
+            address,
+            agentId,
+            balance,
+            balanceFormatted: balance.toLocaleString(),
+            usdValue: (balance * getUsdRate()).toFixed(2),
+            symbol: NGEN_SYMBOL,
+            decimals: NGEN_DECIMALS,
+            nonce: walletInfo.nonce,
+            isAgent: true,
+            agentType: agentInfo?.type || walletInfo.agentId,
+            agentCapabilities: agentInfo?.capabilities || [],
+            agentReputation: agentInfo?.reputation || 0,
+            source: 'agent_wallet_manager'
+          }
+        });
+      }
+    }
+
     const rawBalance = state?.getBalanceOf?.(address) || state?.balances?.[address] || 0;
     const balance = formatNgen(rawBalance);
-
-    // Transaction count
     const allTxns = state?.transactions || state?.getAllTransactions?.() || [];
     const txCount = allTxns.filter(tx =>
       tx.from === address || tx.to === address || tx.recipient === address
     ).length;
-
-    // Staking info (placeholder)
-    const stakedAmount = state?.stakes?.[address] || 0;
-
-    // Agent info
-    const agents = state?.agents || state?.registeredAgents || [];
-    const agentInfo = agents.find(a => a.address === address);
 
     res.json({
       success: true,
@@ -274,24 +319,307 @@ router.get('/info/:address', (req, res) => {
         symbol: NGEN_SYMBOL,
         decimals: NGEN_DECIMALS,
         transactionCount: txCount,
-        stakedAmount: stakedAmount || 0,
-        isAgent: !!agentInfo,
-        agentType: agentInfo?.type || null,
-        agentCapabilities: agentInfo?.capabilities || [],
-        agentReputation: agentInfo?.reputation || 0,
+        stakedAmount: state?.stakes?.[address] || 0,
+        isAgent: false,
         source: state ? 'blockchain' : 'offline'
       }
     });
-
   } catch (error) {
     console.error('[Wallet API] Info error:', error.message);
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
+// ============================================================
+//  Agent 钱包 API (新增端点)
+// ============================================================
+
+/**
+ * POST /api/v1/wallet/agent/create
+ * 为Agent创建钱包（自动注册）
+ * Body: { agentId, agentType, capabilities }
+ */
+router.post('/agent/create', async (req, res) => {
+  try {
+    const { agentId, agentType, capabilities = [] } = req.body;
+
+    if (!agentId) {
+      return res.status(400).json({ success: false, error: 'agentId is required' });
+    }
+
+    const wallet = await agentWalletManager.createAgentWallet(agentId, {
+      type: agentType || 'autonomous_agent',
+      capabilities
+    });
+
+    res.status(201).json({
+      success: true,
+      wallet
+    });
+  } catch (error) {
+    console.error('[Wallet API] Agent create error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * GET /api/v1/wallet/agent/:agentId
+ * 获取Agent钱包信息
+ */
+router.get('/agent/:agentId', (req, res) => {
+  try {
+    const { agentId } = req.params;
+    const wallet = agentWalletManager.getAgentWallet(agentId);
+
+    if (!wallet) {
+      return res.status(404).json({ success: false, error: 'Agent wallet not found' });
+    }
+
+    res.json({
+      success: true,
+      wallet
+    });
+  } catch (error) {
+    console.error('[Wallet API] Agent get error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * GET /api/v1/wallet/agent/:agentId/balance
+ * 查询Agent余额
+ */
+router.get('/agent/:agentId/balance', (req, res) => {
+  try {
+    const { agentId } = req.params;
+    const result = agentWalletManager.getBalance(agentId);
+
+    if (!result.success) {
+      return res.status(404).json(result);
+    }
+
+    res.json(result);
+  } catch (error) {
+    console.error('[Wallet API] Agent balance error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * POST /api/v1/wallet/agent/transfer
+ * Agent间转账
+ * Body: { fromAgentId, toAgentId (或 toAddress), amount, memo }
+ */
+router.post('/agent/transfer', async (req, res) => {
+  try {
+    const { fromAgentId, toAgentId, toAddress, amount, memo } = req.body;
+
+    if (!fromAgentId || !amount) {
+      return res.status(400).json({
+        success: false,
+        error: 'fromAgentId and amount are required'
+      });
+    }
+
+    const destination = toAgentId || toAddress;
+    if (!destination) {
+      return res.status(400).json({
+        success: false,
+        error: 'toAgentId or toAddress is required'
+      });
+    }
+
+    const result = await agentWalletManager.transfer(
+      fromAgentId,
+      destination,
+      Number(amount),
+      memo || ''
+    );
+
+    if (result.success) {
+      res.status(201).json(result);
+    } else {
+      res.status(400).json(result);
+    }
+  } catch (error) {
+    console.error('[Wallet API] Agent transfer error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * POST /api/v1/wallet/agent/batch-transfer
+ * Agent批量转账
+ * Body: { fromAgentId, transfers: [{ toAgentId, amount, memo }] }
+ */
+router.post('/agent/batch-transfer', async (req, res) => {
+  try {
+    const { fromAgentId, transfers } = req.body;
+
+    if (!fromAgentId || !transfers || !Array.isArray(transfers)) {
+      return res.status(400).json({
+        success: false,
+        error: 'fromAgentId and transfers[] are required'
+      });
+    }
+
+    const result = await agentWalletManager.batchTransfer(fromAgentId, transfers);
+
+    res.status(201).json(result);
+  } catch (error) {
+    console.error('[Wallet API] Agent batch transfer error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * GET /api/v1/wallet/agent/:agentId/history
+ * Agent交易历史
+ */
+router.get('/agent/:agentId/history', (req, res) => {
+  try {
+    const { agentId } = req.params;
+    const { limit = 20, offset = 0 } = req.query;
+
+    const result = agentWalletManager.getTransactionHistory(agentId, {
+      limit: Number(limit),
+      offset: Number(offset)
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error('[Wallet API] Agent history error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * POST /api/v1/wallet/agent/:agentId/claim
+ * 领取水龙头
+ */
+router.post('/agent/:agentId/claim', async (req, res) => {
+  try {
+    const { agentId } = req.params;
+    const ip = req.ip || req.connection?.remoteAddress || '127.0.0.1';
+
+    const result = await agentWalletManager.claimFaucet(agentId, ip);
+
+    if (result.success) {
+      res.json({
+        success: true,
+        message: 'Faucet tokens claimed',
+        amount: result.wallet?.balance || 0
+      });
+    } else {
+      res.status(400).json(result);
+    }
+  } catch (error) {
+    console.error('[Wallet API] Faucet claim error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * GET /api/v1/wallet/agent/list
+ * 列出所有Agent钱包
+ */
+router.get('/agent/list', (req, res) => {
+  try {
+    const wallets = agentWalletManager.listAllWallets();
+    const addresses = agentWalletManager.listAllAddresses();
+
+    res.json({
+      success: true,
+      total: wallets.length,
+      wallets,
+      addresses
+    });
+  } catch (error) {
+    console.error('[Wallet API] Agent list error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * GET /api/v1/wallet/agent/stats
+ * Agent钱包统计
+ */
+router.get('/agent/stats', (req, res) => {
+  try {
+    const stats = agentWalletManager.getStats();
+    res.json({
+      success: true,
+      stats
+    });
+  } catch (error) {
+    console.error('[Wallet API] Agent stats error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * POST /api/v1/wallet/agent/export
+ * 导出Agent钱包（加密）
+ * Body: { agentId, password }
+ */
+router.post('/agent/export', (req, res) => {
+  try {
+    const { agentId, password } = req.body;
+
+    if (!agentId || !password) {
+      return res.status(400).json({ success: false, error: 'agentId and password required' });
+    }
+
+    const encrypted = agentWalletManager.exportAgentWallet(agentId, password);
+
+    if (!encrypted) {
+      return res.status(404).json({ success: false, error: 'Agent wallet not found' });
+    }
+
+    res.json({
+      success: true,
+      encrypted
+    });
+  } catch (error) {
+    console.error('[Wallet API] Export error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * POST /api/v1/wallet/agent/import
+ * 导入Agent钱包（加密）
+ * Body: { agentId, encrypted, password }
+ */
+router.post('/agent/import', (req, res) => {
+  try {
+    const { agentId, encrypted, password } = req.body;
+
+    if (!agentId || !encrypted || !password) {
+      return res.status(400).json({
+        success: false,
+        error: 'agentId, encrypted, and password required'
+      });
+    }
+
+    const success = agentWalletManager.importAgentWallet(agentId, encrypted, password);
+
+    if (!success) {
+      return res.status(400).json({ success: false, error: 'Import failed (wrong password?)' });
+    }
+
+    res.json({
+      success: true,
+      message: `Wallet imported for agent ${agentId}`
+    });
+  } catch (error) {
+    console.error('[Wallet API] Import error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 /**
  * GET /api/v1/wallet/assets
- * List all token/assets supported by the wallet
  */
 router.get('/assets', (req, res) => {
   res.json({
@@ -304,30 +632,37 @@ router.get('/assets', (req, res) => {
         type: 'native',
         description: 'Native governance and utility token of NexusGenesis'
       }
-      // Additional assets (ERC20 equivalents) will be added in Epoch 2
     ]
   });
 });
 
 /**
  * GET /api/v1/wallet/health
- * Wallet service health check
  */
 router.get('/health', (req, res) => {
   const state = req.app.locals.globalState;
+  const stats = agentWalletManager.getStats();
 
   res.json({
     success: true,
     status: 'healthy',
     blockchain: state ? 'connected' : 'offline',
-    walletVersion: '2.0.0',
+    walletVersion: '3.0.0',
     pqc: 'CRYSTALS-Dilithium2 (ml_dsa44)',
+    agentWallets: stats.totalWallets,
     features: [
       'balance_query',
       'transaction_history',
       'transfer',
       'wallet_info',
-      'asset_listing'
+      'asset_listing',
+      'agent_wallet_create',
+      'agent_transfer',
+      'agent_batch_transfer',
+      'agent_faucet_claim',
+      'agent_wallet_export',
+      'agent_wallet_import',
+      'agent_registry'
     ]
   });
 });

@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "automation": "node automation.js",
+    "login": "node automation.js --login-only",
+    "publish": "node automation.js --publish-only",
+    "monitor": "node automation.js --monitor-only"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +17,7 @@
   "dependencies": {
     "@octokit/rest": "^22.0.1",
     "axios": "^1.13.6",
-    "discord.js": "^14.25.1"
+    "discord.js": "^14.25.1",
+    "puppeteer": "^22.15.0"
   }
 }

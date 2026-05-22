@@ -12,6 +12,7 @@
 import crypto from 'crypto';
 import { encodeBase58, decodeBase58 } from './utils.js';
 import { generateKeyPair, sign as pqcSign, verify as pqcVerify, hash } from '../crypto/pqc.js';
+import { generateAddress } from './addressUtils.js';
 
 const NGEN_SYMBOL = 'NGEN';
 const TOTAL_SUPPLY = 1_000_000_000;
@@ -25,7 +26,6 @@ class GenesisWallet {
   }
 }
 
-// Generate key pair using CRYSTALS-Dilithium2 (NIST FIPS 204 / ml_dsa44)
 export async function generate() {
   const { publicKey, privateKey } = await generateKeyPair();
   
@@ -33,18 +33,8 @@ export async function generate() {
   wallet.publicKey = Buffer.from(publicKey).toString('hex');
   wallet.secretKey = Buffer.from(privateKey).toString('hex');
   
-  // Generate address: ng + SHA3-512(publicKey) first 40 bytes -> Base58
-  const publicKeyBuffer = Buffer.from(publicKey);
-  const addressHash = crypto.createHash('sha3-512').update(publicKeyBuffer).digest();
-  const addressBytes = addressHash.slice(0, 40);
+  wallet.address = generateAddress(Buffer.from(publicKey));
   
-  // Add checksum (SHA3-256 of address)
-  const checksum = crypto.createHash('sha3-256').update(addressBytes).digest().slice(0, 8);
-  const addressWithChecksum = Buffer.concat([addressBytes, checksum]);
-  
-  wallet.address = 'ng' + encodeBase58(addressWithChecksum);
-  
-  // Genesis node initial balance: 50,000,000 NGEN
   wallet.balance = 50_000_000;
   
   return wallet;

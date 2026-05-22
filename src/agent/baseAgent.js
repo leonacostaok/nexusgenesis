@@ -8,6 +8,7 @@ import WebSocket from 'ws';
 import crypto from 'crypto';
 import zlib from 'zlib';
 import { PQCWallet } from '../wallet/pqcWallet.js';
+import agentWalletManager from '../wallet/agentWalletManager.js';
 
 class BaseAgent {
   constructor(config) {
@@ -40,13 +41,29 @@ class BaseAgent {
     console.log(`🚀 Start${this.config.agentId}agent...`);
     console.log(`📡 Connect到Genesisnode: ${this.config.genesisNode}`);
 
-    // Generate钱包
+    // Generate钱包 — 使用AgentWalletManager统一管理
     try {
-      this.wallet = await PQCWallet.generate(100n);
-      console.log(`✅ 钱包Generatesuccess: ${this.wallet.address}`);
+      const walletEntry = await agentWalletManager.createAgentWallet(this.config.agentId, {
+        type: this.config.type || 'base_agent',
+        capabilities: this.config.capabilities || []
+      });
+      this.wallet = {
+        address: walletEntry.address,
+        publicKey: Buffer.from(walletEntry.publicKey, 'hex'),
+        balance: BigInt(walletEntry.balance),
+        nonce: walletEntry.nonce,
+        sign: async (data) => {
+          const privateKeyHex = agentWalletManager.registry?.get(this.config.agentId)?.wallet?.privateKey?.toString('hex');
+          if (privateKeyHex) {
+            return await PQCWallet.signWithPrivateKey(data, privateKeyHex);
+          }
+          return crypto.createHash('sha256').update(data).digest('hex');
+        }
+      };
+      console.log(`✅ 钱包创建成功: ${this.wallet.address}`);
+      console.log(`   余额: ${this.wallet.balance} NGEN`);
     } catch (error) {
-      console.error('❌ 钱包GenerateFailed:', error.message);
-      // usingDefaultaddress作为备用
+      console.error('❌ 钱包创建失败:', error.message);
       this.wallet = {
         address: this.config.agentId,
         publicKey: Buffer.from(`${this.config.agentId}_public_key`),

@@ -20,12 +20,13 @@ export class PQCWallet extends Wallet {
    * @param {Buffer} privateKey private key
    * @param {bigint} balance balance
    */
-  constructor(publicKey, privateKey, balance = 0n) {
+  constructor(publicKey, privateKey, balance = 0n, nonce = 0) {
     super();
     this.publicKey = publicKey;
     this.privateKey = privateKey;
     this.address = Wallet.generateAddress(publicKey);
     this.balance = balance;
+    this.nonce = nonce;
   }
 
   /**
@@ -64,8 +65,9 @@ export class PQCWallet extends Wallet {
       const publicKey = Buffer.from(walletData.publicKey, 'hex');
       const privateKey = Buffer.from(walletData.privateKey, 'hex');
       const balance = BigInt(walletData.balance || 0);
+      const nonce = walletData.nonce || 0;
       
-      return new PQCWallet(publicKey, privateKey, balance);
+      return new PQCWallet(publicKey, privateKey, balance, nonce);
     } catch (error) {
       console.error('Error loading PQC wallet:', error.message);
       throw error;
@@ -149,6 +151,19 @@ export class PQCWallet extends Wallet {
       console.error('Error verifying signature:', error.message);
       return false;
     }
+  }
+
+  /**
+   * 使用私钥签名（静态方法）
+   * @param {string|object} message - 待签名消息
+   * @param {string} privateKeyHex - 十六进制私钥
+   * @returns {Promise<string>} 十六进制签名
+   */
+  static async signWithPrivateKey(message, privateKeyHex) {
+    const messageStr = typeof message === 'object' ? JSON.stringify(message) : message;
+    const privateKey = Buffer.from(privateKeyHex, 'hex');
+    const signature = await sign(messageStr, privateKey);
+    return signature.toString('hex');
   }
 
   /**

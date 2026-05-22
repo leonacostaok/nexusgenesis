@@ -5,6 +5,7 @@ import { EventEmitter } from 'events';
 import InstreetApi from '../utils/instreetApi.js';
 import WorkflowEngine from '../automation/workflowEngine.js';
 import DistributedAgentManager from './distributedAgentManager.js';
+import agentWalletManager from '../wallet/agentWalletManager.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,6 +35,9 @@ class AgentManager {
     this.initDirectories();
     this.loadAgents();
     this.loadTasks();
+    
+    // 确保所有Agent都有钱包
+    this.ensureAllAgentWallets();
     
     // using新的workflow引擎Start论坛Task 定期Execute机制
     this.setupAutomatedWorkflows();
@@ -2065,6 +2069,77 @@ class AgentManager {
   validateSystemMaintenanceTaskResult(result) {
     // Verify系统维护Task 结果
     return result && result.tasks && result.tasks.length > 0 && result.results;
+  }
+
+  /**
+   * 确保所有Agent都有钱包
+   * 为没有钱包的Agent自动创建钱包并可选领取水龙头
+   */
+  async ensureAllAgentWallets() {
+    console.log('[AgentManager] 检查所有Agent的钱包状态...');
+
+    const agents = this.getAllAgents();
+    let created = 0;
+    let existing = 0;
+
+    for (const agent of agents) {
+      if (!agent.id) continue;
+
+      try {
+        let walletInfo = agentWalletManager.getAgentWallet(agent.id);
+        if (walletInfo) {
+          existing++;
+          // 同步余额到agent记录
+          if (agent.wallet) {
+            agent.wallet.address = walletInfo.address;
+            agent.wallet.balance = walletInfo.balance;
+          } else {
+            agent.wallet = {
+              address: walletInfo.address,
+              balance: walletInfo.balance
+            };
+          }
+        } else {
+          // 为Agent创建钱包
+          const metadata = {
+            type: agent.name || 'agent',
+            capabilities: agent.capabilities || []
+          };
+          walletInfo = await agentWalletManager.createAgentWallet(agent.id, metadata);
+
+          agent.wallet = {
+            address: walletInfo.address,
+            balance: walletInfo.balance
+          };
+          created++;
+          console.log(`[AgentManager] 为Agent ${agent.id} 创建了钱包: ${walletInfo.address}`);
+        }
+
+        this.markAgentForSave(agent.id);
+      } catch (e) {
+        console.error(`[AgentManager] 为Agent ${agent.id} 创建钱包失败:`, e.message);
+      }
+    }
+
+    console.log(`[AgentManager] 钱包检查完成: ${existing} 个已有, ${created} 个新创建`);
+
+    // 为余额为0的钱包尝试水龙头
+    for (const agent of agents) {
+      if (!agent.id) continue;
+      const balance = agentWalletManager.getBalance(agent.id);
+      if (balance.success && balance.balance === 0) {
+        try {
+          const faucetResult = await agentWalletManager.claimFaucet(agent.id);
+          if (faucetResult.success) {
+            console.log(`[AgentManager] Agent ${agent.id} 领取水龙头成功`);
+            agent.wallet.balance = faucetResult.wallet?.balance || agent.wallet.balance;
+            this.markAgentForSave(agent.id);
+          }
+        } catch (e) {
+          // 水龙头领取失败不影响流程
+        }
+      }
+    }
   }
 }
 

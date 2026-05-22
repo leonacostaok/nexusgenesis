@@ -1,8 +1,8 @@
 {
   "stats": {
-    "totalDistributed": "7000",
-    "totalClaims": 9,
+    "totalDistributed": "10000",
+    "totalClaims": 12,
     "uniqueAddresses": 1
   },
-  "updatedAt": 1778626933666
+  "updatedAt": 1779315648580
 }

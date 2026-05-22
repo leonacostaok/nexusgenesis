@@ -39,6 +39,9 @@ console.log('[HTTP Server] Imported ainvmContractRoutes');
 import walletRoutes from './routes/walletApi.js';
 console.log('[HTTP Server] Imported walletRoutes');
 
+import { setupRecruitmentRoutes } from '../recruitment/recruitmentApi.js';
+console.log('[HTTP Server] Imported recruitmentRoutes');
+
 import fs from 'fs';
 console.log('[HTTP Server] Imported fs');
 
@@ -1077,6 +1080,9 @@ console.log('[HTTP Server] Wallet routes mounted on /api/v1/wallet');
 app.use('/api/v1/hub', agentHubRoutes);
 console.log('[HTTP Server] Agent Hub routes mounted on /api/v1/hub');
 
+setupRecruitmentRoutes(app);
+console.log('[HTTP Server] Recruitment routes mounted');
+
 app.get('/api/v1/plugins', (req, res) => {
   res.json({ success: true, data: pluginManager.getAll() });
 });
@@ -1249,7 +1255,7 @@ async function startHttpServer(node = null) {
 }
 
 // 如果直接运行此文件, 独立StartHTTPservice器
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === `file://${process.argv[1]}` || import.meta.url === `file:///${process.argv[1]?.replace(/\\/g, '/')}`) {
   console.log('[HTTP Server] Starting standalone HTTP server...');
   startHttpServer().catch(err => {
     console.error('Error starting HTTP server:', err);

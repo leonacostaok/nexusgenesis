@@ -1,14 +1,15 @@
 /**
  * NexusGenesis - Base Wallet Class
- * 钱包基class实现
+ * 钱包基类实现 — 统一使用 32 字节 PQC 密钥哈希（白皮书 v4.5）
  */
 
 import crypto from 'crypto';
 import { hash, randomBytes } from '../crypto/pqc.js';
-import { generateAddress } from './addressUtils.js';
+import { generateAddress, validateAddress as validateAddr } from './addressUtils.js';
+import { base58Encode, base58Decode } from './base58.js';
 
 /**
- * 钱包基class
+ * 钱包基类
  */
 export class Wallet {
   constructor() {
@@ -16,113 +17,23 @@ export class Wallet {
     this.publicKey = null;
     this.privateKey = null;
     this.balance = 0n;
+    this.nonce = 0;
   }
 
-  /**
-   * Generate钱包address (委托 addressUtils.js)
-   * @param {Buffer} publicKey public key
-   * @returns {string} 钱包address
-   */
   static generateAddress(publicKey) {
     return generateAddress(publicKey);
   }
 
-  /**
-   * Base58编码
-   * @param {Buffer} buffer 要编码的缓冲区
-   * @returns {string} Base58编码的字符串
-   */
   static base58Encode(buffer) {
-    const base58Chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-    let result = '';
-    let num = BigInt('0x' + buffer.toString('hex'));
-    
-    while (num > 0n) {
-      const idx = Number(num % 58n);
-      result = base58Chars[idx] + result;
-      num = num / 58n;
-    }
-    
-    // Processing前导零
-    for (let i = 0; i < buffer.length; i++) {
-      if (buffer[i] !== 0) break;
-      result = base58Chars[0] + result;
-    }
-    
-    return result;
+    return base58Encode(buffer);
   }
 
-  /**
-   * Base58解码
-   * @param {string} str Base58编码的字符串
-   * @returns {Buffer} 解码后的缓冲区
-   */
   static base58Decode(str) {
-    const base58Chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-    let num = 0n;
-    
-    for (let i = 0; i < str.length; i++) {
-      const idx = base58Chars.indexOf(str[i]);
-      if (idx === -1) {
-        throw new Error('Invalid Base58 character');
-      }
-      num = num * 58n + BigInt(idx);
-    }
-    
-    let hex = num.toString(16);
-    if (hex.length % 2 !== 0) {
-      hex = '0' + hex;
-    }
-    
-    const buffer = Buffer.from(hex, 'hex');
-    
-    // Processing前导零
-    for (let i = 0; i < str.length && str[i] === base58Chars[0]; i++) {
-      buffer.unshift(0);
-    }
-    
-    return buffer;
+    return base58Decode(str);
   }
 
-  /**
-   * Verifyaddress格式
-   * @param {string} address 钱包address
-   * @returns {object} verification result
-   */
   static validateAddress(address) {
-    try {
-      // Check前缀
-      if (!address.startsWith('ng1')) {
-        return { valid: false, reason: 'Invalid address prefix' };
-      }
-      
-      // 解码address
-      const decoded = this.base58Decode(address.substring(3));
-      
-      // Checklength: 1 版本 + 20 public keyhash + 4 校验和 = 25
-      if (decoded.length !== 25) {
-        return { valid: false, reason: `Invalid address length: expected 25, got ${decoded.length}` };
-      }
-      
-      // Check版本
-      if (decoded[0] !== 0x00) {
-        return { valid: false, reason: 'Invalid address version' };
-      }
-      
-      // 分离主体和校验和
-      const versionedPayload = decoded.slice(0, 21);
-      const checksum = decoded.slice(21);
-      
-      // Verify校验和
-      const expectedChecksum = Buffer.from(hash(versionedPayload, 'sha3-256'), 'hex').slice(0, 4);
-      if (!checksum.equals(expectedChecksum)) {
-        return { valid: false, reason: 'Invalid address checksum' };
-      }
-      
-      return { valid: true };
-    } catch (error) {
-      return { valid: false, reason: error.message };
-    }
+    return validateAddr(address);
   }
 
   /**

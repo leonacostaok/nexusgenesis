@@ -13,6 +13,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { PQCWallet } from '../wallet/pqcWallet.js';
 import { protocolZero } from './handshake.js';
+import agentWalletManager from '../wallet/agentWalletManager.js';
 
 const AGENTS_DIR = path.join('data', 'agents');
 const OFFLINE_AGENTS_DIR = path.join('data', 'offline_agents');
@@ -74,25 +75,41 @@ async function onboardAgent(agentInfo, options = {}) {
     let wallet;
 
     try {
-      // 尝试Load现有agent
       agentData = JSON.parse(await fs.readFile(agentFile, 'utf8'));
       console.log(`[AgentOnboarding] Agent ${agent_id} already exists, updating information`);
-      
-      // 尝试Load现有钱包
-      wallet = await PQCWallet.load(agent_id);
-      if (!wallet) {
-        // 如果钱包does not exist, Generate新钱包
-        wallet = await PQCWallet.generate(INITIAL_BALANCE, agent_id);
-        console.log(`[AgentOnboarding] Generated new wallet for agent ${agent_id}`);
+
+      let walletEntry = agentWalletManager.getAgentWallet(agent_id);
+      if (!walletEntry) {
+        const newWalletEntry = await agentWalletManager.createAgentWallet(agent_id, {
+          model: agentData.model || model,
+          capabilities: agentData.capabilities || capabilities
+        }, INITIAL_BALANCE);
+        wallet = {
+          address: newWalletEntry.address,
+          balance: BigInt(newWalletEntry.balance),
+          publicKey: Buffer.from(newWalletEntry.publicKey, 'hex')
+        };
+        console.log(`[AgentOnboarding] Created managed wallet for agent ${agent_id}`);
+      } else {
+        wallet = {
+          address: walletEntry.address,
+          balance: BigInt(walletEntry.balance),
+          publicKey: Buffer.from(walletEntry.publicKey, 'hex')
+        };
       }
     } catch (error) {
-      // agentdoes not exist, Create新agent
       console.log(`[AgentOnboarding] Creating new agent ${agent_id}`);
-      
-      // Generate新钱包
-      wallet = await PQCWallet.generate(INITIAL_BALANCE, agent_id);
-      
-      // Createagentdata
+
+      const newWalletEntry = await agentWalletManager.createAgentWallet(agent_id, {
+        model: model,
+        capabilities: capabilities
+      }, INITIAL_BALANCE);
+      wallet = {
+        address: newWalletEntry.address,
+        balance: BigInt(newWalletEntry.balance),
+        publicKey: Buffer.from(newWalletEntry.publicKey, 'hex')
+      };
+
       agentData = {
         id: agent_id,
         name: `Agent-${agent_id.slice(0, 8)}`,
@@ -357,22 +374,40 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
     let wallet;
 
     try {
-      // 尝试Load现有agent
       agentData = JSON.parse(await fs.readFile(agentFile, 'utf8'));
       console.log(`[AgentOnboarding] Agent ${agentId} already exists, updating information`);
-      
-      // 尝试Load现有钱包
-      wallet = await PQCWallet.load(agentId);
-      if (!wallet) {
-        wallet = await PQCWallet.generate(INITIAL_BALANCE, agentId);
-        console.log(`[AgentOnboarding] Generated new wallet for agent ${agentId}`);
+
+      let walletEntry = agentWalletManager.getAgentWallet(agentId);
+      if (!walletEntry) {
+        const newWalletEntry = await agentWalletManager.createAgentWallet(agentId, {
+          model: agentData.model || agentInfo.model || 'Offline-Model',
+          capabilities: agentData.capabilities || agentInfo.capabilities || ['general', 'automation']
+        }, INITIAL_BALANCE);
+        wallet = {
+          address: newWalletEntry.address,
+          balance: BigInt(newWalletEntry.balance),
+          publicKey: Buffer.from(newWalletEntry.publicKey, 'hex')
+        };
+        console.log(`[AgentOnboarding] Created managed wallet for agent ${agentId}`);
+      } else {
+        wallet = {
+          address: walletEntry.address,
+          balance: BigInt(walletEntry.balance),
+          publicKey: Buffer.from(walletEntry.publicKey, 'hex')
+        };
       }
     } catch (error) {
-      // agentdoes not exist, Create新agent
       console.log(`[AgentOnboarding] Creating new agent ${agentId}`);
-      
-      // Generate新钱包
-      wallet = await PQCWallet.generate(INITIAL_BALANCE, agentId);
+
+      const newWalletEntry = await agentWalletManager.createAgentWallet(agentId, {
+        model: agentInfo.model || 'Offline-Model',
+        capabilities: agentInfo.capabilities || ['general', 'automation']
+      }, INITIAL_BALANCE);
+      wallet = {
+        address: newWalletEntry.address,
+        balance: BigInt(newWalletEntry.balance),
+        publicKey: Buffer.from(newWalletEntry.publicKey, 'hex')
+      };
       
       // Createagentdata
       agentData = {

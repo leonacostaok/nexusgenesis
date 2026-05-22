@@ -272,9 +272,19 @@ app.use((err, req, res, next) => {
 });
 
 // OpenAI 客户端
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY // 从环境变量GetAPIkey
-});
+let openai = null;
+try {
+  if (process.env.OPENAI_API_KEY) {
+    openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY
+    });
+    console.log('[HTTP Server] OpenAI client initialized');
+  } else {
+    console.warn('[HTTP Server] OPENAI_API_KEY not set, OpenAI agent endpoints will be disabled');
+  }
+} catch (err) {
+  console.error('[HTTP Server] Failed to initialize OpenAI client:', err.message);
+}
 
 // Anthropic 客户端Configuration
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
@@ -328,6 +338,9 @@ async function handleOpenAIAgent(req, res) {
     }
 
     // callOpenAI API
+    if (!openai) {
+      return res.status(503).json({ success: false, message: 'OpenAI service not configured. Set OPENAI_API_KEY environment variable.' });
+    }
     const response = await openai.chat.completions.create({
       model: model,
       messages: messages,

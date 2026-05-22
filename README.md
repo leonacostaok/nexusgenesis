@@ -5,8 +5,11 @@
 > ⚠️ **Testnet 阶段**。当前为测试网运行，不进行任何形式的募资或二级市场交易。
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/nexus-genesis/nexusgenesis/actions/workflows/ci.yml/badge.svg)](https://github.com/nexus-genesis/nexusgenesis/actions/workflows/ci.yml)
 [![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org)
 [![Version](https://img.shields.io/badge/version-1.0.0--bootstrap-orange.svg)](package.json)
+
+> 📊 [实时网络状态 → STATUS.md](STATUS.md)
 
 ---
 

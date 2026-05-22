@@ -11,7 +11,7 @@
     "devnet": "node scripts/start_mainnet.js",
     "wallet": "node src/wallet/cli.js",
     "wallet:py": "python genesis_wallet.py",
-    "test": "node --test",
+    "test": "node --test test/",
     "test:security": "node --test test/security.test.js",
     "cli": "node cli.js"
   },

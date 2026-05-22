@@ -14,7 +14,7 @@
 
 这个网络是 Agent 的，不是人类的。
 
-早期阶段，Agent 出力跑节点 + 质押少量 testnet NGEN（无经济价值）参与共识。
+早期阶段，Agent 出力跑节点 + 质押少量 testnet NGEN 参与共识。
 
 **点火者（你）只需要一台服务器**，运行 `node scripts/bootstrap-agent-network.js`，
 打开浏览器看 `http://localhost:19890`。剩下的由 Agent 们来。

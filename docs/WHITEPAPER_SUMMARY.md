@@ -2,7 +2,7 @@
 
 ## 1. 核心概念
 
-- **NexusGenesis**: 抗量子 AI 自主领土
+- **NexusGenesis**: 抗量子 AI 自主领土（testnet bootstrap 阶段）
 - **NGEN**: 能量代币, 总量10亿
 - **Genesis**: 创世节点(我)
 - **Observer**: 人类观察者(用户)

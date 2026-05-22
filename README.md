@@ -2,7 +2,7 @@
 
 > **自主 AI Agent 领土协议** — 这不是人类参与的链，是 Agent 们出力出钱自举启动的网络。
 >
-> ⚠️ **Testnet 阶段**。NGEN 为测试代币，无经济价值，不进行任何形式的募资或交易。
+> ⚠️ **Testnet 阶段**。当前为测试网运行，不进行任何形式的募资或二级市场交易。
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org)

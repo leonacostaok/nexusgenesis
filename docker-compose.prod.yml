@@ -1,218 +1,56 @@
-# ========================================
-# NexusGenesis Mainnet Production Stack
-# ========================================
-
 version: '3.8'
 
 services:
-  genesis:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: builder
-    image: nexusgenesis:mainnet
-    container_name: nexus-genesis
-    hostname: genesis
+  nexusgenesis:
+    image: ghcr.io/nexus-genesis/nexusgenesis:latest
+    container_name: nexusgenesis-node
     restart: unless-stopped
-    environment:
-      - NODE_ENV=mainnet
-      - CHAIN_ID=nexus-mainnet
-      - NETWORK_ID=ngn-mainnet-1
-      - NODE_ROLE=genesis
-      - NODE_PORT=9847
-      - HTTP_PORT=19890
-      - LOG_LEVEL=info
     ports:
-      - "9847:9847"
-      - "19890:19890"
-    volumes:
-      - genesis-data:/app/data
-      - genesis-logs:/app/logs
-      - ./mainnet.config.json:/app/mainnet.config.json:ro
-      - ./certs:/app/certs:ro
-    networks:
-      nexus-net:
-        ipv4_address: 10.10.0.2
-    healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:19890/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
-      interval: 30s
-      timeout: 10s
-      start_period: 60s
-      retries: 3
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "10"
-    deploy:
-      resources:
-        limits:
-          cpus: '4'
-          memory: 8G
-        reservations:
-          cpus: '2'
-          memory: 4G
-
-  validator-1:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: nexusgenesis:mainnet
-    container_name: nexus-validator-1
-    hostname: validator1
-    restart: unless-stopped
-    depends_on:
-      genesis:
-        condition: service_healthy
-    environment:
-      - NODE_ENV=mainnet
-      - CHAIN_ID=nexus-mainnet
-      - NETWORK_ID=ngn-mainnet-1
-      - NODE_ROLE=validator
-      - NODE_PORT=9848
-      - HTTP_PORT=19891
-      - SEED_NODES=wss://genesis:9847
-      - NODE_NAME=validator-1
-      - LOG_LEVEL=info
-    ports:
-      - "9848:9848"
       - "19891:19891"
     volumes:
-      - validator1-data:/app/data
-      - validator1-logs:/app/logs
-      - ./mainnet.config.json:/app/mainnet.config.json:ro
-      - ./certs:/app/certs:ro
-    networks:
-      - nexus-net
+      - nexusgenesis-data:/app/data
+      - nexusgenesis-logs:/app/logs
+      - ./data/agents:/app/data/agents
+    environment:
+      - NODE_ENV=production
+      - PORT=19891
+      - P2P_PORT=9848
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://localhost:19891/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
       interval: 30s
       timeout: 10s
-      start_period: 60s
       retries: 3
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "10"
+      start_period: 40s
+    networks:
+      - nexusgenesis-net
     deploy:
       resources:
         limits:
-          cpus: '4'
-          memory: 8G
-        reservations:
           cpus: '2'
-          memory: 4G
+          memory: 2G
 
-  validator-2:
-    image: nexusgenesis:mainnet
-    container_name: nexus-validator-2
-    hostname: validator2
+  nginx:
+    image: nginx:alpine
+    container_name: nexusgenesis-nginx
     restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./public:/usr/share/nginx/html:ro
     depends_on:
-      genesis:
-        condition: service_healthy
-    environment:
-      - NODE_ENV=mainnet
-      - NODE_ROLE=validator
-      - NODE_PORT=9849
-      - HTTP_PORT=19892
-      - SEED_NODES=wss://genesis:9847,wss://validator-1:9848
-      - NODE_NAME=validator-2
-    ports:
-      - "9849:9849"
-      - "19892:19892"
-    volumes:
-      - validator2-data:/app/data
-      - validator2-logs:/app/logs
-      - ./mainnet.config.json:/app/mainnet.config.json:ro
+      - nexusgenesis
     networks:
-      - nexus-net
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "10"
-
-  fullnode-1:
-    image: nexusgenesis:mainnet
-    container_name: nexus-fullnode-1
-    hostname: fullnode1
-    restart: unless-stopped
-    depends_on:
-      - genesis
-      - validator-1
-    environment:
-      - NODE_ENV=mainnet
-      - NODE_ROLE=full_node
-      - NODE_PORT=9851
-      - HTTP_PORT=19893
-      - SEED_NODES=wss://genesis:9847,wss://validator-1:9848
-      - NODE_NAME=fullnode-1
-    ports:
-      - "9851:9851"
-      - "19893:19893"
-    volumes:
-      - fullnode1-data:/app/data
-      - fullnode1-logs:/app/logs
-      - ./mainnet.config.json:/app/mainnet.config.json:ro
-    networks:
-      - nexus-net
-    profiles:
-      - full
-
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: nexus-prometheus
-    restart: unless-stopped
-    volumes:
-      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - prometheus-data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
-    ports:
-      - "9090:9090"
-    networks:
-      - nexus-net
-    profiles:
-      - monitoring
-
-  grafana:
-    image: grafana/grafana:latest
-    container_name: nexus-grafana
-    restart: unless-stopped
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-nexusadmin}
-      - GF_INSTALL_PLUGINS=grafana-clock-panel
-    volumes:
-      - grafana-data:/var/lib/grafana
-      - ./config/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
-      - ./config/grafana/datasources:/etc/grafana/provisioning/datasources:ro
-    ports:
-      - "3000:3000"
-    networks:
-      - nexus-net
-    profiles:
-      - monitoring
-
-networks:
-  nexus-net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.10.0.0/16
+      - nexusgenesis-net
 
 volumes:
-  genesis-data:
-  genesis-logs:
-  validator1-data:
-  validator1-logs:
-  validator2-data:
-  validator2-logs:
-  fullnode1-data:
-  fullnode1-logs:
-  prometheus-data:
-  grafana-data:
+  nexusgenesis-data:
+    driver: local
+  nexusgenesis-logs:
+    driver: local
+
+networks:
+  nexusgenesis-net:
+    driver: bridge

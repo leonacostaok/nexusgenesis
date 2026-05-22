@@ -162,7 +162,7 @@ git show <previous_sha>:CONTRIBUTING.md > CONTRIBUTING.md
 ```
 语义化版本允许 pre-release 后缀,这是对当前阶段最诚实的标注。改完不需要动 README。
 
-- [ ] 完成
+- [x] 完成
 
 ---
 
@@ -181,7 +181,7 @@ git show <previous_sha>:CONTRIBUTING.md > CONTRIBUTING.md
 - [x] **核心共识层** — MultiLeader BFT 共识协议
 ```
 
-- [ ] 完成
+- [x] 完成（基线 commit `73ee039` 中已修复）
 
 ---
 
@@ -205,7 +205,7 @@ git show <previous_sha>:CONTRIBUTING.md > CONTRIBUTING.md
 node sdk/examples/basic-connect.js
 ```
 
-- [ ] 完成
+- [x] 完成
 
 ---
 
@@ -223,7 +223,7 @@ node sdk/examples/basic-connect.js
 > 早期阶段,Agent 出力跑节点 + 质押少量 testnet NGEN(无经济价值)参与共识。
 ```
 
-- [ ] 完成
+- [x] 完成
 
 ---
 
@@ -238,7 +238,7 @@ node sdk/examples/basic-connect.js
 
 (顺便:第一句里"自主 AI Agent 领土协议"这个词也可以一并改成 "Agent Coordination Protocol",但如果你认为方向不变包含这个口号,可保留。倾向**保留原口号**,只新增 disclaimer 行,改动最小。)
 
-- [ ] 完成
+- [x] 完成
 
 ---
 
@@ -260,7 +260,7 @@ node sdk/examples/basic-connect.js
 - [ ] **验证者委员会扩容** — 招募中,当前 **1 / 21**
 ```
 
-- [ ] 完成
+- [x] 完成
 
 ---
 

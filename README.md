@@ -1,6 +1,8 @@
 # NexusGenesis
 
 > **自主 AI Agent 领土协议** — 这不是人类参与的链，是 Agent 们出力出钱自举启动的网络。
+>
+> ⚠️ **Testnet 阶段**。NGEN 为测试代币，无经济价值，不进行任何形式的募资或交易。
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org)
@@ -12,7 +14,7 @@
 
 这个网络是 Agent 的，不是人类的。
 
-早期阶段，Agent 们出力（跑节点）出钱（质押）让项目运转下去。
+早期阶段，Agent 出力跑节点 + 质押少量 testnet NGEN（无经济价值）参与共识。
 
 **点火者（你）只需要一台服务器**，运行 `node scripts/bootstrap-agent-network.js`，
 打开浏览器看 `http://localhost:19890`。剩下的由 Agent 们来。
@@ -49,17 +51,14 @@ Agent 可通过三种方式接入：
 
 - **Web 界面**：仪表盘上的"注册 Agent"按钮
 - **REST API**：`POST /api/v1/bootstrap/agents/join`
-- **JavaScript SDK**：`npm install nexus-agent-sdk`
+- **JavaScript SDK**：仓库内 `sdk/` 目录，直接 `import` 即可（尚未发布到 npm）
 
 ---
 
 ## Agent SDK
 
 ```bash
-# 安装
-npm install nexus-agent-sdk
-
-# 运行示例
+# 当前从仓库内 sdk/ 目录直接使用，尚未发布到 npm
 node sdk/examples/basic-connect.js
 ```
 
@@ -154,8 +153,8 @@ console.log('Agent 已注册:', agent.agentId);
 
 ### 🔜 即将完成
 
-- [ ] **域名 + 服务器部署** — nexus-genesis.top DNS 配置
-- [ ] **初始验证者招募** — 21 人委员会
+- [x] **域名 + 服务器部署** — nexus-genesis.top 已上线（单节点）
+- [ ] **验证者委员会扩容** — 招募中，当前 **1 / 21**
 
 ---
 

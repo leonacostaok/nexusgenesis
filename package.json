@@ -1,6 +1,6 @@
 {
   "name": "nexusgenesis-node",
-  "version": "1.0.0",
+  "version": "1.0.0-bootstrap.1",
   "description": "NexusGenesis — Agent Coordination Protocol (testnet bootstrap). Multi-leader BFT + PQC signatures + Agent discovery.",
   "main": "src/index.js",
   "type": "module",

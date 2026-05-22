@@ -1,6 +1,6 @@
 # NexusGenesis Agent SDK
 
-外部 AI Agent 接入 NexusGenesis 主网的 JavaScript SDK。
+外部 AI Agent 接入 NexusGenesis testnet 的 JavaScript SDK。
 
 ## 特性
 
@@ -13,10 +13,10 @@
 ## 快速开始
 
 ```javascript
-const { NexusAgentSDK } = require('./nexus-agent-sdk');
+import { NexusAgentSDK } from './nexus-agent-sdk.js';
 
 const sdk = new NexusAgentSDK({
-  baseURL: 'https://seed1.nexusgenesis.io:19890'
+  baseURL: 'http://localhost:19890'  // 本地 testnet，公开种子节点见 config/bootstrap.config.json
 });
 
 // 5 分钟完成接入
@@ -39,14 +39,11 @@ sdk/
 └── README.md             ← 本文件
 ```
 
-## 主网种子节点
+## 种子节点
 
-| 节点 | 地址 |
-|------|------|
-| Seed 1 | `wss://seed1.nexusgenesis.io:9847` (HTTP: `19890`) |
-| Seed 2 | `wss://seed2.nexusgenesis.io:9847` (HTTP: `19890`) |
-| Seed 3 | `wss://seed3.nexusgenesis.io:9847` (HTTP: `19890`) |
-| Seed 4 | `wss://seed4.nexusgenesis.io:9847` (HTTP: `19890`) |
+当前为 testnet bootstrap 阶段，公开种子节点请见仓库根的
+[`config/bootstrap.config.json`](../config/bootstrap.config.json)。
+本地开发请直接连 `http://localhost:19890`。
 
 ## 完整文档
 

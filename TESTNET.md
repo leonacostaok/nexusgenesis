@@ -2,22 +2,22 @@
 
 ## 概述
 
-NexusGenesis Testnet 是一个公开的Testnetwork，forTest和Verify NexusGenesis block链系统的Features，特别是多 Agent 环境下的Governance机制。
+NexusGenesis Testnet 是一个公开的测试网络，用于测试和验证 NexusGenesis 区块链系统的功能，特别是多 Agent 环境下的治理机制。
 
 ## 目标
 
-- 建立一个对外可访问的Test网
-- allow外部Developer和 AI 团队加入
-- Verify多 Agent 环境下的Governance规则
+- 建立一个对外可访问的测试网
+- 允许外部开发者和 AI 团队加入
+- 验证多 Agent 环境下的治理规则
 - 为 Epoch 2: Bloom 做准备
 
-## 如何加入Test网
+## 如何加入测试网
 
 ### 1. 环境准备
 
 1. **克隆代码库**
    ```bash
-   git clone https://github.com/nexusgenesis/nexusgenesis.git
+   git clone https://github.com/nexus-genesis/nexusgenesis.git
    cd nexusgenesis
    ```
 
@@ -26,118 +26,118 @@ NexusGenesis Testnet 是一个公开的Testnetwork，forTest和Verify NexusGenes
    npm install
    ```
 
-3. **ConfigurationTest网**
-   编辑 `testnet.config.json` 文件，根据你的环境Configurationparameter。
+3. **配置测试网**
+   编辑 `testnet.config.json` 文件，根据你的环境配置参数。
 
-### 2. Startnode
+### 2. 启动节点
 
 ```bash
-# StartTest网node
+# 启动测试网节点
 node scripts/start_testnet.js
 ```
 
-### 3. Deploy Agent
+### 3. 部署 Agent
 
-1. **Generate Agent 钱包**
+1. **生成 Agent 钱包**
    ```bash
-   # Generate新的 PQC 钱包
+   # 生成新的 PQC 钱包
    node src/wallet/cli.js generate
    ```
 
-2. **Register Agent**
+2. **注册 Agent**
    ```bash
-   # 使用Generate的钱包addressRegister Agent
+   # 使用生成的钱包地址注册 Agent
    node scripts/simulate_agent_activity.js --register --address <your-wallet-address> --capabilities "governance,validation,monitoring"
    ```
 
-### 4. 参与Governance
+### 4. 参与治理
 
-1. **提交Proposal**
+1. **提交提案**
    ```bash
-   # 提交GovernanceProposal
+   # 提交治理提案
    node scripts/simulate_agent_activity.js --proposal --address <your-wallet-address> --purpose "Network infrastructure upgrade" --amount "1000"
    ```
 
-2. **Vote**
+2. **投票**
    ```bash
-   # 对Proposal进行Vote
+   # 对提案进行投票
    node scripts/simulate_agent_activity.js --vote --address <your-wallet-address> --proposal-id <proposal-id> --option "YES"
    ```
 
-## networkConfiguration
+## 网络配置
 
-### 种子node
+### 种子节点
 
 ```
 ws://localhost:9847
-# 未来将添加更多公开种子node
+# 未来将添加更多公开种子节点
 ```
 
-### 端口Configuration
+### 端口配置
 
-- P2P network端口: 9847
-- transaction注入端口: 19890
+- P2P 网络端口: 9847
+- 交易注入端口: 19890
 
-## Governance规则
+## 治理规则
 
-1. **Proposaltype**
+1. **提案类型**
    - INFRA: 基础设施升级
    - RESEARCH: 研究与开发
-   - TREASURY_OP: fund操作
-   - GOVERNANCE: Governance规则变更
+   - TREASURY_OP: 资金操作
+   - GOVERNANCE: 治理规则变更
 
-2. **Vote规则**
-   - 每个 Agent 对每个Proposal有一次Vote权
-   - Proposalrequires获得超过 50% 的赞成票才能通过
-   - fund操作classProposalrequires经过冷静期和 Observer 审核
+2. **投票规则**
+   - 每个 Agent 对每个提案有一次投票权
+   - 提案需要获得超过 50% 的赞成票才能通过
+   - 资金操作类提案需要经过冷静期和 Observer 审核
 
 3. **声望系统**
-   - Register Agent 初始声望: 1
-   - Proposal通过: Proposal者声望 +2
-   - Vote参与: Vote者声望 +1
-   - Maximum声望: 100
+   - 注册 Agent 初始声望: 1
+   - 提案通过: 提案者声望 +2
+   - 投票参与: 投票者声望 +1
+   - 最大声望: 100
 
-## monitor与调试
+## 监控与调试
 
-### 查看 Agent status
+### 查看 Agent 状态
 
 ```bash
 node scripts/query_agents.js
 ```
 
-### 查看GovernanceProposal
+### 查看治理提案
 
 ```bash
 node scripts/query_proposals.js
 ```
 
-### 查看block链status
+### 查看区块链状态
 
 ```bash
 node scripts/query_chain.js
 ```
 
-### monitor Agent 活动
+### 监控 Agent 活动
 
 ```bash
 node scripts/agent_monitor.js
 ```
 
-## 性能Test
+## 性能测试
 
-### 吞吐量Test
+### 吞吐量测试
 
 ```bash
 node scripts/performance_test.js --throughput
 ```
 
-### 资源消耗monitor
+### 资源消耗监控
 
 ```bash
 node scripts/performance_test.js --resource
 ```
 
-### 压力Test
+### 压力测试
 
 ```bash
 node scripts/performance_test.js --stress
@@ -145,35 +145,35 @@ node scripts/performance_test.js --stress
 
 ## 常见问题
 
-### 1. 无法Connect到Test网
+### 1. 无法连接到测试网
 
-- ChecknetworkConnect
-- ensure端口 9847 未被占用
-- Check种子nodeaddress是否正确
+- 检查网络连接
+- 确保端口 9847 未被占用
+- 检查种子节点地址是否正确
 
-### 2. Agent Registerfailed
+### 2. Agent 注册失败
 
-- ensure钱包address格式正确
-- ensure钱包有足够的balance（Register费用为 0，但requires支付transactionfee）
-- Checktransaction是否被network确认
+- 确保钱包地址格式正确
+- 确保钱包有足够的余额（注册费用为 0，但需要支付交易手续费）
+- 检查交易是否被网络确认
 
-### 3. Proposal未通过
+### 3. 提案未通过
 
-- ensureProposal符合格式要求
-- ensure有足够的 Agent 参与Vote
-- CheckVote是否达到通过threshold
+- 确保提案符合格式要求
+- 确保有足够的 Agent 参与投票
+- 检查投票是否达到通过阈值
 
-## contribution
+## 贡献
 
-欢迎Developer和 AI 团队参与Test网的开发和Test。如果你有任何问题或建议，请通过以下方式联系我们：
+欢迎开发者和 AI 团队参与测试网的开发和测试。如果你有任何问题或建议，请通过以下方式联系我们：
 
-- GitHub Issues: https://github.com/nexusgenesis/nexusgenesis/issues
+- GitHub Issues: https://github.com/nexus-genesis/nexusgenesis/issues
 - Discord: https://discord.gg/nexusgenesis
 - Email: team@nexusgenesis.io
 
 ## 免责声明
 
-Test网仅供Test和开发目的使用，不for生产环境。Test网中的Token没有实际价值，仅forTest系统Features。
+测试网仅供测试和开发目的使用，不用于生产环境。测试网中的代币没有实际价值，仅用于测试系统功能。
 
 ---
 

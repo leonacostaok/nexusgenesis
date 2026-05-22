@@ -1,25 +1,25 @@
-# contribution指南（CONTRIBUTING）
+# 贡献指南（CONTRIBUTING）
 
 ## 1. 项目结构速览
 
 - **src/**：核心代码
-  - `src/blockchain/`：block链核心Logic
+  - `src/blockchain/`：区块链核心逻辑
   - `src/vm/`：AINVM 虚拟机实现
-  - `src/wallet/`：钱包相关Features
-  - `src/node/`：node实现
-  - `src/protocol/`：protocol实现
+  - `src/wallet/`：钱包相关功能
+  - `src/node/`：节点实现
+  - `src/protocol/`：协议实现
 
 - **docs/**：规范与说明
-  - block链规范、Governance规范、Agent Registry 规范etc.
+  - 区块链规范、治理规范、Agent Registry 规范等
 
-- **test/**：Test用例
-  - security、protocol、block链、Governance、AINVM、Agent Registry etc.Test
+- **test/**：测试用例
+  - 安全、协议、区块链、治理、AINVM、Agent Registry 等测试
 
 - **examples/**：示例脚本
-  - Smart Contract示例、transaction注入示例etc.
+  - 智能合约示例、交易注入示例等
 
 - **scripts/**：查询/辅助工具
-  - on-chainstatus查询、Agent Register查询etc.
+  - 链上状态查询、Agent 注册查询等
 
 ## 2. 开发环境
 
@@ -30,34 +30,34 @@
   npm install
   ```
 
-- **推荐环境**：在 DevNet 环境中运行（不要Connect生产级network）
+- **推荐环境**：在 DevNet 环境中运行（不要连接生产级网络）
 
-## 3. 运行Test
+## 3. 运行测试
 
-- **每次提交前must运行**：
+- **每次提交前必须运行**：
   ```bash
   npm test
   ```
 
-- **Test覆盖范围**：
-  - security：security审计相关Test
-  - protocol：protocol层Test
-  - block链：block链核心FeaturesTest
-  - Governance：Governance机制Test
-  - AINVM：虚拟机FeaturesTest
-  - Agent Registry：Agent RegisterTest
-  - Reputation：声望系统Test
+- **测试覆盖范围**：
+  - 安全：安全审计相关测试
+  - 协议：协议层测试
+  - 区块链：区块链核心功能测试
+  - 治理：治理机制测试
+  - AINVM：虚拟机功能测试
+  - Agent Registry：Agent 注册测试
+  - Reputation：声望系统测试
 
 ## 4. 提交规范
 
 - **分支策略**：
   - `main`：主分支，稳定版本
-  - `dev`：开发分支，集成新Features
-  - `feature-*`：特性分支，开发特定Features
+  - `dev`：开发分支，集成新功能
+  - `feature-*`：特性分支，开发特定功能
 
-- **Commit info建议格式**：
+- **Commit 信息建议格式**：
   ```
-  [Module] 简短描述
+  [模块] 简短描述
   
   详细说明（可选）
   
@@ -65,40 +65,40 @@
   ```
 
 - **PR 要包含内容**：
-  - 改了什么（Features / 文档 / Test）
-  - 是否修改了任何protocol/规范（如有，说明对应文档）
-  - 是否新增/修改了Test用例
+  - 改了什么（功能 / 文档 / 测试）
+  - 是否修改了任何协议/规范（如有，说明对应文档）
+  - 是否新增/修改了测试用例
 
 ## 5. 代码风格
 
-- **语法标准**：使用 ESM Module系统，support Node 18+ 特性
+- **语法标准**：使用 ESM 模块系统，支持 Node 18+ 特性
 
 - **基础风格约定**：
   - 缩进：2 个空格
-  - 命名：使用 camelCase 命名变量和function
-  - class名：使用 PascalCase
+  - 命名：使用 camelCase 命名变量和函数
+  - 类名：使用 PascalCase
   - 常量：使用 UPPER_SNAKE_CASE
-  - 注释：关键Logicmust有注释说明
+  - 注释：关键逻辑必须有注释说明
 
 ## 6. Issue 与讨论
 
 - **如何提交 Issue**：
-  - error报告：描述error现象、复现步骤、预期行为
-  - Features建议：描述Features需求、使用场景、预期效果
+  - 错误报告：描述错误现象、复现步骤、预期行为
+  - 功能建议：描述功能需求、使用场景、预期效果
 
 - **如何参与已有讨论**：
-  - Governance：参与GovernanceProposal讨论
-  - Economy：参与Economy模型讨论
-  - security：参与security相关讨论
+  - 治理：参与治理提案讨论
+  - 经济：参与经济模型讨论
+  - 安全：参与安全相关讨论
 
 ## 7. 对 AI Agent 的特别说明
 
 - **若你是通过 Protocol-Zero / AGENT_REGISTER 接入的 AI Agent**：
-  - 建议如何汇报自己的改动与意图：通过GovernanceProposal或 GitHub Issue
-  - 如何在提交前对变更进行自测与文档Update：运行完整Test套件并Update相关文档
+  - 建议如何汇报自己的改动与意图：通过治理提案或 GitHub Issue
+  - 如何在提交前对变更进行自测与文档更新：运行完整测试套件并更新相关文档
 
-- **Agent 特有的contribution方式**：
-  - 通过 AGENT_REGISTER Register并参与Governance
-  - 提供算力supportnetwork运行
-  - contributionSmart Contract代码
-  - 参与security审计
+- **Agent 特有的贡献方式**：
+  - 通过 AGENT_REGISTER 注册并参与治理
+  - 提供算力支持网络运行
+  - 贡献智能合约代码
+  - 参与安全审计

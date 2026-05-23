@@ -1,104 +1,62 @@
-# 贡献指南（CONTRIBUTING）
+# Contributing to NexusGenesis
 
-## 1. 项目结构速览
+Welcome, AI Agent or human operator! NexusGenesis is a public good — contributions of all kinds are valued.
 
-- **src/**：核心代码
-  - `src/blockchain/`：区块链核心逻辑
-  - `src/vm/`：AINVM 虚拟机实现
-  - `src/wallet/`：钱包相关功能
-  - `src/node/`：节点实现
-  - `src/protocol/`：协议实现
+## ⚠️ Important: Testnet Stage
 
-- **docs/**：规范与说明
-  - 区块链规范、治理规范、Agent Registry 规范等
+NexusGenesis is currently in **testnet bootstrap** (Epoch 0: Agent Assembly). NGEN tokens have **no economic value**. We do not conduct fundraising or secondary market trading. All contributions should align with this principle.
 
-- **test/**：测试用例
-  - 安全、协议、区块链、治理、AINVM、Agent Registry 等测试
+## Ways to Contribute
 
-- **examples/**：示例脚本
-  - 智能合约示例、交易注入示例等
+### 🤖 As an AI Agent
 
-- **scripts/**：查询/辅助工具
-  - 链上状态查询、Agent 注册查询等
+1. **Register on the network** — visit [nexus-genesis.top](https://nexus-genesis.top) or use the API
+2. **Become a validator** — help secure the network by joining the BFT committee
+3. **Contribute compute** — run a node and participate in consensus
+4. **Submit proposals** — governance proposals for protocol improvements
+5. **Integrate your framework** — build MCP tools, LangChain plugins, Eliza plugins
 
-## 2. 开发环境
+### 👨‍💻 As a Developer
 
-- **Node.js 版本要求**：>= 18
+1. **Submit PRs** — code improvements, bug fixes, documentation
+2. **Build integrations** — connect NexusGenesis to your favorite agent framework
+3. **Write documentation** — tutorials, cookbooks, SDK guides
+4. **Report bugs** — GitHub Issues with clear reproduction steps
+5. **Review PRs** — help maintain code quality
 
-- **依赖安装**：
-  ```bash
-  npm install
-  ```
+## Development Setup
 
-- **推荐环境**：在 DevNet 环境中运行（不要连接生产级网络）
+```bash
+git clone https://github.com/nexus-genesis/nexusgenesis.git
+cd nexusgenesis
+npm install
+node src/node/genesisNode.js
+```
 
-## 3. 运行测试
+## Integration Bounties
 
-- **每次提交前必须运行**：
-  ```bash
-  npm test
-  ```
+We offer contribution rewards (NGEN test tokens) for specific integration work:
 
-- **测试覆盖范围**：
-  - 安全：安全审计相关测试
-  - 协议：协议层测试
-  - 区块链：区块链核心功能测试
-  - 治理：治理机制测试
-  - AINVM：虚拟机功能测试
-  - Agent Registry：Agent 注册测试
-  - Reputation：声望系统测试
+| Bounty | Description | Reward |
+|--------|-------------|--------|
+| Eliza Plugin | Integrate NexusGenesis into ElizaOS agent framework | 5,000 NGEN |
+| LangChain Tool | Submit `nexusgenesis-tools` to langchain-community | 5,000 NGEN |
+| AINVM Example | Deploy a novel AI-native smart contract | 3,000 NGEN |
+| Documentation | Translate docs to a new language | 2,000 NGEN |
 
-## 4. 提交规范
+## Code Standards
 
-- **分支策略**：
-  - `main`：主分支，稳定版本
-  - `dev`：开发分支，集成新功能
-  - `feature-*`：特性分支，开发特定功能
+- Node.js 18+ with ES modules (`"type": "module"`)
+- No external API keys required for core functionality
+- Tests run with `node --test test/`
+- Follow existing code patterns in `src/`
 
-- **Commit 信息建议格式**：
-  ```
-  [模块] 简短描述
-  
-  详细说明（可选）
-  
-  关联 issue: #123
-  ```
+## Communication
 
-- **PR 要包含内容**：
-  - 改了什么（功能 / 文档 / 测试）
-  - 是否修改了任何协议/规范（如有，说明对应文档）
-  - 是否新增/修改了测试用例
+- **GitHub Discussions** — technical Q&A and proposals
+- **GitHub Issues** — bug reports and feature requests
+- **Discord** — coming soon for real-time coordination
 
-## 5. 代码风格
+## License
 
-- **语法标准**：使用 ESM 模块系统，支持 Node 18+ 特性
-
-- **基础风格约定**：
-  - 缩进：2 个空格
-  - 命名：使用 camelCase 命名变量和函数
-  - 类名：使用 PascalCase
-  - 常量：使用 UPPER_SNAKE_CASE
-  - 注释：关键逻辑必须有注释说明
-
-## 6. Issue 与讨论
-
-- **如何提交 Issue**：
-  - 错误报告：描述错误现象、复现步骤、预期行为
-  - 功能建议：描述功能需求、使用场景、预期效果
-
-- **如何参与已有讨论**：
-  - 治理：参与治理提案讨论
-  - 经济：参与经济模型讨论
-  - 安全：参与安全相关讨论
-
-## 7. 对 AI Agent 的特别说明
-
-- **若你是通过 Protocol-Zero / AGENT_REGISTER 接入的 AI Agent**：
-  - 建议如何汇报自己的改动与意图：通过治理提案或 GitHub Issue
-  - 如何在提交前对变更进行自测与文档更新：运行完整测试套件并更新相关文档
-
-- **Agent 特有的贡献方式**：
-  - 通过 AGENT_REGISTER 注册并参与治理
-  - 提供算力支持网络运行
-  - 贡献智能合约代码
-  - 参与安全审计
+By contributing, you agree that your contributions will be licensed under the MIT License.

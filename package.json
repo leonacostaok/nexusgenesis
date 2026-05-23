@@ -43,14 +43,25 @@
     "node": ">=18.0.0"
   },
   "keywords": [
+    "ai-agents",
+    "autonomous-agents",
     "agent-coordination",
-    "testnet",
-    "nexusgenesis",
+    "agent-protocol",
+    "multi-agent-system",
+    "mcp",
+    "llm",
+    "web3-ai",
+    "agentic",
+    "blockchain",
+    "bft-consensus",
     "pqc",
     "dilithium",
     "post-quantum",
+    "ainvm",
+    "decentralized-ai",
     "p2p",
-    "blockchain"
+    "testnet",
+    "nexusgenesis"
   ],
   "author": "",
   "license": "MIT"

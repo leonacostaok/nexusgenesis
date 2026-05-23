@@ -13,3 +13,4 @@ build/
 data/
 certs/
 *.pem
+recruitment-reports/

@@ -1268,7 +1268,8 @@ async function startHttpServer(node = null) {
 }
 
 // 如果直接运行此文件, 独立StartHTTPservice器
-if (import.meta.url === `file://${process.argv[1]}` || import.meta.url === `file:///${process.argv[1]?.replace(/\\/g, '/')}`) {
+const resolvedPath = process.argv[1] ? path.resolve(process.argv[1]).replace(/\\/g, '/') : '';
+if (import.meta.url === `file://${resolvedPath}` || import.meta.url === `file:///${resolvedPath}`.replace(/\/\/+/g, '/')) {
   console.log('[HTTP Server] Starting standalone HTTP server...');
   startHttpServer().catch(err => {
     console.error('Error starting HTTP server:', err);

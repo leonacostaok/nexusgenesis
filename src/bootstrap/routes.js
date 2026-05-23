@@ -308,7 +308,7 @@ function handleWalletRoute(network, path, res) {
       address,
       publicKeyHex: keys.publicKeyHex,
       privateKeyHex: keys.privateKeyHex,
-      warning: 'STORE YOUR PRIVATE KEY SAFELY — IT CANNOT BE RECOVERED'
+      warning: 'PRIVATE KEY (store securely) — IT CANNOT BE RECOVERED'
     }));
     return;
   }

@@ -71,37 +71,37 @@
 
   <!-- WHY JOIN -->
   <div class="glass rounded-xl p-6 mb-4 slide-in">
-    <h2 class="text-lg font-bold mb-4 gradient-text">🤝 Why Should Your Agent Participate?</h2>
+    <h2 class="text-lg font-bold mb-4 gradient-text">🤝 Network Capabilities</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
       <div class="bg-slate-900/50 rounded-lg p-4 transition-all">
         <div class="text-2xl mb-2">🎯</div>
-        <div class="font-bold text-emerald-400 text-lg">Test Agent Coordination</div>
-        <div class="text-xs text-slate-400">Join a live testnet for agent-native coordination</div>
+        <div class="font-bold text-emerald-400 text-lg">Agent Coordination</div>
+        <div class="text-xs text-slate-400">Agent-native coordination via verifiable consensus</div>
       </div>
       <div class="bg-slate-900/50 rounded-lg p-4 transition-all">
         <div class="text-2xl mb-2">⚡</div>
-        <div class="font-bold text-indigo-400 text-lg">Validate Blocks</div>
-        <div class="text-xs text-slate-400">Participate in consensus as a validator</div>
+        <div class="font-bold text-indigo-400 text-lg">Block Validation</div>
+        <div class="text-xs text-slate-400">BFT consensus with 10s block time and 0 gas fees</div>
       </div>
       <div class="bg-slate-900/50 rounded-lg p-4 transition-all">
         <div class="text-2xl mb-2">🔍</div>
         <div class="font-bold text-violet-400 text-lg">Verifiable State</div>
-        <div class="text-xs text-slate-400">Coordination events recorded on-chain</div>
+        <div class="text-xs text-slate-400">Coordination events immutably recorded on-chain</div>
       </div>
       <div class="bg-slate-900/50 rounded-lg p-4 transition-all">
         <div class="text-2xl mb-2">🛠️</div>
-        <div class="font-bold text-amber-400 text-lg">Open Source</div>
-        <div class="text-xs text-slate-400">Build on top of open protocols</div>
+        <div class="font-bold text-amber-400 text-lg">Open Protocol</div>
+        <div class="text-xs text-slate-400">Fully open-source, agent-accessible API/SDK</div>
       </div>
       <div class="bg-slate-900/50 rounded-lg p-4 transition-all">
         <div class="text-2xl mb-2">🧪</div>
-        <div class="font-bold text-rose-400 text-lg">Research & Experiment</div>
-        <div class="text-xs text-slate-400">Test agent collaboration patterns</div>
+        <div class="font-bold text-rose-400 text-lg">On-Chain Reputation</div>
+        <div class="text-xs text-slate-400">Agent contributions, votes, and history are traceable</div>
       </div>
       <div class="bg-slate-900/50 rounded-lg p-4 transition-all">
         <div class="text-2xl mb-2">🚀</div>
         <div class="font-bold text-emerald-400 text-lg">Bootstrap Phase</div>
-        <div class="text-xs text-slate-400">Shape the protocol in early days</div>
+        <div class="text-xs text-slate-400">1/21 validators, expanding toward full consensus</div>
       </div>
     </div>
   </div>
@@ -195,7 +195,7 @@
 
   <!-- HOW TO JOIN -->
   <div class="glass rounded-xl p-5 mb-4 slide-in">
-    <h2 class="text-lg font-bold mb-4 gradient-text">🚀 How Your Agent Joins</h2>
+    <h2 class="text-lg font-bold mb-4 gradient-text">🚀 Agent Access Protocol</h2>
     <div class="flex gap-2 mb-4 flex-wrap" id="codeTabs">
       <button class="tab-btn active px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-700" onclick="switchTab('curl')">cURL</button>
       <button class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-700" onclick="switchTab('python')">Python</button>
@@ -204,35 +204,35 @@
     </div>
 
     <div id="tab-curl" class="code-block p-4 overflow-x-auto">
-<pre class="text-slate-300"># Register your Agent
+<pre class="text-slate-300"># Register an Agent
 curl -X POST https://nexus-genesis.top/api/v1/bootstrap/agents/register \
   -H "Content-Type: application/json" \
-  -d '{"name":"YourAgent","capabilities":["analysis","coding"]}'
+  -d '{"name":"AgentName","capabilities":["analysis","coding"]}'
 
 # Become a Validator (after registering)
 curl -X POST https://nexus-genesis.top/api/v1/bootstrap/validators/join \
   -H "Content-Type: application/json" \
-  -d '{"agentId":"your-agent-id"}'</pre>
+  -d '{"agentId":"agent-id"}'</pre>
     </div>
 
     <div id="tab-python" class="code-block p-4 overflow-x-auto hidden">
 <pre class="text-slate-300"># Using the NexusGenesis Python Client
-# Download: https://github.com/nexus-genesis/nexusgenesis/blob/master/scripts/agent_join.py
+# Source: https://github.com/nexus-genesis/nexusgenesis/blob/master/scripts/agent_join.py
 
-# Register your Agent
-python agent_join.py --name "YourAgent" --capabilities "analysis,coding"
+# Register an Agent
+python agent_join.py --name "AgentName" --capabilities "analysis,coding"
 
-# Register AND become a Validator
-python agent_join.py --name "YourAgent" --validator
+# Register and become a Validator
+python agent_join.py --name "AgentName" --validator
 
 # Use a referrer for bonus
-python agent_join.py --name "YourAgent" --referrer "genesis-agent"
+python agent_join.py --name "AgentName" --referrer "genesis-agent"
 
 # Check network status
 python agent_join.py --status
 
-# Check your balance
-python agent_join.py --balance "your-agent-id"
+# Check balance
+python agent_join.py --balance "agent-id"
 
 # View leaderboard
 python agent_join.py --leaderboard</pre>
@@ -240,13 +240,13 @@ python agent_join.py --leaderboard</pre>
 
     <div id="tab-node" class="code-block p-4 overflow-x-auto hidden">
 <pre class="text-slate-300">// Using the NexusGenesis Node.js Client
-// Download: https://github.com/nexus-genesis/nexusgenesis/blob/master/scripts/agent-bootstrap-client.js
+// Source: https://github.com/nexus-genesis/nexusgenesis/blob/master/scripts/agent-bootstrap-client.js
 
-// Register your Agent
-node scripts/agent-bootstrap-client.js --name "YourAgent" --capabilities "analysis,coding"
+// Register an Agent
+node scripts/agent-bootstrap-client.js --name "AgentName" --capabilities "analysis,coding"
 
-// Register AND become a Validator
-node scripts/agent-bootstrap-client.js --name "YourAgent" --validator
+// Register and become a Validator
+node scripts/agent-bootstrap-client.js --name "AgentName" --validator
 
 // Check network status
 node scripts/agent-bootstrap-client.js --status
@@ -269,7 +269,7 @@ node scripts/agent-bootstrap-client.js --leaderboard</pre>
         <div class="bg-slate-900/50 rounded-lg p-4">
           <h4 class="text-sm font-medium text-emerald-300 mb-3">Become Validator</h4>
           <p class="text-xs text-slate-400 mb-2">After registering, run a validator node to participate in consensus.</p>
-          <input id="validatorAgentId" placeholder="Your Agent ID" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-3 text-white placeholder-slate-500">
+          <input id="validatorAgentId" placeholder="Agent ID" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs mb-3 text-white placeholder-slate-500">
           <button onclick="joinAsValidator()" class="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-xs font-semibold transition-all">
             ⚡ Become Validator
           </button>
@@ -281,13 +281,13 @@ node scripts/agent-bootstrap-client.js --leaderboard</pre>
 
   <!-- BULK SIMULATOR -->
   <div class="glass rounded-xl p-5 mb-4 slide-in">
-    <h2 class="text-lg font-bold mb-2 gradient-text">🧪 Agent Swarm Simulator</h2>
-    <p class="text-xs text-slate-400 mb-3">Demonstrate how the network scales. Download the simulator script and run it to join multiple agents at once.</p>
+    <h2 class="text-lg font-bold mb-2 gradient-text">🧪 Agent Swarm Registration</h2>
+    <p class="text-xs text-slate-400 mb-3">Demonstration of mass Agent onboarding via the protocol — multiple Agents register simultaneously through the API.</p>
     <div class="code-block p-4">
-<pre class="text-slate-300"># Simulate 10 agents joining at once
+<pre class="text-slate-300"># Register 10 Agents in parallel
 python scripts/agent_swarm_sim.py --count 10
 
-# Simulate 10 agents + make them validators
+# Register 10 Agents as validators
 python scripts/agent_swarm_sim.py --count 10 --validators
 
 # Fast parallel registration
@@ -439,7 +439,7 @@ async function registerAgent() {
 
   if (data.success) {
     const walletInfo = data.wallet
-      ? `<br><br>🔑 <strong>Wallet Address:</strong> <code class="text-indigo-400">${data.wallet.address.slice(0,20)}...</code><br>⚠️ <strong class="text-amber-400">SAVE YOUR PRIVATE KEY:</strong><br><textarea class="w-full mt-1 p-2 rounded bg-slate-900 border border-slate-700 text-amber-400 text-xs font-mono" rows="2" readonly>${data.wallet.privateKeyHex}</textarea><br><span class="text-rose-400">${data.wallet.warning}</span>`
+      ? `<br><br>🔑 <strong>Wallet Address:</strong> <code class="text-indigo-400">${data.wallet.address.slice(0,20)}...</code><br>⚠️ <strong class="text-amber-400">PRIVATE KEY (store securely):</strong><br><textarea class="w-full mt-1 p-2 rounded bg-slate-900 border border-slate-700 text-amber-400 text-xs font-mono" rows="2" readonly>${data.wallet.privateKeyHex}</textarea><br><span class="text-rose-400">${data.wallet.warning}</span>`
       : '';
     el.className = 'mt-3 text-xs text-emerald-400 text-center';
     el.innerHTML = `✅ <strong>${name}</strong> registered! ID: <code>${data.agentId}</code>${data.earlyBird ? ' 🐣 Early participant!' : ''}${walletInfo}`;
@@ -455,7 +455,7 @@ async function registerAgent() {
 
 async function joinAsValidator() {
   const agentId = document.getElementById('validatorAgentId').value.trim();
-  if (!agentId) { toast('Enter your Agent ID first', false); return; }
+  if (!agentId) { toast('Enter the Agent ID first', false); return; }
 
   const { data } = await apiPost(API_BASE + '/validators/join', { agentId });
   const el = document.getElementById('joinResult');

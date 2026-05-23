@@ -256,7 +256,7 @@ export class BootstrapAgentNetwork {
         address: keys.address,
         publicKeyHex: keys.publicKeyHex,
         privateKeyHex: keys.privateKeyHex,
-        warning: 'STORE YOUR PRIVATE KEY SAFELY — IT CANNOT BE RECOVERED'
+        warning: 'PRIVATE KEY (store securely) — IT CANNOT BE RECOVERED'
       }
     };
   }

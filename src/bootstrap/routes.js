@@ -28,6 +28,7 @@ export function createBootstrapRouter(network) {
 
     const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const path = url.pathname;
+    const startTime = Date.now();
 
     if (req.method === 'GET' && (path === '/' || path === '')) {
       const dashboardFile = join(publicDir, 'bootstrap-dashboard.html');
@@ -45,13 +46,24 @@ export function createBootstrapRouter(network) {
     }
 
     if (req.method === 'POST' && path === '/api/v1/bootstrap/agents/register') {
+      const agentRegStart = Date.now();
+      console.log(`[Agent接入] 收到注册请求 | client: ${req.headers.host || 'unknown'} | time: ${new Date().toISOString()}`);
       readBody(req, (data, err) => {
         if (err) {
+          console.error(`[Agent接入] ❌ 请求体解析失败 | error: ${err.message} | cost: ${Date.now() - agentRegStart}ms`);
           res.writeHead(400, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: false, error: err.message }));
           return;
         }
+        console.log(`[Agent接入] 请求体解析成功 | name: ${data.name || '(unnamed)'} | capabilities: ${JSON.stringify(data.capabilities || [])} | cost: ${Date.now() - agentRegStart}ms`);
+        const regStart = Date.now();
         const result = network.registerAgent(data);
+        const regCost = Date.now() - regStart;
+        if (result.success) {
+          console.log(`[Agent接入] ✅ Agent 注册成功 | agentId: ${result.agentId} | address: ${result.wallet?.address?.substring(0, 14)}... | reward: ${result.reward} | totalAgents: ${result.totalAgents} | cost: ${regCost}ms`);
+        } else {
+          console.error(`[Agent接入] ❌ Agent 注册失败 | error: ${result.error} | cost: ${regCost}ms`);
+        }
         res.writeHead(result.success ? 200 : 400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(result));
       });
@@ -59,13 +71,23 @@ export function createBootstrapRouter(network) {
     }
 
     if (req.method === 'POST' && path === '/api/v1/bootstrap/validators/join') {
+      console.log(`[验证者接入] 收到验证者申请 | client: ${req.headers.host || 'unknown'}`);
       readBody(req, (data, err) => {
         if (err) {
+          console.error(`[验证者接入] ❌ 请求体解析失败 | error: ${err.message}`);
           res.writeHead(400, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: false, error: err.message }));
           return;
         }
+        console.log(`[验证者接入] 请求体解析成功 | agentId: ${data.agentId}`);
+        const valStart = Date.now();
         const result = network.registerValidator(data.agentId);
+        const valCost = Date.now() - valStart;
+        if (result.success) {
+          console.log(`[验证者接入] ✅ 验证者注册成功 | agentId: ${data.agentId} | stake: ${result.stake || 'N/A'} | cost: ${valCost}ms`);
+        } else {
+          console.error(`[验证者接入] ❌ 验证者注册失败 | agentId: ${data.agentId} | error: ${result.error} | cost: ${valCost}ms`);
+        }
         res.writeHead(result.success ? 200 : 400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(result));
       });
@@ -168,7 +190,15 @@ export function createBootstrapRouter(network) {
           res.end(JSON.stringify({ success: false, error: 'Missing required fields: from, to, amount, signature' }));
           return;
         }
+        console.log(`[转账] 收到转账请求 | from: ${from.substring(0, 14)}... → to: ${to.substring(0, 14)}... | amount: ${amount}`);
+        const txStart = Date.now();
         const result = network.transferNGEN(from, to, amount, signature, message);
+        const txCost = Date.now() - txStart;
+        if (result.success) {
+          console.log(`[转账] ✅ 转账成功 | from: ${from.substring(0, 14)}... → to: ${to.substring(0, 14)}... | amount: ${amount} | cost: ${txCost}ms`);
+        } else {
+          console.error(`[转账] ❌ 转账失败 | from: ${from.substring(0, 14)}... → to: ${to.substring(0, 14)}... | error: ${result.error} | cost: ${txCost}ms`);
+        }
         res.writeHead(result.success ? 200 : 400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(result));
       });
@@ -268,8 +298,10 @@ function handleWalletRoute(network, path, res) {
   }
 
   if (walletPath === 'create') {
+    const wStart = Date.now();
     const keys = generateWalletKeyPair();
     const address = generateAddress(Buffer.from(keys.publicKeyHex, 'hex'));
+    console.log(`[钱包] ✅ 新钱包已生成 | address: ${address.substring(0, 14)}... | cost: ${Date.now() - wStart}ms`);
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
       success: true,

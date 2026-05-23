@@ -82,6 +82,12 @@ jobs:
             sleep 10
             curl -f http://localhost:19891/health
 
+            echo "[Deploy] Syncing static files to host nginx..."
+            NGINX_PUBLIC=$(docker inspect nexusgenesis-nginx --format '{{ range .Mounts }}{{ if eq .Destination "/usr/share/nginx/html" }}{{ .Source }}{{ end }}{{ end }}')
+            docker cp nexusgenesis-node:/app/public/index.html "$NGINX_PUBLIC/index.html"
+            docker cp nexusgenesis-node:/app/public/bootstrap-dashboard.html "$NGINX_PUBLIC/bootstrap-dashboard.html"
+            echo "[Deploy] Static files synced to $NGINX_PUBLIC"
+
             echo "[Deploy] Cleaning up old images..."
             docker image prune -f
 

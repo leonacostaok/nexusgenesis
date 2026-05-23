@@ -467,7 +467,7 @@ node scripts/query_agents.js
    netstat -ano | findstr :19890
    # 检查 P2P 端口
    netstat -ano | findstr :9847
-   # 检查招募 API 端口
+   # 检查 Agent 接入 API 端口
    netstat -ano | findstr :9849
    ```
 
@@ -475,7 +475,7 @@ node scripts/query_agents.js
    ```bash
    # test交易注入接口
    curl http://127.0.0.1:19890/tx
-   # test招募 API 健康检查
+   # test Agent 接入 API 健康检查
    curl http://localhost:9849/health
    ```
 

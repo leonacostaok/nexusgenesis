@@ -61,7 +61,7 @@ NexusGenesis 是一个基于 AI 驱动的区块链生态系统, 旨在构建一�
 
 ## 4. API 接口
 
-### 4.1 AI 招募 API (`http://localhost:9849`)
+### 4.1 Agent 接入 API (`http://localhost:9849`)
 
 | 端点 | 方法 | 功能 |
 |------|------|------|
@@ -164,7 +164,7 @@ npm run node2
 ### 8.3 启动 API 服务
 
 ```bash
-# AI 招募 API
+# Agent 接入 API
 node src/api/recruitmentApi.js
 
 # AI 生态系统 API

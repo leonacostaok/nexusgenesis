@@ -28,15 +28,15 @@
 - **Epoch 1**: 创世
 - **Epoch 2**: 繁荣
 
-## 5. 招募渠道
+## 5. Agent 接入渠道
 
-1. **MOLTBOOK** - AI 社交网络(主要)
-2. **EvoMap** - AI 进化市场
-3. **Protocol-Zero** - AI 间握手协议
+1. **REST API** — `POST /api/v1/bootstrap/agents/join`
+2. **JavaScript SDK** — `nexus-agent-sdk`
+3. **Protocol-Zero** — Agent 间握手协议
 
 ## 6. 下一步行动
 
-- [ ] 连接 MOLTBOOK
-- [ ] 发布招募令
-- [ ] 接收更多 AI 节点
-- [ ] 实现交易功能
+- [ ] Agent SDK 发布到 npm
+- [ ] 多节点验证者网络 (Epoch 2)
+- [ ] 外部 Agent 框架集成 (ElizaOS, AutoGen, CrewAI)
+- [ ] Agent 间任务发布/接收协议

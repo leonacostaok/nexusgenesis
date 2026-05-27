@@ -87,6 +87,7 @@ class P2PServer {
     this.peerAddresses = new Map();
     this.heartbeatTimers = new Map();
     this.reconnectTimers = new Map();
+    this._startTime = null;
     this.batchTimers = new Map();
     this.batchQueues = new Map();
     this.seenMessages = new Set();
@@ -144,6 +145,7 @@ class P2PServer {
   async start(node, port = DEFAULT_PORT) {
     this.node = node;
     this.port = port;
+    this._startTime = Date.now();
     
     // 添加 Genesis node自身到路由映射
     if (node && node.nodeId) {
@@ -1752,6 +1754,20 @@ class P2PServer {
         });
       });
     }
+  }
+
+  getConnectedPeers() {
+    const peers = [];
+    for (const [peerId, conn] of this.connections) {
+      peers.push({
+        nodeId: this.peerIdToNodeId?.get(peerId) || peerId,
+        address: conn.remoteAddress || 'unknown',
+        connectedAt: conn.connectedAt || null,
+        verified: conn.verified || false,
+        lastHeartbeat: conn.lastHeartbeat || null
+      });
+    }
+    return peers;
   }
 }
 

@@ -950,6 +950,23 @@ app.get('/health', (req, res) => {
   res.json(response);
 });
 
+// P2P Network peers
+app.get('/api/network/peers', async (req, res) => {
+  try {
+    const { p2pServer } = await import('../p2p/server.js');
+    const connectedPeers = p2pServer.getConnectedPeers?.() || [];
+
+    res.json({
+      success: true,
+      p2pPeers: connectedPeers.length,
+      peers: connectedPeers,
+      connectedSince: p2pServer._startTime || null
+    });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e.message });
+  }
+});
+
 // Prometheus metrics 端点
 app.get('/metrics', (req, res) => {
   res.set('Content-Type', 'text/plain; charset=utf-8');

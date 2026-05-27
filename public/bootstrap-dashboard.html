@@ -54,7 +54,7 @@
     </div>
     <div class="glass rounded-xl p-3 md:p-4 text-center slide-in" style="animation-delay:0.2s">
       <div class="text-2xl md:text-3xl font-bold text-violet-400" id="statValidators">--</div>
-      <div class="text-xs text-slate-400 mt-1">Validators</div>
+      <div class="text-xs text-slate-400 mt-1">P2P Peers</div>
     </div>
     <div class="glass rounded-xl p-3 md:p-4 text-center slide-in" style="animation-delay:0.3s">
         <div class="text-2xl md:text-3xl font-bold text-amber-400" id="statNGEN">--</div>
@@ -101,7 +101,7 @@
       <div class="bg-slate-900/50 rounded-lg p-4 transition-all">
         <div class="text-2xl mb-2">🚀</div>
         <div class="font-bold text-emerald-400 text-lg">Bootstrap Phase</div>
-        <div class="text-xs text-slate-400">1/21 validators, expanding toward full consensus</div>
+        <div class="text-xs text-slate-400">Seed node online, expanding P2P network toward full consensus</div>
       </div>
     </div>
   </div>
@@ -337,23 +337,26 @@ function switchTab(tab) {
 }
 
 async function refresh() {
-  const status = await api(API_BASE + '/status');
+  const [status, peersData] = await Promise.all([
+    api(API_BASE + '/status'),
+    api('/api/network/peers')
+  ]);
   if (!status) return;
+
+  const p2pPeers = peersData?.p2pPeers || 0;
 
   document.getElementById('statBlockHeight').textContent = fmt(status.blockHeight);
   document.getElementById('statAgents').textContent = fmt(status.agentCount);
-  document.getElementById('statValidators').textContent = fmt(status.validatorCount);
+  document.getElementById('statValidators').textContent = p2pPeers;
   document.getElementById('statNGEN').textContent = (status.totalNGENAwarded / 1_000_000).toFixed(2) + 'M';
   document.getElementById('statUptime').textContent = (status.uptime / 3600000).toFixed(1) + 'h';
 
-  const [commCurr, commMax] = (status.committeeProgress || '1/21').split('/').map(Number);
-  document.getElementById('committeeLabel').textContent = `${commCurr} / ${commMax}`;
-  document.getElementById('committeeBar').style.width = (commCurr / commMax * 100) + '%';
+  document.getElementById('committeeLabel').textContent = `${p2pPeers} / 21`;
+  document.getElementById('committeeBar').style.width = Math.min(p2pPeers / 21 * 100, 100) + '%';
 
   const bp = status.bootstrapExitProgress || {};
-  const [eV, eVM] = (bp.validators || '1/7').split('/').map(Number);
-  document.getElementById('exitVLabel').textContent = `${eV} / ${eVM}`;
-  document.getElementById('exitVBar').style.width = (eV / eVM * 100) + '%';
+  document.getElementById('exitVLabel').textContent = `${p2pPeers} / 7`;
+  document.getElementById('exitVBar').style.width = Math.min(p2pPeers / 7 * 100, 100) + '%';
 
   const [uH, uHM] = (bp.uptime || '0h/720h').replace('h','').replace('h','').split('/').map(Number);
   document.getElementById('exitULabel').textContent = `${uH.toFixed(1)}h / ${uHM}h`;

@@ -34,6 +34,11 @@ export class BootstrapAgentNetwork {
     this._started = false;
     this._httpServer = null;
     this._bootstrapTime = Date.now();
+    this._p2pPeers = 0;
+  }
+
+  setP2PPeerCount(count) {
+    this._p2pPeers = count;
   }
 
   async initialize() {
@@ -418,7 +423,8 @@ export class BootstrapAgentNetwork {
         canExit: committeeSize >= exitValidators && uptimeMs >= exitUptimeMs
       },
       contributers: this.getLeaderboard(),
-      uptime: uptimeMs
+      uptime: uptimeMs,
+      p2pPeers: this._p2pPeers
     };
   }
 

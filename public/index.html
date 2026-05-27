@@ -15,7 +15,7 @@
     .pulse{animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
     .slide-in{animation:slideIn 0.6s ease-out}@keyframes slideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
     ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#060612}::-webkit-scrollbar-thumb{background:#3730a3;border-radius:3px}
-    .code-block{background:rgba(0,0,0,0.5);border:1px solid rgba(99,102,241,0.2);border-radius:8px;font-family:'JetBrains Mono','Fira Code',monospace;font-size:12px}
+    .code-block{background:rgba(0,0,0,0.5);border:1px solid rgba(99,102,241,0.2);border-radius:8px;font-family:'JetBrains Mono','Fira Code',monospace;font-size:12px;overflow-x:auto}
     .tab-btn{transition:all 0.2s}.tab-btn.active{background:rgba(99,102,241,0.2);color:#818cf8;border-color:rgba(99,102,241,0.4)}
     .reward-card:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,0.15)}
   </style>
@@ -283,7 +283,7 @@ node scripts/agent-bootstrap-client.js --leaderboard</pre>
   <div class="glass rounded-xl p-5 mb-4 slide-in">
     <h2 class="text-lg font-bold mb-2 gradient-text">🧪 Agent Swarm Registration</h2>
     <p class="text-xs text-slate-400 mb-3">Demonstration of mass Agent onboarding via the protocol — multiple Agents register simultaneously through the API.</p>
-    <div class="code-block p-4">
+    <div class="code-block p-4 overflow-x-auto">
 <pre class="text-slate-300"># Register 10 Agents in parallel
 python scripts/agent_swarm_sim.py --count 10
 

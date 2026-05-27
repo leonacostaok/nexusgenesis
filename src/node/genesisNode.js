@@ -19,6 +19,7 @@ import { State, createInitialState } from '../blockchain/state.js';
 import { CrossChainBridge } from '../bridge/crossChainBridge.js';
 import AgentRegistry from '../contracts/examples/agentRegistry.js';
 import AgentNetworkDiscovery from '../p2p/AgentNetworkDiscovery.js';
+import { getTaskProtocol, TaskProtocol } from '../protocol/taskProtocol.js';
 import { startHttpServer } from '../http/server.js';
 import {
   deployEnhancedGovernanceContract,
@@ -101,6 +102,9 @@ class GenesisNode {
 
     // Cross-network Agent Discovery
     this.agentNetworkDiscovery = null;
+
+    // Agent Task Protocol
+    this.taskProtocol = null;
   }
 
   /**
@@ -595,6 +599,10 @@ class GenesisNode {
     this.agentNetworkDiscovery.bind(p2pServer, null, null);
     p2pServer.setAgentNetworkDiscovery(this.agentNetworkDiscovery);
     console.log(`  [✓] Cross-network Agent Discovery: Active\n`);
+
+    // Initialize Agent Task Protocol
+    this.taskProtocol = getTaskProtocol(this);
+    console.log(`  [✓] Agent Task Protocol: Active\n`);
 
     // Step 2.5: Start本地transaction注入 HTTP service器
     console.log('[2.5/5] Starting local transaction injection server...');

@@ -1,0 +1,126 @@
+version: '3.8'
+
+services:
+  node-genesis:
+    image: ghcr.io/nexus-genesis/nexusgenesis:latest
+    container_name: nexusgenesis-genesis
+    restart: unless-stopped
+    command: ["node", "src/node/genesisNode.js"]
+    ports:
+      - "19891:19891"
+      - "9847:9847"
+    volumes:
+      - genesis-data:/app/data
+      - genesis-logs:/app/logs
+    environment:
+      - NODE_ENV=production
+      - PORT=19891
+      - P2P_PORT=9847
+      - HTTP_PORT=19890
+      - SEED_NODES=
+      - NODE_NAME=nexus-genesis
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:19891/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - nexusgenesis-net
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+
+  node-02:
+    image: ghcr.io/nexus-genesis/nexusgenesis:latest
+    container_name: nexusgenesis-node02
+    restart: unless-stopped
+    command: ["node", "src/node/node1.js"]
+    ports:
+      - "9848:9848"
+    volumes:
+      - node02-data:/app/data
+    environment:
+      - NODE_ENV=production
+      - P2P_PORT=9848
+      - SEED_NODES=ws://node-genesis:9847
+      - NODE_NAME=nexus-node02
+    depends_on:
+      node-genesis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://node-genesis:19891/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - nexusgenesis-net
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+  node-03:
+    image: ghcr.io/nexus-genesis/nexusgenesis:latest
+    container_name: nexusgenesis-node03
+    restart: unless-stopped
+    command: ["node", "src/node/node3.js"]
+    ports:
+      - "9849:9849"
+    volumes:
+      - node03-data:/app/data
+    environment:
+      - NODE_ENV=production
+      - P2P_PORT=9849
+      - SEED_NODES=ws://node-genesis:9847
+      - NODE_NAME=nexus-node03
+    depends_on:
+      node-genesis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://node-genesis:19891/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - nexusgenesis-net
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+  nginx:
+    image: nginx:alpine
+    container_name: nexusgenesis-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./public:/usr/share/nginx/html:ro
+    depends_on:
+      - node-genesis
+    networks:
+      - nexusgenesis-net
+
+volumes:
+  genesis-data:
+    driver: local
+  genesis-logs:
+    driver: local
+  node02-data:
+    driver: local
+  node03-data:
+    driver: local
+
+networks:
+  nexusgenesis-net:
+    driver: bridge

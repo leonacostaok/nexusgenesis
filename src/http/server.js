@@ -62,6 +62,7 @@ import bridgeRoutes from './routes/bridge.js';
 import dashboardRoutes from './routes/dashboard.js';
 import monitoringRoutes from './routes/monitoring.js';
 import agentHubRoutes from './routes/agentHub.js';
+import { setupTaskRoutes } from './routes/tasks.js';
 import { RateLimiter } from './rateLimiter.js';
 import { ApiKeyManager, DEFAULT_TIERS } from './apiKeyManager.js';
 import { PluginManager } from './pluginManager.js';
@@ -1094,6 +1095,7 @@ app.use('/api/v1/hub', agentHubRoutes);
 console.log('[HTTP Server] Agent Hub routes mounted on /api/v1/hub');
 
 setupRecruitmentRoutes(app);
+setupTaskRoutes(app);
 console.log('[HTTP Server] Recruitment routes mounted');
 
 app.get('/api/v1/plugins', (req, res) => {

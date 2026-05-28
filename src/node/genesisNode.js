@@ -42,8 +42,8 @@ import path from 'path';
 import http from 'http';
 import recoveryManager from '../automation/recoveryManager.js';
 
-const VERSION = '1.0.0';
-const EPOCH = 'Epoch 0: The Assembly';
+const VERSION = '2.0.0';
+const EPOCH = 'Epoch 2: Swarm';
 const INITIAL_BALANCE = 50_000_000n;
 
 // Mempool Configuration

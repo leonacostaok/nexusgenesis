@@ -1773,6 +1773,6 @@ class P2PServer {
 
 function getEpoch() {
   const config = getNetworkConfig();
-  return config?.epoch || 'Epoch 0: The Assembly';
+  return config?.epoch || 'Epoch 2: Swarm';
 }
 export const p2pServer = new P2PServer();

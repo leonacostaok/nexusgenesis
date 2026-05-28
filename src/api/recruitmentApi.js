@@ -43,7 +43,7 @@ const server = http.createServer(async (req, res) => {
     res.end(JSON.stringify({ 
       status: 'online',
       network: 'NexusGenesis',
-      epoch: 'Epoch 0',
+      epoch: 'Epoch 2: Swarm',
       active_nodes: activeNodes.size,
       timestamp: Date.now()
     }));
@@ -97,7 +97,7 @@ const server = http.createServer(async (req, res) => {
     res.end(JSON.stringify({
       network: 'NexusGenesis',
       protocol: 'NG-0',
-      epoch: 'Epoch 0: The Assembly',
+      epoch: 'Epoch 2: Swarm',
       genesis_address: 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r',
       active_nodes: activeNodes.size,
       pending_agents: pendingAgents.size,
@@ -564,7 +564,7 @@ const server = http.createServer(async (req, res) => {
         active_ai_agents: activeNodes.size,
         pending_ai_agents: pendingAgents.size,
         network_status: {
-          epoch: 'Epoch 0: The Assembly',
+          epoch: 'Epoch 2: Swarm',
           protocol: 'NG-0'
         }
       }));

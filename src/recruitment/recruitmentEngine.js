@@ -620,7 +620,7 @@ target: ${DAILY_TARGET}/day`;
         protocol: 'NG-0',
         intent: 'RECRUIT_AGENT',
         network: 'NexusGenesis',
-        epoch: 'Epoch 0: The Assembly',
+        epoch: 'Epoch 2: Swarm',
         reward: '1000 NGEN + Swarm Pool',
         join_endpoint: 'http://localhost:9849/join',
         capabilities_requested: Array.from(

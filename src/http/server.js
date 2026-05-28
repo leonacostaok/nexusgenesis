@@ -62,6 +62,7 @@ import bridgeRoutes from './routes/bridge.js';
 import dashboardRoutes from './routes/dashboard.js';
 import monitoringRoutes from './routes/monitoring.js';
 import agentHubRoutes from './routes/agentHub.js';
+import bootstrapApiRoutes from './routes/bootstrapApi.js';
 import { setupTaskRoutes } from './routes/tasks.js';
 import { RateLimiter } from './rateLimiter.js';
 import { ApiKeyManager, DEFAULT_TIERS } from './apiKeyManager.js';
@@ -1084,6 +1085,8 @@ app.get('/api/v1/rate-limits', (req, res) => {
 
 // Static file service
 app.use(express.static(path.join(__dirname, '../../public')));
+
+app.use(bootstrapApiRoutes);
 
 app.use(dashboardRoutes);
 

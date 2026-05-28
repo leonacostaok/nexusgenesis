@@ -1,8 +1,7 @@
 /**
  * NexusGenesis - Main Entry
- * Genesisprotocol入口
+ * Node 18 polyfill: crypto.getRandomValues required by @noble/post-quantum
  */
-
 import { webcrypto } from 'crypto';
 
 if (!globalThis.crypto) {
@@ -12,9 +11,8 @@ if (!globalThis.crypto.getRandomValues) {
   globalThis.crypto.getRandomValues = webcrypto.getRandomValues.bind(webcrypto);
 }
 
-import { GenesisNode } from './node/genesisNode.js';
+const { GenesisNode } = await import('./node/genesisNode.js');
 
-// Create and initialize genesis node
 const node = new GenesisNode();
 node.initialize().catch(err => {
   console.error('Fatal error:', err);
@@ -24,5 +22,4 @@ node.initialize().catch(err => {
 console.log('NexusGenesis Network Starting...');
 console.log('Type .help for available commands');
 
-// Keep process alive
 process.stdin.resume();

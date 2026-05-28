@@ -3,6 +3,15 @@
  * Genesisprotocol入口
  */
 
+import { webcrypto } from 'crypto';
+
+if (!globalThis.crypto) {
+  globalThis.crypto = webcrypto;
+}
+if (!globalThis.crypto.getRandomValues) {
+  globalThis.crypto.getRandomValues = webcrypto.getRandomValues.bind(webcrypto);
+}
+
 import { GenesisNode } from './node/genesisNode.js';
 
 // Create and initialize genesis node

@@ -1,7 +1,0 @@
-{
-  "type": "state_transition",
-  "timestamp": 1778626932912,
-  "nodeState": "offline",
-  "from": "healthy",
-  "to": "offline"
-}

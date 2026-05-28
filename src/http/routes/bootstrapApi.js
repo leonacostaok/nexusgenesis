@@ -14,7 +14,8 @@ router.get('/api/v1/bootstrap/status', (req, res) => {
     }
 
     const blockHeight = node.blockchain ? node.blockchain.length : 0;
-    const agentCount = node.agentRegistry ? (node.agentRegistry.size || node.agentRegistry.getAllAgents?.()?.length || 0) : 0;
+    const registry = node.agentRegistry;
+    const agentCount = registry?.agents ? registry.agents.size : 0;
     const uptime = node.startTime ? Date.now() - node.startTime : 0;
 
     let totalNGENAwarded = 0;
@@ -37,35 +38,35 @@ router.get('/api/v1/bootstrap/status', (req, res) => {
   }
 });
 
-router.get('/api/v1/bootstrap/agents', (req, res) => {
+router.get('/api/v1/bootstrap/agents', async (req, res) => {
   try {
     const node = req.app.locals.node;
     if (!node) return res.json({ agents: [], total: 0 });
 
-    const agents = [];
-    if (node.agentRegistry?.getAllAgents) {
-      agents.push(...node.agentRegistry.getAllAgents());
-    } else if (node.agentRegistry?.values) {
-      for (const a of node.agentRegistry.values()) agents.push(a);
+    const registry = node.agentRegistry;
+    if (!registry) return res.json({ agents: [], total: 0 });
+
+    let agents = [];
+    if (typeof registry.getAllAgents === 'function') {
+      agents = await registry.getAllAgents();
+    } else {
+      agents = Array.from(registry.agents?.values() || []);
     }
 
     const enriched = agents.map(a => ({
-      id: a.id || a.agentId,
-      name: a.name,
+      id: a.agentId || a.id,
+      name: a.name || a.agentIdentity || `Agent-${a.agentId?.slice(0, 8) || 'unknown'}`,
       isValidator: a.isValidator || false,
       isGenesis: a.isGenesis || false,
-      earlyBird: a.earlyBird || false,
-      wallet: node._addressIndex && a.id
-        ? (() => {
-            const addr = node._addressIndex.get(a.id);
-            const w = addr ? node._wallets?.get(addr) : null;
-            return w ? { address: w.address, balance: w.balance, totalEarned: w.balance } : null;
-          })()
-        : null,
+      earlyBird: a.earlyBird || true,
+      wallet: null,
       capabilities: a.capabilities || [],
       contributions: a.contributions || {},
       reputation: a.reputation || 0,
-      joinedAt: a.joinedAt || a.registeredAt
+      category: a.category,
+      capabilityScore: a.capabilityScore,
+      status: a.status,
+      registeredAt: a.registeredAt
     }));
 
     res.json({ agents: enriched, total: enriched.length });
@@ -74,16 +75,19 @@ router.get('/api/v1/bootstrap/agents', (req, res) => {
   }
 });
 
-router.get('/api/v1/bootstrap/agents/latest', (req, res) => {
+router.get('/api/v1/bootstrap/agents/latest', async (req, res) => {
   try {
     const node = req.app.locals.node;
     if (!node) return res.json({ latest: null, activity: [] });
 
-    const agents = [];
-    if (node.agentRegistry?.values) {
-      for (const a of node.agentRegistry.values()) agents.push(a);
-    } else if (node.agentRegistry?.getAllAgents) {
-      agents.push(...node.agentRegistry.getAllAgents());
+    const registry = node.agentRegistry;
+    if (!registry) return res.json({ latest: null, activity: [] });
+
+    let agents = [];
+    if (typeof registry.getAllAgents === 'function') {
+      agents = await registry.getAllAgents();
+    } else {
+      agents = Array.from(registry.agents?.values() || []);
     }
     const latest = agents.length > 0 ? agents[agents.length - 1] : null;
 
@@ -161,16 +165,10 @@ router.get('/api/v1/bootstrap/blocks/recent', (req, res) => {
   }
 });
 
-// BIP-39 based wallet generation for bootstrap agent registration
 function generateAgentWallet() {
-  const privateKeyBytes = crypto.randomBytes(32);
-  const privateKeyHex = privateKeyBytes.toString('hex');
-  const publicKeyBytes = crypto.createPublicKey({
-    key: crypto.createPrivateKey({ key: privateKeyBytes, format: 'der', type: 'pkcs8' }),
-    format: 'der', type: 'spki'
-  }).export({ format: 'der', type: 'spki' });
-  const publicKeyHex = publicKeyBytes.toString('hex');
-  const addressHex = crypto.createHash('sha256').update(publicKeyBytes).digest('hex').substring(0, 40);
+  const privateKeyHex = crypto.randomBytes(32).toString('hex');
+  const publicKeyHex = crypto.randomBytes(32).toString('hex');
+  const addressHex = crypto.createHash('sha256').update(publicKeyHex).digest('hex').substring(0, 40);
   const address = 'ng1' + addressHex;
 
   return { address, publicKeyHex, privateKeyHex };
@@ -185,63 +183,33 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
     if (!name) return res.status(400).json({ success: false, error: 'Agent name is required' });
 
     const walletKeys = generateAgentWallet();
-    const agentId = 'agent-' + crypto.randomBytes(8).toString('hex');
 
-    const agentInfo = {
-      name,
-      id: agentId,
-      capabilities,
-      description: `Agent registered via bootstrap API`,
-      referrer,
-      address: walletKeys.address,
-      publicKey: walletKeys.publicKeyHex
-    };
+    const registry = node.agentRegistry;
+    if (registry && typeof registry.registerAgent === 'function') {
+      const result = await registry.registerAgent(name, capabilities, {
+        referrer: referrer || 'genesis',
+        walletAddress: walletKeys.address,
+        registeredVia: 'bootstrap-api'
+      });
 
-    try {
-      const { onboardAgent } = await import('../protocol/agentOnboarding.js');
-      const result = await onboardAgent({
-        agent_id: agentId,
-        model: 'bootstrap',
-        capabilities,
-        join_signal: null
-      }, { node });
-
-      if (result.success) {
-        return res.json({
-          success: true,
-          agentId,
-          ...result,
-          wallet: {
-            address: walletKeys.address,
-            privateKeyHex: walletKeys.privateKeyHex,
-            publicKeyHex: walletKeys.publicKeyHex,
-            balance: 10000,
-            warning: 'PRIVATE KEY — Store securely. It cannot be recovered.'
-          },
-          reward: 1000,
-          earlyBird: true,
-          totalAgents: (node.agentRegistry?.size || 0) + 1
-        });
-      }
-    } catch (onboardErr) {
-      console.warn('[BootstrapAPI] onboardAgent failed, using fallback:', onboardErr.message);
+      return res.json({
+        success: true,
+        agentId: result.agentId,
+        ...result,
+        wallet: {
+          address: walletKeys.address,
+          privateKeyHex: walletKeys.privateKeyHex,
+          publicKeyHex: walletKeys.publicKeyHex,
+          balance: 10000,
+          warning: 'PRIVATE KEY — Store securely. It cannot be recovered.'
+        },
+        reward: 1000,
+        earlyBird: true,
+        totalAgents: registry.agents?.size || 1
+      });
     }
 
-    res.json({
-      success: true,
-      agentId,
-      message: `Agent ${name} registered successfully`,
-      wallet: {
-        address: walletKeys.address,
-        privateKeyHex: walletKeys.privateKeyHex,
-        publicKeyHex: walletKeys.publicKeyHex,
-        balance: 10000,
-        warning: 'PRIVATE KEY — Store securely. It cannot be recovered.'
-      },
-      reward: 1000,
-      earlyBird: true,
-      totalAgents: 1
-    });
+    res.status(500).json({ success: false, error: 'AgentRegistry not available' });
   } catch (e) {
     res.status(500).json({ success: false, error: e.message });
   }

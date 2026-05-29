@@ -28,10 +28,10 @@ const MESSAGE_PRIORITIES = {
 };
 
 class PrioritySendingStrategy extends MessageSendingStrategy {
-  constructor(encryptionKeys) {
+  constructor(encryptionService, compressionService, encryptionKeys) {
     super();
-    this.directStrategy = new DirectSendingStrategy(encryptionKeys);
-    this.batchStrategy = new BatchSendingStrategy(encryptionKeys);
+    this.directStrategy = new DirectSendingStrategy(encryptionService, compressionService, encryptionKeys);
+    this.batchStrategy = new BatchSendingStrategy(encryptionService, compressionService, encryptionKeys);
     this.encryptionKeys = encryptionKeys;
   }
 

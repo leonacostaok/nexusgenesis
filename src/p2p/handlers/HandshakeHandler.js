@@ -1,25 +1,7 @@
 import { MessageHandler } from './MessageHandler.js';
 import crypto from 'crypto';
 import { PQCWallet } from '../../wallet/pqcWallet.js';
-
-// SimulationKyberkey协商(实际生产环境中应using真实的Kyber实现)
-class KyberMock {
-  static generateKeyPair() {
-    const privateKey = crypto.randomBytes(32);
-    const publicKey = crypto.randomBytes(32);
-    return { privateKey, publicKey };
-  }
-
-  static encapsulate(publicKey) {
-    const sharedSecret = crypto.randomBytes(32);
-    const ciphertext = crypto.randomBytes(32);
-    return { sharedSecret, ciphertext };
-  }
-
-  static decapsulate(ciphertext, privateKey) {
-    return crypto.randomBytes(32); // Simulation共享key
-  }
-}
+import { KyberKEM } from '../server.js';
 
 export class HandshakeHandler extends MessageHandler {
   /**
@@ -30,6 +12,8 @@ export class HandshakeHandler extends MessageHandler {
       await this.handleHello(peerId, msg);
     } else if (msg.type === 'HELLO_ACK') {
       await this.handleHelloAck(peerId, msg);
+    } else if (msg.type === 'KEY_EXCHANGE') {
+      await this.p2pServer.handleKeyExchange(peerId, msg);
     }
     return true;
   }
@@ -92,7 +76,7 @@ export class HandshakeHandler extends MessageHandler {
       console.log(`Generated signature: ${signature.slice(0, 32)}...`);
       
       // GenerateKyberkey pairforkey协商
-      const kyberKeyPair = KyberMock.generateKeyPair();
+      const kyberKeyPair = KyberKEM.generateKeyPair();
       
       // Send HELLO_ACK
       this.p2pServer.send(peerId, {
@@ -217,7 +201,31 @@ export class HandshakeHandler extends MessageHandler {
       return;
     }
     
-    // 握手success
+    // 执行 Kyber 密钥交换，发送 KEY_EXCHANGE
+    if (msg.kyberPublicKey) {
+      console.log('Performing Kyber key exchange');
+      try {
+        const kyberPublicKey = Buffer.from(msg.kyberPublicKey, 'hex');
+        // 使用真实的 Kyber 密钥生成（从 p2p/server.js 的 KyberKEM 类导入）
+        const { KyberKEM } = await import('../../p2p/server.js');
+        const { sharedSecret, ciphertext } = KyberKEM.encapsulate(kyberPublicKey);
+        // 存储共享密钥用于加密通信
+        this.p2pServer.encryptionKeys.set(peerId, sharedSecret);
+        console.log('Kyber key exchange completed, encryption enabled');
+        
+        // 发送 KEY_EXCHANGE 消息
+        this.p2pServer.send(peerId, {
+          type: 'KEY_EXCHANGE',
+          kyberCiphertext: ciphertext.toString('hex')
+        });
+        console.log('Sent KEY_EXCHANGE to peer');
+      } catch (error) {
+        console.error('Kyber key exchange failed:', error.message);
+        // 即使密钥协商失败，也继续连接（降级到非加密通信）
+      }
+    }
+
+    // 握手成功
     clearTimeout(pending.timeout);
     this.p2pServer.pendingHandshakes.delete(peerId);
     
@@ -225,20 +233,21 @@ export class HandshakeHandler extends MessageHandler {
     conn.remoteNodeId = msg.nodeId;
     conn.remotePublicKey = remotePublicKey;
     conn.lastHeartbeat = Date.now();
+    conn.verified = true; // 标记为已验证
     
-    // Registernode身份
+    // 注册 node 身份
     if (this.p2pServer.node) {
       this.p2pServer.node.markPeerChallengeVerified(peerId);
       this.p2pServer.node.registerPeerIdentity(peerId, msg.nodeId, remotePublicKey);
       this.p2pServer.node.peers.set(peerId, conn);
     }
     
-    // Start心跳
+    // 启动心跳
     this.p2pServer.startHeartbeat(peerId, conn.ws);
     
     console.log(`[✓] Peer ${msg.nodeId.slice(0, 24)}... verified and connected`);
     
-    // 请求status
+    // 请求状态
     this.p2pServer.send(peerId, { type: 'GET_STATUS' });
   }
 

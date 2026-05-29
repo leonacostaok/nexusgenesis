@@ -7,10 +7,10 @@ import EncryptionService from '../services/EncryptionService.js';
 import CompressionService from '../services/CompressionService.js';
 
 class DirectSendingStrategy extends MessageSendingStrategy {
-  constructor(encryptionKeys) {
+  constructor(encryptionService, compressionService, encryptionKeys) {
     super();
-    this.encryptionService = new EncryptionService();
-    this.compressionService = new CompressionService();
+    this.encryptionService = encryptionService;
+    this.compressionService = compressionService;
     this.encryptionKeys = encryptionKeys; // peerId -> sharedSecret
   }
 

@@ -130,9 +130,9 @@ class P2PServer {
     
     // InitializeMessageSend策略
     this.messageStrategies = {
-      direct: new DirectSendingStrategy(this.encryptionService, this.compressionService),
-      batch: new BatchSendingStrategy(this.encryptionService, this.compressionService),
-      priority: new PrioritySendingStrategy(this.encryptionService, this.compressionService)
+      direct: new DirectSendingStrategy(this.encryptionService, this.compressionService, this.encryptionKeys),
+      batch: new BatchSendingStrategy(this.encryptionService, this.compressionService, this.encryptionKeys),
+      priority: new PrioritySendingStrategy(this.encryptionService, this.compressionService, this.encryptionKeys)
     };
     
     // InitializeDefault策略
@@ -1777,4 +1777,5 @@ function getEpoch() {
   const config = getNetworkConfig();
   return config?.epoch || 'Epoch 2: Swarm';
 }
+export { KyberKEM };
 export const p2pServer = new P2PServer();

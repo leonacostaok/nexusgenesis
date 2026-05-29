@@ -9,9 +9,9 @@ const BATCH_INTERVAL = 100; // message批Process间隔(ms)
 const MAX_BATCH_SIZE = 100; // Maximum批Processmessage数
 
 class BatchSendingStrategy extends MessageSendingStrategy {
-  constructor(encryptionKeys) {
+  constructor(encryptionService, compressionService, encryptionKeys) {
     super();
-    this.directStrategy = new DirectSendingStrategy(encryptionKeys);
+    this.directStrategy = new DirectSendingStrategy(encryptionService, compressionService, encryptionKeys);
     this.batchQueues = new Map(); // peerId -> message队列
     this.batchTimers = new Map(); // peerId -> 批Process定时器
     this.encryptionKeys = encryptionKeys;

@@ -27,6 +27,7 @@ export class MessageHandlerRegistry {
     // 握手MessageHandler
     this.register('HELLO', new HandshakeHandler(this.p2pServer));
     this.register('HELLO_ACK', new HandshakeHandler(this.p2pServer));
+    this.register('KEY_EXCHANGE', new HandshakeHandler(this.p2pServer));
     
     // 直接MessageHandler
     this.register('DIRECT_MESSAGE', new DirectMessageHandler(this.p2pServer));

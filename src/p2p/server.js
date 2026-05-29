@@ -160,6 +160,7 @@ class P2PServer {
         this.server = new WebSocketServer({ port: this.port, host: '0.0.0.0' });
         
         this.server.on('connection', (ws, req) => {
+          console.log(`[DEBUG] P2P connection request received from ${req?.connection?.remoteAddress}:${req?.connection?.remotePort}`);
           this.handleConnection(ws, req);
         });
         
@@ -169,7 +170,7 @@ class P2PServer {
         });
         
         this.server.on('listening', async () => {
-          console.log(`P2P Server listening on port ${this.port}`);
+          console.log(`[DEBUG] P2P Server listening on ${this.port}`);
           
           // Startnode发现
           this.startNodeDiscovery();
@@ -848,6 +849,7 @@ class P2PServer {
   }
 
   async connectToPeer(address) {
+    console.log(`[DEBUG] Attempting to connect to peer at ${address}`);
     // Check是否已经Connect到该address
     if (this.peerAddresses.has(address)) {
       console.log(`Already connected or connecting to ${address}`);

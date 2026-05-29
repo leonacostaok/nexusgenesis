@@ -510,7 +510,7 @@ class GenesisNode {
       }
     });
 
-    const PORT = 19890;
+    const PORT = parseInt(process.env.HTTP_PORT || '19891') - 1;
     server.listen(PORT, '127.0.0.1', () => {
       console.log(`[✓] Local transaction injection server: Active on http://127.0.0.1:${PORT}/tx`);
     });

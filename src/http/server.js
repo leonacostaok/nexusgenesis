@@ -73,7 +73,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 19891;
+const PORT = parseInt(process.env.HTTP_PORT || '19891');
 
 const rateLimiter = new RateLimiter();
 const apiKeyManager = new ApiKeyManager();

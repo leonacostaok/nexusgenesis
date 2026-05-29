@@ -46,6 +46,9 @@ const VERSION = '2.0.0';
 const EPOCH = 'Epoch 2: Swarm';
 const INITIAL_BALANCE = 50_000_000n;
 
+const DATA_ROOT = process.env.DATA_DIR || 'data/genesis';
+const dataPath = (...segments) => path.join(DATA_ROOT, ...segments);
+
 // Mempool Configuration
 const MAX_MEMPOOL_SIZE = 10000;
 const MIN_TX_FEE = 1n;
@@ -117,7 +120,7 @@ class GenesisNode {
       const path = await import('path');
       
       // ensurestatus目录存在
-      const stateDir = path.join('data', 'state');
+      const stateDir = dataPath('state');
       await fs.mkdir(stateDir, { recursive: true });
       
       // Generatestatus文件名
@@ -169,7 +172,7 @@ class GenesisNode {
       const fs = await import('fs/promises');
       const path = await import('path');
       
-      const stateFile = path.join('data', 'state', 'genesisNode.json');
+      const stateFile = dataPath('state', 'genesisNode.json');
       
       // 读取文件
       const stateData = JSON.parse(await fs.readFile(stateFile, 'utf8'));
@@ -216,7 +219,7 @@ class GenesisNode {
    */
   async loadBlockchain() {
     try {
-      const blockchainDir = path.join('data', 'blockchain');
+      const blockchainDir = dataPath('blockchain');
       const blockchainFile = path.join(blockchainDir, 'blocks.json');
       
       const data = await fs.readFile(blockchainFile, 'utf8');
@@ -240,7 +243,7 @@ class GenesisNode {
    */
   async saveBlockchain() {
     try {
-      const blockchainDir = path.join('data', 'blockchain');
+      const blockchainDir = dataPath('blockchain');
       await fs.mkdir(blockchainDir, { recursive: true });
       
       const blockchainFile = path.join(blockchainDir, 'blocks.json');
@@ -264,7 +267,7 @@ class GenesisNode {
     this.currentState = createInitialState(this.nodeId, this.wallet.balance);
     
     // 尝试从最新快照recoverystatus
-    const stateDir = path.join('data', 'state');
+    const stateDir = dataPath('state');
     const stateFile = path.join(stateDir, 'blockchainState.json');
     
     // 先尝试从快照recovery
@@ -535,7 +538,7 @@ class GenesisNode {
     let savedWallet = null;
     try {
       // Check是否存在上次的钱包address
-      const walletDir = path.join('data', 'wallet');
+      const walletDir = dataPath('wallet');
       
       // 读取钱包目录中的文件
       const walletFiles = await fs.readdir(walletDir);
@@ -591,8 +594,9 @@ class GenesisNode {
 
     // Step 2: Start P2P 层 (带身份authentication)
     console.log('[2/5] Starting P2P communication layer...');
-    await p2pServer.start(this);
-    console.log(`  [✓] P2P Server: Active on port 9847\n`);
+    const p2pPort = parseInt(process.env.P2P_PORT || '9847');
+    await p2pServer.start(this, p2pPort);
+    console.log(`  [✓] P2P Server: Active on port ${p2pPort}\n`);
 
     // 初始化跨网络 Agent Discovery
     this.agentNetworkDiscovery = new AgentNetworkDiscovery(this.nodeId);
@@ -1598,7 +1602,7 @@ class GenesisNode {
     }
     
     // Save完整status(作为backup)
-    const stateDir = path.join('data', 'state');
+    const stateDir = dataPath('state');
     const stateFile = path.join(stateDir, 'blockchainState.json');
     await this.currentState.saveToFile(stateFile);
     
@@ -1811,7 +1815,7 @@ class GenesisNode {
     }
     
     // Save完整status(作为backup)
-    const stateDir = path.join('data', 'state');
+    const stateDir = dataPath('state');
     const stateFile = path.join(stateDir, 'blockchainState.json');
     await this.currentState.saveToFile(stateFile);
     
@@ -2087,7 +2091,7 @@ class GenesisNode {
       const path = await import('path');
       
       // 从事件日志文件中查询
-      const eventsDir = path.join('data', 'events');
+      const eventsDir = dataPath('events');
       const eventFiles = await fs.readdir(eventsDir);
       
       const events = [];

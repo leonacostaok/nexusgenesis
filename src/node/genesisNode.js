@@ -691,15 +691,20 @@ class GenesisNode {
   }
 
   async tryConnect() {
-    const seedPorts = [9848, 9849, 9850];
+    const seedNodesStr = process.env.SEED_NODES || '';
+    if (!seedNodesStr) {
+      console.log('  No seed nodes configured, skipping connection attempts');
+      return;
+    }
     
-    for (const port of seedPorts) {
-      console.log(`  Connecting to peer on port ${port}...`);
+    const seedNodes = seedNodesStr.split(',').filter(s => s.trim());
+    for (const seed of seedNodes) {
+      console.log(`  Connecting to seed node: ${seed}...`);
       try {
-        await p2pServer.connectToPeer(`ws://127.0.0.1:${port}`);
-        console.log(`  [✓] Connected to port ${port}\n`);
+        await p2pServer.connectToPeer(seed);
+        console.log(`  [✓] Connected to ${seed}\n`);
       } catch (e) {
-        console.log(`  [-] Connection to port ${port} failed: ${e.message}\n`);
+        console.log(`  [-] Connection to ${seed} failed: ${e.message}\n`);
       }
     }
   }

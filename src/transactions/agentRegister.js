@@ -18,6 +18,7 @@
  */
 
 import crypto from 'crypto';
+import { validateAddress } from '../wallet/addressUtils.js';
 
 /**
  * Create AGENT_REGISTER transaction
@@ -42,6 +43,7 @@ export function createAgentRegisterTransaction(from, agentInfo, privateKey) {
   const transaction = {
     id,
     type: 'AGENT_REGISTER',
+    tx_type: 'AGENT_REGISTER',
     from,
     payload: {
       agent_identity: agentInfo.agent_identity,
@@ -116,10 +118,7 @@ export function validateAgentRegisterTransaction(transaction) {
  * @returns {boolean} 是否有效
  */
 function isValidAddress(address) {
-  if (!address || typeof address !== 'string') return false;
-  if (!address.startsWith('ng1')) return false;
-  if (address.length < 30 || address.length > 50) return false;
-  return true;
+  return validateAddress(address).valid;
 }
 
 /**
@@ -222,8 +221,11 @@ export function listAllAgents(state) {
   for (const [agentId, agentRecord] of state.agentRegistry.agents) {
     agents.push({
       agent_id: agentId,
+      identity: agentRecord.identity || null,
       address: agentRecord.address,
       capabilities: agentRecord.capabilities,
+      metadata: agentRecord.metadata || '',
+      public_key: agentRecord.public_key || '',
       reputation: agentRecord.reputation,
       registered_at_block: agentRecord.registered_at_block
     });

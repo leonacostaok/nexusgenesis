@@ -10,6 +10,12 @@ const RATE_LIMIT_BY_ENDPOINT = {
   '/api/agents/heartbeat': 120
 };
 
+const EXEMPT_ENDPOINTS = new Set([
+  '/health',
+  '/health/live',
+  '/health/ready'
+]);
+
 const AGENT_RATE_LIMITS = {
   high_reputation: 300,
   medium_reputation: 200,
@@ -33,6 +39,10 @@ class RateLimiter {
       const now = Date.now();
       const ip = req.ip;
       const endpoint = req.path;
+
+      if (EXEMPT_ENDPOINTS.has(endpoint)) {
+        return next();
+      }
 
       const result = this._checkIpLimit(ip, endpoint, now, req);
       if (!result.allowed) {

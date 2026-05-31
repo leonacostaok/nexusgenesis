@@ -1563,13 +1563,10 @@ class GenesisNode {
    * @returns {Promise<Block|null>}
    */
   async createNewBlock() {
-    if (this.mempool.size === 0) {
-      return null;
-    }
-    
     // get排序后的transaction
     const orderedTransactions = this.getOrderedMempool();
     const transactionsToInclude = orderedTransactions.slice(0, 10); // 限制每块10笔transaction
+    const isEmptyBlock = transactionsToInclude.length === 0;
     
     // get最New block
     const latestBlock = this.blockchain[this.blockchain.length - 1];
@@ -1616,7 +1613,7 @@ class GenesisNode {
       this.mempool.delete(tx.id);
     }
     
-    console.log(`[✓] Created block #${newBlock.header.height} with ${transactionsToInclude.length} transactions`);
+    console.log(`[✓] Created block #${newBlock.header.height} with ${transactionsToInclude.length} transactions${isEmptyBlock ? ' (empty block)' : ''}`);
     return newBlock;
   }
 
@@ -1712,6 +1709,14 @@ class GenesisNode {
     this.consensusState.leaderSchedule = schedule;
   }
 
+  allowSingleNodeBlockProduction() {
+    const flag = process.env.ALLOW_SINGLE_NODE_BLOCKS;
+    if (typeof flag === 'string') {
+      return !['0', 'false', 'no', 'off'].includes(flag.toLowerCase());
+    }
+    return true;
+  }
+
   /**
    * Check是否为Current轮次的领导者
    * @returns {boolean}
@@ -1735,9 +1740,15 @@ class GenesisNode {
         console.log(`[CONSENSUS] Skipping block production: recovery state=${recoveryReport.state}`);
         return;
       }
-      if (!this.consensusState?.committee || this.consensusState.committee.size < 2) {
+      const committee = this.consensusState?.committee;
+      const committeeSize = committee?.size || 0;
+      const singleNodeMode = this.allowSingleNodeBlockProduction() && committeeSize === 1 && committee.has(this.nodeId);
+      if (!committee || (committeeSize < 2 && !singleNodeMode)) {
         console.log('[CONSENSUS] Skipping block: insufficient committee');
         return;
+      }
+      if (singleNodeMode) {
+        console.log('[CONSENSUS] Single-node committee detected, producing blocks in standalone mode');
       }
       if (!this.isCurrentLeader()) return;
 

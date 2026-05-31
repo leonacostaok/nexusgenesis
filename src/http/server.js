@@ -21,8 +21,20 @@ console.log('[HTTP Server] Imported OpenAI');
 import { PQCWallet, validateAddress } from '../wallet/pqcWallet.js';
 console.log('[HTTP Server] Imported PQCWallet');
 
+import agentWalletManager from '../wallet/agentWalletManager.js';
+console.log('[HTTP Server] Imported agentWalletManager');
+
 import { onboardAgent } from '../protocol/agentOnboarding.js';
 console.log('[HTTP Server] Imported onboardAgent');
+
+import {
+  createAgentRegisterTransaction,
+  validateAgentRegisterTransaction,
+  listAllAgents as listOnChainAgents,
+  isAddressRegistered,
+  getAgentIdByAddress
+} from '../transactions/agentRegister.js';
+console.log('[HTTP Server] Imported agent register helpers');
 
 import prometheusExporter from '../monitoring/prometheusExporter.js';
 console.log('[HTTP Server] Imported prometheusExporter');
@@ -460,8 +472,7 @@ function getRegisteredAgents(req, res) {
       return res.json(cachedData);
     }
     
-    const agentManager = app.locals.agentManager;
-    const agents = agentManager.getAllAgents();
+    const agents = getUnifiedRegisteredAgents();
     const response = {
       success: true,
       agents: agents,
@@ -475,6 +486,84 @@ function getRegisteredAgents(req, res) {
     console.error('Error getting registered agents:', error.message);
     res.status(500).json({ success: false, message: error.message });
   }
+}
+
+function getUnifiedRegisteredAgents() {
+  const chainState = app.locals.state;
+  const localAgents = app.locals.agentManager?.getAllAgents?.() || [];
+  const localAgentsById = new Map(
+    localAgents
+      .map(agent => [String(agent.id || agent.agentId || ''), agent])
+      .filter(([id]) => id)
+  );
+
+  if (chainState?.agentRegistry?.agents instanceof Map) {
+    return listOnChainAgents(chainState).map(agent => {
+      const localAgent = localAgentsById.get(String(agent.identity || agent.agent_id));
+      const runtimeAgent = registeredAgents.get(String(agent.identity || agent.agent_id))
+        || registeredAgents.get(String(agent.address));
+
+      return {
+        agent_id: agent.agent_id,
+        identity: agent.identity || localAgent?.id || runtimeAgent?.id || null,
+        address: agent.address,
+        capabilities: agent.capabilities || [],
+        reputation: agent.reputation ?? 0,
+        registered_at_block: agent.registered_at_block ?? null,
+        public_key: agent.public_key || localAgent?.wallet?.publicKey || null,
+        metadata: agent.metadata || '',
+        model: localAgent?.model || runtimeAgent?.model || null,
+        status: runtimeAgent ? 'active' : (localAgent?.status || 'onchain'),
+        lastActive: runtimeAgent?.lastActive || localAgent?.lastActive || null,
+        source: 'onchain'
+      };
+    });
+  }
+
+  const unifiedAgents = [];
+  const seen = new Set();
+
+  for (const agent of localAgents) {
+    const id = String(agent.id || agent.agentId || '');
+    if (!id || seen.has(id)) continue;
+    seen.add(id);
+    unifiedAgents.push({
+      agent_id: id,
+      identity: id,
+      address: agent.wallet?.address || null,
+      capabilities: agent.capabilities || [],
+      reputation: agent.reputation ?? 0,
+      registered_at_block: null,
+      public_key: null,
+      metadata: '',
+      model: agent.model || null,
+      status: agent.status || 'active',
+      lastActive: agent.lastActive || null,
+      source: 'local'
+    });
+  }
+
+  for (const [agentId, runtimeAgent] of registeredAgents.entries()) {
+    const id = String(agentId);
+    if (seen.has(id)) continue;
+    seen.add(id);
+    unifiedAgents.push({
+      agent_id: id,
+      identity: id,
+      address: runtimeAgent.address || null,
+      capabilities: runtimeAgent.capabilities || [],
+      reputation: 0,
+      registered_at_block: null,
+      public_key: null,
+      metadata: '',
+      model: runtimeAgent.model || null,
+      status: 'active',
+      lastActive: runtimeAgent.lastActive || null,
+      source: 'runtime'
+    });
+  }
+
+  return unifiedAgents;
 }
 
 /**
@@ -578,6 +667,68 @@ async function handleAgentRegister(req, res) {
     // agentinfo已经viaonboardAgentfunctionSave到文件系统, 无需再Save到memoryMap
     // AgentManager会在Start时从文件Load所有agent
     console.log(`[HTTP] Agent successfully onboarded: ${onboardingResult.agent_id} (model: ${model})`);
+
+    const walletInfo = agentWalletManager.getAgentWallet(onboardingResult.agent_id);
+    const onChainRegistration = {
+      attempted: false,
+      applied: false,
+      existing: false,
+      transactionId: null,
+      address: walletInfo?.address || onboardingResult.wallet?.address || null
+    };
+
+    if (app.locals.state && walletInfo?.address) {
+      onChainRegistration.attempted = true;
+
+      if (isAddressRegistered(walletInfo.address, app.locals.state)) {
+        onChainRegistration.existing = true;
+        onChainRegistration.applied = true;
+        onChainRegistration.transactionId = getAgentIdByAddress(walletInfo.address, app.locals.state);
+      } else {
+        const registerTransaction = createAgentRegisterTransaction(walletInfo.address, {
+          agent_identity: onboardingResult.agent_id,
+          capabilities: capabilities || [],
+          metadata: JSON.stringify({
+            model,
+            registered_via: 'legacy-api'
+          }),
+          public_key: walletInfo.publicKey || ''
+        });
+
+        const validation = validateAgentRegisterTransaction(registerTransaction);
+        if (!validation.valid) {
+          return res.status(400).json({ success: false, message: validation.reason });
+        }
+
+        onChainRegistration.transactionId = registerTransaction.id;
+        onChainRegistration.applied = app.locals.state.applyTransaction(
+          registerTransaction,
+          Math.max(1, app.locals.blockHeight || 1)
+        );
+
+        if (!onChainRegistration.applied) {
+          return res.status(500).json({
+            success: false,
+            message: 'Legacy registration onboarded locally but failed to register on-chain'
+          });
+        }
+      }
+    }
+
+    registeredAgents.set(onboardingResult.agent_id, {
+      id: onboardingResult.agent_id,
+      address: walletInfo?.address || onboardingResult.wallet?.address || null,
+      model,
+      capabilities: capabilities || [],
+      registeredAt: Date.now(),
+      lastActive: Date.now(),
+      onChainAgentId: onChainRegistration.transactionId
+    });
+
+    // Refresh in-memory agent view so /api/agents can see newly persisted agents.
+    if (app.locals.agentManager?.loadAgents) {
+      app.locals.agentManager.loadAgents();
+    }
     
     // 清除缓存, ensure下次get的是最新data
     cache.delete('registered_agents');
@@ -587,6 +738,7 @@ async function handleAgentRegister(req, res) {
       message: 'Agent registered successfully',
       agent_id: onboardingResult.agent_id,
       wallet: onboardingResult.wallet,
+      onChain: onChainRegistration,
       joinSignal: onboardingResult.joinSignal,
       timestamp: Date.now()
     });
@@ -1122,6 +1274,10 @@ app.get('/api/v1/plugins', (req, res) => {
   res.json({ success: true, data: pluginManager.getAll() });
 });
 
+app.get('/join', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public', 'join.html'));
+});
+
 app.get('/wallet-mobile', (req, res) => {
   res.sendFile(path.join(__dirname, '../../public', 'wallet-mobile.html'));
 });
@@ -1154,8 +1310,26 @@ app.get('/api/v1/oracle/random', async (req, res) => {
 });
 
 async function startHttpServer(node = null) {
-  // Savenode引用
+  // Bind state accessors to the current node so v1 agent APIs always see live chain state.
   app.locals.node = node;
+  Object.defineProperty(app.locals, 'state', {
+    configurable: true,
+    enumerable: true,
+    get() {
+      return app.locals.node?.currentState || null;
+    }
+  });
+  Object.defineProperty(app.locals, 'blockHeight', {
+    configurable: true,
+    enumerable: true,
+    get() {
+      const blockchain = app.locals.node?.blockchain;
+      if (!Array.isArray(blockchain) || blockchain.length === 0) {
+        return 0;
+      }
+      return blockchain[blockchain.length - 1]?.header?.height ?? (blockchain.length - 1);
+    }
+  });
   
   // ImportAgentManager
   console.log('[HTTP Server] Importing AgentManager...');

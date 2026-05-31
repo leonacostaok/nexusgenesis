@@ -3,6 +3,22 @@ import crypto from 'crypto';
 
 const router = Router();
 
+router.get('/api/v1/bootstrap', (req, res) => {
+  res.json({
+    service: 'bootstrap',
+    success: true,
+    endpoints: {
+      status: '/api/v1/bootstrap/status',
+      agents: '/api/v1/bootstrap/agents',
+      latest: '/api/v1/bootstrap/agents/latest',
+      contributions: '/api/v1/bootstrap/contributions',
+      recentBlocks: '/api/v1/bootstrap/blocks/recent',
+      registerAgent: '/api/v1/bootstrap/agents/register',
+      joinValidator: '/api/v1/bootstrap/validators/join'
+    }
+  });
+});
+
 router.get('/api/v1/bootstrap/status', (req, res) => {
   try {
     const node = req.app.locals.node;

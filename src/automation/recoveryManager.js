@@ -152,12 +152,13 @@ class RecoveryManager {
     const issues = [];
     const node = this.nodeRef;
     if (!node) return issues;
+    const minPeersForHealth = this._getMinPeersForHealth(node);
 
     if (node.status === 'OFFLINE' || node.status === 'ERROR') {
       issues.push({ type: FAILURE_TYPES.NODE_CRASH, severity: 3, detail: `Node status: ${node.status}` });
     }
 
-    if (node.peers && node.peers.size < this.config.minPeersForHealth) {
+    if (node.peers && node.peers.size < minPeersForHealth) {
       issues.push({ type: FAILURE_TYPES.P2P_DISCONNECT, severity: 2, detail: `Peers: ${node.peers?.size || 0}` });
     }
 
@@ -171,6 +172,21 @@ class RecoveryManager {
     }
 
     return issues;
+  }
+
+  _getMinPeersForHealth(node) {
+    const allowSingleNode = process.env.ALLOW_SINGLE_NODE_BLOCKS;
+    const singleNodeEnabled = typeof allowSingleNode === 'string'
+      ? !['0', 'false', 'no', 'off'].includes(allowSingleNode.toLowerCase())
+      : true;
+    const committeeSize = node?.consensusState?.committee?.size || 0;
+    const hasSeedNodes = Boolean(process.env.SEED_NODES?.trim());
+
+    if (singleNodeEnabled && committeeSize <= 1 && !hasSeedNodes) {
+      return 0;
+    }
+
+    return this.config.minPeersForHealth;
   }
 
   _transitionState(newState) {

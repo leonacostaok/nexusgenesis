@@ -727,7 +727,7 @@ export class State {
   applyAgentRegister(transaction, height) {
     try {
       const { from } = transaction;
-      const { agent_identity, capabilities, metadata } = transaction.payload || {};
+      const { agent_identity, capabilities, metadata, public_key } = transaction.payload || {};
       
       // Verifyparameter
       if (!from || !agent_identity) {
@@ -745,8 +745,9 @@ export class State {
       // 构造 AgentRecord
       const agentRecord = {
         agent_id: agent_id,
+        identity: agent_identity,
         address: from,
-        public_key: '', // 暂留空字符串(待未来与 PQC 钱包绑定)
+        public_key: public_key || '',
         capabilities: capabilities || [],
         metadata: metadata || '',
         registered_at_block: height,

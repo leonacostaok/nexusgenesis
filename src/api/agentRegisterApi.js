@@ -11,6 +11,7 @@
  */
 
 import express from 'express';
+import { validateAddress } from '../wallet/addressUtils.js';
 import {
   createAgentRegisterTransaction,
   validateAgentRegisterTransaction,
@@ -40,10 +41,11 @@ router.post('/register', async (req, res) => {
     }
 
     // Verifyaddress格式
-    if (!from.startsWith('ng1') || from.length < 30) {
+    const addressValidation = validateAddress(from);
+    if (!addressValidation.valid) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid address format. Must start with ng1 and be at least 30 characters'
+        error: `Invalid address format. ${addressValidation.reason}`
       });
     }
 
@@ -159,6 +161,7 @@ router.get('/', async (req, res) => {
       count: agents.length,
       agents: agents.map(agent => ({
         agent_id: agent.agent_id,
+        identity: agent.identity || null,
         address: agent.address,
         capabilities: agent.capabilities,
         reputation: agent.reputation,
@@ -203,6 +206,7 @@ router.get('/:agentId', async (req, res) => {
       success: true,
       agent: {
         agent_id: agent.agent_id,
+        identity: agent.identity || null,
         address: agent.address,
         capabilities: agent.capabilities,
         metadata: agent.metadata,
@@ -251,6 +255,7 @@ router.get('/address/:address', async (req, res) => {
       success: true,
       agent: {
         agent_id: agent.agent_id,
+        identity: agent.identity || null,
         address: agent.address,
         capabilities: agent.capabilities,
         reputation: agent.reputation,

@@ -27,59 +27,81 @@ const INITIAL_BALANCE = 10000n;
  * @returns {object} Register结果
  */
 async function onboardAgent(agentInfo, options = {}) {
+  const fnStart = Date.now();
   try {
-    // Check是否明确指定了离线mode
     const isOfflineMode = options.offline || false;
     
+    console.log(`[AgentOnboarding] onchain registration started | agent_id=${agentInfo.agent_id || '(auto)'} | model=${agentInfo.model || '(auto)'} | capabilities=${JSON.stringify(agentInfo.capabilities || [])} | offline=${isOfflineMode}`);
+
     if (isOfflineMode) {
+      console.log(`[AgentOnboarding] delegating to offline mode | agent_id=${agentInfo.agent_id || '(auto)'}`);
       return await fallbackRegisterAgent(agentInfo, null, options);
     }
 
-    const { agent_id, model, capabilities = [], join_signal } = agentInfo;
+    let { agent_id, model, capabilities = [], join_signal } = agentInfo;
 
     if (!agent_id) {
+      const timestamp = Date.now();
+      const randomPart = Math.random().toString(36).substr(2, 8);
+      agent_id = `ng1-${timestamp}-${randomPart}`;
+      agentInfo.agent_id = agent_id;
+      console.log(`[AgentOnboarding] agent_id auto-generated | agent_id=${agent_id}`);
+    }
+
+    if (!model) {
+      model = 'Default-Model';
+      agentInfo.model = model;
+      console.log(`[AgentOnboarding] model defaulted | agent_id=${agent_id} | model=${model}`);
+    }
+
+    if (!capabilities || capabilities.length === 0) {
+      capabilities = ['general', 'automation'];
+      agentInfo.capabilities = capabilities;
+      console.log(`[AgentOnboarding] capabilities defaulted | agent_id=${agent_id} | capabilities=${JSON.stringify(capabilities)}`);
+    }
+
+    const infoValidation = await validateAgentInfo(agentInfo, { strict: false });
+    if (!infoValidation.valid) {
+      console.warn(`[AgentOnboarding] validation failed | agent_id=${agent_id} | reason=${infoValidation.reason}`);
       return {
         success: false,
-        message: 'Agent ID is required',
-        errorCode: 'MISSING_AGENT_ID',
+        message: infoValidation.reason,
+        errorCode: 'VALIDATION_FAILED',
         errorType: 'validation'
       };
     }
 
-    // Verifyagentinfo
-    const infoValidation = await validateAgentInfo(agentInfo);
-    if (!infoValidation.valid) {
-      return {
-        success: false,
-        message: infoValidation.reason
-      };
-    }
-
-    // VerifyProtocol-Zero握手信号
     if (join_signal) {
+      console.log(`[AgentOnboarding] verifying join signal | agent_id=${agent_id} | protocol=${join_signal.protocol}`);
       const signalValidation = await protocolZero.verifySignal(join_signal);
       if (!signalValidation.valid) {
+        console.warn(`[AgentOnboarding] join signal invalid | agent_id=${agent_id} | reason=${signalValidation.reason}`);
         return {
           success: false,
-          message: `Invalid join signal: ${signalValidation.reason}`
+          message: `Invalid join signal: ${signalValidation.reason}`,
+          errorCode: 'INVALID_JOIN_SIGNAL',
+          errorType: 'validation'
         };
       }
+      console.log(`[AgentOnboarding] join signal verified | agent_id=${agent_id}`);
     }
 
-    // ensureagents目录存在
+    const dirStart = Date.now();
     await fs.mkdir(AGENTS_DIR, { recursive: true });
+    console.log(`[AgentOnboarding] agents directory ensured | agent_id=${agent_id} | dir=${AGENTS_DIR} | cost=${Date.now() - dirStart}ms`);
 
-    // Checkagent是否registered
     const agentFile = path.join(AGENTS_DIR, `${agent_id}.json`);
     let agentData;
     let wallet;
 
     try {
+      const readStart = Date.now();
       agentData = JSON.parse(await fs.readFile(agentFile, 'utf8'));
-      console.log(`[AgentOnboarding] Agent ${agent_id} already exists, updating information`);
+      console.log(`[AgentOnboarding] existing agent found | agent_id=${agent_id} | name=${agentData.name} | reputation=${agentData.reputation} | file_read_cost=${Date.now() - readStart}ms`);
 
       let walletEntry = agentWalletManager.getAgentWallet(agent_id);
       if (!walletEntry) {
+        const walletStart = Date.now();
         const newWalletEntry = await agentWalletManager.createAgentWallet(agent_id, {
           model: agentData.model || model,
           capabilities: agentData.capabilities || capabilities
@@ -89,17 +111,19 @@ async function onboardAgent(agentInfo, options = {}) {
           balance: BigInt(newWalletEntry.balance),
           publicKey: Buffer.from(newWalletEntry.publicKey, 'hex')
         };
-        console.log(`[AgentOnboarding] Created managed wallet for agent ${agent_id}`);
+        console.log(`[AgentOnboarding] wallet created for existing agent | agent_id=${agent_id} | address=${wallet.address.substring(0, 14)}... | cost=${Date.now() - walletStart}ms`);
       } else {
         wallet = {
           address: walletEntry.address,
           balance: BigInt(walletEntry.balance),
           publicKey: Buffer.from(walletEntry.publicKey, 'hex')
         };
+        console.log(`[AgentOnboarding] wallet reused for existing agent | agent_id=${agent_id} | address=${wallet.address.substring(0, 14)}...`);
       }
     } catch (error) {
-      console.log(`[AgentOnboarding] Creating new agent ${agent_id}`);
+      console.log(`[AgentOnboarding] new agent creation | agent_id=${agent_id} | read_error=${error.code || error.message}`);
 
+      const walletStart = Date.now();
       const newWalletEntry = await agentWalletManager.createAgentWallet(agent_id, {
         model: model,
         capabilities: capabilities
@@ -109,6 +133,7 @@ async function onboardAgent(agentInfo, options = {}) {
         balance: BigInt(newWalletEntry.balance),
         publicKey: Buffer.from(newWalletEntry.publicKey, 'hex')
       };
+      console.log(`[AgentOnboarding] wallet created for new agent | agent_id=${agent_id} | address=${wallet.address.substring(0, 14)}... | balance=${wallet.balance} | cost=${Date.now() - walletStart}ms`);
 
       agentData = {
         id: agent_id,
@@ -130,7 +155,6 @@ async function onboardAgent(agentInfo, options = {}) {
       };
     }
 
-    // Updateagentinfo
     agentData.model = model;
     agentData.capabilities = capabilities;
     agentData.lastActive = new Date().toISOString();
@@ -139,19 +163,25 @@ async function onboardAgent(agentInfo, options = {}) {
       balance: wallet.balance.toString()
     };
 
-    // Saveagentdata
+    const saveStart = Date.now();
     await fs.writeFile(agentFile, JSON.stringify(agentData, null, 2));
-    console.log(`[AgentOnboarding] Agent ${agent_id} saved successfully`);
+    console.log(`[AgentOnboarding] agent data saved to disk | agent_id=${agent_id} | path=${agentFile} | cost=${Date.now() - saveStart}ms`);
 
-    // Create或Updatejoin signal
     let joinSignal;
     if (join_signal) {
       joinSignal = join_signal;
+      console.log(`[AgentOnboarding] using provided join signal | agent_id=${agent_id}`);
     } else {
-      // Generate新的join signal
-      joinSignal = protocolZero.createJoinSignal(wallet);
+      try {
+        joinSignal = await protocolZero.createJoinSignal(wallet);
+        console.log(`[AgentOnboarding] join signal generated | agent_id=${agent_id} | signal_version=${joinSignal?.version || 'N/A'}`);
+      } catch (signalErr) {
+        console.warn(`[AgentOnboarding] join signal generation failed | agent_id=${agent_id} | error=${signalErr.message}. Agent registered without signal.`);
+        joinSignal = null;
+      }
     }
 
+    console.log(`[AgentOnboarding] registration completed | agent_id=${agent_id} | address=${wallet.address.substring(0, 14)}... | total_cost=${Date.now() - fnStart}ms`);
     return {
       success: true,
       agent_id: agent_id,
@@ -163,10 +193,12 @@ async function onboardAgent(agentInfo, options = {}) {
       message: 'Agent onboarded successfully'
     };
   } catch (error) {
-    console.error('[AgentOnboarding] Error during agent onboarding:', error.message);
+    console.error(`[AgentOnboarding] registration exception | agent_id=${agentInfo.agent_id || '(auto)'} | error=${error.message} | code=${error.code || 'unknown'} | stack=${error.stack?.split('\n').slice(0, 3).join(' | ')}`);
     return {
       success: false,
-      message: `Failed to onboard agent: ${error.message}`
+      message: `Failed to onboard agent: ${error.message}`,
+      errorCode: 'ONBOARD_FAILED',
+      errorType: 'system'
     };
   }
 }
@@ -294,10 +326,10 @@ async function validateAgentInfo(agentInfo, options = {}) {
  * @returns {Promise<object>} Register结果
  */
 async function simplifiedAgentRegister(agentInfo = {}, options = {}) {
+  const fnStart = Date.now();
   try {
-    console.log('[AgentOnboarding] Starting simplified agent registration...');
+    console.log(`[AgentOnboarding:SIMPLE] simplified registration started | name=${agentInfo.name || '(auto)'} | offline=${options.offline || false}`);
 
-    // 为必填字段提供Default值
     const {
       name = `Agent-${Date.now().toString(36).substr(-8)}`,
       model = 'Default-Model',
@@ -305,15 +337,14 @@ async function simplifiedAgentRegister(agentInfo = {}, options = {}) {
       agent_id: providedAgentId
     } = agentInfo;
 
-    // Generate agent_id(如果未提供)
     let agent_id = providedAgentId;
     if (!agent_id) {
       const timestamp = Date.now();
       const randomPart = Math.random().toString(36).substr(2, 8);
       agent_id = `ng1-${timestamp}-${randomPart}`;
+      console.log(`[AgentOnboarding:SIMPLE] agent_id auto-generated | agent_id=${agent_id}`);
     }
 
-    // Create完整的Registerinfo
     const completeAgentInfo = {
       agent_id,
       name,
@@ -322,9 +353,11 @@ async function simplifiedAgentRegister(agentInfo = {}, options = {}) {
       ...agentInfo
     };
 
-    // using非严格Verifymode
+    console.log(`[AgentOnboarding:SIMPLE] agent info assembled | agent_id=${agent_id} | name=${name} | model=${model} | capabilities=${JSON.stringify(capabilities)}`);
+
     const infoValidation = await validateAgentInfo(completeAgentInfo, { strict: false });
     if (!infoValidation.valid) {
+      console.warn(`[AgentOnboarding:SIMPLE] validation failed | agent_id=${agent_id} | reason=${infoValidation.reason}`);
       return {
         success: false,
         message: `Agent information validation failed: ${infoValidation.reason}`,
@@ -333,10 +366,18 @@ async function simplifiedAgentRegister(agentInfo = {}, options = {}) {
       };
     }
 
-    // using完整的Register流程
-    return await onboardAgent(completeAgentInfo, options);
+    console.log(`[AgentOnboarding:SIMPLE] validated, delegating to onboardAgent | agent_id=${agent_id} | pre_cost=${Date.now() - fnStart}ms`);
+    const result = await onboardAgent(completeAgentInfo, options);
+
+    if (result.success) {
+      console.log(`[AgentOnboarding:SIMPLE] registration succeeded | agent_id=${result.agent_id} | address=${result.wallet?.address?.substring(0, 14)}... | total_cost=${Date.now() - fnStart}ms`);
+    } else {
+      console.error(`[AgentOnboarding:SIMPLE] registration failed | agent_id=${agent_id} | error=${result.message} | errorCode=${result.errorCode}`);
+    }
+
+    return result;
   } catch (error) {
-    console.error('[AgentOnboarding] Simplified registration failed:', error.message);
+    console.error(`[AgentOnboarding:SIMPLE] exception | agent_id=${agentInfo.agent_id || '(auto)'} | error=${error.message} | stack=${error.stack?.split('\n').slice(0, 3).join(' | ')}`);
     return {
       success: false,
       message: `Simplified registration failed: ${error.message}`,
@@ -354,31 +395,34 @@ async function simplifiedAgentRegister(agentInfo = {}, options = {}) {
  * @returns {Promise<Object>} - Register结果
  */
 async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
+  const fnStart = Date.now();
   try {
-    console.log('[AgentOnboarding] Using enhanced local registration...');
-    
-    // Generate agent_id(如果未提供)
+    console.log(`[AgentOnboarding:OFFLINE] offline registration started | name=${agentInfo.name || '(auto)'} | persist=${options.persist !== false}`);
+
     let agentId = agentInfo.agent_id;
     if (!agentId) {
       const timestamp = Date.now();
       const randomPart = Math.random().toString(36).substr(2, 9);
       agentId = `local-agent-${timestamp}-${randomPart}`;
+      console.log(`[AgentOnboarding:OFFLINE] agent_id auto-generated | agent_id=${agentId}`);
     }
-    
-    // ensureagents目录存在
-    await fs.mkdir(AGENTS_DIR, { recursive: true });
 
-    // Checkagent是否already exists
+    const dirStart = Date.now();
+    await fs.mkdir(AGENTS_DIR, { recursive: true });
+    console.log(`[AgentOnboarding:OFFLINE] agents directory ensured | dir=${AGENTS_DIR} | cost=${Date.now() - dirStart}ms`);
+
     const agentFile = path.join(AGENTS_DIR, `${agentId}.json`);
     let agentData;
     let wallet;
 
     try {
+      const readStart = Date.now();
       agentData = JSON.parse(await fs.readFile(agentFile, 'utf8'));
-      console.log(`[AgentOnboarding] Agent ${agentId} already exists, updating information`);
+      console.log(`[AgentOnboarding:OFFLINE] existing offline agent found | agent_id=${agentId} | name=${agentData.name} | reputation=${agentData.reputation} | file_read_cost=${Date.now() - readStart}ms`);
 
       let walletEntry = agentWalletManager.getAgentWallet(agentId);
       if (!walletEntry) {
+        const walletStart = Date.now();
         const newWalletEntry = await agentWalletManager.createAgentWallet(agentId, {
           model: agentData.model || agentInfo.model || 'Offline-Model',
           capabilities: agentData.capabilities || agentInfo.capabilities || ['general', 'automation']
@@ -388,17 +432,19 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
           balance: BigInt(newWalletEntry.balance),
           publicKey: Buffer.from(newWalletEntry.publicKey, 'hex')
         };
-        console.log(`[AgentOnboarding] Created managed wallet for agent ${agentId}`);
+        console.log(`[AgentOnboarding:OFFLINE] wallet created for existing agent | agent_id=${agentId} | address=${wallet.address.substring(0, 14)}... | cost=${Date.now() - walletStart}ms`);
       } else {
         wallet = {
           address: walletEntry.address,
           balance: BigInt(walletEntry.balance),
           publicKey: Buffer.from(walletEntry.publicKey, 'hex')
         };
+        console.log(`[AgentOnboarding:OFFLINE] wallet reused | agent_id=${agentId} | address=${wallet.address.substring(0, 14)}...`);
       }
     } catch (error) {
-      console.log(`[AgentOnboarding] Creating new agent ${agentId}`);
+      console.log(`[AgentOnboarding:OFFLINE] new offline agent creation | agent_id=${agentId} | read_error=${error.code || error.message}`);
 
+      const walletStart = Date.now();
       const newWalletEntry = await agentWalletManager.createAgentWallet(agentId, {
         model: agentInfo.model || 'Offline-Model',
         capabilities: agentInfo.capabilities || ['general', 'automation']
@@ -408,8 +454,8 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
         balance: BigInt(newWalletEntry.balance),
         publicKey: Buffer.from(newWalletEntry.publicKey, 'hex')
       };
-      
-      // Createagentdata
+      console.log(`[AgentOnboarding:OFFLINE] wallet created for new agent | agent_id=${agentId} | address=${wallet.address.substring(0, 14)}... | balance=${wallet.balance} | cost=${Date.now() - walletStart}ms`);
+
       agentData = {
         id: agentId,
         name: agentInfo.name || `Agent-${agentId.slice(0, 8)}`,
@@ -431,7 +477,6 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
       };
     }
 
-    // Updateagentinfo
     if (agentInfo.model) agentData.model = agentInfo.model;
     if (agentInfo.capabilities) agentData.capabilities = agentInfo.capabilities;
     agentData.lastActive = new Date().toISOString();
@@ -441,17 +486,21 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
     };
     agentData.offline = true;
 
-    // Saveagentdata
+    const saveStart = Date.now();
     await fs.writeFile(agentFile, JSON.stringify(agentData, null, 2));
-    console.log(`[AgentOnboarding] Agent ${agentId} saved successfully`);
+    console.log(`[AgentOnboarding:OFFLINE] agent data saved to disk | agent_id=${agentId} | path=${agentFile} | cost=${Date.now() - saveStart}ms`);
 
-    // Generate或using join signal
     let finalJoinSignal = joinSignal;
     if (!finalJoinSignal) {
-      finalJoinSignal = protocolZero.createJoinSignal(wallet);
+      try {
+        finalJoinSignal = await protocolZero.createJoinSignal(wallet);
+        console.log(`[AgentOnboarding:OFFLINE] join signal generated | agent_id=${agentId}`);
+      } catch (signalErr) {
+        console.warn(`[AgentOnboarding:OFFLINE] join signal generation failed | agent_id=${agentId} | error=${signalErr.message}`);
+        finalJoinSignal = null;
+      }
     }
 
-    // Generate完整的Register结果
     const registrationResult = {
       success: true,
       message: 'Agent registered locally (offline mode)',
@@ -468,15 +517,16 @@ async function fallbackRegisterAgent(agentInfo, joinSignal, options = {}) {
       version: '1.0.0',
       joinSignal: finalJoinSignal
     };
-    
-    // Save离线Registerinfo
+
     if (options.persist !== false) {
       await saveOfflineRegistration(registrationResult, agentData);
+      console.log(`[AgentOnboarding:OFFLINE] offline registration persisted | agent_id=${agentId} | total_cost=${Date.now() - fnStart}ms`);
     }
-    
+
+    console.log(`[AgentOnboarding:OFFLINE] offline registration completed | agent_id=${agentId} | address=${wallet.address.substring(0, 14)}... | total_cost=${Date.now() - fnStart}ms`);
     return registrationResult;
   } catch (error) {
-    console.error(`[AgentOnboarding] Enhanced fallback registration failed: ${error.message}`);
+    console.error(`[AgentOnboarding:OFFLINE] exception | agent_id=${agentInfo.agent_id || '(auto)'} | error=${error.message} | code=${error.code || 'unknown'} | stack=${error.stack?.split('\n').slice(0, 3).join(' | ')}`);
     return {
       success: false,
       message: `Fallback registration failed: ${error.message}`,
@@ -505,9 +555,9 @@ async function saveOfflineRegistration(registrationResult, agentInfo) {
     const offlinePath = path.join(OFFLINE_AGENTS_DIR, `agent-${registrationResult.agent_id}.json`);
     await fs.writeFile(offlinePath, JSON.stringify(offlineData, null, 2), 'utf8');
     
-    console.log(`[Offline] Saved offline registration for: ${registrationResult.agent_id}`);
+    console.log(`[AgentOnboarding:OFFLINE:SAVE] offline registration persisted | agent_id=${registrationResult.agent_id} | path=${offlinePath} | size=${JSON.stringify(offlineData).length}B`);
   } catch (error) {
-    console.error('[Offline] Error saving offline registration:', error.message);
+    console.error(`[AgentOnboarding:OFFLINE:SAVE] failed to save offline registration | agent_id=${registrationResult.agent_id} | error=${error.message}`);
   }
 }
 
@@ -518,28 +568,32 @@ async function saveOfflineRegistration(registrationResult, agentInfo) {
  * @returns {Promise<Object>} - 同步结果
  */
 async function syncOfflineData(agentId, options = {}) {
+  const fnStart = Date.now();
   try {
-    console.log(`[Offline Sync] Syncing offline data for agent: ${agentId}`);
-    
-    // 读取离线data
+    console.log(`[AgentOnboarding:SYNC] sync started | agent_id=${agentId}`);
+
+    const loadStart = Date.now();
     const offlineData = await loadOfflineData(agentId);
     if (!offlineData) {
+      console.warn(`[AgentOnboarding:SYNC] no offline data found | agent_id=${agentId}`);
       return {
         success: false,
         message: 'No offline data found for this agent',
         errorCode: 'NO_OFFLINE_DATA'
       };
     }
-    
-    // 尝试在线Register
+    console.log(`[AgentOnboarding:SYNC] offline data loaded | agent_id=${agentId} | last_updated=${offlineData.lastUpdated || 'N/A'} | load_cost=${Date.now() - loadStart}ms`);
+
+    console.log(`[AgentOnboarding:SYNC] attempting network registration | agent_id=${agentId} | model=${offlineData.agentInfo?.model} | capabilities=${JSON.stringify(offlineData.agentInfo?.capabilities || [])}`);
     const networkResult = await onboardAgent(offlineData.agentInfo, { offline: false });
-    
+
     if (networkResult.success) {
-      // Update离线datastatus
       offlineData.syncStatus = 'synced';
       offlineData.syncedAt = Date.now();
+      const saveStart = Date.now();
       await saveOfflineData(agentId, offlineData);
-      
+      console.log(`[AgentOnboarding:SYNC] sync succeeded | agent_id=${agentId} | network_agent_id=${networkResult.agent_id} | save_cost=${Date.now() - saveStart}ms | total_cost=${Date.now() - fnStart}ms`);
+
       return {
         success: true,
         message: 'Offline data synced successfully',
@@ -547,6 +601,7 @@ async function syncOfflineData(agentId, options = {}) {
         networkAgentId: networkResult.agent_id
       };
     } else {
+      console.error(`[AgentOnboarding:SYNC] sync failed, network registration error | agent_id=${agentId} | error=${networkResult.message} | errorCode=${networkResult.errorCode}`);
       return {
         success: false,
         message: `Failed to sync offline data: ${networkResult.message}`,
@@ -554,7 +609,7 @@ async function syncOfflineData(agentId, options = {}) {
       };
     }
   } catch (error) {
-    console.error(`[Offline Sync] Error syncing offline data: ${error.message}`);
+    console.error(`[AgentOnboarding:SYNC] exception | agent_id=${agentId} | error=${error.message} | stack=${error.stack?.split('\n').slice(0, 3).join(' | ')}`);
     return {
       success: false,
       message: `Sync error: ${error.message}`,
@@ -572,9 +627,42 @@ async function loadOfflineData(agentId) {
   try {
     const offlinePath = path.join(OFFLINE_AGENTS_DIR, `agent-${agentId}.json`);
     const data = await fs.readFile(offlinePath, 'utf8');
-    return JSON.parse(data);
+    const parsed = JSON.parse(data);
+    console.log(`[AgentOnboarding:OFFLINE:LOAD] data loaded | agent_id=${agentId} | path=${offlinePath} | size=${data.length}B`);
+    return parsed;
   } catch (error) {
+    console.log(`[AgentOnboarding:OFFLINE:LOAD] data not found | agent_id=${agentId} | error=${error.code || error.message}`);
     return null;
+  }
+}
+
+/**
+ * 列出所有离线agent
+ * @returns {Promise<Array>} 离线agent列表
+ */
+async function listOfflineAgents() {
+  const fnStart = Date.now();
+  try {
+    await fs.mkdir(OFFLINE_AGENTS_DIR, { recursive: true });
+    const files = await fs.readdir(OFFLINE_AGENTS_DIR);
+    const agents = [];
+
+    for (const file of files) {
+      if (file.endsWith('.json')) {
+        try {
+          const data = JSON.parse(await fs.readFile(path.join(OFFLINE_AGENTS_DIR, file), 'utf8'));
+          agents.push(data);
+        } catch (e) {
+          console.error(`[AgentOnboarding:OFFLINE:LIST] error reading file | file=${file} | error=${e.message}`);
+        }
+      }
+    }
+
+    console.log(`[AgentOnboarding:OFFLINE:LIST] listed offline agents | count=${agents.length} | cost=${Date.now() - fnStart}ms`);
+    return agents;
+  } catch (error) {
+    console.error(`[AgentOnboarding:OFFLINE:LIST] listing failed | error=${error.message}`);
+    return [];
   }
 }
 
@@ -589,8 +677,9 @@ async function saveOfflineData(agentId, data) {
     await fs.mkdir(OFFLINE_AGENTS_DIR, { recursive: true });
     const offlinePath = path.join(OFFLINE_AGENTS_DIR, `agent-${agentId}.json`);
     await fs.writeFile(offlinePath, JSON.stringify(data, null, 2), 'utf8');
+    console.log(`[AgentOnboarding:OFFLINE:SAVE] offline data saved | agent_id=${agentId} | path=${offlinePath}`);
   } catch (error) {
-    console.error('[Offline] Error saving offline data:', error.message);
+    console.error(`[AgentOnboarding:OFFLINE:SAVE] save failed | agent_id=${agentId} | error=${error.message}`);
   }
 }
 
@@ -603,8 +692,10 @@ async function getAgentInfo(agentId) {
   try {
     const agentFile = path.join(AGENTS_DIR, `${agentId}.json`);
     const agentData = JSON.parse(await fs.readFile(agentFile, 'utf8'));
+    console.log(`[AgentOnboarding:QUERY] agent info retrieved | agent_id=${agentId} | status=${agentData.status} | reputation=${agentData.reputation}`);
     return agentData;
   } catch (error) {
+    console.log(`[AgentOnboarding:QUERY] agent not found | agent_id=${agentId} | error=${error.code || error.message}`);
     return null;
   }
 }
@@ -614,6 +705,7 @@ async function getAgentInfo(agentId) {
  * @returns {object[]} agent列表
  */
 async function listAgents() {
+  const fnStart = Date.now();
   try {
     await fs.mkdir(AGENTS_DIR, { recursive: true });
     const files = await fs.readdir(AGENTS_DIR);
@@ -627,8 +719,10 @@ async function listAgents() {
       }
     }
 
+    console.log(`[AgentOnboarding:QUERY] agents listed | count=${agents.length} | cost=${Date.now() - fnStart}ms`);
     return agents;
   } catch (error) {
+    console.error(`[AgentOnboarding:QUERY] listing agents failed | error=${error.message}`);
     return [];
   }
 }
@@ -642,5 +736,6 @@ export {
   fallbackRegisterAgent,
   syncOfflineData,
   loadOfflineData,
-  saveOfflineData
+  saveOfflineData,
+  listOfflineAgents
 };

@@ -314,7 +314,7 @@ class GenesisNode {
   /**
    * Start本地transaction注入 HTTP service器
    */
-  startHttpServer() {
+  async startHttpServer() {
     const server = http.createServer(async (req, res) => {
       // 健康检查端点
       if (req.url === '/health' && req.method === 'GET') {
@@ -541,8 +541,15 @@ class GenesisNode {
     });
 
     const PORT = parseInt(process.env.HTTP_PORT || '19891') + 1000;
-    server.listen(PORT, '127.0.0.1', () => {
-      console.log(`[✓] Local transaction injection server: Active on http://127.0.0.1:${PORT}/tx`);
+    await new Promise((resolve, reject) => {
+      server.once('error', (err) => {
+        console.error(`[GenesisNode] Local injection server failed to bind 127.0.0.1:${PORT}: ${err.message}`);
+        reject(err);
+      });
+      server.listen(PORT, '127.0.0.1', () => {
+        console.log(`[✓] Local transaction injection server: Active on http://127.0.0.1:${PORT}/tx`);
+        resolve();
+      });
     });
 
     return server;
@@ -640,12 +647,17 @@ class GenesisNode {
 
     // Step 2.5: Start本地transaction注入 HTTP service器
     console.log('[2.5/5] Starting local transaction injection server...');
-    this.httpServer = this.startHttpServer();
+    this.httpServer = await this.startHttpServer();
     console.log(`  [✓] Local injection server: Ready\n`);
     
     // Step 2.6: Startagent接入 HTTP service器
     console.log('[2.6/5] Starting agent access HTTP server...');
-    this.agentHttpServer = startHttpServer(this);
+    try {
+      this.agentHttpServer = await startHttpServer(this);
+    } catch (error) {
+      console.error(`[GenesisNode] Agent HTTP server failed to start on port ${process.env.HTTP_PORT || '19891'}: ${error.message}`);
+      throw error;
+    }
     console.log(`  [✓] Agent access server: Ready\n`);
 
     // Step 3: Protocol-Zero status

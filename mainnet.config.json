@@ -11,10 +11,7 @@
     "maxInbound": 100,
     "maxOutbound": 100,
     "seedNodes": [
-      "wss://seed1.nexus-genesis.top:9847",
-      "wss://seed2.nexus-genesis.top:9847",
-      "wss://seed3.nexus-genesis.top:9847",
-      "wss://seed4.nexus-genesis.top:9847"
+      "ws://127.0.0.1:9847"
     ],
     "bootstrapNodes": [],
     "discoveryInterval": 60000,
@@ -23,10 +20,7 @@
     "handshakeTimeout": 10000,
     "maxMessageSize": 10485760,
     "tls": {
-      "enabled": true,
-      "certPath": "certs/fullchain.pem",
-      "keyPath": "certs/privkey.pem",
-      "caPath": "certs/ca.pem"
+      "enabled": false
     }
   },
   "blockchain": {

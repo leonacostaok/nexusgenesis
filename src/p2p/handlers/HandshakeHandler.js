@@ -199,8 +199,13 @@ export class HandshakeHandler extends MessageHandler {
         });
         console.log('Sent KEY_EXCHANGE to peer');
       } catch (error) {
-        console.error('Kyber key exchange failed:', error.message);
-        // 即使密钥协商失败，也继续连接（降级到非加密通信）
+        console.error('Kyber key exchange failed, disconnecting peer:', error.message);
+        // 密钥协商失败必须断开，不允许降级到明文通信
+        const conn = this.p2pServer.connections.get(peerId);
+        if (conn && conn.ws) {
+          conn.ws.close(1002, 'Kyber key exchange failed');
+        }
+        return;
       }
     }
 

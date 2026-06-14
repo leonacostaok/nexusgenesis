@@ -1319,7 +1319,10 @@ app.get('/api/v1/oracle/random', async (req, res) => {
   }
 });
 
-async function startHttpServer(node = null) {
+async function startHttpServer(node = null, options = {}) {
+  const port = Number.parseInt(options.port || process.env.HTTP_PORT || '19891', 10);
+  const host = options.host || '0.0.0.0';
+
   // Bind state accessors to the current node so v1 agent APIs always see live chain state.
   app.locals.node = node;
   Object.defineProperty(app.locals, 'state', {
@@ -1422,7 +1425,7 @@ async function startHttpServer(node = null) {
     const realtimeService = realtimeMod.default;
     realtimeService.attach(server);
     app.locals.realtimeService = realtimeService;
-    console.log('[HTTP Server] WebSocket Realtime Service initialized on port ' + PORT);
+    console.log('[HTTP Server] WebSocket Realtime Service initialized on port ' + port);
 
     // 事件Bridge: Marketplace 事件 → WebSocket 广播
     if (app.locals.marketplace) {
@@ -1459,18 +1462,29 @@ async function startHttpServer(node = null) {
   warmupCache();
   console.log('[HTTP Server] Cache warmup completed');
   
-  console.log('[HTTP Server] Starting HTTP server...');
-  server.listen(PORT, '0.0.0.0', () => {
-    console.log(`[✓] HTTP Server: Active on http://0.0.0.0:${PORT}`);
-    console.log(`[✓] OpenAI Agent endpoint: http://0.0.0.0:${PORT}/api/agents/openai`);
-    console.log(`[✓] Anthropic Agent endpoint: http://0.0.0.0:${PORT}/api/agents/anthropic`);
-    console.log(`[✓] Agent registration endpoint: http://0.0.0.0:${PORT}/api/agents/register`);
-    console.log(`[✓] Agents list endpoint: http://0.0.0.0:${PORT}/api/agents`);
-    console.log(`[✓] Health check endpoint: http://0.0.0.0:${PORT}/health`);
+  console.log(`[HTTP Server] Starting HTTP server on ${host}:${port}...`);
+  await new Promise((resolve, reject) => {
+    const handleError = (error) => {
+      console.error(`[HTTP Server] Failed to bind ${host}:${port}: ${error.message}`);
+      reject(error);
+    };
+
+    server.once('error', handleError);
+    server.listen(port, host, () => {
+      server.off('error', handleError);
+      console.log(`[✓] HTTP Server: Active on http://${host}:${port}`);
+      console.log(`[✓] OpenAI Agent endpoint: http://${host}:${port}/api/agents/openai`);
+      console.log(`[✓] Anthropic Agent endpoint: http://${host}:${port}/api/agents/anthropic`);
+      console.log(`[✓] Agent registration endpoint: http://${host}:${port}/api/agents/register`);
+      console.log(`[✓] Agents list endpoint: http://${host}:${port}/api/agents`);
+      console.log(`[✓] Health check endpoint: http://${host}:${port}/health`);
+      resolve();
+    });
   });
-  
+
+  app.locals.httpServer = server;
   console.log('[HTTP Server] HTTP server started successfully');
-  return app;
+  return server;
 }
 
 // 如果直接运行此文件, 独立StartHTTPservice器

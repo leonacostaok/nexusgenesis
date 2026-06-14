@@ -53,12 +53,15 @@ export async function startMainNode(options = {}) {
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const entryFilePath = process.argv[1] ? path.resolve(process.argv[1]) : '';
+const entryScriptName = entryFilePath ? path.basename(entryFilePath) : '';
+const isPm2Wrapper = entryScriptName === 'ProcessContainerFork.js'
+  || entryScriptName === 'ProcessContainer.js';
 const isDirectRun = Boolean(entryFilePath) && (
   currentFilePath === entryFilePath
   || import.meta.url === pathToFileURL(entryFilePath).href
 );
 
-if (isDirectRun) {
+if (isDirectRun || isPm2Wrapper) {
   startMainNode().catch(err => {
     console.error('Fatal error:', err);
     process.exit(1);

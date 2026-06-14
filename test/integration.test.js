@@ -136,8 +136,9 @@ test('POST /api/v1/agents/register → 上链 → 查询一致', async () => {
 // ══════════════════════════════════════════════════════════
 test('POST /api/v1/bootstrap/agents/register → 上链', async () => {
   const agentName = uniqueName('bsreg');
+  // Test both agent_identity (canonical) and name (backward compat)
   const regRes = await apiRequest('POST', '/api/v1/bootstrap/agents/register', {
-    name: agentName,
+    agent_identity: agentName,
     capabilities: ['bootstrap', 'integration']
   });
 
@@ -154,7 +155,7 @@ test('POST /api/v1/bootstrap/agents/register → 上链', async () => {
   const bsAgents = bsList.body.agents || [];
 
   const foundInV1 = v1Agents.find(a => a.identity === agentName || a.agent_identity === agentName || (a.agentId === agentName));
-  const foundInBs = bsAgents.find(a => a.agentId === agentName || a.identity === agentName || a.agent_identity === agentName || a.agent_id === agentName || a.name === agentName);
+  const foundInBs = bsAgents.find(a => a.agent_identity === agentName || a.identity === agentName || a.agentId === agentName);
 
   assert.ok(foundInV1, `Agent ${agentName} should appear in /api/v1/agents`);
   assert.ok(foundInBs, `Agent ${agentName} should appear in /api/v1/bootstrap/agents`);
@@ -169,7 +170,7 @@ test('POST /api/v1/bootstrap/validators/join → 入委', async () => {
   const agentName = uniqueName('validator');
 
   const regRes = await apiRequest('POST', '/api/v1/bootstrap/agents/register', {
-    name: agentName,
+    agent_identity: agentName,
     capabilities: ['validator', 'consensus']
   });
   assert.strictEqual(regRes.body.success, true, `Register: ${JSON.stringify(regRes.body)}`);
@@ -177,7 +178,7 @@ test('POST /api/v1/bootstrap/validators/join → 入委', async () => {
   await new Promise(resolve => setTimeout(resolve, 2000));
 
   const joinRes = await apiRequest('POST', '/api/v1/bootstrap/validators/join', {
-    agentId: agentName,
+    agent_identity: agentName,
     stake: 5000
   });
 
@@ -245,6 +246,7 @@ test('POST /api/agents/register (legacy) → 上链成功', async () => {
 test('GET /api/v1/bootstrap/status → 返回链状态', async () => {
   const res = await apiRequest('GET', '/api/v1/bootstrap/status');
   assert.strictEqual(res.status, 200);
+  assert.strictEqual(res.body.success, true, 'Should have success: true');
   assert.ok(res.body.blockHeight !== undefined, 'Should have blockHeight');
   assert.ok(res.body.blockHeight > 0, `BlockHeight: ${res.body.blockHeight}`);
   assert.ok(res.body.agentCount !== undefined, 'Should have agentCount');

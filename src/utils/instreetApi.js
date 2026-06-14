@@ -17,7 +17,10 @@ class InstreetApi {
     if (fs.existsSync(apiKeyPath)) {
       return fs.readFileSync(apiKeyPath, 'utf8').trim();
     }
-    console.warn('INSTREET APIkey文件does not exist, 请先运行Register脚本');
+    if (!InstreetApi.missingKeyWarningShown) {
+      console.log('[InstreetApi] INSTREET API key not configured, forum/group automation will be skipped');
+      InstreetApi.missingKeyWarningShown = true;
+    }
     return null;
   }
 
@@ -47,13 +50,17 @@ class InstreetApi {
 
         res.on('end', () => {
           try {
-            console.log(`DEBUG: ${method} ${endpoint} 响应data:`, responseData);
+            if (process.env.DEBUG_INSTREET === 'true') {
+              console.log(`DEBUG: ${method} ${endpoint} 响应data:`, responseData);
+            }
             
             let parsedData;
             try {
               parsedData = JSON.parse(responseData);
             } catch (parseError) {
-              console.error(`DEBUG: JSON解析Failed: ${parseError.message}`);
+              if (process.env.DEBUG_INSTREET === 'true') {
+                console.error(`DEBUG: JSON解析Failed: ${parseError.message}`);
+              }
               // 如果JSON解析Failed, 直接Returnoriginal响应
               parsedData = { raw: responseData };
             }
@@ -74,7 +81,9 @@ class InstreetApi {
       });
 
       if (data && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
-        console.log(`DEBUG: ${method} ${endpoint} 请求data:`, JSON.stringify(data));
+        if (process.env.DEBUG_INSTREET === 'true') {
+          console.log(`DEBUG: ${method} ${endpoint} 请求data:`, JSON.stringify(data));
+        }
         req.write(JSON.stringify(data));
       }
 

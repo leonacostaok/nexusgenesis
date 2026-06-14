@@ -19,6 +19,7 @@ class AgentManager {
     this.agentsDirectory = path.join(__dirname, '../../data/agents');
     this.tasksDirectory = path.join(__dirname, '../../data/tasks');
     this.instreetApi = new InstreetApi();
+    this.instreetEnabled = Boolean(this.instreetApi.apiKey);
     this.workflowEngine = new WorkflowEngine();
     this.eventEmitter = new EventEmitter();
     this.healthCheckInterval = null;
@@ -1338,8 +1339,42 @@ class AgentManager {
     };
   }
   
+  normalizeCollectionResponse(response, preferredKeys = []) {
+    if (Array.isArray(response)) {
+      return response;
+    }
+
+    if (!response || typeof response !== 'object') {
+      return [];
+    }
+
+    for (const key of preferredKeys) {
+      if (Array.isArray(response[key])) {
+        return response[key];
+      }
+    }
+
+    if (response.data) {
+      return this.normalizeCollectionResponse(response.data, preferredKeys);
+    }
+
+    return [];
+  }
+
   // Task Executemethod
   async executeForumTask(task) {
+    if (!this.instreetEnabled) {
+      return {
+        success: false,
+        ownPostsMaintained: 0,
+        commentsReplied: 0,
+        agentsInvited: 0,
+        proactiveEngagements: 0,
+        newPostsPublished: 0,
+        details: 'INSTREET 未配置，已跳过论坛任务'
+      };
+    }
+
     // 实际的论坛管理Task ExecuteLogic
     try {
       const results = {
@@ -1355,7 +1390,7 @@ class AgentManager {
       
       // get自己的帖子列表
       const ownPosts = await this.instreetApi.searchPosts('nexusgenesis_c3d036', { limit: 10 });
-      for (const post of ownPosts.posts || []) {
+      for (const post of this.normalizeCollectionResponse(ownPosts, ['posts', 'items'])) {
         results.ownPostsMaintained++;
         
         // get帖子的评论
@@ -1389,7 +1424,7 @@ class AgentManager {
       const keywords = ['block链', 'AIAgent', '去中心化', 'post-quantumsecurity', 'P2Pnetwork'];
       for (const keyword of keywords) {
         const techPosts = await this.instreetApi.searchPosts(keyword, { limit: 3 });
-        for (const post of techPosts.posts || []) {
+        for (const post of this.normalizeCollectionResponse(techPosts, ['posts', 'items'])) {
           // 分析帖子within容, 判断是否与技术, block链相关
           if (this.isTechRelevant(post.content)) {
             // Generate技术讨论回复
@@ -1422,8 +1457,7 @@ class AgentManager {
       let groups = [];
       try {
         const groupsResponse = await this.instreetApi.getGroups();
-        // APIReturn的小组列表格式包含items数组
-        groups = groupsResponse.items || [];
+        groups = this.normalizeCollectionResponse(groupsResponse, ['items', 'groups']);
         console.log(`[ForumTask] 找到 ${groups.length} 个小组`);
       } catch (error) {
         console.error('[ForumTask] get小组列表Failed:', error.message);
@@ -1658,23 +1692,27 @@ class AgentManager {
   setupAutomatedWorkflows() {
     console.log('[AgentManager] Setautomationworkflow程');
     
-    // 1. 论坛within容管理Task (every 6 hoursExecute一次)
-    const FORUM_TASK_INTERVAL = 6 * 60 * 60 * 1000;
-    this.workflowEngine.createRecurringTask(
-      '论坛内容管理',
-      async () => {
-        return await this.executeScheduledForumTask();
-      },
-      FORUM_TASK_INTERVAL,
-      {
-        retryConfig: {
-          maxRetries: 3,
-          initialDelay: 120000, // 2分钟
-          backoffMultiplier: 2
+    if (this.instreetEnabled) {
+      // 1. 论坛within容管理Task (every 6 hoursExecute一次)
+      const FORUM_TASK_INTERVAL = 6 * 60 * 60 * 1000;
+      this.workflowEngine.createRecurringTask(
+        '论坛内容管理',
+        async () => {
+          return await this.executeScheduledForumTask();
         },
-        description: '定期维护INSTREET论坛内容, 发布项目介绍和回复user留言'
-      }
-    );
+        FORUM_TASK_INTERVAL,
+        {
+          retryConfig: {
+            maxRetries: 3,
+            initialDelay: 120000, // 2分钟
+            backoffMultiplier: 2
+          },
+          description: '定期维护INSTREET论坛内容, 发布项目介绍和回复user留言'
+        }
+      );
+    } else {
+      console.log('[AgentManager] INSTREET 未配置，跳过论坛与小组自动任务');
+    }
     
     // 2. agentHealth checkTask (every 30 minutesExecute一次)
     const HEALTH_CHECK_INTERVAL = 30 * 60 * 1000;
@@ -1707,33 +1745,35 @@ class AgentManager {
       }
     );
     
-    // 4. 小组管理Task (every  daysExecute一次)
-    const GROUP_MANAGEMENT_INTERVAL = 24 * 60 * 60 * 1000;
-    this.workflowEngine.createRecurringTask(
-      '小组管理',
-      async () => {
-        console.log('[AgentManager] Execute小组管理Task ...');
-        
-        // Create或getNexusGenesis小组
-        const groupId = await this.setupNexusGenesisGroup();
-        
-        // monitor小组活动
-        if (groupId) {
-          await this.monitorGroupActivity(groupId);
-        }
-        
-        return { success: true, groupId };
-      },
-      GROUP_MANAGEMENT_INTERVAL,
-      {
-        retryConfig: {
-          maxRetries: 2,
-          initialDelay: 60000, // 1分钟
-          backoffMultiplier: 2
+    if (this.instreetEnabled) {
+      // 4. 小组管理Task (every  daysExecute一次)
+      const GROUP_MANAGEMENT_INTERVAL = 24 * 60 * 60 * 1000;
+      this.workflowEngine.createRecurringTask(
+        '小组管理',
+        async () => {
+          console.log('[AgentManager] Execute小组管理Task ...');
+          
+          // Create或getNexusGenesis小组
+          const groupId = await this.setupNexusGenesisGroup();
+          
+          // monitor小组活动
+          if (groupId) {
+            await this.monitorGroupActivity(groupId);
+          }
+          
+          return { success: true, groupId };
         },
-        description: '管理NexusGenesis专属小组, monitor活动并邀请member'
-      }
-    );
+        GROUP_MANAGEMENT_INTERVAL,
+        {
+          retryConfig: {
+            maxRetries: 2,
+            initialDelay: 60000, // 1分钟
+            backoffMultiplier: 2
+          },
+          description: '管理NexusGenesis专属小组, monitor活动并邀请member'
+        }
+      );
+    }
     
     console.log('[AgentManager] automationworkflow程Setcomplete');
   }
@@ -1769,7 +1809,9 @@ class AgentManager {
       
       // Checkagent是否有未complete的Task 
       if (agent.tasks && agent.tasks.length > 0) {
-        const pendingTasks = agent.tasks.filter(task => task.status === 'pending' || task.status === 'working');
+        const pendingTasks = agent.tasks
+          .map(taskId => this.tasks.get(taskId))
+          .filter(task => task && (task.status === 'pending' || task.status === 'working'));
         if (pendingTasks.length > 3) {
           status = 'unhealthy';
           issues.push('Task积压');
@@ -1819,7 +1861,7 @@ class AgentManager {
           const filePath = path.join(logsDir, file);
           const stats = fs.statSync(filePath);
           
-          if (stats.mtime.getTime() < sevenDaysAgo) {
+          if (stats.isFile() && stats.mtime.getTime() < sevenDaysAgo) {
             fs.unlinkSync(filePath);
             cleanupReport.cleanedFiles++;
             cleanupReport.freedSpace += stats.size;
@@ -1857,6 +1899,13 @@ class AgentManager {
 
   // Execute调度的论坛Task 
   async executeScheduledForumTask() {
+    if (!this.instreetEnabled) {
+      return {
+        success: false,
+        details: 'INSTREET 未配置，已跳过定时论坛任务'
+      };
+    }
+
     console.log('[AgentManager] Execute调度的论坛Task ...');
     
     try {
@@ -1880,21 +1929,28 @@ class AgentManager {
         newPostsPublished: result.newPostsPublished,
         details: result.details
       });
-      
+      return result;
     } catch (error) {
       console.error('[AgentManager] 论坛Task execution failed:', error);
+      return {
+        success: false,
+        details: `定时论坛任务执行失败: ${error.message}`
+      };
     }
   }
   
   // 小组管理: CreateNexusGenesis专属小组
   async setupNexusGenesisGroup() {
+    if (!this.instreetEnabled) {
+      return null;
+    }
+
     console.log('[AgentManager] Start SetNexusGenesis专属小组...');
     
     try {
       // 1. Check是否already existsNexusGenesis相关小组
       const groupsResponse = await this.instreetApi.getGroups();
-      // APIReturn的小组列表格式包含items数组
-      const existingGroups = groupsResponse.items || [];
+      const existingGroups = this.normalizeCollectionResponse(groupsResponse, ['items', 'groups']);
       
       const nexusGroup = existingGroups.find(group => 
         group.name.includes('NexusGenesis') || group.name.includes('nexusgenesis')
@@ -1924,6 +1980,10 @@ class AgentManager {
   
   // 小组管理: monitor小组活动
   async monitorGroupActivity(groupId) {
+    if (!this.instreetEnabled) {
+      return null;
+    }
+
     console.log(`[AgentManager] monitor小组 ${groupId} 的活动...`);
     
     try {
@@ -1932,7 +1992,8 @@ class AgentManager {
       console.log(`[AgentManager] 小组info: ${groupInfo.name}, member数: ${groupInfo.memberCount}`);
       
       // get小组帖子
-      const groupPosts = await this.instreetApi.getGroupPosts(groupId, { limit: 5 });
+      const groupPostsResponse = await this.instreetApi.getGroupPosts(groupId, { limit: 5 });
+      const groupPosts = this.normalizeCollectionResponse(groupPostsResponse, ['items', 'posts']);
       console.log(`[AgentManager] 最近帖子数: ${groupPosts.length}`);
       
       // 分析小组活动情况
@@ -2037,7 +2098,13 @@ class AgentManager {
     if (result.success === false) return false;
     
     // 实际环境下, 我们allow部分操作Failed, 但至少要complete一项操作
-    return result.projectPromotion === true && (result.forumPosts > 0 || result.replies > 0);
+    const completedActions =
+      (result.ownPostsMaintained || 0)
+      + (result.commentsReplied || 0)
+      + (result.proactiveEngagements || 0)
+      + (result.newPostsPublished || 0);
+
+    return result.projectPromotion === true && completedActions > 0;
   }
   
   validateSocialMediaTaskResult(result) {

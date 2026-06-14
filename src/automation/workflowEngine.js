@@ -38,7 +38,7 @@ class WorkflowEngine {
     this.retryQueue = new Map();
     this.tasksDirectory = path.join(__dirname, '../../data/workflow-tasks');
     this.logsDirectory = path.join(__dirname, '../../logs');
-    this.systemMonitor = new SystemMonitor();
+    this.systemMonitor = SystemMonitor.getInstance ? SystemMonitor.getInstance() : new SystemMonitor();
     this.backupManager = new BackupManager();
     this.notificationService = new NotificationService();
     this.initDirectories();

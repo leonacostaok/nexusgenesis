@@ -66,8 +66,22 @@ const ALERT_LEVELS = {
   CRITICAL: 'critical'
 };
 
+function toPersistedAlertRule(rule) {
+  return {
+    id: rule.id,
+    name: rule.name,
+    metric: rule.metric,
+    level: rule.level,
+    enabled: rule.enabled
+  };
+}
+
 class SystemMonitor {
   constructor() {
+    if (SystemMonitor.instance) {
+      return SystemMonitor.instance;
+    }
+
     this.metrics = new Map();
     this.alerts = new Map();
     this.alertRules = new Map();
@@ -83,6 +97,15 @@ class SystemMonitor {
     this.loadAlertRules();
     this.startMonitoring();
     this.startAlertCheck();
+    SystemMonitor.instance = this;
+  }
+
+  static getInstance() {
+    if (!SystemMonitor.instance) {
+      SystemMonitor.instance = new SystemMonitor();
+    }
+
+    return SystemMonitor.instance;
   }
 
   initDirectories() {
@@ -416,31 +439,60 @@ class SystemMonitor {
 
     // Load自定义Alert rules
     const rulesPath = path.join(this.alertsDirectory, 'alert-rules.json');
+    const defaultRulesById = new Map(defaultRules.map(rule => [rule.id, rule]));
+    const persistDefaults = () => {
+      fs.writeFileSync(
+        rulesPath,
+        JSON.stringify(defaultRules.map(toPersistedAlertRule), null, 2),
+        'utf8'
+      );
+    };
+
     if (fs.existsSync(rulesPath)) {
       try {
         const customRules = JSON.parse(fs.readFileSync(rulesPath, 'utf8'));
-        customRules.forEach(rule => {
-          // 解析condition字符串为function
-          if (typeof rule.condition === 'string') {
-            try {
-              rule.condition = eval(rule.condition);
-            } catch (error) {
-              console.error(`Parse alert rule ${rule.id} 的conditionFailed:`, error);
-              rule.condition = () => false;
-            }
+        const normalizedRules = Array.isArray(customRules) ? customRules : [];
+
+        normalizedRules.forEach(rule => {
+          const defaultRule = defaultRulesById.get(rule.id);
+          if (!defaultRule) {
+            return;
           }
-          this.alertRules.set(rule.id, rule);
+
+          const mergedRule = {
+            ...defaultRule,
+            ...rule
+          };
+
+          if (typeof mergedRule.condition !== 'function') {
+            mergedRule.condition = defaultRule.condition;
+          }
+
+          if (typeof mergedRule.message !== 'function' && !mergedRule.message) {
+            mergedRule.message = defaultRule.message;
+          }
+
+          this.alertRules.set(mergedRule.id, mergedRule);
         });
+
+        defaultRules.forEach(rule => {
+          if (!this.alertRules.has(rule.id)) {
+            this.alertRules.set(rule.id, rule);
+          }
+        });
+
+        persistDefaults();
       } catch (error) {
         console.error('Load自定义Alert rulesFailed:', error);
         // Load default rules as fallback
         defaultRules.forEach(rule => {
           this.alertRules.set(rule.id, rule);
         });
+        persistDefaults();
       }
     } else {
       // Save default alert rules
-      fs.writeFileSync(rulesPath, JSON.stringify(defaultRules, null, 2), 'utf8');
+      persistDefaults();
       defaultRules.forEach(rule => {
         this.alertRules.set(rule.id, rule);
       });

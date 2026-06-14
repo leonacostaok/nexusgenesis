@@ -1643,7 +1643,8 @@ export class State {
     try {
       // 从快照文件名中提取block height和timestamp
       const snapshotBlock = parseInt(snapshotFile.replace('snapshot_', '').replace('.json.gz', ''));
-      const snapshotTimestamp = new Date(fs.statSync(path.join(PERSISTENCE_CONFIG.snapshotDir, snapshotFile)).mtime).getTime();
+      const snapshotStats = await fs.stat(path.join(PERSISTENCE_CONFIG.snapshotDir, snapshotFile));
+      const snapshotTimestamp = snapshotStats.mtime.getTime();
       
       // get所有增量文件
       const incrementalFiles = await fs.readdir(PERSISTENCE_CONFIG.stateDir);

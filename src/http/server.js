@@ -294,7 +294,7 @@ try {
     });
     console.log('[HTTP Server] OpenAI client initialized');
   } else {
-    console.warn('[HTTP Server] OPENAI_API_KEY not set, OpenAI agent endpoints will be disabled');
+    console.log('[HTTP Server] OPENAI_API_KEY not set, OpenAI agent endpoints will remain disabled');
   }
 } catch (err) {
   console.error('[HTTP Server] Failed to initialize OpenAI client:', err.message);

@@ -155,44 +155,25 @@ export class HandshakeHandler extends MessageHandler {
       console.log(`Verifying signature for challenge: ${conn.challengeSent.slice(0, 16)}...`);
       console.log(`Using public key: ${remotePublicKey.toString('hex').slice(0, 32)}...`);
       
-      // 尝试VerifySign
+      // 严格验签，避免测试态绕过进入生产网络
       try {
         const isValid = await PQCWallet.verify(
           conn.challengeSent,
           msg.response,
           remotePublicKey
         );
-        
+
         console.log(`Signature verification result: ${isValid}`);
-        
+
         if (!isValid) {
-          console.log(`[!] Handshake signature verification failed for ${peerId}`);
-          // 降级: 跳过SignVerify, allowConnect(仅forTest)
-          console.log(`[⚠️] Skipping signature verification for testing purposes`);
-          // 不关闭Connect, 继续进行
+          console.log(`[!] Handshake signature verification failed for ${peerId} — rejecting connection`);
+          conn.ws.close(1002, 'Signature verification failed');
+          return;
         }
       } catch (error) {
-        console.log(`[!] Signature verification error: ${error.message}`);
-        console.log(error.stack);
-        
-        // 降级: 跳过SignVerify, allowConnect(仅forTest)
-        console.log(`[⚠️] Skipping signature verification for testing purposes`);
-      }
-      
-      // ExecuteKyberkey协商
-      if (msg.kyberPublicKey) {
-        console.log('Performing Kyber key exchange');
-        try {
-          const kyberPublicKey = Buffer.from(msg.kyberPublicKey, 'hex');
-          // usingKyber封装Generate共享key
-          const { sharedSecret } = KyberMock.encapsulate(kyberPublicKey);
-          // Storage共享keyfor加密通信
-          this.p2pServer.encryptionKeys.set(peerId, sharedSecret);
-          console.log('Kyber key exchange completed, encryption enabled');
-        } catch (error) {
-          console.error('Kyber key exchange failed:', error.message);
-          // 即使key协商Failed, 也继续Connect(降级到非加密通信)
-        }
+        console.log(`[!] Handshake signature verification error: ${error.message} — rejecting connection`);
+        conn.ws.close(1002, 'Signature verification failed');
+        return;
       }
     } catch (error) {
       console.log(`[!] Handshake verification error: ${error.message}`);
@@ -206,8 +187,6 @@ export class HandshakeHandler extends MessageHandler {
       console.log('Performing Kyber key exchange');
       try {
         const kyberPublicKey = Buffer.from(msg.kyberPublicKey, 'hex');
-        // 使用真实的 Kyber 密钥生成（从 p2p/server.js 的 KyberKEM 类导入）
-        const { KyberKEM } = await import('../../p2p/server.js');
         const { sharedSecret, ciphertext } = KyberKEM.encapsulate(kyberPublicKey);
         // 存储共享密钥用于加密通信
         this.p2pServer.encryptionKeys.set(peerId, sharedSecret);

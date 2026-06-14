@@ -768,6 +768,43 @@ export class State {
       return false;
     }
   }
+
+  applyValidatorJoin(transaction, height) {
+    try {
+      const { from } = transaction;
+      const { agent_identity, node_id, stake } = transaction.payload || {};
+      if (!from || !agent_identity) {
+        return false;
+      }
+
+      const agentId = this.agentRegistry.addressIndex.get(from);
+      if (!agentId) {
+        return false;
+      }
+
+      const agentRecord = this.agentRegistry.agents.get(agentId);
+      if (!agentRecord) {
+        return false;
+      }
+
+      if (agentRecord.is_validator) {
+        return false;
+      }
+
+      agentRecord.is_validator = true;
+      agentRecord.validator_node_id = node_id || null;
+      agentRecord.validator_stake = Number(stake || 5000);
+      agentRecord.validator_joined_at_block = height;
+      this.agentRegistry.agents.set(agentId, agentRecord);
+      this.changes.agents.add(agentId);
+
+      console.log(`[VALIDATOR_JOIN] agent_id=${agentId} identity=${agent_identity} node_id=${agentRecord.validator_node_id || ''} stake=${agentRecord.validator_stake} block=${height}`);
+      return true;
+    } catch (error) {
+      console.error('Error applying validator join:', error.message);
+      return false;
+    }
+  }
   
   /**
    * 将十六进制字符串转换为 Uint8Array
@@ -903,6 +940,8 @@ export class State {
         return this.applyContractCall(transaction);
       case 'AGENT_REGISTER':
         return this.applyAgentRegister(transaction, currentBlockHeight);
+      case 'VALIDATOR_JOIN':
+        return this.applyValidatorJoin(transaction, currentBlockHeight);
       case AuditTransactionType.PROJECT_SUBMIT:
       case AuditTransactionType.PROJECT_REVIEW:
       case AuditTransactionType.PROJECT_APPROVE:

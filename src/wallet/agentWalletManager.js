@@ -195,6 +195,16 @@ class AgentWalletManager {
     return this._formatWalletResponse(agentId, entry.wallet, entry.metadata);
   }
 
+  getWalletInstance(agentId) {
+    return this.registry.get(agentId)?.wallet || null;
+  }
+
+  getWalletInstanceByAddress(address) {
+    const agentId = this.getAgentByAddress(address);
+    if (!agentId) return null;
+    return this.getWalletInstance(agentId);
+  }
+
   /**
    * 通过地址查找Agent ID
    * @param {string} address - 钱包地址

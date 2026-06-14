@@ -19,6 +19,7 @@
 
 import crypto from 'crypto';
 import { validateAddress } from '../wallet/addressUtils.js';
+import { signSpecialTransactionWithWallet } from './transactionSigning.js';
 
 /**
  * Create AGENT_REGISTER transaction
@@ -45,6 +46,10 @@ export function createAgentRegisterTransaction(from, agentInfo, privateKey) {
     type: 'AGENT_REGISTER',
     tx_type: 'AGENT_REGISTER',
     from,
+    to: from,
+    amount: '0',
+    fee: '1',
+    public_key: agentInfo.public_key || '',
     payload: {
       agent_identity: agentInfo.agent_identity,
       capabilities: agentInfo.capabilities || [],
@@ -60,6 +65,15 @@ export function createAgentRegisterTransaction(from, agentInfo, privateKey) {
     transaction.signature = signTransaction(transaction, privateKey);
   }
 
+  return transaction;
+}
+
+export async function createSignedAgentRegisterTransaction(wallet, agentInfo) {
+  const transaction = createAgentRegisterTransaction(wallet.address, {
+    ...agentInfo,
+    public_key: agentInfo.public_key || wallet.publicKey.toString('hex')
+  });
+  transaction.signature = await signSpecialTransactionWithWallet(transaction, wallet);
   return transaction;
 }
 
@@ -226,6 +240,10 @@ export function listAllAgents(state) {
       capabilities: agentRecord.capabilities,
       metadata: agentRecord.metadata || '',
       public_key: agentRecord.public_key || '',
+      is_validator: Boolean(agentRecord.is_validator),
+      validator_node_id: agentRecord.validator_node_id || null,
+      validator_stake: agentRecord.validator_stake ?? null,
+      validator_joined_at_block: agentRecord.validator_joined_at_block ?? null,
       reputation: agentRecord.reputation,
       registered_at_block: agentRecord.registered_at_block
     });
@@ -235,6 +253,7 @@ export function listAllAgents(state) {
 
 export default {
   createAgentRegisterTransaction,
+  createSignedAgentRegisterTransaction,
   validateAgentRegisterTransaction,
   verifyAgentRegisterSignature,
   isAddressRegistered,

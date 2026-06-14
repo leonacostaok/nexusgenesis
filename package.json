@@ -6,11 +6,13 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
+    "bootstrap": "node scripts/bootstrap-agent-network.js",
     "node": "node src/node/genesisNode.js",
     "node2": "node src/node/node2.js",
     "devnet": "node scripts/start_mainnet.js",
     "wallet": "node src/wallet/cli.js",
     "wallet:py": "python genesis_wallet.py",
+    "migrate:agents": "node src/scripts/migrateAgentRegistryIdentity.js",
     "test": "node --test test/",
     "test:security": "node --test test/security.test.js",
     "cli": "node cli.js"

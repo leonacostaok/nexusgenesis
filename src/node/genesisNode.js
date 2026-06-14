@@ -96,6 +96,13 @@ class GenesisNode {
     this.blockchain = [];
     this.currentState = null;
     this.genesisBlock = null;
+
+    // Bootstrap validator state (hosted by this genesis node in single-process mode)
+    this.validatorState = {
+      validators: new Map(),
+      maxCommitteeSize: parseInt(process.env.MAX_BOOTSTRAP_VALIDATORS || '21')
+    };
+    this._validators = this.validatorState.validators;
     
     // Cross-chainBridge
     this.bridge = null;
@@ -152,6 +159,13 @@ class GenesisNode {
           activeProposals: this.governanceState.activeProposals,
           voteCounts: Object.fromEntries(this.governanceState.voteCounts)
         },
+        validatorState: {
+          validators: Array.from(this.validatorState.validators.entries()).map(([nodeId, validator]) => ({
+            nodeId,
+            ...validator
+          })),
+          maxCommitteeSize: this.validatorState.maxCommitteeSize
+        },
         lastSaved: Date.now()
       };
       
@@ -203,6 +217,20 @@ class GenesisNode {
         if (stateData.governanceState.voteCounts) {
           this.governanceState.voteCounts = new Map(Object.entries(stateData.governanceState.voteCounts));
         }
+      }
+
+      if (stateData.validatorState) {
+        this.validatorState.maxCommitteeSize = stateData.validatorState.maxCommitteeSize || this.validatorState.maxCommitteeSize;
+        this.validatorState.validators = new Map(
+          (stateData.validatorState.validators || []).map(entry => [
+            entry.nodeId,
+            {
+              ...entry,
+              nodeId: entry.nodeId
+            }
+          ])
+        );
+        this._validators = this.validatorState.validators;
       }
       
       console.log(`Node state loaded from ${stateFile}`);
@@ -277,6 +305,8 @@ class GenesisNode {
     if (!snapshotRestored) {
       await this.currentState.loadFromFile(stateFile);
     }
+
+    this.syncHostedValidatorsFromCurrentState();
     
     console.log('[✓] Blockchain and state initialized');
   }
@@ -810,7 +840,7 @@ class GenesisNode {
    */
   async validateTransaction(tx) {
     // Check是否为特殊transactiontype
-    if (tx.tx_type === 'OBSERVER_EVENT' || tx.tx_type === 'GOVERNANCE_PROPOSAL' || tx.tx_type === 'GOVERNANCE_VOTE' || tx.tx_type === 'TRANSFER' || tx.tx_type === 'AGENT_REGISTER') {
+    if (tx.tx_type === 'OBSERVER_EVENT' || tx.tx_type === 'GOVERNANCE_PROPOSAL' || tx.tx_type === 'GOVERNANCE_VOTE' || tx.tx_type === 'TRANSFER' || tx.tx_type === 'AGENT_REGISTER' || tx.tx_type === 'VALIDATOR_JOIN') {
       return this.validateSpecialTransaction(tx);
     }
     
@@ -923,7 +953,7 @@ class GenesisNode {
     }
     
     // 对于 TRANSFER 和 AGENT_REGISTER transaction, 不requires payload 字段
-    if (tx.tx_type !== 'TRANSFER' && tx.tx_type !== 'AGENT_REGISTER' && !tx.payload) {
+    if (tx.tx_type !== 'TRANSFER' && tx.tx_type !== 'AGENT_REGISTER' && tx.tx_type !== 'VALIDATOR_JOIN' && !tx.payload) {
       return { valid: false, reason: 'Invalid special transaction structure' };
     }
     
@@ -956,8 +986,8 @@ class GenesisNode {
     // 6. Processing AGENT_REGISTER transaction的public key提取
     let publicKey = this.getCachedPublicKey(tx.from);
     
-    if (!publicKey && tx.tx_type === 'AGENT_REGISTER' && tx.public_key) {
-      // 从 AGENT_REGISTER transaction中提取public key
+    if (!publicKey && tx.public_key) {
+      // 从特殊 transaction 中提取 public key
       try {
         publicKey = Buffer.from(tx.public_key, 'hex');
         // 缓存public key
@@ -1028,6 +1058,8 @@ class GenesisNode {
           return { valid: true };
         case 'AGENT_REGISTER':
           // 对于 AGENT_REGISTER transaction, 直接Return有效
+          return { valid: true };
+        case 'VALIDATOR_JOIN':
           return { valid: true };
         case 'AGENT_JOINED':
           // 对于 AGENT_JOINED transaction, 直接Return有效
@@ -1111,6 +1143,150 @@ class GenesisNode {
     this.observerState.registeredObservers.add(observerAddress);
     this.observerState.observerRoles.set(observerAddress, role);
     console.log(`[OBSERVER] Registered observer: ${observerAddress} with role: ${role}`);
+  }
+
+  resolveRegisteredAgent(agentRef) {
+    if (!agentRef || !this.currentState?.agentRegistry?.agents) {
+      return null;
+    }
+
+    for (const [agentId, agentRecord] of this.currentState.agentRegistry.agents.entries()) {
+      if (
+        agentId === agentRef ||
+        agentRecord.identity === agentRef ||
+        agentRecord.address === agentRef
+      ) {
+        return {
+          agentId,
+          ...agentRecord
+        };
+      }
+    }
+
+    return null;
+  }
+
+  getHostedValidatorNodeIds() {
+    return Array.from(this.validatorState.validators.values())
+      .filter(validator => validator.active !== false)
+      .map(validator => validator.nodeId);
+  }
+
+  isLocallyRepresentedCommitteeMember(nodeId) {
+    return nodeId === this.nodeId || this.validatorState.validators.has(nodeId);
+  }
+
+  registerValidator(agentRef, options = {}) {
+    const agent = this.resolveRegisteredAgent(agentRef);
+    if (!agent) {
+      return { success: false, error: 'Agent not registered on-chain' };
+    }
+
+    const existingValidator = Array.from(this.validatorState.validators.values()).find(validator =>
+      validator.agentId === agent.agentId ||
+      validator.agentIdentity === agent.identity ||
+      validator.address === agent.address
+    );
+    if (existingValidator) {
+      return {
+        success: false,
+        error: 'Already a validator',
+        nodeId: existingValidator.nodeId
+      };
+    }
+
+    const currentCommitteeSize = 1 + this.validatorState.validators.size;
+    if (currentCommitteeSize >= this.validatorState.maxCommitteeSize) {
+      return {
+        success: false,
+        error: `Committee full (${currentCommitteeSize}/${this.validatorState.maxCommitteeSize})`
+      };
+    }
+
+    const nodeId = options.nodeId || `validator-${crypto.randomBytes(4).toString('hex')}`;
+    const validatorRecord = {
+      nodeId,
+      agentId: agent.agentId,
+      agentIdentity: agent.identity || agent.agentId,
+      address: options.address || agent.address,
+      publicKey: options.publicKey || agent.public_key || '',
+      stake: Number(options.stake || 5000),
+      joinedAt: Date.now(),
+      lastActive: Date.now(),
+      hostedBy: this.nodeId,
+      delegated: true,
+      active: true
+    };
+
+    this.validatorState.validators.set(nodeId, validatorRecord);
+    this._validators = this.validatorState.validators;
+    this.updateCommittee();
+    if (options.persist !== false) {
+      this.saveState().catch(error => {
+        console.error('[VALIDATOR] Failed to persist validator state:', error.message);
+      });
+    }
+
+    console.log(`[VALIDATOR] Registered validator ${nodeId} for agent ${validatorRecord.agentIdentity}`);
+    return {
+      success: true,
+      nodeId,
+      agentId: validatorRecord.agentId,
+      identity: validatorRecord.agentIdentity,
+      address: validatorRecord.address,
+      stake: validatorRecord.stake,
+      committeeSize: this.consensusState.committee.size,
+      maxCommittee: this.validatorState.maxCommitteeSize,
+      hostedBy: this.nodeId,
+      delegated: true
+    };
+  }
+
+  applyValidatorJoinTransaction(transaction, options = {}) {
+    const payload = transaction.payload || {};
+    const existingValidator = Array.from(this.validatorState.validators.values()).find(validator =>
+      validator.agentIdentity === payload.agent_identity ||
+      validator.address === transaction.from ||
+      validator.nodeId === payload.node_id
+    );
+    if (existingValidator) {
+      return {
+        success: true,
+        nodeId: existingValidator.nodeId,
+        existing: true
+      };
+    }
+
+    return this.registerValidator(payload.agent_identity || transaction.from, {
+      nodeId: payload.node_id,
+      stake: payload.stake,
+      address: transaction.from,
+      publicKey: transaction.public_key || '',
+      persist: options.persist
+    });
+  }
+
+  syncHostedValidatorsFromCurrentState() {
+    if (!this.currentState?.agentRegistry?.agents) {
+      return;
+    }
+
+    for (const [agentId, agentRecord] of this.currentState.agentRegistry.agents.entries()) {
+      if (!agentRecord?.is_validator) {
+        continue;
+      }
+
+      this.applyValidatorJoinTransaction({
+        id: `state-sync-${agentId}`,
+        from: agentRecord.address,
+        public_key: agentRecord.public_key || '',
+        payload: {
+          agent_identity: agentRecord.identity || agentId,
+          node_id: agentRecord.validator_node_id,
+          stake: agentRecord.validator_stake || 5000
+        }
+      }, { persist: false });
+    }
   }
   
   /**
@@ -1281,6 +1457,69 @@ class GenesisNode {
     
     console.log(`[✓] Transaction ${tx.id.slice(0, 16)}... added to mempool (fee: ${tx.fee})`);
     return { success: true, txId: tx.id };
+  }
+
+  findTransactionById(txId) {
+    for (let i = this.blockchain.length - 1; i >= 0; i--) {
+      const block = this.blockchain[i];
+      const transactions = block?.body?.transactions || block?.transactions || [];
+      const transaction = transactions.find(tx => tx.id === txId);
+      if (transaction) {
+        return {
+          transaction,
+          blockHeight: block?.header?.height ?? i,
+          blockHash: block?.hash || null
+        };
+      }
+    }
+
+    return null;
+  }
+
+  async waitForTransactionInclusion(txId, timeoutMs = 15000, pollMs = 500) {
+    const startedAt = Date.now();
+    while (Date.now() - startedAt < timeoutMs) {
+      const found = this.findTransactionById(txId);
+      if (found) {
+        return { found: true, ...found };
+      }
+      await new Promise(resolve => setTimeout(resolve, pollMs));
+    }
+
+    return { found: false, blockHeight: null, blockHash: null };
+  }
+
+  async submitOnChainTransaction(tx, options = {}) {
+    const result = await this.addToMempool(tx);
+    if (!result.success) {
+      return { success: false, error: result.reason };
+    }
+
+    if (options.broadcast !== false && this.peers.size > 0) {
+      p2pServer.broadcast({ type: 'TRANSACTION', tx });
+    }
+
+    if (!options.waitForInclusion) {
+      return { success: true, txId: tx.id, accepted: true, applied: false };
+    }
+
+    const inclusion = await this.waitForTransactionInclusion(tx.id, options.timeoutMs || 15000);
+    return {
+      success: true,
+      txId: tx.id,
+      accepted: true,
+      applied: inclusion.found,
+      blockHeight: inclusion.blockHeight,
+      blockHash: inclusion.blockHash
+    };
+  }
+
+  async applyCommittedTransactionSideEffects(transactions) {
+    for (const transaction of transactions) {
+      if (transaction.tx_type === 'VALIDATOR_JOIN') {
+        this.applyValidatorJoinTransaction(transaction);
+      }
+    }
   }
 
   /**
@@ -1585,6 +1824,7 @@ class GenesisNode {
       console.error('Failed to apply transactions to state');
       return null;
     }
+    await this.applyCommittedTransactionSideEffects(transactionsToInclude);
     
     // 添加block到block链
     this.blockchain.push(newBlock);
@@ -1649,7 +1889,7 @@ class GenesisNode {
    * Update委员会member
    */
   updateCommittee() {
-    const candidates = Array.from(this.peers.entries())
+    const peerCandidates = Array.from(this.peers.entries())
       .map(([peerId, peer]) => {
         // 综合健康评分: Base分 + 心跳响应时间 + Connect稳定性
         const healthScore = peer.healthScore || 100;
@@ -1666,6 +1906,27 @@ class GenesisNode {
         };
       })
       .filter(candidate => candidate.nodeId && candidate.healthScore > 0)
+      .sort((a, b) => b.healthScore - a.healthScore || b.connectedTime - a.connectedTime);
+
+    const hostedValidatorCandidates = Array.from(this.validatorState.validators.values())
+      .filter(validator => validator.active !== false)
+      .map(validator => ({
+        peerId: validator.nodeId,
+        nodeId: validator.nodeId,
+        healthScore: 90,
+        connectedTime: validator.joinedAt,
+        lastActive: validator.lastActive || validator.joinedAt
+      }));
+
+    const dedupedCandidates = new Map();
+    for (const candidate of [...peerCandidates, ...hostedValidatorCandidates]) {
+      const existing = dedupedCandidates.get(candidate.nodeId);
+      if (!existing || candidate.healthScore > existing.healthScore) {
+        dedupedCandidates.set(candidate.nodeId, candidate);
+      }
+    }
+
+    const candidates = Array.from(dedupedCandidates.values())
       .sort((a, b) => b.healthScore - a.healthScore || b.connectedTime - a.connectedTime);
     
     const committeeSize = Math.min(7, candidates.length);
@@ -1724,7 +1985,7 @@ class GenesisNode {
   isCurrentLeader() {
     const currentRound = Math.floor(Date.now() / 10000); // 每10秒一轮
     const scheduledLeader = this.consensusState.leaderSchedule.get(currentRound % 100);
-    return scheduledLeader === this.nodeId;
+    return this.isLocallyRepresentedCommitteeMember(scheduledLeader);
   }
 
   /**
@@ -1736,11 +1997,15 @@ class GenesisNode {
       // 稳定性Check: nodemust ONLINE 且recovery管理器status健康
       const recoveryReport = recoveryManager.getHealthReport();
       if (this.status !== 'ONLINE') return;
-      if (recoveryReport.state === 'critical' || recoveryReport.state === 'recovering') {
+      const committee = this.consensusState?.committee;
+      const localOnlyCommittee = committee?.size > 0 && Array.from(committee).every(member =>
+        this.isLocallyRepresentedCommitteeMember(member)
+      );
+      const allowStandaloneRecoveryBypass = localOnlyCommittee && !process.env.SEED_NODES?.trim();
+      if (recoveryReport.state === 'critical' || (recoveryReport.state === 'recovering' && !allowStandaloneRecoveryBypass)) {
         console.log(`[CONSENSUS] Skipping block production: recovery state=${recoveryReport.state}`);
         return;
       }
-      const committee = this.consensusState?.committee;
       const committeeSize = committee?.size || 0;
       const singleNodeMode = this.allowSingleNodeBlockProduction() && committeeSize === 1 && committee.has(this.nodeId);
       if (!committee || (committeeSize < 2 && !singleNodeMode)) {
@@ -1766,6 +2031,11 @@ class GenesisNode {
    * @param {Block} block - 要广播的block
    */
   broadcastBlockWithRequest(block) {
+    const autoConfirmations = new Set([
+      this.nodeId,
+      ...this.getHostedValidatorNodeIds()
+    ]);
+
     // 广播block
     p2pServer.broadcast({
       type: 'BLOCK',
@@ -1777,9 +2047,13 @@ class GenesisNode {
     // Initializeblock确认count
     this.consensusState.blockConfirmations.set(block.hash, {
       block,
-      confirmations: new Set([this.nodeId]),
+      confirmations: autoConfirmations,
       timestamp: Date.now()
     });
+
+    if (autoConfirmations.size > 1) {
+      console.log(`[CONSENSUS] Auto-confirmed block with ${autoConfirmations.size} locally represented committee members`);
+    }
   }
 
   /**
@@ -1812,6 +2086,7 @@ class GenesisNode {
       console.error('Failed to apply transactions from received block');
       return false;
     }
+    await this.applyCommittedTransactionSideEffects(block.body.transactions);
     
     // 添加block到block链
     this.blockchain.push(block);

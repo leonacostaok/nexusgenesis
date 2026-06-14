@@ -28,7 +28,7 @@ import { onboardAgent } from '../protocol/agentOnboarding.js';
 console.log('[HTTP Server] Imported onboardAgent');
 
 import {
-  createAgentRegisterTransaction,
+  createSignedAgentRegisterTransaction,
   validateAgentRegisterTransaction,
   listAllAgents as listOnChainAgents,
   isAddressRegistered,
@@ -685,7 +685,15 @@ async function handleAgentRegister(req, res) {
         onChainRegistration.applied = true;
         onChainRegistration.transactionId = getAgentIdByAddress(walletInfo.address, app.locals.state);
       } else {
-        const registerTransaction = createAgentRegisterTransaction(walletInfo.address, {
+        const wallet = agentWalletManager.getWalletInstance(onboardingResult.agent_id);
+        if (!wallet) {
+          return res.status(500).json({
+            success: false,
+            message: 'Managed wallet not available for legacy registration'
+          });
+        }
+
+        const registerTransaction = await createSignedAgentRegisterTransaction(wallet, {
           agent_identity: onboardingResult.agent_id,
           capabilities: capabilities || [],
           metadata: JSON.stringify({
@@ -701,15 +709,17 @@ async function handleAgentRegister(req, res) {
         }
 
         onChainRegistration.transactionId = registerTransaction.id;
-        onChainRegistration.applied = app.locals.state.applyTransaction(
-          registerTransaction,
-          Math.max(1, app.locals.blockHeight || 1)
-        );
+        const submission = await app.locals.node.submitOnChainTransaction(registerTransaction, {
+          waitForInclusion: true,
+          timeoutMs: 15000
+        });
+        onChainRegistration.applied = submission.success && submission.applied;
+        onChainRegistration.blockHeight = submission.blockHeight || null;
 
-        if (!onChainRegistration.applied) {
+        if (!submission.success || !onChainRegistration.applied) {
           return res.status(500).json({
             success: false,
-            message: 'Legacy registration onboarded locally but failed to register on-chain'
+            message: submission.error || 'Legacy registration onboarded locally but failed to register on-chain'
           });
         }
       }

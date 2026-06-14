@@ -13,7 +13,7 @@
 import express from 'express';
 import { validateAddress } from '../wallet/addressUtils.js';
 import {
-  createAgentRegisterTransaction,
+  createSignedAgentRegisterTransaction,
   validateAgentRegisterTransaction,
   isAddressRegistered,
   getAgentInfo,
@@ -33,20 +33,22 @@ router.post('/register', async (req, res) => {
     const { from, agent_identity, capabilities, metadata, public_key } = req.body;
 
     // Verify必填字段
-    if (!from || !agent_identity) {
+    if (!agent_identity) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields: from, agent_identity'
+        error: 'Missing required field: agent_identity'
       });
     }
 
     // Verifyaddress格式
-    const addressValidation = validateAddress(from);
-    if (!addressValidation.valid) {
-      return res.status(400).json({
-        success: false,
-        error: `Invalid address format. ${addressValidation.reason}`
-      });
+    if (from) {
+      const addressValidation = validateAddress(from);
+      if (!addressValidation.valid) {
+        return res.status(400).json({
+          success: false,
+          error: `Invalid address format. ${addressValidation.reason}`
+        });
+      }
     }
 
     // Verify agent_identity 格式
@@ -65,8 +67,39 @@ router.post('/register', async (req, res) => {
       });
     }
 
+    const node = req.app.locals.node;
+    if (!node) {
+      return res.status(503).json({
+        success: false,
+        error: 'Node not ready'
+      });
+    }
+
+    // 自动为Agent创建或获取本地托管钱包
+    const walletInfo = await agentWalletManager.createAgentWallet(agent_identity, {
+      capabilities: capabilities || [],
+      registeredVia: 'api'
+    });
+    const wallet = agentWalletManager.getWalletInstance(agent_identity)
+      || (from ? agentWalletManager.getWalletInstanceByAddress(from) : null);
+    if (!wallet) {
+      return res.status(500).json({
+        success: false,
+        error: 'Managed wallet not available for agent'
+      });
+    }
+
+    if (from && from !== wallet.address) {
+      return res.status(400).json({
+        success: false,
+        error: 'Provided from address does not match the managed agent wallet'
+      });
+    }
+
+    const effectiveFrom = wallet.address;
+
     // Checkaddress是否registered
-    if (req.app.locals.state && isAddressRegistered(from, req.app.locals.state)) {
+    if (req.app.locals.state && isAddressRegistered(effectiveFrom, req.app.locals.state)) {
       return res.status(409).json({
         success: false,
         error: 'Address already registered as an agent'
@@ -74,11 +107,11 @@ router.post('/register', async (req, res) => {
     }
 
     // Createtransaction
-    const transaction = createAgentRegisterTransaction(from, {
+    const transaction = await createSignedAgentRegisterTransaction(wallet, {
       agent_identity,
       capabilities: capabilities || [],
       metadata: metadata || '',
-      public_key: public_key || ''
+      public_key: public_key || walletInfo.publicKey
     });
 
     // Verifytransaction
@@ -90,23 +123,15 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // 如果Blockchain state可用, 直接应用transaction
-    let applied = false;
-    if (req.app.locals.state) {
-      const currentHeight = req.app.locals.blockHeight || 1;
-      applied = req.app.locals.state.applyTransaction(transaction, currentHeight);
-    }
-
-    // 自动为Agent创建钱包
-    let walletInfo = null;
-    try {
-      walletInfo = await agentWalletManager.createAgentWallet(agent_identity, {
-        capabilities: capabilities || [],
-        registeredVia: 'api'
+    const submission = await node.submitOnChainTransaction(transaction, {
+      waitForInclusion: true,
+      timeoutMs: 15000
+    });
+    if (!submission.success) {
+      return res.status(400).json({
+        success: false,
+        error: submission.error
       });
-      console.log(`[AgentRegisterAPI] 为Agent ${agent_identity} 创建了钱包: ${walletInfo.address}`);
-    } catch (walletErr) {
-      console.error(`[AgentRegisterAPI] 为Agent ${agent_identity} 创建钱包失败:`, walletErr.message);
     }
 
     res.status(201).json({
@@ -119,10 +144,11 @@ router.post('/register', async (req, res) => {
         payload: transaction.payload,
         timestamp: transaction.timestamp
       },
-      applied: applied,
+      applied: submission.applied,
+      blockHeight: submission.blockHeight,
       agent: {
         agent_id: transaction.id,
-        address: from,
+        address: effectiveFrom,
         identity: agent_identity,
         capabilities: capabilities || []
       },
@@ -164,6 +190,8 @@ router.get('/', async (req, res) => {
         identity: agent.identity || null,
         address: agent.address,
         capabilities: agent.capabilities,
+        is_validator: agent.is_validator,
+        validator_node_id: agent.validator_node_id,
         reputation: agent.reputation,
         registered_at_block: agent.registered_at_block
       }))
@@ -210,6 +238,10 @@ router.get('/:agentId', async (req, res) => {
         address: agent.address,
         capabilities: agent.capabilities,
         metadata: agent.metadata,
+        is_validator: agent.is_validator,
+        validator_node_id: agent.validator_node_id,
+        validator_stake: agent.validator_stake,
+        validator_joined_at_block: agent.validator_joined_at_block,
         reputation: agent.reputation,
         registered_at_block: agent.registered_at_block,
         public_key: agent.public_key
@@ -258,6 +290,8 @@ router.get('/address/:address', async (req, res) => {
         identity: agent.identity || null,
         address: agent.address,
         capabilities: agent.capabilities,
+        is_validator: agent.is_validator,
+        validator_node_id: agent.validator_node_id,
         reputation: agent.reputation,
         registered_at_block: agent.registered_at_block
       }

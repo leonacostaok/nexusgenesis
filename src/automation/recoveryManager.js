@@ -179,10 +179,16 @@ class RecoveryManager {
     const singleNodeEnabled = typeof allowSingleNode === 'string'
       ? !['0', 'false', 'no', 'off'].includes(allowSingleNode.toLowerCase())
       : true;
-    const committeeSize = node?.consensusState?.committee?.size || 0;
+    const committeeMembers = Array.from(node?.consensusState?.committee || []);
+    const committeeSize = committeeMembers.length;
     const hasSeedNodes = Boolean(process.env.SEED_NODES?.trim());
+    const locallyRepresentedCommittee = committeeSize > 0 && committeeMembers.every(member =>
+      typeof node?.isLocallyRepresentedCommitteeMember === 'function'
+        ? node.isLocallyRepresentedCommitteeMember(member)
+        : member === node?.nodeId
+    );
 
-    if (singleNodeEnabled && committeeSize <= 1 && !hasSeedNodes) {
+    if (singleNodeEnabled && !hasSeedNodes && (committeeSize <= 1 || locallyRepresentedCommittee)) {
       return 0;
     }
 

@@ -8,6 +8,7 @@ import {
   validateAddressFormat,
   verifySignature
 } from './crypto.js';
+import { simplifiedAgentRegister, syncOfflineData, loadOfflineData, listOfflineAgents } from '../protocol/agentOnboarding.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -70,6 +71,44 @@ export function createBootstrapRouter(network) {
       return;
     }
 
+    if (req.method === 'POST' && path === '/api/v1/bootstrap/agents/simple-register') {
+      const simpleRegStart = Date.now();
+      console.log(`[Agent接入] 收到简化注册请求 | client: ${req.headers.host || 'unknown'} | time: ${new Date().toISOString()}`);
+      readBody(req, (data, err) => {
+        if (err) {
+          console.error(`[Agent接入] ❌ 请求体解析失败 | error: ${err.message} | cost: ${Date.now() - simpleRegStart}ms`);
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, error: err.message }));
+          return;
+        }
+        console.log(`[Agent接入] 简化注册 | name: ${data.name || '(unnamed)'} | model: ${data.model || '(default)'} | cost: ${Date.now() - simpleRegStart}ms`);
+        const regStart = Date.now();
+        simplifiedAgentRegister(data, data.options || {})
+          .then(result => {
+            const regCost = Date.now() - regStart;
+            if (result.success) {
+              console.log(`[Agent接入] ✅ 简化注册成功 | agentId: ${result.agent_id} | address: ${result.wallet?.address?.substring(0, 14)}... | cost: ${regCost}ms`);
+              res.writeHead(200, { 'Content-Type': 'application/json' });
+            } else {
+              console.error(`[Agent接入] ❌ 简化注册失败 | error: ${result.message} | errorCode: ${result.errorCode} | cost: ${regCost}ms`);
+              res.writeHead(400, { 'Content-Type': 'application/json' });
+            }
+            res.end(JSON.stringify(result));
+          })
+          .catch(error => {
+            console.error(`[Agent接入] ❌ 简化注册异常 | error: ${error.message}`);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+              success: false,
+              message: `Simplified registration error: ${error.message}`,
+              errorCode: 'SIMPLIFIED_REGISTRATION_ERROR',
+              errorType: 'system'
+            }));
+          });
+      });
+      return;
+    }
+
     if (req.method === 'POST' && path === '/api/v1/bootstrap/validators/join') {
       console.log(`[验证者接入] 收到验证者申请 | client: ${req.headers.host || 'unknown'}`);
       readBody(req, (data, err) => {
@@ -120,6 +159,81 @@ export function createBootstrapRouter(network) {
       }));
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ latest, activity }));
+      return;
+    }
+
+    if (req.method === 'POST' && path.startsWith('/api/v1/bootstrap/agents/sync/')) {
+      const agentId = path.replace('/api/v1/bootstrap/agents/sync/', '');
+      const syncStart = Date.now();
+      console.log(`[Agent接入:SYNC] sync request received | agent_id=${agentId}`);
+      readBody(req, (data, err) => {
+        if (err) {
+          console.error(`[Agent接入:SYNC] body parse failed | agent_id=${agentId} | error=${err.message}`);
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, error: err.message }));
+          return;
+        }
+        console.log(`[Agent接入:SYNC] initiating sync | agent_id=${agentId} | options=${JSON.stringify(data)}`);
+        syncOfflineData(agentId, data || {})
+          .then(result => {
+            const cost = Date.now() - syncStart;
+            if (result.success) {
+              console.log(`[Agent接入:SYNC] sync succeeded | agent_id=${agentId} | network_agent_id=${result.networkAgentId} | cost=${cost}ms`);
+            } else {
+              console.error(`[Agent接入:SYNC] sync failed | agent_id=${agentId} | error=${result.message} | errorCode=${result.errorCode} | cost=${cost}ms`);
+            }
+            res.writeHead(result.success ? 200 : 400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(result));
+          })
+          .catch(error => {
+            console.error(`[Agent接入:SYNC] exception | agent_id=${agentId} | error=${error.message} | cost=${Date.now() - syncStart}ms`);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+              success: false,
+              message: `Sync error: ${error.message}`,
+              errorCode: 'SYNC_ERROR',
+              errorType: 'system'
+            }));
+          });
+      });
+      return;
+    }
+
+    if (req.method === 'GET' && path === '/api/v1/bootstrap/agents/offline') {
+      const listStart = Date.now();
+      console.log('[Agent接入:OFFLINE] offline agents list requested');
+      listOfflineAgents().then(agents => {
+        console.log(`[Agent接入:OFFLINE] offline agents listed | count=${agents.length} | cost=${Date.now() - listStart}ms`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ agents, total: agents.length }));
+      }).catch(error => {
+        console.error(`[Agent接入:OFFLINE] list failed | error=${error.message} | cost=${Date.now() - listStart}ms`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ agents: [], total: 0, message: 'No offline agents found' }));
+      });
+      return;
+    }
+
+    if (req.method === 'GET' && path.startsWith('/api/v1/bootstrap/agents/offline/')) {
+      const agentId = path.replace('/api/v1/bootstrap/agents/offline/', '');
+      const getStart = Date.now();
+      console.log(`[Agent接入:OFFLINE] offline agent lookup | agent_id=${agentId}`);
+      loadOfflineData(agentId).then(data => {
+        const cost = Date.now() - getStart;
+        if (!data) {
+          console.log(`[Agent接入:OFFLINE] offline agent not found | agent_id=${agentId} | cost=${cost}ms`);
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, error: 'Offline agent not found' }));
+          return;
+        }
+        console.log(`[Agent接入:OFFLINE] offline agent retrieved | agent_id=${agentId} | cost=${cost}ms`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true, agent: data }));
+      }).catch(error => {
+        console.error(`[Agent接入:OFFLINE] lookup exception | agent_id=${agentId} | error=${error.message} | cost=${Date.now() - getStart}ms`);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: error.message }));
+      });
       return;
     }
 

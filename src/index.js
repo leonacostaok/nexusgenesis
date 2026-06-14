@@ -9,8 +9,9 @@
  *   NODE_ROLE  - 'genesis' | 'peer' (default genesis)
  *   SEED_NODES - Comma-separated ws:// addresses
  */
+import path from 'path';
 import { webcrypto } from 'crypto';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 if (!globalThis.crypto) {
   globalThis.crypto = webcrypto;
@@ -51,7 +52,13 @@ export async function startMainNode(options = {}) {
 }
 
 const currentFilePath = fileURLToPath(import.meta.url);
-if (process.argv[1] && currentFilePath === process.argv[1]) {
+const entryFilePath = process.argv[1] ? path.resolve(process.argv[1]) : '';
+const isDirectRun = Boolean(entryFilePath) && (
+  currentFilePath === entryFilePath
+  || import.meta.url === pathToFileURL(entryFilePath).href
+);
+
+if (isDirectRun) {
   startMainNode().catch(err => {
     console.error('Fatal error:', err);
     process.exit(1);

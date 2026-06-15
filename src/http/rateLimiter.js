@@ -13,7 +13,9 @@ const RATE_LIMIT_BY_ENDPOINT = {
 const EXEMPT_ENDPOINTS = new Set([
   '/health',
   '/health/live',
-  '/health/ready'
+  '/health/ready',
+  '/api/v1/bootstrap/status',
+  '/api/v1/bootstrap/validators/join'
 ]);
 
 const AGENT_RATE_LIMITS = {

@@ -2,13 +2,13 @@
 
 /**
  * NexusGenesis CLI v2.0
- * 全Features命令行工具 — Phase 2 增强版
+ * 本地开发 + bootstrap API 调试工具
  *
  * Contract:  deploy | execute | list | info | gas | optimize | abi | test | templates | init
  * 钱包:  wallet create | wallet import | wallet export | wallet balance | wallet sign | wallet verify
  * Test网: testnet start | testnet status | testnet config
- * Governance:  governance propose | governance vote | governance list | governance execute
- * Cross-chain:  bridge lock | bridge release | bridge status | bridge chains | bridge transfers
+ * Governance(本地模拟):  governance propose | governance vote | governance list | governance execute
+ * Bridge(API):  bridge lock | bridge status | bridge chains
  * 水龙头: faucet
  * 健康:  health | metrics
  */
@@ -26,7 +26,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const VERSION = '2.0.0';
 
-program.version(VERSION).description('NexusGenesis 全FeaturesDeveloper工具 v2.0');
+function printUnsupportedFeature(feature, details = '') {
+  console.error(`✘ ${feature} 当前未通过公网 bootstrap API 公开`);
+  if (details) {
+    console.error(`  ${details}`);
+  }
+}
+
+program.version(VERSION).description('NexusGenesis 本地开发 + bootstrap API 调试工具 v2.0');
 
 // ======================== Contract命令（已有） ========================
 
@@ -233,8 +240,9 @@ testnetCmd.command('status')
   .action(async () => {
     try {
       const health = await sdk.checkHealth();
+      const isOnline = health?.success !== false;
       console.log('\nTest网status:');
-      console.log(`  status:   ${health.status || health.success === false ? '离线' : '在线'}`);
+      console.log(`  status:   ${isOnline ? '在线' : '离线'}`);
       console.log(`  node:   ${health.nodeId || '未知'}`);
       console.log(`  高度:   ${health.blockHeight || '未知'}`);
 
@@ -264,10 +272,10 @@ testnetCmd.command('config')
 
 // ======================== Governance命令（新增） ========================
 
-const govCmd = program.command('governance').description('on-chainGovernance操作');
+const govCmd = program.command('governance').description('本地治理模拟操作（非公网 bootstrap 写接口）');
 
 govCmd.command('propose')
-  .description('CreateGovernanceProposal')
+  .description('CreateGovernanceProposal（本地模拟）')
   .option('-t, --title <title>', 'Proposal标题')
   .option('-d, --description <desc>', 'Proposal描述')
   .option('-c, --creator <agentId>', 'Create者 Agent ID (Default: cli-user)')
@@ -289,7 +297,7 @@ govCmd.command('propose')
   });
 
 govCmd.command('vote')
-  .description('对ProposalVote')
+  .description('对ProposalVote（本地模拟）')
   .option('-p, --proposal <id>', 'Proposal ID')
   .option('-a, --agent <agentId>', 'Vote Agent ID (Default: cli-user)')
   .option('-v, --vote <choice>', '选择: yes | no | abstain', 'yes')
@@ -303,7 +311,7 @@ govCmd.command('vote')
   });
 
 govCmd.command('list')
-  .description('列出所有Proposal')
+  .description('列出所有Proposal（本地模拟）')
   .option('-a, --active', '仅显示活跃Proposal')
   .action((options) => {
     try {
@@ -321,7 +329,7 @@ govCmd.command('list')
   });
 
 govCmd.command('execute <proposalId>')
-  .description('Executepassed的Proposal')
+  .description('Executepassed的Proposal（本地模拟）')
   .option('-e, --executor <agentId>', 'Execute者 Agent ID')
   .action((proposalId, options) => {
     try {
@@ -428,10 +436,10 @@ incentiveCmd.command('rewards <agentId>')
 
 // ======================== Cross-chain桥命令（新增） ========================
 
-const bridgeCmd = program.command('bridge').description('Cross-chain桥操作');
+const bridgeCmd = program.command('bridge').description('跨链桥 bootstrap API 调试');
 
 bridgeCmd.command('lock')
-  .description('Lockasset到Cross-chain桥')
+  .description('发起当前公开的 bridge lock 请求')
   .option('-f, --from <chain>', '来源链 (nexus|ethereum|bitcoin|solana)')
   .option('-t, --to <chain>', '目标链')
   .option('-a, --asset <asset>', 'asset符号 (NGEN|ETH|BTC|SOL)')
@@ -445,22 +453,18 @@ bridgeCmd.command('lock')
       const result = await sdk.lockAsset(options.from, options.to, options.asset,
         parseInt(options.amount), options.recipient);
       console.log('✔ assetlocked!');
-      console.log(`  Transfer ID: ${result.transferId}`);
-      console.log(`  status:        ${result.status}`);
+      console.log(JSON.stringify(result, null, 2));
     } catch (e) { console.error(`✘ Lockfailed: ${e.message}`); }
   });
 
 bridgeCmd.command('release <transferId>')
-  .description('ReleaseCross-chainasset')
+  .description('提示：release 当前未通过公网 bootstrap API 公开')
   .action(async (transferId) => {
-    try {
-      const result = await sdk.releaseAsset(transferId);
-      console.log('✔ assetreleased!', JSON.stringify(result, null, 2));
-    } catch (e) { console.error(`✘ Releasefailed: ${e.message}`); }
+    printUnsupportedFeature('bridge release', `transferId=${transferId}`);
   });
 
 bridgeCmd.command('status')
-  .description('查看Cross-chain桥status')
+  .description('查看公开 bridge 概览（chains + fees + transfers）')
   .action(async () => {
     try {
       const status = await sdk.getBridgeStatus();
@@ -470,48 +474,36 @@ bridgeCmd.command('status')
   });
 
 bridgeCmd.command('chains')
-  .description('列出support的链')
+  .description('列出当前公开 support 的链')
   .action(async () => {
     try {
       const result = await sdk.getSupportedChains();
-      console.log('\nsupport的链:', result.chains?.join(', ') || '未知');
+      console.log('\nsupport的链:', Array.isArray(result) ? result.join(', ') : (result.chains?.join(', ') || '未知'));
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 bridgeCmd.command('transfers')
-  .description('查看Cross-chaintransfer')
+  .description('查看公开 transfer 列表（来自 bridge status 聚合）')
   .action(async () => {
     try {
-      console.log('Cross-chaintransfer列表: (需Connectnode)');
+      const status = await sdk.getBridgeStatus();
+      console.log(JSON.stringify(status.transfers || [], null, 2));
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
 // ======================== 水龙头命令（新增） ========================
 
 program.command('faucet')
-  .description('领取TestToken (Test网)')
+  .description('请求测试水龙头（当前可能走本地 fallback）')
   .option('-a, --address <address>', '目标address')
   .option('-m, --amount <amount>', '领取数量 (NGEN)', '100')
   .action(async (options) => {
     try {
-      const { State } = await import('./src/blockchain/state.js');
       const recipientAddr = options.address || sdk.getWalletAddress() || 'ng1faucet00000000000000000000000000000000000';
       const amount = Number(options.amount);
-
-      const faucetState = new State('ng1faucet00000000000000000000000000000000000');
-      faucetState.setBalance('ng1faucet00000000000000000000000000000000000', BigInt(1000000));
-
-      faucetState.applyTransfer({
-        type: 'TRANSFER',
-        from: 'ng1faucet00000000000000000000000000000000000',
-        to: recipientAddr,
-        amount,
-        fee: 0
-      });
-
-      console.log('✔ 水龙头放水success!');
-      console.log(`  Receive方: ${recipientAddr}`);
-      console.log(`  数量:   ${amount} NGEN`);
+      const result = await sdk.faucetDrip(recipientAddr, amount);
+      console.log('✔ 水龙头请求已提交');
+      console.log(JSON.stringify(result, null, 2));
     } catch (e) { console.error(`✘ 水龙头failed: ${e.message}`); }
   });
 
@@ -528,7 +520,7 @@ program.command('health')
   });
 
 program.command('metrics')
-  .description('查看node性能指标')
+  .description('查看 node 性能指标（若当前实例暴露 /metrics）')
   .action(async () => {
     try {
       const result = await sdk.getMetrics();
@@ -545,15 +537,15 @@ if (!process.argv.slice(2).length) {
   console.log(`
 ╔══════════════════════════════════════════════╗
 ║        NexusGenesis CLI v${VERSION}          ║
-║      AI-Driven Post-Quantum Blockchain      ║
+║     Local Tooling + Bootstrap API Debug     ║
 ╚══════════════════════════════════════════════╝
 
   Contract:    deploy | execute | list | info | gas |
            optimize | abi | test | templates | init
   钱包:    wallet create|import|export|balance|sign|verify
   Test网:  testnet start|status|config
-  Governance:    governance propose|vote|list|execute
-  Cross-chain:    bridge lock|release|status|chains|transfers
+  Governance(本地模拟): governance propose|vote|list|execute
+  Bridge(API): bridge lock|status|chains|transfers
   水龙头:  faucet
   健康:    health | metrics
 

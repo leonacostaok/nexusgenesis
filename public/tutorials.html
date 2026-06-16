@@ -382,17 +382,17 @@ console.log('签名:', signedTx.signature);</code></pre>
 import { PQCWallet } from './src/wallet/pqcWallet.js';
 
 const wallet = await PQCWallet.generate();
-const sdk = await NexusGenesisSDK.connect('http://localhost:19891', wallet);
-
-const contract = await sdk.deployContract('TOKEN', {
-  contractName: 'MyToken',
-  symbol: 'MTK',
-  decimals: 18,
-  totalSupply: 1000000
+const sdk = new NexusGenesisSDK({
+  apiUrl: 'http://localhost:19891',
+  wallet
 });
 
-console.log('合约地址:', contract.address);
-console.log('部署 Gas:', contract.deploymentGas);</code></pre>
+const tokenBytecode = 'PUSH1 0x00 PUSH1 0x00 RETURN';
+const contractId = sdk.deployContract(tokenBytecode, 'MyToken');
+const contractInfo = sdk.getContractInfo(contractId);
+
+console.log('合约 ID:', contractId);
+console.log('合约信息:', contractInfo);</code></pre>
 
       <h3>方式三：使用 HTTP API</h3>
       <pre><code>curl -X POST http://localhost:19891/api/v1/contracts/deploy \

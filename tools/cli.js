@@ -1,6 +1,6 @@
 /**
  * NexusGenesis 命令行工具
- * 帮助开发者开发、部署和测试智能合约
+ * 本地合约开发辅助工具
  */
 
 import fs from 'fs/promises';
@@ -18,6 +18,8 @@ class CLI {
   showHelp() {
     console.log('NexusGenesis CLI 工具');
     console.log('====================');
+    console.log('');
+    console.log('说明: 该 CLI 仅面向本地合约开发与状态文件管理，不代表公网 bootstrap API 全部能力。');
     console.log('');
     console.log('命令列表:');
     console.log('  deploy <bytecode-file> <name> - 部署智能合约');

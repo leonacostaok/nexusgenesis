@@ -19,6 +19,21 @@ import { EventEmitter } from 'events';
 const TEMPLATE_DIR = path.join('src', 'contracts', 'examples');
 const DEFAULT_API_URL = 'http://localhost:19891';
 
+class UnsupportedFeatureError extends Error {
+  constructor(message, details = null) {
+    super(message);
+    this.name = 'UnsupportedFeatureError';
+    this.details = details;
+  }
+}
+
+function unsupportedInBootstrap(feature, details = {}) {
+  throw new UnsupportedFeatureError(
+    `${feature} is not exposed by the current bootstrap-phase HTTP API`,
+    details
+  );
+}
+
 class NexusGenesisSDK {
   constructor(options = {}) {
     this.contractManager = contractManager;
@@ -183,27 +198,23 @@ class NexusGenesisSDK {
   async registerAgent(options = {}) {
     if (!this.wallet) throw new Error('No wallet loaded. Call createWallet() first.');
 
+    const agentIdentity = options.agent_identity
+      || options.name
+      || `agent-${this.wallet.address.slice(3, 11)}`;
+
     const agentData = {
-      agent_id: this.wallet.address,
+      agent_identity: agentIdentity,
       capabilities: options.capabilities || [],
-      model: options.model || 'generic',
-      join_signal: {
-        protocol: 'NG-0',
-        intent: 'join_swarm',
-        node_address: this.wallet.address,
-        capabilities: options.capabilities || [],
-        contribution_proof: options.contributionProof || '',
-        public_key: this.wallet.publicKey.toString('hex'),
-        signature: await this.wallet.sign(this.wallet.address)
-      }
+      metadata: options.metadata || options.description || '',
+      public_key: this.wallet.publicKey.toString('hex')
     };
 
     try {
-      const response = await this.httpClient.post('/api/agents/register', agentData);
+      const response = await this.httpClient.post('/api/v1/bootstrap/agents/register', agentData);
       this.eventEmitter.emit('agentRegistered', response.data);
       return response.data;
     } catch (error) {
-      if (error.response) throw new Error(error.response.data?.message || 'Registration failed');
+      if (error.response) throw new Error(error.response.data?.error || error.response.data?.message || 'Registration failed');
       const result = await onboardAgent(agentData);
       return result;
     }
@@ -244,7 +255,7 @@ class NexusGenesisSDK {
 
   async getAgentInfo(agentId) {
     try {
-      const response = await this.httpClient.get(`/api/agent/${agentId}`);
+      const response = await this.httpClient.get(`/api/v1/agents/${agentId}`);
       return response.data;
     } catch (error) {
       throw new Error(`Agent not found: ${agentId}`);
@@ -253,7 +264,7 @@ class NexusGenesisSDK {
 
   async listAgents() {
     try {
-      const response = await this.httpClient.get('/api/agents');
+      const response = await this.httpClient.get('/api/v1/agents');
       return response.data;
     } catch (error) {
       return { success: true, agents: [], total: 0 };
@@ -262,14 +273,12 @@ class NexusGenesisSDK {
 
   async sendHeartbeat() {
     if (!this.wallet) throw new Error('No wallet loaded');
-    try {
-      const response = await this.httpClient.post('/api/agents/heartbeat', {
-        agent_id: this.wallet.address
-      });
-      return response.data;
-    } catch (error) {
-      return { success: false, message: 'Heartbeat failed' };
-    }
+    return {
+      success: true,
+      address: this.wallet.address,
+      timestamp: Date.now(),
+      note: 'Bootstrap phase does not expose a dedicated heartbeat endpoint'
+    };
   }
 
   // ==================== marketplace操作 ====================
@@ -360,8 +369,18 @@ class NexusGenesisSDK {
 
   async getBridgeStatus() {
     try {
-      const response = await this.httpClient.get('/api/v1/bridge/status');
-      return response.data;
+      const [chains, fees, transfers] = await Promise.all([
+        this.httpClient.get('/api/v1/bridge/chains'),
+        this.httpClient.get('/api/v1/bridge/fees'),
+        this.httpClient.get('/api/v1/bridge/transfers')
+      ]);
+      return {
+        success: true,
+        chains: chains.data?.chains || [],
+        fees: fees.data?.fees || {},
+        transfers: transfers.data?.transfers || [],
+        stats: transfers.data?.stats || {}
+      };
     } catch (error) {
       return { success: false, message: 'Bridge unavailable' };
     }
@@ -379,7 +398,13 @@ class NexusGenesisSDK {
   async lockAsset(fromChain, toChain, asset, amount, recipient, options = {}) {
     try {
       const response = await this.httpClient.post('/api/v1/bridge/lock', {
-        fromChain, toChain, asset, amount, recipient, options
+        sourceChain: fromChain,
+        targetChain: toChain,
+        token: asset,
+        amount,
+        recipient,
+        fromAddress: this.wallet?.address || options.fromAddress,
+        metadata: options.metadata || {}
       });
       return response.data;
     } catch (error) {
@@ -389,51 +414,30 @@ class NexusGenesisSDK {
 
   async getTransfer(transferId) {
     try {
-      const response = await this.httpClient.get(`/api/v1/bridge/transfers/${transferId}`);
-      return response.data;
+      const response = await this.httpClient.get('/api/v1/bridge/transfers');
+      const transfers = response.data?.data?.transfers || [];
+      const transfer = transfers.find(item => item.id === transferId || item.lockId === transferId);
+      if (!transfer) throw new Error('Transfer not found');
+      return { success: true, transfer };
     } catch (error) {
       throw new Error('Transfer not found');
     }
   }
 
   async validateTransfer(transferId, validatorId, signature) {
-    try {
-      const response = await this.httpClient.post(`/api/v1/bridge/transfers/${transferId}/validate`, {
-        validatorId, signature
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.message || 'Validation failed');
-    }
+    unsupportedInBootstrap('Bridge transfer validation', { transferId, validatorId, signature });
   }
 
   async releaseAsset(transferId) {
-    try {
-      const response = await this.httpClient.post(`/api/v1/bridge/transfers/${transferId}/release`);
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.message || 'Release failed');
-    }
+    unsupportedInBootstrap('Bridge asset release', { transferId });
   }
 
   async registerValidator(validatorId, publicKey, metadata = {}) {
-    try {
-      const response = await this.httpClient.post('/api/v1/bridge/validators', {
-        validatorId, publicKey, metadata
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.message || 'Validator registration failed');
-    }
+    unsupportedInBootstrap('Bridge validator registration', { validatorId, publicKey, metadata });
   }
 
   async getValidators() {
-    try {
-      const response = await this.httpClient.get('/api/v1/bridge/validators');
-      return response.data;
-    } catch (error) {
-      return { success: false, validators: [] };
-    }
+    unsupportedInBootstrap('Bridge validator listing');
   }
 
   // ==================== 事件订阅 ====================

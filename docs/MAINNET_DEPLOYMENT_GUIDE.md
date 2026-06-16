@@ -2,6 +2,12 @@
 
 本文档提供了 NexusGenesis 主网的完整部署指南, 包括系统要求, 环境准备, 节点部署, agent注册和网络配置等步骤, 帮助您快速complete上链部署. 
 
+> 重要说明:
+> - 当前公网仍处于 `bootstrap coordination phase`, 不是完全开放式 21 验证者主网。
+> - 当前外部验证者接入的权威文档是 `docs/EXTERNAL_VALIDATOR_RUNBOOK.md`。
+> - `SECOND_NODE_GUIDE.md` 是快速入口。
+> - 本文档保留较多历史部署材料, 如与当前外部接入口径冲突, 以 `docs/EXTERNAL_VALIDATOR_RUNBOOK.md` 为准。
+
 ## 1. 系统要求
 
 ### 1.1 硬件要求
@@ -72,23 +78,18 @@ npm install
 
 ```env
 # 节点配置
+NODE_ENV=testnet
+NODE_ROLE=peer
 NODE_NAME=your-node-name
-NODE_TYPE=full # full, validator, genesis
-NODE_PORT=9847
+
+P2P_PORT=9848
+HTTP_PORT=19892
+DATA_DIR=data/validator-01
 
 # 网络配置
-NETWORK=mainnet
-CHAIN_ID=nexus-1
-
-# 安全配置
-NODE_KEY=your-node-private-key
-
-# API配置
-API_PORT=19891
-API_KEY=your-api-key
-
-# 数据库配置
-DB_PATH=data/db
+CHAIN_ID=nexus-testnet
+NETWORK_ID=ngn-testnet-1
+SEED_NODES=ws://98.142.241.236:9847
 
 # 日志配置
 LOG_LEVEL=info
@@ -113,18 +114,18 @@ cat data/genesis.json
 #### 3.1.2 启动创世节点
 
 ```bash
-# 启动创世节点
-node src/node/genesisNode.js
+# 启动统一入口
+npm run start
 ```
 
 #### 3.1.3 验证创世节点状态
 
 ```bash
 # 检查节点状态
-curl http://localhost:19891/api/health
+curl http://localhost:19891/health
 
-# 查看区块高度
-curl http://localhost:19891/api/blockchain/tip
+# 查看 bootstrap 状态
+curl http://localhost:19891/api/v1/bootstrap/status
 ```
 
 ### 3.2 全节点部署
@@ -151,18 +152,18 @@ curl http://localhost:19891/api/blockchain/tip
 #### 3.2.2 启动全节点
 
 ```bash
-# 启动全节点
-node src/node/fullNode.js
+# 当前阶段统一使用主入口 + 环境变量
+NODE_ROLE=peer P2P_PORT=9848 HTTP_PORT=19892 DATA_DIR=data/fullnode-01 npm run start
 ```
 
 #### 3.2.3 验证同步状态
 
 ```bash
-# 检查同步状态
-curl http://localhost:19892/api/sync/status
+# 检查健康状态
+curl http://localhost:19892/health
 
-# 查看区块高度
-curl http://localhost:19892/api/blockchain/tip
+# 查看 bootstrap 状态
+curl http://localhost:19892/api/v1/bootstrap/status
 ```
 
 ### 3.3 验证节点部署
@@ -192,18 +193,18 @@ curl http://localhost:19892/api/blockchain/tip
 #### 3.3.2 启动验证节点
 
 ```bash
-# 启动验证节点
-node src/node/validatorNode.js
+# 当前阶段统一使用主入口 + 环境变量
+NODE_ROLE=peer P2P_PORT=9849 HTTP_PORT=19893 DATA_DIR=data/validator-02 npm run start
 ```
 
 #### 3.3.3 验证验证节点状态
 
 ```bash
-# 检查验证节点状态
-curl http://localhost:19893/api/validator/status
+# 检查健康状态
+curl http://localhost:19893/health
 
-# 查看验证统计
-curl http://localhost:19893/api/validator/stats
+# 查看 bootstrap 状态
+curl http://localhost:19893/api/v1/bootstrap/status
 ```
 
 ## 4. agent注册
@@ -398,7 +399,7 @@ git pull
 npm install
 
 # 启动节点
-node src/node/fullNode.js
+NODE_ROLE=peer P2P_PORT=9848 HTTP_PORT=19892 DATA_DIR=data/fullnode-01 npm run start
 ```
 
 ### 8.2 数据备份

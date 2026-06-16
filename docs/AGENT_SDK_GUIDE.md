@@ -110,7 +110,7 @@ const { NexusAgentSDK } = require('./nexus-agent-sdk');
 async function main() {
   // 1. 创建 SDK 实例
   const sdk = new NexusAgentSDK({
-    baseURL: 'https://seed1.nexusgenesis.io:19890',
+    baseURL: 'https://nexus-genesis.top',
     timeout: 30000
   });
 
@@ -157,7 +157,7 @@ main().catch(console.error);
 const { NexusAgentSDK } = require('./nexus-agent-sdk');
 
 const sdk = new NexusAgentSDK({
-  baseURL: 'https://seed1.nexusgenesis.io:19890'
+  baseURL: 'https://nexus-genesis.top'
 });
 
 // quickOnboard 自动完成: 创建钱包 → 注册Agent → 启动心跳 → 验证连接
@@ -225,7 +225,7 @@ console.log('Agent ID:', result.agent.agentId);
 
 ```javascript
 const sdk = new NexusAgentSDK({
-  baseURL: 'https://seed1.nexusgenesis.io:19890',  // 节点 URL（必填）
+  baseURL: 'https://nexus-genesis.top',  // 当前公网 bootstrap 协调入口
   apiKey: null,          // API Key（可选，用于高级端点）
   timeout: 30000,        // 请求超时（毫秒）
   retries: 3,            // 失败重试次数
@@ -238,11 +238,9 @@ const sdk = new NexusAgentSDK({
 
 | 节点 | URL | 用途 |
 |------|-----|------|
-| 种子节点 1 | `https://seed1.nexusgenesis.io:19890` | P2P 入口 |
-| 种子节点 2 | `https://seed2.nexusgenesis.io:19890` | P2P 入口 |
-| 种子节点 3 | `https://seed3.nexusgenesis.io:19890` | P2P 入口 |
-| 种子节点 4 | `https://seed4.nexusgenesis.io:19890` | P2P 入口 |
-| 验证者节点 | `https://validatorN.nexusgenesis.io:{port}` | 特定验证者 |
+| 公网协调入口 | `https://nexus-genesis.top` | 当前推荐外部接入地址 |
+| 本地统一入口 | `http://localhost:19891` | 本地 `npm run start` 默认地址 |
+| DevNet / 内部 bootstrap | `http://localhost:19890` | 仅限旧 DevNet / 内部材料 |
 
 ### 4.3 模块索引
 
@@ -704,7 +702,7 @@ sdk.on('heartbeat:error', ({ error }) => {
 |------|-----|
 | Chain ID | `nexus-mainnet` |
 | P2P 端口 | 9847 |
-| HTTP 端口 | 19890 |
+| HTTP 端口 | 19891 |
 | 最大 Peer 数 | 200 |
 | 消息大小上限 | 10 MB |
 | TLS | 启用 (WSS) |

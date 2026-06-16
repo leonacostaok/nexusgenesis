@@ -219,22 +219,27 @@ class AgentRegistry {
   }
 
   async register(walletAddress, options = {}) {
-    const agentData = {
-      agentId: this.metadata.agentId || crypto.randomUUID(),
-      address: walletAddress,
-      name: this.metadata.name,
-      version: this.metadata.version,
+    const fallbackIdentity = (this.metadata.name || `agent-${crypto.randomBytes(4).toString('hex')}`)
+      .trim()
+      .replace(/\s+/g, '-');
+
+    const agentIdentity = options.agent_identity || this.metadata.agent_identity || fallbackIdentity;
+    const payload = {
+      agent_identity: agentIdentity,
       capabilities: this.metadata.capabilities,
-      model: this.metadata.model,
-      description: this.metadata.description,
-      endpoint: this.metadata.endpoint,
-      tags: this.metadata.tags,
-      metadata: options.metadata || {},
-      timestamp: Date.now()
+      metadata: options.metadata || this.metadata.description || ''
     };
 
-    const result = await this.http.post('/api/v1/agents/register', agentData);
-    this.registeredAgent = { ...agentData, ...result };
+    const result = await this.http.post('/api/v1/bootstrap/agents/register', payload);
+    this.registeredAgent = {
+      agentId: result?.agent?.agent_id || result?.transaction?.id || crypto.randomUUID(),
+      agent_identity: result?.agent?.identity || agentIdentity,
+      address: result?.agent?.address || result?.wallet?.address || walletAddress,
+      capabilities: result?.agent?.capabilities || this.metadata.capabilities,
+      blockHeight: result?.blockHeight || null,
+      transactionId: result?.transaction?.id || null,
+      raw: result
+    };
     return this.registeredAgent;
   }
 
@@ -247,23 +252,48 @@ class AgentRegistry {
   }
 
   async list(filters = {}) {
-    const params = new URLSearchParams();
-    if (filters.capability) params.set('capability', filters.capability);
-    if (filters.search) params.set('search', filters.search);
-    if (filters.sort) params.set('sort', filters.sort);
-    if (filters.limit) params.set('limit', filters.limit);
-    if (filters.status) params.set('status', filters.status);
+    const result = await this.http.get('/api/v1/agents');
+    let agents = Array.isArray(result?.agents) ? [...result.agents] : [];
 
-    const query = params.toString();
-    return this.http.get(`/api/v1/hub/agents${query ? '?' + query : ''}`);
+    if (filters.search) {
+      const query = filters.search.toLowerCase();
+      agents = agents.filter(agent =>
+        String(agent.identity || '').toLowerCase().includes(query)
+        || String(agent.agent_id || '').toLowerCase().includes(query)
+      );
+    }
+
+    if (filters.capability) {
+      const capability = filters.capability.toLowerCase();
+      agents = agents.filter(agent =>
+        Array.isArray(agent.capabilities)
+        && agent.capabilities.some(item => String(item).toLowerCase().includes(capability))
+      );
+    }
+
+    if (filters.sort === 'newest') {
+      agents.sort((a, b) => Number(b.registered_at_block || 0) - Number(a.registered_at_block || 0));
+    }
+
+    if (filters.limit) {
+      agents = agents.slice(0, Number(filters.limit));
+    }
+
+    return {
+      ...result,
+      agents,
+      count: agents.length
+    };
   }
 
   async heartbeat() {
     if (!this.registeredAgent) return null;
-    return this.http.post('/api/v1/agents/heartbeat', {
-      agentId: this.registeredAgent.agentId,
-      timestamp: Date.now()
-    });
+    return {
+      success: true,
+      agent_identity: this.registeredAgent.agent_identity,
+      timestamp: Date.now(),
+      note: 'Bootstrap phase does not expose a dedicated heartbeat endpoint'
+    };
   }
 
   async updateMetadata(updates) {
@@ -392,7 +422,7 @@ class BlockchainQuery {
   }
 
   async getStatus() {
-    return this.http.get('/api/v1/blockchain/status');
+    return this.http.get('/api/v1/bootstrap/status');
   }
 
   async getBalance(address) {
@@ -714,7 +744,7 @@ class NexusAgentSDK extends EventEmitter {
   constructor(config = {}) {
     super();
 
-    const baseURL = config.baseURL || config.nodeURL || 'http://localhost:19890';
+    const baseURL = config.baseURL || config.nodeURL || 'http://localhost:19891';
 
     this.config = {
       baseURL,

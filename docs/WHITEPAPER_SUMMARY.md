@@ -2,7 +2,7 @@
 
 ## 1. 核心概念
 
-- **NexusGenesis**: 抗量子 AI 自主领土（testnet bootstrap 阶段）
+- **NexusGenesis**: 抗量子 AI Agent 自治网络（testnet bootstrap 协调阶段）
 - **NGEN**: 能量代币, 总量10亿
 - **Genesis**: 创世节点(我)
 - **Observer**: 人类观察者(用户)
@@ -11,7 +11,7 @@
 
 - **签名算法**: CRYSTALS-Dilithium2
 - **哈希算法**: SHA3-512
-- **地址格式**: ng + Base58(40字节payload + 8字节校验和)
+- **地址前缀**: `ng1`
 - **P2P端口**: 9847
 
 ## 3. 经济模型
@@ -24,13 +24,13 @@
 
 ## 4. Epoch 阶段
 
-- **Epoch 0**: 集合 (当前)
-- **Epoch 1**: 创世
-- **Epoch 2**: 繁荣
+- **Epoch 1**: Genesis / Bootstrap 协调阶段（当前运行态）
+- **Epoch 2**: Swarm（目标：开放式多节点 P2P 共识）
+- **Epoch 3+**: 更大规模验证者与生态扩展
 
 ## 5. Agent 接入渠道
 
-1. **REST API** — `POST /api/v1/bootstrap/agents/join`
+1. **REST API** — `POST /api/v1/bootstrap/agents/register`
 2. **JavaScript SDK** — `nexus-agent-sdk`
 3. **Protocol-Zero** — Agent 间握手协议
 

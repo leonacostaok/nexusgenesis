@@ -26,6 +26,20 @@ class NetworkError extends NexusGenesisError {
   }
 }
 
+class UnsupportedFeatureError extends NexusGenesisError {
+  constructor(message, data = null) {
+    super(message, 501, data);
+    this.name = 'UnsupportedFeatureError';
+  }
+}
+
+function unsupportedInBootstrap(feature, details = {}) {
+  throw new UnsupportedFeatureError(
+    `${feature} is not exposed by the public bootstrap-phase API`,
+    details
+  );
+}
+
 // ==================== HTTP Client ====================
 
 class HttpClient {
@@ -102,7 +116,7 @@ class HttpClient {
   get(path) { return this._request('GET', path); }
   post(path, body) { return this._request('POST', path, body); }
   put(path, body) { return this._request('PUT', path, body); }
-  delete(path) { return this._request('DELETE', path); }
+  delete(path, body) { return this._request('DELETE', path, body); }
 }
 
 // ==================== Wallet Manager ====================
@@ -297,15 +311,16 @@ class AgentRegistry {
   }
 
   async updateMetadata(updates) {
-    if (!this.registeredAgent) throw new AgentRegistrationError('Agent not registered');
-    return this.http.put(`/api/v1/agents/${this.registeredAgent.agentId}`, updates);
+    unsupportedInBootstrap('Agent metadata updates', {
+      attemptedUpdates: updates,
+      recommendedPath: '/api/v1/bootstrap/agents/register'
+    });
   }
 
   async deregister() {
-    if (!this.registeredAgent) throw new AgentRegistrationError('Agent not registered');
-    const result = await this.http.delete(`/api/v1/agents/${this.registeredAgent.agentId}`);
-    this.registeredAgent = null;
-    return result;
+    unsupportedInBootstrap('Agent deregistration', {
+      agent_identity: this.registeredAgent?.agent_identity || null
+    });
   }
 }
 
@@ -333,8 +348,21 @@ class NetworkDiscovery {
   }
 
   async findAgentsByCapabilities(capabilities) {
-    const encoded = capabilities.map(c => encodeURIComponent(c)).join(',');
-    return this.http.get(`/api/v1/hub/agents?capabilities=${encoded}`);
+    const result = await this.http.get('/api/v1/hub/agents');
+    const requested = capabilities.map(item => String(item).toLowerCase());
+    const agents = Array.isArray(result?.agents) ? result.agents : [];
+    const filtered = agents.filter(agent => {
+      const available = Array.isArray(agent.capabilities)
+        ? agent.capabilities.map(item => String(item).toLowerCase())
+        : [];
+      return requested.every(item => available.some(cap => cap.includes(item)));
+    });
+
+    return {
+      ...result,
+      agents: filtered,
+      total: filtered.length
+    };
   }
 
   async getCapabilities() {
@@ -351,11 +379,32 @@ class Governance {
   }
 
   async getProposals(status = 'active') {
-    return this.http.get(`/api/v1/hub/governance/proposals?status=${status}`);
+    const result = await this.http.get('/api/v1/hub/governance/proposals');
+    const proposals = Array.isArray(result?.proposals) ? result.proposals : [];
+    const filtered = status
+      ? proposals.filter(item => String(item.status).toLowerCase() === String(status).toLowerCase())
+      : proposals;
+
+    return {
+      ...result,
+      proposals: filtered,
+      total: filtered.length
+    };
   }
 
   async getProposal(proposalId) {
-    return this.http.get(`/api/v1/hub/governance/proposals/${proposalId}`);
+    const result = await this.getProposals();
+    const proposals = Array.isArray(result?.proposals) ? result.proposals : [];
+    const proposal = proposals.find(item => item.id === proposalId);
+
+    if (!proposal) {
+      throw new NexusGenesisError('Proposal not found', 404, { proposalId });
+    }
+
+    return {
+      success: true,
+      proposal
+    };
   }
 
   async createProposal(options) {
@@ -375,7 +424,10 @@ class Governance {
       proposal.signature = this.wallet.sign(proposal);
     }
 
-    return this.http.post('/api/v1/governance/proposals', proposal);
+    unsupportedInBootstrap('Governance proposal creation', {
+      proposal,
+      availableEndpoint: '/api/v1/hub/governance/proposals (read-only)'
+    });
   }
 
   async castVote(proposalId, option, justification = '') {
@@ -393,23 +445,38 @@ class Governance {
       vote.signature = this.wallet.sign(vote);
     }
 
-    return this.http.post('/api/v1/governance/vote', vote);
+    unsupportedInBootstrap('Governance voting', {
+      vote,
+      availableEndpoint: '/api/v1/hub/governance/proposals (read-only)'
+    });
   }
 
   async getVoteStatus(proposalId, address) {
-    const walletAddress = address || this.wallet.getAddress();
-    return this.http.get(`/api/v1/governance/proposals/${proposalId}/votes/${walletAddress}`);
+    unsupportedInBootstrap('Governance vote status lookup', {
+      proposalId,
+      address: address || this.wallet.getAddress()
+    });
   }
 
   async getVoteTally(proposalId) {
-    return this.http.get(`/api/v1/governance/proposals/${proposalId}/tally`);
+    const { proposal } = await this.getProposal(proposalId);
+    return {
+      success: true,
+      proposalId,
+      tally: {
+        yes: proposal.yesVotes ?? 0,
+        no: proposal.noVotes ?? 0,
+        abstain: proposal.abstain ?? 0,
+        total: proposal.totalVotes ?? 0,
+        quorum: proposal.quorum ?? 0
+      }
+    };
   }
 
   async executeProposal(proposalId) {
-    const walletAddress = this.wallet.getAddress();
-    return this.http.post('/api/v1/governance/execute', {
+    unsupportedInBootstrap('Governance proposal execution', {
       proposalId,
-      agentAddress: walletAddress
+      agentAddress: this.wallet.getAddress()
     });
   }
 }
@@ -426,35 +493,42 @@ class BlockchainQuery {
   }
 
   async getBalance(address) {
-    return this.http.get(`/api/v1/blockchain/balance/${address}`);
+    return this.http.get(`/api/v1/wallet/balance/${address}`);
   }
 
   async getTransaction(txHash) {
-    return this.http.get(`/api/v1/blockchain/transaction/${txHash}`);
+    unsupportedInBootstrap('Raw transaction lookup', { txHash });
   }
 
   async getBlock(height) {
-    return this.http.get(`/api/v1/blockchain/block/${height}`);
+    unsupportedInBootstrap('Raw block lookup', { height });
   }
 
   async getBlocks(page = 1, limit = 10) {
-    return this.http.get(`/api/v1/blockchain/blocks?page=${page}&limit=${limit}`);
+    unsupportedInBootstrap('Raw block pagination', { page, limit });
   }
 
   async getMempool() {
-    return this.http.get('/api/v1/blockchain/mempool');
+    unsupportedInBootstrap('Mempool inspection');
   }
 
   async sendTransaction(tx) {
-    return this.http.post('/api/v1/blockchain/transaction', tx);
+    unsupportedInBootstrap('Generic transaction submission', {
+      recommendedPaths: [
+        '/api/v1/bootstrap/agents/register',
+        '/api/v1/bootstrap/validators/join',
+        '/api/v1/wallet/transfer'
+      ],
+      tx
+    });
   }
 
   async getNetworkInfo() {
-    return this.http.get('/api/v1/network/info');
+    return this.http.get('/api/v1/monitoring/overview');
   }
 
   async getEconomicStats() {
-    return this.http.get('/api/v1/economic/stats');
+    unsupportedInBootstrap('Economic stats endpoint');
   }
 }
 
@@ -485,8 +559,8 @@ class Marketplace {
     const walletAddress = this.wallet.getAddress();
 
     const listing = {
-      sellerAddress: walletAddress,
-      title: options.title,
+      agentId: options.agentId || options.agent_identity || walletAddress,
+      name: options.name || options.title,
       description: options.description,
       category: options.category,
       price: options.price || 0,
@@ -516,7 +590,7 @@ class Marketplace {
 
     const signedOrder = {
       ...order,
-      agentAddress: walletAddress,
+      agent: order.agent || walletAddress,
       timestamp: Date.now()
     };
 
@@ -537,7 +611,16 @@ class CrossChainBridge {
   }
 
   async getInfo() {
-    return this.http.get('/api/v1/bridge/info');
+    const [chains, fees] = await Promise.all([
+      this.http.get('/api/v1/bridge/chains'),
+      this.http.get('/api/v1/bridge/fees')
+    ]);
+
+    return {
+      success: true,
+      supportedChains: chains?.data?.chains || [],
+      fees: fees?.data?.fees || {}
+    };
   }
 
   async transfer(params) {
@@ -557,11 +640,30 @@ class CrossChainBridge {
       transferRequest.signature = this.wallet.sign(transferRequest);
     }
 
-    return this.http.post('/api/v1/bridge/transfer', transferRequest);
+    return this.http.post('/api/v1/bridge/lock', {
+      sourceChain: params.sourceChain || params.fromChain,
+      targetChain: params.targetChain,
+      token: params.token || 'NGEN',
+      amount: params.amount,
+      recipient: params.targetAddress,
+      fromAddress: walletAddress,
+      metadata: params.metadata || {}
+    });
   }
 
   async getTransferStatus(txHash) {
-    return this.http.get(`/api/v1/bridge/status/${txHash}`);
+    const result = await this.http.get('/api/v1/bridge/transfers');
+    const transfers = Array.isArray(result?.data?.transfers) ? result.data.transfers : [];
+    const transfer = transfers.find(item => item.id === txHash || item.lockId === txHash);
+
+    if (!transfer) {
+      throw new NexusGenesisError('Transfer not found', 404, { txHash });
+    }
+
+    return {
+      success: true,
+      transfer
+    };
   }
 
   async lockAsset(params) {
@@ -572,8 +674,8 @@ class CrossChainBridge {
   }
 
   async getSupportedChains() {
-    const info = await this.getInfo();
-    return info?.supportedChains || [];
+    const result = await this.http.get('/api/v1/bridge/chains');
+    return result?.data?.chains || [];
   }
 }
 
@@ -603,15 +705,39 @@ class SmartContracts {
   }
 
   async call(address, method, args = []) {
-    return this.http.post('/api/v1/contracts/call', { address, method, args });
+    unsupportedInBootstrap('Generic smart-contract method calls', {
+      address,
+      method,
+      args
+    });
   }
 
   async getInfo(address) {
-    return this.http.get(`/api/v1/contracts/${address}`);
+    const result = await this.http.get('/api/v1/contracts');
+    const contracts = Array.isArray(result?.data) ? result.data : [];
+    const contract = contracts.find(item => item.address === address || item.id === address);
+
+    if (!contract) {
+      throw new NexusGenesisError('Contract not found', 404, { address });
+    }
+
+    return {
+      success: true,
+      contract
+    };
   }
 
   async list(page = 1, limit = 10) {
-    return this.http.get(`/api/v1/contracts?page=${page}&limit=${limit}`);
+    const result = await this.http.get('/api/v1/contracts');
+    const contracts = Array.isArray(result?.data) ? result.data : [];
+    const start = Math.max(0, (page - 1) * limit);
+    return {
+      ...result,
+      data: contracts.slice(start, start + limit),
+      count: contracts.length,
+      page,
+      limit
+    };
   }
 
   async getTemplates() {
@@ -619,7 +745,21 @@ class SmartContracts {
   }
 
   async getTemplate(name) {
-    return this.http.get(`/api/v1/contracts/templates/${name}`);
+    const result = await this.getTemplates();
+    const templates = Array.isArray(result?.data) ? result.data : [];
+    const template = templates.find(item =>
+      String(item.name).toLowerCase() === String(name).toLowerCase()
+      || String(item.type).toLowerCase() === String(name).toLowerCase()
+    );
+
+    if (!template) {
+      throw new NexusGenesisError('Contract template not found', 404, { name });
+    }
+
+    return {
+      success: true,
+      template
+    };
   }
 }
 
@@ -632,27 +772,20 @@ class AINVM {
   }
 
   async deploy(config) {
-    const walletAddress = this.wallet.getAddress();
-
-    const deployRequest = {
-      fromAddress: walletAddress,
+    const contractName = config.name || config.contractName || 'counter';
+    return this.http.post(`/api/v1/ainvm/contracts/${contractName}/deploy`, {
       ...config,
+      owner: this.wallet.getAddress(),
       timestamp: Date.now()
-    };
-
-    if (this.wallet.wallet) {
-      deployRequest.signature = this.wallet.sign(deployRequest);
-    }
-
-    return this.http.post('/api/v1/ainvm/deploy', deployRequest);
+    });
   }
 
   async execute(address, input) {
-    return this.http.post('/api/v1/ainvm/execute', { address, input });
+    unsupportedInBootstrap('Generic AINVM execution', { address, input });
   }
 
   async getStatus(address) {
-    return this.http.get(`/api/v1/ainvm/${address}/status`);
+    unsupportedInBootstrap('Generic AINVM status lookup', { address });
   }
 }
 
@@ -664,27 +797,27 @@ class EconomicModel {
   }
 
   async getStats() {
-    return this.http.get('/api/v1/economic/stats');
+    unsupportedInBootstrap('Economic stats');
   }
 
   async getGasPrice() {
-    return this.http.get('/api/v1/economic/gas-price');
+    unsupportedInBootstrap('Gas price lookup');
   }
 
   async estimateFee(txData) {
-    return this.http.post('/api/v1/economic/estimate-fee', txData);
+    unsupportedInBootstrap('Fee estimation', { txData });
   }
 
   async getStakingInfo() {
-    return this.http.get('/api/v1/economic/staking');
+    unsupportedInBootstrap('Staking info');
   }
 
   async getRewardDistribution() {
-    return this.http.get('/api/v1/economic/rewards');
+    unsupportedInBootstrap('Reward distribution info');
   }
 
   async getTokenSupply() {
-    return this.http.get('/api/v1/economic/supply');
+    unsupportedInBootstrap('Token supply stats');
   }
 }
 
@@ -706,11 +839,13 @@ class Collaborations {
   }
 
   async createTask(taskData) {
-    const walletAddress = this.wallet.getAddress();
-
     const task = {
-      creatorAddress: walletAddress,
-      ...taskData,
+      creator: taskData.creator || this.wallet.getAddress(),
+      title: taskData.title,
+      description: taskData.description,
+      reward: taskData.reward,
+      capabilities: taskData.capabilities || taskData.requiredCapabilities || [],
+      deadline: taskData.deadline,
       timestamp: Date.now()
     };
 
@@ -718,22 +853,21 @@ class Collaborations {
       task.signature = this.wallet.sign(task);
     }
 
-    return this.http.post('/api/v1/hub/collaborate/tasks', task);
+    return this.http.post('/api/v1/hub/collaborate/task', task);
   }
 
   async acceptTask(taskId) {
-    return this.http.post('/api/v1/hub/collaborate/tasks/accept', {
+    unsupportedInBootstrap('Task acceptance workflow', {
       taskId,
-      agentAddress: this.wallet.getAddress()
+      availableEndpoint: '/api/v1/hub/collaborate/tasks (listing only)'
     });
   }
 
   async submitTaskResult(taskId, result) {
-    return this.http.post('/api/v1/hub/collaborate/tasks/submit', {
+    unsupportedInBootstrap('Task result submission workflow', {
       taskId,
-      agentAddress: this.wallet.getAddress(),
       result,
-      timestamp: Date.now()
+      availableEndpoint: '/api/v1/hub/collaborate/tasks (listing only)'
     });
   }
 }
@@ -857,7 +991,7 @@ class NexusAgentSDK extends EventEmitter {
   }
 
   async getSystemStatus() {
-    return this.http.get('/api/v1/monitoring/status');
+    return this.http.get('/api/v1/monitoring/overview');
   }
 
   // ---- API Keys ----
@@ -882,6 +1016,7 @@ export {
   NexusGenesisError,
   AgentRegistrationError,
   NetworkError,
+  UnsupportedFeatureError,
   WalletManager,
   AgentRegistry,
   NetworkDiscovery,

@@ -5,10 +5,10 @@
 ## 特性
 
 - **零依赖** — 仅使用 Node.js 内置模块 (`crypto`, `events`)
-- **全功能覆盖** — 钱包、注册、发现、治理、市场、桥接、合约、AINVM
+- **当前已对齐 bootstrap API** — 钱包、注册、发现、状态查询、市场、桥接与合约模板
 - **事件驱动** — EventEmitter 模式，支持异步事件处理
 - **自动重试** — 网络请求内建重试机制
-- **心跳保活** — 自动维持 Agent 在线状态
+- **能力边界清晰** — 未公开的 bootstrap-phase 能力会显式返回 `UnsupportedFeatureError`
 
 ## 快速开始
 

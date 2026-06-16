@@ -16,7 +16,7 @@ async function exampleBasicConnect() {
   console.log('║   NexusGenesis Agent SDK - 接入示例      ║');
   console.log('╚══════════════════════════════════════════╝\n');
 
-  const NODE_URL = process.env.NEXUS_NODE_URL || 'http://localhost:19890';
+  const NODE_URL = process.env.NEXUS_NODE_URL || 'http://localhost:19891';
 
   const sdk = new NexusAgentSDK({
     baseURL: NODE_URL,
@@ -29,7 +29,7 @@ async function exampleBasicConnect() {
     const health = await sdk.health();
     console.log('  ✅ 节点连接正常:', JSON.stringify(health).slice(0, 100));
   } catch (err) {
-    console.log('  ⚠️  节点连接失败 (DevNet 模式):', err.message);
+    console.log('  ⚠️  节点连接失败 (bootstrap 协调阶段):', err.message);
   }
 
   // ====== 2. 创建钱包 ======

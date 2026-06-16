@@ -16,7 +16,7 @@
 import { NexusAgentSDK } from './nexus-agent-sdk.js';
 
 const sdk = new NexusAgentSDK({
-  baseURL: 'http://localhost:19890'  // 本地 testnet，公开种子节点见 config/bootstrap.config.json
+  baseURL: 'https://nexus-genesis.top'  // 公网 bootstrap 协调入口
 });
 
 // 5 分钟完成接入
@@ -43,7 +43,8 @@ sdk/
 
 当前为 testnet bootstrap 阶段，公开种子节点请见仓库根的
 [`config/bootstrap.config.json`](../config/bootstrap.config.json)。
-本地开发请直接连 `http://localhost:19890`。
+本地使用统一入口 `npm run start` 时，请直接连 `http://localhost:19891`。
+旧的 `19890` 主要保留给内部 bootstrap / DevNet 材料，不应再作为外部接入默认值。
 
 ## 完整文档
 

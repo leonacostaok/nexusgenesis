@@ -13,7 +13,7 @@
  * 用法: node test/agent-onboarding.test.js [baseURL]
  */
 
-const DEFAULT_BASE_URL = process.env.NEXUS_API_URL || 'http://localhost:19890';
+const DEFAULT_BASE_URL = process.env.NEXUS_API_URL || 'http://localhost:19891';
 
 function timestamp() {
   return new Date().toISOString();

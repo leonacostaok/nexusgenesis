@@ -72,7 +72,12 @@ class DevNetOrchestrator {
 
     const child = spawn('node', [script], {
       stdio: ['pipe', 'pipe', 'pipe'],
-      env: { ...process.env, NODE_NAME: name, NODE_PORT: String(nodeConfig.port) },
+      env: {
+        ...process.env,
+        NODE_NAME: name,
+        P2P_PORT: String(nodeConfig.port),
+        HTTP_PORT: String(nodeConfig.httpPort || process.env.HTTP_PORT || 19891)
+      },
     });
 
     this.processes[name] = child;

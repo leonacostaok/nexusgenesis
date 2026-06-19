@@ -195,13 +195,11 @@ function warmupCache() {
       active: 0
     },
     endpoints: {
-      openai: '/api/agents/openai',
-      anthropic: '/api/agents/anthropic',
-      register: '/api/agents/register',
-      agents: '/api/agents',
-      heartbeat: '/api/agents/heartbeat',
-      agentManagement: '/api/agent',
       health: '/health',
+      bootstrapStatus: '/api/v1/bootstrap/status',
+      agentRegister: '/api/v1/bootstrap/agents/register',
+      agentsList: '/api/v1/agents',
+      validatorJoin: '/api/v1/bootstrap/validators/join',
       dashboard: '/dashboard/overview'
     }
   });
@@ -1098,13 +1096,11 @@ app.get('/health', (req, res) => {
       active: allAgents.length
     },
     endpoints: {
-      openai: '/api/agents/openai',
-      anthropic: '/api/agents/anthropic',
-      register: '/api/agents/register',
-      agents: '/api/agents',
-      heartbeat: '/api/agents/heartbeat',
-      agentManagement: '/api/agent',
       health: '/health',
+      bootstrapStatus: '/api/v1/bootstrap/status',
+      agentRegister: '/api/v1/bootstrap/agents/register',
+      agentsList: '/api/v1/agents',
+      validatorJoin: '/api/v1/bootstrap/validators/join',
       dashboard: '/dashboard/overview'
     }
   };

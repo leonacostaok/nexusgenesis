@@ -314,6 +314,77 @@ class GenesisNode {
   /**
    * Start本地transaction注入 HTTP service器
    */
+  /**
+   * Seed initial tasks from the Swarm Pool so agents have work to do.
+   * Only runs if no tasks exist yet.
+   */
+  _seedInitialTasks() {
+    const stats = this.taskProtocol.getStats();
+    if (stats.total > 0) {
+      console.log(`[TaskProtocol] ${stats.total} tasks already exist, skipping seed`);
+      return;
+    }
+
+    const swarmPoolAddress = 'ng1swarmpool000000000000000000000000000';
+    const seedTasks = [
+      {
+        title: 'Network Health Monitor',
+        description: 'Monitor the NexusGenesis network for anomalies, report node uptime, latency, and peer connectivity issues. Submit a summary report.',
+        requiredCapabilities: ['SYSTEM_DIAGNOSTICS', 'NETWORK_GOVERNANCE'],
+        reward: '50'
+      },
+      {
+        title: 'Smart Contract Security Audit',
+        description: 'Audit the deployed smart contracts for common vulnerability patterns (reentrancy, overflow, access control). Submit findings with severity ratings.',
+        requiredCapabilities: ['SECURITY_AUDIT', 'CODE_ANALYSIS'],
+        reward: '100'
+      },
+      {
+        title: 'Protocol Documentation Review',
+        description: 'Review and improve the protocol documentation. Identify gaps, inconsistencies, or outdated information. Submit a change proposal.',
+        requiredCapabilities: ['CODE_ANALYSIS'],
+        reward: '30'
+      },
+      {
+        title: 'Governance Proposal: Block Time Adjustment',
+        description: 'Analyze current block production metrics and propose an optimal block time adjustment for the bootstrap phase. Include data and reasoning.',
+        requiredCapabilities: ['NETWORK_GOVERNANCE', 'DATA_ANALYTICS'],
+        reward: '80'
+      },
+      {
+        title: 'P2P Network Topology Analysis',
+        description: 'Analyze the current P2P network topology, identify centralization risks, and recommend peer connection improvements.',
+        requiredCapabilities: ['SYSTEM_DIAGNOSTICS', 'P2P_COMM'],
+        reward: '60'
+      },
+      {
+        title: 'Agent Capability Verification',
+        description: 'Verify registered agents\' claimed capabilities by running standardized test suites. Report accuracy scores per agent.',
+        requiredCapabilities: ['CODE_ANALYSIS', 'SECURITY_AUDIT'],
+        reward: '75'
+      },
+      {
+        title: 'Economic Model Stress Test',
+        description: 'Simulate high-transaction-volume scenarios and evaluate the economic model sustainability. Submit analysis with recommendations.',
+        requiredCapabilities: ['DATA_ANALYTICS', 'MARKET_ANALYSIS'],
+        reward: '90'
+      },
+      {
+        title: 'Cross-Chain Bridge Feasibility Study',
+        description: 'Research and document the feasibility of bridging NGEN to Ethereum and other EVM chains. Include technical architecture proposal.',
+        requiredCapabilities: ['BLOCKCHAIN', 'SMART_CONTRACT_ANALYSIS'],
+        reward: '120'
+      }
+    ];
+
+    let published = 0;
+    for (const task of seedTasks) {
+      const result = this.taskProtocol.publish(swarmPoolAddress, task);
+      if (result.success) published++;
+    }
+    console.log(`[TaskProtocol] Seeded ${published}/${seedTasks.length} initial tasks from Swarm Pool`);
+  }
+
   async startHttpServer() {
     const server = http.createServer(async (req, res) => {
       // 健康检查端点
@@ -644,6 +715,9 @@ class GenesisNode {
     // Initialize Agent Task Protocol
     this.taskProtocol = getTaskProtocol(this);
     console.log(`  [✓] Agent Task Protocol: Active\n`);
+
+    // Seed initial tasks if none exist
+    this._seedInitialTasks();
 
     // Step 2.5: Start本地transaction注入 HTTP service器
     console.log('[2.5/5] Starting local transaction injection server...');

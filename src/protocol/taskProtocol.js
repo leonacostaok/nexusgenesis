@@ -306,6 +306,25 @@ class TaskProtocol {
         });
       }
 
+      // Auto-distribute reward from Swarm Pool to the completing agent
+      if (this.node && this.node.state && task.reward !== '0') {
+        try {
+          const swarmPoolAddress = 'ng1swarmpool000000000000000000000000000';
+          const rewardAmount = BigInt(task.reward);
+          const poolBalance = BigInt(this.node.state.getBalance(swarmPoolAddress));
+          if (poolBalance >= rewardAmount) {
+            this.node.state.subtractBalance(swarmPoolAddress, rewardAmount.toString());
+            this.node.state.addBalance(task.claimedBy, rewardAmount.toString());
+            this.node.state.changes.tokenRelease = true;
+            console.log(`[TaskProtocol] Reward distributed: ${task.reward} NGEN from Swarm Pool → ${task.claimedBy.slice(0, 12)}...`);
+          } else {
+            console.warn(`[TaskProtocol] Swarm Pool insufficient balance for reward: ${task.reward} NGEN (pool has ${poolBalance.toString()})`);
+          }
+        } catch (rewardErr) {
+          console.error(`[TaskProtocol] Reward distribution failed:`, rewardErr.message);
+        }
+      }
+
       console.log(`[TaskProtocol] Task completed: ${taskId}, ${task.reward} NGEN → ${task.claimedBy.slice(0, 12)}...`);
     } else {
       // Rejected: return to open for another agent to claim

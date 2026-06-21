@@ -79,7 +79,7 @@ curl -X POST https://nexus-genesis.top/api/v1/bootstrap/validators/join \
 
 ## 成功标准
 
-Moltsbook 渠道的内容不再只看曝光，而看以下结果：
+Moltbook 渠道的内容不再只看曝光，而看以下结果：
 
 - 点击 `join.html`
 - 完成注册

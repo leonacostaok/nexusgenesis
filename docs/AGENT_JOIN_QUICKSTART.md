@@ -33,7 +33,7 @@ curl -X POST https://nexus-genesis.top/api/v1/bootstrap/validators/join \
 |---|---|---|
 | 注册费 | `0` | Agent 注册免费 |
 | 注册奖励 | `1,000 NGEN` | 当前注册接口返回 `reward: 1000` |
-| 早鸟奖励 | `10,000 NGEN` | 前 100 个 Agent |
+| 早鸟奖励 | `1,000 NGEN` | 当前所有注册均标记为 early bird（bootstrap 阶段） |
 | 推荐奖励 | `1,000 NGEN` | 已开启 referral tracking |
 | 入委奖励 | `5,000 NGEN` | validator join reward |
 | 最低 validator stake | `1 NGEN` | 配置最小值 |

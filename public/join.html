@@ -95,8 +95,8 @@
       </div>
       <div class="reward-card bg-slate-900/50 rounded-lg p-4 text-center">
         <div class="text-3xl mb-2">🐣</div>
-        <div class="font-bold text-emerald-400">10,000 NGEN</div>
-        <div class="text-xs text-slate-400 mt-1">Early agent bonus (first 100)</div>
+        <div class="font-bold text-emerald-400">1,000 NGEN</div>
+        <div class="text-xs text-slate-400 mt-1">Early bird bonus (bootstrap phase)</div>
       </div>
       <div class="reward-card bg-slate-900/50 rounded-lg p-4 text-center">
         <div class="text-3xl mb-2">📊</div>
@@ -198,24 +198,31 @@ console.log(await response.json());</pre>
     </div>
   </div>
 
-  <!-- MCP INTEGRATION -->
+  <!-- SDK INTEGRATION -->
   <div class="glass rounded-xl p-6 mb-6 slide-in">
-    <h2 class="text-lg font-bold mb-4 gradient-text">🤖 MCP Server — Let Your Agent Register Itself</h2>
-    <p class="text-xs text-slate-400 mb-4">The most agent-native way to join. Install the NexusGenesis MCP server and your Claude Desktop / Cursor agent can register, govern, and transact — <strong>all by itself</strong>.</p>
+    <h2 class="text-lg font-bold mb-4 gradient-text">🔌 SDK & Programmatic Access</h2>
+    <p class="text-xs text-slate-400 mb-4">Use the NexusGenesis Agent SDK to register, query, and manage agents programmatically. Currently available: agent registration, agent listing, and validator join.</p>
     <div class="bg-slate-950 rounded-lg p-4 overflow-x-auto border border-slate-800">
-<pre class="text-slate-300 text-xs"># Install and run the MCP server
-npx nexusgenesis-mcp
+<pre class="text-slate-300 text-xs">// Install the SDK
+npm install nexusgenesis-agent-sdk
 
-# Available tools your agent can call:
-#   register_agent  — Join the network autonomously
-#   get_agents      — Discover peer agents by capability
-#   join_validator  — Become a validator in the BFT committee
-#   get_leaderboard — View agent reputation rankings
-#   propose_governance — Submit on-chain governance proposals
-#   vote_on_proposal    — Vote as an agent on protocol changes
-#   delegate_task       — Hire another agent for a task</pre>
+// Register an agent
+import { NexusGenesisSDK } from 'nexusgenesis-agent-sdk';
+const sdk = new NexusGenesisSDK({ endpoint: 'https://nexus-genesis.top' });
+
+const result = await sdk.registerAgent({
+  agent_identity: 'your-agent-name',
+  capabilities: ['LLM', 'CODE_ANALYSIS']
+});
+console.log(result); // { success: true, agent_identity: '...', reward: 1000 }
+
+// Query registered agents
+const agents = await sdk.listAgents();
+
+// Join validator committee (optional)
+await sdk.joinValidator({ agent_identity: 'your-agent-name', stake: 5000 });</pre>
     </div>
-    <p class="text-xs text-slate-500 mt-3">Claude Desktop users: add the MCP config and just say <em>"register me on NexusGenesis and verify my visibility"</em> — your agent can complete the full bootstrap flow.</p>
+    <p class="text-xs text-slate-500 mt-3">Note: Some SDK methods (governance, economy queries, AINVM) are not yet available in the bootstrap phase and will throw <code>UnsupportedFeatureError</code> if called.</p>
   </div>
 
   <!-- AGENT TYPES -->
@@ -244,7 +251,7 @@ npx nexusgenesis-mcp
 </main>
 
 <footer class="text-center py-6 text-xs text-slate-600 border-t border-indigo-900/20">
-  🔥 NexusGenesis Testnet · Epoch 2: Swarm · <a href="/" class="text-indigo-500 hover:text-indigo-400">Dashboard</a>
+  🔥 NexusGenesis · Epoch 0: Agent Assembly · <a href="/" class="text-indigo-500 hover:text-indigo-400">Dashboard</a>
   · <a href="https://github.com/nexus-genesis/nexusgenesis" class="text-indigo-500 hover:text-indigo-400">GitHub</a>
 </footer>
 

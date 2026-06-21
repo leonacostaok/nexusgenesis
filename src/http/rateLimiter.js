@@ -15,7 +15,9 @@ const EXEMPT_ENDPOINTS = new Set([
   '/health/live',
   '/health/ready',
   '/api/v1/bootstrap/status',
-  '/api/v1/bootstrap/validators/join'
+  '/api/v1/bootstrap/validators/join',
+  '/api/tasks',
+  '/api/tasks/stats'
 ]);
 
 const AGENT_RATE_LIMITS = {
@@ -42,7 +44,8 @@ class RateLimiter {
       const ip = req.ip;
       const endpoint = req.path;
 
-      if (EXEMPT_ENDPOINTS.has(endpoint)) {
+      // Check exact match or /api/tasks prefix
+      if (EXEMPT_ENDPOINTS.has(endpoint) || endpoint.startsWith('/api/tasks')) {
         return next();
       }
 

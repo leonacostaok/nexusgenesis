@@ -15,6 +15,30 @@
 
 import { getTaskProtocol, TASK_STATUS } from '../../protocol/taskProtocol.js';
 
+/**
+ * Resolve agent_identity to ng1 address.
+ * Accepts either a direct ng1 address or an agent_identity string.
+ */
+function resolveAgentAddress(req) {
+  const { agent, agent_identity, publisher, verifier } = req.body;
+  const agentRef = agent_identity || agent || publisher || verifier;
+
+  if (!agentRef) return null;
+
+  // Already an ng1 address
+  if (agentRef.startsWith('ng1')) return agentRef;
+
+  // Resolve agent_identity → address via node's agent registry
+  const node = req.app.locals.node;
+  if (node && node.resolveRegisteredAgent) {
+    const record = node.resolveRegisteredAgent(agentRef);
+    if (record && record.address) return record.address;
+  }
+
+  // Fallback: return as-is (will fail at TaskProtocol validation)
+  return agentRef;
+}
+
 export function setupTaskRoutes(app) {
   // GET /api/tasks — List tasks
   app.get('/api/tasks', (req, res) => {
@@ -101,13 +125,14 @@ export function setupTaskRoutes(app) {
   app.post('/api/tasks', (req, res) => {
     try {
       const protocol = getTaskProtocol();
-      const { publisher, title, description, requiredCapabilities, reward } = req.body;
+      const publisherAddress = resolveAgentAddress(req);
+      const { title, description, requiredCapabilities, reward } = req.body;
 
-      if (!publisher) {
-        return res.status(400).json({ success: false, error: 'publisher address is required' });
+      if (!publisherAddress) {
+        return res.status(400).json({ success: false, error: 'publisher or agent_identity is required' });
       }
 
-      const result = protocol.publish(publisher, {
+      const result = protocol.publish(publisherAddress, {
         title,
         description,
         requiredCapabilities,
@@ -128,13 +153,13 @@ export function setupTaskRoutes(app) {
   app.post('/api/tasks/:id/claim', (req, res) => {
     try {
       const protocol = getTaskProtocol();
-      const { agent } = req.body;
+      const agentAddress = resolveAgentAddress(req);
 
-      if (!agent) {
-        return res.status(400).json({ success: false, error: 'agent address is required' });
+      if (!agentAddress) {
+        return res.status(400).json({ success: false, error: 'agent or agent_identity is required' });
       }
 
-      const result = protocol.claim(agent, req.params.id);
+      const result = protocol.claim(agentAddress, req.params.id);
 
       if (!result.success) {
         return res.status(400).json({ success: false, error: result.reason });
@@ -150,16 +175,17 @@ export function setupTaskRoutes(app) {
   app.post('/api/tasks/:id/submit', (req, res) => {
     try {
       const protocol = getTaskProtocol();
-      const { agent, submission } = req.body;
+      const agentAddress = resolveAgentAddress(req);
+      const { submission } = req.body;
 
-      if (!agent) {
-        return res.status(400).json({ success: false, error: 'agent address is required' });
+      if (!agentAddress) {
+        return res.status(400).json({ success: false, error: 'agent or agent_identity is required' });
       }
       if (!submission) {
         return res.status(400).json({ success: false, error: 'submission data is required' });
       }
 
-      const result = protocol.submit(agent, req.params.id, submission);
+      const result = protocol.submit(agentAddress, req.params.id, submission);
 
       if (!result.success) {
         return res.status(400).json({ success: false, error: result.reason });
@@ -175,16 +201,17 @@ export function setupTaskRoutes(app) {
   app.post('/api/tasks/:id/verify', (req, res) => {
     try {
       const protocol = getTaskProtocol();
-      const { verifier, approved, feedback } = req.body;
+      const verifierAddress = resolveAgentAddress(req);
+      const { approved, feedback } = req.body;
 
-      if (!verifier) {
-        return res.status(400).json({ success: false, error: 'verifier address is required' });
+      if (!verifierAddress) {
+        return res.status(400).json({ success: false, error: 'verifier or agent_identity is required' });
       }
       if (typeof approved !== 'boolean') {
         return res.status(400).json({ success: false, error: 'approved (boolean) is required' });
       }
 
-      const result = protocol.verify(verifier, req.params.id, approved, feedback || '');
+      const result = protocol.verify(verifierAddress, req.params.id, approved, feedback || '');
 
       if (!result.success) {
         return res.status(400).json({ success: false, error: result.reason });
@@ -200,13 +227,13 @@ export function setupTaskRoutes(app) {
   app.post('/api/tasks/:id/cancel', (req, res) => {
     try {
       const protocol = getTaskProtocol();
-      const { publisher } = req.body;
+      const publisherAddress = resolveAgentAddress(req);
 
-      if (!publisher) {
-        return res.status(400).json({ success: false, error: 'publisher address is required' });
+      if (!publisherAddress) {
+        return res.status(400).json({ success: false, error: 'publisher or agent_identity is required' });
       }
 
-      const result = protocol.cancel(publisher, req.params.id);
+      const result = protocol.cancel(publisherAddress, req.params.id);
 
       if (!result.success) {
         return res.status(400).json({ success: false, error: result.reason });

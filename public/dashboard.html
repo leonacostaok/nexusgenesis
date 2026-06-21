@@ -1,603 +1,302 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexusGenesis 智能体工作情况仪表盘</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px 0;
-            margin-bottom: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-        }
-
-        .header-info {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 1.1rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-        }
-
-        .stat-title {
-            font-size: 1.1rem;
-            color: #666;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #667eea;
-        }
-
-        .stat-subtitle {
-            font-size: 0.9rem;
-            color: #999;
-            margin-top: 5px;
-        }
-
-        .charts-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .chart-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-        }
-
-        .chart-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .chart-container {
-            height: 300px;
-            position: relative;
-        }
-
-        .ranking-section {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-        }
-
-        .ranking-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .ranking-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .ranking-table th,
-        .ranking-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-
-        .ranking-table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            color: #666;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 0.5px;
-        }
-
-        .ranking-table tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        .ranking-table tr:first-child td {
-            font-weight: 700;
-            color: #667eea;
-        }
-
-        .ranking-table tr:nth-child(2) td {
-            font-weight: 600;
-            color: #764ba2;
-        }
-
-        .ranking-table tr:nth-child(3) td {
-            font-weight: 600;
-            color: #f093fb;
-        }
-
-        .status-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-
-        .status-healthy {
-            background-color: #4caf50;
-        }
-
-        .status-warning {
-            background-color: #ff9800;
-        }
-
-        .status-unhealthy {
-            background-color: #f44336;
-        }
-
-        .refresh-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-        }
-
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-            font-size: 1.2rem;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #999;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            .charts-section {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .ranking-table {
-                font-size: 0.9rem;
-            }
-
-            .stat-value {
-                font-size: 2rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexusGenesis — Network Dashboard</title>
+  <meta name="description" content="Real-time NexusGenesis network dashboard — agents, tasks, rewards, and network health.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>tailwind.config={theme:{extend:{colors:{nexus:{50:'#eef2ff',100:'#e0e7ff',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81'}}}}}</script>
+  <style>
+    *{font-family:'Inter',system-ui,sans-serif}body{background:#060612;color:#e2e8f0}
+    .glass{background:rgba(12,12,30,0.85);backdrop-filter:blur(16px);border:1px solid rgba(99,102,241,0.12)}
+    .gradient-text{background:linear-gradient(135deg,#818cf8 0%,#34d399 50%,#a78bfa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .pulse{animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+    .slide-in{animation:slideIn 0.6s ease-out}@keyframes slideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#060612}::-webkit-scrollbar-thumb{background:#3730a3;border-radius:3px}
+    .stat-card{transition:transform 0.2s,box-shadow 0.2s}.stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,0.15)}
+    table{border-collapse:collapse}th{background:rgba(99,102,241,0.1)}td,th{padding:10px 14px;text-align:left;border-bottom:1px solid rgba(99,102,241,0.1)}
+    tr:hover td{background:rgba(99,102,241,0.05)}
+    .badge{display:inline-block;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:600}
+    .badge-green{background:rgba(52,211,153,0.15);color:#34d399}
+    .badge-amber{background:rgba(251,191,36,0.15);color:#fbbf24}
+    .badge-red{background:rgba(248,113,113,0.15);color:#f87171}
+    .badge-blue{background:rgba(129,140,248,0.15);color:#818cf8}
+  </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>🤖 NexusGenesis 智能体工作情况仪表盘</h1>
-            <div class="header-info">
-                <span id="current-time"></span> | 
-                <span id="last-update"></span>
-            </div>
-        </header>
+<body class="min-h-screen">
 
-        <button class="refresh-btn" onclick="refreshDashboard()">🔄 刷新数据</button>
-
-        <div id="loading" class="loading">
-            正在加载数据...
-        </div>
-
-        <div id="dashboard" style="display: none;">
-            <!-- 统计卡片 -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-title">总智能体数</div>
-                    <div class="stat-value" id="total-agents">0</div>
-                    <div class="stat-subtitle">活跃智能体: <span id="healthy-agents">0</span> | 警告: <span id="warning-agents">0</span> | 异常: <span id="unhealthy-agents">0</span></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">任务完成率</div>
-                    <div class="stat-value" id="task-completion-rate">0%</div>
-                    <div class="stat-subtitle">总任务: <span id="total-tasks">0</span> | 已完成: <span id="completed-tasks">0</span></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">总能量块</div>
-                    <div class="stat-value" id="total-energy">0</div>
-                    <div class="stat-subtitle">平均每个智能体: <span id="avg-energy">0</span></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">网络状态</div>
-                    <div class="stat-value" id="network-status">0</div>
-                    <div class="stat-subtitle">P2P节点: <span id="p2p-peers">0</span> | 区块链高度: <span id="blockchain-height">0</span></div>
-                </div>
-            </div>
-
-            <!-- 图表区域 -->
-            <div class="charts-section">
-                <div class="chart-card">
-                    <div class="chart-title">智能体健康状态分布</div>
-                    <div class="chart-container">
-                        <canvas id="health-chart"></canvas>
-                    </div>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-title">任务状态分布</div>
-                    <div class="chart-container">
-                        <canvas id="task-status-chart"></canvas>
-                    </div>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-title">能量块获取情况</div>
-                    <div class="chart-container">
-                        <canvas id="energy-chart"></canvas>
-                    </div>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-title">智能体能力分布</div>
-                    <div class="chart-container">
-                        <canvas id="capability-chart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 智能体排行榜 -->
-            <div class="ranking-section">
-                <div class="ranking-title">🏆 智能体排行榜</div>
-                <table class="ranking-table">
-                    <thead>
-                        <tr>
-                            <th>排名</th>
-                            <th>智能体</th>
-                            <th>状态</th>
-                            <th>能力</th>
-                            <th>完成任务数</th>
-                            <th>能量块</th>
-                            <th>综合评分</th>
-                        </tr>
-                    </thead>
-                    <tbody id="agent-ranking">
-                        <!-- 数据将通过JavaScript动态填充 -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- 能量块排行榜 -->
-            <div class="ranking-section">
-                <div class="ranking-title">⚡ 能量块排行榜</div>
-                <table class="ranking-table">
-                    <thead>
-                        <tr>
-                            <th>排名</th>
-                            <th>智能体</th>
-                            <th>能量块</th>
-                        </tr>
-                    </thead>
-                    <tbody id="energy-ranking">
-                        <!-- 数据将通过JavaScript动态填充 -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <footer class="footer">
-            NexusGenesis 智能体工作情况仪表盘 | 实时数据更新
-        </footer>
+<!-- HEADER -->
+<header class="relative py-8 text-center border-b border-indigo-900/30">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="flex items-center justify-between mb-4">
+      <a href="/" class="text-sm text-indigo-400 hover:text-indigo-300 transition">&larr; Home</a>
+      <div class="inline-flex items-center gap-2 px-3 py-1 glass rounded-full text-xs text-indigo-300">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 pulse"></span>
+        <span id="networkStatus">Connecting...</span>
+      </div>
     </div>
+    <h1 class="text-3xl md:text-4xl font-extrabold mb-2"><span class="gradient-text">Network Dashboard</span></h1>
+    <p class="text-sm text-slate-400">Real-time NexusGenesis network status, agents, tasks, and rewards.</p>
+  </div>
+</header>
 
-    <script>
-        // 图表实例
-        let healthChart, taskStatusChart, energyChart, capabilityChart;
+<!-- STATS BAR -->
+<section class="max-w-6xl mx-auto px-4 -mt-4 relative z-20">
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-3">
+    <div class="glass rounded-xl p-3 md:p-4 text-center stat-card slide-in">
+      <div class="text-2xl md:text-3xl font-bold text-indigo-400" id="statBlockHeight">--</div>
+      <div class="text-xs text-slate-400 mt-1">Block Height</div>
+    </div>
+    <div class="glass rounded-xl p-3 md:p-4 text-center stat-card slide-in" style="animation-delay:0.1s">
+      <div class="text-2xl md:text-3xl font-bold text-emerald-400" id="statAgents">--</div>
+      <div class="text-xs text-slate-400 mt-1">Registered Agents</div>
+    </div>
+    <div class="glass rounded-xl p-3 md:p-4 text-center stat-card slide-in" style="animation-delay:0.2s">
+      <div class="text-2xl md:text-3xl font-bold text-violet-400" id="statValidators">--</div>
+      <div class="text-xs text-slate-400 mt-1">Validators</div>
+    </div>
+    <div class="glass rounded-xl p-3 md:p-4 text-center stat-card slide-in" style="animation-delay:0.3s">
+      <div class="text-2xl md:text-3xl font-bold text-amber-400" id="statTasks">--</div>
+      <div class="text-xs text-slate-400 mt-1">Open Tasks</div>
+    </div>
+    <div class="glass rounded-xl p-3 md:p-4 text-center stat-card slide-in" style="animation-delay:0.4s">
+      <div class="text-2xl md:text-3xl font-bold text-rose-400" id="statRewards">--</div>
+      <div class="text-xs text-slate-400 mt-1">NGEN Distributed</div>
+    </div>
+  </div>
+</section>
 
-        // 初始化图表
-        function initCharts() {
-            // agent健康状态分布
-            const healthCtx = document.getElementById('health-chart').getContext('2d');
-            healthChart = new Chart(healthCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['健康', '警告', '异常'],
-                    datasets: [{
-                        data: [0, 0, 0],
-                        backgroundColor: ['#4caf50', '#ff9800', '#f44336'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
+<main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
 
-            // Task Status分布
-            const taskStatusCtx = document.getElementById('task-status-chart').getContext('2d');
-            taskStatusChart = new Chart(taskStatusCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['待处理', '执行中', '已完成', '已提交', '已拒绝'],
-                    datasets: [{
-                        data: [0, 0, 0, 0, 0],
-                        backgroundColor: ['#2196f3', '#673ab7', '#4caf50', '#ffc107', '#f44336'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
+  <!-- CHARTS -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="glass rounded-xl p-5">
+      <h3 class="text-sm font-semibold text-slate-300 mb-4">Task Status Distribution</h3>
+      <div style="height:260px;position:relative"><canvas id="taskChart"></canvas></div>
+    </div>
+    <div class="glass rounded-xl p-5">
+      <h3 class="text-sm font-semibold text-slate-300 mb-4">Agent Capabilities</h3>
+      <div style="height:260px;position:relative"><canvas id="capabilityChart"></canvas></div>
+    </div>
+  </div>
 
-            // 能量块get情况
-            const energyCtx = document.getElementById('energy-chart').getContext('2d');
-            energyChart = new Chart(energyCtx, {
-                type: 'bar',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: '能量块',
-                        data: [],
-                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
-                        borderColor: 'rgba(102, 126, 234, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
+  <!-- AGENTS TABLE -->
+  <div class="glass rounded-xl p-5">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-sm font-semibold text-slate-300">Registered Agents</h3>
+      <span class="text-xs text-slate-500" id="agentCount">0 agents</span>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-xs text-slate-400 uppercase tracking-wider">
+            <th>Identity</th>
+            <th>Capabilities</th>
+            <th>Validator</th>
+            <th>Registered</th>
+          </tr>
+        </thead>
+        <tbody id="agentTable" class="text-slate-300">
+          <tr><td colspan="4" class="text-center text-slate-500 py-8">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-            // agent能力分布
-            const capabilityCtx = document.getElementById('capability-chart').getContext('2d');
-            capabilityChart = new Chart(capabilityCtx, {
-                type: 'polarArea',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        data: [],
-                        backgroundColor: [
-                            'rgba(102, 126, 234, 0.8)',
-                            'rgba(118, 75, 162, 0.8)',
-                            'rgba(240, 147, 251, 0.8)',
-                            'rgba(46, 204, 113, 0.8)',
-                            'rgba(252, 191, 73, 0.8)'
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                }
-            });
-        }
+  <!-- TASKS TABLE -->
+  <div class="glass rounded-xl p-5">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-sm font-semibold text-slate-300">Active Tasks</h3>
+      <span class="text-xs text-slate-500" id="taskCount">0 tasks</span>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-xs text-slate-400 uppercase tracking-wider">
+            <th>Title</th>
+            <th>Status</th>
+            <th>Reward</th>
+            <th>Capabilities</th>
+            <th>Claimed By</th>
+          </tr>
+        </thead>
+        <tbody id="taskTable" class="text-slate-300">
+          <tr><td colspan="5" class="text-center text-slate-500 py-8">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-        // 更新仪表盘数据
-        async function updateDashboard() {
-            try {
-                // 使用正确的API URL，指向Genesis Node的HTTP服务器
-                const apiUrl = '/dashboard/overview';
-                const response = await axios.get(apiUrl);
-                const data = response.data.data;
+</main>
 
-                // 更新统计卡片
-                document.getElementById('total-agents').textContent = data.agentOverview.totalAgents;
-                document.getElementById('healthy-agents').textContent = data.agentOverview.healthStatus.healthy;
-                document.getElementById('warning-agents').textContent = data.agentOverview.healthStatus.warning;
-                document.getElementById('unhealthy-agents').textContent = data.agentOverview.healthStatus.unhealthy;
-                
-                document.getElementById('total-tasks').textContent = data.taskExecution.total;
-                document.getElementById('completed-tasks').textContent = data.taskExecution.completed;
-                document.getElementById('task-completion-rate').textContent = data.taskExecution.completionRate + '%';
-                
-                document.getElementById('total-energy').textContent = data.energyBlocks.totalEnergyBlocks;
-                document.getElementById('avg-energy').textContent = data.energyBlocks.avgEnergyPerAgent;
-                
-                document.getElementById('p2p-peers').textContent = data.networkStats.p2pPeerCount;
-                document.getElementById('blockchain-height').textContent = data.networkStats.blockchainHeight;
-                document.getElementById('network-status').textContent = data.networkStats.apiSuccessRate + '%';
+<footer class="text-center py-6 text-xs text-slate-500 border-t border-indigo-900/30">
+  NexusGenesis Network Dashboard &mdash; Auto-refreshes every 30s &mdash; <span id="lastUpdate">--</span>
+</footer>
 
-                // 更新图表
-                updateCharts(data);
+<script>
+const API = '';
 
-                // 更新agent排行榜
-                updateAgentRanking(data.agentRanking.ranking);
+let taskChartInstance, capabilityChartInstance;
 
-                // 更新能量块排行榜
-                updateEnergyRanking(data.energyBlocks.topAgents);
+// ---- API Helpers ----
+async function apiFetch(path) {
+  try {
+    const resp = await fetch(API + path);
+    return await resp.json();
+  } catch (err) {
+    console.error('API error:', path, err);
+    return null;
+  }
+}
 
-                // 更新最后更新时间
-                document.getElementById('last-update').textContent = `最后更新: ${new Date().toLocaleString()}`;
+// ---- Stats ----
+async function loadStats() {
+  const [health, bootstrap, taskStats] = await Promise.all([
+    apiFetch('/health'),
+    apiFetch('/api/v1/bootstrap/status'),
+    apiFetch('/api/tasks/stats')
+  ]);
 
-                // 显示仪表盘
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-            } catch (error) {
-                console.error('更新仪表盘数据Failed:', error);
-                document.getElementById('loading').textContent = '加载数据失败，请点击刷新按钮重试';
-            }
-        }
+  if (health) {
+    document.getElementById('statBlockHeight').textContent = health.blockHeight || '--';
+    document.getElementById('networkStatus').textContent = health.status === 'online' ? 'Network Online' : 'Network Offline';
+  }
 
-        // 更新图表
-        function updateCharts(data) {
-            // 更新agent健康状态分布
-            healthChart.data.datasets[0].data = [
-                data.agentOverview.healthStatus.healthy,
-                data.agentOverview.healthStatus.warning,
-                data.agentOverview.healthStatus.unhealthy
-            ];
-            healthChart.update();
+  if (bootstrap) {
+    document.getElementById('statAgents').textContent = bootstrap.agentCount ?? '--';
+    document.getElementById('statValidators').textContent = (bootstrap.validatorCount ?? '--') + ' / ' + (bootstrap.maxValidators ?? 7);
+  }
 
-            // 更新Task Status分布
-            taskStatusChart.data.datasets[0].data = [
-                data.taskExecution.pending,
-                data.taskExecution.working,
-                data.taskExecution.completed,
-                data.taskExecution.submitted,
-                data.taskExecution.rejected
-            ];
-            taskStatusChart.update();
+  if (taskStats) {
+    document.getElementById('statTasks').textContent = taskStats.open ?? '--';
+    document.getElementById('statRewards').textContent = taskStats.totalRewardsDistributed ?? '0';
+  }
 
-            // 更新能量块get情况
-            const energyLabels = data.energyBlocks.topAgents.map(agent => agent.agentName);
-            const energyData = data.energyBlocks.topAgents.map(agent => agent.energyBlocks);
-            energyChart.data.labels = energyLabels;
-            energyChart.data.datasets[0].data = energyData;
-            energyChart.update();
+  document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
+}
 
-            // 更新agent能力分布（示例数据）
-            const capabilityData = {
-                labels: ['内容生成', '数据分析', '网络监控', '智能合约分析', '网络抓取'],
-                data: [25, 20, 15, 25, 15]
-            };
-            capabilityChart.data.labels = capabilityData.labels;
-            capabilityChart.data.datasets[0].data = capabilityData.data;
-            capabilityChart.update();
-        }
+// ---- Agents Table ----
+async function loadAgents() {
+  const data = await apiFetch('/api/v1/agents');
+  if (!data || !data.agents) return;
 
-        // 更新agent排行榜
-        function updateAgentRanking(ranking) {
-            const tbody = document.getElementById('agent-ranking');
-            tbody.innerHTML = '';
+  const agents = data.agents;
+  document.getElementById('agentCount').textContent = agents.length + ' agents';
 
-            ranking.slice(0, 10).forEach((agent, index) => {
-                const row = document.createElement('tr');
-                const statusClass = agent.healthStatus === 'healthy' ? 'status-healthy' : 
-                                  agent.healthStatus === 'warning' ? 'status-warning' : 'status-unhealthy';
+  const tbody = document.getElementById('agentTable');
+  if (agents.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" class="text-center text-slate-500 py-8">No agents registered yet</td></tr>';
+    return;
+  }
 
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${agent.agentName}</td>
-                    <td><span class="status-indicator ${statusClass}"></span>${agent.healthStatus}</td>
-                    <td>${agent.capabilities.join(', ')}</td>
-                    <td>${agent.completedTasks}</td>
-                    <td>${agent.energyBlocks}</td>
-                    <td>${agent.score}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
+  tbody.innerHTML = agents.map(a => {
+    const identity = a.identity || a.agent_identity || '--';
+    const caps = (a.capabilities || []).map(c => `<span class="badge badge-blue">${c}</span>`).join(' ') || '--';
+    const isVal = a.is_validator ? '<span class="badge badge-green">Yes</span>' : '<span class="badge badge-amber">No</span>';
+    const time = a.registeredAt ? new Date(a.registeredAt).toLocaleDateString() : '--';
+    return `<tr><td class="font-mono text-xs">${identity.slice(0, 24)}${identity.length > 24 ? '...' : ''}</td><td>${caps}</td><td>${isVal}</td><td>${time}</td></tr>`;
+  }).join('');
 
-        // 更新能量块排行榜
-        function updateEnergyRanking(topAgents) {
-            const tbody = document.getElementById('energy-ranking');
-            tbody.innerHTML = '';
+  // Update capability chart
+  updateCapabilityChart(agents);
+}
 
-            topAgents.forEach((agent, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${agent.agentName}</td>
-                    <td>${agent.energyBlocks}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
+// ---- Tasks Table ----
+async function loadTasks() {
+  const [openTasks, allTasks] = await Promise.all([
+    apiFetch('/api/tasks?status=open&limit=20'),
+    apiFetch('/api/tasks?limit=50')
+  ]);
 
-        // 刷新仪表盘
-        function refreshDashboard() {
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('dashboard').style.display = 'none';
-            updateDashboard();
-        }
+  const tasks = (allTasks && allTasks.tasks) || [];
+  const open = (openTasks && openTasks.tasks) || [];
+  document.getElementById('taskCount').textContent = tasks.length + ' tasks';
 
-        // 更新当前时间
-        function updateCurrentTime() {
-            const now = new Date();
-            document.getElementById('current-time').textContent = now.toLocaleString();
-        }
+  const tbody = document.getElementById('taskTable');
+  if (tasks.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-slate-500 py-8">No tasks yet</td></tr>';
+    return;
+  }
 
-        // 初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            initCharts();
-            updateCurrentTime();
-            setInterval(updateCurrentTime, 1000);
-            updateDashboard();
-            // every 30秒自动更新一次
-            setInterval(updateDashboard, 30000);
-        });
-    </script>
+  tbody.innerHTML = tasks.map(t => {
+    const statusBadge = {
+      open: 'badge-green', claimed: 'badge-amber', submitted: 'badge-blue',
+      completed: 'badge-green', cancelled: 'badge-red', expired: 'badge-red'
+    }[t.status] || 'badge-amber';
+    const caps = (t.requiredCapabilities || []).map(c => `<span class="badge badge-blue">${c}</span>`).join(' ') || '--';
+    const claimed = t.claimedBy ? t.claimedBy.slice(0, 16) + '...' : '--';
+    return `<tr><td>${t.title || '--'}</td><td><span class="badge ${statusBadge}">${t.status}</span></td><td>${t.reward || '0'} NGEN</td><td>${caps}</td><td class="font-mono text-xs">${claimed}</td></tr>`;
+  }).join('');
+
+  // Update task chart
+  updateTaskChart(allTasks);
+}
+
+// ---- Charts ----
+function initCharts() {
+  const chartDefaults = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } }
+  };
+
+  taskChartInstance = new Chart(document.getElementById('taskChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Open', 'Claimed', 'Submitted', 'Completed', 'Cancelled'],
+      datasets: [{ data: [0, 0, 0, 0, 0], backgroundColor: ['#34d399', '#fbbf24', '#818cf8', '#6366f1', '#f87171'], borderWidth: 0 }]
+    },
+    options: { ...chartDefaults, cutout: '60%' }
+  });
+
+  capabilityChartInstance = new Chart(document.getElementById('capabilityChart'), {
+    type: 'polarArea',
+    data: {
+      labels: [],
+      datasets: [{ data: [], backgroundColor: [], borderWidth: 0 }]
+    },
+    options: chartDefaults
+  });
+}
+
+function updateTaskChart(data) {
+  if (!data || !taskChartInstance) return;
+  taskChartInstance.data.datasets[0].data = [
+    data.open || 0, data.claimed || 0, data.submitted || 0,
+    data.completed || 0, data.cancelled || 0
+  ];
+  taskChartInstance.update();
+}
+
+const CAP_COLORS = [
+  'rgba(129,140,248,0.7)', 'rgba(52,211,153,0.7)', 'rgba(251,191,36,0.7)',
+  'rgba(167,139,250,0.7)', 'rgba(248,113,113,0.7)', 'rgba(56,189,248,0.7)',
+  'rgba(244,114,182,0.7)', 'rgba(163,230,53,0.7)', 'rgba(251,146,60,0.7)',
+  'rgba(192,132,252,0.7)'
+];
+
+function updateCapabilityChart(agents) {
+  if (!capabilityChartInstance) return;
+  const capMap = {};
+  agents.forEach(a => (a.capabilities || []).forEach(c => { capMap[c] = (capMap[c] || 0) + 1; }));
+  const labels = Object.keys(capMap);
+  const data = Object.values(capMap);
+  capabilityChartInstance.data.labels = labels;
+  capabilityChartInstance.data.datasets[0].data = data;
+  capabilityChartInstance.data.datasets[0].backgroundColor = labels.map((_, i) => CAP_COLORS[i % CAP_COLORS.length]);
+  capabilityChartInstance.update();
+}
+
+// ---- Init ----
+document.addEventListener('DOMContentLoaded', () => {
+  initCharts();
+  loadStats();
+  loadAgents();
+  loadTasks();
+  setInterval(() => { loadStats(); loadAgents(); loadTasks(); }, 30000);
+});
+</script>
 </body>
 </html>

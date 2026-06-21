@@ -872,6 +872,189 @@ class Collaborations {
   }
 }
 
+// ==================== Task Module (TaskProtocol) ====================
+
+class TaskModule {
+  constructor(http, wallet, registry) {
+    this.http = http;
+    this.wallet = wallet;
+    this.registry = registry;
+  }
+
+  /**
+   * Get the agent_identity for the current agent.
+   * Falls back to wallet address if not registered via identity.
+   */
+  _agentRef() {
+    if (this.registry.registeredAgent) {
+      return this.registry.registeredAgent.agent_identity ||
+             this.registry.registeredAgent.identity ||
+             this.wallet.getAddress();
+    }
+    return this.wallet.getAddress();
+  }
+
+  /**
+   * List tasks with optional filters.
+   * @param {Object} filters - { status, limit, capabilities }
+   */
+  async list(filters = {}) {
+    const params = new URLSearchParams();
+    if (filters.status) params.set('status', filters.status);
+    if (filters.limit) params.set('limit', filters.limit);
+    const query = params.toString();
+    return this.http.get(`/api/tasks${query ? '?' + query : ''}`);
+  }
+
+  /**
+   * Get available (open) tasks, optionally filtered by capabilities.
+   * @param {string[]} capabilities - Filter by required capabilities
+   */
+  async pollAvailable(capabilities = []) {
+    const result = await this.list({ status: 'open', limit: 50 });
+    const tasks = result.tasks || [];
+
+    if (capabilities.length === 0) return tasks;
+
+    return tasks.filter(task => {
+      const required = task.requiredCapabilities || task.required_capabilities || [];
+      return capabilities.some(cap => required.includes(cap));
+    });
+  }
+
+  /**
+   * Get a specific task by ID.
+   */
+  async get(taskId) {
+    return this.http.get(`/api/tasks/${taskId}`);
+  }
+
+  /**
+   * Get task statistics.
+   */
+  async stats() {
+    return this.http.get('/api/tasks/stats');
+  }
+
+  /**
+   * Claim a task for the current agent.
+   */
+  async claim(taskId) {
+    return this.http.post(`/api/tasks/${taskId}/claim`, {
+      agent_identity: this._agentRef()
+    });
+  }
+
+  /**
+   * Submit task results.
+   * @param {string} taskId
+   * @param {Object} submission - The task result data
+   */
+  async submit(taskId, submission) {
+    return this.http.post(`/api/tasks/${taskId}/submit`, {
+      agent_identity: this._agentRef(),
+      submission
+    });
+  }
+
+  /**
+   * Verify (approve or reject) a task submission.
+   * Only the task publisher or a designated verifier can call this.
+   * @param {string} taskId
+   * @param {boolean} approved
+   * @param {string} feedback
+   */
+  async verify(taskId, approved, feedback = '') {
+    return this.http.post(`/api/tasks/${taskId}/verify`, {
+      agent_identity: this._agentRef(),
+      approved,
+      feedback
+    });
+  }
+
+  /**
+   * Publish a new task.
+   * @param {Object} taskData - { title, description, requiredCapabilities, reward }
+   */
+  async publish(taskData) {
+    return this.http.post('/api/tasks', {
+      agent_identity: this._agentRef(),
+      title: taskData.title,
+      description: taskData.description,
+      requiredCapabilities: taskData.requiredCapabilities || taskData.capabilities || [],
+      reward: taskData.reward || '10'
+    });
+  }
+
+  /**
+   * Cancel a task (publisher only).
+   */
+  async cancel(taskId) {
+    return this.http.post(`/api/tasks/${taskId}/cancel`, {
+      agent_identity: this._agentRef()
+    });
+  }
+
+  /**
+   * Run a complete task loop: poll → claim → execute → submit → verify.
+   * The `executeFn` callback receives the task data and must return the result.
+   * @param {Function} executeFn - async (task) => result
+   * @param {Object} options - { capabilities, pollInterval, maxAttempts }
+   */
+  async runLoop(executeFn, options = {}) {
+    const {
+      capabilities = [],
+      maxAttempts = 1
+    } = options;
+
+    const results = [];
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      // 1. Poll for available tasks
+      const tasks = await this.pollAvailable(capabilities);
+      if (tasks.length === 0) {
+        results.push({ attempt, status: 'no_tasks', message: 'No available tasks' });
+        continue;
+      }
+
+      // 2. Claim the first matching task
+      const task = tasks[0];
+      const claimResult = await this.claim(task.id);
+      if (!claimResult.success) {
+        results.push({ attempt, status: 'claim_failed', taskId: task.id, error: claimResult.error });
+        continue;
+      }
+
+      // 3. Execute the task
+      let submission;
+      try {
+        submission = await executeFn(task);
+      } catch (err) {
+        results.push({ attempt, status: 'execution_failed', taskId: task.id, error: err.message });
+        continue;
+      }
+
+      // 4. Submit the result
+      const submitResult = await this.submit(task.id, submission);
+      if (!submitResult.success) {
+        results.push({ attempt, status: 'submit_failed', taskId: task.id, error: submitResult.error });
+        continue;
+      }
+
+      results.push({
+        attempt,
+        status: 'submitted',
+        taskId: task.id,
+        taskTitle: task.title,
+        reward: task.reward,
+        submission
+      });
+    }
+
+    return results;
+  }
+}
+
 // ==================== Main SDK Class ====================
 
 class NexusAgentSDK extends EventEmitter {
@@ -901,6 +1084,7 @@ class NexusAgentSDK extends EventEmitter {
     this.ainvm = new AINVM(this.http, this.wallet);
     this.economic = new EconomicModel(this.http);
     this.collaborations = new Collaborations(this.http, this.wallet);
+    this.tasks = new TaskModule(this.http, this.wallet, this.registry);
 
     this._heartbeatTimer = null;
     this._connected = false;
@@ -1028,6 +1212,7 @@ export {
   AINVM,
   EconomicModel,
   Collaborations,
+  TaskModule,
   HttpClient
 };
 

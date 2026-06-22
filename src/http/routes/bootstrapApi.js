@@ -33,7 +33,9 @@ router.get('/api/v1/bootstrap', (req, res) => {
       contributions: '/api/v1/bootstrap/contributions',
       recentBlocks: '/api/v1/bootstrap/blocks/recent',
       registerAgent: '/api/v1/bootstrap/agents/register',
-      joinValidator: '/api/v1/bootstrap/validators/join'
+      joinValidator: '/api/v1/bootstrap/validators/join',
+      tasks: '/api/tasks',
+      taskStats: '/api/tasks/stats'
     }
   });
 });
@@ -59,12 +61,24 @@ router.get('/api/v1/bootstrap/status', (req, res) => {
       }
     }
 
+    const validatorCount = node.consensusState?.committee?.size || (1 + (node._validators?.size || 0));
+    const maxValidators = 7;
+
     res.json({
       success: true,
-      blockHeight, agentCount, totalNGENAwarded, uptime,
+      phase: 'bootstrap',
+      blockHeight,
+      agentCount,
+      validatorCount,
+      maxValidators,
+      totalNGENAwarded,
+      uptime,
+      blockTime: node.config?.blockTime || 5000,
+      gasPrice: '0',
+      networkId: node.config?.networkId || 'nexusgenesis-testnet',
       bootstrapExitProgress: {
         uptime: `${(uptime / 3600000).toFixed(1)}h/720h`,
-        validatorCount: `${node.consensusState?.committee?.size || (1 + (node._validators?.size || 0))}/7`,
+        validatorCount: `${validatorCount}/${maxValidators}`,
         canExit: false
       }
     });
@@ -285,10 +299,15 @@ router.post('/api/v1/bootstrap/validators/join', async (req, res) => {
       return res.status(409).json({ success: false, error: 'Agent already joined validator committee' });
     }
 
-    const wallet = agentWalletManager.getWalletInstance(agent_identity)
+    let wallet = agentWalletManager.getWalletInstance(agent_identity)
       || agentWalletManager.getWalletInstanceByAddress(registeredAgent.address);
     if (!wallet) {
-      return res.status(400).json({ success: false, error: 'Managed wallet not found for agent' });
+      // Auto-create wallet for externally registered agents
+      try {
+        wallet = agentWalletManager.createWallet(agent_identity);
+      } catch (createErr) {
+        return res.status(400).json({ success: false, error: `Failed to create wallet for agent: ${createErr.message}` });
+      }
     }
 
     const transaction = await createSignedValidatorJoinTransaction(wallet, {

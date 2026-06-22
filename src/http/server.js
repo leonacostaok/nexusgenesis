@@ -200,7 +200,8 @@ function warmupCache() {
       agentRegister: '/api/v1/bootstrap/agents/register',
       agentsList: '/api/v1/agents',
       validatorJoin: '/api/v1/bootstrap/validators/join',
-      dashboard: '/dashboard/overview'
+      tasks: '/api/tasks',
+      taskStats: '/api/tasks/stats'
     }
   });
   
@@ -1101,7 +1102,8 @@ app.get('/health', (req, res) => {
       agentRegister: '/api/v1/bootstrap/agents/register',
       agentsList: '/api/v1/agents',
       validatorJoin: '/api/v1/bootstrap/validators/join',
-      dashboard: '/dashboard/overview'
+      tasks: '/api/tasks',
+      taskStats: '/api/tasks/stats'
     }
   };
   

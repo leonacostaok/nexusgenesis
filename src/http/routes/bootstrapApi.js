@@ -115,7 +115,7 @@ router.get('/api/v1/bootstrap/agents', async (req, res) => {
       public_key: a.public_key || null
     }));
 
-    res.json({ agents: enriched, total: enriched.length });
+    res.json({ success: true, count: enriched.length, agents: enriched, total: enriched.length });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -231,6 +231,12 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
         agent_identity,
         agentId: agent_identity, // backward compat
         onChainAgentId: getAgentIdByAddress(walletInfo.address, node.currentState),
+        agent: {
+          agent_id: getAgentIdByAddress(walletInfo.address, node.currentState),
+          identity: agent_identity,
+          address: walletInfo.address,
+          capabilities: capabilities || []
+        },
         wallet: {
           address: walletInfo.address,
           publicKeyHex: walletInfo.publicKey,
@@ -268,6 +274,12 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
       onChainAgentId: transaction.id,
       applied: result.applied,
       blockHeight: result.blockHeight,
+      agent: {
+        agent_id: transaction.id,
+        identity: agent_identity,
+        address: walletInfo.address,
+        capabilities: capabilities || []
+      },
       wallet: {
         address: walletInfo.address,
         publicKeyHex: walletInfo.publicKey,

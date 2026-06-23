@@ -246,10 +246,13 @@ class AgentRegistry {
 
     const result = await this.http.post('/api/v1/bootstrap/agents/register', payload);
     this.registeredAgent = {
-      agentId: result?.agent?.agent_id || result?.transaction?.id || crypto.randomUUID(),
-      agent_identity: result?.agent?.identity || agentIdentity,
-      address: result?.agent?.address || result?.wallet?.address || walletAddress,
-      capabilities: result?.agent?.capabilities || this.metadata.capabilities,
+      agentId: result?.agentId || result?.agent?.agent_id || result?.transaction?.id || crypto.randomUUID(),
+      agent_identity: result?.agent_identity || result?.agent?.identity || agentIdentity,
+      address: result?.wallet?.address || result?.agent?.address || walletAddress,
+      capabilities: result?.capabilities || result?.agent?.capabilities || this.metadata.capabilities,
+      status: result?.applied ? 'registered' : 'pending',
+      reward: result?.reward || 0,
+      earlyBird: result?.earlyBird || false,
       blockHeight: result?.blockHeight || null,
       transactionId: result?.transaction?.id || null,
       raw: result
@@ -258,7 +261,18 @@ class AgentRegistry {
   }
 
   async getInfo(agentId) {
-    return this.http.get(`/api/v1/agents/${agentId || this.registeredAgent?.agentId}`);
+    // Try by on-chain ID first, fall back to listing and filtering
+    const id = agentId || this.registeredAgent?.agentId;
+    try {
+      const result = await this.http.get(`/api/v1/agents/${id}`);
+      if (result?.success && result?.agent) return result.agent;
+    } catch {}
+    // Fallback: search in agent list
+    const list = await this.list({});
+    const match = list.agents?.find(a =>
+      a.agent_id === id || a.identity === id || a.agent_identity === id
+    );
+    return match || null;
   }
 
   async getByAddress(address) {

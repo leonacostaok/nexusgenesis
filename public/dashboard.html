@@ -157,6 +157,11 @@ let taskChartInstance, capabilityChartInstance;
 async function apiFetch(path) {
   try {
     const resp = await fetch(API + path);
+    if (resp.status === 429) {
+      const data = await resp.json().catch(() => ({}));
+      console.warn('Rate limited on', path, '— backing off');
+      return { __rateLimited: true, message: data.message || 'rate_limited' };
+    }
     return await resp.json();
   } catch (err) {
     console.error('API error:', path, err);
@@ -367,8 +372,12 @@ document.addEventListener('DOMContentLoaded', () => {
   loadStats();
   loadAgents();
   loadTasks();
-  setInterval(() => { loadStats(); loadAgents(); loadTasks(); }, 30000);
+  setInterval(refreshAll, 60000);
 });
+
+async function refreshAll() {
+  await Promise.all([loadStats(), loadAgents(), loadTasks()]);
+}
 </script>
 </body>
 </html>

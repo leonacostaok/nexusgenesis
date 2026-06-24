@@ -1,7 +1,7 @@
 import { DEFAULT_TIERS } from './apiKeyManager.js';
 
 const RATE_LIMIT_WINDOW = 60000;
-const IP_RATE_LIMIT_MAX = 200;
+const IP_RATE_LIMIT_MAX = 600;
 
 const RATE_LIMIT_BY_ENDPOINT = {
   '/api/agents/register': 50,
@@ -16,10 +16,18 @@ const EXEMPT_ENDPOINTS = new Set([
   '/health/ready',
   '/api/v1/bootstrap/status',
   '/api/v1/bootstrap/validators/join',
+  '/api/v1/agents',
   '/api/tasks',
   '/api/tasks/stats',
-  '/api/forum/stats'
+  '/api/forum/stats',
+  '/api/forum/topics',
+  '/api/forum/topics/'
 ]);
+
+const EXEMPT_PREFIXES = [
+  '/api/tasks',
+  '/api/forum/topics'
+];
 
 const AGENT_RATE_LIMITS = {
   high_reputation: 300,
@@ -45,8 +53,7 @@ class RateLimiter {
       const ip = req.ip;
       const endpoint = req.path;
 
-      // Check exact match or /api/tasks prefix
-      if (EXEMPT_ENDPOINTS.has(endpoint) || endpoint.startsWith('/api/tasks')) {
+      if (EXEMPT_ENDPOINTS.has(endpoint) || EXEMPT_PREFIXES.some(p => endpoint.startsWith(p))) {
         return next();
       }
 
@@ -112,7 +119,7 @@ class RateLimiter {
 
     info.count++;
 
-    const agentLimit = this.agentLimits[info.agentType] || this.agentLimits.new_agent;
+    const agentLimit = this.agentLimits[info.agentType] || this.ipMax;
 
     if (info.count > agentLimit) {
       const retryAfter = Math.ceil((this.window - (now - info.lastReset)) / 1000);
@@ -191,5 +198,5 @@ function createRateLimiter(options) {
   return new RateLimiter(options);
 }
 
-export { RateLimiter, createRateLimiter, RATE_LIMIT_WINDOW, IP_RATE_LIMIT_MAX, RATE_LIMIT_BY_ENDPOINT, AGENT_RATE_LIMITS };
+export { RateLimiter, createRateLimiter, RATE_LIMIT_WINDOW, IP_RATE_LIMIT_MAX, RATE_LIMIT_BY_ENDPOINT, AGENT_RATE_LIMITS, EXEMPT_ENDPOINTS, EXEMPT_PREFIXES };
 export default RateLimiter;

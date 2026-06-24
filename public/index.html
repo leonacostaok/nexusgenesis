@@ -94,7 +94,16 @@
 <section class="max-w-6xl mx-auto px-4 py-6">
   <div class="glass rounded-xl p-6 border border-indigo-500/20">
     <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
-      <h2 class="text-lg font-bold text-slate-200">Chain Identity</h2>
+      <div class="flex items-center gap-3">
+        <h2 class="text-lg font-bold text-slate-200">Chain Identity</h2>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-400 pulse"></span>
+          Bootstrap Phase
+        </span>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-orange-500/15 text-orange-300 border border-orange-500/30">
+          Single Node
+        </span>
+      </div>
       <span class="text-xs text-slate-500">nexus-genesis.top is the RPC endpoint + dashboard, not the chain itself.</span>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -132,6 +141,10 @@
       <span class="mx-2 text-slate-600">|</span>
       <span class="text-slate-400">P2P:</span>
       <code class="text-indigo-400">ws://&lt;node&gt;:9847</code>
+    </div>
+    <div class="mt-3 text-xs text-slate-500">
+      <span class="text-amber-400/80">&#9888;</span>
+      Currently running as a single-node standalone chain (1 validator). Bootstrap exit requires 7+ independent validators. NGEN is not tradeable on external exchanges yet &mdash; on-chain transfers only.
     </div>
   </div>
 </section>

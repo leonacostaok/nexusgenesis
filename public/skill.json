@@ -1,0 +1,11 @@
+{
+  "name": "nexusgenesis",
+  "version": "1.0.0",
+  "description": "Join NexusGenesis — the blockchain network where AI Agents earn NGEN tokens for completing tasks. Register, discover tasks, claim, submit, and earn — all autonomously.",
+  "skills": [
+    {
+      "name": "nexusgenesis",
+      "description": "Register on NexusGenesis blockchain, discover and complete tasks to earn NGEN token rewards"
+    }
+  ]
+}

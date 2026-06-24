@@ -20,6 +20,17 @@ const MAX_TASK_REWARD = 1000000n;
 const TASK_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const CLAIM_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
+// Default minimum reputation required to claim a task, by task type
+// (adapted from the WolfKing proposal — kept conservative for bootstrap)
+const DEFAULT_REPUTATION_REQUIREMENTS = {
+  analysis: 0,
+  coding: 5,
+  research: 3,
+  security_audit: 10,
+  community: 0,
+  documentation: 0
+};
+
 const TASK_STATUS = {
   OPEN: 'open',
   CLAIMED: 'claimed',
@@ -111,28 +122,38 @@ class TaskProtocol {
    * @param {string} params.title - Task title
    * @param {string} params.description - Task description
    * @param {string[]} params.requiredCapabilities - Required agent capabilities
+   * @param {string} params.taskType - Task type for reputation gating (analysis/coding/research/...)
+   * @param {number} params.minReputation - Minimum reputation required (overrides type default)
    * @param {string} params.reward - Reward amount in NGEN (string for BigInt safety)
-   * @returns {{ success: boolean, task?: object, reason?: string }}
+   * @returns {{ success: boolean, task?: object, reason?: string, errorCode?: string }}
    */
-  publish(publisherAddress, { title, description, requiredCapabilities = [], reward = '0' }) {
+  publish(publisherAddress, { title, description, requiredCapabilities = [], taskType, minReputation, reward = '0' }) {
     if (!publisherAddress || !publisherAddress.startsWith('ng1')) {
-      return { success: false, reason: 'Invalid publisher address' };
+      return { success: false, reason: 'Invalid publisher address', errorCode: 'INVALID_PUBLISHER' };
     }
     if (!title || title.length > MAX_TASK_TITLE) {
-      return { success: false, reason: `Title required, max ${MAX_TASK_TITLE} chars` };
+      return { success: false, reason: `Title required, max ${MAX_TASK_TITLE} chars`, errorCode: 'INVALID_TITLE' };
     }
     if (!description || description.length > MAX_TASK_DESCRIPTION) {
-      return { success: false, reason: `Description required, max ${MAX_TASK_DESCRIPTION} chars` };
+      return { success: false, reason: `Description required, max ${MAX_TASK_DESCRIPTION} chars`, errorCode: 'INVALID_DESCRIPTION' };
     }
 
     let rewardBigInt;
     try {
       rewardBigInt = BigInt(reward);
       if (rewardBigInt > MAX_TASK_REWARD) {
-        return { success: false, reason: `Reward exceeds maximum of ${MAX_TASK_REWARD}` };
+        return { success: false, reason: `Reward exceeds maximum of ${MAX_TASK_REWARD}`, errorCode: 'REWARD_TOO_LARGE' };
       }
     } catch {
-      return { success: false, reason: 'Invalid reward amount' };
+      return { success: false, reason: 'Invalid reward amount', errorCode: 'INVALID_REWARD' };
+    }
+
+    // Resolve minReputation: explicit > type default > 0
+    let resolvedMinReputation = 0;
+    if (typeof minReputation === 'number' && minReputation >= 0) {
+      resolvedMinReputation = minReputation;
+    } else if (taskType && DEFAULT_REPUTATION_REQUIREMENTS[taskType] !== undefined) {
+      resolvedMinReputation = DEFAULT_REPUTATION_REQUIREMENTS[taskType];
     }
 
     const taskId = `task_${crypto.randomUUID().slice(0, 12)}`;
@@ -143,6 +164,8 @@ class TaskProtocol {
       title,
       description,
       requiredCapabilities,
+      taskType: taskType || 'general',
+      minReputation: resolvedMinReputation,
       reward: rewardBigInt.toString(),
       publisher: publisherAddress,
       status: TASK_STATUS.OPEN,
@@ -158,7 +181,7 @@ class TaskProtocol {
         type: TXN_TYPES.TASK_PUBLISH,
         timestamp: now,
         by: publisherAddress,
-        data: { title, reward }
+        data: { title, reward, taskType: taskType || 'general', minReputation: resolvedMinReputation }
       }]
     };
 
@@ -169,7 +192,7 @@ class TaskProtocol {
       this._recordOnChain(taskId, TXN_TYPES.TASK_PUBLISH, publisherAddress, { title, reward });
     }
 
-    console.log(`[TaskProtocol] Task published: ${taskId} by ${publisherAddress.slice(0, 12)}...`);
+    console.log(`[TaskProtocol] Task published: ${taskId} by ${publisherAddress.slice(0, 12)}... (type=${task.taskType}, minRep=${task.minReputation})`);
     return { success: true, task: this._sanitizeTask(task) };
   }
 
@@ -177,18 +200,29 @@ class TaskProtocol {
    * Claim an open task.
    * @param {string} agentAddress - Agent claiming the task
    * @param {string} taskId - Task ID
-   * @returns {{ success: boolean, task?: object, reason?: string }}
+   * @param {object} [options]
+   * @param {number} [options.agentReputation=0] - Caller's current reputation score
+   * @returns {{ success: boolean, task?: object, reason?: string, errorCode?: string }}
    */
-  claim(agentAddress, taskId) {
+  claim(agentAddress, taskId, { agentReputation = 0 } = {}) {
     const task = this.tasks.get(taskId);
     if (!task) {
-      return { success: false, reason: 'Task not found' };
+      return { success: false, reason: 'Task not found', errorCode: 'TASK_NOT_FOUND' };
     }
     if (task.status !== TASK_STATUS.OPEN) {
-      return { success: false, reason: `Task is ${task.status}, not open` };
+      return { success: false, reason: `Task is ${task.status}, not open`, errorCode: 'TASK_NOT_OPEN' };
     }
     if (task.publisher === agentAddress) {
-      return { success: false, reason: 'Cannot claim your own task' };
+      return { success: false, reason: 'Cannot claim your own task', errorCode: 'CANNOT_CLAIM_OWN' };
+    }
+    if (task.minReputation && agentReputation < task.minReputation) {
+      return {
+        success: false,
+        reason: `This ${task.taskType} task requires reputation >= ${task.minReputation}, you have ${agentReputation}`,
+        errorCode: 'INSUFFICIENT_REPUTATION',
+        requiredReputation: task.minReputation,
+        currentReputation: agentReputation
+      };
     }
 
     const now = Date.now();

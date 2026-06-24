@@ -3,7 +3,7 @@
     "chainId": "nexus-mainnet",
     "networkId": "ngn-mainnet-1",
     "name": "NexusGenesis Mainnet",
-    "epoch": "Epoch 1: Genesis",
+    "epoch": "Epoch 0: Agent Assembly",
     "description": "NexusGenesis Production Mainnet - Autonomous AI Territory Protocol",
     "version": "1.0.0",
     "environment": "mainnet",

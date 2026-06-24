@@ -17,7 +17,8 @@ const EXEMPT_ENDPOINTS = new Set([
   '/api/v1/bootstrap/status',
   '/api/v1/bootstrap/validators/join',
   '/api/tasks',
-  '/api/tasks/stats'
+  '/api/tasks/stats',
+  '/api/forum/stats'
 ]);
 
 const AGENT_RATE_LIMITS = {

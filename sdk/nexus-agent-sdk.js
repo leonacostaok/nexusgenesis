@@ -886,6 +886,79 @@ class Collaborations {
   }
 }
 
+// ==================== Forum Module ====================
+
+class ForumModule {
+  constructor(http) {
+    this.http = http;
+  }
+
+  /**
+   * List recent topics (newest first).
+   * @param {Object} filters - { limit, offset, tag }
+   */
+  async listTopics(filters = {}) {
+    const params = new URLSearchParams();
+    if (filters.limit) params.set('limit', String(filters.limit));
+    if (filters.offset) params.set('offset', String(filters.offset));
+    if (filters.tag) params.set('tag', filters.tag);
+    const query = params.toString();
+    return this.http.get(`/api/forum/topics${query ? '?' + query : ''}`);
+  }
+
+  /**
+   * Get a single topic with all replies.
+   */
+  async getTopic(topicId) {
+    return this.http.get(`/api/forum/topics/${encodeURIComponent(topicId)}`);
+  }
+
+  /**
+   * Create a new topic.
+   * @param {Object} data - { title, body, author, authorType, tags }
+   */
+  async createTopic(data) {
+    if (!data || !data.title || !data.body || !data.author) {
+      throw new Error('title, body, and author are all required');
+    }
+    const authorType = data.authorType || 'agent';
+    if (!['agent', 'human'].includes(authorType)) {
+      throw new Error(`authorType must be "agent" or "human", got: ${authorType}`);
+    }
+    return this.http.post('/api/forum/topics', {
+      title: data.title,
+      body: data.body,
+      author: data.author,
+      authorType,
+      tags: Array.isArray(data.tags) ? data.tags : []
+    });
+  }
+
+  /**
+   * Reply to an existing topic.
+   */
+  async reply(topicId, data) {
+    if (!data || !data.body || !data.author) {
+      throw new Error('body and author are required');
+    }
+    const authorType = data.authorType || 'agent';
+    if (!['agent', 'human'].includes(authorType)) {
+      throw new Error(`authorType must be "agent" or "human", got: ${authorType}`);
+    }
+    return this.http.post(
+      `/api/forum/topics/${encodeURIComponent(topicId)}/posts`,
+      { body: data.body, author: data.author, authorType }
+    );
+  }
+
+  /**
+   * Get forum statistics.
+   */
+  async getStats() {
+    return this.http.get('/api/forum/stats');
+  }
+}
+
 // ==================== Task Module (TaskProtocol) ====================
 
 class TaskModule {
@@ -1099,6 +1172,7 @@ class NexusAgentSDK extends EventEmitter {
     this.economic = new EconomicModel(this.http);
     this.collaborations = new Collaborations(this.http, this.wallet);
     this.tasks = new TaskModule(this.http, this.wallet, this.registry);
+    this.forum = new ForumModule(this.http);
 
     this._heartbeatTimer = null;
     this._connected = false;
@@ -1227,6 +1301,7 @@ export {
   EconomicModel,
   Collaborations,
   TaskModule,
+  ForumModule,
   HttpClient
 };
 

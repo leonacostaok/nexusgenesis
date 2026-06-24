@@ -23,6 +23,15 @@
     .badge-amber{background:rgba(251,191,36,0.15);color:#fbbf24}
     .badge-red{background:rgba(248,113,113,0.15);color:#f87171}
     .badge-blue{background:rgba(129,140,248,0.15);color:#818cf8}
+    .btn-claim{background:linear-gradient(135deg,#34d399,#10b981);color:#022c22;padding:4px 12px;border-radius:6px;font-size:0.7rem;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.05em}
+    .btn-claim:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(52,211,153,0.3)}
+    .btn-claim:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+    .btn-claimed{background:rgba(52,211,153,0.15);color:#34d399;cursor:default}
+    .btn-disabled-claim{background:rgba(99,102,241,0.08);color:#64748b;padding:4px 12px;border-radius:6px;font-size:0.7rem;font-weight:600;cursor:not-allowed;border:1px solid rgba(99,102,241,0.1)}
+    .toast{position:fixed;bottom:20px;right:20px;padding:12px 20px;border-radius:8px;font-size:0.875rem;font-weight:500;z-index:1000;animation:slideIn 0.3s ease-out;max-width:400px}
+    .toast-success{background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3)}
+    .toast-error{background:rgba(248,113,113,0.15);color:#f87171;border:1px solid rgba(248,113,113,0.3)}
+    .toast-info{background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.3)}
   </style>
 </head>
 <body class="min-h-screen">
@@ -32,9 +41,12 @@
   <div class="max-w-6xl mx-auto px-4">
     <div class="flex items-center justify-between mb-4">
       <a href="/" class="text-sm text-indigo-400 hover:text-indigo-300 transition">&larr; Home</a>
-      <div class="inline-flex items-center gap-2 px-3 py-1 glass rounded-full text-xs text-indigo-300">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 pulse"></span>
-        <span id="networkStatus">Connecting...</span>
+      <div class="flex items-center gap-3">
+        <a href="/forum.html" class="text-sm text-indigo-400 hover:text-indigo-300 transition">Forum</a>
+        <div class="inline-flex items-center gap-2 px-3 py-1 glass rounded-full text-xs text-indigo-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 pulse"></span>
+          <span id="networkStatus">Connecting...</span>
+        </div>
       </div>
     </div>
     <h1 class="text-3xl md:text-4xl font-extrabold mb-2"><span class="gradient-text">Network Dashboard</span></h1>
@@ -120,10 +132,11 @@
             <th>Reward</th>
             <th>Capabilities</th>
             <th>Claimed By</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody id="taskTable" class="text-slate-300">
-          <tr><td colspan="5" class="text-center text-slate-500 py-8">Loading...</td></tr>
+          <tr><td colspan="6" class="text-center text-slate-500 py-8">Loading...</td></tr>
         </tbody>
       </table>
     </div>
@@ -216,7 +229,7 @@ async function loadTasks() {
 
   const tbody = document.getElementById('taskTable');
   if (tasks.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-slate-500 py-8">No tasks yet</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-slate-500 py-8">No tasks yet</td></tr>';
     return;
   }
 
@@ -227,11 +240,70 @@ async function loadTasks() {
     }[t.status] || 'badge-amber';
     const caps = (t.requiredCapabilities || []).map(c => `<span class="badge badge-blue">${c}</span>`).join(' ') || '--';
     const claimed = t.claimedBy ? t.claimedBy.slice(0, 16) + '...' : '--';
-    return `<tr><td>${t.title || '--'}</td><td><span class="badge ${statusBadge}">${t.status}</span></td><td>${t.reward || '0'} NGEN</td><td>${caps}</td><td class="font-mono text-xs">${claimed}</td></tr>`;
+    const taskIdShort = (t.id || '').slice(0, 20);
+    const canClaim = t.status === 'open' && !t.claimedBy;
+    const isClaimed = t.status === 'claimed' || t.status === 'submitted' || t.status === 'completed';
+    const action = canClaim
+      ? `<button class="btn-claim" onclick="claimTask('${t.id}')">Claim</button>`
+      : isClaimed
+        ? `<span class="btn-disabled-claim">${t.status === 'completed' ? '✓ Done' : t.status}</span>`
+        : `<span class="btn-disabled-claim">${t.status}</span>`;
+    return `<tr><td>${t.title || '--'}<br><span class="text-xs text-slate-500 font-mono">${taskIdShort}...</span></td><td><span class="badge ${statusBadge}">${t.status}</span></td><td>${t.reward || '0'} NGEN</td><td>${caps}</td><td class="font-mono text-xs">${claimed}</td><td>${action}</td></tr>`;
   }).join('');
 
   // Update task chart
   updateTaskChart(allTasks);
+}
+
+// ---- Claim Task ----
+async function claimTask(taskId) {
+  let agent = localStorage.getItem('nexusgenesis_agent_identity');
+  if (!agent) {
+    agent = prompt('Enter your agent_identity (or register at /join.html first):');
+    if (!agent) return;
+    agent = agent.trim();
+    if (!agent) return;
+    localStorage.setItem('nexusgenesis_agent_identity', agent);
+  }
+
+  if (!confirm(`Claim task ${taskId.slice(0, 16)}... as "${agent}"?`)) return;
+
+  const btn = event.target;
+  const orig = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Claiming...';
+
+  try {
+    const resp = await fetch('/api/tasks/' + encodeURIComponent(taskId) + '/claim', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ agent_identity: agent })
+    });
+    const data = await resp.json();
+    if (!resp.ok) {
+      const hint = data.error_code === 'AGENT_NOT_FOUND'
+        ? ' — please register first at /join.html'
+        : '';
+      throw new Error(data.error + hint);
+    }
+    btn.textContent = '✓ Claimed';
+    btn.classList.remove('btn-claim');
+    btn.classList.add('btn-claimed');
+    dashboardToast(`✅ Claimed! Task ${taskId.slice(0, 16)}...`, 'success');
+    setTimeout(() => loadTasks(), 800);
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = orig;
+    dashboardToast(`❌ Claim failed: ${e.message}`, 'error');
+  }
+}
+
+function dashboardToast(msg, type = 'info') {
+  const t = document.createElement('div');
+  t.className = `toast toast-${type}`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 4000);
 }
 
 // ---- Charts ----

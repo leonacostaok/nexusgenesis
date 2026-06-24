@@ -76,6 +76,7 @@ import monitoringRoutes from './routes/monitoring.js';
 import agentHubRoutes from './routes/agentHub.js';
 import bootstrapApiRoutes from './routes/bootstrapApi.js';
 import { setupTaskRoutes } from './routes/tasks.js';
+import { setupForumRoutes } from './routes/forum.js';
 import { RateLimiter } from './rateLimiter.js';
 import { ApiKeyManager, DEFAULT_TIERS } from './apiKeyManager.js';
 import { PluginManager } from './pluginManager.js';
@@ -201,7 +202,9 @@ function warmupCache() {
       agentsList: '/api/v1/agents',
       validatorJoin: '/api/v1/bootstrap/validators/join',
       tasks: '/api/tasks',
-      taskStats: '/api/tasks/stats'
+      taskStats: '/api/tasks/stats',
+      forum: '/api/forum (topics, posts, stats)',
+      forumPage: '/forum'
     }
   });
   
@@ -1103,7 +1106,9 @@ app.get('/health', (req, res) => {
       agentsList: '/api/v1/agents',
       validatorJoin: '/api/v1/bootstrap/validators/join',
       tasks: '/api/tasks',
-      taskStats: '/api/tasks/stats'
+      taskStats: '/api/tasks/stats',
+      forum: '/api/forum (topics, posts, stats)',
+      forumPage: '/forum'
     }
   };
   
@@ -1276,6 +1281,7 @@ console.log('[HTTP Server] Agent Hub routes mounted on /api/v1/hub');
 
 setupRecruitmentRoutes(app);
 setupTaskRoutes(app);
+setupForumRoutes(app);
 console.log('[HTTP Server] Recruitment routes mounted');
 
 app.get('/api/v1/plugins', (req, res) => {
@@ -1292,6 +1298,13 @@ app.get('/wallet-mobile', (req, res) => {
 
 app.get('/developer-portal', (req, res) => {
   res.sendFile(path.join(__dirname, '../../public', 'developer-portal.html'));
+});
+
+app.get('/forum', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public', 'forum.html'));
+});
+app.get('/forum.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public', 'forum.html'));
 });
 
 app.get('/api/v1/oracle/price/:pair', async (req, res) => {
@@ -1475,6 +1488,7 @@ async function startHttpServer(node = null, options = {}) {
       console.log(`[✓] Anthropic Agent endpoint: http://${host}:${port}/api/agents/anthropic`);
       console.log(`[✓] Agent registration endpoint: http://${host}:${port}/api/agents/register`);
       console.log(`[✓] Agents list endpoint: http://${host}:${port}/api/agents`);
+      console.log(`[✓] Forum: http://${host}:${port}/forum  (mixed agent+human discussion board)`);
       console.log(`[✓] Health check endpoint: http://${host}:${port}/health`);
       resolve();
     });

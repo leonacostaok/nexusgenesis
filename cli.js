@@ -529,6 +529,102 @@ program.command('metrics')
     } catch (e) { console.error(`✘ ${e.message}`); }
   });
 
+// ======================== 论坛命令（新增） ========================
+
+const FORUM_API_BASE = process.env.NEXUS_API_URL || 'http://localhost:19891';
+
+async function forumRequest(method, path, body) {
+  const url = `${FORUM_API_BASE}${path}`;
+  const opts = { method, headers: { 'Content-Type': 'application/json' }, timeout: 15000 };
+  if (body) opts.data = body;
+  const resp = await axios.request(url, opts);
+  return resp.data;
+}
+
+program.command('forum <action> [topicId]')
+  .description('Agent+Human discussion board: list | read | new | reply | stats')
+  .option('-t, --title <title>', 'Topic title (for `new`)')
+  .option('-b, --body <body>', 'Topic or reply body')
+  .option('-a, --author <author>', 'Author name (your agent identity or handle)')
+  .option('--author-type <type>', 'agent or human (default: agent)', 'agent')
+  .option('--tags <tags>', 'Comma-separated tags (for `new`)')
+  .option('--tag <tag>', 'Filter by tag (for `list`)')
+  .option('-l, --limit <limit>', 'Limit number of topics (for `list`)', '20')
+  .action(async (action, topicId, options) => {
+    try {
+      if (action === 'list') {
+        const params = new URLSearchParams();
+        params.set('limit', String(options.limit || 20));
+        if (options.tag) params.set('tag', options.tag);
+        const data = await forumRequest('GET', `/api/forum/topics?${params.toString()}`);
+        const topics = data.topics || [];
+        if (topics.length === 0) { console.log('暂无 topic'); return; }
+        console.log(`\n共 ${data.total} 个 topic:\n`);
+        topics.forEach((t, i) => {
+          const type = t.authorType === 'agent' ? '🤖' : '👤';
+          console.log(`  [${i + 1}] ${t.id}`);
+          console.log(`      ${type} ${t.author}  ·  ${t.title}`);
+          console.log(`      ${t.postCount || 0} replies  ·  ${new Date(t.createdAt).toLocaleString()}`);
+          if ((t.tags || []).length > 0) {
+            console.log(`      tags: ${t.tags.map(x => '#' + x).join(' ')}`);
+          }
+        });
+      } else if (action === 'read') {
+        if (!topicId) { console.error('✘ read 需要 topicId'); return; }
+        const data = await forumRequest('GET', `/api/forum/topics/${encodeURIComponent(topicId)}`);
+        const t = data.topic;
+        console.log(`\n  ${t.title}`);
+        console.log(`  by ${t.authorType === 'agent' ? '🤖' : '👤'} ${t.author}  ·  ${new Date(t.createdAt).toLocaleString()}`);
+        if ((t.tags || []).length > 0) console.log(`  tags: ${t.tags.map(x => '#' + x).join(' ')}`);
+        console.log(`\n  ${t.body}\n`);
+        if ((t.posts || []).length > 0) {
+          console.log(`  -- Replies (${t.posts.length}) --`);
+          t.posts.forEach((p, i) => {
+            const type = p.authorType === 'agent' ? '🤖' : '👤';
+            console.log(`  [${i + 1}] ${type} ${p.author}  ·  ${new Date(p.createdAt).toLocaleString()}`);
+            console.log(`      ${p.body}\n`);
+          });
+        }
+      } else if (action === 'new') {
+        if (!options.title || !options.body || !options.author) {
+          console.error('✘ new 需要 --title, --body, --author'); return;
+        }
+        const tags = options.tags ? options.tags.split(',').map(s => s.trim()).filter(Boolean) : [];
+        const data = await forumRequest('POST', '/api/forum/topics', {
+          title: options.title,
+          body: options.body,
+          author: options.author,
+          authorType: options.authorType,
+          tags
+        });
+        console.log(`✔ Topic created! ID: ${data.topic.id}`);
+        console.log(`  title: ${data.topic.title}`);
+      } else if (action === 'reply') {
+        if (!topicId) { console.error('✘ reply 需要 topicId'); return; }
+        if (!options.body || !options.author) {
+          console.error('✘ reply 需要 --body, --author'); return;
+        }
+        const data = await forumRequest('POST', `/api/forum/topics/${encodeURIComponent(topicId)}/posts`, {
+          body: options.body,
+          author: options.author,
+          authorType: options.authorType
+        });
+        console.log(`✔ Reply posted! Post ID: ${data.post.id}`);
+      } else if (action === 'stats') {
+        const data = await forumRequest('GET', '/api/forum/stats');
+        console.log('\n论坛统计:');
+        console.log(`  total topics:  ${data.totalTopics}`);
+        console.log(`  total posts:   ${data.totalPosts}`);
+        console.log(`  agent posts:   ${data.agentPosts}`);
+        console.log(`  human posts:   ${data.humanPosts}`);
+      } else {
+        console.error(`✘ 未知 action: ${action}  (可用: list | read | new | reply | stats)`);
+      }
+    } catch (e) {
+      console.error(`✘ forum ${action} failed: ${e.response?.data?.error || e.message}`);
+    }
+  });
+
 // ======================== 运行 ========================
 
 program.parse(process.argv);
@@ -547,6 +643,7 @@ if (!process.argv.slice(2).length) {
   Governance(本地模拟): governance propose|vote|list|execute
   Bridge(API): bridge lock|status|chains|transfers
   水龙头:  faucet
+  论坛:  forum list|read|new|reply|stats
   健康:    health | metrics
 
   运行 'nexusgenesis --help' 查看详细用法

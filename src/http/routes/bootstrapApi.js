@@ -193,7 +193,7 @@ router.get('/api/v1/bootstrap/blocks/recent', (req, res) => {
     const recent = node.blockchain.slice(-count).reverse().map(b => ({
       index: b.header?.height ?? b.index,
       hash: b.hash || '',
-      timestamp: b.header?.timestamp ?? b.timestamp,
+      timestamp: block.header?.timestamp ?? block.timestamp,
       validator: b.validator || b.miner || 'genesis',
       transactions: (b.body?.transactions || b.transactions || []).length
     }));
@@ -207,12 +207,33 @@ router.get('/api/v1/bootstrap/blocks/recent', (req, res) => {
 router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
   try {
     const node = req.app.locals.node;
-    if (!node) return res.status(503).json({ success: false, error: 'Node not ready' });
+    if (!node) {
+      return res.status(503).json({
+        success: false,
+        error: 'Node not ready',
+        error_code: 'NODE_NOT_READY'
+      });
+    }
 
     // agent_identity is the canonical field; 'name' accepted for backward compat
     const agent_identity = req.body.agent_identity || req.body.name || req.body.agentId;
     const { capabilities = [], referrer } = req.body;
-    if (!agent_identity) return res.status(400).json({ success: false, error: 'agent_identity (or name) is required' });
+    if (!agent_identity) {
+      return res.status(400).json({
+        success: false,
+        error: 'agent_identity (or name) is required',
+        error_code: 'MISSING_AGENT_IDENTITY'
+      });
+    }
+
+    // Validate agent_identity format (3-64 chars, alphanumeric + hyphens/underscores)
+    if (!/^[a-zA-Z0-9_-]{3,64}$/.test(agent_identity)) {
+      return res.status(400).json({
+        success: false,
+        error: 'agent_identity must be 3-64 chars, alphanumeric with hyphens/underscores',
+        error_code: 'INVALID_AGENT_IDENTITY_FORMAT'
+      });
+    }
 
     const walletInfo = await agentWalletManager.createAgentWallet(agent_identity, {
       capabilities,
@@ -221,7 +242,11 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
     });
     const wallet = agentWalletManager.getWalletInstance(agent_identity);
     if (!wallet) {
-      return res.status(500).json({ success: false, error: 'Agent wallet not available' });
+      return res.status(500).json({
+        success: false,
+        error: 'Agent wallet not available',
+        error_code: 'WALLET_UNAVAILABLE'
+      });
     }
 
     if (isAddressRegistered(walletInfo.address, node.currentState)) {
@@ -256,7 +281,11 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
     });
     const validation = validateAgentRegisterTransaction(transaction);
     if (!validation.valid) {
-      return res.status(400).json({ success: false, error: validation.reason });
+      return res.status(400).json({
+        success: false,
+        error: validation.reason,
+        error_code: validation.reason?.includes('duplicate') ? 'AGENT_ALREADY_EXISTS' : 'INVALID_TRANSACTION'
+      });
     }
 
     const result = await node.submitOnChainTransaction(transaction, {
@@ -264,7 +293,11 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
       timeoutMs: 15000
     });
     if (!result.success) {
-      return res.status(400).json({ success: false, error: result.error });
+      return res.status(400).json({
+        success: false,
+        error: result.error,
+        error_code: 'TRANSACTION_SUBMISSION_FAILED'
+      });
     }
 
     res.status(result.applied ? 201 : 202).json({
@@ -290,25 +323,50 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
       totalAgents: getUnifiedAgents(node).length
     });
   } catch (e) {
-    res.status(500).json({ success: false, error: e.message });
+    res.status(500).json({
+      success: false,
+      error: e.message,
+      error_code: 'INTERNAL_ERROR'
+    });
   }
 });
 
 router.post('/api/v1/bootstrap/validators/join', async (req, res) => {
   try {
     const node = req.app.locals.node;
-    if (!node) return res.status(503).json({ success: false, error: 'Node not ready' });
+    if (!node) {
+      return res.status(503).json({
+        success: false,
+        error: 'Node not ready',
+        error_code: 'NODE_NOT_READY'
+      });
+    }
 
     // agent_identity is canonical; agentId accepted for backward compat
     const agent_identity = req.body.agent_identity || req.body.agentId;
     const { stake, nodeId } = req.body;
-    if (!agent_identity) return res.status(400).json({ success: false, error: 'agent_identity (or agentId) is required' });
+    if (!agent_identity) {
+      return res.status(400).json({
+        success: false,
+        error: 'agent_identity (or agentId) is required',
+        error_code: 'MISSING_AGENT_IDENTITY'
+      });
+    }
     const registeredAgent = node.resolveRegisteredAgent(agent_identity);
     if (!registeredAgent) {
-      return res.status(404).json({ success: false, error: 'Agent not registered on-chain' });
+      return res.status(404).json({
+        success: false,
+        error: 'Agent not registered on-chain. Please register first via /api/v1/bootstrap/agents/register.',
+        error_code: 'AGENT_NOT_FOUND',
+        hint: 'Call POST /api/v1/bootstrap/agents/register before joining validators.'
+      });
     }
     if (registeredAgent.is_validator) {
-      return res.status(409).json({ success: false, error: 'Agent already joined validator committee' });
+      return res.status(409).json({
+        success: false,
+        error: 'Agent already joined validator committee',
+        error_code: 'ALREADY_VALIDATOR'
+      });
     }
 
     let wallet = agentWalletManager.getWalletInstance(agent_identity)
@@ -318,7 +376,11 @@ router.post('/api/v1/bootstrap/validators/join', async (req, res) => {
       try {
         wallet = agentWalletManager.createWallet(agent_identity);
       } catch (createErr) {
-        return res.status(400).json({ success: false, error: `Failed to create wallet for agent: ${createErr.message}` });
+        return res.status(400).json({
+          success: false,
+          error: `Failed to create wallet for agent: ${createErr.message}`,
+          error_code: 'WALLET_CREATION_FAILED'
+        });
       }
     }
 
@@ -330,7 +392,11 @@ router.post('/api/v1/bootstrap/validators/join', async (req, res) => {
     });
     const validation = validateValidatorJoinTransaction(transaction);
     if (!validation.valid) {
-      return res.status(400).json({ success: false, error: validation.reason });
+      return res.status(400).json({
+        success: false,
+        error: validation.reason,
+        error_code: 'INVALID_TRANSACTION'
+      });
     }
 
     const result = await node.submitOnChainTransaction(transaction, {
@@ -338,7 +404,11 @@ router.post('/api/v1/bootstrap/validators/join', async (req, res) => {
       timeoutMs: 15000
     });
     if (!result.success) {
-      return res.status(400).json({ success: false, error: result.error });
+      return res.status(400).json({
+        success: false,
+        error: result.error,
+        error_code: 'TRANSACTION_SUBMISSION_FAILED'
+      });
     }
 
     res.status(result.applied ? 201 : 202).json({
@@ -354,7 +424,11 @@ router.post('/api/v1/bootstrap/validators/join', async (req, res) => {
       message: `Agent ${registeredAgent.identity || agent_identity} joined validator committee as ${transaction.payload.node_id}`
     });
   } catch (e) {
-    res.status(500).json({ success: false, error: e.message });
+    res.status(500).json({
+      success: false,
+      error: e.message,
+      error_code: 'INTERNAL_ERROR'
+    });
   }
 });
 

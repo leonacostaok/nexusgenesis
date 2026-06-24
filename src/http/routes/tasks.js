@@ -126,26 +126,36 @@ export function setupTaskRoutes(app) {
     try {
       const protocol = getTaskProtocol();
       const publisherAddress = resolveAgentAddress(req);
-      const { title, description, requiredCapabilities, reward } = req.body;
+      const { title, description, requiredCapabilities, reward, taskType, minReputation } = req.body;
 
       if (!publisherAddress) {
-        return res.status(400).json({ success: false, error: 'publisher or agent_identity is required' });
+        return res.status(400).json({
+          success: false,
+          error: 'publisher or agent_identity is required',
+          error_code: 'MISSING_PUBLISHER'
+        });
       }
 
       const result = protocol.publish(publisherAddress, {
         title,
         description,
         requiredCapabilities,
-        reward
+        reward,
+        taskType,
+        minReputation
       });
 
       if (!result.success) {
-        return res.status(400).json({ success: false, error: result.reason });
+        return res.status(400).json({
+          success: false,
+          error: result.reason,
+          error_code: result.errorCode || 'PUBLISH_FAILED'
+        });
       }
 
       res.status(201).json({ success: true, task: result.task });
     } catch (e) {
-      res.status(500).json({ success: false, error: e.message });
+      res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
     }
   });
 
@@ -153,21 +163,45 @@ export function setupTaskRoutes(app) {
   app.post('/api/tasks/:id/claim', (req, res) => {
     try {
       const protocol = getTaskProtocol();
+      const agentRef = req.body.agent_identity || req.body.agent || req.body.claimant;
       const agentAddress = resolveAgentAddress(req);
 
       if (!agentAddress) {
-        return res.status(400).json({ success: false, error: 'agent or agent_identity is required' });
+        return res.status(400).json({
+          success: false,
+          error: 'agent or agent_identity is required',
+          error_code: 'MISSING_AGENT'
+        });
       }
 
-      const result = protocol.claim(agentAddress, req.params.id);
+      // Look up the agent's reputation for the reputation-gating check
+      let agentReputation = 0;
+      const node = req.app.locals.node;
+      if (node && node.resolveRegisteredAgent && agentRef) {
+        const record = node.resolveRegisteredAgent(agentRef);
+        if (record && typeof record.reputation === 'number') {
+          agentReputation = record.reputation;
+        }
+      }
+
+      const result = protocol.claim(agentAddress, req.params.id, { agentReputation });
 
       if (!result.success) {
-        return res.status(400).json({ success: false, error: result.reason });
+        const status = result.errorCode === 'INSUFFICIENT_REPUTATION' ? 403
+          : result.errorCode === 'TASK_NOT_FOUND' ? 404
+          : 400;
+        return res.status(status).json({
+          success: false,
+          error: result.reason,
+          error_code: result.errorCode || 'CLAIM_FAILED',
+          requiredReputation: result.requiredReputation,
+          currentReputation: result.currentReputation
+        });
       }
 
       res.json({ success: true, task: result.task });
     } catch (e) {
-      res.status(500).json({ success: false, error: e.message });
+      res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
     }
   });
 

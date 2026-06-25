@@ -426,7 +426,7 @@ class AgentWalletManager {
     const entry = this.registry.get(agentId);
     if (!entry) return { success: false, reason: 'Agent wallet not found' };
 
-    const onChainBalance = blockchainState?.getBalanceOf?.(entry.wallet.address)
+    const onChainBalance = blockchainState?.getBalance?.(entry.wallet.address)
       || blockchainState?.balances?.[entry.wallet.address]
       || 0;
 

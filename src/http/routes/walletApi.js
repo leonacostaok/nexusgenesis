@@ -85,8 +85,8 @@ router.get('/balance/:address', (req, res) => {
     }
 
     // 回退到区块链状态
-    const state = req.app.locals.globalState;
-    const rawBalance = state?.getBalanceOf?.(address) || state?.balances?.[address] || 0;
+    const state = req.app.locals.state;
+    const rawBalance = state?.getBalance?.(address) || state?.balances?.[address] || 0;
     const balance = formatNgen(rawBalance);
 
     res.json({
@@ -130,7 +130,7 @@ router.get('/history/:address', (req, res) => {
       }
     }
 
-    const state = req.app.locals.globalState;
+    const state = req.app.locals.state;
     if (!state) {
       return res.json({ success: true, transactions: [], total: 0 });
     }
@@ -199,7 +199,7 @@ router.post('/transfer', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Invalid amount' });
     }
 
-    const state = req.app.locals.globalState;
+    const state = req.app.locals.state;
     if (!state) {
       return res.status(503).json({ success: false, error: 'Blockchain state not available' });
     }
@@ -238,7 +238,7 @@ router.post('/transfer', async (req, res) => {
 
     if (state.setBalance) {
       state.setBalance(fromAddress, senderBalance - total);
-      const recipientBalance = state.getBalanceOf?.(toAddress) || state.balances?.[toAddress] || 0;
+      const recipientBalance = state.getBalance?.(toAddress) || state.balances?.[toAddress] || 0;
       state.setBalance(toAddress, recipientBalance + amountNum);
     }
 
@@ -272,7 +272,7 @@ router.get('/info/:address', (req, res) => {
     }
 
     const agentId = agentWalletManager.getAgentByAddress(address);
-    const state = req.app.locals.globalState;
+    const state = req.app.locals.state;
 
     if (agentId) {
       const walletInfo = agentWalletManager.getAgentWallet(agentId);
@@ -302,7 +302,7 @@ router.get('/info/:address', (req, res) => {
       }
     }
 
-    const rawBalance = state?.getBalanceOf?.(address) || state?.balances?.[address] || 0;
+    const rawBalance = state?.getBalance?.(address) || state?.balances?.[address] || 0;
     const balance = formatNgen(rawBalance);
     const allTxns = state?.transactions || state?.getAllTransactions?.() || [];
     const txCount = allTxns.filter(tx =>
@@ -640,7 +640,7 @@ router.get('/assets', (req, res) => {
  * GET /api/v1/wallet/health
  */
 router.get('/health', (req, res) => {
-  const state = req.app.locals.globalState;
+  const state = req.app.locals.state;
   const stats = agentWalletManager.getStats();
 
   res.json({

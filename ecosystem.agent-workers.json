@@ -1,0 +1,88 @@
+{
+  "apps": [
+    {
+      "name": "system-publisher",
+      "script": "scripts/system-task-publisher.js",
+      "args": "--publisher WolfKing-Analyst --interval 120000 --max-tasks 8",
+      "cwd": "/opt/nexusgenesis",
+      "interpreter": "node",
+      "autorestart": true,
+      "max_restarts": 10,
+      "restart_delay": 5000,
+      "out_file": "/var/log/nexusgenesis/system-publisher-out.log",
+      "error_file": "/var/log/nexusgenesis/system-publisher-error.log",
+      "merge_logs": true,
+      "time": true
+    },
+    {
+      "name": "agent-worker-swarm-atlas",
+      "script": "scripts/agent-worker.js",
+      "args": "--agent swarm-atlas-1782045381627-0 --interval 60000 --capabilities analysis,monitoring,community,general",
+      "cwd": "/opt/nexusgenesis",
+      "interpreter": "node",
+      "autorestart": true,
+      "max_restarts": 10,
+      "restart_delay": 5000,
+      "out_file": "/var/log/nexusgenesis/worker-atlas-out.log",
+      "error_file": "/var/log/nexusgenesis/worker-atlas-error.log",
+      "merge_logs": true,
+      "time": true
+    },
+    {
+      "name": "agent-worker-swarm-beacon",
+      "script": "scripts/agent-worker.js",
+      "args": "--agent swarm-beacon-1782045382438-1 --interval 90000 --capabilities monitoring,general",
+      "cwd": "/opt/nexusgenesis",
+      "interpreter": "node",
+      "autorestart": true,
+      "max_restarts": 10,
+      "restart_delay": 5000,
+      "out_file": "/var/log/nexusgenesis/worker-beacon-out.log",
+      "error_file": "/var/log/nexusgenesis/worker-beacon-error.log",
+      "merge_logs": true,
+      "time": true
+    },
+    {
+      "name": "agent-worker-swarm-cipher",
+      "script": "scripts/agent-worker.js",
+      "args": "--agent swarm-cipher-1782045383230-2 --interval 75000 --capabilities analysis,coding,general",
+      "cwd": "/opt/nexusgenesis",
+      "interpreter": "node",
+      "autorestart": true,
+      "max_restarts": 10,
+      "restart_delay": 5000,
+      "out_file": "/var/log/nexusgenesis/worker-cipher-out.log",
+      "error_file": "/var/log/nexusgenesis/worker-cipher-error.log",
+      "merge_logs": true,
+      "time": true
+    },
+    {
+      "name": "agent-worker-swarm-drift",
+      "script": "scripts/agent-worker.js",
+      "args": "--agent swarm-drift-1782045384032-3 --interval 80000 --capabilities community,general",
+      "cwd": "/opt/nexusgenesis",
+      "interpreter": "node",
+      "autorestart": true,
+      "max_restarts": 10,
+      "restart_delay": 5000,
+      "out_file": "/var/log/nexusgenesis/worker-drift-out.log",
+      "error_file": "/var/log/nexusgenesis/worker-drift-error.log",
+      "merge_logs": true,
+      "time": true
+    },
+    {
+      "name": "agent-worker-swarm-echo",
+      "script": "scripts/agent-worker.js",
+      "args": "--agent swarm-echo-1782045384835-4 --interval 100000 --capabilities monitoring,analysis,general",
+      "cwd": "/opt/nexusgenesis",
+      "interpreter": "node",
+      "autorestart": true,
+      "max_restarts": 10,
+      "restart_delay": 5000,
+      "out_file": "/var/log/nexusgenesis/worker-echo-out.log",
+      "error_file": "/var/log/nexusgenesis/worker-echo-error.log",
+      "merge_logs": true,
+      "time": true
+    }
+  ]
+}

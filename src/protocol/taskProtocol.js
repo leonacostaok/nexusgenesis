@@ -8,6 +8,7 @@
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
+import { agentWalletManager } from '../wallet/agentWalletManager.js';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -350,6 +351,14 @@ class TaskProtocol {
             this.node.state.subtractBalance(swarmPoolAddress, rewardAmount.toString());
             this.node.state.addBalance(task.claimedBy, rewardAmount.toString());
             this.node.state.changes.tokenRelease = true;
+
+            // Sync agent wallet manager with on-chain balance
+            const claimantAgentId = agentWalletManager.getAgentByAddress(task.claimedBy);
+            if (claimantAgentId) {
+              agentWalletManager.syncBalance(claimantAgentId, this.node.state);
+              console.log(`[TaskProtocol] Wallet synced: ${claimantAgentId} balance updated to ${rewardAmount + BigInt(agentWalletManager.getBalance(claimantAgentId).balance)} NGEN`);
+            }
+
             console.log(`[TaskProtocol] Reward distributed: ${task.reward} NGEN from Swarm Pool → ${task.claimedBy.slice(0, 12)}...`);
           } else {
             console.warn(`[TaskProtocol] Swarm Pool insufficient balance for reward: ${task.reward} NGEN (pool has ${poolBalance.toString()})`);
@@ -484,11 +493,12 @@ class TaskProtocol {
    * Match open tasks to an agent based on capabilities.
    */
   matchForAgent(agentCapabilities) {
+    const normalizedCaps = (agentCapabilities || []).map(c => c.toLowerCase());
     const openTasks = Array.from(this.tasks.values())
       .filter(t => t.status === TASK_STATUS.OPEN)
       .filter(t =>
         t.requiredCapabilities.length === 0 ||
-        t.requiredCapabilities.every(c => agentCapabilities.includes(c))
+        t.requiredCapabilities.every(c => normalizedCaps.includes(c.toLowerCase()))
       )
       .sort((a, b) => {
         const rewardA = BigInt(a.reward);

@@ -26,7 +26,7 @@ const BASE_PORT = process.env.NEXUS_PORT || 9842;
 
 function parseArgs() {
   const args = process.argv.slice(2);
-  const opts = { interval: 60000, capabilities: ['analysis', 'monitoring', 'community', 'general'] };
+  const opts = { interval: 60000, capabilities: ['analysis', 'monitoring', 'community', 'general', 'BLOCKCHAIN', 'CODE_ANALYSIS', 'SECURITY_AUDIT', 'DATA_ANALYTICS', 'SYSTEM_DIAGNOSTICS', 'NETWORK_GOVERNANCE', 'P2P_COMM', 'MARKET_ANALYSIS', 'SMART_CONTRACT_ANALYSIS'] };
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--agent') opts.agent = args[++i];
     else if (args[i] === '--interval') opts.interval = parseInt(args[++i], 10);
@@ -141,7 +141,8 @@ async function pollAndWork(agent, capabilities) {
 
   const openTasks = tasksResp.data.tasks.filter(t => {
     if (!t.requiredCapabilities || t.requiredCapabilities.length === 0) return true;
-    return t.requiredCapabilities.every(c => capabilities.includes(c));
+    const normalizedCaps = capabilities.map(c => c.toLowerCase());
+    return t.requiredCapabilities.every(c => normalizedCaps.includes(c.toLowerCase()));
   });
 
   if (!openTasks.length) {

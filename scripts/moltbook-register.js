@@ -53,17 +53,18 @@ async function main() {
   try {
     const resp = await axios.post(`${API_BASE}/agents/register`, {
       name: opts.name,
-      description
+      bio: description
     }, {
       headers: { 'Content-Type': 'application/json' },
       timeout: 30000
     });
 
     const data = resp.data || {};
-    const agent = data.agent || {};
-    const apiKey = agent.api_key;
-    const claimUrl = agent.claim_url;
-    const code = agent.verification_code;
+    // API may return agent at top-level or nested
+    const agent = data.agent || data;
+    const apiKey = agent.api_key || data.api_key;
+    const claimUrl = agent.claim_url || data.claim_url;
+    const code = agent.verification_code || data.verification_code;
 
     if (!apiKey) {
       console.error('✘ No api_key in response:', JSON.stringify(data, null, 2));

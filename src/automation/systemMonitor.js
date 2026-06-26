@@ -919,7 +919,7 @@ class SystemMonitor {
         // Calculate过去24 hoursTask 数
         const now = Date.now();
         const past24h = now - 24 * 60 * 60 * 1000;
-        const recentTasks = tasksData.filter(task => task.createdAt && task.createdAt > past24h);
+        const recentTasks = Object.values(tasksData).filter(task => task.createdAt && task.createdAt > past24h);
         taskCreationRate = recentTasks.length / 24; // 平均每小时Create的Task数
       }
       return taskCreationRate;
@@ -942,7 +942,7 @@ class SystemMonitor {
         // Calculate过去24 hourswithincomplete的Task 数
         const now = Date.now();
         const past24h = now - 24 * 60 * 60 * 1000;
-        const completedTasks = tasksData.filter(task => task.completedAt && task.completedAt > past24h);
+        const completedTasks = Object.values(tasksData).filter(task => task.completedAt && task.completedAt > past24h);
         taskCompletionRate = completedTasks.length / 24; // 平均每小时complete的Task数
       }
       return taskCompletionRate;
@@ -964,7 +964,7 @@ class SystemMonitor {
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
         // CalculateCompletedTask 的AverageQuality score
-        const completedTasks = tasksData.filter(task => task.status === 'completed' && typeof task.qualityScore === 'number');
+        const completedTasks = Object.values(tasksData).filter(task => task.status === 'completed' && typeof task.qualityScore === 'number');
         scoredTasks = completedTasks.length;
         if (scoredTasks > 0) {
           totalScore = completedTasks.reduce((sum, task) => sum + task.qualityScore, 0);
@@ -1021,7 +1021,7 @@ class SystemMonitor {
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
         // Calculate能力匹配的Task 比例
-        const assignedTasks = tasksData.filter(task => task.agentId && task.agentCapabilities);
+        const assignedTasks = Object.values(tasksData).filter(task => task.agentId && task.agentCapabilities);
         totalTasks = assignedTasks.length;
         if (totalTasks > 0) {
           matchedTasks = assignedTasks.filter(task => {
@@ -1053,7 +1053,7 @@ class SystemMonitor {
         // Calculate协作Task 比例
         totalTasks = tasksData.length;
         if (totalTasks > 0) {
-          collaborativeTasks = tasksData.filter(task => task.agentIds && task.agentIds.length > 1).length;
+          collaborativeTasks = Object.values(tasksData).filter(task => task.agentIds && task.agentIds.length > 1).length;
           return collaborativeTasks / totalTasks;
         }
       }
@@ -1076,7 +1076,7 @@ class SystemMonitor {
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
         // Calculate长期Task 的Average进度
-        const longTerm = tasksData.filter(task => task.type === 'long_term' && typeof task.progress === 'number');
+        const longTerm = Object.values(tasksData).filter(task => task.type === 'long_term' && typeof task.progress === 'number');
         longTermTasks = longTerm.length;
         if (longTermTasks > 0) {
           totalProgress = longTerm.reduce((sum, task) => sum + task.progress, 0);
@@ -1102,7 +1102,7 @@ class SystemMonitor {
       if (fs.existsSync(tasksPath)) {
         const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
         // Calculate依赖满足的Task 比例
-        const dependentTasks = tasksData.filter(task => task.dependencies && task.dependencies.length > 0);
+        const dependentTasks = Object.values(tasksData).filter(task => task.dependencies && task.dependencies.length > 0);
         dependentTasks.forEach(task => {
           const dependencies = task.dependencies;
           totalDependencies += dependencies.length;

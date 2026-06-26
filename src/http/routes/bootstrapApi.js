@@ -193,7 +193,7 @@ router.get('/api/v1/bootstrap/blocks/recent', (req, res) => {
     const recent = node.blockchain.slice(-count).reverse().map(b => ({
       index: b.header?.height ?? b.index,
       hash: b.hash || '',
-      timestamp: block.header?.timestamp ?? block.timestamp,
+      timestamp: b.header?.timestamp ?? b.timestamp,
       validator: b.validator || b.miner || 'genesis',
       transactions: (b.body?.transactions || b.transactions || []).length
     }));

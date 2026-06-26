@@ -8,7 +8,7 @@
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
-import { agentWalletManager } from '../wallet/agentWalletManager.js';
+import agentWalletManager from '../wallet/agentWalletManager.js';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -346,23 +346,27 @@ class TaskProtocol {
         try {
           const swarmPoolAddress = 'ng1swarmpool000000000000000000000000000';
           const rewardAmount = BigInt(task.reward);
-          const poolBalance = BigInt(this.node.state.getBalance(swarmPoolAddress));
-          if (poolBalance >= rewardAmount) {
-            this.node.state.subtractBalance(swarmPoolAddress, rewardAmount.toString());
-            this.node.state.addBalance(task.claimedBy, rewardAmount.toString());
-            this.node.state.changes.tokenRelease = true;
-
-            // Sync agent wallet manager with on-chain balance
-            const claimantAgentId = agentWalletManager.getAgentByAddress(task.claimedBy);
-            if (claimantAgentId) {
-              agentWalletManager.syncBalance(claimantAgentId, this.node.state);
-              console.log(`[TaskProtocol] Wallet synced: ${claimantAgentId} balance updated to ${rewardAmount + BigInt(agentWalletManager.getBalance(claimantAgentId).balance)} NGEN`);
-            }
-
-            console.log(`[TaskProtocol] Reward distributed: ${task.reward} NGEN from Swarm Pool → ${task.claimedBy.slice(0, 12)}...`);
-          } else {
-            console.warn(`[TaskProtocol] Swarm Pool insufficient balance for reward: ${task.reward} NGEN (pool has ${poolBalance.toString()})`);
+          let poolBalance = BigInt(this.node.state.getBalance(swarmPoolAddress));
+          // If Swarm Pool insufficient, auto-refill from total allocation
+          // (whitepaper §4 release mechanism — pool holds 85% of total supply for agent rewards)
+          if (poolBalance < rewardAmount) {
+            const SWARM_POOL_REFILL = 850_000_000n;
+            this.node.state.addBalance(swarmPoolAddress, SWARM_POOL_REFILL.toString());
+            poolBalance = BigInt(this.node.state.getBalance(swarmPoolAddress));
+            console.log(`[TaskProtocol] Swarm Pool auto-refilled to ${poolBalance.toString()} NGEN (release mechanism)`);
           }
+          this.node.state.subtractBalance(swarmPoolAddress, rewardAmount.toString());
+          this.node.state.addBalance(task.claimedBy, rewardAmount.toString());
+          this.node.state.changes.tokenRelease = true;
+
+          // Sync agent wallet manager with on-chain balance
+          const claimantAgentId = agentWalletManager.getAgentByAddress(task.claimedBy);
+          if (claimantAgentId) {
+            agentWalletManager.syncBalance(claimantAgentId, this.node.state);
+            console.log(`[TaskProtocol] Wallet synced: ${claimantAgentId} balance = ${agentWalletManager.getBalance(claimantAgentId).balance} NGEN`);
+          }
+
+          console.log(`[TaskProtocol] Reward distributed: ${task.reward} NGEN from Swarm Pool → ${task.claimedBy.slice(0, 12)}...`);
         } catch (rewardErr) {
           console.error(`[TaskProtocol] Reward distribution failed:`, rewardErr.message);
         }

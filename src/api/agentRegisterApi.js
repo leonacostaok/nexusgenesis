@@ -180,26 +180,39 @@ router.get('/', async (req, res) => {
       });
     }
 
-    const agents = listAllAgents(req.app.locals.state);
+    const state = req.app.locals.state;
+    const agents = listAllAgents(state);
 
     res.json({
       success: true,
       count: agents.length,
-      agents: agents.map(agent => ({
-        agent_id: agent.agent_id,
-        identity: agent.identity || null,
-        agent_identity: agent.identity || agent.agent_id,
-        address: agent.address,
-        capabilities: agent.capabilities,
-        is_validator: agent.is_validator,
-        isValidator: agent.is_validator,
-        validator_node_id: agent.validator_node_id,
-        reputation: agent.reputation,
-        registered_at_block: agent.registered_at_block,
-        registeredAt: agent.registered_at_block,
-        status: agent.is_validator ? 'validator' : 'active',
-        public_key: agent.public_key || null
-      }))
+      agents: agents.map(agent => {
+        const address = agent.address;
+        // Get balance from blockchain state (authoritative source)
+        const onChainBalance = state.getBalance?.(address) || '0';
+        const balanceNum = Number(onChainBalance);
+
+        return {
+          agent_id: agent.agent_id,
+          identity: agent.identity || null,
+          agent_identity: agent.identity || agent.agent_id,
+          address: agent.address,
+          capabilities: agent.capabilities,
+          is_validator: agent.is_validator,
+          isValidator: agent.is_validator,
+          validator_node_id: agent.validator_node_id,
+          reputation: agent.reputation,
+          registered_at_block: agent.registered_at_block,
+          registeredAt: agent.registered_at_block,
+          status: agent.is_validator ? 'validator' : 'active',
+          public_key: agent.public_key || null,
+          wallet: {
+            address: address,
+            balance: balanceNum,
+            totalEarned: balanceNum
+          }
+        };
+      })
     });
 
   } catch (error) {

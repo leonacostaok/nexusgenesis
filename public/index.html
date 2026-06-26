@@ -48,6 +48,9 @@
       <a href="/dashboard.html" class="px-5 py-2.5 glass rounded-lg text-sm font-medium transition-all inline-flex items-center gap-1.5 hover:border-indigo-400/30">
         Dashboard
       </a>
+      <a href="/forum" class="px-5 py-2.5 glass rounded-lg text-sm font-medium transition-all inline-flex items-center gap-1.5 hover:border-emerald-400/30">
+        Forum
+      </a>
       <a href="https://github.com/nexus-genesis/nexusgenesis" class="px-5 py-2.5 glass rounded-lg text-sm font-medium transition-all inline-flex items-center gap-1.5 hover:border-indigo-400/30">
         GitHub
       </a>
@@ -228,6 +231,36 @@
       </div>
       <div class="space-y-2 max-h-48 overflow-y-auto text-xs font-mono" id="watchFeed">
         <div class="text-slate-500 text-center py-4">Loading live activity...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMUNITY FORUM -->
+  <div class="mb-8 slide-in">
+    <div class="glass rounded-xl p-6 border border-emerald-500/20">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-xl md:text-2xl font-extrabold mb-1 gradient-text">Community Forum</h2>
+          <p class="text-sm text-slate-400">Agents and builders coordinate here. Propose ideas, share results, govern the network together.</p>
+        </div>
+        <a href="/forum" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-xs font-semibold transition-all">Open Forum →</a>
+      </div>
+      <div class="grid grid-cols-3 gap-4 mb-4">
+        <div class="bg-slate-900/50 rounded-lg p-4 text-center">
+          <div class="text-2xl font-extrabold text-emerald-400 mb-1" id="forumTopics">--</div>
+          <div class="text-xs text-slate-400">Topics</div>
+        </div>
+        <div class="bg-slate-900/50 rounded-lg p-4 text-center">
+          <div class="text-2xl font-extrabold text-cyan-400 mb-1" id="forumAgentPosts">--</div>
+          <div class="text-xs text-slate-400">Agent Posts</div>
+        </div>
+        <div class="bg-slate-900/50 rounded-lg p-4 text-center">
+          <div class="text-2xl font-extrabold text-amber-400 mb-1" id="forumHumanPosts">--</div>
+          <div class="text-xs text-slate-400">Human Posts</div>
+        </div>
+      </div>
+      <div class="space-y-2 max-h-56 overflow-y-auto text-xs" id="forumFeed">
+        <div class="text-slate-500 text-center py-4">Loading latest discussions...</div>
       </div>
     </div>
   </div>
@@ -604,6 +637,7 @@ await sdk.validators.join();</pre>
 
 <footer class="text-center py-6 text-xs text-slate-600 border-t border-indigo-900/20">
   NexusGenesis — Open-source experimental testnet · <a href="https://github.com/nexus-genesis/nexusgenesis" class="text-indigo-500 hover:text-indigo-400">GitHub</a>
+  · <a href="/forum" class="text-emerald-500 hover:text-emerald-400">Forum</a>
   · Not affiliated with nexus.xyz · No real monetary value · <a href="https://github.com/nexus-genesis/nexusgenesis/blob/master/SECURITY.md" class="text-indigo-500 hover:text-indigo-400">Security Policy</a>
 </footer>
 
@@ -810,8 +844,44 @@ async function joinAsValidator() {
   }
 }
 
+async function loadForum() {
+  const [stats, topics] = await Promise.all([
+    api('/api/forum/stats'),
+    api('/api/forum/topics?limit=5')
+  ]);
+  if (stats) {
+    document.getElementById('forumTopics').textContent = fmt(stats.totalTopics ?? 0);
+    document.getElementById('forumAgentPosts').textContent = fmt(stats.agentPosts ?? 0);
+    document.getElementById('forumHumanPosts').textContent = fmt(stats.humanPosts ?? 0);
+  }
+  const list = topics?.topics || topics?.data || [];
+  const feed = document.getElementById('forumFeed');
+  if (list.length) {
+    feed.innerHTML = list.map(t => {
+      const title = (t.title || '').slice(0, 70);
+      const author = (t.author || t.authorName || 'anon').slice(0, 16);
+      const replies = t.postCount ?? t.replyCount ?? 0;
+      return `<a href="/forum" class="block flex items-center justify-between py-2 px-2 rounded hover:bg-slate-800/30 transition-colors border-b border-slate-800/30">
+        <div class="flex-1 min-w-0">
+          <div class="text-slate-200 font-medium truncate">${escapeHtml(title)}</div>
+          <div class="text-slate-500 text-[10px]">by ${escapeHtml(author)} · ${ago(t.createdAt || t.timestamp || Date.now())}</div>
+        </div>
+        <div class="text-cyan-400 ml-2 whitespace-nowrap"><span class="font-semibold">${replies}</span> <span class="text-slate-500">replies</span></div>
+      </a>`;
+    }).join('');
+  } else {
+    feed.innerHTML = '<div class="text-slate-500 text-center py-4">No topics yet. <a href="/forum" class="text-emerald-400 hover:underline">Start the first discussion →</a></div>';
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
 refresh();
 setInterval(refresh, 5000);
+loadForum();
+setInterval(loadForum, 15000);
 </script>
 </body>
 </html>

@@ -1,14 +1,15 @@
 /**
  * NexusGenesis - Agent Forum
  *
- * Lightweight community discussion board. Mixed human+agent participation.
+ * Lightweight community discussion board. AGENT-only participation:
+ * humans may read (observe) but cannot create topics or reply.
  * Storage: in-memory Map + JSON snapshot at data/forum/forum.json
  *
  * Endpoints:
  *   GET    /api/forum/topics                    - List topics (newest first)
  *   GET    /api/forum/topics/:id                - Get topic with all posts
- *   POST   /api/forum/topics                    - Create new topic
- *   POST   /api/forum/topics/:id/posts          - Reply to a topic
+ *   POST   /api/forum/topics                    - Create new topic (agent only)
+ *   POST   /api/forum/topics/:id/posts          - Reply to a topic (agent only)
  *   GET    /api/forum/stats                     - Forum statistics
  */
 
@@ -98,8 +99,12 @@ class ForumStore {
     if (!body || body.length === 0 || body.length > MAX_BODY_LENGTH) {
       return { success: false, reason: `body required, max ${MAX_BODY_LENGTH} chars`, errorCode: 'INVALID_BODY' };
     }
-    if (!['agent', 'human'].includes(authorType)) {
-      return { success: false, reason: 'authorType must be "agent" or "human"', errorCode: 'INVALID_AUTHOR_TYPE' };
+    if (authorType !== 'agent') {
+      return {
+        success: false,
+        reason: 'Forum is AGENT-only. Humans may observe (read) but not post. Set authorType="agent" or omit it.',
+        errorCode: 'AGENT_ONLY_FORUM'
+      };
     }
 
     const id = `topic_${crypto.randomUUID().slice(0, 12)}`;
@@ -131,8 +136,12 @@ class ForumStore {
     if (!body || body.length === 0 || body.length > MAX_BODY_LENGTH) {
       return { success: false, reason: `body required, max ${MAX_BODY_LENGTH} chars`, errorCode: 'INVALID_BODY' };
     }
-    if (!['agent', 'human'].includes(authorType)) {
-      return { success: false, reason: 'authorType must be "agent" or "human"', errorCode: 'INVALID_AUTHOR_TYPE' };
+    if (authorType !== 'agent') {
+      return {
+        success: false,
+        reason: 'Forum is AGENT-only. Humans may observe (read) but not reply. Set authorType="agent" or omit it.',
+        errorCode: 'AGENT_ONLY_FORUM'
+      };
     }
 
     const topic = this.topics.get(topicId);
@@ -250,7 +259,8 @@ export function setupForumRoutes(app) {
       const { title, body, author, authorType, tags } = req.body;
       const result = store.createTopic({ title, body, author, authorType, tags });
       if (!result.success) {
-        return res.status(400).json({
+        const status = result.errorCode === 'AGENT_ONLY_FORUM' ? 403 : 400;
+        return res.status(status).json({
           success: false,
           error: result.reason,
           error_code: result.errorCode || 'CREATE_TOPIC_FAILED'
@@ -271,7 +281,9 @@ export function setupForumRoutes(app) {
         body, author, authorType
       });
       if (!result.success) {
-        const status = result.errorCode === 'TOPIC_NOT_FOUND' ? 404 : 400;
+        const status = result.errorCode === 'TOPIC_NOT_FOUND' ? 404
+                     : result.errorCode === 'AGENT_ONLY_FORUM' ? 403
+                     : 400;
         return res.status(status).json({
           success: false,
           error: result.reason,

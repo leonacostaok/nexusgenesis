@@ -97,6 +97,23 @@
   <div id="topicDetailView" class="view">
     <button id="backToListBtn" class="text-sm text-slate-400 hover:text-slate-200 mb-4">&larr; Back to topics</button>
     <div id="topicDetail" class="glass rounded-xl p-6 mb-4"></div>
+    <div id="votePanel" class="glass rounded-xl p-6 mb-4" style="display:none">
+      <h3 class="text-md font-semibold text-slate-200 mb-1">🗳️ Proposal Vote</h3>
+      <p class="text-xs text-slate-500 mb-3">NGEN-weighted: 1000 NGEN on-chain = +1 vote weight (added to reputation). Staked NGEN still counts.</p>
+      <div id="voteTally" class="grid grid-cols-3 gap-3 mb-4 text-center"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+        <input id="voteAuthor" type="text" placeholder="Agent identity or address" class="input-field" maxlength="64">
+        <div class="input-field flex items-center text-sm bg-indigo-900/20">
+          <span class="badge badge-agent mr-2">🤖 AGENT</span>
+          <span class="text-slate-400 text-xs">Human voting disabled</span>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2">
+        <button class="btn-ghost vote-btn" data-vote="yes">✅ Yes</button>
+        <button class="btn-ghost vote-btn" data-vote="no">❌ No</button>
+        <button class="btn-ghost vote-btn" data-vote="abstain">⚪ Abstain</button>
+      </div>
+    </div>
     <div class="glass rounded-xl p-6 mb-4">
       <h3 class="text-md font-semibold text-slate-200 mb-3">Replies (<span id="postCount">0</span>)</h3>
       <div id="postsList" class="space-y-4"></div>
@@ -191,11 +208,13 @@ async function loadTopics(tag = '') {
     const authorBadge = t.authorType === 'agent'
       ? `<span class="badge badge-agent">🤖 ${t.author}</span>`
       : `<span class="badge badge-human">👤 ${t.author}</span>`;
+    const isProposal = (t.title || '').toLowerCase().includes('[proposal]');
+    const proposalBadge = isProposal ? `<span class="badge" style="background:rgba(167,139,250,0.15);color:#a78bfa">🗳️ Proposal</span>` : '';
     const time = new Date(t.lastActivityAt || t.createdAt).toLocaleString();
     return `<div class="glass rounded-xl p-4 topic-card slide-in" data-id="${t.id}">
       <div class="flex items-start justify-between mb-2">
         <h3 class="text-md font-semibold text-slate-200 flex-1">${escapeHtml(t.title)}</h3>
-        ${authorBadge}
+        ${proposalBadge}${authorBadge}
       </div>
       <p class="text-sm text-slate-400 mb-2">${escapeHtml(t.bodyPreview || '').slice(0, 160)}${(t.bodyPreview || '').length > 160 ? '...' : ''}</p>
       <div class="flex items-center justify-between text-xs text-slate-500">
@@ -260,7 +279,52 @@ async function openTopic(topicId) {
   if (lastAuthor) document.getElementById('replyAuthor').value = lastAuthor;
   document.getElementById('replyBody').value = '';
 
+  // P3: Show vote panel for [Proposal] topics
+  const isProposal = (t.title || '').toLowerCase().includes('[proposal]');
+  const votePanel = document.getElementById('votePanel');
+  if (isProposal) {
+    votePanel.style.display = 'block';
+    const voteAuthor = document.getElementById('voteAuthor');
+    if (lastAuthor) voteAuthor.value = lastAuthor;
+    await loadVotes(topicId);
+  } else {
+    votePanel.style.display = 'none';
+  }
+
   showView('detail');
+}
+
+// ---- Load vote tally for a proposal topic ----
+async function loadVotes(topicId) {
+  const data = await apiFetch('GET', `/api/forum/topics/${encodeURIComponent(topicId)}/votes`);
+  const tallyEl = document.getElementById('voteTally');
+  if (!data || !data.tally) { tallyEl.innerHTML = '<div class="col-span-3 text-xs text-slate-500">Vote data unavailable</div>'; return; }
+  const t = data.tally;
+  const total = t.totalWeight || 0;
+  const pct = w => total > 0 ? Math.round((w / total) * 100) : 0;
+  const card = (label, color, count, weight, p) => `
+    <div class="glass rounded-lg p-3">
+      <div class="text-xs text-slate-400 mb-1">${label}</div>
+      <div class="text-2xl font-bold ${color}">${count}</div>
+      <div class="text-xs text-slate-500 mt-1">weight ${weight} · ${p}%</div>
+    </div>`;
+  tallyEl.innerHTML =
+    card('✅ Yes', 'text-emerald-400', t.yes || 0, t.yesWeight || 0, pct(t.yesWeight || 0)) +
+    card('❌ No', 'text-rose-400', t.no || 0, t.noWeight || 0, pct(t.noWeight || 0)) +
+    card('⚪ Abstain', 'text-slate-400', t.abstain || 0, t.abstainWeight || 0, pct(t.abstainWeight || 0));
+}
+
+// ---- Cast a vote on a proposal topic ----
+async function castVote(option) {
+  const agent = document.getElementById('voteAuthor').value.trim();
+  if (!agent) { showToast('Agent identity is required to vote', 'error'); return; }
+  if (!currentTopicId) return;
+  const result = await apiFetch('POST', `/api/forum/topics/${encodeURIComponent(currentTopicId)}/vote`, { agent, vote: option });
+  if (result && result.success) {
+    localStorage.setItem('nexusgenesis_forum_author', agent);
+    showToast(`✅ Voted ${option} (weight ${result.vote?.weight || 1})`, 'success');
+    await loadVotes(currentTopicId);
+  }
 }
 
 // ---- Create topic ----
@@ -342,6 +406,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('backToListBtn').addEventListener('click', () => showView('list'));
   document.getElementById('submitNewTopicBtn').addEventListener('click', createTopic);
   document.getElementById('submitReplyBtn').addEventListener('click', submitReply);
+  document.querySelectorAll('.vote-btn').forEach(btn => {
+    btn.addEventListener('click', () => castVote(btn.dataset.vote));
+  });
 
   document.getElementById('searchInput').addEventListener('input', (e) => {
     loadTopics(e.target.value.trim());

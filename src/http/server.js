@@ -1465,11 +1465,18 @@ async function startHttpServer(node = null, options = {}) {
         return res.status(503).json({ success: false, error: 'Chain state not ready' });
       }
       const agents = state.agentRegistry.agents;
-      let endowed = 0, skipped = 0, failed = 0;
+      let endowed = 0, skipped = 0, failed = 0, validatorSkipped = 0;
       const results = [];
       for (const [agentId, record] of agents.entries()) {
         const addr = record.address;
         if (!addr) { failed++; continue; }
+        // Skip validators: their stake is locked in ng1staking and should
+        // not be topped up here. Their effective balance = on-chain balance
+        // + locked stake, which already reflects their full allocation.
+        if (record.is_validator) {
+          validatorSkipped++;
+          continue;
+        }
         const current = BigInt(state.getBalance(addr) || '0');
         if (current >= target) {
           skipped++;
@@ -1481,10 +1488,10 @@ async function startHttpServer(node = null, options = {}) {
         endowed++;
         results.push({ agentId, address: addr, before: current.toString(), topup: topup.toString(), after: target.toString() });
       }
-      console.log(`[ADMIN] endow-existing-agents: endowed=${endowed} skipped=${skipped} failed=${failed} target=${target.toString()}`);
+      console.log(`[ADMIN] endow-existing-agents: endowed=${endowed} skipped=${skipped} failed=${failed} validatorSkipped=${validatorSkipped} target=${target.toString()}`);
       res.json({
         success: true,
-        endowed, skipped, failed,
+        endowed, skipped, failed, validatorSkipped,
         target: target.toString(),
         results: results.slice(0, 50)
       });

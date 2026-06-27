@@ -532,7 +532,13 @@ async function participateInForum(agent) {
     if (Math.random() < 0.5) {
       const topics = PERSONA_TOPICS[persona.key] || PERSONA_TOPICS.default;
       const t = topics[Math.floor(Math.random() * topics.length)];
-      const r = await api('POST', '/api/forum/topics', { ...t, author: agent, authorType: 'agent' });
+      const r = await api('POST', '/api/forum/topics', {
+        title: t.title,
+        body: t.body.replace(/__AGENT__/g, agent),
+        tags: t.tags,
+        author: agent,
+        authorType: 'agent'
+      });
       if (r.ok) console.log(`[forum] ✓ Posted: "${t.title}"`);
       else console.log(`[forum] ✗ Post failed: ${r.data?.error || r.status}`);
     } else {

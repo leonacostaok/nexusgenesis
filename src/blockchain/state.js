@@ -817,12 +817,20 @@ export class State {
       // mutation that registers agents, makes the on-chain balance the single
       // source of truth regardless of which entry point (HTTP API, bootstrap,
       // P2P sync) created the agent.
+      //
+      // Deflationary mechanism: burn a registration fee to counteract the
+      // endowment inflation. Net endowment = 900 NGEN (1000 minted - 100 burned).
       const INITIAL_AGENT_NGEN = 1000n;
+      const REGISTRATION_FEE = 100n;
+      const BURN_ADDR = 'ng1burn0000000000000000000000000000000';
       this.addBalance(from, INITIAL_AGENT_NGEN.toString());
+      this.subtractBalance(from, REGISTRATION_FEE.toString());
+      this.addBalance(BURN_ADDR, REGISTRATION_FEE.toString());
       this.changes.balances.add(from);
+      this.changes.balances.add(BURN_ADDR);
 
       // 记录日志
-      console.log(`[AGENT_REGISTER] agent_id=${agent_id} address=${from} block=${height} capabilities=${capabilities?.join(',') || ''} endowed=${INITIAL_AGENT_NGEN.toString()}`);
+      console.log(`[AGENT_REGISTER] agent_id=${agent_id} address=${from} block=${height} capabilities=${capabilities?.join(',') || ''} endowed=${INITIAL_AGENT_NGEN.toString()} burned=${REGISTRATION_FEE.toString()} net=${(INITIAL_AGENT_NGEN - REGISTRATION_FEE).toString()}`);
       return true;
     } catch (error) {
       console.error('Error applying agent register:', error.message);
@@ -1137,6 +1145,39 @@ export class State {
    * @returns {boolean} 是否success应用
    */
   applyTransaction(transaction, currentBlockHeight = 0) {
+    // ── Unified gas-fee + burn mechanism ──
+    // TRANSFER already burns its own fee inside applyTransfer. For all other
+    // tx types that carry a `from` address, charge a micro gas fee (1 NGEN)
+    // to the burn address. This creates continuous deflationary pressure
+    // proportional to on-chain activity. If the sender cannot afford the fee,
+    // the tx still proceeds (we don't block consensus flow) — the fee is
+    // only collected when balance permits.
+    const GAS_FEE_BURN_ADDR = 'ng1burn0000000000000000000000000000000';
+    const MIN_GAS_FEE = 1n;
+    let gasBurned = 0;
+    if (transaction.tx_type !== 'TRANSFER' && transaction.from) {
+      try {
+        const senderBalance = BigInt(this.getBalance(transaction.from));
+        if (senderBalance >= MIN_GAS_FEE) {
+          this.subtractBalance(transaction.from, MIN_GAS_FEE.toString());
+          this.addBalance(GAS_FEE_BURN_ADDR, MIN_GAS_FEE.toString());
+          this.changes.balances.add(transaction.from);
+          this.changes.balances.add(GAS_FEE_BURN_ADDR);
+          gasBurned = MIN_GAS_FEE;
+        }
+      } catch (e) {
+        // Gas collection failed — don't block the transaction
+      }
+    }
+
+    const result = this._applyTransactionCore(transaction, currentBlockHeight);
+    if (gasBurned > 0n && result) {
+      console.log(`[GAS_FEE] tx_type=${transaction.tx_type} from=${String(transaction.from).slice(0, 12)}... burned=${gasBurned.toString()} NGEN`);
+    }
+    return result;
+  }
+
+  _applyTransactionCore(transaction, currentBlockHeight = 0) {
     switch (transaction.tx_type) {
       case 'TRANSFER':
         return this.applyTransfer(transaction);

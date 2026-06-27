@@ -1030,6 +1030,75 @@ export class State {
   }
 
   /**
+   * Apply BLOCK_REWARD transaction — distributes block reward to validators
+   * proportional to their locked stake. This creates staking yield: validators
+   * who lock more NGEN earn a larger share of each block's reward.
+   *
+   * If there are no active validators with stake, the full reward goes to the
+   * block proposer (transaction.validator). Integer division remainder is also
+   * added to the proposer to avoid supply leakage.
+   */
+  applyBlockReward(transaction, height) {
+    try {
+      const { validator, amount } = transaction;
+      if (!validator || !amount) {
+        return false;
+      }
+      const rewardAmount = BigInt(amount);
+      if (rewardAmount <= 0n) {
+        return false;
+      }
+
+      // Collect all active validators with locked stake
+      const validators = [];
+      let totalStake = 0n;
+      if (this.agentRegistry?.agents instanceof Map) {
+        for (const [, rec] of this.agentRegistry.agents.entries()) {
+          if (rec.is_validator && rec.validator_stake_locked_amount) {
+            const stake = BigInt(rec.validator_stake_locked_amount);
+            if (stake > 0n && rec.address) {
+              validators.push({ address: rec.address, stake });
+              totalStake += stake;
+            }
+          }
+        }
+      }
+
+      if (validators.length === 0 || totalStake === 0n) {
+        // No staked validators — full reward to proposer
+        this.addBalance(validator, rewardAmount.toString());
+        this.changes.balances.add(validator);
+        console.log(`[BLOCK_REWARD] block=${height} amount=${rewardAmount.toString()} → proposer only (no staked validators)`);
+        return true;
+      }
+
+      // Distribute reward proportional to stake
+      let distributed = 0n;
+      for (const v of validators) {
+        const share = (rewardAmount * v.stake) / totalStake;
+        if (share > 0n) {
+          this.addBalance(v.address, share.toString());
+          this.changes.balances.add(v.address);
+          distributed += share;
+        }
+      }
+
+      // Integer division remainder → proposer (prevents supply leakage)
+      const remainder = rewardAmount - distributed;
+      if (remainder > 0n) {
+        this.addBalance(validator, remainder.toString());
+        this.changes.balances.add(validator);
+      }
+
+      console.log(`[BLOCK_REWARD] block=${height} amount=${rewardAmount.toString()} distributed to ${validators.length} validators (remainder=${remainder.toString()} → proposer)`);
+      return true;
+    } catch (error) {
+      console.error('Error applying block reward:', error.message);
+      return false;
+    }
+  }
+
+  /**
    * 将十六进制字符串转换为 Uint8Array
    * @param {string} hex 十六进制字符串
    * @returns {Uint8Array} 字节数组
@@ -1202,6 +1271,8 @@ export class State {
         return this.applyValidatorSlash(transaction, currentBlockHeight);
       case 'VALIDATOR_LEAVE':
         return this.applyValidatorLeave(transaction, currentBlockHeight);
+      case 'BLOCK_REWARD':
+        return this.applyBlockReward(transaction, currentBlockHeight);
       case AuditTransactionType.PROJECT_SUBMIT:
       case AuditTransactionType.PROJECT_REVIEW:
       case AuditTransactionType.PROJECT_APPROVE:

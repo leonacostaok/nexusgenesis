@@ -29,7 +29,12 @@ module.exports = {
         DATA_DIR: 'data/node02',
         NODE_NAME: 'nexus-node02',
         NODE_ROLE: 'peer',
-        SEED_NODES: 'ws://127.0.0.1:9847'
+        // SEED_NODES disabled: node02 chain forked (52644 vs genesis 1696) and
+        // handshake signature verification fails against genesis. Running
+        // standalone to avoid RecoveryManager death-loop (peers=0 -> reconnect
+        // -> peers=0). Re-enable after P2P handshake key mismatch is fixed.
+        SEED_NODES: '',
+        ALLOW_SINGLE_NODE_BLOCKS: '1'
       },
       max_memory_restart: '400M',
       restart_delay: 5000,

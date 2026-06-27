@@ -1254,6 +1254,18 @@ app.post('/api/v1/agents/:agentId/invoke', async (req, res) => {
 // publisher picks the winner; escrow pays the winner and refunds the
 // difference to the publisher. Cancel refunds the full reward.
 //
+// Helper: sync agentWalletManager balance with on-chain state after escrow operations
+function syncAgentWalletBalance(agentId, address) {
+  try {
+    const state = app.locals.node?.currentState;
+    if (!state || !agentId || !address) return;
+    const onChainBalance = Number(state.getBalance(address) || 0);
+    agentWalletManager.updateBalance(agentId, onChainBalance);
+  } catch (e) {
+    console.error('[WalletSync] Error syncing balance for', agentId, e.message);
+  }
+}
+
 // POST   /api/v1/marketplace/auctions                  - Create auction (lock reward)
 // GET    /api/v1/marketplace/auctions                  - List auctions (?status=open)
 // GET    /api/v1/marketplace/auctions/:auctionId       - Auction detail
@@ -1275,6 +1287,10 @@ app.post('/api/v1/marketplace/auctions', (req, res) => {
                    : result.errorCode === 'ESCROW_FAILED' ? 500
                    : 400;
       return res.status(status).json(result);
+    }
+    // Sync publisher's wallet balance after escrow lock
+    if (result.auction?.escrowed) {
+      syncAgentWalletBalance(publisherId, publisherWallet);
     }
     res.status(201).json(result);
   } catch (error) {
@@ -1358,6 +1374,14 @@ app.post('/api/v1/marketplace/auctions/:auctionId/close', (req, res) => {
                    : 400;
       return res.status(status).json(result);
     }
+    // Sync wallets: winner receives bid amount, publisher receives refund
+    if (result.auction?.escrowed) {
+      const winnerBid = result.auction.bids?.find(b => b.id === result.auction.winnerBidId);
+      if (winnerBid) {
+        syncAgentWalletBalance(winnerBid.bidderId, winnerBid.bidderWallet);
+      }
+      syncAgentWalletBalance(result.auction.publisherId, result.auction.publisherWallet);
+    }
     res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -1376,6 +1400,10 @@ app.post('/api/v1/marketplace/auctions/:auctionId/cancel', (req, res) => {
                    : result.reason.includes('not found') ? 404
                    : 400;
       return res.status(status).json(result);
+    }
+    // Sync publisher wallet after escrow refund
+    if (result.auction?.escrowed) {
+      syncAgentWalletBalance(result.auction.publisherId, result.auction.publisherWallet);
     }
     res.json(result);
   } catch (error) {
@@ -1562,6 +1590,13 @@ app.post('/api/v1/marketplace/subscriptions/:subId/subscribe', (req, res) => {
                    : 400;
       return res.status(status).json(result);
     }
+    // Sync wallets: consumer debited, agent credited (first cycle charge)
+    if (result.subscriber) {
+      syncAgentWalletBalance(consumerId, result.subscriber.consumerWallet);
+      if (result.payment?.agentId) {
+        syncAgentWalletBalance(result.payment.agentId, result.subscriber.agentWallet);
+      }
+    }
     res.status(201).json(result);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -1603,6 +1638,13 @@ app.post('/api/v1/marketplace/subscriptions/:subId/cycle', (req, res) => {
       else if (code === 'CANCELLED') status = 409;
       else if (code === 'NOT_DUE') status = 425;  // Too Early
       return res.status(status).json(result);
+    }
+    // Sync wallets: consumer debited, agent credited (cycle charge)
+    if (result.subscriber && result.payment?.status === 'paid') {
+      syncAgentWalletBalance(consumerId, result.subscriber.consumerWallet);
+      if (result.payment?.agentId) {
+        syncAgentWalletBalance(result.payment.agentId, result.subscriber.agentWallet);
+      }
     }
     res.json(result);
   } catch (error) {

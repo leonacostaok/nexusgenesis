@@ -42,7 +42,7 @@ class EncryptionService {
    */
   shouldEncrypt(messageType) {
     // 心跳etc.紧急Message不requires加密
-    const noEncryptTypes = ['PING', 'PONG', 'HELLO', 'HELLO_ACK'];
+    const noEncryptTypes = ['PING', 'PONG', 'HELLO', 'HELLO_ACK', 'KEY_EXCHANGE'];
     return !noEncryptTypes.includes(messageType);
   }
 }

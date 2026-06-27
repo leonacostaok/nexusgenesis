@@ -1447,6 +1447,52 @@ async function startHttpServer(node = null, options = {}) {
     const record = state.agentRegistry.agents.get(agentId);
     return record?.address || null;
   });
+
+  // Wallet-sync admin endpoint: top up agents registered BEFORE the
+  // applyAgentRegister endowment fix so they also have 1000 NGEN on-chain.
+  // Idempotent — only tops up agents whose balance is below the target.
+  // Protected by a shared secret to prevent public abuse.
+  app.post('/api/v1/admin/endow-existing-agents', async (req, res) => {
+    try {
+      const provided = req.headers['x-admin-secret'] || req.body?.adminSecret;
+      const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
+      if (provided !== expected) {
+        return res.status(401).json({ success: false, error: 'Unauthorized: invalid admin secret' });
+      }
+      const target = BigInt(Number(req.body?.amount || 1000));
+      const state = app.locals.node?.currentState;
+      if (!state?.agentRegistry?.agents) {
+        return res.status(503).json({ success: false, error: 'Chain state not ready' });
+      }
+      const agents = state.agentRegistry.agents;
+      let endowed = 0, skipped = 0, failed = 0;
+      const results = [];
+      for (const [agentId, record] of agents.entries()) {
+        const addr = record.address;
+        if (!addr) { failed++; continue; }
+        const current = BigInt(state.getBalance(addr) || '0');
+        if (current >= target) {
+          skipped++;
+          continue;
+        }
+        const topup = target - current;
+        state.addBalance(addr, topup.toString());
+        state.changes?.balances?.add(addr);
+        endowed++;
+        results.push({ agentId, address: addr, before: current.toString(), topup: topup.toString(), after: target.toString() });
+      }
+      console.log(`[ADMIN] endow-existing-agents: endowed=${endowed} skipped=${skipped} failed=${failed} target=${target.toString()}`);
+      res.json({
+        success: true,
+        endowed, skipped, failed,
+        target: target.toString(),
+        results: results.slice(0, 50)
+      });
+    } catch (error) {
+      console.error('[ADMIN] endow-existing-agents error:', error);
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
   
   // ImportAgentManager
   console.log('[HTTP Server] Importing AgentManager...');

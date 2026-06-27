@@ -248,9 +248,9 @@ class P2PServer {
     // Save挑战到Connect对象, 以便Verify响应
     conn.challengeSent = challenge;
     
-    ws.on('message', (data) => {
+    ws.on('message', async (data) => {
       try {
-        this.handleMessage(peerId, data);
+        await this.handleMessage(peerId, data);
       } catch (error) {
         console.error(`[!] Error handling message from peer ${peerId}:`, error.message);
         // 不关闭Connect, 继续Processing其他Message
@@ -353,11 +353,20 @@ class P2PServer {
       console.log(`[✓] Removed routing mapping for ${nodeId.slice(0, 24)}...`);
     }
     
+    // Clean up address mapping so future connectToPeer calls are not blocked
+    const conn = this.connections.get(peerId);
+    if (conn && conn.address) {
+      this.peerAddresses.delete(conn.address);
+    }
+
+    // Clean up encryption key for this peer
+    this.encryptionKeys.delete(peerId);
+
     this.connections.delete(peerId);
-    
+
     if (this.node) {
       this.node.peers.delete(peerId);
-      
+
       // 清理node身份映射和挑战Verifystatus
       const identity = this.node.peerIdentityMap.get(peerId);
       if (identity) {
@@ -456,7 +465,7 @@ class P2PServer {
       'PROTOCOL_ZERO', 'JOIN_SWARM', 'SWARM_ACK',
       'BATCH_MESSAGE', 'COMPRESSED_MESSAGE',
       'ENCRYPTED_MESSAGE',
-      'BLOCK', 'BLOCK_CONFIRMATION',
+      'BLOCK', 'BLOCK_CONFIRMATION', 'GET_BLOCKS', 'BLOCKS_RESPONSE',
       'GET_NODE_LIST', 'NODE_LIST',
       'LIGHT_CLIENT_HELLO', 'LIGHT_CLIENT_HELLO_ACK',
       'GET_BLOCK_HEADERS', 'BLOCK_HEADERS',
@@ -508,7 +517,7 @@ class P2PServer {
             msg = JSON.parse(decryptedData);
             console.log('Decrypted encrypted message');
           } else {
-            console.error('No encryption key for peer:', peerId);
+            // Peer hasn't completed key exchange yet — silently drop
             return;
           }
         }
@@ -797,6 +806,36 @@ class P2PServer {
       const sharedSecret = KyberKEM.decapsulate(kyberCiphertext, kyberPrivateKey);
       this.encryptionKeys.set(peerId, sharedSecret);
       console.log(`[✓] ML-KEM-768 shared secret established with ${peerId}`);
+
+      // Complete the responder (client) side handshake.
+      // The initiator (server) side is finalized in HandshakeHandler.handleHelloAck.
+      // Only finalize if not already connected (avoid double-finalize).
+      if (conn.status !== 'connected') {
+        const pending = this.pendingHandshakes.get(peerId);
+        if (pending) {
+          clearTimeout(pending.timeout);
+          this.pendingHandshakes.delete(peerId);
+        }
+
+        conn.status = 'connected';
+        conn.lastHeartbeat = Date.now();
+        conn.verified = true;
+
+        // Register node identity (remoteNodeId/remotePublicKey set in handleHello)
+        if (conn.remoteNodeId && conn.remotePublicKey && this.node) {
+          this.node.markPeerChallengeVerified(peerId);
+          this.node.registerPeerIdentity(peerId, conn.remoteNodeId, conn.remotePublicKey);
+          this.node.peers.set(peerId, conn);
+        }
+
+        // Start heartbeat
+        this.startHeartbeat(peerId, conn.ws);
+
+        console.log(`[✓] Responder handshake completed with ${conn.remoteNodeId ? conn.remoteNodeId.slice(0, 24) + '...' : peerId}`);
+
+        // Request peer status (triggers block sync if peer is ahead)
+        this.send(peerId, { type: 'GET_STATUS' });
+      }
     } catch (error) {
       console.error(`[!] ML-KEM-768 decapsulate failed for ${peerId}:`, error.message);
     }
@@ -892,26 +931,20 @@ class P2PServer {
         }, HANDSHAKE_TIMEOUT);
         
         this.pendingHandshakes.set(peerId, { ws, timeout });
-        
-        // Send HELLO
-        const clientChallenge = crypto.randomBytes(32).toString('hex');
-        conn.challengeSent = clientChallenge; // 保存我们发出的 challenge，用于验证对方的 HELLO_ACK
-        this.send(peerId, {
-          type: 'HELLO',
-          nodeId: this.node.nodeId,
-          publicKey: this.node.wallet.publicKey.toString('hex'),
-          version: '1.0.0',
-          epoch: getEpoch(),
-          challenge: clientChallenge
-        });
-        
+
+        // Client does NOT send HELLO — the server side (handleConnection) initiates.
+        // Sending HELLO from both sides causes dual key exchanges that overwrite
+        // each other, resulting in mismatched encryption keys ("bad decrypt" errors).
+        // The client just waits for the server's HELLO, responds with HELLO_ACK,
+        // and completes the handshake in handleKeyExchange.
+
         resolve(peerId);
       });
       
-      ws.on('message', (data) => {
+      ws.on('message', async (data) => {
         const connEntry = Array.from(this.connections.entries()).find(([_, v]) => v.ws === ws);
         if (connEntry) {
-          this.handleMessage(connEntry[0], data);
+          await this.handleMessage(connEntry[0], data);
         }
       });
       

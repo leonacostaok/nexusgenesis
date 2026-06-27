@@ -17,7 +17,7 @@ class ProtocolValidationHandler extends MessageHandlerChain {
       'PROTOCOL_ZERO', 'JOIN_SWARM', 'SWARM_ACK',
       'BATCH_MESSAGE', 'COMPRESSED_MESSAGE',
       'ENCRYPTED_MESSAGE',
-      'BLOCK', 'BLOCK_CONFIRMATION',
+      'BLOCK', 'BLOCK_CONFIRMATION', 'GET_BLOCKS', 'BLOCKS_RESPONSE',
       'GET_NODE_LIST', 'NODE_LIST',
       'LIGHT_CLIENT_HELLO', 'LIGHT_CLIENT_HELLO_ACK',
       'GET_BLOCK_HEADERS', 'BLOCK_HEADERS',
@@ -25,7 +25,10 @@ class ProtocolValidationHandler extends MessageHandlerChain {
       'GET_TRANSACTION_STATUS', 'TRANSACTION_STATUS',
       'GET_ADDRESS_BALANCE', 'SEND_TRANSACTION',
       'CROSS_CHAIN_MESSAGE', 'CROSS_CHAIN_RESPONSE',
-      'AGENT_MESSAGE', 'DIRECT_MESSAGE', 'DIRECT_MESSAGE_ACK'
+      'AGENT_MESSAGE', 'DIRECT_MESSAGE', 'DIRECT_MESSAGE_ACK',
+      'AGENT_ANNOUNCE', 'AGENT_QUERY', 'AGENT_QUERY_RESPONSE',
+      'AGENT_SYNC_REQUEST', 'AGENT_SYNC_RESPONSE', 'AGENT_OFFLINE',
+      'AUTH_ERROR', 'PROTOCOL_ERROR', 'KEY_EXCHANGE'
     ];
   }
 
@@ -52,14 +55,8 @@ class ProtocolValidationHandler extends MessageHandlerChain {
     }
     
     // Message不符合Protocol-Zero格式
-    console.log(`[!] Ignoring non-Protocol-Zero message from ${peerId}`);
-    context.p2pServer.send(peerId, {
-      type: 'PROTOCOL_ERROR',
-      message: 'Only Protocol-Zero formatted messages are accepted',
-      details: 'Please use the correct Protocol-Zero format with protocol: "NG-0"',
-      timestamp: Date.now()
-    });
-    
+    console.log(`[!] Ignoring non-Protocol-Zero message type='${message.type}' from ${peerId}`);
+
     return false;
   }
 }

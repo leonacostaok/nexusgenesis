@@ -1778,30 +1778,32 @@ export class State {
   async saveIncrementalChanges() {
     try {
       const changes = this.getIncrementalChanges();
-      
+
       // 如果没有变更, 跳过Save
-      if (Object.keys(changes.balances).length === 0 && 
-          Object.keys(changes.contracts).length === 0 && 
-          Object.keys(changes.governance).length === 0 && 
-          Object.keys(changes.agents).length === 0 && 
-          changes.audit === null && 
+      if (Object.keys(changes.balances).length === 0 &&
+          Object.keys(changes.contracts).length === 0 &&
+          Object.keys(changes.governance).length === 0 &&
+          Object.keys(changes.agents).length === 0 &&
+          changes.audit === null &&
           changes.tokenRelease === null) {
         return;
       }
-      
+
       // Generate增量文件名
       const timestamp = Date.now();
       const incrementalFile = path.join(PERSISTENCE_CONFIG.stateDir, `incremental_${timestamp}.json.gz`);
-      
-      // 压缩并Save
+      const tmpFile = incrementalFile + '.tmp';
+
+      // 压缩并Save (atomic write: write to temp file, then rename)
       const jsonString = stringifyStateData(changes);
       const compressedData = await gzip(jsonString, { level: PERSISTENCE_CONFIG.compressionLevel });
-      await fs.writeFile(incrementalFile, compressedData);
-      
+      await fs.writeFile(tmpFile, compressedData);
+      await fs.rename(tmpFile, incrementalFile);
+
       // 重置变更跟踪
       this.resetChanges();
       this.lastSaveTime = timestamp;
-      
+
       console.log(`Incremental changes saved to ${incrementalFile}`);
     } catch (error) {
       console.error('Error saving incremental changes:', error.message);
@@ -1867,7 +1869,8 @@ export class State {
       
       console.log(`Loaded incremental changes from ${incrementalFile}`);
     } catch (error) {
-      console.error('Error loading incremental changes:', error.message);
+      console.error(`Error loading incremental changes from ${incrementalFile}: ${error.message} — deleting corrupted file`);
+      try { await fs.unlink(incrementalFile); } catch (_) { /* ignore */ }
     }
   }
   

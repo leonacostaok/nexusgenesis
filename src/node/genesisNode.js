@@ -115,6 +115,10 @@ class GenesisNode {
 
     // Agent Task Protocol
     this.taskProtocol = null;
+
+    // Block sync state — prevents duplicate concurrent sync requests
+    this._syncInProgress = false;
+    this._lastSyncRequestAt = 0;
   }
 
   /**
@@ -1753,6 +1757,143 @@ class GenesisNode {
       console.log(`Peer ${status.nodeId} has larger mempool, requesting sync...`);
       p2pServer.broadcast({ type: 'GET_MEMPOOL' });
     }
+
+    // Block sync: if peer is ahead, request missing blocks
+    if (status.chainHeight !== undefined && this.blockchain.length > 0) {
+      const ownHeight = this.blockchain[this.blockchain.length - 1].header.height;
+      if (status.chainHeight > ownHeight) {
+        this.requestBlocksFromPeer(status.nodeId, ownHeight + 1, status.chainHeight);
+      }
+    }
+  }
+
+  /**
+   * Request blocks from a peer by nodeId (resolves nodeId → peerId)
+   * @param {string} nodeId - target node ID
+   * @param {number} fromHeight - start height (inclusive)
+   * @param {number} toHeight - end height (inclusive), -1 for "all you have"
+   */
+  requestBlocksFromPeer(nodeId, fromHeight, toHeight) {
+    // Prevent duplicate concurrent sync requests (min 5s between requests)
+    const now = Date.now();
+    if (this._syncInProgress || (now - this._lastSyncRequestAt < 5000)) {
+      console.log(`[SYNC] Sync already in progress or throttled, skipping request`);
+      return;
+    }
+
+    const peerId = this._nodeIdToPeerId.get(nodeId);
+    if (!peerId) {
+      console.log(`[SYNC] Cannot find peerId for nodeId ${nodeId.slice(0, 16)}...`);
+      return;
+    }
+
+    this._syncInProgress = true;
+    this._lastSyncRequestAt = now;
+    const ownHeight = this.blockchain[this.blockchain.length - 1].header.height;
+    console.log(`[SYNC] Requesting blocks ${fromHeight}-${toHeight} from ${nodeId.slice(0, 16)}... (own height: ${ownHeight})`);
+    p2pServer.send(peerId, {
+      type: 'GET_BLOCKS',
+      fromHeight,
+      toHeight,
+      nodeId: this.nodeId
+    });
+  }
+
+  /**
+   * Process a batch of blocks received from a peer (sync response)
+   * @param {string} peerId - source peer
+   * @param {Block[]} blocks - array of Block instances
+   */
+  async handleBlocksResponse(peerId, blocks) {
+    if (!blocks || blocks.length === 0) {
+      this._syncInProgress = false;
+      return;
+    }
+
+    let applied = 0;
+    let skipped = 0;
+
+    for (const block of blocks) {
+      const tip = this.blockchain[this.blockchain.length - 1];
+
+      // Skip blocks we already have
+      if (block.header.height <= tip.header.height) {
+        skipped++;
+        continue;
+      }
+
+      // Validate the block
+      if (!block.validate()) {
+        console.error(`[SYNC] Invalid block #${block.header.height} in sync response, aborting batch`);
+        break;
+      }
+
+      // Check parent hash linkage
+      if (block.header.height !== tip.header.height + 1 ||
+          block.header.parent_hash !== tip.hash) {
+        console.error(`[SYNC] Block #${block.header.height} does not link to current tip #${tip.header.height}, aborting batch`);
+        break;
+      }
+
+      // Apply transactions
+      if (!this.currentState.applyTransactions(block.body.transactions, block.header.height)) {
+        console.error(`[SYNC] Failed to apply transactions from block #${block.header.height}, aborting batch`);
+        break;
+      }
+      await this.applyCommittedTransactionSideEffects(block.body.transactions);
+
+      this.blockchain.push(block);
+      applied++;
+    }
+
+    if (applied > 0) {
+      await this.saveBlockchain();
+      const stateDir = dataPath('state');
+      const stateFile = path.join(stateDir, 'blockchainState.json');
+      await this.currentState.saveToFile(stateFile);
+
+      // Remove synced transactions from mempool
+      for (const block of blocks) {
+        for (const tx of block.body.transactions) {
+          this.mempool.delete(tx.id);
+        }
+      }
+
+      const newHeight = this.blockchain[this.blockchain.length - 1].header.height;
+      console.log(`[SYNC] Applied ${applied} blocks (skipped ${skipped}), new height: ${newHeight}`);
+
+      // Request next batch if the peer sent a full batch (likely has more)
+      if (applied === blocks.length && applied >= 50) {
+        const peerNodeId = this.peerIdentityMap.get(peerId)?.nodeId;
+        if (peerNodeId) {
+          const nextFrom = this.blockchain[this.blockchain.length - 1].header.height + 1;
+          // Reset throttle to allow immediate follow-up request
+          this._lastSyncRequestAt = 0;
+          this.requestBlocksFromPeer(peerNodeId, nextFrom, -1);
+          return; // _syncInProgress stays true via the new request
+        }
+      }
+    } else {
+      console.log(`[SYNC] No blocks applied (skipped ${skipped})`);
+    }
+
+    this._syncInProgress = false;
+  }
+
+  /**
+   * Get blocks in a height range (inclusive)
+   * @param {number} fromHeight - start height
+   * @param {number} toHeight - end height
+   * @returns {Block[]}
+   */
+  getBlocksByRange(fromHeight, toHeight) {
+    if (!this.blockchain || this.blockchain.length === 0) return [];
+    const max = Math.min(toHeight, this.blockchain.length - 1);
+    const result = [];
+    for (let i = fromHeight; i <= max; i++) {
+      if (i >= 0) result.push(this.blockchain[i]);
+    }
+    return result;
   }
 
   periodicSync() {
@@ -2118,6 +2259,11 @@ class GenesisNode {
         console.log('[CONSENSUS] Skipping block: insufficient committee');
         return;
       }
+      // Peer nodes (NODE_ROLE=peer) must never produce blocks — only genesis may.
+      // This prevents chain forks during the bootstrap phase.
+      if (process.env.NODE_ROLE === 'peer') {
+        return;
+      }
       if (singleNodeMode) {
         console.log('[CONSENSUS] Single-node committee detected, producing blocks in standalone mode');
       }
@@ -2165,28 +2311,41 @@ class GenesisNode {
   /**
    * ProcessingReceive到的block
    * @param {Block} block - Receive到的block
+   * @param {string} [peerId] - 来源 peer (for sync requests)
    * @returns {boolean} 是否successProcessing
    */
-  async handleBlock(block) {
+  async handleBlock(block, peerId) {
     // Verifyblock
     if (!block.validate()) {
       console.error('Invalid block received');
       return false;
     }
-    
-    // Checkblock height
+
     const latestBlock = this.blockchain[this.blockchain.length - 1];
-    if (block.header.height !== latestBlock.header.height + 1) {
-      console.error('Invalid block height');
+
+    // Already have this block (or older) — ignore
+    if (block.header.height <= latestBlock.header.height) {
       return false;
     }
-    
+
+    // Peer is ahead — request missing blocks instead of accepting this one yet
+    if (block.header.height > latestBlock.header.height + 1) {
+      console.log(`[SYNC] Received block #${block.header.height} but own height is ${latestBlock.header.height}, requesting missing blocks`);
+      if (peerId) {
+        const peerNodeId = this.peerIdentityMap.get(peerId)?.nodeId;
+        if (peerNodeId) {
+          this.requestBlocksFromPeer(peerNodeId, latestBlock.header.height + 1, block.header.height);
+        }
+      }
+      return false;
+    }
+
     // Check父hash
     if (block.header.parent_hash !== latestBlock.hash) {
       console.error('Invalid parent hash');
       return false;
     }
-    
+
     // 应用transaction到status
     if (!this.currentState.applyTransactions(block.body.transactions, block.header.height)) {
       console.error('Failed to apply transactions from received block');
@@ -2233,13 +2392,18 @@ class GenesisNode {
    * Sendblock确认
    * @param {string} blockHash - block hash
    */
-  sendBlockConfirmation(blockHash) {
-    p2pServer.broadcast({
-      type: 'BLOCK_CONFIRMATION',
-      blockHash,
-      nodeId: this.nodeId,
-      signature: this.wallet.sign(blockHash)
-    });
+  async sendBlockConfirmation(blockHash) {
+    try {
+      const signature = await this.wallet.sign(blockHash);
+      p2pServer.broadcast({
+        type: 'BLOCK_CONFIRMATION',
+        blockHash,
+        nodeId: this.nodeId,
+        signature
+      });
+    } catch (error) {
+      console.error(`[!] Failed to send block confirmation: ${error.message}`);
+    }
   }
 
   /**

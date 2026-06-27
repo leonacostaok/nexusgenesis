@@ -37,6 +37,8 @@ export class MessageHandlerRegistry {
     
     // block链MessageHandler
     this.register('BLOCK', new BlockchainMessageHandler(this.p2pServer));
+    this.register('GET_BLOCKS', new BlockchainMessageHandler(this.p2pServer));
+    this.register('BLOCKS_RESPONSE', new BlockchainMessageHandler(this.p2pServer));
     this.register('BLOCK_CONFIRMATION', new BlockchainMessageHandler(this.p2pServer));
     this.register('GET_STATUS', new BlockchainMessageHandler(this.p2pServer));
     this.register('STATUS_UPDATE', new BlockchainMessageHandler(this.p2pServer));

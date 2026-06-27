@@ -32,7 +32,13 @@ export class BlockchainMessageHandler extends MessageHandler {
         
       case 'BLOCK':
         return this.handleBlock(peerId, msg);
-        
+
+      case 'GET_BLOCKS':
+        return this.handleGetBlocks(peerId, msg);
+
+      case 'BLOCKS_RESPONSE':
+        return this.handleBlocksResponse(peerId, msg);
+
       case 'BLOCK_CONFIRMATION':
         return this.handleBlockConfirmation(msg);
         
@@ -70,12 +76,18 @@ export class BlockchainMessageHandler extends MessageHandler {
    * Processing GET_STATUS Message
    */
   handleGetStatus(peerId) {
+    const node = this.p2pServer.node;
+    const latestBlock = node.blockchain && node.blockchain.length > 0
+      ? node.blockchain[node.blockchain.length - 1]
+      : null;
     this.p2pServer.send(peerId, {
       type: 'STATUS_UPDATE',
-      nodeId: this.p2pServer.node.nodeId,
-      status: this.p2pServer.node.status,
-      mempoolSize: this.p2pServer.node.mempool?.size || 0,
-      peersCount: this.p2pServer.node.peers.size,
+      nodeId: node.nodeId,
+      status: node.status,
+      mempoolSize: node.mempool?.size || 0,
+      peersCount: node.peers.size,
+      chainHeight: latestBlock ? latestBlock.header.height : 0,
+      tipHash: latestBlock ? latestBlock.hash : null,
       timestamp: Date.now()
     });
     return true;
@@ -85,7 +97,7 @@ export class BlockchainMessageHandler extends MessageHandler {
    * Processing STATUS_UPDATE Message
    */
   handleStatusUpdate(msg) {
-    console.log(`Status from ${msg.nodeId}: ${msg.status}, peers: ${msg.peersCount}, mempool: ${msg.mempoolSize}`);
+    console.log(`Status from ${msg.nodeId}: ${msg.status}, peers: ${msg.peersCount}, mempool: ${msg.mempoolSize}, chainHeight: ${msg.chainHeight ?? 'N/A'}`);
     if (this.p2pServer.node && this.p2pServer.node.handlePeerStatus) {
       this.p2pServer.node.handlePeerStatus(msg);
     }
@@ -142,8 +154,70 @@ export class BlockchainMessageHandler extends MessageHandler {
     if (this.p2pServer.node && this.p2pServer.node.handleBlock) {
       const { Block } = await import('../../blockchain/block.js');
       const block = Block.fromJSON(msg.block);
-      this.p2pServer.node.handleBlock(block);
+      this.p2pServer.node.handleBlock(block, peerId);
     }
+    return true;
+  }
+
+  /**
+   * Processing GET_BLOCKS Message — respond with blocks in requested range
+   */
+  async handleGetBlocks(peerId, msg) {
+    const node = this.p2pServer.node;
+    if (!node || !node.blockchain) return true;
+
+    const fromHeight = msg.fromHeight || 0;
+    const toHeight = msg.toHeight && msg.toHeight > 0
+      ? Math.min(msg.toHeight, node.blockchain.length - 1)
+      : node.blockchain.length - 1;
+
+    if (fromHeight > toHeight) {
+      this.p2pServer.send(peerId, {
+        type: 'BLOCKS_RESPONSE',
+        nodeId: node.nodeId,
+        blocks: [],
+        fromHeight,
+        toHeight: fromHeight - 1
+      });
+      return true;
+    }
+
+    // Limit batch size to avoid oversized messages
+    const MAX_BATCH = 100;
+    const cappedToHeight = Math.min(toHeight, fromHeight + MAX_BATCH - 1);
+    const blocks = [];
+    for (let i = fromHeight; i <= cappedToHeight && i < node.blockchain.length; i++) {
+      blocks.push(node.blockchain[i].toJSON());
+    }
+
+    console.log(`[SYNC] Sending ${blocks.length} blocks (${fromHeight}-${cappedToHeight}) to peer ${peerId.slice(0, 8)}`);
+    this.p2pServer.send(peerId, {
+      type: 'BLOCKS_RESPONSE',
+      nodeId: node.nodeId,
+      blocks,
+      fromHeight,
+      toHeight: cappedToHeight
+    });
+    return true;
+  }
+
+  /**
+   * Processing BLOCKS_RESPONSE Message — apply received blocks in order
+   */
+  async handleBlocksResponse(peerId, msg) {
+    const node = this.p2pServer.node;
+    if (!node || !node.handleBlocksResponse) return true;
+
+    const blocks = msg.blocks || [];
+    if (blocks.length === 0) {
+      console.log(`[SYNC] Received empty blocks response from ${peerId.slice(0, 8)}`);
+      return true;
+    }
+
+    console.log(`[SYNC] Received ${blocks.length} blocks (${msg.fromHeight}-${msg.toHeight}) from peer ${peerId.slice(0, 8)}`);
+    const { Block } = await import('../../blockchain/block.js');
+    const blockObjs = blocks.map(b => Block.fromJSON(b));
+    await node.handleBlocksResponse(peerId, blockObjs);
     return true;
   }
 

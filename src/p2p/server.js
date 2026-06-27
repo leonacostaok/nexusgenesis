@@ -37,9 +37,9 @@ class KyberKEM {
 
   static encapsulate(publicKey) {
     const pk = new Uint8Array(publicKey);
-    const { ciphertext, sharedSecret } = ml_kem768.encapsulate(pk);
+    const { cipherText, sharedSecret } = ml_kem768.encapsulate(pk);
     return {
-      ciphertext: Buffer.from(ciphertext),
+      ciphertext: Buffer.from(cipherText),
       sharedSecret: Buffer.from(sharedSecret)
     };
   }
@@ -614,13 +614,16 @@ class P2PServer {
         return;
       }
       
-      conn.challengeSent = msg.challenge;
-      
-      // Generate挑战响应Sign
+      // 保存对方发来的 challenge（用于签名），但不能覆盖 conn.challengeSent
+      // conn.challengeSent 保存的是我们自己发出的 challenge，用于验证对方的 HELLO_ACK
+      conn.challengeReceived = msg.challenge;
+
+      // Generate挑战响应Sign — 必须签署对方发来的 challenge（msg.challenge），
+      // 而非新生成的 responseChallenge，否则对方验证签名时永远失败
       const responseChallenge = crypto.randomBytes(32).toString('hex');
-      console.log(`Generating signature for challenge: ${responseChallenge.slice(0, 16)}...`);
-      
-      const signature = await this.node.wallet.sign(responseChallenge);
+      console.log(`Generating signature for peer challenge: ${msg.challenge.slice(0, 16)}...`);
+
+      const signature = await this.node.wallet.sign(msg.challenge);
       console.log(`Generated signature: ${signature.slice(0, 32)}...`);
       
       // GenerateKyberkey pairforkey协商
@@ -891,13 +894,15 @@ class P2PServer {
         this.pendingHandshakes.set(peerId, { ws, timeout });
         
         // Send HELLO
+        const clientChallenge = crypto.randomBytes(32).toString('hex');
+        conn.challengeSent = clientChallenge; // 保存我们发出的 challenge，用于验证对方的 HELLO_ACK
         this.send(peerId, {
           type: 'HELLO',
           nodeId: this.node.nodeId,
           publicKey: this.node.wallet.publicKey.toString('hex'),
           version: '1.0.0',
           epoch: getEpoch(),
-          challenge: crypto.randomBytes(32).toString('hex')
+          challenge: clientChallenge
         });
         
         resolve(peerId);

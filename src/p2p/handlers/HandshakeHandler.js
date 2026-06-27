@@ -66,13 +66,15 @@ export class HandshakeHandler extends MessageHandler {
         return;
       }
       
-      conn.challengeSent = msg.challenge;
-      
+      // 保存对方发来的 challenge（用于签名），但不能覆盖 conn.challengeSent
+      // conn.challengeSent 保存的是我们自己发出的 challenge，用于验证对方的 HELLO_ACK
+      conn.challengeReceived = msg.challenge;
+
       // Generate挑战响应Sign
       const responseChallenge = crypto.randomBytes(32).toString('hex');
-      console.log(`Generating signature for challenge: ${responseChallenge.slice(0, 16)}...`);
-      
-      const signature = await this.p2pServer.node.wallet.sign(responseChallenge);
+      console.log(`Generating signature for peer challenge: ${msg.challenge.slice(0, 16)}...`);
+
+      const signature = await this.p2pServer.node.wallet.sign(msg.challenge);
       console.log(`Generated signature: ${signature.slice(0, 32)}...`);
       
       // GenerateKyberkey pairforkey协商

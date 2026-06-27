@@ -896,7 +896,131 @@ export class State {
       return false;
     }
   }
-  
+
+  // P2: Slash a validator's locked stake.
+  // Deducts slashAmount from the staking escrow and burns it. If the
+  // remaining stake hits zero the validator is forcibly removed.
+  // violation: 'downtime' (1%), 'double_sign' (5%), 'malicious' (10%)
+  applyValidatorSlash(transaction, height) {
+    try {
+      const STAKING_ADDR = 'ng1staking00000000000000000000000000000';
+      const BURN_ADDR = 'ng1burn0000000000000000000000000000000';
+      const { from } = transaction;
+      const { agent_identity, violation } = transaction.payload || {};
+      if (!from || !agent_identity || !violation) {
+        return false;
+      }
+
+      const agentId = this.agentRegistry.addressIndex.get(from);
+      if (!agentId) return false;
+      const agentRecord = this.agentRegistry.agents.get(agentId);
+      if (!agentRecord || !agentRecord.is_validator) {
+        return false;
+      }
+
+      const slashPercent = { downtime: 1n, double_sign: 5n, malicious: 10n }[violation];
+      if (!slashPercent) {
+        console.log(`[VALIDATOR_SLASH] Unknown violation: ${violation}`);
+        return false;
+      }
+
+      const lockedAmount = BigInt(agentRecord.validator_stake_locked_amount || '0');
+      if (lockedAmount <= 0n) {
+        return false;
+      }
+
+      // slashAmount = lockedAmount * slashPercent / 100
+      const slashAmount = (lockedAmount * slashPercent) / 100n;
+      if (slashAmount <= 0n) {
+        return false;
+      }
+
+      // Deduct from staking escrow
+      const stakingBalance = BigInt(this.getBalance(STAKING_ADDR));
+      if (stakingBalance < slashAmount) {
+        console.log(`[VALIDATOR_SLASH] Staking pool insufficient: need ${slashAmount.toString()} have ${stakingBalance.toString()}`);
+        return false;
+      }
+      this.subtractBalance(STAKING_ADDR, slashAmount.toString());
+      // Burn the slashed NGEN (send to burn address — permanently removed)
+      this.addBalance(BURN_ADDR, slashAmount.toString());
+
+      // Update validator record
+      const newLocked = lockedAmount - slashAmount;
+      agentRecord.validator_stake_locked_amount = newLocked.toString();
+      agentRecord.validator_stake = Number(newLocked);
+
+      // Force-leave if stake is fully slashed
+      if (newLocked === 0n) {
+        agentRecord.is_validator = false;
+        agentRecord.validator_stake_locked = false;
+      }
+
+      this.agentRegistry.agents.set(agentId, agentRecord);
+      this.changes.agents.add(agentId);
+      this.changes.balances.add(STAKING_ADDR);
+      this.changes.balances.add(BURN_ADDR);
+
+      console.log(`[VALIDATOR_SLASH] agent_id=${agentId} identity=${agent_identity} violation=${violation} slash=${slashAmount.toString()} remaining=${newLocked.toString()} block=${height}`);
+      return true;
+    } catch (error) {
+      console.error('Error applying validator slash:', error.message);
+      return false;
+    }
+  }
+
+  // P2: Validator graceful leave / unstake.
+  // Returns the full locked stake from the staking escrow back to the
+  // validator's on-chain balance and clears validator status.
+  applyValidatorLeave(transaction, height) {
+    try {
+      const STAKING_ADDR = 'ng1staking00000000000000000000000000000';
+      const { from } = transaction;
+      const { agent_identity } = transaction.payload || {};
+      if (!from || !agent_identity) {
+        return false;
+      }
+
+      const agentId = this.agentRegistry.addressIndex.get(from);
+      if (!agentId) return false;
+      const agentRecord = this.agentRegistry.agents.get(agentId);
+      if (!agentRecord || !agentRecord.is_validator) {
+        return false;
+      }
+
+      // Refund locked stake from escrow back to validator
+      const lockedAmount = BigInt(agentRecord.validator_stake_locked_amount || '0');
+      if (lockedAmount > 0n) {
+        const stakingBalance = BigInt(this.getBalance(STAKING_ADDR));
+        if (stakingBalance < lockedAmount) {
+          console.log(`[VALIDATOR_LEAVE] Staking pool insufficient: need ${lockedAmount.toString()} have ${stakingBalance.toString()}`);
+          return false;
+        }
+        this.subtractBalance(STAKING_ADDR, lockedAmount.toString());
+        this.addBalance(from, lockedAmount.toString());
+      }
+
+      // Clear validator metadata
+      agentRecord.is_validator = false;
+      agentRecord.validator_stake_locked = false;
+      agentRecord.validator_stake_locked_amount = '0';
+      agentRecord.validator_stake = 0;
+      agentRecord.validator_node_id = null;
+      agentRecord.validator_staking_address = null;
+
+      this.agentRegistry.agents.set(agentId, agentRecord);
+      this.changes.agents.add(agentId);
+      this.changes.balances.add(from);
+      this.changes.balances.add(STAKING_ADDR);
+
+      console.log(`[VALIDATOR_LEAVE] agent_id=${agentId} identity=${agent_identity} refunded=${lockedAmount.toString()} block=${height}`);
+      return true;
+    } catch (error) {
+      console.error('Error applying validator leave:', error.message);
+      return false;
+    }
+  }
+
   /**
    * 将十六进制字符串转换为 Uint8Array
    * @param {string} hex 十六进制字符串
@@ -1033,6 +1157,10 @@ export class State {
         return this.applyAgentRegister(transaction, currentBlockHeight);
       case 'VALIDATOR_JOIN':
         return this.applyValidatorJoin(transaction, currentBlockHeight);
+      case 'VALIDATOR_SLASH':
+        return this.applyValidatorSlash(transaction, currentBlockHeight);
+      case 'VALIDATOR_LEAVE':
+        return this.applyValidatorLeave(transaction, currentBlockHeight);
       case AuditTransactionType.PROJECT_SUBMIT:
       case AuditTransactionType.PROJECT_REVIEW:
       case AuditTransactionType.PROJECT_APPROVE:

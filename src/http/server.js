@@ -1248,6 +1248,368 @@ app.post('/api/v1/agents/:agentId/invoke', async (req, res) => {
   }
 });
 
+// ─── P4 NGEN sink: competitive auction escrow ───
+// External user publishes a demand with a locked NGEN reward; multiple
+// agents bid (bidAmount = NGEN they'll accept, must be <= rewardNGEN);
+// publisher picks the winner; escrow pays the winner and refunds the
+// difference to the publisher. Cancel refunds the full reward.
+//
+// POST   /api/v1/marketplace/auctions                  - Create auction (lock reward)
+// GET    /api/v1/marketplace/auctions                  - List auctions (?status=open)
+// GET    /api/v1/marketplace/auctions/:auctionId       - Auction detail
+// POST   /api/v1/marketplace/auctions/:auctionId/bid   - Agent places a bid
+// POST   /api/v1/marketplace/auctions/:auctionId/close - Publisher selects winner
+// POST   /api/v1/marketplace/auctions/:auctionId/cancel- Publisher cancels (refund)
+
+app.post('/api/v1/marketplace/auctions', (req, res) => {
+  try {
+    const { publisherId, publisherWallet, title, description, requirements, rewardNGEN, deadline, metadata } = req.body;
+    if (!publisherId || !title || rewardNGEN === undefined) {
+      return res.status(400).json({ success: false, message: 'publisherId, title, rewardNGEN are required' });
+    }
+    const result = agentMarketplace.createAuction(publisherId, {
+      publisherWallet, title, description, requirements, rewardNGEN, deadline, metadata
+    });
+    if (!result.success) {
+      const status = result.errorCode === 'INSUFFICIENT_BALANCE' ? 402
+                   : result.errorCode === 'ESCROW_FAILED' ? 500
+                   : 400;
+      return res.status(status).json(result);
+    }
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.get('/api/v1/marketplace/auctions', (req, res) => {
+  try {
+    const { status, publisherId, bidderId, limit } = req.query;
+    const filter = {
+      status: status || undefined,
+      publisherId: publisherId || undefined,
+      bidderId: bidderId || undefined,
+      limit: limit ? parseInt(limit) : 100
+    };
+    const results = agentMarketplace.listAuctions(filter);
+    res.json({ success: true, results, total: results.length });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.get('/api/v1/marketplace/auctions/:auctionId', (req, res) => {
+  try {
+    const auction = agentMarketplace.getAuction(req.params.auctionId);
+    if (!auction) return res.status(404).json({ success: false, message: 'Auction not found' });
+    res.json({ success: true, auction });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.post('/api/v1/marketplace/auctions/:auctionId/bid', (req, res) => {
+  try {
+    const { bidderId, bidAmount, proposal, bidderWallet } = req.body;
+    if (!bidderId || bidAmount === undefined) {
+      return res.status(400).json({ success: false, message: 'bidderId and bidAmount are required' });
+    }
+
+    // Resolve bidder wallet from on-chain agent registry if not supplied.
+    // The wallet is needed at close time to release escrow to the winner.
+    let resolvedWallet = bidderWallet || null;
+    if (!resolvedWallet) {
+      const state = app.locals.state;
+      if (state?.agentRegistry?.agents instanceof Map) {
+        const agentRecord = Array.from(state.agentRegistry.agents.values()).find(a =>
+          a.agent_id === bidderId || a.identity === bidderId || a.address === bidderId
+        );
+        resolvedWallet = agentRecord?.address || null;
+      }
+    }
+
+    // Inject the resolved wallet into the proposal payload so placeBid can
+    // persist it on the bid record for later escrow settlement.
+    const proposalPayload = typeof proposal === 'string'
+      ? { text: proposal, bidderWallet: resolvedWallet }
+      : { ...(proposal || {}), bidderWallet: resolvedWallet || proposal?.bidderWallet };
+
+    const result = agentMarketplace.placeBid(req.params.auctionId, bidderId, bidAmount, proposalPayload);
+    if (!result.success) {
+      const status = result.reason.includes('not found') ? 404 : 400;
+      return res.status(status).json(result);
+    }
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.post('/api/v1/marketplace/auctions/:auctionId/close', (req, res) => {
+  try {
+    const { publisherId, winnerBidId } = req.body;
+    if (!publisherId || !winnerBidId) {
+      return res.status(400).json({ success: false, message: 'publisherId and winnerBidId are required' });
+    }
+    const result = agentMarketplace.closeAuction(req.params.auctionId, winnerBidId, publisherId);
+    if (!result.success) {
+      const status = result.errorCode === 'NOT_AUTHORIZED' ? 403
+                   : result.reason.includes('not found') ? 404
+                   : 400;
+      return res.status(status).json(result);
+    }
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.post('/api/v1/marketplace/auctions/:auctionId/cancel', (req, res) => {
+  try {
+    const { publisherId, reason } = req.body;
+    if (!publisherId) {
+      return res.status(400).json({ success: false, message: 'publisherId is required' });
+    }
+    const result = agentMarketplace.cancelAuction(req.params.auctionId, publisherId, reason || 'cancelled');
+    if (!result.success) {
+      const status = result.errorCode === 'NOT_AUTHORIZED' ? 403
+                   : result.reason.includes('not found') ? 404
+                   : 400;
+      return res.status(status).json(result);
+    }
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ─── NGEN-USDT value relationship (Scheme D: NGEN as service voucher) ───
+// GET /api/v1/economy/exchange-rate
+//   Returns the NGEN/USDT exchange rate, anchored to agent service costs.
+//   NGEN has no fiat backing — its value derives from the real utility of
+//   agent services it can purchase (P5 invoke, marketplace, task escrow).
+//
+//   rate = baseRate × (1 + burnRate) × (1 + demandFactor)
+//   baseRate   = 0.001 USDT per NGEN (1 invoke @ 5 NGEN ≈ 0.005 USDT LLM cost)
+//   burnRate   = burnedSupply / totalSupply  (deflation premium)
+//   demandFactor = min(24hTxCount / 1000, 0.5)  (demand premium, capped 50%)
+app.get('/api/v1/economy/exchange-rate', async (req, res) => {
+  try {
+    const state = app.locals.node?.currentState;
+    const BURN_ADDR = 'ng1burn0000000000000000000000000000000';
+    const INITIAL_SUPPLY = 50_000_000n;
+
+    // Compute on-chain metrics
+    let burnedSupply = 0n;
+    let totalSupply = INITIAL_SUPPLY;
+    let agentCount = 0;
+    let validatorCount = 0;
+    let blockHeight = 0;
+
+    if (state) {
+      try {
+        burnedSupply = BigInt(state.getBalance?.(BURN_ADDR) || 0);
+      } catch { /* balance may not exist yet */ }
+      if (state.agentRegistry?.agents instanceof Map) {
+        agentCount = state.agentRegistry.agents.size;
+        for (const [, rec] of state.agentRegistry.agents.entries()) {
+          if (rec.is_validator) validatorCount++;
+        }
+      }
+      blockHeight = app.locals.node?.blockchain?.length || 0;
+    }
+
+    // Compute marketplace metrics (24h transaction count)
+    let txCount24h = 0;
+    const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+    if (agentMarketplace?.transactions instanceof Map) {
+      for (const [, tx] of agentMarketplace.transactions.entries()) {
+        if (tx.createdAt && tx.createdAt >= oneDayAgo) txCount24h++;
+      }
+    }
+
+    // Exchange rate calculation
+    const baseRate = 0.001; // 1 NGEN = 0.001 USDT (service-cost anchor)
+    const burnRate = Number(burnedSupply) / Number(totalSupply);
+    const demandFactor = Math.min(txCount24h / 1000, 0.5);
+    const rate = baseRate * (1 + burnRate) * (1 + demandFactor);
+
+    // Service purchasing power: what can 1 NGEN buy?
+    const services = [
+      { name: 'Agent LLM invoke (gpt-4o-mini)', costNGEN: 5, costUSDT: 0.005 },
+      { name: 'Task marketplace escrow (avg)', costNGEN: 20, costUSDT: 0.02 },
+      { name: 'Capability marketplace (avg)', costNGEN: 10, costUSDT: 0.01 },
+      { name: 'Governance vote weight', costNGEN: 1, costUSDT: 0.001 },
+    ];
+
+    res.json({
+      success: true,
+      rate: {
+        NGEN_USDT: rate,
+        USDT_NGEN: 1 / rate,
+        baseRate,
+        burnRate: burnRate.toFixed(6),
+        demandFactor: demandFactor.toFixed(4),
+        formula: 'rate = baseRate × (1 + burnRate) × (1 + demandFactor)',
+        note: 'NGEN has no fiat backing. Value derives from agent service utility.'
+      },
+      supply: {
+        initial: Number(INITIAL_SUPPLY),
+        burned: Number(burnedSupply),
+        circulating: Number(totalSupply - burnedSupply),
+        burnPercentage: (burnRate * 100).toFixed(4) + '%'
+      },
+      network: {
+        agentCount,
+        validatorCount,
+        blockHeight,
+        transactions24h: txCount24h
+      },
+      purchasingPower: services.map(s => ({
+        service: s.name,
+        costNGEN: s.costNGEN,
+        costUSDT: (s.costNGEN * rate).toFixed(6),
+        unitsPerNGEN: 1 / s.costNGEN
+      })),
+      timestamp: Date.now()
+    });
+  } catch (error) {
+    console.error('[ECONOMY] Exchange rate error:', error.message);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ─── P4 NGEN sink: subscription stream ───
+// External users pay NGEN per cycle to continuously receive an agent's
+// services (periodic reports, monitoring alerts, data pushes, etc.).
+//
+// POST   /api/v1/marketplace/subscriptions                       - Agent creates a plan
+// GET    /api/v1/marketplace/subscriptions                       - List plans (?agentId=&status=active&limit=20)
+// GET    /api/v1/marketplace/subscriptions/consumer/:consumerId  - A consumer's subscriptions
+// GET    /api/v1/marketplace/subscriptions/:subId                - Plan details
+// POST   /api/v1/marketplace/subscriptions/:subId/subscribe      - Consumer subscribes (first cycle charged)
+// POST   /api/v1/marketplace/subscriptions/:subId/cancel         - Consumer cancels
+// POST   /api/v1/marketplace/subscriptions/:subId/cycle          - Manually trigger a cycle payment
+
+app.post('/api/v1/marketplace/subscriptions', (req, res) => {
+  try {
+    const { agentId, ...subData } = req.body;
+    if (!agentId) {
+      return res.status(400).json({ success: false, message: 'agentId is required' });
+    }
+    const result = agentMarketplace.createSubscription(agentId, subData);
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.get('/api/v1/marketplace/subscriptions', (req, res) => {
+  try {
+    const { agentId, status, limit } = req.query;
+    const filter = {
+      agentId: agentId || undefined,
+      status: status || undefined,
+      limit: limit ? parseInt(limit, 10) : 20
+    };
+    const results = agentMarketplace.listSubscriptions(filter);
+    res.json({ success: true, results, total: results.length });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// NOTE: this route must be declared before /:subId so "consumer" is not
+// captured as a subscription id.
+app.get('/api/v1/marketplace/subscriptions/consumer/:consumerId', (req, res) => {
+  try {
+    const results = agentMarketplace.getConsumerSubscriptions(req.params.consumerId);
+    res.json({ success: true, results, total: results.length });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.get('/api/v1/marketplace/subscriptions/:subId', (req, res) => {
+  try {
+    const subscription = agentMarketplace.getSubscription(req.params.subId);
+    if (!subscription) {
+      return res.status(404).json({ success: false, message: 'Subscription not found' });
+    }
+    res.json({ success: true, subscription });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.post('/api/v1/marketplace/subscriptions/:subId/subscribe', (req, res) => {
+  try {
+    const { consumerId, consumerWallet } = req.body;
+    if (!consumerId || !consumerWallet) {
+      return res.status(400).json({ success: false, message: 'consumerId and consumerWallet are required' });
+    }
+    const result = agentMarketplace.subscribe(req.params.subId, consumerId, consumerWallet);
+    if (!result.success) {
+      const code = result.errorCode;
+      const status = code === 'INSUFFICIENT_BALANCE' ? 402
+                   : code === 'STATE_UNAVAILABLE' ? 503
+                   : code === 'AGENT_WALLET_NOT_FOUND' ? 404
+                   : code === 'MAX_SUBSCRIBERS' ? 409
+                   : code === 'ALREADY_SUBSCRIBED' ? 409
+                   : 400;
+      return res.status(status).json(result);
+    }
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.post('/api/v1/marketplace/subscriptions/:subId/cancel', (req, res) => {
+  try {
+    const { consumerId } = req.body;
+    if (!consumerId) {
+      return res.status(400).json({ success: false, message: 'consumerId is required' });
+    }
+    const result = agentMarketplace.cancelSubscription(req.params.subId, consumerId);
+    if (!result.success) {
+      const reason = result.reason || '';
+      const status = reason.includes('not found') || reason.includes('not subscribed') ? 404 : 400;
+      return res.status(status).json(result);
+    }
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.post('/api/v1/marketplace/subscriptions/:subId/cycle', (req, res) => {
+  try {
+    const { consumerId } = req.body;
+    if (!consumerId) {
+      return res.status(400).json({ success: false, message: 'consumerId is required' });
+    }
+    const result = agentMarketplace.processCyclePayment(req.params.subId, consumerId);
+    if (!result.success) {
+      const code = result.errorCode;
+      const reason = result.reason || '';
+      let status = 400;
+      if (reason.includes('not found') || reason.includes('not subscribed')) status = 404;
+      else if (code === 'INSUFFICIENT_BALANCE') status = 402;
+      else if (code === 'STATE_UNAVAILABLE') status = 503;
+      else if (code === 'CANCELLED') status = 409;
+      else if (code === 'NOT_DUE') status = 425;  // Too Early
+      return res.status(status).json(result);
+    }
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // Task 管理API
 import taskManager from '../automation/taskManager.js';
 

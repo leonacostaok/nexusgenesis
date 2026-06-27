@@ -1045,7 +1045,7 @@ class GenesisNode {
     }
     
     // 对于 TRANSFER 和 AGENT_REGISTER transaction, 不requires payload 字段
-    if (tx.tx_type !== 'TRANSFER' && tx.tx_type !== 'AGENT_REGISTER' && tx.tx_type !== 'VALIDATOR_JOIN' && !tx.payload) {
+    if (tx.tx_type !== 'TRANSFER' && tx.tx_type !== 'AGENT_REGISTER' && tx.tx_type !== 'VALIDATOR_JOIN' && tx.tx_type !== 'VALIDATOR_SLASH' && tx.tx_type !== 'VALIDATOR_LEAVE' && !tx.payload) {
       return { valid: false, reason: 'Invalid special transaction structure' };
     }
     

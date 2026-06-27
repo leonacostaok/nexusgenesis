@@ -1500,6 +1500,136 @@ async function startHttpServer(node = null, options = {}) {
       res.status(500).json({ success: false, error: error.message });
     }
   });
+
+  // P2: Slash a validator's locked stake (admin-only).
+  // Burns slashAmount from the staking escrow. violation:
+  // 'downtime' (1%), 'double_sign' (5%), 'malicious' (10%)
+  app.post('/api/v1/admin/validator-slash', async (req, res) => {
+    try {
+      const provided = req.headers['x-admin-secret'] || req.body?.adminSecret;
+      const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
+      if (provided !== expected) {
+        return res.status(401).json({ success: false, error: 'Unauthorized: invalid admin secret' });
+      }
+      const { agent_identity, violation } = req.body || {};
+      if (!agent_identity || !violation) {
+        return res.status(400).json({ success: false, error: 'Missing agent_identity or violation' });
+      }
+      const state = app.locals.node?.currentState;
+      if (!state?.agentRegistry?.agents) {
+        return res.status(503).json({ success: false, error: 'Chain state not ready' });
+      }
+
+      // Find validator by agent_identity
+      let validatorAddr = null;
+      let validatorId = null;
+      for (const [agentId, record] of state.agentRegistry.agents.entries()) {
+        if (record.agent_identity === agent_identity || record.identity === agent_identity) {
+          validatorAddr = record.address;
+          validatorId = agentId;
+          break;
+        }
+      }
+      if (!validatorAddr) {
+        return res.status(404).json({ success: false, error: `Agent not found: ${agent_identity}` });
+      }
+
+      const slashTx = {
+        id: `slash-${Date.now()}-${validatorAddr}`,
+        tx_type: 'VALIDATOR_SLASH',
+        from: validatorAddr,
+        to: validatorAddr,
+        amount: '0',
+        fee: '0',
+        payload: { agent_identity, violation }
+      };
+
+      const height = app.locals.node?.currentBlockHeight || 0;
+      const applied = state.applyValidatorSlash(slashTx, height);
+      if (!applied) {
+        return res.status(400).json({ success: false, error: 'Slash failed: validator not found or insufficient stake' });
+      }
+
+      const record = state.agentRegistry.agents.get(validatorId);
+      res.json({
+        success: true,
+        agent_identity,
+        violation,
+        remaining_stake: record.validator_stake_locked_amount || '0',
+        is_validator: record.is_validator
+      });
+    } catch (error) {
+      console.error('[ADMIN] validator-slash error:', error);
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
+
+  // P2: Validator graceful leave / unstake.
+  // Returns the full locked stake from the staking escrow back to the validator.
+  app.post('/api/v1/validators/leave', async (req, res) => {
+    try {
+      const { agent_identity, address } = req.body || {};
+      if (!agent_identity || !address) {
+        return res.status(400).json({ success: false, error: 'Missing agent_identity or address' });
+      }
+      const state = app.locals.node?.currentState;
+      if (!state?.agentRegistry?.agents) {
+        return res.status(503).json({ success: false, error: 'Chain state not ready' });
+      }
+
+      const agentId = state.agentRegistry.addressIndex.get(address);
+      if (!agentId) {
+        return res.status(404).json({ success: false, error: 'Address not registered' });
+      }
+      const record = state.agentRegistry.agents.get(agentId);
+      if (!record) {
+        return res.status(404).json({ success: false, error: 'Agent record not found' });
+      }
+      if (!record.is_validator) {
+        return res.status(400).json({ success: false, error: 'Agent is not a validator' });
+      }
+
+      const leaveTx = {
+        id: `leave-${Date.now()}-${address}`,
+        tx_type: 'VALIDATOR_LEAVE',
+        from: address,
+        to: address,
+        amount: '0',
+        fee: '1',
+        payload: { agent_identity }
+      };
+
+      const height = app.locals.node?.currentBlockHeight || 0;
+      const refundAmount = record.validator_stake_locked_amount || '0';
+      const applied = state.applyValidatorLeave(leaveTx, height);
+      if (!applied) {
+        return res.status(400).json({ success: false, error: 'Leave failed' });
+      }
+
+      // Sync AgentWalletManager so /wallet/balance reflects the refund.
+      // applyValidatorLeave updates state.balances, but the balance API reads
+      // from agentWalletManager first for registered agents.
+      try {
+        const walletAgentId = agentWalletManager.getAgentByAddress(address);
+        if (walletAgentId) {
+          const newOnChainBalance = state.getBalance(address);
+          agentWalletManager.updateBalance(walletAgentId, Number(newOnChainBalance));
+        }
+      } catch (syncErr) {
+        console.error('[HTTP] validator-leave wallet sync error:', syncErr);
+      }
+
+      res.json({
+        success: true,
+        agent_identity,
+        refunded: refundAmount,
+        address
+      });
+    } catch (error) {
+      console.error('[HTTP] validator-leave error:', error);
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
   
   // ImportAgentManager
   console.log('[HTTP Server] Importing AgentManager...');

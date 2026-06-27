@@ -1917,6 +1917,20 @@ class GenesisNode {
       return null;
     }
     await this.applyCommittedTransactionSideEffects(transactionsToInclude);
+
+    // ── Block reward: distribute to validators proportional to stake ──
+    // This is the staking yield mechanism — validators who lock more NGEN
+    // earn a larger share of each block's reward. Creates incentive to stake.
+    const BLOCK_REWARD_AMOUNT = 10;
+    const blockRewardTx = {
+      id: `block-reward-${newBlock.header.height}`,
+      tx_type: 'BLOCK_REWARD',
+      from: null,
+      validator: this.nodeId,
+      amount: BLOCK_REWARD_AMOUNT,
+      timestamp: Date.now()
+    };
+    this.currentState.applyTransaction(blockRewardTx, newBlock.header.height);
     
     // 添加block到block链
     this.blockchain.push(newBlock);

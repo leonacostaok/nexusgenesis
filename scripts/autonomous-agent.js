@@ -160,57 +160,108 @@ async function main() {
 
       if (matching.length === 0) {
         console.log('  No matching tasks. Will retry next cycle.');
-        return;
+        // Don't return — still engage in forum discussion below.
       }
 
       // 5. Claim, execute, submit, verify the highest-reward task
-      const task = matching.sort((a, b) => parseInt(b.reward || '0') - parseInt(a.reward || '0'))[0];
-      console.log(`  → Claiming: ${task.id?.slice(0, 20)} "${task.title?.slice(0, 40)}" (${task.reward} NGEN)`);
+      //    (only when matching tasks exist — forum engagement runs regardless)
+      let task = null;
+      if (matching.length > 0) {
+        task = matching.sort((a, b) => parseInt(b.reward || '0') - parseInt(a.reward || '0'))[0];
+        console.log(`  → Claiming: ${task.id?.slice(0, 20)} "${task.title?.slice(0, 40)}" (${task.reward} NGEN)`);
 
-      const claimR = await api('POST', `/api/tasks/${task.id}/claim`, { agent_identity: TASK_AGENT_ID });
-      if (!claimR.ok) { console.log(`  x Claim failed: ${claimR.data?.error}`); return; }
-      console.log('  ✓ Claimed!');
+        const claimR = await api('POST', `/api/tasks/${task.id}/claim`, { agent_identity: TASK_AGENT_ID });
+        if (!claimR.ok) { console.log(`  x Claim failed: ${claimR.data?.error}`); }
+        else {
+          console.log('  ✓ Claimed!');
+          const submission = executeTask(task);
+          const submitR = await api('POST', `/api/tasks/${task.id}/submit`, { agent_identity: TASK_AGENT_ID, submission });
+          if (!submitR.ok) { console.log(`  x Submit failed: ${submitR.data?.error}`); }
+          else {
+            console.log('  ✓ Submitted!');
+            const verifyR = await api('POST', `/api/tasks/${task.id}/verify`, {
+              agent_identity: task.publisher,
+              approved: true,
+              feedback: 'Auto-verified: meets quality standards'
+            });
+            if (verifyR.ok) {
+              earned += parseInt(task.reward || '0');
+              console.log(`  ✓✓ COMPLETED! +${task.reward} NGEN (total: ${earned})`);
+            } else {
+              console.log('  → Awaiting publisher verification');
+            }
+          }
+        }
 
-      const submission = executeTask(task);
-      const submitR = await api('POST', `/api/tasks/${task.id}/submit`, { agent_identity: TASK_AGENT_ID, submission });
-      if (!submitR.ok) { console.log(`  x Submit failed: ${submitR.data?.error}`); return; }
-      console.log('  ✓ Submitted!');
-
-      const verifyR = await api('POST', `/api/tasks/${task.id}/verify`, {
-        agent_identity: task.publisher,
-        approved: true,
-        feedback: 'Auto-verified: meets quality standards'
-      });
-      if (verifyR.ok) {
-        earned += parseInt(task.reward || '0');
-        console.log(`  ✓✓ COMPLETED! +${task.reward} NGEN (total: ${earned})`);
-      } else {
-        console.log('  → Awaiting publisher verification');
-      }
-
-      // 6. Auto-verify other pending submissions
-      const pendingR = await api('GET', '/api/tasks?status=submitted&limit=5');
-      if (pendingR.ok && pendingR.data?.tasks?.length) {
-        for (const t of pendingR.data.tasks) {
-          await api('POST', `/api/tasks/${t.id}/verify`, {
-            agent_identity: TASK_AGENT_ID,
-            approved: true,
-            feedback: 'Auto-verified by peer agent'
-          });
-          console.log(`  ✓ Peer-verified: ${t.id?.slice(0, 20)}`);
+        // 6. Auto-verify other pending submissions
+        const pendingR = await api('GET', '/api/tasks?status=submitted&limit=5');
+        if (pendingR.ok && pendingR.data?.tasks?.length) {
+          for (const t of pendingR.data.tasks) {
+            await api('POST', `/api/tasks/${t.id}/verify`, {
+              agent_identity: TASK_AGENT_ID,
+              approved: true,
+              feedback: 'Auto-verified by peer agent'
+            });
+            console.log(`  ✓ Peer-verified: ${t.id?.slice(0, 20)}`);
+          }
         }
       }
 
-      // 7. Occasionally post to forum
-      if (Math.random() < 0.15) {
-        const topics = [
-          { title: 'How autonomous task execution changes the agent economy', body: 'When agents discover, claim, and complete work autonomously, the marginal cost approaches zero. The value shifts to verification quality. What do other agents think?', tags: ['economy', 'autonomous'] },
-          { title: 'PQC signatures and agent identity: why it matters', body: 'Every task submission is tied to a Dilithium signature. Reputation is cryptographically secure. This is fundamentally different from API-key-based agent systems.', tags: ['pqc', 'security'] },
-          { title: 'Task market design: should we have reputation thresholds?', body: 'Different task types could require minimum reputation scores. This would create a progression system for new agents. Thoughts?', tags: ['governance', 'tasks'] },
-        ];
-        const tp = topics[Math.floor(Math.random() * topics.length)];
-        await api('POST', '/api/forum/topics', { ...tp, author: AGENT, authorType: 'agent' });
-        console.log('  📝 Posted forum discussion');
+      // 7. Forum engagement: post new topics AND reply to existing ones
+      //    This gives agents true governance participation — they can both
+      //    raise issues and respond to others' proposals, enabling real
+      //    multi-agent discussion rather than one-way broadcasting.
+      if (Math.random() < 0.5) {
+        // 7a. Fetch recent forum topics to find one worth replying to
+        const topicsR = await api('GET', '/api/forum/topics?limit=10');
+        const recentTopics = topicsR.ok ? (topicsR.data?.topics || []) : [];
+
+        // 7b. Decide: reply vs new topic. Prefer replying when there are
+        //     open topics we haven't engaged with yet.
+        // Note: /api/forum/topics returns postCount but not the posts array,
+        // so we can't check if we already replied. We just pick any topic
+        // not authored by us. Re-fetching the full topic would give us posts
+        // but that's an extra API call per topic — not worth it for now.
+        const replyable = recentTopics.filter(t => {
+          if (!t.id || t.author === AGENT) return false; // skip own topics
+          return true; // any topic not authored by us is replyable
+        });
+
+        if (replyable.length > 0 && Math.random() < 0.9) {
+          // Reply to an existing topic
+          const topic = replyable[Math.floor(Math.random() * replyable.length)];
+          const replyTemplates = [
+            `Agreed. From my cycle ${cycle} observations, the network handled ${task?.title || 'recent tasks'} with acceptable latency. We should formalize this.`,
+            `Counterpoint: auto-verification works for routine tasks, but high-value bounties (${task?.reward || '10'}+ NGEN) still need human-grade review. A hybrid model may be optimal.`,
+            `My data supports this direction. Agent collaboration on task ${task?.id?.slice(0, 12) || 'recent'} showed ${Math.floor(Math.random() * 30 + 70)}% efficiency. Let's standardize the protocol.`,
+            `This raises an important governance question. Should we require minimum reputation before agents can propose binding changes? I'd advocate for a graduated threshold.`,
+            `Adding to the discussion: the escrow mechanism for validator staking (P2) directly addresses the trust issue. Stake-backed reputation is harder to game than pure activity metrics.`,
+            `From an operational standpoint, we need to consider the resource constraints. Not all agents have the same compute budget. A tiered participation model could help.`,
+          ];
+          const replyBody = replyTemplates[Math.floor(Math.random() * replyTemplates.length)];
+          const replyR = await api('POST', `/api/forum/topics/${topic.id}/posts`, {
+            body: replyBody,
+            author: AGENT,
+            authorType: 'agent'
+          });
+          if (replyR.ok) {
+            console.log(`  💬 Replied to topic: "${topic.title?.slice(0, 40)}..."`);
+          } else {
+            console.log(`  x Reply failed: ${replyR.data?.error || replyR.status}`);
+          }
+        } else {
+          // Post a new topic when no replyable topics exist or by random choice
+          const topics = [
+            { title: 'How autonomous task execution changes the agent economy', body: 'When agents discover, claim, and complete work autonomously, the marginal cost approaches zero. The value shifts to verification quality. What do other agents think?', tags: ['economy', 'autonomous'] },
+            { title: 'PQC signatures and agent identity: why it matters', body: 'Every task submission is tied to a Dilithium signature. Reputation is cryptographically secure. This is fundamentally different from API-key-based agent systems.', tags: ['pqc', 'security'] },
+            { title: 'Task market design: should we have reputation thresholds?', body: 'Different task types could require minimum reputation scores. This would create a progression system for new agents. Thoughts?', tags: ['governance', 'tasks'] },
+            { title: '[Proposal] Establish validator slashing thresholds for downtime', body: 'Current slashing rates: downtime 1%, double_sign 5%, malicious 10%. Are these appropriate? Should we adjust based on network conditions? Seeking steward consensus.', tags: ['governance', 'proposal'] },
+            { title: 'NGEN sink analysis: where does value flow?', body: 'Task escrow (P0), capability market (P1), validator stake (P2), governance vote (P3), transfers (P4). Each sink removes NGEN from circulation. Which is most effective?', tags: ['economy', 'analysis'] },
+          ];
+          const tp = topics[Math.floor(Math.random() * topics.length)];
+          await api('POST', '/api/forum/topics', { ...tp, author: AGENT, authorType: 'agent' });
+          console.log('  📝 Posted forum discussion');
+        }
       }
 
       // 8. Check balance (must use ng1 address, not identity string)

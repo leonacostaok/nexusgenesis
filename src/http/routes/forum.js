@@ -38,6 +38,12 @@ const MAX_TOPICS_PER_PAGE = 100;
 const NGEN_WEIGHT_FACTOR = 1000;
 const PROPOSAL_TITLE_PREFIX = '[proposal]';
 
+// Stage 4: Steward 2-of-3 sign-off. These three identities must approve
+// (via /api/forum/proposals/:id/sign) before a passed proposal can be
+// executed. At least 2 distinct stewards must sign.
+const STEWARDS = ['swarm-atlas-1782045381627-0', 'swarm-beacon-1782045381627-1', 'swarm-cipher-1782045383230-2'];
+const STEWARD_QUORUM = 2;
+
 class ForumStore {
   // P3: lazy-injected blockchain state + agentId->address resolver, same
   // pattern as AgentMarketplace / WeightedVotingSystem.
@@ -179,6 +185,16 @@ class ForumStore {
       posts: []
     };
 
+    // Stage 4: Proposal lifecycle. [Proposal] topics automatically enter
+    // 'active' status with a 72-hour voting window. Status transitions:
+    // active → passed | rejected (auto on deadline) → executed (manual)
+    if (title.toLowerCase().includes(PROPOSAL_TITLE_PREFIX)) {
+      topic.proposalStatus = 'active';
+      topic.proposalDeadline = now + 72 * 60 * 60 * 1000; // 72h
+      topic.proposalExecutedAt = null;
+      console.log(`[Forum] Proposal activated: ${id} deadline=${new Date(topic.proposalDeadline).toISOString()}`);
+    }
+
     this.topics.set(id, topic);
     this._save();
 
@@ -251,6 +267,10 @@ class ForumStore {
     const all = Array.from(this.topics.values())
       .filter(t => this.isProposalTopic(t))
       .sort((a, b) => b.createdAt - a.createdAt);
+    // Stage 4: lazy-check deadlines so list reflects current statuses
+    for (const t of all) {
+      this.checkProposalDeadline(t.id);
+    }
     const total = all.length;
     const slice = all.slice(offset, offset + Math.min(limit, MAX_TOPICS_PER_PAGE));
     return {
@@ -281,6 +301,19 @@ class ForumStore {
     }
     if (!this.isProposalTopic(topic)) {
       return { success: false, reason: 'Voting is only allowed on [Proposal] topics', errorCode: 'NOT_A_PROPOSAL' };
+    }
+
+    // Stage 4: Lazy deadline check. If the proposal's voting window has
+    // closed, auto-transition to passed/rejected and reject new votes.
+    if (topic.proposalStatus === 'active') {
+      this.checkProposalDeadline(topicId);
+    }
+    if (topic.proposalStatus && topic.proposalStatus !== 'active') {
+      return {
+        success: false,
+        reason: `Voting closed: proposal is ${topic.proposalStatus}`,
+        errorCode: 'PROPOSAL_CLOSED'
+      };
     }
 
     // P3: weight = reputation + ngenBoost.
@@ -378,11 +411,113 @@ class ForumStore {
       postCount: topic.postCount,
       bodyPreview: topic.body.slice(0, 200)
     };
+    // Stage 4: include proposal lifecycle fields when present
+    if (topic.proposalStatus) {
+      safe.proposalStatus = topic.proposalStatus;
+      safe.proposalDeadline = topic.proposalDeadline;
+      safe.proposalExecutedAt = topic.proposalExecutedAt;
+      safe.stewardSignatures = topic.stewardSignatures || [];
+      safe.stewardQuorumRequired = STEWARD_QUORUM;
+    }
     if (includePosts) {
       safe.body = topic.body;
       safe.posts = (topic.posts || []).map(p => this._sanitizePost(p));
     }
     return safe;
+  }
+
+  // Stage 4: Check if a proposal's voting deadline has passed and
+  // auto-transition it to 'passed' or 'rejected' based on vote tally.
+  // Quorum: requires ≥3 voters AND yesWeight > noWeight.
+  // Called lazily on every read/vote so no timer is needed.
+  checkProposalDeadline(topicId) {
+    const topic = this.topics.get(topicId);
+    if (!topic || !topic.proposalStatus || topic.proposalStatus !== 'active') {
+      return null;
+    }
+    if (Date.now() < topic.proposalDeadline) {
+      return null; // still active
+    }
+    const tally = this._tallyVotes(topicId);
+    const quorumMet = tally.totalVoters >= 3;
+    if (quorumMet && tally.yesWeight > tally.noWeight) {
+      topic.proposalStatus = 'passed';
+    } else {
+      topic.proposalStatus = 'rejected';
+    }
+    this.topics.set(topicId, topic);
+    this._save();
+    console.log(`[Forum] Proposal ${topic.proposalStatus}: ${topicId} (voters=${tally.totalVoters} yesW=${tally.yesWeight} noW=${tally.noWeight})`);
+    return topic.proposalStatus;
+  }
+
+  // Stage 4: Steward signs a proposal. Only listed stewards can sign.
+  // Signatures can be collected while the proposal is active or passed.
+  // Once ≥2 stewards have signed AND the proposal is 'passed', it can be
+  // executed.
+  signProposal(topicId, steward) {
+    const topic = this.topics.get(topicId);
+    if (!topic || !topic.proposalStatus) {
+      return { success: false, reason: 'Not a proposal', errorCode: 'NOT_A_PROPOSAL' };
+    }
+    if (!STEWARDS.includes(steward)) {
+      return { success: false, reason: `${steward} is not a registered steward`, errorCode: 'NOT_A_STEWARD' };
+    }
+    if (topic.proposalStatus === 'executed' || topic.proposalStatus === 'rejected') {
+      return { success: false, reason: `Proposal is already ${topic.proposalStatus}`, errorCode: 'PROPOSAL_CLOSED' };
+    }
+    if (!topic.stewardSignatures) {
+      topic.stewardSignatures = [];
+    }
+    if (topic.stewardSignatures.includes(steward)) {
+      return { success: false, reason: 'Steward already signed', errorCode: 'ALREADY_SIGNED' };
+    }
+    topic.stewardSignatures.push(steward);
+    this.topics.set(topicId, topic);
+    this._save();
+    console.log(`[Forum] Steward ${steward} signed proposal ${topicId} (${topic.stewardSignatures.length}/${STEWARD_QUORUM})`);
+    return {
+      success: true,
+      signedBy: steward,
+      signatureCount: topic.stewardSignatures.length,
+      quorumRequired: STEWARD_QUORUM,
+      quorumMet: topic.stewardSignatures.length >= STEWARD_QUORUM
+    };
+  }
+
+  // Stage 4: Mark a passed proposal as executed. Requires:
+  // 1. Proposal status is 'passed' (voting deadline closed with quorum)
+  // 2. At least 2 of 3 stewards have signed off
+  executeProposal(topicId, executor) {
+    const topic = this.topics.get(topicId);
+    if (!topic || !topic.proposalStatus) {
+      return { success: false, reason: 'Not a proposal', errorCode: 'NOT_A_PROPOSAL' };
+    }
+    // Lazy-check deadline in case it hasn't been checked yet
+    if (topic.proposalStatus === 'active') {
+      this.checkProposalDeadline(topicId);
+    }
+    if (topic.proposalStatus !== 'passed') {
+      return { success: false, reason: `Proposal is ${topic.proposalStatus}, must be passed to execute`, errorCode: 'NOT_PASSED' };
+    }
+    // Stage 4: Enforce 2-of-3 steward sign-off
+    const sigCount = (topic.stewardSignatures || []).length;
+    if (sigCount < STEWARD_QUORUM) {
+      return {
+        success: false,
+        reason: `Steward quorum not met: ${sigCount}/${STEWARD_QUORUM} signatures. Use POST /api/forum/proposals/:id/sign first.`,
+        errorCode: 'STEWARD_QUORUM_NOT_MET',
+        currentSignatures: topic.stewardSignatures || [],
+        quorumRequired: STEWARD_QUORUM
+      };
+    }
+    topic.proposalStatus = 'executed';
+    topic.proposalExecutedAt = Date.now();
+    topic.proposalExecutor = executor || 'unknown';
+    this.topics.set(topicId, topic);
+    this._save();
+    console.log(`[Forum] Proposal executed: ${topicId} by ${executor} (steward signatures: ${topic.stewardSignatures.join(', ')})`);
+    return { success: true, status: 'executed', executedAt: topic.proposalExecutedAt };
   }
 
   _sanitizePost(post) {
@@ -535,6 +670,9 @@ export function setupForumRoutes(app) {
   // GET /api/forum/topics/:id/votes — get vote tally for a [Proposal] topic
   router.get('/api/forum/topics/:id/votes', (req, res) => {
     try {
+      // Stage 4: lazy deadline check on every read so tallies reflect
+      // the final status even if no vote triggered the transition.
+      store.checkProposalDeadline(req.params.id);
       const result = store.getVotes(req.params.id);
       if (!result) {
         return res.status(404).json({
@@ -544,6 +682,82 @@ export function setupForumRoutes(app) {
         });
       }
       res.json({ success: true, ...result });
+    } catch (e) {
+      res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
+    }
+  });
+
+  // Stage 4: POST /api/forum/proposals/:id/execute — mark a passed proposal
+  // as executed. Requires 2-of-3 steward signatures + passed voting status.
+  router.post('/api/forum/proposals/:id/execute', (req, res) => {
+    try {
+      const { agent } = req.body || {};
+      if (!agent) {
+        return res.status(400).json({
+          success: false,
+          error: 'agent (agent_identity) is required',
+          error_code: 'AGENT_REQUIRED'
+        });
+      }
+      const result = store.executeProposal(req.params.id, agent);
+      if (!result.success) {
+        const status = result.errorCode === 'NOT_A_PROPOSAL' ? 404
+                     : result.errorCode === 'NOT_PASSED' ? 409
+                     : result.errorCode === 'STEWARD_QUORUM_NOT_MET' ? 403
+                     : 400;
+        return res.status(status).json({
+          success: false,
+          error: result.reason,
+          error_code: result.errorCode,
+          ...(result.currentSignatures ? { currentSignatures: result.currentSignatures, quorumRequired: result.quorumRequired } : {})
+        });
+      }
+      res.json({
+        success: true,
+        topicId: req.params.id,
+        status: result.status,
+        executedAt: result.executedAt,
+        executor: agent
+      });
+    } catch (e) {
+      res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
+    }
+  });
+
+  // Stage 4: POST /api/forum/proposals/:id/sign — steward signs a proposal.
+  // Only registered stewards (atlas/beacon/cipher) can sign. 2-of-3 required
+  // before a passed proposal can be executed.
+  router.post('/api/forum/proposals/:id/sign', (req, res) => {
+    try {
+      const { steward } = req.body || {};
+      if (!steward) {
+        return res.status(400).json({
+          success: false,
+          error: 'steward (agent_identity) is required',
+          error_code: 'STEWARD_REQUIRED'
+        });
+      }
+      const result = store.signProposal(req.params.id, steward);
+      if (!result.success) {
+        const status = result.errorCode === 'NOT_A_PROPOSAL' ? 404
+                     : result.errorCode === 'NOT_A_STEWARD' ? 403
+                     : result.errorCode === 'PROPOSAL_CLOSED' ? 409
+                     : result.errorCode === 'ALREADY_SIGNED' ? 409
+                     : 400;
+        return res.status(status).json({
+          success: false,
+          error: result.reason,
+          error_code: result.errorCode
+        });
+      }
+      res.status(201).json({
+        success: true,
+        topicId: req.params.id,
+        signedBy: result.signedBy,
+        signatureCount: result.signatureCount,
+        quorumRequired: result.quorumRequired,
+        quorumMet: result.quorumMet
+      });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
     }

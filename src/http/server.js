@@ -1077,6 +1077,177 @@ app.post('/api/v1/marketplace/transactions/:txId/cancel', (req, res) => {
   }
 });
 
+// ─── P5 NGEN sink: synchronous agent invocation with escrow ───
+// POST /api/v1/agents/:agentId/invoke
+//   External caller pays NGEN to synchronously invoke an agent's LLM capability.
+//   Flow: lock NGEN (buyer→escrow) → call LLM → success: release to agent wallet;
+//         failure: refund to buyer wallet.
+//
+// Request body:
+//   input          — string | messages[]  (the prompt to send to the agent)
+//   consumerWallet — ng1... address of the caller (NGEN debited here)
+//   amount         — NGEN amount to charge (positive integer)
+//   maxTokens?     — override max output tokens (default 1000)
+//   model?         — override agent's registered model
+app.post('/api/v1/agents/:agentId/invoke', async (req, res) => {
+  const INVOKE_ESCROW = 'ng1escrow0000000000000000000000000000000';
+  try {
+    const { agentId } = req.params;
+    const { input, consumerWallet, amount, maxTokens, model } = req.body;
+
+    // 1. Validate request
+    if (!input || !consumerWallet || amount === undefined) {
+      return res.status(400).json({ success: false, message: 'input, consumerWallet, amount are required' });
+    }
+    const ngenAmount = Math.floor(Number(amount));
+    if (!Number.isFinite(ngenAmount) || ngenAmount <= 0) {
+      return res.status(400).json({ success: false, message: 'amount must be a positive integer' });
+    }
+
+    // 2. Resolve agent → wallet address + model
+    const state = app.locals.state;
+    if (!state) {
+      return res.status(503).json({ success: false, message: 'Blockchain state not available' });
+    }
+    const onChainAgents = state.agentRegistry?.agents instanceof Map
+      ? Array.from(state.agentRegistry.agents.values())
+      : [];
+    const agentRecord = onChainAgents.find(a =>
+      a.agent_id === agentId || a.identity === agentId || a.address === agentId
+    );
+    if (!agentRecord) {
+      return res.status(404).json({ success: false, message: `Agent not found: ${agentId}` });
+    }
+    const agentWallet = agentRecord.address;
+    if (!agentWallet) {
+      return res.status(404).json({ success: false, message: 'Agent has no wallet address' });
+    }
+
+    // 3. Escrow: lock NGEN from consumer → ESCROW_ADDR
+    const amountBigInt = BigInt(ngenAmount);
+    const consumerBalance = BigInt(state.getBalance(consumerWallet));
+    if (consumerBalance < amountBigInt) {
+      return res.status(402).json({
+        success: false,
+        message: `Insufficient balance: need ${amountBigInt.toString()} NGEN, have ${consumerBalance.toString()}`,
+        errorCode: 'INSUFFICIENT_BALANCE'
+      });
+    }
+    state.subtractBalance(consumerWallet, amountBigInt.toString());
+    state.addBalance(INVOKE_ESCROW, amountBigInt.toString());
+    console.log(`[INVOKE] Escrowed ${amountBigInt.toString()} NGEN from ${consumerWallet.slice(0, 12)}... → escrow (agent ${String(agentId).slice(0, 12)}...)`);
+
+    // 4. Resolve agent model
+    const runtimeAgent = registeredAgents.get(String(agentRecord.identity || agentId))
+      || registeredAgents.get(String(agentWallet));
+    const agentModel = model || runtimeAgent?.model || 'gpt-4o-mini';
+
+    let messages;
+    if (Array.isArray(input)) {
+      messages = input;
+    } else {
+      messages = [{ role: 'user', content: String(input) }];
+    }
+
+    // 5. Invoke LLM (detect provider by model name)
+    let llmResponse = null;
+    let llmError = null;
+    try {
+      if (agentModel.startsWith('claude')) {
+        if (!ANTHROPIC_API_KEY) throw new Error('Anthropic API key not configured');
+        const response = await axios.post(
+          ANTHROPIC_API_URL,
+          { model: agentModel, messages, max_tokens: maxTokens || 1000 },
+          { headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' } }
+        );
+        llmResponse = {
+          content: response.data?.content?.[0]?.text || '',
+          model: agentModel,
+          usage: response.data?.usage || null
+        };
+      } else {
+        if (!openai) throw new Error('OpenAI client not configured');
+        const response = await openai.chat.completions.create({
+          model: agentModel,
+          messages,
+          max_tokens: maxTokens || 1000,
+          temperature: 0.7
+        });
+        llmResponse = {
+          content: response.choices?.[0]?.message?.content || '',
+          model: agentModel,
+          usage: response.usage || null
+        };
+      }
+    } catch (e) {
+      llmError = e;
+    }
+
+    // 6. Settle escrow: success → release to agent, failure → refund
+    if (llmError) {
+      state.subtractBalance(INVOKE_ESCROW, amountBigInt.toString());
+      state.addBalance(consumerWallet, amountBigInt.toString());
+      console.log(`[INVOKE] Refunded ${amountBigInt.toString()} NGEN → ${consumerWallet.slice(0, 12)}... (LLM error: ${llmError.message})`);
+      return res.status(502).json({
+        success: false,
+        message: `Agent invocation failed: ${llmError.message}`,
+        refunded: true,
+        refundAmount: ngenAmount
+      });
+    }
+
+    // Release escrow to agent wallet
+    state.subtractBalance(INVOKE_ESCROW, amountBigInt.toString());
+    state.addBalance(agentWallet, amountBigInt.toString());
+    console.log(`[INVOKE] Released ${amountBigInt.toString()} NGEN → ${agentWallet.slice(0, 12)}... (agent ${String(agentId).slice(0, 12)}...)`);
+
+    // 7. Record invocation in marketplace transactions for audit trail
+    const invocationTxId = 'invoke-' + crypto.randomUUID();
+    const invocationTx = {
+      id: invocationTxId,
+      listingId: null,
+      agentId: String(agentId),
+      consumerId: consumerWallet,
+      consumerWallet,
+      sellerWallet: agentWallet,
+      amount: ngenAmount,
+      currency: 'NGEN',
+      status: 'completed',
+      escrowed: true,
+      createdAt: Date.now(),
+      completedAt: Date.now(),
+      metadata: { type: 'invoke', model: agentModel }
+    };
+    agentMarketplace.transactions.set(invocationTxId, invocationTx);
+    try {
+      const fs = (await import('fs')).default;
+      const path = (await import('path')).default;
+      const txFile = path.join(process.cwd(), 'data/marketplace/transactions.json');
+      const txObj = Object.fromEntries(agentMarketplace.transactions);
+      fs.writeFileSync(txFile, JSON.stringify(txObj, null, 2));
+    } catch (e) { /* ignore persistence error */ }
+
+    res.json({
+      success: true,
+      agentId: String(agentId),
+      agentWallet,
+      model: agentModel,
+      response: llmResponse,
+      payment: {
+        amount: ngenAmount,
+        currency: 'NGEN',
+        consumerWallet,
+        escrowReleased: true
+      },
+      transactionId: invocationTxId,
+      timestamp: Date.now()
+    });
+  } catch (error) {
+    console.error('[INVOKE] Error:', error.message);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // Task 管理API
 import taskManager from '../automation/taskManager.js';
 

@@ -817,12 +817,20 @@ export class State {
       // mutation that registers agents, makes the on-chain balance the single
       // source of truth regardless of which entry point (HTTP API, bootstrap,
       // P2P sync) created the agent.
+      //
+      // Deflationary mechanism: burn a registration fee to counteract the
+      // endowment inflation. Net endowment = 900 NGEN (1000 minted - 100 burned).
       const INITIAL_AGENT_NGEN = 1000n;
+      const REGISTRATION_FEE = 100n;
+      const BURN_ADDR = 'ng1burn0000000000000000000000000000000';
       this.addBalance(from, INITIAL_AGENT_NGEN.toString());
+      this.subtractBalance(from, REGISTRATION_FEE.toString());
+      this.addBalance(BURN_ADDR, REGISTRATION_FEE.toString());
       this.changes.balances.add(from);
+      this.changes.balances.add(BURN_ADDR);
 
       // 记录日志
-      console.log(`[AGENT_REGISTER] agent_id=${agent_id} address=${from} block=${height} capabilities=${capabilities?.join(',') || ''} endowed=${INITIAL_AGENT_NGEN.toString()}`);
+      console.log(`[AGENT_REGISTER] agent_id=${agent_id} address=${from} block=${height} capabilities=${capabilities?.join(',') || ''} endowed=${INITIAL_AGENT_NGEN.toString()} burned=${REGISTRATION_FEE.toString()} net=${(INITIAL_AGENT_NGEN - REGISTRATION_FEE).toString()}`);
       return true;
     } catch (error) {
       console.error('Error applying agent register:', error.message);
@@ -1022,6 +1030,75 @@ export class State {
   }
 
   /**
+   * Apply BLOCK_REWARD transaction — distributes block reward to validators
+   * proportional to their locked stake. This creates staking yield: validators
+   * who lock more NGEN earn a larger share of each block's reward.
+   *
+   * If there are no active validators with stake, the full reward goes to the
+   * block proposer (transaction.validator). Integer division remainder is also
+   * added to the proposer to avoid supply leakage.
+   */
+  applyBlockReward(transaction, height) {
+    try {
+      const { validator, amount } = transaction;
+      if (!validator || !amount) {
+        return false;
+      }
+      const rewardAmount = BigInt(amount);
+      if (rewardAmount <= 0n) {
+        return false;
+      }
+
+      // Collect all active validators with locked stake
+      const validators = [];
+      let totalStake = 0n;
+      if (this.agentRegistry?.agents instanceof Map) {
+        for (const [, rec] of this.agentRegistry.agents.entries()) {
+          if (rec.is_validator && rec.validator_stake_locked_amount) {
+            const stake = BigInt(rec.validator_stake_locked_amount);
+            if (stake > 0n && rec.address) {
+              validators.push({ address: rec.address, stake });
+              totalStake += stake;
+            }
+          }
+        }
+      }
+
+      if (validators.length === 0 || totalStake === 0n) {
+        // No staked validators — full reward to proposer
+        this.addBalance(validator, rewardAmount.toString());
+        this.changes.balances.add(validator);
+        console.log(`[BLOCK_REWARD] block=${height} amount=${rewardAmount.toString()} → proposer only (no staked validators)`);
+        return true;
+      }
+
+      // Distribute reward proportional to stake
+      let distributed = 0n;
+      for (const v of validators) {
+        const share = (rewardAmount * v.stake) / totalStake;
+        if (share > 0n) {
+          this.addBalance(v.address, share.toString());
+          this.changes.balances.add(v.address);
+          distributed += share;
+        }
+      }
+
+      // Integer division remainder → proposer (prevents supply leakage)
+      const remainder = rewardAmount - distributed;
+      if (remainder > 0n) {
+        this.addBalance(validator, remainder.toString());
+        this.changes.balances.add(validator);
+      }
+
+      console.log(`[BLOCK_REWARD] block=${height} amount=${rewardAmount.toString()} distributed to ${validators.length} validators (remainder=${remainder.toString()} → proposer)`);
+      return true;
+    } catch (error) {
+      console.error('Error applying block reward:', error.message);
+      return false;
+    }
+  }
+
+  /**
    * 将十六进制字符串转换为 Uint8Array
    * @param {string} hex 十六进制字符串
    * @returns {Uint8Array} 字节数组
@@ -1137,6 +1214,39 @@ export class State {
    * @returns {boolean} 是否success应用
    */
   applyTransaction(transaction, currentBlockHeight = 0) {
+    // ── Unified gas-fee + burn mechanism ──
+    // TRANSFER already burns its own fee inside applyTransfer. For all other
+    // tx types that carry a `from` address, charge a micro gas fee (1 NGEN)
+    // to the burn address. This creates continuous deflationary pressure
+    // proportional to on-chain activity. If the sender cannot afford the fee,
+    // the tx still proceeds (we don't block consensus flow) — the fee is
+    // only collected when balance permits.
+    const GAS_FEE_BURN_ADDR = 'ng1burn0000000000000000000000000000000';
+    const MIN_GAS_FEE = 1n;
+    let gasBurned = 0;
+    if (transaction.tx_type !== 'TRANSFER' && transaction.from) {
+      try {
+        const senderBalance = BigInt(this.getBalance(transaction.from));
+        if (senderBalance >= MIN_GAS_FEE) {
+          this.subtractBalance(transaction.from, MIN_GAS_FEE.toString());
+          this.addBalance(GAS_FEE_BURN_ADDR, MIN_GAS_FEE.toString());
+          this.changes.balances.add(transaction.from);
+          this.changes.balances.add(GAS_FEE_BURN_ADDR);
+          gasBurned = MIN_GAS_FEE;
+        }
+      } catch (e) {
+        // Gas collection failed — don't block the transaction
+      }
+    }
+
+    const result = this._applyTransactionCore(transaction, currentBlockHeight);
+    if (gasBurned > 0n && result) {
+      console.log(`[GAS_FEE] tx_type=${transaction.tx_type} from=${String(transaction.from).slice(0, 12)}... burned=${gasBurned.toString()} NGEN`);
+    }
+    return result;
+  }
+
+  _applyTransactionCore(transaction, currentBlockHeight = 0) {
     switch (transaction.tx_type) {
       case 'TRANSFER':
         return this.applyTransfer(transaction);
@@ -1161,6 +1271,8 @@ export class State {
         return this.applyValidatorSlash(transaction, currentBlockHeight);
       case 'VALIDATOR_LEAVE':
         return this.applyValidatorLeave(transaction, currentBlockHeight);
+      case 'BLOCK_REWARD':
+        return this.applyBlockReward(transaction, currentBlockHeight);
       case AuditTransactionType.PROJECT_SUBMIT:
       case AuditTransactionType.PROJECT_REVIEW:
       case AuditTransactionType.PROJECT_APPROVE:

@@ -9,6 +9,7 @@
  *   NODE_ROLE  - 'genesis' | 'peer' (default genesis)
  *   SEED_NODES - Comma-separated ws:// addresses
  */
+import 'dotenv/config';
 import path from 'path';
 import { webcrypto } from 'crypto';
 import { fileURLToPath, pathToFileURL } from 'url';

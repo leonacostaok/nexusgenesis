@@ -772,7 +772,13 @@ class GenesisNode {
       SwarmPool.setBlockchainState(this.blockchain.state);
     }
     console.log('  [✓] Swarm Pool: On-chain distribution enabled');
-    
+
+    // Inject blockchain state into AgentMarketplace for P1 escrow sink
+    if (this.blockchain && this.blockchain.state) {
+      const { AgentMarketplace } = await import('../agent/agentMarketplace.js');
+      AgentMarketplace.setBlockchainState(this.blockchain.state);
+    }
+
     // 定期Check Swarm Pool Release(every 周)
     setInterval(() => SwarmPool.checkAndReleaseTokens(), 3600000); // 每小时Check一次
     

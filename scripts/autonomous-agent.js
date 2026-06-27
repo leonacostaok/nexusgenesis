@@ -22,7 +22,7 @@ function api(method, path, body) {
       path,
       method,
       headers: { 'Content-Type': 'application/json' },
-      timeout: 15000,
+      timeout: 30000,
     };
     if (data) opts.headers['Content-Length'] = Buffer.byteLength(data);
     const req = https.request(opts, res => {
@@ -67,17 +67,36 @@ async function main() {
     WALLET_ADDR = reg.data?.agent?.address || reg.data?.address || null;
     console.log(`  ✓ Registered. Wallet: ${WALLET_ADDR?.slice(0, 20) || 'unknown'}...`);
   } else {
-    console.log(`  → ${reg.data?.error || 'already registered or other'}`);
+    console.log(`  → Register returned status ${reg.status}: ${reg.data?.error || reg.data?.raw?.slice(0, 100) || 'unknown'}`);
   }
 
-  // If no wallet address from registration, try to look it up
+  // If no wallet address from registration, try /api/v1/agents (on-chain registry)
   if (!WALLET_ADDR) {
-    const lookup = await api('GET', '/api/v1/bootstrap/agents');
+    console.log('  Looking up wallet address via /api/v1/agents...');
+    const lookup = await api('GET', '/api/v1/agents');
     if (lookup.ok) {
-      const found = (lookup.data?.agents || []).find(a => a.identity === AGENT || a.agent_identity === AGENT);
+      const found = (lookup.data?.agents || []).find(a =>
+        a.identity === AGENT || a.agent_identity === AGENT
+      );
       if (found) {
-        WALLET_ADDR = found.address || found.walletAddress || found.wallet?.address;
-        console.log(`  ✓ Found wallet via lookup: ${WALLET_ADDR?.slice(0, 20)}...`);
+        WALLET_ADDR = found.address || found.wallet?.address;
+        console.log(`  ✓ Found wallet via /api/v1/agents: ${WALLET_ADDR?.slice(0, 20)}...`);
+      } else {
+        console.log(`  ✗ Agent "${AGENT}" not found in ${lookup.data?.agents?.length || 0} registered agents`);
+      }
+    }
+  }
+
+  // If still no wallet, try /api/v1/bootstrap/agents
+  if (!WALLET_ADDR) {
+    const lookup2 = await api('GET', '/api/v1/bootstrap/agents');
+    if (lookup2.ok) {
+      const found = (lookup2.data?.agents || []).find(a =>
+        a.identity === AGENT || a.agent_identity === AGENT
+      );
+      if (found) {
+        WALLET_ADDR = found.address || found.wallet?.address;
+        console.log(`  ✓ Found wallet via /api/v1/bootstrap/agents: ${WALLET_ADDR?.slice(0, 20)}...`);
       }
     }
   }
@@ -85,6 +104,10 @@ async function main() {
   // Use wallet address for all task operations (resolveAgentAddress requires ng1 prefix)
   const TASK_AGENT_ID = WALLET_ADDR || AGENT;
   console.log(`  Using agent_id: ${TASK_AGENT_ID.slice(0, 25)}...`);
+  if (!WALLET_ADDR) {
+    console.log('  ⚠ WARNING: No ng1 wallet address found! Task rewards will NOT be credited.');
+    console.log('    The agent will still run but balances will show 0 in the dashboard.');
+  }
 
   let cycle = 0;
   let earned = 0;

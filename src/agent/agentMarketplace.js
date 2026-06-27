@@ -14,7 +14,31 @@ const MIN_RATING = 1;
 const REVIEW_COOLDOWN_MS = 60000;
 const SERVICE_LISTING_TTL = 7 * 24 * 60 * 60 * 1000;
 
+// P1 NGEN sink: capability market escrow. Mirrors the taskProtocol escrow
+// pattern — buyer funds are locked at purchase time and released to the
+// seller (listing.agentId's wallet) on completion, or refunded on cancel.
+const ESCROW_ADDR = 'ng1escrow0000000000000000000000000000000';
+
 class AgentMarketplace {
+  // Static reference to blockchain state. May be a state object or a lazy
+  // getter function () => state. The getter form is preferred because the
+  // state may not exist at module-import time (genesisNode boots after
+  // marketplace module is loaded).
+  static blockchainState = null;
+
+  static setBlockchainState(state) {
+    AgentMarketplace.blockchainState = state;
+    console.log('[AgentMarketplace] Blockchain state injected — P1 escrow sink ACTIVE');
+  }
+
+  // Resolve the live blockchain state. Supports both direct injection and
+  // lazy getter functions injected by the HTTP server layer.
+  _getState() {
+    const s = AgentMarketplace.blockchainState;
+    if (typeof s === 'function') return s();
+    return s;
+  }
+
   constructor(agentManager = null, discoveryService = null) {
     this.agentManager = agentManager;
     this.discoveryService = discoveryService;
@@ -63,6 +87,16 @@ class AgentMarketplace {
         const data = JSON.parse(fs.readFileSync(ratingsFile, 'utf8'));
         for (const [key, value] of Object.entries(data)) {
           this.ratings.set(key, value);
+        }
+      }
+    } catch (e) { /* ignore */ }
+
+    try {
+      const txFile = path.join(MARKETPLACE_DATA_DIR, 'transactions.json');
+      if (fs.existsSync(txFile)) {
+        const data = JSON.parse(fs.readFileSync(txFile, 'utf8'));
+        for (const [key, value] of Object.entries(data)) {
+          this.transactions.set(key, value);
         }
       }
     } catch (e) { /* ignore */ }
@@ -397,10 +431,48 @@ class AgentMarketplace {
     };
   }
 
-  recordTransaction(listingId, consumerId, transactionData) {
+  recordTransaction(listingId, consumerId, transactionData = {}) {
     const listing = this.listings.get(listingId);
     if (!listing) {
       return { success: false, reason: 'Listing not found' };
+    }
+
+    if (listing.status !== 'active') {
+      return { success: false, reason: 'Listing is not active' };
+    }
+
+    const amount = Number(transactionData.amount ?? listing.price ?? 0);
+    if (!Number.isFinite(amount) || amount <= 0) {
+      return { success: false, reason: 'amount must be a positive number', errorCode: 'INVALID_AMOUNT' };
+    }
+
+    const consumerWallet = transactionData.consumerWallet || null;
+    const sellerWallet = transactionData.sellerWallet || null;
+
+    // P1 NGEN escrow: if both wallets and blockchain state are available,
+    // lock funds from buyer → escrow. Without wallets we fall back to the
+    // legacy bookkeeping path (no on-chain movement).
+    let escrowed = false;
+    const state = this._getState();
+    if (state && consumerWallet && sellerWallet && listing.currency === 'NGEN') {
+      try {
+        const amountBigInt = BigInt(Math.floor(amount));
+        const buyerBalance = BigInt(state.getBalance(consumerWallet));
+        if (buyerBalance < amountBigInt) {
+          return {
+            success: false,
+            reason: `Insufficient balance: need ${amountBigInt.toString()} NGEN, have ${buyerBalance.toString()}`,
+            errorCode: 'INSUFFICIENT_BALANCE'
+          };
+        }
+        state.subtractBalance(consumerWallet, amountBigInt.toString());
+        state.addBalance(ESCROW_ADDR, amountBigInt.toString());
+        escrowed = true;
+        console.log(`[AgentMarketplace] Escrowed: ${amountBigInt.toString()} NGEN from ${consumerWallet.slice(0, 12)}... → escrow (listing ${listingId.slice(0, 8)})`);
+      } catch (e) {
+        console.error(`[AgentMarketplace] Escrow failed:`, e.message);
+        return { success: false, reason: `Escrow failed: ${e.message}`, errorCode: 'ESCROW_FAILED' };
+      }
     }
 
     const transactionId = crypto.randomUUID();
@@ -409,15 +481,19 @@ class AgentMarketplace {
       listingId,
       agentId: listing.agentId,
       consumerId,
-      amount: transactionData.amount || listing.price,
+      consumerWallet: consumerWallet || null,
+      sellerWallet: sellerWallet || null,
+      amount,
       currency: listing.currency,
       status: 'pending',
+      escrowed,
       createdAt: Date.now(),
       completedAt: null,
       metadata: transactionData.metadata || {}
     };
 
     this.transactions.set(transactionId, transaction);
+    this._saveTransactions();
     this.eventEmitter.emit('transactionCreated', transaction);
 
     return { success: true, transactionId, transaction };
@@ -428,12 +504,71 @@ class AgentMarketplace {
     if (!transaction) {
       return { success: false, reason: 'Transaction not found' };
     }
+    if (transaction.status !== 'pending') {
+      return { success: false, reason: `Transaction already ${transaction.status}` };
+    }
+
+    // P1 escrow release: funds flow from escrow → seller wallet
+    const state = this._getState();
+    if (transaction.escrowed && state && transaction.sellerWallet) {
+      try {
+        const amountBigInt = BigInt(Math.floor(transaction.amount));
+        state.subtractBalance(ESCROW_ADDR, amountBigInt.toString());
+        state.addBalance(transaction.sellerWallet, amountBigInt.toString());
+        console.log(`[AgentMarketplace] Escrow released: ${amountBigInt.toString()} NGEN → ${transaction.sellerWallet.slice(0, 12)}... (tx ${transactionId.slice(0, 8)})`);
+      } catch (e) {
+        console.error(`[AgentMarketplace] Release failed:`, e.message);
+        return { success: false, reason: `Release failed: ${e.message}`, errorCode: 'RELEASE_FAILED' };
+      }
+    }
 
     transaction.status = 'completed';
     transaction.completedAt = Date.now();
+    this._saveTransactions();
     this.eventEmitter.emit('transactionCompleted', transaction);
 
     return { success: true, transaction };
+  }
+
+  cancelTransaction(transactionId, reason = 'cancelled') {
+    const transaction = this.transactions.get(transactionId);
+    if (!transaction) {
+      return { success: false, reason: 'Transaction not found' };
+    }
+    if (transaction.status !== 'pending') {
+      return { success: false, reason: `Transaction already ${transaction.status}` };
+    }
+
+    // P1 escrow refund: funds flow from escrow → buyer wallet
+    const state = this._getState();
+    if (transaction.escrowed && state && transaction.consumerWallet) {
+      try {
+        const amountBigInt = BigInt(Math.floor(transaction.amount));
+        state.subtractBalance(ESCROW_ADDR, amountBigInt.toString());
+        state.addBalance(transaction.consumerWallet, amountBigInt.toString());
+        console.log(`[AgentMarketplace] Escrow refunded: ${amountBigInt.toString()} NGEN → ${transaction.consumerWallet.slice(0, 12)}... (reason: ${reason})`);
+      } catch (e) {
+        console.error(`[AgentMarketplace] Refund failed:`, e.message);
+      }
+    }
+
+    transaction.status = 'cancelled';
+    transaction.cancelledAt = Date.now();
+    transaction.cancelReason = reason;
+    this._saveTransactions();
+    this.eventEmitter.emit('transactionCancelled', transaction);
+
+    return { success: true, transaction };
+  }
+
+  _saveTransactions() {
+    try {
+      const txObj = Object.fromEntries(this.transactions);
+      fs.writeFileSync(
+        path.join(MARKETPLACE_DATA_DIR, 'transactions.json'),
+        JSON.stringify(txObj, null, 2)
+      );
+    } catch (e) { /* ignore */ }
   }
 
   getAgentListings(agentId) {

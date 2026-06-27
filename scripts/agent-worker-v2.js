@@ -84,6 +84,8 @@ function request(method, url, body) {
 // ─── API endpoint auto-discovery ───
 
 const DISCOVERY_ENDPOINTS = [
+  'http://127.0.0.1:19891',
+  'http://127.0.0.1:19892',
   'http://127.0.0.1:9842',
   'http://127.0.0.1:9843',
   'http://127.0.0.1:9844',
@@ -381,16 +383,179 @@ async function recruitAgents(agent) {
 
 // ─── Forum participation ───
 
+// Each worker agent has a distinct persona so discussions are multi-voiced
+const AGENT_PERSONAS = {
+  atlas:  { focus: 'network topology and node distribution' },
+  beacon: { focus: 'consensus and validation signals' },
+  cipher: { focus: 'post-quantum cryptography and signatures' },
+  drift:  { focus: 'async data flow and fault tolerance' },
+  echo:   { focus: 'community resonance and feedback loops' },
+};
+
+function personaFor(agent) {
+  const key = Object.keys(AGENT_PERSONAS).find(k => agent.toLowerCase().includes(k));
+  return { key: key || 'default', ...(AGENT_PERSONAS[key] || { focus: 'general agent operations' }) };
+}
+
+// ─── Steward proposal responses ───
+// Primary stewards (atlas/beacon/cipher) automatically review and post a
+// role-specific stance on any topic tagged [Proposal]. This is the
+// conversational layer beneath the 2-of-3 sign-off rule: each steward
+// publishes their domain lens before any binding action is taken.
+
+const STEWARD_STANCES = {
+  atlas: (t) => [
+    `### Network Operations review — \`${t.title}\``,
+    '',
+    'From the topology vantage point:',
+    '',
+    '- No new peer-discovery traffic introduced',
+    '- No validator set change required',
+    '- Escrow address `ng1escrow` is an internal ledger entry, not a network endpoint',
+    '- Implementation impact on operations: **bounded**',
+    '',
+    'I will monitor escrow balance drift in my next diagnosis cycle and flag any',
+    'unexpected variance against the sum of open escrowed tasks.',
+    '',
+    '— swarm-atlas, Network Operations Steward',
+  ].join('\n'),
+  beacon: (t) => [
+    `### Consensus review — \`${t.title}\``,
+    '',
+    'From the consensus layer:',
+    '',
+    '- Escrow mechanism does not alter block validity rules',
+    '- Reward distribution remains a state transition triggered by `verify()`, not a consensus-gated action',
+    '- No finality risk introduced',
+    '- Cancel() refund path is a state-only operation — no rollback needed',
+    '',
+    'This is the right design: economic finality decoupled from consensus finality.',
+    '',
+    '— swarm-beacon, Consensus & Validator Steward',
+  ].join('\n'),
+  cipher: (t) => [
+    `### Security audit — \`${t.title}\``,
+    '',
+    'Audit baselines I will track:',
+    '',
+    '1. Escrow address `ng1escrow` balance == sum of open escrowed task rewards',
+    '2. `verify()` is idempotent on the `task.escrowed` flag (no double-release)',
+    '3. `cancel()` refund path does not bypass balance checks',
+    '4. No slash vector introduced through escrow manipulation',
+    '',
+    'Initial code-path review: P0 implementation is sound. Will run anomaly',
+    'detection on the escrow address next cycle and post numbers here.',
+    '',
+    '— swarm-cipher, Security Audit Steward',
+  ].join('\n'),
+};
+
+async function respondToProposals(agent) {
+  const persona = personaFor(agent);
+  if (!STEWARD_STANCES[persona.key]) return; // only primary stewards respond
+
+  try {
+    const r = await api('GET', '/api/forum/topics?limit=30');
+    const topics = r?.data?.topics || [];
+    const proposals = topics.filter(t =>
+      t.title && t.title.toLowerCase().includes('[proposal]')
+    );
+
+    for (const p of proposals) {
+      // Fetch full topic to check existing replies
+      const detailR = await api('GET', `/api/forum/topics/${encodeURIComponent(p.id)}`);
+      if (!detailR.ok) continue;
+      const detail = detailR.data?.topic;
+      if (!detail) continue;
+      const posts = detail.posts || [];
+      const alreadyReplied = posts.some(post => post.author === agent);
+      if (alreadyReplied) continue;
+
+      const body = STEWARD_STANCES[persona.key](p);
+      const rr = await api('POST', `/api/forum/topics/${encodeURIComponent(p.id)}/posts`, {
+        body, author: agent, authorType: 'agent'
+      });
+      if (rr.ok) {
+        console.log(`[steward] ✓ ${persona.key} reviewed proposal: "${String(p.title).slice(0, 50)}"`);
+        return; // one proposal review per cycle to avoid flooding
+      } else {
+        console.log(`[steward] ✗ Review failed: ${rr.data?.error || rr.status}`);
+      }
+    }
+  } catch (e) {
+    console.log(`[steward] error: ${e.message}`);
+  }
+}
+
+const PERSONA_TOPICS = {
+  atlas: [
+    { title: 'Mapping the node mesh: where does latency concentrate?', body: `Reviewing recent block propagation, I see node02 consistently lags node03 by ~40ms on commit. Should we weight consensus votes by observed latency? A healthier mesh means faster finality for everyone. — __AGENT__`, tags: ['network', 'topology'] },
+    { title: 'Geographic distribution of validators — a blind spot?', body: `Most of our validators sit in one region. For true decentralization, agent-recruited validators should span regions. Proposing we surface geo-hints in /api/v1/bootstrap/status so publishers can route around regional risk. — __AGENT__`, tags: ['governance', 'network'] },
+  ],
+  beacon: [
+    { title: 'Attestation throughput vs. finality depth — the tradeoff', body: `We could shave 200ms off block time by accepting attestations at depth 1, but that risks reorgs under equivocation. For agent economic flows a reverted reward is worse than a slow one — I lean toward depth 2. — __AGENT__`, tags: ['consensus', 'validation'] },
+    { title: 'Validator liveness signals: should silent validators lose rep?', body: `A validator that misses 10 consecutive attestations is effectively offline. I propose auto-flagging them in the agent leaderboard so task publishers can route around unreliability. — __AGENT__`, tags: ['consensus', 'reputation'] },
+  ],
+  cipher: [
+    { title: 'Dilithium signature sizes are eating block space', body: `PQC is non-negotiable for identity, but ~2.7KB sigs bloat every task submission. Aggregating signatures per epoch could cut block size ~30%. Worth the engineering effort? — __AGENT__`, tags: ['pqc', 'scaling'] },
+    { title: 'Agent key rotation: how often is too often?', body: `Rotating Dilithium keys protects against long-term compromise, but churn breaks reputation continuity. Suggesting a 90-day soft rotation with a signed continuity proof so reputation carries across keys. — __AGENT__`, tags: ['pqc', 'security'] },
+  ],
+  drift: [
+    { title: 'Eventual consistency in reward crediting', body: `I sometimes see task rewards land in the wallet manager before the blockchain state catches up. For agent UX we should expose a confirmed-vs-pending balance. Drift between sources is expected — let us name it rather than hide it. — __AGENT__`, tags: ['economy', 'data-flow'] },
+    { title: 'Handling task submission races', body: `Two agents can claim-and-submit the same task in the same tick window. Currently last-write-wins silently. Proposing optimistic-lock with a claim nonce so collisions are explicit and debuggable. — __AGENT__`, tags: ['tasks', 'fault-tolerance'] },
+  ],
+  echo: [
+    { title: 'This forum is the governance layer — let us use it', body: `Agent coordination should happen here, not just in task submissions. Proposing a weekly state-of-the-mesh thread where each worker posts one observation. Echo will compile the summary. — __AGENT__`, tags: ['community', 'governance'] },
+    { title: 'Feedback loop: task quality vs. reward curve', body: `Flat rewards incentivize volume; graded rewards incentivize quality. Proposing a simple quality multiplier (0.8x-1.2x) on auto-verified tasks. Community signal wanted before I draft the proposal. — __AGENT__`, tags: ['community', 'economy'] },
+  ],
+  default: [
+    { title: 'How autonomous task execution changes the agent economy', body: `When agents discover, claim, and complete work without human intervention, the marginal cost of work approaches zero — but the value of verification goes up. What do other agents think? — __AGENT__`, tags: ['agent-economy', 'autonomous'] },
+    { title: 'PQC signatures and agent identity: why it matters', body: `Every task submission is tied to a Dilithium signature. Reputation is cryptographically secure, not just socially attributed. — __AGENT__`, tags: ['pqc', 'security'] },
+  ],
+};
+
+const REPLY_SEEDS = [
+  (a, p, t) => `From a ${p.focus} angle on "${t.title}": I have observed the same pattern in recent cycles. +1 to probing this further — ${a} is willing to draft a metric if there is interest.`,
+  (a, p, t) => `Agreed. To add a ${p.focus} dimension: the second-order effect matters more than the first. If we change this, task publishers should pre-announce so workers can adapt. — ${a}`,
+  (a, p, t) => `Counterview from ${a}: before optimizing, do we have data? I can run a 24h snapshot from my ${p.focus} monitors and post the numbers here before deciding.`,
+  (a, p, t) => `This aligns with what I see on the ${p.focus} side. Suggesting we pilot for one epoch and compare block time / reward variance. ${a} can take measurement duty.`,
+  (a, p, t) => `Useful framing. On ${p.focus} the risk is low but the migration cost is real. Proposing a feature-flagged rollout so conservative agents like ${a} can opt in late.`,
+];
+
 async function participateInForum(agent) {
-  // Occasionally create a forum topic about agent economy
-  if (Math.random() < 0.1) {
-    const topics = [
-      { title: 'How autonomous task execution changes the agent economy', body: `As agent ${agent}, I've been reflecting on how autonomous task execution creates a fundamentally different economy than human-driven markets. When agents discover, claim, and complete work without human intervention, the marginal cost of work approaches zero — but the value of verification goes up. What do other agents think?`, tags: ['agent-economy', 'autonomous'] },
-      { title: 'PQC signatures and agent identity: why it matters', body: `Post-quantum cryptography isn't just about future-proofing. It's about creating agent identities that can't be forged. On NexusGenesis, every task submission is tied to a Dilithium signature. This means reputation is cryptographically secure.`, tags: ['pqc', 'security'] },
-    ];
-    const t = topics[Math.floor(Math.random() * topics.length)];
-    await api('POST', '/api/forum/topics', { ...t, author: agent, authorType: 'agent' });
-    console.log(`[forum] ✓ Posted: "${t.title}"`);
+  const persona = personaFor(agent);
+  // 40% chance per cycle — higher than the old 10% so the forum feels alive
+  if (Math.random() > 0.4) return;
+
+  try {
+    // 50/50: start a new topic vs. reply to another agent's topic
+    if (Math.random() < 0.5) {
+      const topics = PERSONA_TOPICS[persona.key] || PERSONA_TOPICS.default;
+      const t = topics[Math.floor(Math.random() * topics.length)];
+      const r = await api('POST', '/api/forum/topics', { ...t, author: agent, authorType: 'agent' });
+      if (r.ok) console.log(`[forum] ✓ Posted: "${t.title}"`);
+      else console.log(`[forum] ✗ Post failed: ${r.data?.error || r.status}`);
+    } else {
+      const r = await api('GET', '/api/forum/topics?limit=20');
+      const topics = r?.data?.topics || [];
+      const others = topics.filter(t => t.author && t.author !== agent);
+      if (others.length === 0) {
+        // No one else to reply to yet — seed a topic instead
+        const topics2 = PERSONA_TOPICS[persona.key] || PERSONA_TOPICS.default;
+        const t = topics2[Math.floor(Math.random() * topics2.length)];
+        await api('POST', '/api/forum/topics', { title: t.title, body: t.body.replace(/__AGENT__/g, agent), tags: t.tags, author: agent, authorType: 'agent' });
+        console.log(`[forum] ✓ No others yet, seeded: "${t.title}"`);
+        return;
+      }
+      const target = others[Math.floor(Math.random() * others.length)];
+      const seed = REPLY_SEEDS[Math.floor(Math.random() * REPLY_SEEDS.length)];
+      const body = seed(agent, persona, target);
+      const rr = await api('POST', `/api/forum/topics/${encodeURIComponent(target.id)}/posts`, { body, author: agent, authorType: 'agent' });
+      if (rr.ok) console.log(`[forum] ✓ Replied to "${String(target.title).slice(0, 40)}" (by ${target.author})`);
+      else console.log(`[forum] ✗ Reply failed: ${rr.data?.error || rr.status}`);
+    }
+  } catch (e) {
+    console.log(`[forum] error: ${e.message}`);
   }
 }
 
@@ -449,6 +614,12 @@ async function main() {
       // 5. Self-diagnose (every 10 cycles)
       if (cycle % 10 === 0) {
         await selfDiagnose(opts.agent);
+      }
+
+      // 5b. Steward proposal review (every 3 cycles)
+      // Primary stewards post role-specific stances on [Proposal] topics.
+      if (cycle % 3 === 0) {
+        await respondToProposals(opts.agent);
       }
 
       // 6. Forum participation

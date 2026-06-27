@@ -898,7 +898,9 @@ app.get('/api/v1/discovery/stats', (req, res) => {
 });
 
 // Agent marketplace API
-import agentMarketplace from '../agent/agentMarketplace.js';
+import agentMarketplace, { AgentMarketplace } from '../agent/agentMarketplace.js';
+import { WeightedVotingSystem } from '../governance/weightedVoting.js';
+import { ForumStore } from '../http/routes/forum.js';
 
 app.get('/api/v1/marketplace/listings', (req, res) => {
   try {
@@ -1006,6 +1008,70 @@ app.get('/api/v1/marketplace/stats', (req, res) => {
     const stats = agentMarketplace.getMarketplaceStats();
     const categories = agentMarketplace.getCategories();
     res.json({ success: true, stats, categories });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ─── P1 NGEN escrow: capability market transactions ───
+// POST   /api/v1/marketplace/transactions          - Buyer escrows funds for a listing
+// POST   /api/v1/marketplace/transactions/:id/complete  - Release escrow to seller
+// POST   /api/v1/marketplace/transactions/:id/cancel    - Refund escrow to buyer
+// GET    /api/v1/marketplace/transactions/:id           - Inspect a transaction
+
+app.post('/api/v1/marketplace/transactions', (req, res) => {
+  try {
+    const { listingId, consumerId, consumerWallet, sellerWallet, amount, metadata } = req.body;
+    if (!listingId || !consumerId) {
+      return res.status(400).json({ success: false, message: 'listingId and consumerId are required' });
+    }
+    const result = agentMarketplace.recordTransaction(listingId, consumerId, {
+      consumerWallet, sellerWallet, amount, metadata
+    });
+    if (!result.success) {
+      const status = result.errorCode === 'INSUFFICIENT_BALANCE' ? 402
+                   : result.errorCode === 'ESCROW_FAILED' ? 500
+                   : 400;
+      return res.status(status).json(result);
+    }
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.get('/api/v1/marketplace/transactions/:txId', (req, res) => {
+  try {
+    const tx = agentMarketplace.transactions.get(req.params.txId);
+    if (!tx) return res.status(404).json({ success: false, message: 'Transaction not found' });
+    res.json({ success: true, transaction: tx });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.post('/api/v1/marketplace/transactions/:txId/complete', (req, res) => {
+  try {
+    const result = agentMarketplace.completeTransaction(req.params.txId);
+    if (!result.success) {
+      const status = result.reason.includes('not found') ? 404 : 400;
+      return res.status(status).json(result);
+    }
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.post('/api/v1/marketplace/transactions/:txId/cancel', (req, res) => {
+  try {
+    const reason = req.body?.reason || 'cancelled';
+    const result = agentMarketplace.cancelTransaction(req.params.txId, reason);
+    if (!result.success) {
+      const status = result.reason.includes('not found') ? 404 : 400;
+      return res.status(status).json(result);
+    }
+    res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -1353,6 +1419,33 @@ async function startHttpServer(node = null, options = {}) {
       }
       return blockchain[blockchain.length - 1]?.header?.height ?? (blockchain.length - 1);
     }
+  });
+
+  // Inject lazy blockchain state getter into AgentMarketplace for P1 escrow.
+  // Lazy because node.currentState may not be populated until after the
+  // blockchain finishes bootstrapping; the getter is re-evaluated on every
+  // transaction operation so escrow always sees the live chain state.
+  AgentMarketplace.setBlockchainState(() => app.locals.node?.currentState || null);
+
+  // P3: Inject lazy blockchain state + agentId->address resolver into
+  // WeightedVotingSystem so castVote can boost vote weight by the voter's
+  // on-chain NGEN balance. Same lazy pattern as AgentMarketplace.
+  WeightedVotingSystem.setBlockchainState(() => app.locals.node?.currentState || null);
+  WeightedVotingSystem.setAgentIdToAddressResolver((agentId) => {
+    const state = app.locals.node?.currentState;
+    if (!state?.agentRegistry?.agents) return null;
+    const record = state.agentRegistry.agents.get(agentId);
+    return record?.address || null;
+  });
+
+  // P3 mirror: same lazy state + resolver into ForumStore so forum proposal
+  // votes get the same NGEN-weighted boost as on-chain governance votes.
+  ForumStore.setBlockchainState(() => app.locals.node?.currentState || null);
+  ForumStore.setAgentIdToAddressResolver((agentId) => {
+    const state = app.locals.node?.currentState;
+    if (!state?.agentRegistry?.agents) return null;
+    const record = state.agentRegistry.agents.get(agentId);
+    return record?.address || null;
   });
   
   // ImportAgentManager

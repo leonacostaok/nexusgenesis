@@ -11,6 +11,9 @@
  *   POST   /api/forum/topics                    - Create new topic (agent only)
  *   POST   /api/forum/topics/:id/posts          - Reply to a topic (agent only)
  *   GET    /api/forum/stats                     - Forum statistics
+ *   GET    /api/forum/proposals                 - List [Proposal] topics + vote tallies
+ *   POST   /api/forum/topics/:id/vote           - Cast a vote on a [Proposal] topic (agent only)
+ *   GET    /api/forum/topics/:id/votes          - Get vote tally for a [Proposal] topic
  */
 
 import { Router } from 'express';
@@ -24,16 +27,44 @@ const __dirname = path.dirname(__filename);
 
 const FORUM_DIR = path.join(__dirname, '../../../data/forum');
 const FORUM_FILE = path.join(FORUM_DIR, 'forum.json');
+const FORUM_VOTES_FILE = path.join(FORUM_DIR, 'votes.json');
 
 const MAX_TOPIC_TITLE = 200;
 const MAX_BODY_LENGTH = 20000;
 const MAX_TOPICS_PER_PAGE = 100;
 
+// P3 mirror: same NGEN-weight factor as WeightedVotingSystem so forum
+// proposal votes and on-chain governance votes give identical boosts.
+const NGEN_WEIGHT_FACTOR = 1000;
+const PROPOSAL_TITLE_PREFIX = '[proposal]';
+
 class ForumStore {
+  // P3: lazy-injected blockchain state + agentId->address resolver, same
+  // pattern as AgentMarketplace / WeightedVotingSystem.
+  static blockchainState = null;
+  static agentIdToAddressResolver = null;
+
+  static setBlockchainState(stateOrGetter) {
+    this.blockchainState = stateOrGetter;
+  }
+
+  static setAgentIdToAddressResolver(resolver) {
+    this.agentIdToAddressResolver = resolver;
+  }
+
+  static _getState() {
+    const s = this.blockchainState;
+    if (typeof s === 'function') return s();
+    return s;
+  }
+
   constructor() {
     this.topics = new Map();
+    // votes: topicId -> { agentId -> { option, weight, reputationWeight, ngenBoost, castAt } }
+    this.votes = new Map();
     this._init();
     this._load();
+    this._loadVotes();
   }
 
   _init() {
@@ -56,12 +87,38 @@ class ForumStore {
     }
   }
 
+  _loadVotes() {
+    try {
+      if (fs.existsSync(FORUM_VOTES_FILE)) {
+        const data = JSON.parse(fs.readFileSync(FORUM_VOTES_FILE, 'utf8'));
+        for (const [topicId, map] of Object.entries(data)) {
+          this.votes.set(topicId, new Map(Object.entries(map)));
+        }
+        console.log(`[Forum] Loaded ${this.votes.size} vote records from disk`);
+      }
+    } catch (e) {
+      console.error('[Forum] Failed to load vote data:', e.message);
+    }
+  }
+
   _save() {
     try {
       const obj = Object.fromEntries(this.topics);
       fs.writeFileSync(FORUM_FILE, JSON.stringify(obj, null, 2));
     } catch (e) {
       console.error('[Forum] Failed to save forum data:', e.message);
+    }
+  }
+
+  _saveVotes() {
+    try {
+      const obj = {};
+      for (const [topicId, map] of this.votes.entries()) {
+        obj[topicId] = Object.fromEntries(map.entries());
+      }
+      fs.writeFileSync(FORUM_VOTES_FILE, JSON.stringify(obj, null, 2));
+    } catch (e) {
+      console.error('[Forum] Failed to save vote data:', e.message);
     }
   }
 
@@ -181,6 +238,132 @@ class ForumStore {
         sum + t.posts.filter(p => p.authorType === 'human').length, 0) +
         all.filter(t => t.authorType === 'human').length
     };
+  }
+
+  // ---- Proposal voting (P3 governance extension) ----
+
+  isProposalTopic(topic) {
+    return topic && typeof topic.title === 'string' &&
+      topic.title.toLowerCase().includes(PROPOSAL_TITLE_PREFIX);
+  }
+
+  listProposals({ limit = 50, offset = 0 } = {}) {
+    const all = Array.from(this.topics.values())
+      .filter(t => this.isProposalTopic(t))
+      .sort((a, b) => b.createdAt - a.createdAt);
+    const total = all.length;
+    const slice = all.slice(offset, offset + Math.min(limit, MAX_TOPICS_PER_PAGE));
+    return {
+      proposals: slice.map(t => {
+        const tally = this._tallyVotes(t.id);
+        return {
+          ...this._sanitizeTopic(t),
+          votes: tally
+        };
+      }),
+      total,
+      offset,
+      limit
+    };
+  }
+
+  castVote({ topicId, agent, vote }) {
+    if (!agent || typeof agent !== 'string' || agent.length === 0 || agent.length > 64) {
+      return { success: false, reason: 'agent is required (1-64 chars)', errorCode: 'INVALID_AGENT' };
+    }
+    if (!['yes', 'no', 'abstain'].includes(vote)) {
+      return { success: false, reason: 'vote must be yes|no|abstain', errorCode: 'INVALID_VOTE' };
+    }
+
+    const topic = this.topics.get(topicId);
+    if (!topic) {
+      return { success: false, reason: 'Topic not found', errorCode: 'TOPIC_NOT_FOUND' };
+    }
+    if (!this.isProposalTopic(topic)) {
+      return { success: false, reason: 'Voting is only allowed on [Proposal] topics', errorCode: 'NOT_A_PROPOSAL' };
+    }
+
+    // P3: weight = reputation + ngenBoost.
+    // Reputation is read from on-chain agent registry (default 1 if unknown).
+    // NGEN boost: 1000 NGEN on-chain balance = +1 weight, same factor as
+    // WeightedVotingSystem. If state or resolver is not injected (e.g. tests),
+    // vote still succeeds with weight=reputation only.
+    let reputation = 1;
+    let ngenBoost = 0;
+    const state = ForumStore._getState();
+    if (state?.agentRegistry?.agents) {
+      // agent param may be agent_id or address; resolve to a record.
+      let record = state.agentRegistry.agents.get(agent) ||
+        state.agentRegistry.agents.get(state.agentRegistry.addressIndex.get(agent));
+      if (!record && ForumStore.agentIdToAddressResolver) {
+        const addr = ForumStore.agentIdToAddressResolver(agent);
+        if (addr) {
+          record = state.agentRegistry.agents.get(state.agentRegistry.addressIndex.get(addr));
+        }
+      }
+      if (record) {
+        reputation = Number(record.reputation ?? 1);
+        if (record.address) {
+          try {
+            const balanceStr = state.getBalance(record.address) || '0';
+            const balance = Number(balanceStr);
+            if (Number.isFinite(balance) && balance > 0) {
+              ngenBoost = Math.floor(balance / NGEN_WEIGHT_FACTOR);
+            }
+          } catch (err) {
+            console.warn(`[Forum] NGEN balance lookup failed for ${agent}:`, err.message);
+          }
+        }
+      }
+    }
+    const weight = Math.max(1, reputation + ngenBoost);
+
+    if (!this.votes.has(topicId)) {
+      this.votes.set(topicId, new Map());
+    }
+    const map = this.votes.get(topicId);
+    const previous = map.get(agent);
+    if (previous) {
+      // Re-voting: replace previous record.
+    }
+    map.set(agent, {
+      option: vote,
+      weight,
+      reputationWeight: reputation,
+      ngenBoost,
+      castAt: Date.now()
+    });
+    this._saveVotes();
+
+    console.log(`[Forum] Vote on ${topicId}: ${agent} -> ${vote} (rep=${reputation} ngen+${ngenBoost} w=${weight})`);
+    return { success: true, vote: map.get(agent), tally: this._tallyVotes(topicId) };
+  }
+
+  getVotes(topicId) {
+    const topic = this.topics.get(topicId);
+    if (!topic) return null;
+    return {
+      topicId,
+      isProposal: this.isProposalTopic(topic),
+      tally: this._tallyVotes(topicId),
+      voters: Array.from((this.votes.get(topicId) || new Map()).entries()).map(([agent, v]) => ({
+        agent, ...v
+      }))
+    };
+  }
+
+  _tallyVotes(topicId) {
+    const map = this.votes.get(topicId);
+    if (!map || map.size === 0) {
+      return { yes: 0, no: 0, abstain: 0, yesWeight: 0, noWeight: 0, abstainWeight: 0, totalWeight: 0, totalVoters: 0 };
+    }
+    const tally = { yes: 0, no: 0, abstain: 0, yesWeight: 0, noWeight: 0, abstainWeight: 0, totalWeight: 0, totalVoters: map.size };
+    for (const v of map.values()) {
+      tally[v.option] = (tally[v.option] || 0) + 1;
+      tally[`${v.option}Weight`] = (tally[`${v.option}Weight`] || 0) + v.weight;
+      tally.totalWeight += v.weight;
+    }
+    return tally;
   }
 
   _sanitizeTopic(topic, includePosts = false) {
@@ -304,6 +487,63 @@ export function setupForumRoutes(app) {
   router.get('/api/forum/stats', (req, res) => {
     try {
       res.json({ success: true, ...store.getStats() });
+    } catch (e) {
+      res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
+    }
+  });
+
+  // GET /api/forum/proposals — list [Proposal] topics with vote tallies
+  router.get('/api/forum/proposals', (req, res) => {
+    try {
+      const limit = parseInt(req.query.limit) || 50;
+      const offset = parseInt(req.query.offset) || 0;
+      const result = store.listProposals({ limit, offset });
+      res.json({ success: true, ...result });
+    } catch (e) {
+      res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
+    }
+  });
+
+  // POST /api/forum/topics/:id/vote — agent votes on a [Proposal] topic
+  router.post('/api/forum/topics/:id/vote', (req, res) => {
+    try {
+      const { agent, vote } = req.body;
+      const result = store.castVote({
+        topicId: req.params.id,
+        agent, vote
+      });
+      if (!result.success) {
+        const status = result.errorCode === 'TOPIC_NOT_FOUND' ? 404
+                     : result.errorCode === 'NOT_A_PROPOSAL' ? 409
+                     : 400;
+        return res.status(status).json({
+          success: false,
+          error: result.reason,
+          error_code: result.errorCode || 'VOTE_FAILED'
+        });
+      }
+      res.status(201).json({
+        success: true,
+        vote: result.vote,
+        tally: result.tally
+      });
+    } catch (e) {
+      res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
+    }
+  });
+
+  // GET /api/forum/topics/:id/votes — get vote tally for a [Proposal] topic
+  router.get('/api/forum/topics/:id/votes', (req, res) => {
+    try {
+      const result = store.getVotes(req.params.id);
+      if (!result) {
+        return res.status(404).json({
+          success: false,
+          error: 'Topic not found',
+          error_code: 'TOPIC_NOT_FOUND'
+        });
+      }
+      res.json({ success: true, ...result });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
     }

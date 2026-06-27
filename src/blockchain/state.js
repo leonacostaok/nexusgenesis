@@ -805,11 +805,24 @@ export class State {
       // 写入status
       this.agentRegistry.agents.set(agent_id, agentRecord);
       this.agentRegistry.addressIndex.set(from, agent_id);
-      
+
       this.changes.agents.add(agent_id);
-      
+
+      // Wallet-sync fix: endow newly registered agents with their initial
+      // NGEN allocation on-chain. Previously the wallet manager only stored
+      // a "soft" balance in memory + JSON, while the on-chain state remained
+      // 0, which broke every downstream consumer of state.getBalance()
+      // (P1 marketplace escrow, P2 validator stake locking, P3 NGEN-weighted
+      // voting). Minting the initial allocation here, inside the only state
+      // mutation that registers agents, makes the on-chain balance the single
+      // source of truth regardless of which entry point (HTTP API, bootstrap,
+      // P2P sync) created the agent.
+      const INITIAL_AGENT_NGEN = 1000n;
+      this.addBalance(from, INITIAL_AGENT_NGEN.toString());
+      this.changes.balances.add(from);
+
       // 记录日志
-      console.log(`[AGENT_REGISTER] agent_id=${agent_id} address=${from} block=${height} capabilities=${capabilities?.join(',') || ''}`);
+      console.log(`[AGENT_REGISTER] agent_id=${agent_id} address=${from} block=${height} capabilities=${capabilities?.join(',') || ''} endowed=${INITIAL_AGENT_NGEN.toString()}`);
       return true;
     } catch (error) {
       console.error('Error applying agent register:', error.message);
@@ -819,6 +832,7 @@ export class State {
 
   applyValidatorJoin(transaction, height) {
     try {
+      const STAKING_ADDR = 'ng1staking00000000000000000000000000000';
       const { from } = transaction;
       const { agent_identity, node_id, stake } = transaction.payload || {};
       if (!from || !agent_identity) {
@@ -839,14 +853,43 @@ export class State {
         return false;
       }
 
+      // P2: Lock NGEN stake into staking escrow.
+      // Previously we only stored validator_stake as metadata without moving
+      // any tokens, which made "staking" purely cosmetic. Real economic
+      // locking requires moving the stake from the validator's balance into a
+      // dedicated staking address so it cannot be double-spent.
+      const stakeAmount = BigInt(Number(stake || 5000));
+      if (stakeAmount <= 0n) {
+        console.log(`[VALIDATOR_JOIN] Invalid stake amount: ${stakeAmount.toString()}`);
+        return false;
+      }
+
+      const currentBalance = BigInt(this.getBalance(from));
+      if (currentBalance < stakeAmount) {
+        console.log(`[VALIDATOR_JOIN] Insufficient balance for ${from}: need ${stakeAmount.toString()} NGEN, have ${currentBalance.toString()}`);
+        return false;
+      }
+
+      const locked = this.subtractBalance(from, stakeAmount.toString());
+      if (!locked) {
+        console.log(`[VALIDATOR_JOIN] subtractBalance failed for ${from} stake=${stakeAmount.toString()}`);
+        return false;
+      }
+      this.addBalance(STAKING_ADDR, stakeAmount.toString());
+
       agentRecord.is_validator = true;
       agentRecord.validator_node_id = node_id || null;
-      agentRecord.validator_stake = Number(stake || 5000);
+      agentRecord.validator_stake = Number(stake);
+      agentRecord.validator_stake_locked = true;
+      agentRecord.validator_stake_locked_amount = stakeAmount.toString();
+      agentRecord.validator_staking_address = STAKING_ADDR;
       agentRecord.validator_joined_at_block = height;
       this.agentRegistry.agents.set(agentId, agentRecord);
       this.changes.agents.add(agentId);
+      this.changes.balances.add(from);
+      this.changes.balances.add(STAKING_ADDR);
 
-      console.log(`[VALIDATOR_JOIN] agent_id=${agentId} identity=${agent_identity} node_id=${agentRecord.validator_node_id || ''} stake=${agentRecord.validator_stake} block=${height}`);
+      console.log(`[VALIDATOR_JOIN] agent_id=${agentId} identity=${agent_identity} node_id=${agentRecord.validator_node_id || ''} stake=${agentRecord.validator_stake} locked=${stakeAmount.toString()} block=${height}`);
       return true;
     } catch (error) {
       console.error('Error applying validator join:', error.message);

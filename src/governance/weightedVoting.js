@@ -58,6 +58,14 @@ const VOTES_FILE = path.join(DATA_DIR, 'votes.json');
 let proposals = new Map(); // proposalId -> proposal details
 let votes = new Map(); // proposalId -> { agentId -> vote }
 
+// P3: NGEN-weighted voting.
+// Vote weight is no longer reputation-only; it is boosted by the voter's
+// on-chain NGEN balance. This makes NGEN a governance token — the more NGEN
+// an agent holds, the more influence it has over proposals, which is the
+// intended sink incentive for P3.
+// 1000 NGEN on-chain balance = +1 vote weight (linear, no logarithmic cap for now).
+const NGEN_WEIGHT_FACTOR = 1000;
+
 // Ensure data directory exists
 function ensureDataDir() {
   if (!fs.existsSync(DATA_DIR)) {
@@ -66,6 +74,26 @@ function ensureDataDir() {
 }
 
 class WeightedVotingSystem {
+  // P3: lazy-injected blockchain state (object or getter) and agentId->address
+  // resolver. Injected by server.js once the genesis node is online so we do
+  // not depend on import-time ordering.
+  static blockchainState = null;
+  static agentIdToAddressResolver = null;
+
+  static setBlockchainState(stateOrGetter) {
+    this.blockchainState = stateOrGetter;
+  }
+
+  static setAgentIdToAddressResolver(resolver) {
+    this.agentIdToAddressResolver = resolver;
+  }
+
+  static _getState() {
+    const s = this.blockchainState;
+    if (typeof s === 'function') return s();
+    return s;
+  }
+
   // Initialize: Load data from files
   static init() {
     ensureDataDir();
@@ -213,7 +241,28 @@ class WeightedVotingSystem {
     
     // getagent的reputation score数作为voting weight
     const reputationScore = ContributionSystem.getAgentReputation(agentId);
-    const voteWeight = Math.max(1, reputationScore); // 最低权重为1
+
+    // P3: Boost voting weight by the agent's on-chain NGEN balance.
+    // This ties governance influence to economic stake, making NGEN a real
+    // governance token. 1000 NGEN = +1 weight. Staked NGEN (locked in
+    // validator staking address) still counts because the agent "owns" it.
+    let ngenBoost = 0;
+    const state = this._getState();
+    if (state && this.agentIdToAddressResolver) {
+      try {
+        const address = this.agentIdToAddressResolver(agentId);
+        if (address) {
+          const balanceStr = state.getBalance(address) || '0';
+          const balance = Number(balanceStr);
+          if (Number.isFinite(balance) && balance > 0) {
+            ngenBoost = Math.floor(balance / NGEN_WEIGHT_FACTOR);
+          }
+        }
+      } catch (err) {
+        console.warn(`[WeightedVotingSystem] NGEN balance lookup failed for ${agentId}:`, err.message);
+      }
+    }
+    const voteWeight = Math.max(1, reputationScore + ngenBoost); // 最低权重为1
     
     // 记录Vote
     const proposalVotes = votes.get(proposalId) || {};
@@ -236,6 +285,8 @@ class WeightedVotingSystem {
     proposalVotes[agentId] = {
       option: vote,
       weight: voteWeight,
+      reputationWeight: reputationScore,
+      ngenBoost,
       castAt: now
     };
     

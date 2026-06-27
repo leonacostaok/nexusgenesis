@@ -11,7 +11,8 @@
     "maxInbound": 100,
     "maxOutbound": 100,
     "seedNodes": [
-      "ws://127.0.0.1:9847"
+      "ws://nexus-genesis.top:9847",
+      "ws://98.142.241.236:9847"
     ],
     "bootstrapNodes": [],
     "discoveryInterval": 60000,

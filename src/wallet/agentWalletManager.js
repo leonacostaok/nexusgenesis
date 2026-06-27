@@ -434,17 +434,29 @@ class AgentWalletManager {
       || blockchainState?.nonces?.[entry.wallet.address]
       || entry.wallet.nonce;
 
-    entry.wallet.balance = BigInt(onChainBalance);
+    // Wallet-sync fix: previously this method OVERWROTE the wallet's in-memory
+    // balance with the on-chain balance. When the on-chain state had not yet
+    // been endowed (a long-standing bug now fixed in state.applyAgentRegister),
+    // every syncBalance call would silently zero out the 1000 NGEN soft
+    // allocation. Even with the on-chain fix in place, an overwrite is the
+    // wrong semantic: the on-chain balance is authoritative for spent/locked
+    // funds, but the wallet manager may also track off-chain allocations
+    // (faucet claims, etc.). Take the max so neither side silently loses
+    // value, and never decrease the wallet balance via a read-only sync.
+    const onChainBigInt = BigInt(onChainBalance);
+    if (onChainBigInt > entry.wallet.balance) {
+      entry.wallet.balance = onChainBigInt;
+    }
     entry.wallet.nonce = onChainNonce;
 
-    this.updateBalance(agentId, BigInt(onChainBalance));
     this._saveRegistry();
 
     return {
       success: true,
       agentId,
       address: entry.wallet.address,
-      balance: Number(onChainBalance),
+      balance: Number(entry.wallet.balance),
+      onChainBalance: Number(onChainBigInt),
       nonce: onChainNonce
     };
   }

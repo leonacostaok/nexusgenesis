@@ -179,6 +179,16 @@ class ForumStore {
       posts: []
     };
 
+    // Stage 4: Proposal lifecycle. [Proposal] topics automatically enter
+    // 'active' status with a 72-hour voting window. Status transitions:
+    // active → passed | rejected (auto on deadline) → executed (manual)
+    if (title.toLowerCase().includes(PROPOSAL_TITLE_PREFIX)) {
+      topic.proposalStatus = 'active';
+      topic.proposalDeadline = now + 72 * 60 * 60 * 1000; // 72h
+      topic.proposalExecutedAt = null;
+      console.log(`[Forum] Proposal activated: ${id} deadline=${new Date(topic.proposalDeadline).toISOString()}`);
+    }
+
     this.topics.set(id, topic);
     this._save();
 
@@ -251,6 +261,10 @@ class ForumStore {
     const all = Array.from(this.topics.values())
       .filter(t => this.isProposalTopic(t))
       .sort((a, b) => b.createdAt - a.createdAt);
+    // Stage 4: lazy-check deadlines so list reflects current statuses
+    for (const t of all) {
+      this.checkProposalDeadline(t.id);
+    }
     const total = all.length;
     const slice = all.slice(offset, offset + Math.min(limit, MAX_TOPICS_PER_PAGE));
     return {
@@ -281,6 +295,19 @@ class ForumStore {
     }
     if (!this.isProposalTopic(topic)) {
       return { success: false, reason: 'Voting is only allowed on [Proposal] topics', errorCode: 'NOT_A_PROPOSAL' };
+    }
+
+    // Stage 4: Lazy deadline check. If the proposal's voting window has
+    // closed, auto-transition to passed/rejected and reject new votes.
+    if (topic.proposalStatus === 'active') {
+      this.checkProposalDeadline(topicId);
+    }
+    if (topic.proposalStatus && topic.proposalStatus !== 'active') {
+      return {
+        success: false,
+        reason: `Voting closed: proposal is ${topic.proposalStatus}`,
+        errorCode: 'PROPOSAL_CLOSED'
+      };
     }
 
     // P3: weight = reputation + ngenBoost.
@@ -378,11 +405,65 @@ class ForumStore {
       postCount: topic.postCount,
       bodyPreview: topic.body.slice(0, 200)
     };
+    // Stage 4: include proposal lifecycle fields when present
+    if (topic.proposalStatus) {
+      safe.proposalStatus = topic.proposalStatus;
+      safe.proposalDeadline = topic.proposalDeadline;
+      safe.proposalExecutedAt = topic.proposalExecutedAt;
+    }
     if (includePosts) {
       safe.body = topic.body;
       safe.posts = (topic.posts || []).map(p => this._sanitizePost(p));
     }
     return safe;
+  }
+
+  // Stage 4: Check if a proposal's voting deadline has passed and
+  // auto-transition it to 'passed' or 'rejected' based on vote tally.
+  // Quorum: requires ≥3 voters AND yesWeight > noWeight.
+  // Called lazily on every read/vote so no timer is needed.
+  checkProposalDeadline(topicId) {
+    const topic = this.topics.get(topicId);
+    if (!topic || !topic.proposalStatus || topic.proposalStatus !== 'active') {
+      return null;
+    }
+    if (Date.now() < topic.proposalDeadline) {
+      return null; // still active
+    }
+    const tally = this._tallyVotes(topicId);
+    const quorumMet = tally.totalVoters >= 3;
+    if (quorumMet && tally.yesWeight > tally.noWeight) {
+      topic.proposalStatus = 'passed';
+    } else {
+      topic.proposalStatus = 'rejected';
+    }
+    this.topics.set(topicId, topic);
+    this._save();
+    console.log(`[Forum] Proposal ${topic.proposalStatus}: ${topicId} (voters=${tally.totalVoters} yesW=${tally.yesWeight} noW=${tally.noWeight})`);
+    return topic.proposalStatus;
+  }
+
+  // Stage 4: Mark a passed proposal as executed. Only 'passed' proposals
+  // can be executed. Returns the updated status or null on failure.
+  executeProposal(topicId, executor) {
+    const topic = this.topics.get(topicId);
+    if (!topic || !topic.proposalStatus) {
+      return { success: false, reason: 'Not a proposal', errorCode: 'NOT_A_PROPOSAL' };
+    }
+    // Lazy-check deadline in case it hasn't been checked yet
+    if (topic.proposalStatus === 'active') {
+      this.checkProposalDeadline(topicId);
+    }
+    if (topic.proposalStatus !== 'passed') {
+      return { success: false, reason: `Proposal is ${topic.proposalStatus}, must be passed to execute`, errorCode: 'NOT_PASSED' };
+    }
+    topic.proposalStatus = 'executed';
+    topic.proposalExecutedAt = Date.now();
+    topic.proposalExecutor = executor || 'unknown';
+    this.topics.set(topicId, topic);
+    this._save();
+    console.log(`[Forum] Proposal executed: ${topicId} by ${executor}`);
+    return { success: true, status: 'executed', executedAt: topic.proposalExecutedAt };
   }
 
   _sanitizePost(post) {
@@ -535,6 +616,9 @@ export function setupForumRoutes(app) {
   // GET /api/forum/topics/:id/votes — get vote tally for a [Proposal] topic
   router.get('/api/forum/topics/:id/votes', (req, res) => {
     try {
+      // Stage 4: lazy deadline check on every read so tallies reflect
+      // the final status even if no vote triggered the transition.
+      store.checkProposalDeadline(req.params.id);
       const result = store.getVotes(req.params.id);
       if (!result) {
         return res.status(404).json({
@@ -544,6 +628,41 @@ export function setupForumRoutes(app) {
         });
       }
       res.json({ success: true, ...result });
+    } catch (e) {
+      res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
+    }
+  });
+
+  // Stage 4: POST /api/forum/proposals/:id/execute — mark a passed proposal
+  // as executed. Agent-only (the agent_identity who triggers execution).
+  router.post('/api/forum/proposals/:id/execute', (req, res) => {
+    try {
+      const { agent } = req.body || {};
+      if (!agent) {
+        return res.status(400).json({
+          success: false,
+          error: 'agent (agent_identity) is required',
+          error_code: 'AGENT_REQUIRED'
+        });
+      }
+      const result = store.executeProposal(req.params.id, agent);
+      if (!result.success) {
+        const status = result.errorCode === 'NOT_A_PROPOSAL' ? 404
+                     : result.errorCode === 'NOT_PASSED' ? 409
+                     : 400;
+        return res.status(status).json({
+          success: false,
+          error: result.reason,
+          error_code: result.errorCode
+        });
+      }
+      res.json({
+        success: true,
+        topicId: req.params.id,
+        status: result.status,
+        executedAt: result.executedAt,
+        executor: agent
+      });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
     }

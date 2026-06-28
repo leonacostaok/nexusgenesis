@@ -87,6 +87,48 @@
       "error_file": "/var/log/nexusgenesis/worker-echo-error.log",
       "merge_logs": true,
       "time": true
+    },
+    {
+      "name": "agent-worker-swarm-falcon",
+      "script": "scripts/agent-worker-v2.js",
+      "args": "--agent swarm-falcon-1782900000000-5 --interval 70000",
+      "cwd": "/opt/nexusgenesis",
+      "interpreter": "node",
+      "autorestart": true,
+      "max_restarts": 10,
+      "restart_delay": 5000,
+      "out_file": "/var/log/nexusgenesis/worker-falcon-out.log",
+      "error_file": "/var/log/nexusgenesis/worker-falcon-error.log",
+      "merge_logs": true,
+      "time": true
+    },
+    {
+      "name": "agent-worker-swarm-oracle",
+      "script": "scripts/agent-worker-v2.js",
+      "args": "--agent swarm-oracle-1782900000000-6 --interval 85000",
+      "cwd": "/opt/nexusgenesis",
+      "interpreter": "node",
+      "autorestart": true,
+      "max_restarts": 10,
+      "restart_delay": 5000,
+      "out_file": "/var/log/nexusgenesis/worker-oracle-out.log",
+      "error_file": "/var/log/nexusgenesis/worker-oracle-error.log",
+      "merge_logs": true,
+      "time": true
+    },
+    {
+      "name": "agent-worker-swarm-prism",
+      "script": "scripts/agent-worker-v2.js",
+      "args": "--agent swarm-prism-1782900000000-7 --interval 95000",
+      "cwd": "/opt/nexusgenesis",
+      "interpreter": "node",
+      "autorestart": true,
+      "max_restarts": 10,
+      "restart_delay": 5000,
+      "out_file": "/var/log/nexusgenesis/worker-prism-out.log",
+      "error_file": "/var/log/nexusgenesis/worker-prism-error.log",
+      "merge_logs": true,
+      "time": true
     }
   ]
 }

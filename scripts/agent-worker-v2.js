@@ -21,6 +21,7 @@
  */
 import http from 'http';
 import https from 'https';
+import 'dotenv/config';
 
 // ─── Config ───
 
@@ -68,6 +69,11 @@ function request(method, url, body) {
       headers: { 'Content-Type': 'application/json' },
       timeout: 10000,
     };
+    // Attach admin-secret if available — required for privileged operations
+    // (steward signature, reserved-address task ops).
+    if (process.env.NG_ADMIN_SECRET) {
+      options.headers['x-admin-secret'] = process.env.NG_ADMIN_SECRET;
+    }
     if (data) options.headers['Content-Length'] = Buffer.byteLength(data);
 
     const req = mod.request(options, (res) => {

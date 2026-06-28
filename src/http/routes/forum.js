@@ -727,6 +727,9 @@ export function setupForumRoutes(app) {
   // Stage 4: POST /api/forum/proposals/:id/sign — steward signs a proposal.
   // Only registered stewards (atlas/beacon/cipher) can sign. 2-of-3 required
   // before a passed proposal can be executed.
+  // SECURITY: steward identity must be authenticated via admin-secret to
+  // prevent impersonation. Without this, anyone could pass
+  // `steward: "swarm-atlas-..."` and forge a signature.
   router.post('/api/forum/proposals/:id/sign', (req, res) => {
     try {
       const { steward } = req.body || {};
@@ -735,6 +738,17 @@ export function setupForumRoutes(app) {
           success: false,
           error: 'steward (agent_identity) is required',
           error_code: 'STEWARD_REQUIRED'
+        });
+      }
+      // Auth guard: steward signature is a privileged operation.
+      const provided = req.headers['x-admin-secret'] || req.body?.admin_secret || req.body?.adminSecret;
+      const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
+      if (provided !== expected) {
+        console.warn(`[SECURITY] Blocked unauthorized steward signature by "${steward}" on proposal ${req.params.id}`);
+        return res.status(403).json({
+          success: false,
+          error: 'Steward signature requires admin-secret authentication',
+          error_code: 'STEWARD_AUTH_REQUIRED'
         });
       }
       const result = store.signProposal(req.params.id, steward);

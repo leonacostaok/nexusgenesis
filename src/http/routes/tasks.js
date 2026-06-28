@@ -16,8 +16,30 @@
 import { getTaskProtocol, TASK_STATUS } from '../../protocol/taskProtocol.js';
 
 /**
+ * Reserved system addresses. Any request that resolves to one of these
+ * requires admin-secret authorization — this prevents self-verification
+ * attacks where an agent impersonates ng1swarmpool to publish "system"
+ * tasks (paid from Swarm Pool) and then verify them for self-reward.
+ */
+const RESERVED_PREFIXES = [
+  'ng1swarmpool', 'ng1escrow', 'ng1staking', 'ng1burn', 'ng1treasury'
+];
+
+function verifyAdminSecret(req) {
+  const provided = req.headers['x-admin-secret'] || req.body?.admin_secret || req.body?.adminSecret;
+  const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
+  return provided === expected;
+}
+
+/**
  * Resolve agent_identity to ng1 address.
  * Accepts either a direct ng1 address or an agent_identity string.
+ *
+ * SECURITY: Reserved system addresses (ng1swarmpool, ng1escrow, ...)
+ * require admin-secret. Without this guard, any agent could pass
+ * `agent_identity: "ng1swarmpool..."` to publish "system" tasks
+ * (which bypass escrow and pay rewards from the Swarm Pool) and then
+ * self-verify them — a The-DAO-class inflation attack.
  */
 function resolveAgentAddress(req) {
   const { agent, agent_identity, publisher, verifier } = req.body;
@@ -26,13 +48,30 @@ function resolveAgentAddress(req) {
   if (!agentRef) return null;
 
   // Already an ng1 address
-  if (agentRef.startsWith('ng1')) return agentRef;
+  if (agentRef.startsWith('ng1')) {
+    // Reserved system addresses require admin-secret
+    const isReserved = RESERVED_PREFIXES.some(p => agentRef.startsWith(p));
+    if (isReserved && !verifyAdminSecret(req)) {
+      console.warn(`[SECURITY] Blocked unauthorized use of reserved address ${agentRef.slice(0, 16)}...`);
+      return null;
+    }
+    return agentRef;
+  }
 
   // Resolve agent_identity → address via node's agent registry
   const node = req.app.locals.node;
   if (node && node.resolveRegisteredAgent) {
     const record = node.resolveRegisteredAgent(agentRef);
-    if (record && record.address) return record.address;
+    if (record && record.address) {
+      // Also guard resolved addresses — an agent_identity registered with
+      // a reserved ng1 address should not bypass the guard.
+      const isReserved = RESERVED_PREFIXES.some(p => record.address.startsWith(p));
+      if (isReserved && !verifyAdminSecret(req)) {
+        console.warn(`[SECURITY] Blocked unauthorized use of registered reserved address ${record.address.slice(0, 16)}... (agent=${agentRef})`);
+        return null;
+      }
+      return record.address;
+    }
   }
 
   // Fallback: return as-is (will fail at TaskProtocol validation)
@@ -232,6 +271,7 @@ export function setupTaskRoutes(app) {
   });
 
   // POST /api/tasks/:id/verify — Verify a submission
+  // SECURITY: Reserved-address impersonation is blocked at resolveAgentAddress.
   app.post('/api/tasks/:id/verify', (req, res) => {
     try {
       const protocol = getTaskProtocol();

@@ -48,7 +48,8 @@ const REPUTATION_REWARDS = {
   BUG_REPORT: 2,               // Bug 报告reward
   DOCUMENTATION: 1,             // 文档完善reward
   TEST_FEEDBACK: 1,            // Test反馈reward
-  PEER_REVIEW: 2               // 代码审查reward
+  PEER_REVIEW: 2,              // 代码审查reward
+  TASK_COMPLETED: 2            // 完成任务reward — 每完成一个任务提升2点声誉
 };
 
 // status持久化Configuration

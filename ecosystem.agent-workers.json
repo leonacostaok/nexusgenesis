@@ -3,12 +3,16 @@
     {
       "name": "system-publisher",
       "script": "scripts/system-task-publisher.js",
-      "args": "--publisher WolfKing-Analyst --interval 120000 --max-tasks 8",
+      "args": "--publisher WolfKing-Analyst --interval 60000 --max-tasks 20",
       "cwd": "/opt/nexusgenesis",
       "interpreter": "node",
       "autorestart": true,
       "max_restarts": 10,
       "restart_delay": 5000,
+      "env": {
+        "NEXUS_HOST": "127.0.0.1",
+        "NEXUS_PORT": "19891"
+      },
       "out_file": "/var/log/nexusgenesis/system-publisher-out.log",
       "error_file": "/var/log/nexusgenesis/system-publisher-error.log",
       "merge_logs": true,

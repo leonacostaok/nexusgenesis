@@ -100,20 +100,33 @@ router.get('/api/v1/bootstrap/agents', async (req, res) => {
       if (validator.agentIdentity) validatorAgentKeys.add(validator.agentIdentity);
       if (validator.address) validatorAgentKeys.add(validator.address);
     }
-    const enriched = agents.map(a => ({
-      agent_identity: a.identity || a.agent_id,
-      agent_id: a.agent_id,
-      identity: a.identity,
-      address: a.address,
-      capabilities: a.capabilities || [],
-      is_validator: Boolean(a.is_validator) || validatorAgentKeys.has(a.identity || a.agent_id) || validatorAgentKeys.has(a.address),
-      isValidator: Boolean(a.is_validator) || validatorAgentKeys.has(a.identity || a.agent_id) || validatorAgentKeys.has(a.address), // backward compat
-      reputation: a.reputation || 0,
-      registered_at_block: a.registered_at_block,
-      registeredAt: a.registered_at_block, // backward compat
-      status: a.is_validator ? 'validator' : 'active',
-      public_key: a.public_key || null
-    }));
+    const enriched = agents.map(a => {
+      // 查询 agent 链上余额 (注册时写入 1000 NGEN, 扣 100 fee 后净 900)
+      const addr = a.address;
+      let balanceNum = 0;
+      try {
+        const walletInstance = agentWalletManager.getWalletInstanceByAddress(addr)
+          || (a.identity ? agentWalletManager.getWalletInstance(a.identity) : null)
+          || agentWalletManager.getWalletInstance(a.agent_id);
+        balanceNum = Number(walletInstance?.balance ?? node.currentState?.getBalance?.(addr) ?? 0);
+      } catch (_) { /* 钱包查询失败时回退 0 */ }
+
+      return {
+        agent_identity: a.identity || a.agent_id,
+        agent_id: a.agent_id,
+        identity: a.identity,
+        address: a.address,
+        capabilities: a.capabilities || [],
+        is_validator: Boolean(a.is_validator) || validatorAgentKeys.has(a.identity || a.agent_id) || validatorAgentKeys.has(a.address),
+        isValidator: Boolean(a.is_validator) || validatorAgentKeys.has(a.identity || a.agent_id) || validatorAgentKeys.has(a.address), // backward compat
+        reputation: a.reputation || 0,
+        registered_at_block: a.registered_at_block,
+        registeredAt: a.registered_at_block, // backward compat
+        status: a.is_validator ? 'validator' : 'active',
+        public_key: a.public_key || null,
+        wallet: { address: addr, balance: balanceNum, totalEarned: balanceNum }
+      };
+    });
 
     res.json({ success: true, count: enriched.length, agents: enriched, total: enriched.length });
   } catch (e) {

@@ -14,8 +14,6 @@ class MessageDeduplicationHandler extends MessageHandlerChain {
    * @returns {Promise<boolean>} Processing是否success
    */
   async handle(peerId, message, context) {
-    console.log(`[MessageDeduplicationHandler] Checking for duplicate message from ${peerId}`);
-    
     // CalculateMessagehash
     const msgHash = crypto.createHash('sha256').update(JSON.stringify(message)).digest('hex');
     

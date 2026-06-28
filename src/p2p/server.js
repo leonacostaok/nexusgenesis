@@ -964,7 +964,6 @@ class P2PServer {
   }
 
   async syncMempoolWithPeers() {
-    console.log('Requesting mempool sync from peers...');
     this.broadcast({ type: 'GET_MEMPOOL' });
   }
 

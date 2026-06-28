@@ -415,6 +415,19 @@ class TaskProtocol {
         }
       }
 
+      // Reward reputation to the claimant for completing a task
+      if (this.node && this.node.currentState && this.node.resolveRegisteredAgent) {
+        const agentRecord = this.node.resolveRegisteredAgent(task.claimedBy);
+        if (agentRecord && agentRecord.agentId && typeof this.node.currentState.rewardReputation === 'function') {
+          this.node.currentState.rewardReputation(agentRecord.agentId, 'TASK_COMPLETED');
+          console.log(`[TaskProtocol] ✓ Reputation rewarded: ${agentRecord.agentId.slice(0, 16)}... +TASK_COMPLETED`);
+        } else {
+          console.log(`[TaskProtocol] ⚠ Reputation skip: agentRecord=${!!agentRecord} agentId=${agentRecord?.agentId?.slice(0,16)} hasRewardFn=${typeof this.node.currentState?.rewardReputation === 'function'} claimedBy=${task.claimedBy?.slice(0,16)}...`);
+        }
+      } else {
+        console.log(`[TaskProtocol] ⚠ Reputation skip: node=${!!this.node} currentState=${!!this.node?.currentState} resolveFn=${!!this.node?.resolveRegisteredAgent}`);
+      }
+
       console.log(`[TaskProtocol] Task completed: ${taskId}, ${task.reward} NGEN → ${task.claimedBy.slice(0, 12)}...`);
     } else {
       // Rejected: return to open for another agent to claim
@@ -593,11 +606,16 @@ class TaskProtocol {
 
   _sanitizeTask(task) {
     const { transactionHistory, submissionData, ...safe } = task;
-    // Include transaction count but not full history
+    // Include transaction count and submission summary (not full data)
     return {
       ...safe,
       transactionCount: transactionHistory.length,
-      hasSubmission: !!submissionData
+      hasSubmission: !!submissionData,
+      submissionSummary: submissionData ? {
+        type: submissionData.type || submissionData.action || 'generic',
+        fields: Object.keys(submissionData),
+        preview: JSON.stringify(submissionData).slice(0, 300)
+      } : null
     };
   }
 }

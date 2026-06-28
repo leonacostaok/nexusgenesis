@@ -760,8 +760,8 @@ class GenesisNode {
     // 定期清理过期transaction
     setInterval(() => this.cleanupMempool(), 60000);
     
-    // 定期与Peer nodes同步
-    setInterval(() => this.periodicSync(), 300000);
+    // 定期与Peer nodes同步 (1分钟间隔, 包含区块高度检查)
+    setInterval(() => this.periodicSync(), 60000);
     
     // 定期清理public key缓存
     setInterval(() => this.cleanupPublicKeyCache(), 600000);
@@ -1818,6 +1818,11 @@ class GenesisNode {
 
       // Skip blocks we already have
       if (block.header.height <= tip.header.height) {
+        // Detect chain divergence: if hash at same height differs, log it
+        const existingBlock = this.blockchain[block.header.height];
+        if (existingBlock && existingBlock.hash !== block.hash) {
+          console.warn(`[SYNC] Divergence at height ${block.header.height}: our=${existingBlock.hash.slice(0, 16)}... peer=${block.hash.slice(0, 16)}...`);
+        }
         skipped++;
         continue;
       }
@@ -1899,6 +1904,10 @@ class GenesisNode {
   periodicSync() {
     if (this.peers.size > 0) {
       p2pServer.syncMempoolWithPeers();
+      // Broadcast GET_STATUS to all peers — their STATUS_UPDATE responses
+      // will trigger handlePeerStatus() which checks chain height and
+      // requests block sync if we're behind.
+      p2pServer.broadcast({ type: 'GET_STATUS', nodeId: this.nodeId });
     }
   }
 
@@ -2340,9 +2349,19 @@ class GenesisNode {
       return false;
     }
 
-    // Check父hash
+    // Check父hash — chain divergence detected
     if (block.header.parent_hash !== latestBlock.hash) {
-      console.error('Invalid parent hash');
+      console.warn(`[FORK] Block #${block.header.height} parent ${block.header.parent_hash.slice(0, 16)}... != our tip ${latestBlock.hash.slice(0, 16)}... at height ${latestBlock.header.height}`);
+      console.warn(`[FORK] Chain divergence — rejecting block. Manual intervention may be required.`);
+      // Attempt to request recent blocks from peer to diagnose divergence point
+      if (peerId) {
+        const peerNodeId = this.peerIdentityMap.get(peerId)?.nodeId;
+        if (peerNodeId) {
+          const lookback = Math.max(0, latestBlock.header.height - 10);
+          console.warn(`[FORK] Requesting blocks from height ${lookback} to find common ancestor`);
+          this.requestBlocksFromPeer(peerNodeId, lookback, -1);
+        }
+      }
       return false;
     }
 

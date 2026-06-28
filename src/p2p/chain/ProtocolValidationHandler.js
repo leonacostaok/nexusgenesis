@@ -40,8 +40,6 @@ class ProtocolValidationHandler extends MessageHandlerChain {
    * @returns {Promise<boolean>} Processing是否success
    */
   async handle(peerId, message, context) {
-    console.log(`[ProtocolValidationHandler] Validating protocol for message from ${peerId}`);
-    
     // Check是否为有效的Messagetype
     if (this.validMessageTypes.includes(message.type)) {
       // call下一个Handler

@@ -1151,8 +1151,8 @@ class SystemMonitor {
           metricsHistory = JSON.parse(fileContent);
         }
       } catch (error) {
-        console.error('读取指标历史记录Failed:', error);
-        // 如果文件损坏, 重新Create一个空数组
+        // 文件损坏 — 删除以避免后续每次读取都报错
+        try { fs.unlinkSync(metricFile); } catch (_) { /* ignore */ }
         metricsHistory = [];
       }
     }

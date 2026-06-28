@@ -14,8 +14,6 @@ class MessageValidationHandler extends MessageHandlerChain {
    * @returns {Promise<boolean>} Processing是否success
    */
   async handle(peerId, message, context) {
-    console.log(`[MessageValidationHandler] Validating message from ${peerId}`);
-    
     // CheckMessage格式
     if (!message || typeof message !== 'object') {
       console.log(`[!] Invalid message format from ${peerId}`);

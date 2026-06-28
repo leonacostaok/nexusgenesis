@@ -13,8 +13,6 @@ class MessageProcessingHandler extends MessageHandlerChain {
    * @returns {Promise<boolean>} Processing是否success
    */
   async handle(peerId, message, context) {
-    console.log(`[MessageProcessingHandler] Processing message from ${peerId}`);
-    
     // 特殊Processing: Protocol-Zero 信号(包含 protocol 字段的情况)
     if (message.protocol === 'NG-0' && message.intent) {
       const handler = context.handlerRegistry.getHandler('PROTOCOL_ZERO');

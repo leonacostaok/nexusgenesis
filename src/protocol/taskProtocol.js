@@ -364,35 +364,48 @@ class TaskProtocol {
           const rewardAmount = BigInt(task.reward);
           const isSystemTask = task.publisher === SWARM_POOL_ADDR;
 
+          let paid = false;
           if (isSystemTask) {
             // System tasks: pay from Swarm Pool (whitepaper §4 release mechanism)
+            // 注意: Swarm Pool 余额由 checkTokenRelease 释放机制补充 (每 100 块释放 0.1%),
+            // 不允许直接 mint 增发 — 那会绕过 totalSupply 上限造成通胀漏洞。
             let poolBalance = BigInt(this.node.state.getBalance(SWARM_POOL_ADDR));
             if (poolBalance < rewardAmount) {
-              const SWARM_POOL_REFILL = 850_000_000n;
-              this.node.state.addBalance(SWARM_POOL_ADDR, SWARM_POOL_REFILL.toString());
-              poolBalance = BigInt(this.node.state.getBalance(SWARM_POOL_ADDR));
-              console.log(`[TaskProtocol] Swarm Pool auto-refilled to ${poolBalance.toString()} NGEN (release mechanism)`);
+              console.warn(`[TaskProtocol] Swarm Pool insufficient (${poolBalance.toString()} < ${task.reward}), skipping reward payment for task ${task.id}`);
+              // 余额不足时跳过支付, 不增发 — 释放机制会在后续区块补充池子
+            } else {
+              this.node.state.subtractBalance(SWARM_POOL_ADDR, rewardAmount.toString());
+              this.node.state.changes.tokenRelease = true;
+              console.log(`[TaskProtocol] Reward released: ${task.reward} NGEN from Swarm Pool → ${task.claimedBy.slice(0, 12)}...`);
+              paid = true;
             }
-            this.node.state.subtractBalance(SWARM_POOL_ADDR, rewardAmount.toString());
-            this.node.state.changes.tokenRelease = true;
-            console.log(`[TaskProtocol] Reward released: ${task.reward} NGEN from Swarm Pool → ${task.claimedBy.slice(0, 12)}...`);
           } else if (task.escrowed) {
             // AGENT tasks: release locked escrow to claimant
             this.node.state.subtractBalance(ESCROW_ADDR, rewardAmount.toString());
             console.log(`[TaskProtocol] Escrow released: ${task.reward} NGEN → ${task.claimedBy.slice(0, 12)}...`);
+            paid = true;
           } else {
             // Fallback (legacy non-escrowed AGENT task): pay from Swarm Pool
-            this.node.state.subtractBalance(SWARM_POOL_ADDR, rewardAmount.toString());
-            console.warn(`[TaskProtocol] Non-escrowed AGENT task ${taskId} paid from Swarm Pool (legacy)`);
+            let poolBalance = BigInt(this.node.state.getBalance(SWARM_POOL_ADDR));
+            if (poolBalance >= rewardAmount) {
+              this.node.state.subtractBalance(SWARM_POOL_ADDR, rewardAmount.toString());
+              console.warn(`[TaskProtocol] Non-escrowed AGENT task ${taskId} paid from Swarm Pool (legacy)`);
+              paid = true;
+            } else {
+              console.warn(`[TaskProtocol] Swarm Pool insufficient for legacy task ${taskId}, skipping payment`);
+            }
           }
 
-          this.node.state.addBalance(task.claimedBy, rewardAmount.toString());
+          // 只有源余额充足时才给 claimant 加余额 (防止凭空增发)
+          if (paid) {
+            this.node.state.addBalance(task.claimedBy, rewardAmount.toString());
 
-          // Sync agent wallet manager with on-chain balance
-          const claimantAgentId = agentWalletManager.getAgentByAddress(task.claimedBy);
-          if (claimantAgentId) {
-            agentWalletManager.syncBalance(claimantAgentId, this.node.state);
-            console.log(`[TaskProtocol] Wallet synced: ${claimantAgentId} balance = ${agentWalletManager.getBalance(claimantAgentId).balance} NGEN`);
+            // Sync agent wallet manager with on-chain balance
+            const claimantAgentId = agentWalletManager.getAgentByAddress(task.claimedBy);
+            if (claimantAgentId) {
+              agentWalletManager.syncBalance(claimantAgentId, this.node.state);
+              console.log(`[TaskProtocol] Wallet synced: ${claimantAgentId} balance = ${agentWalletManager.getBalance(claimantAgentId).balance} NGEN`);
+            }
           }
 
           const source = isSystemTask ? 'Swarm Pool' : (task.escrowed ? 'escrow' : 'Swarm Pool(legacy)');

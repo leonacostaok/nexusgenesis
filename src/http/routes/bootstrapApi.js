@@ -15,6 +15,51 @@ import {
 
 const router = Router();
 
+// ─── Sybil defense: registration rate limiting ───
+// Devnet mitigation: limit registrations per IP to slow down Sybil attacks.
+// Mainnet will add PoW challenge or stake deposit (see project memory).
+const REGISTRATION_COOLDOWN_MS = 60 * 60 * 1000;   // 1 hour window
+const REGISTRATION_MAX_PER_HOUR = 3;
+const REGISTRATION_MAX_PER_DAY = 10;
+const DAY_MS = 24 * 60 * 60 * 1000;
+const registrationLog = new Map(); // ip -> { hourly: [timestamps], daily: [timestamps] }
+
+function checkRegistrationRateLimit(ip) {
+  const now = Date.now();
+  let record = registrationLog.get(ip);
+  if (!record) {
+    record = { hourly: [], daily: [] };
+    registrationLog.set(ip, record);
+  }
+  // Prune expired entries
+  record.hourly = record.hourly.filter(t => now - t < REGISTRATION_COOLDOWN_MS);
+  record.daily = record.daily.filter(t => now - t < DAY_MS);
+
+  if (record.daily.length >= REGISTRATION_MAX_PER_DAY) {
+    const oldest = record.daily[0];
+    const retryAfter = Math.ceil((DAY_MS - (now - oldest)) / 1000);
+    return { allowed: false, reason: 'Daily registration limit exceeded', retryAfter, limit: REGISTRATION_MAX_PER_DAY, window: '24h' };
+  }
+  if (record.hourly.length >= REGISTRATION_MAX_PER_HOUR) {
+    const oldest = record.hourly[0];
+    const retryAfter = Math.ceil((REGISTRATION_COOLDOWN_MS - (now - oldest)) / 1000);
+    return { allowed: false, reason: 'Hourly registration limit exceeded', retryAfter, limit: REGISTRATION_MAX_PER_HOUR, window: '1h' };
+  }
+  record.hourly.push(now);
+  record.daily.push(now);
+  return { allowed: true, remaining: REGISTRATION_MAX_PER_HOUR - record.hourly.length };
+}
+
+// Cleanup stale IP records every 10 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, record] of registrationLog.entries()) {
+    if (now - (record.daily[record.daily.length - 1] || 0) > DAY_MS) {
+      registrationLog.delete(ip);
+    }
+  }
+}, 10 * 60 * 1000).unref();
+
 function getUnifiedAgents(node) {
   if (!node?.currentState?.agentRegistry?.agents) {
     return [];
@@ -245,6 +290,22 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
         success: false,
         error: 'agent_identity must be 3-64 chars, alphanumeric with hyphens/underscores',
         error_code: 'INVALID_AGENT_IDENTITY_FORMAT'
+      });
+    }
+
+    // Sybil defense: rate-limit registrations per IP.
+    const clientIp = req.ip || req.socket?.remoteAddress || 'unknown';
+    const rateLimit = checkRegistrationRateLimit(clientIp);
+    if (!rateLimit.allowed) {
+      console.warn(`[SECURITY] Registration rate-limited for IP ${clientIp}: ${rateLimit.reason} (identity="${agent_identity}")`);
+      res.setHeader('Retry-After', rateLimit.retryAfter);
+      return res.status(429).json({
+        success: false,
+        error: `Registration rate limit exceeded: ${rateLimit.reason}`,
+        error_code: 'REGISTRATION_RATE_LIMITED',
+        retry_after: rateLimit.retryAfter,
+        limit: rateLimit.limit,
+        window: rateLimit.window
       });
     }
 

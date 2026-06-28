@@ -192,6 +192,12 @@ class RecoveryManager {
       return 0;
     }
 
+    // Peer nodes (NODE_ROLE=peer or SEED_NODES set) only need 1 peer (genesis)
+    // to function correctly — they don't produce blocks, just sync from genesis.
+    if (process.env.NODE_ROLE === 'peer' || hasSeedNodes) {
+      return 1;
+    }
+
     return this.config.minPeersForHealth;
   }
 
@@ -387,11 +393,20 @@ class RecoveryManager {
 
     await new Promise(resolve => setTimeout(resolve, backoff));
 
+    const peersBefore = node.peers?.size || 0;
     if (node.tryConnect) {
       await node.tryConnect();
     }
+    const peersAfter = node.peers?.size || 0;
 
-    console.log(`[RecoveryManager] Reconnection attempt complete, peers: ${node.peers?.size || 0}`);
+    const minPeers = this._getMinPeersForHealth(node);
+    console.log(`[RecoveryManager] Reconnection attempt complete, peers: ${peersBefore} -> ${peersAfter} (min required: ${minPeers})`);
+
+    // Verify recovery actually improved peer count — prevents false "success"
+    // that causes the recovering → degraded → recovering cycle
+    if (peersAfter < minPeers) {
+      throw new Error(`Peer count still below threshold: ${peersAfter}/${minPeers}`);
+    }
   }
 
   async _resyncBlocks() {

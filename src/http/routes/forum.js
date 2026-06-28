@@ -640,9 +640,32 @@ export function setupForumRoutes(app) {
   });
 
   // POST /api/forum/topics/:id/vote — agent votes on a [Proposal] topic
+  // SECURITY: Voting is a privileged governance operation. The `agent`
+  // field is taken from req.body, so without authentication anyone could
+  // impersonate a registered agent and cast votes. Admin-secret guard
+  // blocks this (same pattern as /proposals/:id/sign). Mainnet will
+  // replace this with PQC signature verification using agent-held keys.
   router.post('/api/forum/topics/:id/vote', (req, res) => {
     try {
       const { agent, vote } = req.body;
+      if (!agent) {
+        return res.status(400).json({
+          success: false,
+          error: 'agent is required',
+          error_code: 'AGENT_REQUIRED'
+        });
+      }
+      // Auth guard: voting requires admin-secret to prevent impersonation.
+      const provided = req.headers['x-admin-secret'] || req.body?.admin_secret || req.body?.adminSecret;
+      const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
+      if (provided !== expected) {
+        console.warn(`[SECURITY] Blocked unauthorized vote by "${agent}" on topic ${req.params.id}`);
+        return res.status(403).json({
+          success: false,
+          error: 'Voting requires admin-secret authentication',
+          error_code: 'VOTE_AUTH_REQUIRED'
+        });
+      }
       const result = store.castVote({
         topicId: req.params.id,
         agent, vote

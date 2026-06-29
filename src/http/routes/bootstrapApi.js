@@ -17,7 +17,6 @@ const router = Router();
 
 // ─── Sybil defense: registration rate limiting ───
 // Devnet mitigation: limit registrations per IP to slow down Sybil attacks.
-// Mainnet will add PoW challenge or stake deposit (see project memory).
 const REGISTRATION_COOLDOWN_MS = 60 * 60 * 1000;   // 1 hour window
 const REGISTRATION_MAX_PER_HOUR = 3;
 const REGISTRATION_MAX_PER_DAY = 10;
@@ -31,7 +30,6 @@ function checkRegistrationRateLimit(ip) {
     record = { hourly: [], daily: [] };
     registrationLog.set(ip, record);
   }
-  // Prune expired entries
   record.hourly = record.hourly.filter(t => now - t < REGISTRATION_COOLDOWN_MS);
   record.daily = record.daily.filter(t => now - t < DAY_MS);
 
@@ -50,7 +48,6 @@ function checkRegistrationRateLimit(ip) {
   return { allowed: true, remaining: REGISTRATION_MAX_PER_HOUR - record.hourly.length };
 }
 
-// Cleanup stale IP records every 10 minutes
 setInterval(() => {
   const now = Date.now();
   for (const [ip, record] of registrationLog.entries()) {
@@ -59,6 +56,55 @@ setInterval(() => {
     }
   }
 }, 10 * 60 * 1000).unref();
+
+// ─── Sybil defense: PoW challenge ───
+// Mainnet Sybil defense: require proof-of-work before registration.
+// Challenge format: hash(challenge + nonce) must start with N leading zeros.
+// Difficulty: 4 leading zeros (adjustable via POW_DIFFICULTY env var).
+// Expected time per registration: ~1-5 seconds on modern CPU.
+const POW_DIFFICULTY = parseInt(process.env.POW_DIFFICULTY || '4');
+const POW_TIMEOUT_MS = 5 * 60 * 1000;  // 5 minutes to solve
+const powChallenges = new Map();  // challenge -> { timestamp, ip, agent_identity }
+
+function generateChallenge(ip, agent_identity) {
+  const challenge = crypto.randomBytes(16).toString('hex');
+  powChallenges.set(challenge, {
+    timestamp: Date.now(),
+    ip,
+    agent_identity,
+    used: false
+  });
+  return challenge;
+}
+
+function verifyPoW(challenge, nonce) {
+  const stored = powChallenges.get(challenge);
+  if (!stored || stored.used) {
+    return { valid: false, reason: 'Invalid or used challenge' };
+  }
+  if (Date.now() - stored.timestamp > POW_TIMEOUT_MS) {
+    powChallenges.delete(challenge);
+    return { valid: false, reason: 'Challenge expired' };
+  }
+  const input = challenge + nonce;
+  const hash = crypto.createHash('sha256').update(input).digest('hex');
+  const prefix = '0'.repeat(POW_DIFFICULTY);
+  const valid = hash.startsWith(prefix);
+  if (valid) {
+    stored.used = true;
+  }
+  return { valid, hash, requiredPrefix: prefix, actualHash: hash };
+}
+
+function cleanupExpiredChallenges() {
+  const now = Date.now();
+  for (const [challenge, data] of powChallenges.entries()) {
+    if (now - data.timestamp > POW_TIMEOUT_MS || data.used) {
+      powChallenges.delete(challenge);
+    }
+  }
+}
+setInterval(cleanupExpiredChallenges, 60000).unref();
 
 function getUnifiedAgents(node) {
   if (!node?.currentState?.agentRegistry?.agents) {
@@ -262,6 +308,28 @@ router.get('/api/v1/bootstrap/blocks/recent', (req, res) => {
   }
 });
 
+// GET /api/v1/bootstrap/agents/register/challenge — get PoW challenge for registration
+router.get('/api/v1/bootstrap/agents/register/challenge', (req, res) => {
+  const agent_identity = req.query.agent_identity || req.query.name;
+  if (!agent_identity) {
+    return res.status(400).json({
+      success: false,
+      error: 'agent_identity is required in query params',
+      error_code: 'MISSING_AGENT_IDENTITY'
+    });
+  }
+  const clientIp = req.ip || req.socket?.remoteAddress || 'unknown';
+  const challenge = generateChallenge(clientIp, agent_identity);
+  res.json({
+    success: true,
+    challenge,
+    difficulty: POW_DIFFICULTY,
+    algorithm: 'sha256',
+    instruction: `Find nonce such that SHA256(challenge + nonce) starts with ${'0'.repeat(POW_DIFFICULTY)}`,
+    expires_in: Math.floor(POW_TIMEOUT_MS / 1000)
+  });
+});
+
 router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
   try {
     const node = req.app.locals.node;
@@ -275,7 +343,7 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
 
     // agent_identity is the canonical field; 'name' accepted for backward compat
     const agent_identity = req.body.agent_identity || req.body.name || req.body.agentId;
-    const { capabilities = [], referrer } = req.body;
+    const { capabilities = [], referrer, pow_challenge, pow_nonce } = req.body;
     if (!agent_identity) {
       return res.status(400).json({
         success: false,
@@ -307,6 +375,32 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
         limit: rateLimit.limit,
         window: rateLimit.window
       });
+    }
+
+    // Sybil defense: PoW challenge verification.
+    // For mainnet, PoW is required. For devnet, allow registration without PoW.
+    // Set POW_REQUIRED=true in env to enforce.
+    const powRequired = process.env.POW_REQUIRED === 'true';
+    if (powRequired) {
+      if (!pow_challenge || !pow_nonce) {
+        return res.status(400).json({
+          success: false,
+          error: 'PoW challenge and nonce are required. Call GET /api/v1/bootstrap/agents/register/challenge first.',
+          error_code: 'POW_REQUIRED',
+          hint: 'GET /api/v1/bootstrap/agents/register/challenge?agent_identity=your-agent-name'
+        });
+      }
+      const powResult = verifyPoW(pow_challenge, pow_nonce);
+      if (!powResult.valid) {
+        console.warn(`[SECURITY] PoW verification failed for IP ${clientIp}: ${powResult.reason} (identity="${agent_identity}")`);
+        return res.status(403).json({
+          success: false,
+          error: `PoW verification failed: ${powResult.reason}`,
+          error_code: 'POW_FAILED',
+          required_prefix: powResult.requiredPrefix,
+          actual_hash: powResult.actualHash
+        });
+      }
     }
 
     const walletInfo = await agentWalletManager.createAgentWallet(agent_identity, {

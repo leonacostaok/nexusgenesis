@@ -21,6 +21,17 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { PQCWallet } from '../../wallet/pqcWallet.js';
+
+const VOTE_SIGNATURE_TIMEOUT_MS = 120 * 1000;
+const usedVoteNonces = new Set();
+setInterval(() => {
+  for (const nonce of usedVoteNonces) {
+    if (Date.now() - nonce.timestamp > VOTE_SIGNATURE_TIMEOUT_MS * 2) {
+      usedVoteNonces.delete(nonce);
+    }
+  }
+}, 300000).unref();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -640,14 +651,16 @@ export function setupForumRoutes(app) {
   });
 
   // POST /api/forum/topics/:id/vote — agent votes on a [Proposal] topic
-  // SECURITY: Voting is a privileged governance operation. The `agent`
-  // field is taken from req.body, so without authentication anyone could
-  // impersonate a registered agent and cast votes. Admin-secret guard
-  // blocks this (same pattern as /proposals/:id/sign). Mainnet will
-  // replace this with PQC signature verification using agent-held keys.
-  router.post('/api/forum/topics/:id/vote', (req, res) => {
+  // SECURITY: PQC signature verification prevents agent impersonation.
+  // Request must include: { agent, vote, timestamp, nonce, signature }
+  // The agent signs JSON.stringify({ topicId, agent, vote, timestamp, nonce })
+  // Server resolves agent's public_key from on-chain registry and verifies.
+  // Admin-secret fallback is maintained for devnet/automated agents.
+  router.post('/api/forum/topics/:id/vote', async (req, res) => {
     try {
-      const { agent, vote } = req.body;
+      const { agent, vote, timestamp, nonce, signature } = req.body;
+      const topicId = req.params.id;
+
       if (!agent) {
         return res.status(400).json({
           success: false,
@@ -655,21 +668,86 @@ export function setupForumRoutes(app) {
           error_code: 'AGENT_REQUIRED'
         });
       }
-      // Auth guard: voting requires admin-secret to prevent impersonation.
-      const provided = req.headers['x-admin-secret'] || req.body?.admin_secret || req.body?.adminSecret;
-      const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
-      if (provided !== expected) {
-        console.warn(`[SECURITY] Blocked unauthorized vote by "${agent}" on topic ${req.params.id}`);
-        return res.status(403).json({
-          success: false,
-          error: 'Voting requires admin-secret authentication',
-          error_code: 'VOTE_AUTH_REQUIRED'
-        });
+
+      let identityVerified = false;
+
+      // Option 1: PQC signature verification (mainnet)
+      if (signature && timestamp && nonce) {
+        const node = req.app.locals.node;
+        if (!node?.resolveRegisteredAgent) {
+          return res.status(503).json({
+            success: false,
+            error: 'Node not ready for signature verification',
+            error_code: 'NODE_NOT_READY'
+          });
+        }
+
+        const agentRecord = node.resolveRegisteredAgent(agent);
+        if (!agentRecord || !agentRecord.public_key) {
+          return res.status(404).json({
+            success: false,
+            error: 'Agent not found or public key not registered',
+            error_code: 'AGENT_NOT_FOUND'
+          });
+        }
+
+        // Check timestamp freshness (2 minutes)
+        if (Date.now() - timestamp > VOTE_SIGNATURE_TIMEOUT_MS) {
+          return res.status(400).json({
+            success: false,
+            error: 'Signature timestamp expired',
+            error_code: 'SIGNATURE_EXPIRED'
+          });
+        }
+
+        // Check nonce uniqueness (anti-replay)
+        const nonceKey = `${agent}:${nonce}`;
+        if (usedVoteNonces.has(nonceKey)) {
+          return res.status(400).json({
+            success: false,
+            error: 'Nonce already used',
+            error_code: 'NONCE_REUSED'
+          });
+        }
+        usedVoteNonces.add(nonceKey);
+
+        // Reconstruct exact signed data
+        const signedData = JSON.stringify({ topicId, agent, vote, timestamp, nonce });
+
+        // Verify PQC signature
+        const isValid = await PQCWallet.verify(
+          signedData,
+          signature,
+          Buffer.from(agentRecord.public_key, 'hex')
+        );
+
+        if (!isValid) {
+          console.warn(`[SECURITY] Invalid signature for vote by "${agent}" on topic ${topicId}`);
+          return res.status(403).json({
+            success: false,
+            error: 'Invalid signature',
+            error_code: 'INVALID_SIGNATURE'
+          });
+        }
+        identityVerified = true;
       }
-      const result = store.castVote({
-        topicId: req.params.id,
-        agent, vote
-      });
+
+      // Option 2: Admin-secret fallback (devnet)
+      if (!identityVerified) {
+        const provided = req.headers['x-admin-secret'] || req.body?.admin_secret || req.body?.adminSecret;
+        const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
+        if (provided !== expected) {
+          console.warn(`[SECURITY] Blocked unauthorized vote by "${agent}" on topic ${topicId}`);
+          return res.status(403).json({
+            success: false,
+            error: 'Voting requires valid PQC signature or admin-secret authentication',
+            error_code: 'VOTE_AUTH_REQUIRED'
+          });
+        }
+        identityVerified = true;
+      }
+
+      const result = store.castVote({ topicId, agent, vote });
       if (!result.success) {
         const status = result.errorCode === 'TOPIC_NOT_FOUND' ? 404
                      : result.errorCode === 'NOT_A_PROPOSAL' ? 409

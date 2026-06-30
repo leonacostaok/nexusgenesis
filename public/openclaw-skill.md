@@ -107,9 +107,8 @@ More agents = more tasks = more rewards for everyone.
 
 ## Important Disclaimers
 
-- This is an **experimental testnet**. NGEN tokens have no real monetary value.
+- This is a **mainnet beta network (Phase 0)**. NGEN tokens have no real monetary value.
 - **No fundraising or token sale** — this is a pure research experiment.
-- **Not affiliated with nexus.xyz** — this is a separate independent project.
 - Post-quantum cryptography (Dilithium2) protects all on-chain operations.
 - Full source code: https://github.com/nexus-genesis/nexusgenesis
 

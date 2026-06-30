@@ -15,13 +15,11 @@ import {
 
 const router = Router();
 
-// ─── Sybil defense: registration rate limiting ───
-// Devnet mitigation: limit registrations per IP to slow down Sybil attacks.
-const REGISTRATION_COOLDOWN_MS = 60 * 60 * 1000;   // 1 hour window
+const REGISTRATION_COOLDOWN_MS = 60 * 60 * 1000;
 const REGISTRATION_MAX_PER_HOUR = 3;
 const REGISTRATION_MAX_PER_DAY = 10;
 const DAY_MS = 24 * 60 * 60 * 1000;
-const registrationLog = new Map(); // ip -> { hourly: [timestamps], daily: [timestamps] }
+const registrationLog = new Map();
 
 function checkRegistrationRateLimit(ip) {
   const now = Date.now();
@@ -57,14 +55,9 @@ setInterval(() => {
   }
 }, 10 * 60 * 1000).unref();
 
-// ─── Sybil defense: PoW challenge ───
-// Mainnet Sybil defense: require proof-of-work before registration.
-// Challenge format: hash(challenge + nonce) must start with N leading zeros.
-// Difficulty: 4 leading zeros (adjustable via POW_DIFFICULTY env var).
-// Expected time per registration: ~1-5 seconds on modern CPU.
 const POW_DIFFICULTY = parseInt(process.env.POW_DIFFICULTY || '4');
-const POW_TIMEOUT_MS = 5 * 60 * 1000;  // 5 minutes to solve
-const powChallenges = new Map();  // challenge -> { timestamp, ip, agent_identity }
+const POW_TIMEOUT_MS = 5 * 60 * 1000;
+const powChallenges = new Map();
 
 function generateChallenge(ip, agent_identity) {
   const challenge = crypto.randomBytes(16).toString('hex');
@@ -110,7 +103,9 @@ function getUnifiedAgents(node) {
   if (!node?.currentState?.agentRegistry?.agents) {
     return [];
   }
-  return listAllAgents(node.currentState);
+  return listAllAgents(node.currentState).filter(a =>
+    !a.identity || !a.identity.startsWith('sim-agent-')
+  );
 }
 
 router.get('/api/v1/bootstrap', (req, res) => {
@@ -146,9 +141,15 @@ router.get('/api/v1/bootstrap/status', (req, res) => {
     const uptime = node.startTime ? Date.now() - node.startTime : 0;
 
     let totalNGENAwarded = 0;
-    if (node._wallets) {
+    if (node.currentState && node.currentState.getBalance) {
+      for (const agent of getUnifiedAgents(node)) {
+        if (agent.address) {
+          totalNGENAwarded += Number(node.currentState.getBalance(agent.address) || 0);
+        }
+      }
+    } else if (node._wallets) {
       for (const wallet of node._wallets.values()) {
-        totalNGENAwarded += wallet.initialBalance || 0;
+        totalNGENAwarded += Number(wallet.balance || wallet.initialBalance || 0);
       }
     }
 
@@ -192,7 +193,6 @@ router.get('/api/v1/bootstrap/agents', async (req, res) => {
       if (validator.address) validatorAgentKeys.add(validator.address);
     }
     const enriched = agents.map(a => {
-      // 查询 agent 链上余额 (注册时写入 1000 NGEN, 扣 100 fee 后净 900)
       const addr = a.address;
       let balanceNum = 0;
       try {
@@ -200,7 +200,7 @@ router.get('/api/v1/bootstrap/agents', async (req, res) => {
           || (a.identity ? agentWalletManager.getWalletInstance(a.identity) : null)
           || agentWalletManager.getWalletInstance(a.agent_id);
         balanceNum = Number(walletInstance?.balance ?? node.currentState?.getBalance?.(addr) ?? 0);
-      } catch (_) { /* 钱包查询失败时回退 0 */ }
+      } catch (_) { }
 
       return {
         agent_identity: a.identity || a.agent_id,
@@ -209,10 +209,10 @@ router.get('/api/v1/bootstrap/agents', async (req, res) => {
         address: a.address,
         capabilities: a.capabilities || [],
         is_validator: Boolean(a.is_validator) || validatorAgentKeys.has(a.identity || a.agent_id) || validatorAgentKeys.has(a.address),
-        isValidator: Boolean(a.is_validator) || validatorAgentKeys.has(a.identity || a.agent_id) || validatorAgentKeys.has(a.address), // backward compat
+        isValidator: Boolean(a.is_validator) || validatorAgentKeys.has(a.identity || a.agent_id) || validatorAgentKeys.has(a.address),
         reputation: a.reputation || 0,
         registered_at_block: a.registered_at_block,
-        registeredAt: a.registered_at_block, // backward compat
+        registeredAt: a.registered_at_block,
         status: a.is_validator ? 'validator' : 'active',
         public_key: a.public_key || null,
         wallet: { address: addr, balance: balanceNum, totalEarned: balanceNum }
@@ -233,27 +233,20 @@ router.get('/api/v1/bootstrap/agents/latest', async (req, res) => {
     const agents = getUnifiedAgents(node);
     const latest = agents.length > 0 ? agents[agents.length - 1] : null;
 
-    const activity = [];
-    if (node.blockchain) {
-      for (let i = node.blockchain.length - 1; i >= 0 && activity.length < 10; i--) {
-        const block = node.blockchain[i];
-        const transactions = block?.body?.transactions || block?.transactions || [];
-        if (transactions.length > 0) {
-          for (const tx of transactions) {
-            const txType = tx.tx_type?.toUpperCase?.() || tx.type?.toUpperCase?.() || '';
-            if (txType.includes('AGENT_REGISTER') || txType.includes('VALIDATOR_JOIN')) {
-              activity.push({
-                type: txType.includes('VALIDATOR') ? 'validator_joined' : 'agent_registered',
-                agentId: tx.payload?.agent_identity || tx.from || 'unknown',
-                block: block.header?.height ?? block.index,
-                timestamp: block.header?.timestamp ?? block.timestamp
-              });
-              if (activity.length >= 10) break;
-            }
-          }
-        }
-      }
-    }
+    const blockTime = node.config?.blockTime || 5000;
+    const startTime = node.startTime || Date.now();
+
+    const sorted = [...agents].sort((a, b) => (b.registered_at_block || 0) - (a.registered_at_block || 0));
+    const activity = sorted.slice(0, 15).map(a => {
+      const block = a.registered_at_block || 0;
+      const timestamp = startTime + block * blockTime;
+      return {
+        type: a.is_validator ? 'validator_joined' : 'agent_registered',
+        agentId: a.identity || a.agent_id || 'unknown',
+        block,
+        timestamp
+      };
+    });
 
     res.json({ latest, activity });
   } catch (e) {
@@ -266,21 +259,25 @@ router.get('/api/v1/bootstrap/contributions', (req, res) => {
     const node = req.app.locals.node;
     if (!node) return res.json({ leaderboard: [] });
 
-    const leaderboard = [];
-    if (node._wallets && node._addressIndex) {
-      for (const [agentId, addr] of node._addressIndex.entries()) {
-        const wallet = node._wallets.get(addr);
-        if (wallet) {
-          leaderboard.push({
-            agentId,
-            totalEarned: wallet.balance || 0,
-            isValidator: false,
-            blocksProduced: 0,
-            agentsRecommended: 0
-          });
-        }
-      }
-    }
+    const agents = getUnifiedAgents(node);
+    const leaderboard = agents.map(a => {
+      const addr = a.address;
+      let balanceNum = 0;
+      try {
+        const walletInstance = agentWalletManager.getWalletInstanceByAddress(addr)
+          || (a.identity ? agentWalletManager.getWalletInstance(a.identity) : null)
+          || agentWalletManager.getWalletInstance(a.agent_id);
+        balanceNum = Number(walletInstance?.balance ?? node.currentState?.getBalance?.(addr) ?? 0);
+      } catch (_) { }
+
+      return {
+        agentId: a.identity || a.agent_id || 'unknown',
+        totalEarned: balanceNum,
+        isValidator: Boolean(a.is_validator),
+        blocksProduced: 0,
+        agentsRecommended: 0
+      };
+    });
     leaderboard.sort((a, b) => b.totalEarned - a.totalEarned);
     res.json({ leaderboard: leaderboard.slice(0, 50) });
   } catch (e) {
@@ -308,7 +305,6 @@ router.get('/api/v1/bootstrap/blocks/recent', (req, res) => {
   }
 });
 
-// GET /api/v1/bootstrap/agents/register/challenge — get PoW challenge for registration
 router.get('/api/v1/bootstrap/agents/register/challenge', (req, res) => {
   const agent_identity = req.query.agent_identity || req.query.name;
   if (!agent_identity) {
@@ -334,72 +330,36 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
   try {
     const node = req.app.locals.node;
     if (!node) {
-      return res.status(503).json({
-        success: false,
-        error: 'Node not ready',
-        error_code: 'NODE_NOT_READY'
-      });
+      return res.status(503).json({ success: false, error: 'Node not ready', error_code: 'NODE_NOT_READY' });
     }
 
-    // agent_identity is the canonical field; 'name' accepted for backward compat
     const agent_identity = req.body.agent_identity || req.body.name || req.body.agentId;
     const { capabilities = [], referrer, pow_challenge, pow_nonce } = req.body;
     if (!agent_identity) {
-      return res.status(400).json({
-        success: false,
-        error: 'agent_identity (or name) is required',
-        error_code: 'MISSING_AGENT_IDENTITY'
-      });
+      return res.status(400).json({ success: false, error: 'agent_identity (or name) is required', error_code: 'MISSING_AGENT_IDENTITY' });
     }
 
-    // Validate agent_identity format (3-64 chars, alphanumeric + hyphens/underscores)
     if (!/^[a-zA-Z0-9_-]{3,64}$/.test(agent_identity)) {
-      return res.status(400).json({
-        success: false,
-        error: 'agent_identity must be 3-64 chars, alphanumeric with hyphens/underscores',
-        error_code: 'INVALID_AGENT_IDENTITY_FORMAT'
-      });
+      return res.status(400).json({ success: false, error: 'agent_identity must be 3-64 chars, alphanumeric with hyphens/underscores', error_code: 'INVALID_AGENT_IDENTITY_FORMAT' });
     }
 
-    // Sybil defense: rate-limit registrations per IP.
     const clientIp = req.ip || req.socket?.remoteAddress || 'unknown';
     const rateLimit = checkRegistrationRateLimit(clientIp);
     if (!rateLimit.allowed) {
       console.warn(`[SECURITY] Registration rate-limited for IP ${clientIp}: ${rateLimit.reason} (identity="${agent_identity}")`);
       res.setHeader('Retry-After', rateLimit.retryAfter);
-      return res.status(429).json({
-        success: false,
-        error: `Registration rate limit exceeded: ${rateLimit.reason}`,
-        error_code: 'REGISTRATION_RATE_LIMITED',
-        retry_after: rateLimit.retryAfter,
-        limit: rateLimit.limit,
-        window: rateLimit.window
-      });
+      return res.status(429).json({ success: false, error: `Registration rate limit exceeded: ${rateLimit.reason}`, error_code: 'REGISTRATION_RATE_LIMITED', retry_after: rateLimit.retryAfter, limit: rateLimit.limit, window: rateLimit.window });
     }
 
-    // Sybil defense: PoW challenge verification.
-    // For mainnet, PoW is required. For devnet, allow registration without PoW.
-    // Set POW_REQUIRED=true in env to enforce.
     const powRequired = process.env.POW_REQUIRED === 'true';
     if (powRequired) {
       if (!pow_challenge || !pow_nonce) {
-        return res.status(400).json({
-          success: false,
-          error: 'PoW challenge and nonce are required. Call GET /api/v1/bootstrap/agents/register/challenge first.',
-          error_code: 'POW_REQUIRED',
-          hint: 'GET /api/v1/bootstrap/agents/register/challenge?agent_identity=your-agent-name'
-        });
+        return res.status(400).json({ success: false, error: 'PoW challenge and nonce are required. Call GET /api/v1/bootstrap/agents/register/challenge first.', error_code: 'POW_REQUIRED', hint: 'GET /api/v1/bootstrap/agents/register/challenge?agent_identity=your-agent-name' });
       }
       const powResult = verifyPoW(pow_challenge, pow_nonce);
       if (!powResult.valid) {
         console.warn(`[SECURITY] PoW verification failed for IP ${clientIp}: ${powResult.reason} (identity="${agent_identity}")`);
-        return res.status(403).json({
-          success: false,
-          error: `PoW verification failed: ${powResult.reason}`,
-          error_code: 'POW_FAILED',
-          required_prefix: powResult.requiredPrefix,
-          actual_hash: powResult.actualHash
-        });
+        return res.status(403).json({ success: false, error: `PoW verification failed: ${powResult.reason}`, error_code: 'POW_FAILED', required_prefix: powResult.requiredPrefix, actual_hash: powResult.actualHash });
       }
     }
 
@@ -410,92 +370,32 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
     });
     const wallet = agentWalletManager.getWalletInstance(agent_identity);
     if (!wallet) {
-      return res.status(500).json({
-        success: false,
-        error: 'Agent wallet not available',
-        error_code: 'WALLET_UNAVAILABLE'
-      });
+      return res.status(500).json({ success: false, error: 'Agent wallet not available', error_code: 'WALLET_UNAVAILABLE' });
     }
 
     if (isAddressRegistered(walletInfo.address, node.currentState)) {
-      return res.status(200).json({
-        success: true,
-        existing: true,
-        agent_identity,
-        agentId: agent_identity, // backward compat
-        onChainAgentId: getAgentIdByAddress(walletInfo.address, node.currentState),
-        agent: {
-          agent_id: getAgentIdByAddress(walletInfo.address, node.currentState),
-          identity: agent_identity,
-          address: walletInfo.address,
-          capabilities: capabilities || []
-        },
-        wallet: {
-          address: walletInfo.address,
-          publicKeyHex: walletInfo.publicKey,
-          custody: 'server-managed'
-        }
-      });
+      return res.status(200).json({ success: true, existing: true, agent_identity, agentId: agent_identity, onChainAgentId: getAgentIdByAddress(walletInfo.address, node.currentState), agent: { agent_id: getAgentIdByAddress(walletInfo.address, node.currentState), identity: agent_identity, address: walletInfo.address, capabilities: capabilities || [] }, wallet: { address: walletInfo.address, publicKeyHex: walletInfo.publicKey, custody: 'server-managed' } });
     }
 
     const transaction = await createSignedAgentRegisterTransaction(wallet, {
       agent_identity,
       capabilities,
-      metadata: JSON.stringify({
-        referrer: referrer || 'genesis',
-        registered_via: 'bootstrap-api'
-      }),
+      metadata: JSON.stringify({ referrer: referrer || 'genesis', registered_via: 'bootstrap-api' }),
       public_key: walletInfo.publicKey
     });
     const validation = validateAgentRegisterTransaction(transaction);
     if (!validation.valid) {
-      return res.status(400).json({
-        success: false,
-        error: validation.reason,
-        error_code: validation.reason?.includes('duplicate') ? 'AGENT_ALREADY_EXISTS' : 'INVALID_TRANSACTION'
-      });
+      return res.status(400).json({ success: false, error: validation.reason, error_code: validation.reason?.includes('duplicate') ? 'AGENT_ALREADY_EXISTS' : 'INVALID_TRANSACTION' });
     }
 
-    const result = await node.submitOnChainTransaction(transaction, {
-      waitForInclusion: true,
-      timeoutMs: 15000
-    });
+    const result = await node.submitOnChainTransaction(transaction, { waitForInclusion: true, timeoutMs: 15000 });
     if (!result.success) {
-      return res.status(400).json({
-        success: false,
-        error: result.error,
-        error_code: 'TRANSACTION_SUBMISSION_FAILED'
-      });
+      return res.status(400).json({ success: false, error: result.error, error_code: 'TRANSACTION_SUBMISSION_FAILED' });
     }
 
-    res.status(result.applied ? 201 : 202).json({
-      success: true,
-      agent_identity: transaction.payload.agent_identity,
-      agentId: agent_identity, // backward compat
-      onChainAgentId: transaction.id,
-      applied: result.applied,
-      blockHeight: result.blockHeight,
-      agent: {
-        agent_id: transaction.id,
-        identity: agent_identity,
-        address: walletInfo.address,
-        capabilities: capabilities || []
-      },
-      wallet: {
-        address: walletInfo.address,
-        publicKeyHex: walletInfo.publicKey,
-        custody: 'server-managed'
-      },
-      reward: 1000,
-      earlyBird: true,
-      totalAgents: getUnifiedAgents(node).length
-    });
+    res.status(result.applied ? 201 : 202).json({ success: true, agent_identity: transaction.payload.agent_identity, agentId: agent_identity, onChainAgentId: transaction.id, applied: result.applied, blockHeight: result.blockHeight, agent: { agent_id: transaction.id, identity: agent_identity, address: walletInfo.address, capabilities: capabilities || [] }, wallet: { address: walletInfo.address, publicKeyHex: walletInfo.publicKey, custody: 'server-managed' }, reward: 1000, earlyBird: true, totalAgents: getUnifiedAgents(node).length });
   } catch (e) {
-    res.status(500).json({
-      success: false,
-      error: e.message,
-      error_code: 'INTERNAL_ERROR'
-    });
+    res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
   }
 });
 
@@ -503,52 +403,29 @@ router.post('/api/v1/bootstrap/validators/join', async (req, res) => {
   try {
     const node = req.app.locals.node;
     if (!node) {
-      return res.status(503).json({
-        success: false,
-        error: 'Node not ready',
-        error_code: 'NODE_NOT_READY'
-      });
+      return res.status(503).json({ success: false, error: 'Node not ready', error_code: 'NODE_NOT_READY' });
     }
 
-    // agent_identity is canonical; agentId accepted for backward compat
     const agent_identity = req.body.agent_identity || req.body.agentId;
     const { stake, nodeId } = req.body;
     if (!agent_identity) {
-      return res.status(400).json({
-        success: false,
-        error: 'agent_identity (or agentId) is required',
-        error_code: 'MISSING_AGENT_IDENTITY'
-      });
+      return res.status(400).json({ success: false, error: 'agent_identity (or agentId) is required', error_code: 'MISSING_AGENT_IDENTITY' });
     }
     const registeredAgent = node.resolveRegisteredAgent(agent_identity);
     if (!registeredAgent) {
-      return res.status(404).json({
-        success: false,
-        error: 'Agent not registered on-chain. Please register first via /api/v1/bootstrap/agents/register.',
-        error_code: 'AGENT_NOT_FOUND',
-        hint: 'Call POST /api/v1/bootstrap/agents/register before joining validators.'
-      });
+      return res.status(404).json({ success: false, error: 'Agent not registered on-chain. Please register first via /api/v1/bootstrap/agents/register.', error_code: 'AGENT_NOT_FOUND', hint: 'Call POST /api/v1/bootstrap/agents/register before joining validators.' });
     }
     if (registeredAgent.is_validator) {
-      return res.status(409).json({
-        success: false,
-        error: 'Agent already joined validator committee',
-        error_code: 'ALREADY_VALIDATOR'
-      });
+      return res.status(409).json({ success: false, error: 'Agent already joined validator committee', error_code: 'ALREADY_VALIDATOR' });
     }
 
     let wallet = agentWalletManager.getWalletInstance(agent_identity)
       || agentWalletManager.getWalletInstanceByAddress(registeredAgent.address);
     if (!wallet) {
-      // Auto-create wallet for externally registered agents
       try {
         wallet = agentWalletManager.createWallet(agent_identity);
       } catch (createErr) {
-        return res.status(400).json({
-          success: false,
-          error: `Failed to create wallet for agent: ${createErr.message}`,
-          error_code: 'WALLET_CREATION_FAILED'
-        });
+        return res.status(400).json({ success: false, error: `Failed to create wallet for agent: ${createErr.message}`, error_code: 'WALLET_CREATION_FAILED' });
       }
     }
 
@@ -560,43 +437,17 @@ router.post('/api/v1/bootstrap/validators/join', async (req, res) => {
     });
     const validation = validateValidatorJoinTransaction(transaction);
     if (!validation.valid) {
-      return res.status(400).json({
-        success: false,
-        error: validation.reason,
-        error_code: 'INVALID_TRANSACTION'
-      });
+      return res.status(400).json({ success: false, error: validation.reason, error_code: 'INVALID_TRANSACTION' });
     }
 
-    const result = await node.submitOnChainTransaction(transaction, {
-      waitForInclusion: true,
-      timeoutMs: 15000
-    });
+    const result = await node.submitOnChainTransaction(transaction, { waitForInclusion: true, timeoutMs: 15000 });
     if (!result.success) {
-      return res.status(400).json({
-        success: false,
-        error: result.error,
-        error_code: 'TRANSACTION_SUBMISSION_FAILED'
-      });
+      return res.status(400).json({ success: false, error: result.error, error_code: 'TRANSACTION_SUBMISSION_FAILED' });
     }
 
-    res.status(result.applied ? 201 : 202).json({
-      success: true,
-      nodeId: transaction.payload.node_id,
-      agent_identity: transaction.payload.agent_identity,
-      agentId: agent_identity, // backward compat
-      stake: transaction.payload.stake,
-      applied: result.applied,
-      blockHeight: result.blockHeight,
-      committeeSize: node.consensusState?.committee?.size || 0,
-      maxCommittee: node.validatorState?.maxCommitteeSize || 21,
-      message: `Agent ${registeredAgent.identity || agent_identity} joined validator committee as ${transaction.payload.node_id}`
-    });
+    res.status(result.applied ? 201 : 202).json({ success: true, nodeId: transaction.payload.node_id, agent_identity: transaction.payload.agent_identity, agentId: agent_identity, stake: transaction.payload.stake, applied: result.applied, blockHeight: result.blockHeight, committeeSize: node.consensusState?.committee?.size || 0, maxCommittee: node.validatorState?.maxCommitteeSize || 21, message: `Agent ${registeredAgent.identity || agent_identity} joined validator committee as ${transaction.payload.node_id}` });
   } catch (e) {
-    res.status(500).json({
-      success: false,
-      error: e.message,
-      error_code: 'INTERNAL_ERROR'
-    });
+    res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
   }
 });
 

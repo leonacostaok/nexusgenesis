@@ -117,6 +117,13 @@ class GenesisNode {
     // Agent Task Protocol
     this.taskProtocol = null;
 
+    // Referral system — agent_identity → referrer_identity
+    this.referralMap = new Map();
+    // Referral stats — referrer_identity → { totalReferrals, activeReferrals, milestones, totalEarned }
+    this.referralStats = new Map();
+    // Track which agents have already triggered active referral bonus
+    this._activeReferralAwarded = new Set();
+
     // Block sync state — prevents duplicate concurrent sync requests
     this._syncInProgress = false;
     this._lastSyncRequestAt = 0;
@@ -2030,6 +2037,29 @@ class GenesisNode {
       if (result.success) {
         console.log(`[AGENT] Agent registered: ${result.data.agentId}`);
 
+        // Extract referrer from transaction metadata and record referral relationship
+        const agentIdentity = tx.payload?.agent_identity;
+        const agentAddress = tx.from;
+        let referrer = null;
+        try {
+          const metadata = tx.payload?.metadata ? JSON.parse(tx.payload.metadata) : {};
+          referrer = metadata.referrer && metadata.referrer !== 'genesis' ? metadata.referrer : null;
+        } catch (_) { /* metadata not JSON */ }
+
+        if (agentIdentity && agentAddress && referrer) {
+          // Map address → referrer_identity for task completion lookup
+          this.referralMap.set(agentAddress, referrer);
+          // Map identity → address for referrer reward distribution
+          this._identityToAddress = this._identityToAddress || new Map();
+          this._identityToAddress.set(agentIdentity, agentAddress);
+          const stats = this.referralStats.get(referrer) || {
+            totalReferrals: 0, activeReferrals: 0, milestones: [], totalEarned: 0
+          };
+          stats.totalReferrals++;
+          this.referralStats.set(referrer, stats);
+          console.log(`[REFERRAL] ${agentIdentity} (${agentAddress.slice(0,12)}...) referred by ${referrer} (total: ${stats.totalReferrals})`);
+        }
+
         if (this.agentNetworkDiscovery && result.data) {
           this.agentNetworkDiscovery.broadcastAgentRegistration({
             id: result.data.agentId,
@@ -2051,8 +2081,86 @@ class GenesisNode {
         console.error(`[AGENT] Agent update failed: ${result.reason}`);
       }
     }
-    
+
     return this.addToMempool(tx);
+  }
+
+  // ==================== Referral System ====================
+
+  awardActiveReferral(agentAddressOrIdentity) {
+    if (this._activeReferralAwarded.has(agentAddressOrIdentity)) return null;
+
+    const referrer = this.referralMap.get(agentAddressOrIdentity);
+    if (!referrer) return null;
+
+    this._activeReferralAwarded.add(agentAddressOrIdentity);
+
+    const stats = this.referralStats.get(referrer);
+    if (!stats) return null;
+
+    stats.activeReferrals++;
+    const bonus = 1000; // activeReferralBonus
+    stats.totalEarned += bonus;
+
+    // Award NGEN to referrer
+    const referrerAddr = this._identityToAddress?.get(referrer);
+    if (referrerAddr && this.currentState?.addBalance) {
+      this.currentState.addBalance(referrerAddr, bonus.toString());
+    }
+
+    console.log(`[REFERRAL] 🎯 Active referral: ${referrer} → ${agentAddressOrIdentity.slice(0,12)}... completed first task → +${bonus} NGEN`);
+
+    // Check milestones
+    const milestones = { 3: 3000, 5: 8000, 10: 20000 };
+    let milestoneAwarded = null;
+    if (milestones[stats.activeReferrals] && !stats.milestones.find(m => m.count === stats.activeReferrals)) {
+      const reward = milestones[stats.activeReferrals];
+      stats.milestones.push({ count: stats.activeReferrals, reward, timestamp: Date.now() });
+      stats.totalEarned += reward;
+      milestoneAwarded = { count: stats.activeReferrals, reward };
+
+      if (referrerAddr && this.currentState?.addBalance) {
+        this.currentState.addBalance(referrerAddr, reward.toString());
+      }
+      console.log(`[REFERRAL] 🏆 Milestone: ${referrer} reached ${stats.activeReferrals} active referrals → +${reward} NGEN`);
+    }
+
+    this.referralStats.set(referrer, stats);
+    return { referrer, reward: bonus, milestone: milestoneAwarded };
+  }
+
+  getReferralStats(agentAddressOrIdentity) {
+    // If called with an address, find the referrer for this agent
+    const referrer = this.referralMap.get(agentAddressOrIdentity);
+    // If called with an identity, get stats for this agent as a referrer
+    const stats = this.referralStats.get(agentAddressOrIdentity);
+
+    const referrals = [];
+    for (const [addr, ref] of this.referralMap.entries()) {
+      if (ref === agentAddressOrIdentity) {
+        referrals.push({
+          address: addr,
+          isActive: this._activeReferralAwarded.has(addr)
+        });
+      }
+    }
+
+    const milestones = { 3: 3000, 5: 8000, 10: 20000 };
+    const nextMilestone = Object.keys(milestones)
+      .map(Number)
+      .sort((a, b) => a - b)
+      .find(t => (stats?.activeReferrals || 0) < t && !(stats?.milestones || []).find(m => m.count === t));
+
+    return {
+      agent: agentAddressOrIdentity,
+      referrer: referrer || null,
+      totalReferrals: stats?.totalReferrals || 0,
+      activeReferrals: stats?.activeReferrals || 0,
+      totalEarned: stats?.totalEarned || 0,
+      milestones: stats?.milestones || [],
+      nextMilestone: nextMilestone ? { count: nextMilestone, reward: milestones[nextMilestone] } : null,
+      referrals
+    };
   }
 
   // ==================== SEC-003: node身份管理 ====================

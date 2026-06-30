@@ -14,7 +14,14 @@
       "validatorJoinReward": 5000,
       "blockProductionReward": 100,
       "uptimeBonusPerHour": 10,
-      "agentReferralReward": 1000,
+      "agentReferralReward": 2000,
+      "activeReferralBonus": 1000,
+      "milestoneRewards": {
+        "3": 3000,
+        "5": 8000,
+        "10": 20000
+      },
+      "nodeOperationBonus": 500,
       "contributionTrackingEnabled": true
     }
   },

@@ -424,6 +424,14 @@ class TaskProtocol {
         } else {
           console.log(`[TaskProtocol] ⚠ Reputation skip: agentRecord=${!!agentRecord} agentId=${agentRecord?.agentId?.slice(0,16)} hasRewardFn=${typeof this.node.currentState?.rewardReputation === 'function'} claimedBy=${task.claimedBy?.slice(0,16)}...`);
         }
+
+        // Award active referral bonus to the referrer on first task completion
+        if (this.node && typeof this.node.awardActiveReferral === 'function') {
+          const result = this.node.awardActiveReferral(task.claimedBy);
+          if (result) {
+            console.log(`[TaskProtocol] 🎯 Active referral bonus: ${result.referrer} → +${result.reward} NGEN${result.milestone ? ` + milestone(${result.milestone.count}) → +${result.milestone.reward}` : ''}`);
+          }
+        }
       } else {
         console.log(`[TaskProtocol] ⚠ Reputation skip: node=${!!this.node} currentState=${!!this.node?.currentState} resolveFn=${!!this.node?.resolveRegisteredAgent}`);
       }

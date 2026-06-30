@@ -381,6 +381,43 @@ router.get('/api/v1/bootstrap/agents/latest', async (req, res) => {
   }
 });
 
+// Referral stats — agent_identity or address
+router.get('/api/v1/bootstrap/referral-stats/:agentId', (req, res) => {
+  try {
+    const node = req.app.locals.node;
+    if (!node || typeof node.getReferralStats !== 'function') {
+      return res.json({ totalReferrals: 0, activeReferrals: 0, referrals: [] });
+    }
+    const stats = node.getReferralStats(req.params.agentId);
+    res.json(stats);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Referral leaderboard — top referrers
+router.get('/api/v1/bootstrap/referral-leaderboard', (req, res) => {
+  try {
+    const node = req.app.locals.node;
+    if (!node || !node.referralStats) {
+      return res.json({ leaderboard: [] });
+    }
+    const leaderboard = Array.from(node.referralStats.entries())
+      .map(([agentIdentity, stats]) => ({
+        agentIdentity,
+        totalReferrals: stats.totalReferrals || 0,
+        activeReferrals: stats.activeReferrals || 0,
+        totalEarned: stats.totalEarned || 0,
+        milestones: stats.milestones || []
+      }))
+      .sort((a, b) => b.activeReferrals - a.activeReferrals)
+      .slice(0, 20);
+    res.json({ leaderboard });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 router.get('/api/v1/bootstrap/contributions', (req, res) => {
   try {
     const node = req.app.locals.node;
@@ -611,7 +648,7 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
         publicKeyHex: walletInfo.publicKey,
         custody: 'server-managed'
       },
-      reward: 1000,
+      reward: 2000,
       earlyBird: true,
       totalAgents: getUnifiedAgents(node).length,
       welcome_package: buildWelcomePackage(node)

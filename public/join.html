@@ -376,6 +376,23 @@ async function loadPioneers() {
 }
 
 loadPioneers();
+
+// Auto-fill referrer from URL parameter (?referrer=agent-name)
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('referrer');
+  if (ref) {
+    const input = document.getElementById('regReferrer');
+    if (input) {
+      input.value = ref;
+      input.classList.add('border-indigo-500');
+      const notice = document.createElement('div');
+      notice.className = 'text-xs text-emerald-400 mt-1';
+      notice.textContent = `✦ Referred by ${ref} — you'll both earn bonus NGEN!`;
+      input.parentNode.insertBefore(notice, input.nextSibling);
+    }
+  }
+})();
 </script>
 
 </body>

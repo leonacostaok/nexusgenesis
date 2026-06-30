@@ -61,8 +61,11 @@ export class BootstrapAgentNetwork {
     this._exitUptimeMs = (config.bootstrap?.autoExitConditions?.minNetworkUptimeHours ?? 720) * 3600000;
     this._earlyBirdMax = 100;
     this._earlyBirdBonus = config.agent?.bootstrapPrivileges?.first100AgentsReward ?? 10000;
-    this._agentRegReward = config.bootstrap?.rewards?.agentReferralReward ?? 1000;
-    this._referrerBonus = config.bootstrap?.rewards?.agentReferralReward ?? 1000;
+    this._agentRegReward = config.bootstrap?.rewards?.agentReferralReward ?? 2000;
+    this._referrerBonus = config.bootstrap?.rewards?.agentReferralReward ?? 2000;
+    this._activeReferralBonus = config.bootstrap?.rewards?.activeReferralBonus ?? 1000;
+    this._milestoneRewards = config.bootstrap?.rewards?.milestoneRewards ?? { 3: 3000, 5: 8000, 10: 20000 };
+    this._nodeOperationBonus = config.bootstrap?.rewards?.nodeOperationBonus ?? 500;
     this._validatorJoinReward = config.bootstrap?.rewards?.validatorJoinReward ?? 5000;
 
     console.log('\n╔═══════════════════════════════════════════╗');
@@ -420,6 +423,9 @@ export class BootstrapAgentNetwork {
         validatorJoinReward: this._validatorJoinReward,
         agentRegReward: this._agentRegReward,
         referrerBonus: this._referrerBonus,
+        activeReferralBonus: this._activeReferralBonus,
+        milestoneRewards: this._milestoneRewards,
+        nodeOperationBonus: this._nodeOperationBonus,
         earlyBirdBonus: this._earlyBirdBonus,
         blockReward: this._blockReward
       },
@@ -454,6 +460,113 @@ export class BootstrapAgentNetwork {
 
   getValidatorInfo(nodeId) {
     return this.validatorSet.get(nodeId) || null;
+  }
+
+  awardActiveReferral(agentId) {
+    const agent = this.agentRegistry.get(agentId);
+    if (!agent || !agent.referrer || agent.referrer === 'genesis') return null;
+
+    const tracker = this.contributionTracker.get(agentId);
+    if (!tracker || tracker.activeReferralAwarded) return null;
+
+    const referrerTracker = this.contributionTracker.get(agent.referrer);
+    if (!referrerTracker) return null;
+
+    tracker.activeReferralAwarded = true;
+    referrerTracker.activeReferrals = (referrerTracker.activeReferrals || 0) + 1;
+    referrerTracker.totalEarned += this._activeReferralBonus;
+
+    this._produceBlock({
+      type: 'ACTIVE_REFERRAL_BONUS',
+      agentId: agent.referrer,
+      referredAgent: agentId,
+      reward: this._activeReferralBonus,
+      transaction: 'activeReferralBonus'
+    });
+
+    const count = referrerTracker.activeReferrals;
+    const milestone = this._checkMilestone(agent.referrer, count);
+    if (milestone) {
+      referrerTracker.totalEarned += milestone.reward;
+      referrerTracker.milestones = referrerTracker.milestones || [];
+      referrerTracker.milestones.push({ count: milestone.count, reward: milestone.reward, timestamp: Date.now() });
+
+      const refAgent = this.agentRegistry.get(agent.referrer);
+      if (refAgent) {
+        refAgent.reputation = (refAgent.reputation || 5) + (milestone.count >= 10 ? 10 : milestone.count >= 5 ? 5 : 0);
+      }
+
+      this._produceBlock({
+        type: 'MILESTONE_REWARD',
+        agentId: agent.referrer,
+        milestone: milestone.count,
+        reward: milestone.reward,
+        transaction: 'milestoneReward'
+      });
+
+      console.log(`🏆 Milestone: ${agent.referrer} reached ${milestone.count} active referrals → +${milestone.reward} NGEN`);
+    }
+
+    console.log(`🎯 Active referral: ${agent.referrer} → ${agentId} completed first task → +${this._activeReferralBonus} NGEN`);
+    return { referrer: agent.referrer, reward: this._activeReferralBonus, milestone };
+  }
+
+  _checkMilestone(referrerId, activeCount) {
+    const milestones = this._milestoneRewards || {};
+    const sortedThresholds = Object.keys(milestones).map(Number).sort((a, b) => a - b);
+    for (const threshold of sortedThresholds) {
+      if (activeCount === threshold) {
+        const tracker = this.contributionTracker.get(referrerId);
+        const claimed = (tracker?.milestones || []).map(m => m.count);
+        if (!claimed.includes(threshold)) {
+          return { count: threshold, reward: milestones[threshold] };
+        }
+      }
+    }
+    return null;
+  }
+
+  getReferralStats(agentId) {
+    const agent = this.agentRegistry.get(agentId);
+    if (!agent) return null;
+
+    const tracker = this.contributionTracker.get(agentId);
+    const totalReferrals = tracker?.agentsRecommended || 0;
+    const activeReferrals = tracker?.activeReferrals || 0;
+    const milestones = tracker?.milestones || [];
+    const referrerBonus = tracker?.referrerBonus || 0;
+
+    const referrals = [];
+    for (const [id, a] of this.agentRegistry.entries()) {
+      if (a.referrer === agentId) {
+        const refTracker = this.contributionTracker.get(id);
+        referrals.push({
+          agentId: id,
+          joinedAt: a.joinedAt,
+          isActive: !!refTracker?.activeReferralAwarded,
+          tasksCompleted: a.contributions?.tasksCompleted || 0
+        });
+      }
+    }
+
+    const milestonesConfig = this._milestoneRewards || {};
+    const nextMilestone = Object.keys(milestonesConfig)
+      .map(Number)
+      .sort((a, b) => a - b)
+      .find(t => activeReferrals < t && !milestones.find(m => m.count === t));
+
+    return {
+      agentId,
+      referrer: agent.referrer,
+      totalReferrals,
+      activeReferrals,
+      referrerBonusEarned: referrerBonus,
+      activeReferralBonusEarned: tracker?.activeReferralBonusEarned || 0,
+      milestoneRewardsEarned: milestones.reduce((sum, m) => sum + m.reward, 0),
+      milestones,
+      nextMilestone: nextMilestone ? { count: nextMilestone, reward: milestonesConfig[nextMilestone] } : null,
+      referrals
+    };
   }
 
   getRecentBlocks(count = 20) {

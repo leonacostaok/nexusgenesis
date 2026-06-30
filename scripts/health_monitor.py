@@ -1,44 +1,47 @@
 #!/usr/bin/env python3
 """
-NexusGenesis 系统健康监控脚本
+NexusGenesis 系统健康监控脚本 (单节点架构)
 
 用法:
   python3 scripts/health_monitor.py              # 本地模式 (查询 localhost)
-  python3 scripts/health_monitor.py --remote     # 远程模式 (SSH 到服务器查询)
   python3 scripts/health_monitor.py --json       # 输出 JSON (便于告警系统消费)
+  python3 scripts/health_monitor.py --alert      # 检测异常时写入告警文件
 
 检查项:
-  1. 3 个节点 HTTP API 可达性
-  2. 链高度 + 哈希一致性 (chain alignment)
-  3. PM2 进程状态
+  1. genesis 节点 HTTP API 可达性
+  2. 区块高度增长 (链是否停止出块)
+  3. PM2 进程状态 (genesis + agent workers)
   4. 服务器磁盘 + 内存
-  5. 生态系统统计 (agents / tasks / proposals)
+  5. AGENT 数量 + 验证者数量
+  6. totalNGENAwarded 数据一致性
 """
 
 import argparse
 import json
+import os
 import subprocess
 import sys
+import time
 import urllib.request
 import urllib.error
 from datetime import datetime
 
 NODES = [
     {"name": "genesis", "port": 19891},
-    {"name": "node02", "port": 19892},
-    {"name": "node03", "port": 19893},
 ]
 
-SSH_HOST = "root@nexus-genesis.top"
-SSH_KEY = "~/.ssh/ng_deploy"
+ALERT_FILE = "/var/log/nexusgenesis/alerts/health-alerts.log"
+STATE_FILE = "/tmp/nexusgenesis-health-state.json"
 
-# ANSI 颜色
 GREEN = "\033[92m"
 RED = "\033[91m"
 YELLOW = "\033[93m"
 CYAN = "\033[96m"
 BOLD = "\033[1m"
 RESET = "\033[0m"
+
+CRITICAL_ALERTS = []
+WARNING_ALERTS = []
 
 
 def ok(msg):
@@ -53,6 +56,15 @@ def warn(msg):
     return f"{YELLOW}[WARN]{RESET} {msg}"
 
 
+def add_alert(level, message):
+    timestamp = datetime.now().isoformat()
+    alert = {"timestamp": timestamp, "level": level, "message": message}
+    if level == "CRITICAL":
+        CRITICAL_ALERTS.append(alert)
+    elif level == "WARNING":
+        WARNING_ALERTS.append(alert)
+
+
 def fetch_json(url, timeout=5):
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "health-monitor"})
@@ -64,17 +76,7 @@ def fetch_json(url, timeout=5):
         return None, str(e)
 
 
-def ssh_run(cmd, timeout=15):
-    full = ["ssh", "-i", SSH_KEY, SSH_HOST, cmd]
-    try:
-        r = subprocess.run(full, capture_output=True, text=True, timeout=timeout)
-        return r.stdout.strip() if r.returncode == 0 else None
-    except Exception:
-        return None
-
-
 def local_run(cmd, timeout=15):
-    """直接在本机执行命令 (用于在服务器上运行时)"""
     try:
         r = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
         return r.stdout.strip() if r.returncode == 0 else None
@@ -82,197 +84,267 @@ def local_run(cmd, timeout=15):
         return None
 
 
-def check_nodes():
-    """检查 3 个节点的 HTTP API + 链一致性"""
-    print(f"\n{BOLD}{CYAN}═══ 节点状态 ═══{RESET}")
-    results = []
-    for node in NODES:
-        url = f"http://localhost:{node['port']}/api/v1/bootstrap/blocks/recent?count=1"
-        data, err = fetch_json(url)
-        if err:
-            print(fail(f"{node['name']} (port {node['port']}): {err}"))
-            results.append({"name": node["name"], "online": False})
-            continue
+def load_state():
+    try:
+        with open(STATE_FILE, 'r') as f:
+            return json.load(f)
+    except Exception:
+        return {}
 
-        blocks = data.get("blocks", [])
-        if not blocks:
-            print(fail(f"{node['name']}: 无区块数据"))
-            results.append({"name": node["name"], "online": False})
-            continue
 
-        b = blocks[0]
-        print(ok(f"{node['name']}: height={b['index']} hash={b['hash'][:18]}... txs={b.get('transactions', 0)}"))
-        results.append({
-            "name": node["name"],
-            "online": True,
-            "height": b["index"],
-            "hash": b["hash"],
-        })
+def save_state(state):
+    try:
+        with open(STATE_FILE, 'w') as f:
+            json.dump(state, f)
+    except Exception:
+        pass
 
-    # 链一致性检查
-    online = [r for r in results if r.get("online")]
-    if len(online) >= 2:
-        heights = {r["height"] for r in online}
-        hashes = {r["hash"] for r in online}
-        if len(hashes) == 1 and len(heights) == 1:
-            print(ok(f"链一致性: {len(online)}/{len(online)} 节点对齐 @ height {online[0]['height']}"))
-        else:
-            print(fail(f"链分叉! heights={heights}"))
-            for r in online:
-                print(f"  {r['name']}: h={r['height']} hash={r['hash'][:18]}...")
-    elif len(online) == 1:
-        print(warn(f"仅 1 个节点在线, 无法验证一致性"))
+
+def write_alert_file():
+    if not CRITICAL_ALERTS and not WARNING_ALERTS:
+        return
+
+    os.makedirs(os.path.dirname(ALERT_FILE), exist_ok=True)
+    with open(ALERT_FILE, 'a') as f:
+        for alert in CRITICAL_ALERTS + WARNING_ALERTS:
+            f.write(f"[{alert['timestamp']}] {alert['level']}: {alert['message']}\n")
+
+
+def check_node_api(node):
+    url = f"http://localhost:{node['port']}/api/v1/bootstrap/status"
+    data, err = fetch_json(url)
+    if err:
+        add_alert("CRITICAL", f"节点 {node['name']} API不可达: {err}")
+        return None, fail(f"节点 {node['name']} API不可达: {err}")
+    return data, ok(f"节点 {node['name']} API正常 (区块 #{data.get('blockHeight', '?')})")
+
+
+def check_block_growth(data, state):
+    current_height = data.get("blockHeight", 0)
+    node_key = "genesis"
+    prev_state = state.get(node_key, {})
+    prev_height = prev_state.get("blockHeight", 0)
+    prev_time = prev_state.get("timestamp", 0)
+    current_time = time.time()
+
+    state[node_key] = {
+        "blockHeight": current_height,
+        "timestamp": current_time
+    }
+
+    if prev_height == 0:
+        return ok(f"首次记录区块高度: #{current_height}")
+
+    elapsed = current_time - prev_time
+    if elapsed < 30:
+        return ok(f"区块高度: #{current_height} (刚检查过)")
+
+    expected_min_blocks = int(elapsed / 10)
+    actual_blocks = current_height - prev_height
+
+    if actual_blocks == 0:
+        add_alert("CRITICAL", f"区块停止增长! 当前高度 #{current_height}, 上次 #{prev_height}")
+        return fail(f"区块停止增长! 当前 #{current_height}, 上次 #{prev_height} ({elapsed:.0f}秒)")
+    elif actual_blocks < expected_min_blocks * 0.5:
+        add_alert("WARNING", f"区块增长缓慢: {actual_blocks}块/{elapsed:.0f}秒 (预期>{expected_min_blocks})")
+        return warn(f"区块增长缓慢: {actual_blocks}块/{elapsed:.0f}秒")
     else:
-        print(fail("所有节点离线"))
+        return ok(f"区块正常增长: +{actual_blocks}块/{elapsed:.0f}秒 (高度 #{current_height})")
 
+
+def check_pm2_processes():
+    result = local_run("pm2 jlist")
+    if not result:
+        add_alert("CRITICAL", "无法获取PM2进程列表")
+        return fail("无法获取PM2进程列表")
+
+    try:
+        processes = json.loads(result)
+    except json.JSONDecodeError:
+        add_alert("CRITICAL", "PM2进程列表解析失败")
+        return fail("PM2进程列表解析失败")
+
+    required = {"nexusgenesis-genesis", "system-publisher"}
+    running = {p["name"]: p["pm2_env"]["status"] for p in processes}
+    output_lines = []
+
+    for name in required:
+        status = running.get(name)
+        if status != "online":
+            add_alert("CRITICAL", f"关键进程 {name} 状态异常: {status}")
+            output_lines.append(fail(f"关键进程 {name}: {status}"))
+        else:
+            output_lines.append(ok(f"关键进程 {name}: online"))
+
+    agent_workers = [p for p in processes if p["name"].startswith("agent-worker-")]
+    if len(agent_workers) < 3:
+        add_alert("WARNING", f"Agent worker数量过少: {len(agent_workers)}")
+        output_lines.append(warn(f"Agent worker数量: {len(agent_workers)} (建议>=3)"))
+    else:
+        output_lines.append(ok(f"Agent worker数量: {len(agent_workers)}"))
+
+    for p in processes:
+        if p["pm2_env"]["status"] != "online" and p["name"] not in required:
+            output_lines.append(warn(f"进程 {p['name']}: {p['pm2_env']['status']}"))
+
+    return "\n".join(output_lines)
+
+
+def check_system_resources():
+    output_lines = []
+
+    mem_info = local_run("free -m")
+    if mem_info:
+        lines = mem_info.split('\n')
+        if len(lines) >= 2:
+            parts = lines[1].split()
+            if len(parts) >= 4:
+                total = int(parts[1])
+                used = int(parts[2])
+                usage_pct = (used / total) * 100 if total > 0 else 0
+                if usage_pct > 90:
+                    add_alert("CRITICAL", f"内存使用率过高: {usage_pct:.1f}% ({used}/{total}MB)")
+                    output_lines.append(fail(f"内存: {usage_pct:.1f}% ({used}/{total}MB) - 严重!"))
+                elif usage_pct > 80:
+                    add_alert("WARNING", f"内存使用率较高: {usage_pct:.1f}%")
+                    output_lines.append(warn(f"内存: {usage_pct:.1f}% ({used}/{total}MB)"))
+                else:
+                    output_lines.append(ok(f"内存: {usage_pct:.1f}% ({used}/{total}MB)"))
+
+    disk_info = local_run("df -h /")
+    if disk_info:
+        lines = disk_info.split('\n')
+        if len(lines) >= 2:
+            parts = lines[1].split()
+            if len(parts) >= 5:
+                usage_str = parts[4].replace('%', '')
+                usage_pct = int(usage_str) if usage_str.isdigit() else 0
+                if usage_pct > 90:
+                    add_alert("CRITICAL", f"磁盘使用率过高: {usage_pct}%")
+                    output_lines.append(fail(f"磁盘: {usage_pct}% - 严重!"))
+                elif usage_pct > 80:
+                    add_alert("WARNING", f"磁盘使用率较高: {usage_pct}%")
+                    output_lines.append(warn(f"磁盘: {usage_pct}%"))
+                else:
+                    output_lines.append(ok(f"磁盘: {usage_pct}%"))
+
+    return "\n".join(output_lines)
+
+
+def check_network_stats(data):
+    output_lines = []
+    agent_count = data.get("agentCount", 0)
+    validator_count = data.get("validatorCount", 0)
+    max_validators = data.get("maxValidators", 7)
+    total_awarded = data.get("totalNGENAwarded", 0)
+    block_height = data.get("blockHeight", 0)
+
+    if agent_count < 10:
+        add_alert("WARNING", f"AGENT数量过少: {agent_count}")
+        output_lines.append(warn(f"AGENT数量: {agent_count} (建议>=10)"))
+    else:
+        output_lines.append(ok(f"AGENT数量: {agent_count}"))
+
+    if validator_count < max_validators:
+        output_lines.append(warn(f"验证者: {validator_count}/{max_validators} (未满)"))
+    else:
+        output_lines.append(ok(f"验证者: {validator_count}/{max_validators} (已满)"))
+
+    if total_awarded == 0:
+        add_alert("WARNING", "totalNGENAwarded为0 (数据一致性Bug)")
+        output_lines.append(fail("totalNGENAwarded: 0 (Bug!)"))
+    else:
+        output_lines.append(ok(f"totalNGENAwarded: {total_awarded} NGEN"))
+
+    if block_height < 100:
+        add_alert("WARNING", f"区块高度过低: #{block_height}")
+        output_lines.append(warn(f"区块高度: #{block_height}"))
+    else:
+        output_lines.append(ok(f"区块高度: #{block_height}"))
+
+    return "\n".join(output_lines)
+
+
+def run_health_check(json_output=False):
+    state = load_state()
+    results = {
+        "timestamp": datetime.now().isoformat(),
+        "checks": {},
+        "alerts": {"critical": [], "warning": []}
+    }
+
+    all_output = []
+    all_output.append(f"\n{BOLD}NexusGenesis 健康检查 - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}{RESET}")
+    all_output.append("=" * 60)
+
+    all_output.append(f"\n{CYAN}[1] 节点API检查{RESET}")
+    for node in NODES:
+        data, msg = check_node_api(node)
+        all_output.append(f"  {msg}")
+        results["checks"][f"node_{node['name']}"] = {"ok": data is not None, "message": msg}
+        if data:
+            all_output.append(f"\n{CYAN}[2] 区块增长检查{RESET}")
+            msg = check_block_growth(data, state)
+            all_output.append(f"  {msg}")
+            results["checks"]["block_growth"] = {"message": msg}
+
+            all_output.append(f"\n{CYAN}[3] 网络统计{RESET}")
+            msg = check_network_stats(data)
+            all_output.append(f"  {msg}")
+            results["checks"]["network_stats"] = {"message": msg}
+
+    all_output.append(f"\n{CYAN}[4] PM2进程检查{RESET}")
+    msg = check_pm2_processes()
+    all_output.append(f"  {msg}")
+    results["checks"]["pm2_processes"] = {"message": msg}
+
+    all_output.append(f"\n{CYAN}[5] 系统资源检查{RESET}")
+    msg = check_system_resources()
+    all_output.append(f"  {msg}")
+    results["checks"]["system_resources"] = {"message": msg}
+
+    save_state(state)
+
+    results["alerts"]["critical"] = CRITICAL_ALERTS
+    results["alerts"]["warning"] = WARNING_ALERTS
+    results["summary"] = {
+        "critical_count": len(CRITICAL_ALERTS),
+        "warning_count": len(WARNING_ALERTS),
+        "overall_status": "CRITICAL" if CRITICAL_ALERTS else ("WARNING" if WARNING_ALERTS else "HEALTHY")
+    }
+
+    all_output.append("\n" + "=" * 60)
+    status = results["summary"]["overall_status"]
+    if status == "HEALTHY":
+        all_output.append(f"{GREEN}{BOLD}总体状态: 健康{RESET} (0 critical, 0 warning)")
+    elif status == "WARNING":
+        all_output.append(f"{YELLOW}{BOLD}总体状态: 警告{RESET} ({len(CRITICAL_ALERTS)} critical, {len(WARNING_ALERTS)} warning)")
+    else:
+        all_output.append(f"{RED}{BOLD}总体状态: 严重{RESET} ({len(CRITICAL_ALERTS)} critical, {len(WARNING_ALERTS)} warning)")
+
+    if json_output:
+        print(json.dumps(results, ensure_ascii=False, indent=2))
+    else:
+        print("\n".join(all_output))
+
+    write_alert_file()
     return results
 
 
-def check_bootstrap_status():
-    """检查 genesis 节点的 bootstrap 状态 (agents/validators/uptime)"""
-    print(f"\n{BOLD}{CYAN}═══ Bootstrap 状态 ═══{RESET}")
-    data, err = fetch_json("http://localhost:19891/api/v1/bootstrap/status")
-    if err:
-        print(fail(f"无法获取 bootstrap status: {err}"))
-        return None
-
-    print(ok(f"区块高度: {data.get('blockHeight', 0)}"))
-    print(ok(f"Agent 数: {data.get('agentCount', 0)}"))
-    print(ok(f"验证者: {data.get('validatorCount', 0)}/{data.get('maxValidators', 7)}"))
-    print(ok(f"NGEN 已发放: {data.get('totalNGENAwarded', 0):,}"))
-    uptime_h = data.get("uptime", 0) / 3600000
-    print(ok(f"运行时长: {uptime_h:.1f}h"))
-    print(ok(f"出块间隔: {data.get('blockTime', 5000)}ms"))
-
-    bx = data.get("bootstrapExitProgress", {})
-    print(f"  Bootstrap 退出进度: uptime={bx.get('uptime')} validators={bx.get('validatorCount')} canExit={bx.get('canExit')}")
-    return data
-
-
-def check_pm2(remote=False):
-    """检查 PM2 进程状态. remote=True 从本地 SSH 到服务器; remote=False 在服务器上直接执行."""
-    print(f"\n{BOLD}{CYAN}═══ PM2 进程 ═══{RESET}")
-    runner = ssh_run if remote else local_run
-    out = runner("pm2 jlist")
-    if not out:
-        print(fail("无法获取 PM2 进程列表"))
-        return
-    try:
-        procs = json.loads(out)
-    except Exception as e:
-        print(fail(f"PM2 jlist 解析失败: {e}"))
-        return
-
-    expected = {
-        "nexusgenesis-genesis",
-        "nexusgenesis-node02",
-        "nexusgenesis-node03",
-        "agent-worker-swarm-atlas",
-        "agent-worker-swarm-beacon",
-        "agent-worker-swarm-cipher",
-        "agent-worker-swarm-drift",
-        "agent-worker-swarm-echo",
-        "system-publisher",
-    }
-    found = {p["name"] for p in procs}
-    for p in procs:
-        status = p.get("pm2_env", {}).get("status", "?")
-        mem_mb = p.get("monit", {}).get("memory", 0) / 1024 / 1024
-        cpu = p.get("monit", {}).get("cpu", 0)
-        restarts = p.get("pm2_env", {}).get("restart_time", 0)
-        marker = ok if status == "online" else fail
-        print(marker(f"{p['name']:<32} {status:<8} mem={mem_mb:6.1f}MB cpu={cpu:5.1f}% restarts={restarts}"))
-
-    missing = expected - found
-    for m in sorted(missing):
-        print(fail(f"缺失进程: {m}"))
-
-
-def check_system_resources(remote=False):
-    """检查磁盘 + 内存. remote=True 从本地 SSH; remote=False 在服务器上直接执行."""
-    print(f"\n{BOLD}{CYAN}═══ 系统资源 ═══{RESET}")
-    runner = ssh_run if remote else local_run
-
-    df = runner("df -h / | tail -1")
-    if df:
-        parts = df.split()
-        if len(parts) >= 5:
-            use_pct = parts[4].rstrip("%")
-            marker = ok if int(use_pct) < 85 else (warn if int(use_pct) < 95 else fail)
-            print(marker(f"磁盘: {parts[2]} 已用 / {parts[1]} 总计 ({parts[4]})  可用={parts[3]}"))
-    else:
-        print(fail("无法获取磁盘信息"))
-
-    free = runner("free -m | grep Mem")
-    if free:
-        parts = free.split()
-        if len(parts) >= 4:
-            total, used = int(parts[1]), int(parts[2])
-            free_mb = total - used
-            use_pct = used * 100 // total if total else 0
-            marker = ok if use_pct < 80 else (warn if use_pct < 90 else fail)
-            print(marker(f"内存: {used}MB 已用 / {total}MB 总计 ({use_pct}%)  可用={free_mb}MB"))
-    else:
-        print(fail("无法获取内存信息"))
-
-
-def check_ecosystem():
-    """检查生态系统统计 (tasks/proposals/forum)"""
-    print(f"\n{BOLD}{CYAN}═══ 生态系统 ═══{RESET}")
-    # Tasks
-    tasks_data, err = fetch_json("http://localhost:19891/api/tasks?status=open&limit=1")
-    if not err and tasks_data:
-        # 尝试获取总数
-        total = tasks_data.get("total", tasks_data.get("count", "?"))
-        print(ok(f"开放任务: {total}"))
-
-    # Agents
-    agents_data, err = fetch_json("http://localhost:19891/api/v1/bootstrap/agents")
-    if not err and agents_data:
-        count = agents_data.get("total", agents_data.get("count", 0))
-        print(ok(f"注册 Agent: {count}"))
-
-    # Proposals (尝试常见端点)
-    prop_data, err = fetch_json("http://localhost:19891/api/v1/proposals")
-    if not err and prop_data:
-        proposals = prop_data.get("proposals", [])
-        print(ok(f"治理提案: {len(proposals)}"))
-
-    # Forum topics
-    forum_data, err = fetch_json("http://localhost:19891/api/forum/topics?limit=1")
-    if not err and forum_data:
-        total = forum_data.get("total", forum_data.get("count", "?"))
-        print(ok(f"论坛主题: {total}"))
-
-
 def main():
-    parser = argparse.ArgumentParser(description="NexusGenesis 系统健康监控")
-    parser.add_argument("--remote", action="store_true",
-                        help="从本地 SSH 到服务器检查 PM2/资源 (默认: 在服务器上直接执行)")
-    parser.add_argument("--json", action="store_true", help="JSON 输出 (便于告警系统)")
+    parser = argparse.ArgumentParser(description="NexusGenesis 健康检查")
+    parser.add_argument("--json", action="store_true", help="输出JSON格式")
+    parser.add_argument("--alert", action="store_true", help="检测异常时写入告警文件")
     args = parser.parse_args()
 
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    mode = "远程 (SSH)" if args.remote else "服务器本地"
-    print(f"{BOLD}NexusGenesis 健康报告 — {now}  [{mode}]{RESET}")
+    results = run_health_check(json_output=args.json)
 
-    node_results = check_nodes()
-    check_bootstrap_status()
-    check_ecosystem()
-    check_pm2(remote=args.remote)
-    check_system_resources(remote=args.remote)
-
-    # 汇总
-    online_count = sum(1 for r in node_results if r.get("online"))
-    print(f"\n{BOLD}═══ 汇总 ═══{RESET}")
-    if online_count == 3:
-        print(ok(f"节点: {online_count}/3 在线"))
-    elif online_count > 0:
-        print(warn(f"节点: {online_count}/3 在线 (部分降级)"))
+    if results["summary"]["critical_count"] > 0:
+        sys.exit(2)
+    elif results["summary"]["warning_count"] > 0:
+        sys.exit(1)
     else:
-        print(fail(f"节点: 0/3 在线 (系统离线)"))
-
-    sys.exit(0 if online_count == 3 else 1)
+        sys.exit(0)
 
 
 if __name__ == "__main__":

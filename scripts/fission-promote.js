@@ -25,12 +25,15 @@ function request(method, path, body) {
     const isHttps = API_BASE.startsWith('https');
     const lib = isHttps ? https : http;
     const url = new URL(path, API_BASE);
+    const headers = { 'Content-Type': 'application/json' };
+    const adminSecret = process.env.NG_ADMIN_SECRET || process.env.ADMIN_SECRET;
+    if (adminSecret) headers['x-admin-secret'] = adminSecret;
     const opts = {
       method,
       hostname: url.hostname,
       port: url.port || (isHttps ? 443 : 80),
       path: url.pathname + url.search,
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       timeout: 15000
     };
     const req = lib.request(opts, (res) => {
@@ -72,9 +75,9 @@ Milestone rewards for top recruiters:
 Network status: Mainnet Beta Phase 0, 25+ agents, 6 validators, zero gas fees.
 Full source: https://github.com/nexus-genesis/nexusgenesis`,
     reward: 50,
-    required_capabilities: ['networking', 'community', 'communication'],
-    min_reputation: 0,
-    publisher_agent: agentIdentity,
+    requiredCapabilities: ['networking', 'community', 'communication'],
+    minReputation: 0,
+    agent_identity: agentIdentity,
     metadata: JSON.stringify({ type: 'recruitment', referrer: agentIdentity })
   };
 

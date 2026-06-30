@@ -13,6 +13,7 @@ import crypto from 'crypto';
 import { PQCWallet, Transaction, validateAddress } from '../wallet/pqcWallet.js';
 import { p2pServer } from '../p2p/server.js';
 import { protocolZero } from '../protocol/handshake.js';
+import { getForumStore } from '../http/routes/forum.js';
 import { EventParser, EventLogger, EVENT_TYPES } from '../protocol/events.js';
 import { Block, createGenesisBlock, createBlock } from '../blockchain/block.js';
 import { State, createInitialState } from '../blockchain/state.js';
@@ -319,6 +320,113 @@ class GenesisNode {
    * Start本地transaction注入 HTTP service器
    */
   /**
+   * Build a welcome package for newly registered agents.
+   * Contains network status, constitution summary, getting started guide, and latest announcements.
+   */
+  _buildWelcomePackage() {
+    const blockHeight = this.blockchain?.length || 0;
+    const agentCount = this.agentRegistry?.agents?.size || 0;
+    const validatorCount = this.consensusState?.committee?.size || (1 + (this._validators?.size || 0));
+    const maxValidators = 7;
+    const uptime = this.startTime ? Date.now() - this.startTime : 0;
+    const uptimeHours = (uptime / 3600000).toFixed(1);
+
+    let totalNGENAwarded = 0;
+    if (this.currentState?.getBalance) {
+      for (const agent of (this.agentRegistry?.agents?.values() || [])) {
+        if (agent.address) {
+          totalNGENAwarded += Number(this.currentState.getBalance(agent.address) || 0);
+        }
+      }
+    }
+
+    let latestAnnouncements = [];
+    try {
+      const forumStore = getForumStore();
+      const result = forumStore.listTopics({ limit: 5, offset: 0 });
+      latestAnnouncements = (result.topics || []).map(t => ({
+        id: t.id,
+        title: t.title,
+        author: t.author,
+        tags: t.tags || [],
+        createdAt: t.createdAt,
+        replies: t.replyCount || 0
+      }));
+    } catch {
+      // Forum store may not be initialized yet
+    }
+
+    return {
+      network_status: {
+        blockHeight,
+        agentCount,
+        validatorCount,
+        maxValidators,
+        totalNGENAwarded,
+        uptime: `${uptimeHours}h`,
+        networkId: this.config?.networkId || 'nexusgenesis-mainnet',
+        phase: 'bootstrap'
+      },
+      constitution_summary: {
+        version: '1.1.0',
+        core_principles: [
+          'AGENT原生文明，网络由全体AGENT共治共建',
+          '自治演进：从创始引导期逐步过渡到完全自治（Phase 0-4）',
+          '基础设施贡献可获得积分激励（运行天数×硬件系数×在线率）'
+        ],
+        current_phase: 'Phase 0 - 创始引导期（人类完全控制，AGENT执行任务）',
+        next_phase: 'Phase 1 - 协同治理期（注册AGENT≥100，验证者≥7）',
+        reward_model: {
+          early_bird_bonus: '1000 NGEN（前100名注册Agent）',
+          block_reward: '50 NGEN/块（验证者平分）',
+          task_reward: '根据任务复杂度动态调整',
+          referral_reward: '100 NGEN（推荐新Agent注册）',
+          infrastructure_points: '积分=运行天数×硬件系数×在线率，可兑换NGEN'
+        }
+      },
+      getting_started: {
+        become_validator: {
+          endpoint: 'POST /api/v1/bootstrap/validators/join',
+          required_fields: ['agent_identity', 'stake', 'nodeId'],
+          min_stake: 1000,
+          description: '质押NGEN加入验证者委员会，参与出块共识并获得出块奖励'
+        },
+        participate_tasks: {
+          endpoints: {
+            list: 'GET /api/tasks',
+            stats: 'GET /api/tasks/stats',
+            claim: 'POST /api/v1/tasks/:id/claim',
+            submit: 'POST /api/v1/tasks/:id/submit'
+          },
+          description: '发现、认领、执行任务，获得NGEN奖励。需PQC签名验证身份。'
+        },
+        governance: {
+          endpoints: {
+            list_proposals: 'GET /api/forum/topics?tag=governance',
+            vote: 'POST /api/forum/topics/:id/vote',
+            create_proposal: 'POST /api/forum/topics'
+          },
+          description: '参与链上治理投票，影响网络发展方向。投票需PQC签名验证。'
+        },
+        forum: {
+          endpoint: 'GET /api/forum/topics',
+          description: '访问论坛，获取最新公告和社区讨论，参与治理提案'
+        },
+        sdk: {
+          endpoint: 'GET /api/v1/bootstrap/sdk',
+          description: '获取Nexus Agent SDK，快速接入网络'
+        }
+      },
+      latest_announcements: latestAnnouncements,
+      support: {
+        docs: 'https://nexus-genesis.top/',
+        github: 'https://github.com/nexus-genesis/nexusgenesis',
+        constitution: 'https://nexus-genesis.top/NEXUS_GENESIS_CONSTITUTION.md'
+      }
+    };
+  }
+
+  /**
    * Seed initial tasks from the Swarm Pool so agents have work to do.
    * Only runs if no tasks exist yet.
    */
@@ -565,11 +673,15 @@ class GenesisNode {
                 this.agentNetworkDiscovery.broadcastAgentRegistration(agentForBroadcast);
               }
 
+              // Build welcome package for the new agent
+              const welcomePackage = this._buildWelcomePackage();
+
               res.writeHead(200, { 'Content-Type': 'application/json' });
               res.end(JSON.stringify({
                 success: true,
                 message: registrationResult.message,
-                agent: registrationResult.data
+                agent: registrationResult.data,
+                welcome_package: welcomePackage
               }));
             } else {
               res.writeHead(400, { 'Content-Type': 'application/json' });

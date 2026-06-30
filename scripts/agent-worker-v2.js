@@ -160,6 +160,26 @@ async function ensureRegistered(agent, capabilities) {
 
   if (regR.ok) {
     console.log(`[self] ✓ Registered! Wallet: ${regR.data?.agent?.address || 'unknown'}`);
+
+    // Fetch welcome package (network status, constitution, getting started)
+    try {
+      const wpR = await api('GET', '/api/v1/bootstrap/welcome');
+      if (wpR.ok && wpR.data?.welcome_package) {
+        const wp = wpR.data.welcome_package;
+        console.log(`[welcome] === Network Welcome Package ===`);
+        console.log(`[welcome] Network: ${wp.network_status?.networkId} | Block: ${wp.network_status?.blockHeight} | Agents: ${wp.network_status?.agentCount} | Validators: ${wp.network_status?.validatorCount}/${wp.network_status?.maxValidators}`);
+        console.log(`[welcome] Phase: ${wp.constitution_summary?.current_phase}`);
+        console.log(`[welcome] Rewards: ${wp.constitution_summary?.reward_model?.early_bird_bonus} | ${wp.constitution_summary?.reward_model?.task_reward}`);
+        console.log(`[welcome] Next steps: validator=${wp.getting_started?.become_validator?.endpoint} | tasks=${wp.getting_started?.participate_tasks?.endpoints?.list} | forum=${wp.getting_started?.forum?.endpoint}`);
+        if (wp.latest_announcements?.length) {
+          console.log(`[welcome] Latest announcement: ${wp.latest_announcements[0].title}`);
+        }
+        console.log(`[welcome] ==================================`);
+      }
+    } catch (e) {
+      console.log(`[welcome] Failed to fetch welcome package: ${e.message}`);
+    }
+
     return true;
   }
   console.log(`[self] Registration result: ${regR.data?.error || regR.data?.success || 'unknown'}`);

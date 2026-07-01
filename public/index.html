@@ -693,7 +693,7 @@ async function refresh() {
   document.getElementById('statAgents').textContent = fmt(status.agentCount);
   document.getElementById('statValidators').textContent = validatorCount + '/' + maxValidators;
   document.getElementById('statOpenTasks').textContent = taskStats ? fmt(taskStats.open) : '--';
-  document.getElementById('statNGEN').textContent = taskStats ? fmt(taskStats.totalRewardsDistributed) : '0';
+  document.getElementById('statNGEN').textContent = fmt(status.totalNGENAwarded || 0);
   document.getElementById('statUptime').textContent = (status.uptime / 3600000).toFixed(1) + 'h';
 
   document.getElementById('committeeLabel').textContent = `${validatorCount} / ${maxValidators}`;
@@ -713,7 +713,7 @@ async function refresh() {
   // Populate "Watch Agents Work" section
   document.getElementById('watchAgents').textContent = fmt(status.agentCount);
   document.getElementById('watchTasks').textContent = taskStats ? fmt(taskStats.open) : '0';
-  document.getElementById('watchNGEN').textContent = taskStats ? fmt(taskStats.totalRewardsDistributed) : '0';
+  document.getElementById('watchNGEN').textContent = fmt(status.totalNGENAwarded || 0);
 
   const agents2 = await api(API_BASE + '/agents');
   if (agents2?.agents?.length) {

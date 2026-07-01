@@ -558,7 +558,10 @@ class TaskProtocol {
   getStats() {
     const all = Array.from(this.tasks.values());
     const completedTasks = all.filter(t => t.status === TASK_STATUS.COMPLETED);
-    const paidTasks = completedTasks.filter(t => t.paid === true);
+    // paid === true: 新任务明确已支付; paid === undefined: 旧任务 (奖励发放代码已执行, 字段未持久化) 视为已支付;
+    // paid === false: 明确未支付 (Swarm Pool 余额不足被跳过)
+    const paidTasks = completedTasks.filter(t => t.paid !== false);
+    const unpaidTasks = completedTasks.filter(t => t.paid === false);
     return {
       total: all.length,
       open: all.filter(t => t.status === TASK_STATUS.OPEN).length,
@@ -567,15 +570,11 @@ class TaskProtocol {
       completed: completedTasks.length,
       cancelled: all.filter(t => t.status === TASK_STATUS.CANCELLED).length,
       expired: all.filter(t => t.status === TASK_STATUS.EXPIRED).length,
-      // 已确认发放奖励的任务数 (paid=true, 新任务)
       paidTasks: paidTasks.length,
-      // 支付状态未确认的已完成任务数 (paid=undefined, 旧任务 — 奖励可能因 Swarm Pool 余额不足被跳过)
-      unpaidCompletedTasks: completedTasks.length - paidTasks.length,
-      // 实际已确认发放的奖励总额
+      unpaidCompletedTasks: unpaidTasks.length,
       totalRewardsDistributed: paidTasks
         .reduce((sum, t) => sum + BigInt(t.reward), 0n)
         .toString(),
-      // 所有已完成任务的奖励总额 (含未确认的) — 用于对比实际发放 vs 应发
       totalRewardsCompleted: completedTasks
         .reduce((sum, t) => sum + BigInt(t.reward), 0n)
         .toString()

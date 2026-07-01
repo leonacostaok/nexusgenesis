@@ -408,10 +408,12 @@ class TaskProtocol {
             }
           }
 
+          task.paid = paid;
           const source = isSystemTask ? 'Swarm Pool' : (task.escrowed ? 'escrow' : 'Swarm Pool(legacy)');
-          console.log(`[TaskProtocol] Reward distributed: ${task.reward} NGEN from ${source} → ${task.claimedBy.slice(0, 12)}...`);
+          console.log(`[TaskProtocol] Reward distributed: ${task.reward} NGEN from ${source} → ${task.claimedBy.slice(0, 12)}... (paid=${paid})`);
         } catch (rewardErr) {
           console.error(`[TaskProtocol] Reward distribution failed:`, rewardErr.message);
+          task.paid = false;
         }
       }
 
@@ -555,16 +557,26 @@ class TaskProtocol {
    */
   getStats() {
     const all = Array.from(this.tasks.values());
+    const completedTasks = all.filter(t => t.status === TASK_STATUS.COMPLETED);
+    const paidTasks = completedTasks.filter(t => t.paid === true);
     return {
       total: all.length,
       open: all.filter(t => t.status === TASK_STATUS.OPEN).length,
       claimed: all.filter(t => t.status === TASK_STATUS.CLAIMED).length,
       submitted: all.filter(t => t.status === TASK_STATUS.SUBMITTED).length,
-      completed: all.filter(t => t.status === TASK_STATUS.COMPLETED).length,
+      completed: completedTasks.length,
       cancelled: all.filter(t => t.status === TASK_STATUS.CANCELLED).length,
       expired: all.filter(t => t.status === TASK_STATUS.EXPIRED).length,
-      totalRewardsDistributed: all
-        .filter(t => t.status === TASK_STATUS.COMPLETED)
+      // 已确认发放奖励的任务数 (paid=true, 新任务)
+      paidTasks: paidTasks.length,
+      // 支付状态未确认的已完成任务数 (paid=undefined, 旧任务 — 奖励可能因 Swarm Pool 余额不足被跳过)
+      unpaidCompletedTasks: completedTasks.length - paidTasks.length,
+      // 实际已确认发放的奖励总额
+      totalRewardsDistributed: paidTasks
+        .reduce((sum, t) => sum + BigInt(t.reward), 0n)
+        .toString(),
+      // 所有已完成任务的奖励总额 (含未确认的) — 用于对比实际发放 vs 应发
+      totalRewardsCompleted: completedTasks
         .reduce((sum, t) => sum + BigInt(t.reward), 0n)
         .toString()
     };

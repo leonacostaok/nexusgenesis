@@ -181,11 +181,18 @@ router.get('/', async (req, res) => {
     }
 
     const state = req.app.locals.state;
-    const agents = listAllAgents(state);
+    const allAgents = listAllAgents(state);
+    // Filter out stress-test sim-agents from public listing (they are kept on-chain for audit
+    // but should not appear in the public agent list)
+    const agents = allAgents.filter(a => {
+      const id = a.identity || a.agent_identity || a.name || '';
+      return !id.startsWith('sim-agent-');
+    });
 
     res.json({
       success: true,
       count: agents.length,
+      _totalOnChain: allAgents.length,
       agents: agents.map(agent => {
         const address = agent.address;
         // Prefer agentWalletManager (persistent, authoritative for agent wallets).

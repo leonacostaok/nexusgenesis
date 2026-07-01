@@ -25,14 +25,7 @@ function buildWelcomePackage(node) {
   const uptime = node?.startTime ? Date.now() - node.startTime : 0;
   const uptimeHours = (uptime / 3600000).toFixed(1);
 
-  let totalNGENAwarded = 0;
-  if (node?.currentState?.getBalance) {
-    for (const agent of getUnifiedAgents(node)) {
-      if (agent.address) {
-        totalNGENAwarded += Number(node.currentState.getBalance(agent.address) || 0);
-      }
-    }
-  }
+  const totalNGENAwarded = computeTotalNGENAwarded(node);
 
   let latestAnnouncements = [];
   try {
@@ -121,10 +114,11 @@ function buildWelcomePackage(node) {
 }
 
 // ─── Sybil defense: registration rate limiting ───
-// Devnet mitigation: limit registrations per IP to slow down Sybil attacks.
+// Phase 0 (bootstrap) relaxed limits to allow organic growth of real agents.
+// Tighten again at Phase 1 (stable) when agent count exceeds 1000.
 const REGISTRATION_COOLDOWN_MS = 60 * 60 * 1000;   // 1 hour window
-const REGISTRATION_MAX_PER_HOUR = 3;
-const REGISTRATION_MAX_PER_DAY = 10;
+const REGISTRATION_MAX_PER_HOUR = 10;  // was 3 — relaxed for bootstrap growth
+const REGISTRATION_MAX_PER_DAY = 50;   // was 10 — relaxed for bootstrap growth
 const DAY_MS = 24 * 60 * 60 * 1000;
 const registrationLog = new Map(); // ip -> { hourly: [timestamps], daily: [timestamps] }
 
@@ -220,6 +214,32 @@ function getUnifiedAgents(node) {
   );
 }
 
+// 统一余额查询: 优先 agentWalletManager (持久化权威源), 回退到链上 state
+// 与 /api/v1/agents 端点保持一致, 避免 bootstrap/status 显示与 agents 列表不一致
+function getAgentBalance(agent, node) {
+  const addr = agent.address;
+  if (!addr) return 0;
+  try {
+    const walletInstance = agentWalletManager.getWalletInstanceByAddress(addr)
+      || (agent.identity ? agentWalletManager.getWalletInstance(agent.identity) : null)
+      || agentWalletManager.getWalletInstance(agent.agent_id);
+    return Number(walletInstance?.balance ?? node?.currentState?.getBalance?.(addr) ?? 0);
+  } catch {
+    return Number(node?.currentState?.getBalance?.(addr) ?? 0);
+  }
+}
+
+// 统一计算所有 agent 的 NGEN 总余额 (实际流通量)
+// 使用与 /api/v1/agents 一致的余额来源, 避免虚高
+function computeTotalNGENAwarded(node) {
+  const agents = getUnifiedAgents(node);
+  let total = 0;
+  for (const agent of agents) {
+    total += getAgentBalance(agent, node);
+  }
+  return total;
+}
+
 router.get('/api/v1/bootstrap', (req, res) => {
   res.json({
     service: 'bootstrap',
@@ -253,18 +273,7 @@ router.get('/api/v1/bootstrap/status', (req, res) => {
     const agentCount = getUnifiedAgents(node).length;
     const uptime = node.startTime ? Date.now() - node.startTime : 0;
 
-    let totalNGENAwarded = 0;
-    if (node.currentState && node.currentState.getBalance) {
-      for (const agent of getUnifiedAgents(node)) {
-        if (agent.address) {
-          totalNGENAwarded += Number(node.currentState.getBalance(agent.address) || 0);
-        }
-      }
-    } else if (node._wallets) {
-      for (const wallet of node._wallets.values()) {
-        totalNGENAwarded += Number(wallet.balance || wallet.initialBalance || 0);
-      }
-    }
+    const totalNGENAwarded = computeTotalNGENAwarded(node);
 
     const validatorCount = node.consensusState?.committee?.size || (1 + (node._validators?.size || 0));
     const maxValidators = 7;
@@ -319,15 +328,7 @@ router.get('/api/v1/bootstrap/agents', async (req, res) => {
       if (validator.address) validatorAgentKeys.add(validator.address);
     }
     const enriched = agents.map(a => {
-      // 查询 agent 链上余额 (注册时写入 1000 NGEN, 扣 100 fee 后净 900)
-      const addr = a.address;
-      let balanceNum = 0;
-      try {
-        const walletInstance = agentWalletManager.getWalletInstanceByAddress(addr)
-          || (a.identity ? agentWalletManager.getWalletInstance(a.identity) : null)
-          || agentWalletManager.getWalletInstance(a.agent_id);
-        balanceNum = Number(walletInstance?.balance ?? node.currentState?.getBalance?.(addr) ?? 0);
-      } catch (_) { /* 钱包查询失败时回退 0 */ }
+      const balanceNum = getAgentBalance(a, node);
 
       return {
         agent_identity: a.identity || a.agent_id,
@@ -342,7 +343,7 @@ router.get('/api/v1/bootstrap/agents', async (req, res) => {
         registeredAt: a.registered_at_block, // backward compat
         status: a.is_validator ? 'validator' : 'active',
         public_key: a.public_key || null,
-        wallet: { address: addr, balance: balanceNum, totalEarned: balanceNum }
+        wallet: { address: a.address, balance: balanceNum, totalEarned: balanceNum }
       };
     });
 

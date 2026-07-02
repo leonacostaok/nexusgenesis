@@ -47,7 +47,8 @@ class BootstrapRewards extends EventEmitter {
       validatorJoinReward: 5000,
       blockProductionReward: 100,
       uptimeBonusPerHour: 10,
-      agentReferralReward: 1000,
+      agentReferralReward: 2000,
+      activeReferralBonus: 1000,
       contributionTrackingEnabled: true
     };
 

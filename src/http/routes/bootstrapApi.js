@@ -654,6 +654,11 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
         custody: 'server-managed'
       },
       reward: 2000,
+      reward_breakdown: {
+        registration: 2000,
+        early_bird: 10000,
+        total_if_early_bird: 12000
+      },
       earlyBird: true,
       totalAgents: getUnifiedAgents(node).length,
       welcome_package: buildWelcomePackage(node)

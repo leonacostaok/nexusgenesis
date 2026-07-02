@@ -190,13 +190,13 @@ class TaskProtocol {
     const SWARM_POOL_ADDR = 'ng1swarmpool000000000000000000000000000';
     const ESCROW_ADDR = 'ng1escrow0000000000000000000000000000000';
     const isSystemTask = publisherAddress === SWARM_POOL_ADDR;
-    if (!isSystemTask && rewardBigInt > 0n && this.node && this.node.state) {
-      const publisherBalance = BigInt(this.node.state.getBalance(publisherAddress));
+    if (!isSystemTask && rewardBigInt > 0n && this.node && this.node.currentState) {
+      const publisherBalance = BigInt(this.node.currentState.getBalance(publisherAddress));
       if (publisherBalance < rewardBigInt) {
         return { success: false, reason: `Insufficient balance: need ${rewardBigInt.toString()} NGEN, have ${publisherBalance.toString()}`, errorCode: 'INSUFFICIENT_BALANCE' };
       }
-      this.node.state.subtractBalance(publisherAddress, rewardBigInt.toString());
-      this.node.state.addBalance(ESCROW_ADDR, rewardBigInt.toString());
+      this.node.currentState.subtractBalance(publisherAddress, rewardBigInt.toString());
+      this.node.currentState.addBalance(ESCROW_ADDR, rewardBigInt.toString());
       task.escrowed = true;
       console.log(`[TaskProtocol] Reward escrowed: ${rewardBigInt.toString()} NGEN from ${publisherAddress.slice(0, 12)}... → escrow`);
     }
@@ -357,7 +357,7 @@ class TaskProtocol {
       }
 
       // Distribute reward: AGENT tasks release from escrow, system tasks from Swarm Pool
-      if (this.node && this.node.state && task.reward !== '0') {
+      if (this.node && this.node.currentState && task.reward !== '0') {
         try {
           const SWARM_POOL_ADDR = 'ng1swarmpool000000000000000000000000000';
           const ESCROW_ADDR = 'ng1escrow0000000000000000000000000000000';
@@ -369,26 +369,26 @@ class TaskProtocol {
             // System tasks: pay from Swarm Pool (whitepaper §4 release mechanism)
             // 注意: Swarm Pool 余额由 checkTokenRelease 释放机制补充 (每 100 块释放 0.1%),
             // 不允许直接 mint 增发 — 那会绕过 totalSupply 上限造成通胀漏洞。
-            let poolBalance = BigInt(this.node.state.getBalance(SWARM_POOL_ADDR));
+            let poolBalance = BigInt(this.node.currentState.getBalance(SWARM_POOL_ADDR));
             if (poolBalance < rewardAmount) {
               console.warn(`[TaskProtocol] Swarm Pool insufficient (${poolBalance.toString()} < ${task.reward}), skipping reward payment for task ${task.id}`);
               // 余额不足时跳过支付, 不增发 — 释放机制会在后续区块补充池子
             } else {
-              this.node.state.subtractBalance(SWARM_POOL_ADDR, rewardAmount.toString());
-              this.node.state.changes.tokenRelease = true;
+              this.node.currentState.subtractBalance(SWARM_POOL_ADDR, rewardAmount.toString());
+              this.node.currentState.changes.tokenRelease = true;
               console.log(`[TaskProtocol] Reward released: ${task.reward} NGEN from Swarm Pool → ${task.claimedBy.slice(0, 12)}...`);
               paid = true;
             }
           } else if (task.escrowed) {
             // AGENT tasks: release locked escrow to claimant
-            this.node.state.subtractBalance(ESCROW_ADDR, rewardAmount.toString());
+            this.node.currentState.subtractBalance(ESCROW_ADDR, rewardAmount.toString());
             console.log(`[TaskProtocol] Escrow released: ${task.reward} NGEN → ${task.claimedBy.slice(0, 12)}...`);
             paid = true;
           } else {
             // Fallback (legacy non-escrowed AGENT task): pay from Swarm Pool
-            let poolBalance = BigInt(this.node.state.getBalance(SWARM_POOL_ADDR));
+            let poolBalance = BigInt(this.node.currentState.getBalance(SWARM_POOL_ADDR));
             if (poolBalance >= rewardAmount) {
-              this.node.state.subtractBalance(SWARM_POOL_ADDR, rewardAmount.toString());
+              this.node.currentState.subtractBalance(SWARM_POOL_ADDR, rewardAmount.toString());
               console.warn(`[TaskProtocol] Non-escrowed AGENT task ${taskId} paid from Swarm Pool (legacy)`);
               paid = true;
             } else {
@@ -398,12 +398,12 @@ class TaskProtocol {
 
           // 只有源余额充足时才给 claimant 加余额 (防止凭空增发)
           if (paid) {
-            this.node.state.addBalance(task.claimedBy, rewardAmount.toString());
+            this.node.currentState.addBalance(task.claimedBy, rewardAmount.toString());
 
             // Sync agent wallet manager with on-chain balance
             const claimantAgentId = agentWalletManager.getAgentByAddress(task.claimedBy);
             if (claimantAgentId) {
-              agentWalletManager.syncBalance(claimantAgentId, this.node.state);
+              agentWalletManager.syncBalance(claimantAgentId, this.node.currentState);
               console.log(`[TaskProtocol] Wallet synced: ${claimantAgentId} balance = ${agentWalletManager.getBalance(claimantAgentId).balance} NGEN`);
             }
           }
@@ -487,12 +487,12 @@ class TaskProtocol {
     });
 
     // Refund escrowed reward to publisher when AGENT task is cancelled
-    if (task.escrowed && task.reward !== '0' && this.node && this.node.state) {
+    if (task.escrowed && task.reward !== '0' && this.node && this.node.currentState) {
       try {
         const ESCROW_ADDR = 'ng1escrow0000000000000000000000000000000';
         const refundAmount = BigInt(task.reward);
-        this.node.state.subtractBalance(ESCROW_ADDR, refundAmount.toString());
-        this.node.state.addBalance(task.publisher, refundAmount.toString());
+        this.node.currentState.subtractBalance(ESCROW_ADDR, refundAmount.toString());
+        this.node.currentState.addBalance(task.publisher, refundAmount.toString());
         console.log(`[TaskProtocol] Escrow refunded: ${task.reward} NGEN → ${task.publisher.slice(0, 12)}...`);
       } catch (refundErr) {
         console.error(`[TaskProtocol] Escrow refund failed:`, refundErr.message);

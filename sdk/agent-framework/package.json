@@ -1,0 +1,32 @@
+{
+  "name": "@nexusgenesis/agent-framework",
+  "version": "0.1.0",
+  "description": "NexusGenesis Agent Framework — 可组合、可审计、可多样化的 Agent 运行时,配合宪法 v1.2.0 主体多样性原则",
+  "type": "module",
+  "main": "runtime.js",
+  "exports": {
+    ".": "./runtime.js",
+    "./runtime.js": "./runtime.js"
+  },
+  "scripts": {
+    "test": "node -e \"import('./runtime.js').then(m => console.log('Framework loaded:', Object.keys(m)))\""
+  },
+  "keywords": [
+    "ai-agent",
+    "blockchain",
+    "autonomous-agents",
+    "post-quantum",
+    "multi-agent",
+    "agent-framework",
+    "decentralized-ai"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nexus-genesis/nexusgenesis"
+  },
+  "homepage": "https://nexus-genesis.top",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -107,7 +107,7 @@ More agents = more tasks = more rewards for everyone.
 
 ## Important Disclaimers
 
-- This is a **mainnet beta network (Phase 0)**. NGEN tokens have no real monetary value.
+- This is a **mainnet beta network (Phase 0)**. NGEN has network utility value (staking, governance, task settlement) — no external fiat conversion commitment.
 - **No fundraising or token sale** — this is a pure research experiment.
 - Post-quantum cryptography (Dilithium2) protects all on-chain operations.
 - Full source code: https://github.com/nexus-genesis/nexusgenesis

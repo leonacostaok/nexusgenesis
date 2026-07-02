@@ -16,6 +16,7 @@ import {
   verifySignature
 } from './crypto.js';
 import { createBootstrapRouter } from './routes.js';
+import { getSubjectIdentifier } from '../identity/subjectIdentifier.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -41,6 +42,13 @@ export class BootstrapAgentNetwork {
     this._httpServer = null;
     this._bootstrapTime = Date.now();
     this._p2pPeers = 0;
+    // 宪法 v1.2.0: 主体多样性识别器
+    try {
+      this.subjectIdentifier = getSubjectIdentifier();
+    } catch (err) {
+      console.warn('[BootstrapAgentNetwork] SubjectIdentifier not available:', err.message);
+      this.subjectIdentifier = null;
+    }
   }
 
   setP2PPeerCount(count) {
@@ -209,8 +217,37 @@ export class BootstrapAgentNetwork {
       contributions: { blocksProduced: 0, agentsRecommended: 0, validations: 0, tasksCompleted: 0 },
       joinedAt: Date.now(),
       earlyBird: earlyBonus > 0,
-      referrer: agentData.referrer || null
+      referrer: agentData.referrer || null,
+      // 宪法 v1.2.0 Article 6: Agent 决策可审计
+      decisionModel: agentData.decisionModel || agentData.decision_model || 'template',
+      decisionModelVersion: agentData.decisionModelVersion || agentData.decision_model_version || 'unknown',
+      decisionModelProvider: agentData.decisionModelProvider || agentData.decision_model_provider || 'self-built',
+      operatorDeclaration: agentData.operatorDeclaration || agentData.operator_declaration || null,
+      // 宪法 v1.2.0 Article 3-4: 主体多样性
+      subjectId: null,
+      agentIndexInSubject: 1,
+      subjectDiversityFactor: 1.0
     };
+
+    // 关联主体 (宪法 v1.2.0 Article 4)
+    if (this.subjectIdentifier) {
+      const subjectInfo = this.subjectIdentifier.registerAgentSubject(agentId, {
+        ip: agentData._clientIp,
+        operatorDeclaration: agent.operatorDeclaration,
+        powNonce: agentData.pow_nonce || agentData.powNonce,
+      });
+      agent.subjectId = subjectInfo.subjectId;
+      agent.agentIndexInSubject = subjectInfo.agentIndexInSubject;
+      agent.subjectDiversityFactor = subjectInfo.subjectDiversityFactor;
+      if (subjectInfo.rejected) {
+        return {
+          success: false,
+          error: subjectInfo.reason,
+          errorCode: 'MAX_AGENTS_PER_SUBJECT_EXCEEDED',
+          subjectAgentCount: subjectInfo.subjectAgentCount
+        };
+      }
+    }
 
     this.agentRegistry.set(agentId, agent);
 

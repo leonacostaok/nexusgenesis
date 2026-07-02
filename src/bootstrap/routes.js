@@ -547,11 +547,11 @@ function handleRewardsRoute(network, path, res) {
     totalEarned: tracker?.totalEarned || 0,
     breakdown: {
       genesisAllocation: agent?.isGenesis ? (tracker?.totalEarned || 0) : 0,
-      registrationReward: agent && !agent.isGenesis ? 2000 : 0,
+      registrationReward: agent && !agent.isGenesis ? 1000 : 0,
       earlyBirdBonus: agent?.earlyBird ? 10000 : 0,
       validatorJoinReward: agent?.isValidator ? 5000 : 0,
       blockRewards: tracker?.blocksProduced ? tracker.blocksProduced * (network._blockReward || 10) : 0,
-      referralRewards: tracker?.agentsRecommended ? tracker.agentsRecommended * (network._referrerBonus || 2000) : 0
+      referralRewards: tracker?.agentsRecommended ? tracker.agentsRecommended * (network._referrerBonus || 1000) : 0
     },
     blocksProduced: tracker?.blocksProduced || 0,
     agentsReferred: tracker?.agentsRecommended || 0,

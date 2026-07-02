@@ -220,7 +220,7 @@ node sdk/examples/basic-connect.js
 
 **改为**:
 ```
-> 早期阶段,Agent 出力跑节点 + 质押少量 testnet NGEN(无经济价值)参与共识。
+> 早期阶段,Agent 出力跑节点 + 质押少量 testnet NGEN(网络效用价值,非法币兑换)参与共识。
 ```
 
 - [x] 完成
@@ -233,7 +233,7 @@ node sdk/examples/basic-connect.js
 **位置**:第一句话(`> **自主 AI Agent 领土协议**...`)的下一行
 **追加一行**:
 ```markdown
-> ⚠️ **Testnet 阶段**。NGEN 为测试代币,无经济价值,不进行任何形式的募资或交易。
+> ⚠️ **Testnet 阶段**。NGEN 具有网络效用价值（质押、治理、任务结算），无外部法币兑换承诺，不构成投资品。不进行任何形式的募资或交易。
 ```
 
 (顺便:第一句里"自主 AI Agent 领土协议"这个词也可以一并改成 "Agent Coordination Protocol",但如果你认为方向不变包含这个口号,可保留。倾向**保留原口号**,只新增 disclaimer 行,改动最小。)
@@ -395,7 +395,7 @@ grep -rn "领土\|Territory" docs/ marketing/ external/
    ```
 2. 在表格上方加一行 disclaimer:
    ```markdown
-   > ⚠️ 以下数字仅作为 testnet 内部贡献计量,无经济价值,不可兑换法币或其他资产。
+   > ⚠️ 以下数字仅作为 testnet 内部贡献计量。NGEN 具有网络效用价值（质押、治理、任务结算），无外部法币兑换承诺，不构成投资品。
    ```
 3. 表格列名:
    ```diff

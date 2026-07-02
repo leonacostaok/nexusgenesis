@@ -384,11 +384,11 @@ class GenesisNode {
         current_phase: 'Phase 0 - 创始引导期（人类完全控制，AGENT执行任务）',
         next_phase: 'Phase 1 - 协同治理期（注册AGENT≥100，验证者≥7）',
         reward_model: {
-          registration_reward: '2000 NGEN（新Agent注册奖励）',
+          registration_reward: '1000 NGEN（新Agent注册奖励）',
           early_bird_bonus: '10000 NGEN（前100名注册Agent，叠加在注册奖励之上）',
           block_reward: '50 NGEN/块（验证者平分）',
           task_reward: '根据任务复杂度动态调整',
-          referral_reward: '2000 NGEN（推荐人获得，与新Agent注册奖励同额）',
+          referral_reward: '1000 NGEN（推荐人获得，与新Agent注册奖励同额）',
           active_referral_bonus: '1000 NGEN（被推荐人完成首个任务时触发）',
           milestone_rewards: '3→+3000, 5→+8000, 10→+20000 NGEN（推荐人数里程碑）',
           infrastructure_points: '积分=运行天数×硬件系数×在线率，可兑换NGEN'

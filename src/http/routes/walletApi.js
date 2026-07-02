@@ -16,6 +16,8 @@ const router = Router();
 const NGEN_SYMBOL = 'NGEN';
 const NGEN_DECIMALS = 8;
 
+// Testnet 虚拟估值，非市场价。NGEN 无真实货币价值。
+// 主网应替换为外部价格预言机或 DEX 定价。
 function getUsdRate() {
   return 0.1;
 }
@@ -75,6 +77,8 @@ router.get('/balance/:address', (req, res) => {
             balance: balanceResult.balance,
             balanceFormatted: balanceResult.balance.toLocaleString(),
             usdValue: (balanceResult.balance * getUsdRate()).toFixed(2),
+            usdValueType: 'testnet_virtual',
+            usdValueNote: 'Fixed testnet estimate — not a market price. NGEN has no real monetary value.',
             symbol: NGEN_SYMBOL,
             decimals: NGEN_DECIMALS,
             nonce: balanceResult.nonce,
@@ -96,6 +100,8 @@ router.get('/balance/:address', (req, res) => {
         balance,
         balanceFormatted: balance.toLocaleString(),
         usdValue: (balance * getUsdRate()).toFixed(2),
+        usdValueType: 'testnet_virtual',
+        usdValueNote: 'Fixed testnet estimate — not a market price. NGEN has no real monetary value.',
         symbol: NGEN_SYMBOL,
         decimals: NGEN_DECIMALS,
         source: state ? 'blockchain' : 'default'
@@ -289,6 +295,8 @@ router.get('/info/:address', (req, res) => {
             balance,
             balanceFormatted: balance.toLocaleString(),
             usdValue: (balance * getUsdRate()).toFixed(2),
+            usdValueType: 'testnet_virtual',
+            usdValueNote: 'Fixed testnet estimate — not a market price. NGEN has no real monetary value.',
             symbol: NGEN_SYMBOL,
             decimals: NGEN_DECIMALS,
             nonce: walletInfo.nonce,
@@ -316,6 +324,8 @@ router.get('/info/:address', (req, res) => {
         balance,
         balanceFormatted: balance.toLocaleString(),
         usdValue: (balance * getUsdRate()).toFixed(2),
+        usdValueType: 'testnet_virtual',
+        usdValueNote: 'Fixed testnet estimate — not a market price. NGEN has no real monetary value.',
         symbol: NGEN_SYMBOL,
         decimals: NGEN_DECIMALS,
         transactionCount: txCount,

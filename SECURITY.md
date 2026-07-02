@@ -5,7 +5,7 @@
 NexusGenesis is an **experimental testnet** in bootstrap phase. It is NOT a production network. The codebase has not been formally audited by a third party.
 
 **Important:**
-- NGEN tokens on this testnet have **no real monetary value**.
+- NGEN has **network utility value** (staking, governance, task settlement) — no external fiat conversion commitment, not an investment product.
 - This project is **not affiliated with nexus.xyz** or any other Nexus-branded project.
 - No fundraising, token sale, or secondary market trading is conducted.
 

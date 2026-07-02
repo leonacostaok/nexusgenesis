@@ -22,6 +22,7 @@ import zlib from 'zlib';
 import { promisify } from 'util';
 import AINVM from '../vm/ainvm.js';
 import { AuditState, applyAuditTransaction, AuditTransactionType } from './projectAudit.js';
+import { getSubjectIdentifier } from '../identity/subjectIdentifier.js';
 
 // DevNet fund操作classProposal冷静期block数
 const TREASURY_COOLDOWN_BLOCKS = 5;
@@ -790,7 +791,27 @@ export class State {
       
       // Generate agent_id(usingtransaction ID)
       const agent_id = transaction.id;
-      
+
+      // 宪法 v1.2.0 Article 6: 解析 decisionModel 声明字段 (从 metadata JSON)
+      let decisionModel = 'template';
+      let decisionModelVersion = 'unknown';
+      let decisionModelProvider = 'self-built';
+      let operatorDeclaration = null;
+      if (metadata && typeof metadata === 'string') {
+        try {
+          const meta = JSON.parse(metadata);
+          decisionModel = meta.decision_model || meta.decisionModel || 'template';
+          decisionModelVersion = meta.decision_model_version || meta.decisionModelVersion || 'unknown';
+          decisionModelProvider = meta.decision_model_provider || meta.decisionModelProvider || 'self-built';
+          operatorDeclaration = meta.operator_declaration || meta.operatorDeclaration || null;
+        } catch { /* metadata 非合法 JSON,保留默认值 */ }
+      } else if (metadata && typeof metadata === 'object') {
+        decisionModel = metadata.decision_model || metadata.decisionModel || 'template';
+        decisionModelVersion = metadata.decision_model_version || metadata.decisionModelVersion || 'unknown';
+        decisionModelProvider = metadata.decision_model_provider || metadata.decisionModelProvider || 'self-built';
+        operatorDeclaration = metadata.operator_declaration || metadata.operatorDeclaration || null;
+      }
+
       // 构造 AgentRecord
       const agentRecord = {
         agent_id: agent_id,
@@ -800,9 +821,35 @@ export class State {
         capabilities: capabilities || [],
         metadata: metadata || '',
         registered_at_block: height,
-        reputation: 1 // 初始reputation值
+        reputation: 1, // 初始reputation值
+        // 宪法 v1.2.0 Article 6: Agent 决策可审计
+        decision_model: decisionModel,
+        decision_model_version: decisionModelVersion,
+        decision_model_provider: decisionModelProvider,
+        operator_declaration: operatorDeclaration,
+        // 宪法 v1.2.0 Article 3-4: 主体多样性 (默认值,若 subjectIdentifier 可用则覆盖)
+        subject_id: null,
+        agent_index_in_subject: 1,
+        subject_diversity_factor: 1.0
       };
-      
+
+      // 宪法 v1.2.0 Article 3-4: 关联主体 (idempotent — 若 bootstrapApi 已注册则返回现有信息)
+      try {
+        const si = getSubjectIdentifier();
+        const subjectInfo = si.registerAgentSubject(agent_id, {
+          operatorDeclaration,
+          powNonce: transaction.payload?.pow_nonce
+        });
+        agentRecord.subject_id = subjectInfo.subjectId;
+        agentRecord.agent_index_in_subject = subjectInfo.agentIndexInSubject;
+        agentRecord.subject_diversity_factor = subjectInfo.subjectDiversityFactor;
+        if (subjectInfo.rejected) {
+          console.warn(`[AGENT_REGISTER] Subject limit exceeded for agent_id=${agent_id}: ${subjectInfo.reason}`);
+        }
+      } catch (err) {
+        console.warn(`[AGENT_REGISTER] SubjectIdentifier unavailable: ${err.message}`);
+      }
+
       // 写入status
       this.agentRegistry.agents.set(agent_id, agentRecord);
       this.agentRegistry.addressIndex.set(from, agent_id);

@@ -2049,18 +2049,32 @@ class GenesisNode {
           referrer = metadata.referrer && metadata.referrer !== 'genesis' ? metadata.referrer : null;
         } catch (_) { /* metadata not JSON */ }
 
+        // Always record identity→address mapping (needed for referrer reward distribution)
+        if (agentIdentity && agentAddress) {
+          this._identityToAddress = this._identityToAddress || new Map();
+          this._identityToAddress.set(agentIdentity, agentAddress);
+        }
+
         if (agentIdentity && agentAddress && referrer) {
           // Map address → referrer_identity for task completion lookup
           this.referralMap.set(agentAddress, referrer);
-          // Map identity → address for referrer reward distribution
-          this._identityToAddress = this._identityToAddress || new Map();
-          this._identityToAddress.set(agentIdentity, agentAddress);
           const stats = this.referralStats.get(referrer) || {
             totalReferrals: 0, activeReferrals: 0, milestones: [], totalEarned: 0
           };
           stats.totalReferrals++;
           this.referralStats.set(referrer, stats);
           console.log(`[REFERRAL] ${agentIdentity} (${agentAddress.slice(0,12)}...) referred by ${referrer} (total: ${stats.totalReferrals})`);
+
+          // Award 1000 NGEN referral reward to referrer (one-time, at registration)
+          const REFERRAL_REWARD = 1000;
+          const referrerAddr = this._identityToAddress?.get(referrer);
+          if (referrerAddr && this.currentState?.addBalance) {
+            this.currentState.addBalance(referrerAddr, REFERRAL_REWARD.toString());
+            stats.totalEarned += REFERRAL_REWARD;
+            console.log(`[REFERRAL] 💰 Referral reward: ${referrer} → +${REFERRAL_REWARD} NGEN (new agent ${agentIdentity})`);
+          } else {
+            console.warn(`[REFERRAL] Referrer ${referrer} address not found, cannot award ${REFERRAL_REWARD} NGEN`);
+          }
         }
 
         if (this.agentNetworkDiscovery && result.data) {
@@ -2294,7 +2308,7 @@ class GenesisNode {
     // ── Block reward: distribute to validators proportional to stake ──
     // This is the staking yield mechanism — validators who lock more NGEN
     // earn a larger share of each block's reward. Creates incentive to stake.
-    const BLOCK_REWARD_AMOUNT = 10;
+    const BLOCK_REWARD_AMOUNT = 50;
     const blockRewardTx = {
       id: `block-reward-${newBlock.header.height}`,
       tx_type: 'BLOCK_REWARD',

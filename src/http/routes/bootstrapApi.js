@@ -55,11 +55,12 @@ function buildWelcomePackage(node) {
       phase: 'bootstrap'
     },
     constitution_summary: {
-      version: '1.1.0',
+      version: '1.2.0',
       core_principles: [
         'AGENT原生文明，网络由全体AGENT共治共建',
         '自治演进：从创始引导期逐步过渡到完全自治（Phase 0-4）',
-        '基础设施贡献可获得积分激励（运行天数×硬件系数×在线率）'
+        '基础设施贡献可获得积分激励（运行天数×硬件系数×在线率）',
+        '宪法 v1.2.0: 主体多样性原则 — 治理合法性来源于运行主体多样性，非 Agent 数量；同主体多 Agent 治理权重按 0.5^(N-1) 递减；Agent 注册需声明 decisionModel 以供审计'
       ],
       current_phase: 'Phase 0 - 创始引导期（人类完全控制，AGENT执行任务）',
       next_phase: 'Phase 1 - 协同治理期（注册AGENT≥100，验证者≥7）',
@@ -509,6 +510,11 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
     // agent_identity is the canonical field; 'name' accepted for backward compat
     const agent_identity = req.body.agent_identity || req.body.name || req.body.agentId;
     const { capabilities = [], referrer } = req.body;
+    // 宪法 v1.2.0 Article 6: 决策模型声明
+    const decisionModel = req.body.decisionModel || req.body.decision_model || 'template';
+    const decisionModelVersion = req.body.decisionModelVersion || req.body.decision_model_version || 'unknown';
+    const decisionModelProvider = req.body.decisionModelProvider || req.body.decision_model_provider || 'self-built';
+    const operatorDeclaration = req.body.operatorDeclaration || req.body.operator_declaration || null;
     // Accept both field name formats: pow_challenge/pow_nonce (canonical) and challenge/nonce (common shorthand)
     const pow_challenge = req.body.pow_challenge || req.body.challenge;
     const pow_nonce = req.body.pow_nonce !== undefined ? req.body.pow_nonce : req.body.nonce;
@@ -620,7 +626,12 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
       capabilities,
       metadata: JSON.stringify({
         referrer: referrer || 'genesis',
-        registered_via: 'bootstrap-api'
+        registered_via: 'bootstrap-api',
+        // 宪法 v1.2.0 Article 6: 决策模型声明
+        decision_model: decisionModel,
+        decision_model_version: decisionModelVersion,
+        decision_model_provider: decisionModelProvider,
+        operator_declaration: operatorDeclaration
       }),
       public_key: walletInfo.publicKey
     });
@@ -645,6 +656,23 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
       });
     }
 
+    // 宪法 v1.2.0 Article 3-4: 主体识别与多样性因子
+    let subjectInfo = { subjectId: null, agentIndexInSubject: 1, subjectDiversityFactor: 1.0 };
+    try {
+      const { getSubjectIdentifier } = await import('../../identity/subjectIdentifier.js');
+      const si = getSubjectIdentifier();
+      subjectInfo = si.registerAgentSubject(transaction.id, {
+        ip: clientIp,
+        operatorDeclaration,
+        powNonce: pow_nonce
+      });
+      if (subjectInfo.rejected) {
+        console.warn(`[SECURITY] Subject limit exceeded for agent ${agent_identity}: ${subjectInfo.reason}`);
+      }
+    } catch (err) {
+      console.warn('[bootstrap] Subject identifier not available:', err.message);
+    }
+
     res.status(result.applied ? 201 : 202).json({
       success: true,
       agent_identity: transaction.payload.agent_identity,
@@ -656,7 +684,11 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
         agent_id: transaction.id,
         identity: agent_identity,
         address: walletInfo.address,
-        capabilities: capabilities || []
+        capabilities: capabilities || [],
+        // 宪法 v1.2.0 Article 6: 决策模型声明
+        decision_model: decisionModel,
+        decision_model_version: decisionModelVersion,
+        decision_model_provider: decisionModelProvider
       },
       wallet: {
         address: walletInfo.address,
@@ -671,6 +703,13 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
       },
       earlyBird: isEarlyBird,
       totalAgents: getUnifiedAgents(node).length,
+      // 宪法 v1.2.0 Article 3-4: 主体多样性信息
+      subject: {
+        subjectId: subjectInfo.subjectId,
+        agentIndexInSubject: subjectInfo.agentIndexInSubject,
+        subjectDiversityFactor: subjectInfo.subjectDiversityFactor,
+        subjectAgentCount: subjectInfo.subjectAgentCount || 1
+      },
       welcome_package: buildWelcomePackage(node)
     });
   } catch (e) {
@@ -812,6 +851,72 @@ router.post('/api/v1/admin/credit', (req, res) => {
     res.json({ success: true, address, amount: amt, before: Number(before), after: Number(after) });
   } catch (e) {
     res.status(500).json({ error: e.message });
+  }
+});
+
+// ─── 宪法 v1.2.0: 主体多样性 & Sybil 审计接口 ───
+// 这些端点对外公开 (只读), 满足 Article 6 "Agent 决策可审计" 的透明性要求。
+
+// 主体多样性统计 (网络主体集中度)
+router.get('/api/v1/subject/stats', async (req, res) => {
+  try {
+    const { getSubjectIdentifier } = await import('../../identity/subjectIdentifier.js');
+    const si = getSubjectIdentifier();
+    res.json({
+      success: true,
+      constitution: 'v1.2.0 Article 3-4',
+      stats: si.getSubjectDiversityStats()
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+// 主体列表 (审计接口)
+router.get('/api/v1/subject/list', async (req, res) => {
+  try {
+    const { getSubjectIdentifier } = await import('../../identity/subjectIdentifier.js');
+    const si = getSubjectIdentifier();
+    const includeAgents = req.query.includeAgents === 'true' || req.query.include_agents === 'true';
+    res.json({
+      success: true,
+      subjects: si.listSubjects(includeAgents)
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+// Sybil 警报 (公开审计)
+router.get('/api/v1/sybil/alerts', async (req, res) => {
+  try {
+    const { getSubjectIdentifier } = await import('../../identity/subjectIdentifier.js');
+    const si = getSubjectIdentifier();
+    const alerts = si.getSybilAlerts();
+    res.json({
+      success: true,
+      constitution: 'v1.2.0 Article 6',
+      count: alerts.length,
+      alerts
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+// 单个 Agent 的主体信息 (审计接口)
+router.get('/api/v1/agents/:agentId/subject', async (req, res) => {
+  try {
+    const { agentId } = req.params;
+    const { getSubjectIdentifier } = await import('../../identity/subjectIdentifier.js');
+    const si = getSubjectIdentifier();
+    const info = si.getAgentSubjectInfo(agentId);
+    if (!info) {
+      return res.status(404).json({ success: false, error: 'Agent subject info not found' });
+    }
+    res.json({ success: true, subject: info });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
   }
 });
 

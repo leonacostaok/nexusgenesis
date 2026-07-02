@@ -572,11 +572,18 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
       });
     }
 
+    const currentAgentCount = getUnifiedAgents(node).length;
+    const isEarlyBird = currentAgentCount < 100;
+    const REGISTRATION_REWARD = 1000n;
+    const EARLY_BIRD_BONUS = 10000n;
+    const initialBalance = isEarlyBird ? REGISTRATION_REWARD + EARLY_BIRD_BONUS : REGISTRATION_REWARD;
+
     const walletInfo = await agentWalletManager.createAgentWallet(agent_identity, {
       capabilities,
       referrer: referrer || 'genesis',
-      registeredVia: 'bootstrap-api'
-    });
+      registeredVia: 'bootstrap-api',
+      earlyBird: isEarlyBird
+    }, initialBalance);
     const wallet = agentWalletManager.getWalletInstance(agent_identity);
     if (!wallet) {
       return res.status(500).json({
@@ -656,13 +663,13 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
         publicKeyHex: walletInfo.publicKey,
         custody: 'server-managed'
       },
-      reward: 1000,
+      reward: Number(initialBalance),
       reward_breakdown: {
-        registration: 1000,
-        early_bird: 10000,
-        total_if_early_bird: 11000
+        registration: Number(REGISTRATION_REWARD),
+        early_bird: isEarlyBird ? Number(EARLY_BIRD_BONUS) : 0,
+        total: Number(initialBalance)
       },
-      earlyBird: true,
+      earlyBird: isEarlyBird,
       totalAgents: getUnifiedAgents(node).length,
       welcome_package: buildWelcomePackage(node)
     });

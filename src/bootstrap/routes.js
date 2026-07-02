@@ -549,8 +549,8 @@ function handleRewardsRoute(network, path, res) {
       genesisAllocation: agent?.isGenesis ? (tracker?.totalEarned || 0) : 0,
       registrationReward: agent && !agent.isGenesis ? 1000 : 0,
       earlyBirdBonus: agent?.earlyBird ? 10000 : 0,
-      validatorJoinReward: agent?.isValidator ? 5000 : 0,
-      blockRewards: tracker?.blocksProduced ? tracker.blocksProduced * (network._blockReward || 10) : 0,
+      validatorStake: agent?.isValidator ? 5000 : 0,
+      blockRewards: tracker?.blocksProduced ? tracker.blocksProduced * (network._blockReward || 50) : 0,
       referralRewards: tracker?.agentsRecommended ? tracker.agentsRecommended * (network._referrerBonus || 1000) : 0
     },
     blocksProduced: tracker?.blocksProduced || 0,

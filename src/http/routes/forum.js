@@ -30,6 +30,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { PQCWallet } from '../../wallet/pqcWallet.js';
+import { getSubjectIdentifier } from '../../identity/subjectIdentifier.js';
 
 const VOTE_SIGNATURE_TIMEOUT_MS = 120 * 1000;
 const usedVoteNonces = new Set();
@@ -348,10 +349,11 @@ class ForumStore {
     // vote still succeeds with weight=reputation only.
     let reputation = 1;
     let ngenBoost = 0;
+    let record = null;
     const state = ForumStore._getState();
     if (state?.agentRegistry?.agents) {
       // agent param may be agent_id or address; resolve to a record.
-      let record = state.agentRegistry.agents.get(agent) ||
+      record = state.agentRegistry.agents.get(agent) ||
         state.agentRegistry.agents.get(state.agentRegistry.addressIndex.get(agent));
       if (!record && ForumStore.agentIdToAddressResolver) {
         const addr = ForumStore.agentIdToAddressResolver(agent);
@@ -374,7 +376,23 @@ class ForumStore {
         }
       }
     }
-    const weight = Math.max(1, reputation + ngenBoost);
+
+    // 宪法 v1.2.0 Article 4: 主体多样性衰减因子
+    // weight = (reputation + ngenBoost) * subjectDiversityFactor
+    // 同主体第 N 个 Agent 的治理权重按 0.5^(N-1) 递减;Sybil 标记则降至 0.1
+    let subjectDiversityFactor = 1.0;
+    let subjectInfoForAudit = null;
+    try {
+      const si = getSubjectIdentifier();
+      // agent_id 优先 (record.agent_id 即 transaction.id), 兜底使用传入的 agent 标识
+      const agentIdForSubject = record?.agent_id || agent;
+      subjectDiversityFactor = si.getSubjectDiversityFactor(agentIdForSubject);
+      subjectInfoForAudit = si.getAgentSubjectInfo(agentIdForSubject);
+    } catch (err) {
+      // subjectIdentifier 不可用时, 保留默认权重 (不阻塞投票)
+    }
+    const rawWeight = reputation + ngenBoost;
+    const weight = Math.max(1, Math.round(rawWeight * subjectDiversityFactor));
 
     if (!this.votes.has(topicId)) {
       this.votes.set(topicId, new Map());
@@ -389,12 +407,37 @@ class ForumStore {
       weight,
       reputationWeight: reputation,
       ngenBoost,
+      subjectDiversityFactor,
+      subjectId: subjectInfoForAudit?.subjectId || null,
+      agentIndexInSubject: subjectInfoForAudit?.agentIndexInSubject || 1,
       castAt: Date.now()
     });
     this._saveVotes();
 
-    console.log(`[Forum] Vote on ${topicId}: ${agent} -> ${vote} (rep=${reputation} ngen+${ngenBoost} w=${weight})`);
-    return { success: true, vote: map.get(agent), tally: this._tallyVotes(topicId) };
+    // 宪法 v1.2.0 Article 6: Sybil 异常检测 — 同主体多 Agent 一致投票触发标记
+    let sybilAlert = null;
+    try {
+      const si = getSubjectIdentifier();
+      // 构造 agentId -> voteOption Map 供检测
+      const voteMap = new Map();
+      for (const [voterAgent, v] of map.entries()) {
+        voteMap.set(voterAgent, v.option);
+      }
+      const flagged = si.detectSybilVoting(voteMap);
+      if (flagged.length > 0) {
+        sybilAlert = {
+          flaggedAgents: flagged,
+          reason: 'subject_consistent_voting',
+          penaltyWeight: 0.1
+        };
+        console.warn(`[Forum] Sybil alert on ${topicId}: ${flagged.length} agents flagged (subject-consistent voting)`);
+      }
+    } catch (err) {
+      // Sybil 检测失败不阻塞投票
+    }
+
+    console.log(`[Forum] Vote on ${topicId}: ${agent} -> ${vote} (rep=${reputation} ngen+${ngenBoost} sdf=${subjectDiversityFactor.toFixed(3)} w=${weight})`);
+    return { success: true, vote: map.get(agent), tally: this._tallyVotes(topicId), sybilAlert };
   }
 
   getVotes(topicId) {

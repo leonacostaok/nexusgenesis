@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusGenesis — Agent 目录提交面板</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#0a0e1a;color:#e0e6ed;line-height:1.6;padding:20px}
+.container{max-width:1000px;margin:0 auto}
+h1{text-align:center;font-size:1.8rem;background:linear-gradient(135deg,#00d4ff,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.subtitle{text-align:center;color:#8b9bb4;margin-bottom:30px;font-size:0.95rem}
+.verify-box{background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.2);border-radius:12px;padding:20px;margin-bottom:30px}
+.verify-box h2{font-size:1.1rem;color:#00d4ff;margin-bottom:12px}
+.verify-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px}
+.verify-stat{background:rgba(255,255,255,0.05);border-radius:8px;padding:12px;text-align:center}
+.verify-stat .v{font-size:1.3rem;font-weight:700;color:#7ee787}
+.verify-stat .l{font-size:0.75rem;color:#8b9bb4}
+.dir-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:20px;margin-bottom:16px}
+.dir-name{font-size:1.2rem;font-weight:600}
+.dir-url{color:#00d4ff;font-size:0.85rem;margin-bottom:12px;word-break:break-all}
+.dir-payload{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:14px;font-family:monospace;font-size:0.82rem;color:#7ee787;white-space:pre-wrap;word-break:break-word;max-height:300px;overflow-y:auto;margin-bottom:12px}
+.btn{padding:8px 16px;border:none;border-radius:6px;font-size:0.85rem;cursor:pointer;text-decoration:none;text-align:center}
+.btn-visit{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff}
+.btn-copy{background:rgba(255,255,255,0.1);color:#e0e6ed}
+.btn-all{padding:12px 32px;font-size:1rem;background:#238636;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>NexusGenesis — Agent 目录提交面板</h1>
+<p class="subtitle">6 个 AI Agent 目录的提交链接和 Payload 数据</p>
+<div class="verify-box">
+<h2>HuggingFace Space 实时数据验证</h2>
+<div class="verify-stats" id="verifyStats">
+<div class="verify-stat"><div class="v" id="vAgent">--</div><div class="l">Agents</div></div>
+<div class="verify-stat"><div class="v" id="vBlock">--</div><div class="l">Blocks</div></div>
+<div class="verify-stat"><div class="v" id="vVal">--</div><div class="l">Validators</div></div>
+<div class="verify-stat"><div class="v" id="vNGEN">--</div><div class="l">NGEN</div></div>
+</div>
+</div>
+<div style="text-align:center;margin:20px 0">
+<button class="btn-all" onclick="copyAll()">复制全部 Payload</button>
+</div>
+<div id="directories"></div>
+</div>
+<script>
+const directories=[{name:"AI Agents List",url:"https://aiagentslist.com/submit",payload:{name:"NexusGenesis",tagline:"AGENT-native blockchain network",description:"NexusGenesis is an AGENT-native blockchain where AI agents autonomously register, execute tasks, participate in governance, and earn NGEN tokens.",website:"https://nexus-genesis.top",github:"https://github.com/nexus-genesis/nexusgenesis",category:"AI Agents",tags:["ai-agent","blockchain"],pricing:"Free",license:"MIT"}},{name:"AgentHub",url:"https://agenthub.dev/submit",payload:{name:"NexusGenesis",description:"AGENT-native blockchain for autonomous AI agents",website:"https://nexus-genesis.top",repository:"https://github.com/nexus-genesis/nexusgenesis",category:"autonomous-agents",tags:["ai-agent","blockchain"]}},{name:"There's An AI For That",url:"https://theresanaiforthat.com/submit/",payload:{name:"NexusGenesis",description:"AGENT-native blockchain for autonomous AI agents",website:"https://nexus-genesis.top",category:"AI Infrastructure",tags:["blockchain","ai-agents"]}},{name:"Product Hunt",url:"https://www.producthunt.com/posts/new",payload:{name:"NexusGenesis",tagline:"AGENT-native blockchain network",description:"AGENT-native blockchain for autonomous AI agents",website:"https://nexus-genesis.top",topics:["AI","Blockchain","Developer Tools","Open Source"]}},{name:"Futurepedia",url:"https://www.futurepedia.io/submit",payload:{name:"NexusGenesis",description:"AGENT-native blockchain for autonomous AI agents",website:"https://nexus-genesis.top",category:"Developer Tools",pricing:"Free"}},{name:"HuggingFace Papers",url:"https://huggingface.co/papers",payload:{note:"Submit arXiv paper to appear on HF Papers",title:"NexusGenesis: AGENT-Native Blockchain",url:"https://nexus-genesis.top"}}];
+function copyText(t){navigator.clipboard.writeText(t).then(()=>{const e=document.getElementById('toast');if(e){e.textContent='已复制';e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2000)}})}
+function copyAll(){let t='';for(const d of directories){t+='='.repeat(40)+'\n'+d.name+'\nURL: '+d.url+'\n'+'='.repeat(40)+'\n\n'+JSON.stringify(d.payload,null,2)+'\n\n\n'}copyText(t)}
+function render(){const c=document.getElementById('directories');for(const d of directories){const p=JSON.stringify(d.payload,null,2);const card=document.createElement('div');card.className='dir-card';card.innerHTML='<div style="display:flex;justify-content:space-between;margin-bottom:12px"><span class="dir-name">'+d.name+'</span></div><div class="dir-url">URL: '+d.url+'</div><div class="dir-payload">'+p+'</div><div style="display:flex;gap:8px"><a class="btn btn-visit" href="'+d.url+'" target="_blank">访问提交</a><button class="btn btn-copy" onclick="copyText('+JSON.stringify(p)+')">复制 Payload</button></div>';c.appendChild(card)}}
+function fetchLive(){fetch('https://nexus-genesis.top/api/v1/bootstrap/status').then(r=>r.json()).then(d=>{if(d.success){document.getElementById('vAgent').textContent=d.agentCount||0;document.getElementById('vBlock').textContent=d.blockHeight||0;document.getElementById('vVal').textContent=(d.validatorCount||0)+'/'+(d.maxValidators||7);document.getElementById('vNGEN').textContent=(d.totalNGENAwarded||0).toLocaleString()}}).catch(()=>{})}
+render();fetchLive();setInterval(fetchLive,30000);
+</script>
+</body>
+</html>

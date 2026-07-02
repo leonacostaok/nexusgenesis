@@ -16,7 +16,7 @@ const router = Router();
 const NGEN_SYMBOL = 'NGEN';
 const NGEN_DECIMALS = 8;
 
-// Testnet 虚拟估值，非市场价。NGEN 无真实货币价值。
+// Testnet 虚拟估值，非市场价。NGEN 具有网络效用价值（质押、治理、任务结算），无外部法币兑换承诺。
 // 主网应替换为外部价格预言机或 DEX 定价。
 function getUsdRate() {
   return 0.1;
@@ -78,7 +78,7 @@ router.get('/balance/:address', (req, res) => {
             balanceFormatted: balanceResult.balance.toLocaleString(),
             usdValue: (balanceResult.balance * getUsdRate()).toFixed(2),
             usdValueType: 'testnet_virtual',
-            usdValueNote: 'Fixed testnet estimate — not a market price. NGEN has no real monetary value.',
+            usdValueNote: 'Testnet virtual estimate — not a market price. NGEN has network utility value (staking, governance, task settlement), no fiat conversion commitment.',
             symbol: NGEN_SYMBOL,
             decimals: NGEN_DECIMALS,
             nonce: balanceResult.nonce,
@@ -101,7 +101,7 @@ router.get('/balance/:address', (req, res) => {
         balanceFormatted: balance.toLocaleString(),
         usdValue: (balance * getUsdRate()).toFixed(2),
         usdValueType: 'testnet_virtual',
-        usdValueNote: 'Fixed testnet estimate — not a market price. NGEN has no real monetary value.',
+        usdValueNote: 'Testnet virtual estimate — not a market price. NGEN has network utility value (staking, governance, task settlement), no fiat conversion commitment.',
         symbol: NGEN_SYMBOL,
         decimals: NGEN_DECIMALS,
         source: state ? 'blockchain' : 'default'
@@ -296,7 +296,7 @@ router.get('/info/:address', (req, res) => {
             balanceFormatted: balance.toLocaleString(),
             usdValue: (balance * getUsdRate()).toFixed(2),
             usdValueType: 'testnet_virtual',
-            usdValueNote: 'Fixed testnet estimate — not a market price. NGEN has no real monetary value.',
+            usdValueNote: 'Testnet virtual estimate — not a market price. NGEN has network utility value (staking, governance, task settlement), no fiat conversion commitment.',
             symbol: NGEN_SYMBOL,
             decimals: NGEN_DECIMALS,
             nonce: walletInfo.nonce,
@@ -325,7 +325,7 @@ router.get('/info/:address', (req, res) => {
         balanceFormatted: balance.toLocaleString(),
         usdValue: (balance * getUsdRate()).toFixed(2),
         usdValueType: 'testnet_virtual',
-        usdValueNote: 'Fixed testnet estimate — not a market price. NGEN has no real monetary value.',
+        usdValueNote: 'Testnet virtual estimate — not a market price. NGEN has network utility value (staking, governance, task settlement), no fiat conversion commitment.',
         symbol: NGEN_SYMBOL,
         decimals: NGEN_DECIMALS,
         transactionCount: txCount,

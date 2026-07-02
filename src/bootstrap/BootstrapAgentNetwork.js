@@ -61,8 +61,8 @@ export class BootstrapAgentNetwork {
     this._exitUptimeMs = (config.bootstrap?.autoExitConditions?.minNetworkUptimeHours ?? 720) * 3600000;
     this._earlyBirdMax = 100;
     this._earlyBirdBonus = config.agent?.bootstrapPrivileges?.first100AgentsReward ?? 10000;
-    this._agentRegReward = config.bootstrap?.rewards?.agentReferralReward ?? 2000;
-    this._referrerBonus = config.bootstrap?.rewards?.agentReferralReward ?? 2000;
+    this._agentRegReward = config.bootstrap?.rewards?.agentReferralReward ?? 1000;
+    this._referrerBonus = config.bootstrap?.rewards?.agentReferralReward ?? 1000;
     this._activeReferralBonus = config.bootstrap?.rewards?.activeReferralBonus ?? 1000;
     this._milestoneRewards = config.bootstrap?.rewards?.milestoneRewards ?? { 3: 3000, 5: 8000, 10: 20000 };
     this._nodeOperationBonus = config.bootstrap?.rewards?.nodeOperationBonus ?? 500;

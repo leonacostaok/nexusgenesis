@@ -226,7 +226,7 @@ function getAgentBalance(agent, node) {
     const walletInstance = agentWalletManager.getWalletInstanceByAddress(addr)
       || (agent.identity ? agentWalletManager.getWalletInstance(agent.identity) : null)
       || agentWalletManager.getWalletInstance(agent.agent_id);
-    return Number(walletInstance?.balance ?? node?.currentState?.getBalance?.(addr) ?? 0);
+    return Number(node?.currentState?.getBalance?.(addr) ?? walletInstance?.balance ?? 0);
   } catch {
     return Number(node?.currentState?.getBalance?.(addr) ?? 0);
   }
@@ -435,7 +435,7 @@ router.get('/api/v1/bootstrap/contributions', (req, res) => {
         const walletInstance = agentWalletManager.getWalletInstanceByAddress(addr)
           || (a.identity ? agentWalletManager.getWalletInstance(a.identity) : null)
           || agentWalletManager.getWalletInstance(a.agent_id);
-        balanceNum = Number(walletInstance?.balance ?? node.currentState?.getBalance?.(addr) ?? 0);
+        balanceNum = Number(node.currentState?.getBalance?.(addr) ?? walletInstance?.balance ?? 0);
       } catch (_) { /* 钱包查询失败时回退 0 */ }
 
       return {
@@ -781,6 +781,37 @@ router.post('/api/v1/bootstrap/validators/join', async (req, res) => {
       error: e.message,
       error_code: 'INTERNAL_ERROR'
     });
+  }
+});
+
+// POST /api/v1/admin/credit — Direct on-chain balance credit (admin-secret protected)
+// Modifies state.balances in the running node, so the change survives incremental saves.
+router.post('/api/v1/admin/credit', (req, res) => {
+  const adminSecret = req.headers['x-admin-secret'];
+  const expectedSecret = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
+  if (adminSecret !== expectedSecret) {
+    return res.status(403).json({ error: 'Forbidden: invalid admin-secret' });
+  }
+  const node = req.app.locals.node;
+  const { address, amount, reason } = req.body || {};
+  if (!address || !address.startsWith('ng1')) {
+    return res.status(400).json({ error: 'Valid ng1 address required' });
+  }
+  const amt = Number(amount);
+  if (!amount || isNaN(amt) || amt <= 0) {
+    return res.status(400).json({ error: 'Valid positive amount required' });
+  }
+  if (!node?.currentState?.addBalance) {
+    return res.status(500).json({ error: 'State not available' });
+  }
+  try {
+    const before = node.currentState.getBalance(address);
+    node.currentState.addBalance(address, String(amt));
+    const after = node.currentState.getBalance(address);
+    console.log(`[ADMIN] Credit: ${address.slice(0, 20)}... +${amt} NGEN (reason: ${reason || 'N/A'}) | before=${before} after=${after}`);
+    res.json({ success: true, address, amount: amt, before: Number(before), after: Number(after) });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
 });
 

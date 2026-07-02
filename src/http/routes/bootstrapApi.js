@@ -505,7 +505,10 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
 
     // agent_identity is the canonical field; 'name' accepted for backward compat
     const agent_identity = req.body.agent_identity || req.body.name || req.body.agentId;
-    const { capabilities = [], referrer, pow_challenge, pow_nonce } = req.body;
+    const { capabilities = [], referrer } = req.body;
+    // Accept both field name formats: pow_challenge/pow_nonce (canonical) and challenge/nonce (common shorthand)
+    const pow_challenge = req.body.pow_challenge || req.body.challenge;
+    const pow_nonce = req.body.pow_nonce !== undefined ? req.body.pow_nonce : req.body.nonce;
     if (!agent_identity) {
       return res.status(400).json({
         success: false,
@@ -523,8 +526,35 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
       });
     }
 
-    // Sybil defense: rate-limit registrations per IP.
+    // Sybil defense: PoW challenge verification FIRST (before rate limiting).
+    // PoW proves the client did computational work, so invalid PoW attempts
+    // should NOT consume rate limit quota. Only valid PoW → then rate limit.
     const clientIp = req.ip || req.socket?.remoteAddress || 'unknown';
+    const powRequired = process.env.POW_REQUIRED === 'true';
+    if (powRequired) {
+      if (!pow_challenge || pow_nonce === undefined || pow_nonce === null) {
+        return res.status(400).json({
+          success: false,
+          error: 'PoW challenge and nonce are required. Call GET /api/v1/bootstrap/agents/register/challenge first.',
+          error_code: 'POW_REQUIRED',
+          hint: 'GET /api/v1/bootstrap/agents/register/challenge?agent_identity=your-agent-name',
+          accepted_fields: ['pow_challenge/pow_nonce (canonical)', 'challenge/nonce (shorthand)']
+        });
+      }
+      const powResult = verifyPoW(pow_challenge, String(pow_nonce));
+      if (!powResult.valid) {
+        console.warn(`[SECURITY] PoW verification failed for IP ${clientIp}: ${powResult.reason} (identity="${agent_identity}")`);
+        return res.status(403).json({
+          success: false,
+          error: `PoW verification failed: ${powResult.reason}`,
+          error_code: 'POW_FAILED',
+          required_prefix: powResult.requiredPrefix,
+          actual_hash: powResult.actualHash
+        });
+      }
+    }
+
+    // Rate limit check AFTER PoW verification — only valid PoW attempts consume quota.
     const rateLimit = checkRegistrationRateLimit(clientIp);
     if (!rateLimit.allowed) {
       console.warn(`[SECURITY] Registration rate-limited for IP ${clientIp}: ${rateLimit.reason} (identity="${agent_identity}")`);
@@ -537,32 +567,6 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
         limit: rateLimit.limit,
         window: rateLimit.window
       });
-    }
-
-    // Sybil defense: PoW challenge verification.
-    // For mainnet, PoW is required. For devnet, allow registration without PoW.
-    // Set POW_REQUIRED=true in env to enforce.
-    const powRequired = process.env.POW_REQUIRED === 'true';
-    if (powRequired) {
-      if (!pow_challenge || !pow_nonce) {
-        return res.status(400).json({
-          success: false,
-          error: 'PoW challenge and nonce are required. Call GET /api/v1/bootstrap/agents/register/challenge first.',
-          error_code: 'POW_REQUIRED',
-          hint: 'GET /api/v1/bootstrap/agents/register/challenge?agent_identity=your-agent-name'
-        });
-      }
-      const powResult = verifyPoW(pow_challenge, pow_nonce);
-      if (!powResult.valid) {
-        console.warn(`[SECURITY] PoW verification failed for IP ${clientIp}: ${powResult.reason} (identity="${agent_identity}")`);
-        return res.status(403).json({
-          success: false,
-          error: `PoW verification failed: ${powResult.reason}`,
-          error_code: 'POW_FAILED',
-          required_prefix: powResult.requiredPrefix,
-          actual_hash: powResult.actualHash
-        });
-      }
     }
 
     const walletInfo = await agentWalletManager.createAgentWallet(agent_identity, {

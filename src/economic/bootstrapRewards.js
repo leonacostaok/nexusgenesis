@@ -62,11 +62,19 @@ class BootstrapRewards extends EventEmitter {
     this.blockProductionCounts = new Map();
     this.uptimeStartTimes = new Map();
     this._uptimeTimer = null;
+    this._saveTimer = null;
 
     if (!this.state.startedAt) {
       this.state.startedAt = Date.now();
       saveContributions(this.state);
     }
+
+    // 每 5 分钟自动保存，防止数据丢失
+    this._saveTimer = setInterval(() => {
+      try { saveContributions(this.state); }
+      catch (e) { console.error('[BootstrapRewards] Auto-save failed:', e.message); }
+    }, 300000);
+    this._saveTimer.unref();
   }
 
   startTracking() {
@@ -140,6 +148,9 @@ class BootstrapRewards extends EventEmitter {
       timestamp: Date.now()
     });
 
+    // 实时保存，避免数据丢失
+    saveContributions(this.state);
+
     if (metadata.referredBy) {
       this.awardReferralReward(metadata.referredBy, agentId);
     }
@@ -171,7 +182,7 @@ class BootstrapRewards extends EventEmitter {
       }
     }
 
-    if (count % 100 === 0) saveContributions(this.state);
+    if (count % 10 === 0) saveContributions(this.state);
   }
 
   startValidatorUptime(validatorId) {
@@ -350,6 +361,14 @@ class BootstrapRewards extends EventEmitter {
       _activeValidatorsNow: this.uptimeStartTimes.size,
       _activeValidatorIds: Array.from(this.uptimeStartTimes.keys())
     };
+  }
+
+  destroy() {
+    // 清理定时器，确保最终保存
+    clearInterval(this._uptimeTimer);
+    clearInterval(this._saveTimer);
+    try { saveContributions(this.state); } catch (e) {}
+    this.emit('shutdown', this.state);
   }
 }
 

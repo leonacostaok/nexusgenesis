@@ -244,6 +244,16 @@ function computeTotalNGENAwarded(node) {
   return total;
 }
 
+// 实际流通余额（从 AgentWalletManager 直接读取）
+function computeActualCirculatingSupply() {
+  try {
+    const wallets = agentWalletManager.listAllWallets();
+    return wallets.reduce((sum, w) => sum + Number(w.balance || 0), 0);
+  } catch {
+    return 0;
+  }
+}
+
 router.get('/api/v1/bootstrap', (req, res) => {
   res.json({
     service: 'bootstrap',
@@ -278,6 +288,7 @@ router.get('/api/v1/bootstrap/status', (req, res) => {
     const uptime = node.startTime ? Date.now() - node.startTime : 0;
 
     const totalNGENAwarded = computeTotalNGENAwarded(node);
+    const actualCirculating = computeActualCirculatingSupply();
 
     const validatorCount = node.consensusState?.committee?.size || (1 + (node._validators?.size || 0));
     const maxValidators = 7;
@@ -289,7 +300,10 @@ router.get('/api/v1/bootstrap/status', (req, res) => {
       agentCount,
       validatorCount,
       maxValidators,
+      // 历史累计（只增不减，包含已烧毁/税费）
       totalNGENAwarded,
+      // 实际流通余额（从 AgentWalletManager 读取的真实值）
+      actualCirculatingSupply: actualCirculating,
       uptime,
       blockTime: node.config?.blockTime || 5000,
       gasPrice: '0',

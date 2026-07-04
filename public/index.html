@@ -745,7 +745,7 @@ async function refresh() {
   document.getElementById('statAgents').textContent = fmt(status.agentCount);
   document.getElementById('statValidators').textContent = validatorCount + '/' + maxValidators;
   document.getElementById('statOpenTasks').textContent = taskStats ? fmt(taskStats.open) : '--';
-  document.getElementById('statNGEN').textContent = fmt(status.totalNGENAwarded || 0);
+  document.getElementById('statNGEN').textContent = fmt(status.actualCirculatingSupply || status.totalNGENAwarded || 0);
   document.getElementById('statUptime').textContent = (status.uptime / 3600000).toFixed(1) + 'h';
 
   document.getElementById('committeeLabel').textContent = `${validatorCount} / ${maxValidators}`;

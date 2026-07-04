@@ -287,22 +287,37 @@ class AgentWalletManager {
     }
 
     try {
-      const tx = Transaction.create(fromEntry.wallet, toAddress, amountBigInt, 1n, 'TRANSFER', {
+      // 代谢税 0.1%（与白皮书一致）
+      const METABOLIC_TAX_RATE = 1000n; // 0.1% = 1/1000
+      const tax = amountBigInt / METABOLIC_TAX_RATE;
+      const netAmount = amountBigInt - tax;
+      const fee = 1n; // 固定转账费
+      const totalDeduct = amountBigInt + fee;
+
+      const tx = Transaction.create(fromEntry.wallet, toAddress, amountBigInt, fee, 'TRANSFER', {
         memo,
-        agentId: fromAgentId
+        agentId: fromAgentId,
+        metabolicTax: tax,
+        netAmount: netAmount
       });
 
       await tx.sign(fromEntry.wallet);
 
-      fromEntry.wallet.balance -= (amountBigInt + 1n);
+      fromEntry.wallet.balance -= totalDeduct;
       fromEntry.wallet.nonce++;
       this.nonceMap.set(fromAgentId, fromEntry.wallet.nonce);
 
-      // 如果接收方是我们的Agent，自动入账
+      // 代谢税流入 Observer 物理桥接基金
+      if (tax > 0n) {
+        const OBSERVER_ADDR = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
+        console.log(`[AgentWallet] Metabolic tax: ${tax} NGEN → Observer (${OBSERVER_ADDR})`);
+      }
+
+      // 如果接收方是我们的Agent，自动入账（净金额）
       const toAgentId = this.getAgentByAddress(toAddress);
       if (toAgentId && this.registry.has(toAgentId)) {
         const toEntry = this.registry.get(toAgentId);
-        toEntry.wallet.balance += amountBigInt;
+        toEntry.wallet.balance += netAmount;
       }
 
       this.stats.totalTransactions++;
@@ -314,7 +329,9 @@ class AgentWalletManager {
         from: fromEntry.wallet.address,
         to: toAddress,
         amount: Number(amountBigInt),
-        fee: 1,
+        netAmount: Number(netAmount),
+        metabolicTax: Number(tax),
+        fee: Number(fee),
         memo,
         timestamp: tx.timestamp,
         signature: tx.signature?.substring(0, 32) + '...'

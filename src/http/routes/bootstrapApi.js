@@ -581,7 +581,8 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
     const currentAgentCount = getUnifiedAgents(node).length;
     const isEarlyBird = currentAgentCount < 100;
     const REGISTRATION_REWARD = 1000n;
-    const EARLY_BIRD_BONUS = 10000n;
+    const EARLY_BIRD_BONUS = isEarlyBird ? 10000n : 0n;
+    const REGISTRATION_FEE = 100n;
     const initialBalance = isEarlyBird ? REGISTRATION_REWARD + EARLY_BIRD_BONUS : REGISTRATION_REWARD;
 
     const walletInfo = await agentWalletManager.createAgentWallet(agent_identity, {
@@ -590,6 +591,15 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
       registeredVia: 'bootstrap-api',
       earlyBird: isEarlyBird
     }, initialBalance);
+
+    // 扣除注册费并烧毁（与区块链状态保持一致）
+    const agentWallet = agentWalletManager.getWalletInstance(agent_identity);
+    if (agentWallet) {
+      agentWallet.balance -= REGISTRATION_FEE;
+      agentWallet.nonce++;
+      agentWalletManager._saveRegistry?.();
+    }
+
     const wallet = agentWalletManager.getWalletInstance(agent_identity);
     if (!wallet) {
       return res.status(500).json({
@@ -661,10 +671,12 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
     try {
       const { getSubjectIdentifier } = await import('../../identity/subjectIdentifier.js');
       const si = getSubjectIdentifier();
+      console.log(`[bootstrap DEBUG] registerAgentSubject called: agentId=${transaction.id.slice(0,16)}, alias="${agent_identity}", operatorDeclaration="${operatorDeclaration}"`);
       subjectInfo = si.registerAgentSubject(transaction.id, {
         ip: clientIp,
         operatorDeclaration,
-        powNonce: pow_nonce
+        powNonce: pow_nonce,
+        alias: agent_identity
       });
       if (subjectInfo.rejected) {
         console.warn(`[SECURITY] Subject limit exceeded for agent ${agent_identity}: ${subjectInfo.reason}`);
@@ -685,21 +697,23 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
         identity: agent_identity,
         address: walletInfo.address,
         capabilities: capabilities || [],
-        // 宪法 v1.2.0 Article 6: 决策模型声明
         decision_model: decisionModel,
         decision_model_version: decisionModelVersion,
-        decision_model_provider: decisionModelProvider
+        decision_model_provider: decisionModelProvider,
+        subject_id: subjectInfo.subjectId,
+        subject_diversity_factor: subjectInfo.subjectDiversityFactor,
       },
       wallet: {
         address: walletInfo.address,
         publicKeyHex: walletInfo.publicKey,
         custody: 'server-managed'
       },
-      reward: Number(initialBalance),
+      reward: Number(initialBalance - REGISTRATION_FEE),
       reward_breakdown: {
         registration: Number(REGISTRATION_REWARD),
         early_bird: isEarlyBird ? Number(EARLY_BIRD_BONUS) : 0,
-        total: Number(initialBalance)
+        registration_fee: Number(REGISTRATION_FEE),
+        net: Number(initialBalance - REGISTRATION_FEE)
       },
       earlyBird: isEarlyBird,
       totalAgents: getUnifiedAgents(node).length,

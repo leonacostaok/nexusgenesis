@@ -45,7 +45,8 @@ import recoveryManager from '../automation/recoveryManager.js';
 
 const VERSION = '2.0.0';
 const EPOCH = 'Epoch 2: Swarm';
-const INITIAL_BALANCE = 50_000_000n;
+// Swarm Agent 初始余额改为 0 — 通过贡献从 Swarm Pool 领取代币
+const INITIAL_BALANCE = 0n;
 
 const DATA_ROOT = process.env.DATA_DIR || 'data/genesis';
 const dataPath = (...segments) => path.join(DATA_ROOT, ...segments);
@@ -793,13 +794,13 @@ class GenesisNode {
       console.log(`  No existing wallet found or failed to load, generating new one...`);
     }
     
-    // 如果LoadFailed, Generate新钱包
+    // 如果LoadFailed, Generate新钱包（初始余额 0，通过 Swarm Pool 领取）
     if (!savedWallet) {
       this.wallet = await PQCWallet.generate(INITIAL_BALANCE);
-      console.log(`  Generated new wallet`);
+      console.log(`  Generated new wallet (initial balance: 0, claim from Swarm Pool via contributions)`);
     } else {
       this.wallet = savedWallet;
-      console.log(`  Loaded existing wallet`);
+      console.log(`  Loaded existing wallet (balance: ${this.wallet.balance} NGEN)`);
     }
     
     this.nodeId = this.wallet.address;

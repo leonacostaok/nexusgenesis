@@ -31,19 +31,6 @@ jobs:
             echo "[Deploy] Installing production dependencies..."
             npm ci --omit=dev
 
-            echo "[Deploy] Syncing static files to nginx..."
-            NGINX_PUBLIC=/var/www/nexus-genesis.top
-            if [ -d "$NGINX_PUBLIC" ]; then
-              cp -f public/index.html $NGINX_PUBLIC/index.html
-              cp -f public/bootstrap-dashboard.html $NGINX_PUBLIC/bootstrap-dashboard.html 2>/dev/null || true
-              cp -f public/join.html $NGINX_PUBLIC/join.html 2>/dev/null || true
-              cp -f public/dashboard.html $NGINX_PUBLIC/dashboard.html 2>/dev/null || true
-              cp -f public/forum.html $NGINX_PUBLIC/forum.html 2>/dev/null || true
-              echo "[Deploy] Static files synced to $NGINX_PUBLIC"
-            else
-              echo "[Deploy] WARNING: $NGINX_PUBLIC not found, skipping static file sync"
-            fi
-
             echo "[Deploy] Restarting PM2 process: nexusgenesis-genesis..."
             pm2 restart nexusgenesis-genesis --update-env || pm2 start src/index.js --name nexusgenesis-genesis
 

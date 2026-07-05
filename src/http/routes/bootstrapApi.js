@@ -250,11 +250,9 @@ function computeActualCirculatingSupply() {
   try {
     const wallets = agentWalletManager.listAllWallets();
     return wallets.reduce((sum, w) => {
-      const id = String(w.id || '');
-      const meta = w.metadata || {};
-      const identity = String(meta.identity || meta.agentIdentity || '');
-      // 排除 swarm-* 后台服务进程
-      if (id.startsWith('swarm-') || identity.startsWith('swarm-')) return sum;
+      const agentId = String(w.agentId || '');
+      // 排除 swarm-* 后台服务进程（agentId 来自 _formatWalletResponse）
+      if (agentId.startsWith('swarm-') || agentId.includes('swarm-')) return sum;
       return sum + Number(w.balance || 0);
     }, 0);
   } catch {

@@ -14,7 +14,7 @@
     "wallet": "node src/wallet/cli.js",
     "wallet:py": "python genesis_wallet.py",
     "migrate:agents": "node src/scripts/migrateAgentRegistryIdentity.js",
-    "test": "node --test test/",
+    "test": "node --test test/*.test.js",
     "test:security": "node --test test/security.test.js",
     "cli": "node cli.js"
   },

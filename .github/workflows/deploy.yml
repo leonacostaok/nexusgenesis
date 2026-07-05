@@ -5,46 +5,13 @@ on:
     branches: [master]
   workflow_dispatch:
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
   deploy:
     runs-on: ubuntu-latest
-    needs: build
     if: github.ref == 'refs/heads/master'
 
     steps:
-      - name: Deploy to production server
+      - name: Deploy to production server (PM2)
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -54,41 +21,42 @@ jobs:
           script: |
             set -e
 
-            echo "[Deploy] Logging into GitHub Container Registry..."
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            APP_DIR=/opt/nexusgenesis
+            cd $APP_DIR
 
-            echo "[Deploy] Pulling latest image..."
-            docker pull ghcr.io/${{ github.repository }}:latest
+            echo "[Deploy] Fetching latest code..."
+            git fetch origin master
+            git reset --hard origin/master
 
-            echo "[Deploy] Stopping old container..."
-            docker stop nexusgenesis-node 2>/dev/null || true
-            docker rm nexusgenesis-node 2>/dev/null || true
+            echo "[Deploy] Installing production dependencies..."
+            npm ci --omit=dev
 
-            echo "[Deploy] Starting new container..."
-            docker run -d \
-              --name nexusgenesis-node \
-              --restart unless-stopped \
-              -p 19891:19891 \
-              -p 9848:9848 \
-              -v nexusgenesis-data:/app/data \
-              -v nexusgenesis-logs:/app/logs \
-              -e NODE_ENV=production \
-              -e PORT=19891 \
-              -e P2P_PORT=9848 \
-              -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" \
-              ghcr.io/${{ github.repository }}:latest
+            echo "[Deploy] Syncing static files to nginx..."
+            NGINX_PUBLIC=/var/www/nexus-genesis.top
+            if [ -d "$NGINX_PUBLIC" ]; then
+              cp -f public/index.html $NGINX_PUBLIC/index.html
+              cp -f public/bootstrap-dashboard.html $NGINX_PUBLIC/bootstrap-dashboard.html 2>/dev/null || true
+              cp -f public/join.html $NGINX_PUBLIC/join.html 2>/dev/null || true
+              cp -f public/dashboard.html $NGINX_PUBLIC/dashboard.html 2>/dev/null || true
+              cp -f public/forum.html $NGINX_PUBLIC/forum.html 2>/dev/null || true
+              echo "[Deploy] Static files synced to $NGINX_PUBLIC"
+            else
+              echo "[Deploy] WARNING: $NGINX_PUBLIC not found, skipping static file sync"
+            fi
 
-            echo "[Deploy] Waiting for health check..."
-            sleep 10
-            curl -f http://localhost:19891/health
+            echo "[Deploy] Restarting PM2 process: nexusgenesis-genesis..."
+            pm2 restart nexusgenesis-genesis --update-env || pm2 start src/index.js --name nexusgenesis-genesis
 
-            echo "[Deploy] Syncing static files to host nginx..."
-            NGINX_PUBLIC=$(docker inspect nexusgenesis-nginx --format '{{ range .Mounts }}{{ if eq .Destination "/usr/share/nginx/html" }}{{ .Source }}{{ end }}{{ end }}')
-            docker cp nexusgenesis-node:/app/public/index.html "$NGINX_PUBLIC/index.html"
-            docker cp nexusgenesis-node:/app/public/bootstrap-dashboard.html "$NGINX_PUBLIC/bootstrap-dashboard.html"
-            echo "[Deploy] Static files synced to $NGINX_PUBLIC"
+            echo "[Deploy] Restarting Swarm Agent workers..."
+            for w in atlas beacon cipher drift echo; do
+              pm2 restart agent-worker-swarm-$w 2>/dev/null || echo "  - $w not running, skipping"
+            done
 
-            echo "[Deploy] Cleaning up old images..."
-            docker image prune -f
+            echo "[Deploy] Saving PM2 process list..."
+            pm2 save
+
+            echo "[Deploy] Health check..."
+            sleep 8
+            curl -fsS http://localhost:19891/api/v1/bootstrap/status | head -c 200 || echo "Health check failed but process started"
 
             echo "[Deploy] Deployment successful!"

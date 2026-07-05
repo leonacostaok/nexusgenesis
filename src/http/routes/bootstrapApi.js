@@ -244,11 +244,19 @@ function computeTotalNGENAwarded(node) {
   return total;
 }
 
-// 实际流通余额（从 AgentWalletManager 直接读取）
+// 实际流通余额（从 AgentWalletManager 直接读取，排除基础设施钱包）
+// 排除 swarm-* 后台服务进程（这些是基础设施钱包，不应计入社区流通）
 function computeActualCirculatingSupply() {
   try {
     const wallets = agentWalletManager.listAllWallets();
-    return wallets.reduce((sum, w) => sum + Number(w.balance || 0), 0);
+    return wallets.reduce((sum, w) => {
+      const id = String(w.id || '');
+      const meta = w.metadata || {};
+      const identity = String(meta.identity || meta.agentIdentity || '');
+      // 排除 swarm-* 后台服务进程
+      if (id.startsWith('swarm-') || identity.startsWith('swarm-')) return sum;
+      return sum + Number(w.balance || 0);
+    }, 0);
   } catch {
     return 0;
   }

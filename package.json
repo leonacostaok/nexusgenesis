@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
+    "dev": "nodemon",
     "bootstrap": "node scripts/bootstrap-agent-network.js",
     "node": "node src/node/genesisNode.js",
     "node2": "node src/node/node2.js",
@@ -67,5 +68,8 @@
     "nexusgenesis"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
 }

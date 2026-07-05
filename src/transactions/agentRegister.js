@@ -245,7 +245,13 @@ export function listAllAgents(state) {
       validator_stake: agentRecord.validator_stake ?? null,
       validator_joined_at_block: agentRecord.validator_joined_at_block ?? null,
       reputation: agentRecord.reputation,
-      registered_at_block: agentRecord.registered_at_block
+      registered_at_block: agentRecord.registered_at_block,
+      subject_id: agentRecord.subject_id || null,
+      subject_diversity_factor: agentRecord.subject_diversity_factor,
+      decision_model: agentRecord.decision_model || 'template',
+      decision_model_version: agentRecord.decision_model_version || 'unknown',
+      decision_model_provider: agentRecord.decision_model_provider || 'self-built',
+      operator_declaration: agentRecord.operator_declaration || null
     });
   }
   return agents;

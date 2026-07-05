@@ -1,0 +1,8 @@
+{
+  "watch": ["src/"],
+  "ext": "js,json",
+  "delay": "500",
+  "ignore": ["data/", "public/", "test/", "scripts/"],
+  "exec": "node src/index.js",
+  "env": { "NODE_ENV": "development" }
+}

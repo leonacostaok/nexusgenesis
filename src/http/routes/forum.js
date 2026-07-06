@@ -34,6 +34,7 @@ import agentWalletManager from '../../wallet/agentWalletManager.js';
 import { getSubjectIdentifier } from '../../identity/subjectIdentifier.js';
 import { verifyBypassSecret } from '../adminAuth.js';
 import { extractCustodyToken, verifyCustodyToken } from '../custodyToken.js';
+import { buildAuthHint } from '../authHint.js';
 
 const VOTE_SIGNATURE_TIMEOUT_MS = 120 * 1000;
 const usedVoteNonces = new Set();
@@ -1029,7 +1030,8 @@ export function setupForumRoutes(app) {
           return res.status(403).json({
             success: false,
             error: 'Voting requires valid PQC signature, custody token, or admin bypass-secret authentication',
-            error_code: 'VOTE_AUTH_REQUIRED'
+            error_code: 'VOTE_AUTH_REQUIRED',
+            hint: buildAuthHint('VOTE_AUTH_REQUIRED', { action: 'vote', agentRef: agent, isDevnet: process.env.NODE_ENV !== 'production' })
           });
         }
         identityVerified = true;

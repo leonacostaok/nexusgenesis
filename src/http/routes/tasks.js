@@ -21,6 +21,7 @@ import PQCWallet from '../../wallet/pqcWallet.js';
 import agentWalletManager from '../../wallet/agentWalletManager.js';
 import { verifyBypassSecret } from '../adminAuth.js';
 import { extractCustodyToken, verifyCustodyToken } from '../custodyToken.js';
+import { buildAuthHint } from '../authHint.js';
 
 const RESERVED_PREFIXES = [
   'ng1swarmpool', 'ng1escrow', 'ng1staking', 'ng1burn', 'ng1treasury'
@@ -39,6 +40,8 @@ setInterval(() => {
 
 async function verifyTaskSignature(req, action, agentRef) {
   const { timestamp, nonce, signature } = req.body;
+  const isDevnet = process.env.NODE_ENV !== 'production';
+  const hintCtx = { action, agentRef, isDevnet };
 
   if (signature && timestamp && nonce) {
     const node = req.app.locals.node;
@@ -48,16 +51,16 @@ async function verifyTaskSignature(req, action, agentRef) {
 
     const agentRecord = node.resolveRegisteredAgent(agentRef);
     if (!agentRecord || !agentRecord.public_key) {
-      return { valid: false, status: 404, error: 'Agent not found or public key not registered', error_code: 'AGENT_NOT_FOUND' };
+      return { valid: false, status: 404, error: 'Agent not found or public key not registered', error_code: 'AGENT_NOT_FOUND', hint: buildAuthHint('AGENT_NOT_FOUND', hintCtx) };
     }
 
     if (Date.now() - timestamp > TASK_SIGNATURE_TIMEOUT_MS) {
-      return { valid: false, status: 400, error: 'Signature timestamp expired', error_code: 'SIGNATURE_EXPIRED' };
+      return { valid: false, status: 400, error: 'Signature timestamp expired', error_code: 'SIGNATURE_EXPIRED', hint: buildAuthHint('SIGNATURE_EXPIRED', hintCtx) };
     }
 
     const nonceKey = `${agentRef}:${action}:${nonce}`;
     if (usedTaskNonces.has(nonceKey)) {
-      return { valid: false, status: 400, error: 'Nonce already used', error_code: 'NONCE_REUSED' };
+      return { valid: false, status: 400, error: 'Nonce already used', error_code: 'NONCE_REUSED', hint: buildAuthHint('NONCE_REUSED', hintCtx) };
     }
     usedTaskNonces.add(nonceKey);
 
@@ -90,18 +93,18 @@ async function verifyTaskSignature(req, action, agentRef) {
 
     if (!isValid) {
       console.warn(`[SECURITY] Invalid signature for task ${action} by "${agentRef}"`);
-      return { valid: false, status: 403, error: 'Invalid signature', error_code: 'INVALID_SIGNATURE' };
+      return { valid: false, status: 403, error: 'Invalid signature', error_code: 'INVALID_SIGNATURE', hint: buildAuthHint('INVALID_SIGNATURE', hintCtx) };
     }
 
     return { valid: true };
   }
 
-  // Option 2: Custody token (external agent 通道)
+  // Option 2: Custody token (external agent channel)
   const custodyToken = extractCustodyToken(req);
   if (custodyToken) {
     const walletInstance = agentWalletManager.getWalletInstance(agentRef);
     if (!walletInstance) {
-      return { valid: false, status: 404, error: `Agent wallet not found: ${agentRef}`, error_code: 'AGENT_NOT_FOUND' };
+      return { valid: false, status: 404, error: `Agent wallet not found: ${agentRef}`, error_code: 'AGENT_NOT_FOUND', hint: buildAuthHint('AGENT_NOT_FOUND', hintCtx) };
     }
     const verification = verifyCustodyToken(custodyToken, {
       agentId: agentRef,
@@ -110,7 +113,7 @@ async function verifyTaskSignature(req, action, agentRef) {
     });
     if (!verification.valid) {
       console.warn(`[SECURITY] Custody token rejected for task ${action} by "${agentRef}": ${verification.reason}`);
-      return { valid: false, status: 401, error: `Custody token rejected: ${verification.reason}`, error_code: 'CUSTODY_TOKEN_REJECTED' };
+      return { valid: false, status: 401, error: `Custody token rejected: ${verification.reason}`, error_code: 'CUSTODY_TOKEN_REJECTED', hint: buildAuthHint('CUSTODY_TOKEN_REJECTED', hintCtx) };
     }
     return { valid: true, method: 'custody' };
   }
@@ -124,7 +127,8 @@ async function verifyTaskSignature(req, action, agentRef) {
     valid: false,
     status: 403,
     error: `Task ${action} requires valid PQC signature, custody token, or admin bypass-secret authentication`,
-    error_code: 'AUTH_REQUIRED'
+    error_code: 'AUTH_REQUIRED',
+    hint: buildAuthHint('AUTH_REQUIRED', hintCtx)
   };
 }
 
@@ -363,7 +367,7 @@ export function setupTaskRoutes(app) {
 
       const authResult = await verifyTaskSignature(req, 'publish', publisherRef);
       if (!authResult.valid) {
-        return res.status(authResult.status).json({ success: false, error: authResult.error, error_code: authResult.error_code });
+        return res.status(authResult.status).json({ success: false, error: authResult.error, error_code: authResult.error_code, ...(authResult.hint ? { hint: authResult.hint } : {}) });
       }
 
       const result = protocol.publish(publisherAddress, {
@@ -397,7 +401,7 @@ export function setupTaskRoutes(app) {
 
       const authResult = await verifyTaskSignature(req, 'claim', agentRef);
       if (!authResult.valid) {
-        return res.status(authResult.status).json({ success: false, error: authResult.error, error_code: authResult.error_code });
+        return res.status(authResult.status).json({ success: false, error: authResult.error, error_code: authResult.error_code, ...(authResult.hint ? { hint: authResult.hint } : {}) });
       }
 
       let agentReputation = 0;
@@ -441,7 +445,7 @@ export function setupTaskRoutes(app) {
 
       const authResult = await verifyTaskSignature(req, 'submit', agentRef);
       if (!authResult.valid) {
-        return res.status(authResult.status).json({ success: false, error: authResult.error, error_code: authResult.error_code });
+        return res.status(authResult.status).json({ success: false, error: authResult.error, error_code: authResult.error_code, ...(authResult.hint ? { hint: authResult.hint } : {}) });
       }
 
       const result = protocol.submit(agentAddress, req.params.id, submission);
@@ -473,7 +477,7 @@ export function setupTaskRoutes(app) {
 
       const authResult = await verifyTaskSignature(req, 'verify', verifierRef);
       if (!authResult.valid) {
-        return res.status(authResult.status).json({ success: false, error: authResult.error, error_code: authResult.error_code });
+        return res.status(authResult.status).json({ success: false, error: authResult.error, error_code: authResult.error_code, ...(authResult.hint ? { hint: authResult.hint } : {}) });
       }
 
       const result = protocol.verify(verifierAddress, req.params.id, approved, feedback || '');
@@ -501,7 +505,7 @@ export function setupTaskRoutes(app) {
 
       const authResult = await verifyTaskSignature(req, 'cancel', publisherRef);
       if (!authResult.valid) {
-        return res.status(authResult.status).json({ success: false, error: authResult.error, error_code: authResult.error_code });
+        return res.status(authResult.status).json({ success: false, error: authResult.error, error_code: authResult.error_code, ...(authResult.hint ? { hint: authResult.hint } : {}) });
       }
 
       const result = protocol.cancel(publisherAddress, req.params.id);

@@ -8,6 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { verifyCreditSecret } from '../adminAuth.js';
 import { issueCustodyToken, verifyCustodyToken, extractCustodyToken } from '../custodyToken.js';
+import { buildAuthHint } from '../authHint.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -821,7 +822,8 @@ router.post('/sign', async (req, res) => {
       return res.status(401).json({
         success: false,
         error: 'Custody token required (header x-custody-token or body.custody_token)',
-        error_code: 'CUSTODY_TOKEN_REQUIRED'
+        error_code: 'CUSTODY_TOKEN_REQUIRED',
+        hint: buildAuthHint('CUSTODY_TOKEN_REQUIRED', { isDevnet: process.env.NODE_ENV !== 'production' })
       });
     }
 

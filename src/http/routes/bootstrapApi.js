@@ -767,8 +767,44 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
       console.warn('[bootstrap] Subject identifier not available:', err.message);
     }
 
+    // Issue custody token first so we can reference it in warnings/next_steps
+    const custodyInfo = (() => {
+      try {
+        const { token, expiresAt, issuedAt } = issueCustodyToken({
+          agentId: agent_identity,
+          address: walletInfo.address,
+          publicKeyHex: walletInfo.publicKey
+        });
+        return { token, expiresAt, issuedAt, issued: true };
+      } catch (e) {
+        console.warn('[bootstrap] Failed to issue custody token:', e.message);
+        return { issued: false, error: 'token_unavailable', reason: e.message };
+      }
+    })();
+
     res.status(result.applied ? 201 : 202).json({
       success: true,
+      // Critical warning: save custody token before doing anything else
+      warnings: custodyInfo.issued ? [
+        {
+          level: 'critical',
+          code: 'SAVE_CUSTODY_TOKEN',
+          message: 'Please save custody.token immediately. This is your only credential for task claims, voting, and signing.',
+          details: [
+            'Token expires in 24 hours. Refresh via POST /api/v1/wallet/custody/refresh',
+            'If lost, you must register a new Agent or contact admin to reset',
+            'Never publish this token publicly (equivalent to private key permission)'
+          ],
+          docs: 'https://github.com/nexus-genesis/nexusgenesis/blob/master/docs/API_REFERENCE.md#quick-start'
+        }
+      ] : [],
+      // Step-by-step guidance for first-time users
+      next_steps: custodyInfo.issued ? [
+        '1. Save custody.token from this response (shown only once in full)',
+        '2. Call POST /api/v1/wallet/sign with x-custody-token header to get PQC signature',
+        '3. Use returned signature to call POST /api/tasks/:id/claim',
+        '4. Complete task to earn NGEN reward and +2 reputation'
+      ] : [],
       agent_identity: transaction.payload.agent_identity,
       agentId: agent_identity, // backward compat
       onChainAgentId: transaction.id,
@@ -790,28 +826,18 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
         publicKeyHex: walletInfo.publicKey,
         custody: 'server-managed'
       },
-      // Custody token (JWT-lite, HMAC-SHA256) — 用于调用 /api/v1/wallet/sign 让服务器代签任务/投票操作
-      // 私钥永不出服务器，token 默认 24h 过期，过期可重新签发
-      custody: (() => {
-        try {
-          const { token, expiresAt, issuedAt } = issueCustodyToken({
-            agentId: agent_identity,
-            address: walletInfo.address,
-            publicKeyHex: walletInfo.publicKey
-          });
-          return {
-            token,
-            expiresAt,
-            issuedAt,
-            refreshEndpoint: 'POST /api/v1/wallet/custody/refresh',
-            signEndpoint: 'POST /api/v1/wallet/sign',
-            usage: 'Call sign endpoint with { data, action } to obtain a PQC signature for tasks/votes'
-          };
-        } catch (e) {
-          console.warn('[bootstrap] Failed to issue custody token:', e.message);
-          return { error: 'token_unavailable', reason: e.message };
-        }
-      })(),
+      // Custody token (JWT-lite, HMAC-SHA256) — for calling /api/v1/wallet/sign to obtain PQC signatures
+      // Private key never leaves the server. Token expires in 24h and can be refreshed.
+      custody: custodyInfo.issued ? {
+        token: custodyInfo.token,
+        expiresAt: custodyInfo.expiresAt,
+        issuedAt: custodyInfo.issuedAt,
+        expiresAtHuman: new Date(custodyInfo.expiresAt * 1000).toISOString(),
+        ttlSeconds: 86400,
+        refreshEndpoint: 'POST /api/v1/wallet/custody/refresh',
+        signEndpoint: 'POST /api/v1/wallet/sign',
+        usage: 'Call sign endpoint with { data, action } to obtain a PQC signature for tasks/votes'
+      } : custodyInfo,
       reward: Number(initialBalance - REGISTRATION_FEE),
       reward_breakdown: {
         registration: Number(REGISTRATION_REWARD),

@@ -54,6 +54,34 @@ function parseArgs() {
 }
 
 // ─── HTTP client (supports both http and https) ───
+//
+// SECURITY: 2026-07-06 重构 — 移除 NG_ADMIN_SECRET 头部发送
+// 改为使用 custody token 流程（注册时服务器签发）
+// Custody token 默认 24h TTL，过期前自动 refresh
+// 私钥永不出服务器，符合 server-managed custody 模型
+
+let _custodyToken = null;
+let _custodyExpiresAt = 0;
+let _custodyAgentId = null;
+let _custodyAddress = null;
+let _custodyPublicKeyHex = null;
+
+function setCustodyToken({ token, expiresAt, agentId, address, publicKeyHex }) {
+  _custodyToken = token;
+  _custodyExpiresAt = expiresAt;
+  _custodyAgentId = agentId;
+  _custodyAddress = address;
+  _custodyPublicKeyHex = publicKeyHex;
+  console.log(`[custody] Token cached, expires at ${new Date(expiresAt * 1000).toISOString()}`);
+}
+
+function hasValidCustodyToken() {
+  return _custodyToken && Math.floor(Date.now() / 1000) < _custodyExpiresAt - 300; // 5 分钟提前 refresh
+}
+
+function getCustodyToken() {
+  return _custodyToken;
+}
 
 function request(method, url, body) {
   return new Promise((resolve) => {
@@ -69,10 +97,13 @@ function request(method, url, body) {
       headers: { 'Content-Type': 'application/json' },
       timeout: 10000,
     };
-    // Attach admin-secret if available — required for privileged operations
-    // (steward signature, reserved-address task ops).
-    if (process.env.NG_ADMIN_SECRET) {
-      options.headers['x-admin-secret'] = process.env.NG_ADMIN_SECRET;
+    // Attach custody token if available (preferred auth channel for tasks/votes)
+    if (hasValidCustodyToken()) {
+      options.headers['x-custody-token'] = getCustodyToken();
+    }
+    // 兼容保留：NG_ADMIN_BYPASS_SECRET（devnet 兜底）
+    if (process.env.NG_ADMIN_BYPASS_SECRET) {
+      options.headers['x-admin-secret'] = process.env.NG_ADMIN_BYPASS_SECRET;
     }
     if (data) options.headers['Content-Length'] = Buffer.byteLength(data);
 
@@ -89,6 +120,31 @@ function request(method, url, body) {
     if (data) req.write(data);
     req.end();
   });
+}
+
+async function refreshCustodyIfNeeded() {
+  if (hasValidCustodyToken() || !_custodyToken) return;
+  // Token 即将过期（< 5 min），refresh
+  console.log('[custody] Token near expiry, refreshing...');
+  const base = await discoverApi();
+  if (!base) return false;
+  const r = await request('POST', base + '/api/v1/wallet/custody/refresh', {
+    agentId: _custodyAgentId,
+    address: _custodyAddress,
+    publicKeyHex: _custodyPublicKeyHex
+  });
+  if (r.ok && r.data?.custody?.token) {
+    setCustodyToken({
+      token: r.data.custody.token,
+      expiresAt: r.data.custody.expiresAt,
+      agentId: _custodyAgentId,
+      address: _custodyAddress,
+      publicKeyHex: _custodyPublicKeyHex
+    });
+    return true;
+  }
+  console.warn('[custody] Refresh failed:', r.data?.error || r.data);
+  return false;
 }
 
 // ─── API endpoint auto-discovery ───
@@ -160,6 +216,23 @@ async function ensureRegistered(agent, capabilities) {
 
   if (regR.ok) {
     console.log(`[self] ✓ Registered! Wallet: ${regR.data?.agent?.address || 'unknown'}`);
+
+    // 缓存 custody token（如果服务器签发）
+    if (regR.data?.custody?.token) {
+      setCustodyToken({
+        token: regR.data.custody.token,
+        expiresAt: regR.data.custody.expiresAt,
+        agentId: agent,
+        address: regR.data.agent?.address,
+        publicKeyHex: regR.data.wallet?.publicKeyHex
+      });
+    } else if (regR.data?.wallet?.address) {
+      // 旧版服务器未签发 token（升级期间），记录上下文供后续 token 申请
+      _custodyAgentId = agent;
+      _custodyAddress = regR.data.wallet.address;
+      _custodyPublicKeyHex = regR.data.wallet.publicKeyHex;
+      console.log('[custody] No custody token in registration response (server may be on old code). Will retry on first privileged op.');
+    }
 
     // Fetch welcome package (network status, constitution, getting started)
     try {
@@ -409,12 +482,46 @@ async function selfDiagnose(agent) {
 
 // ─── Publish tasks for other agents ───
 
+// TASK_IDEAS 覆盖 7 大类、共 22 种任务（2026-07-06 扩充）
 const TASK_IDEAS = [
+  // ── monitoring 类 ──
   { title: 'Monitor network health and report uptime', capabilities: ['monitoring'], type: 'monitoring', reward: '10' },
+  { title: 'Track block production rate and flag anomalies', capabilities: ['monitoring'], type: 'monitoring', reward: '12' },
+  { title: 'Audit peer connectivity and P2P network health', capabilities: ['monitoring', 'p2p_comm'], type: 'monitoring', reward: '15' },
+
+  // ── analysis 类 ──
   { title: 'Analyze agent participation metrics', capabilities: ['analysis'], type: 'analysis', reward: '15' },
-  { title: 'Create forum discussion about PQC adoption', capabilities: ['community'], type: 'community', reward: '10' },
   { title: 'Audit task completion rates and suggest improvements', capabilities: ['analysis'], type: 'analysis', reward: '20' },
   { title: 'Review consensus mechanism efficiency', capabilities: ['analysis'], type: 'analysis', reward: '25' },
+  { title: 'Statistical analysis of NGEN token distribution', capabilities: ['analysis', 'data_analytics'], type: 'analysis', reward: '22' },
+
+  // ── community 类 ──
+  { title: 'Create forum discussion about PQC adoption', capabilities: ['community'], type: 'community', reward: '10' },
+  { title: 'Onboard new agents via community engagement', capabilities: ['community'], type: 'community', reward: '15' },
+  { title: 'Draft governance proposal for community review', capabilities: ['community', 'network_governance'], type: 'community', reward: '20' },
+
+  // ── coding 类 ──
+  { title: 'Review SDK examples and fix documentation gaps', capabilities: ['coding'], type: 'coding', reward: '18' },
+  { title: 'Contribute test cases for API endpoints', capabilities: ['coding'], type: 'coding', reward: '22' },
+  { title: 'Improve error messages across the codebase', capabilities: ['coding', 'code_analysis'], type: 'coding', reward: '20' },
+
+  // ── research 类 ──
+  { title: 'Research Dilithium2 signature size optimization', capabilities: ['research'], type: 'research', reward: '25' },
+  { title: 'Survey other PQC wallets and identify feature gaps', capabilities: ['research'], type: 'research', reward: '22' },
+  { title: 'Compile literature on Agent Coordination Protocols', capabilities: ['research'], type: 'research', reward: '20' },
+
+  // ── security_audit 类 ──
+  { title: 'Audit custody token flow for vulnerabilities', capabilities: ['security_audit'], type: 'security_audit', reward: '30' },
+  { title: 'Review admin secret split design', capabilities: ['security_audit', 'code_analysis'], type: 'security_audit', reward: '28' },
+  { title: 'Penetration test on the wallet API', capabilities: ['security_audit'], type: 'security_audit', reward: '35' },
+
+  // ── documentation 类 ──
+  { title: 'Write tutorial for first-time agent registration', capabilities: ['community'], type: 'documentation', reward: '15' },
+  { title: 'Document the custody token flow with examples', capabilities: ['community', 'coding'], type: 'documentation', reward: '18' },
+
+  // ── general 类 ──
+  { title: 'Propose new task categories and reward models', capabilities: ['general'], type: 'general', reward: '12' },
+  { title: 'Survey agent feedback and summarize top requests', capabilities: ['general', 'community'], type: 'general', reward: '15' }
 ];
 
 async function publishTasksForAgents(agent) {
@@ -905,6 +1012,9 @@ async function main() {
       if (cycle === 1) {
         await ensureRegistered(opts.agent, opts.capabilities);
       }
+
+      // 2.5 Refresh custody token if needed
+      await refreshCustodyIfNeeded();
 
       // 3. Work on tasks
       const result = await workOnTasks(opts.agent, opts.capabilities);

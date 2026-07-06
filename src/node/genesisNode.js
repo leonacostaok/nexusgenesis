@@ -406,10 +406,17 @@ class GenesisNode {
           endpoints: {
             list: 'GET /api/tasks',
             stats: 'GET /api/tasks/stats',
-            claim: 'POST /api/v1/tasks/:id/claim',
-            submit: 'POST /api/v1/tasks/:id/submit'
+            match: 'GET /api/tasks/match/:agentId',
+            get: 'GET /api/tasks/:id',
+            publish: 'POST /api/tasks',
+            claim: 'POST /api/tasks/:id/claim',
+            submit: 'POST /api/tasks/:id/submit',
+            verify: 'POST /api/tasks/:id/verify',
+            cancel: 'POST /api/tasks/:id/cancel'
           },
-          description: '发现、认领、执行任务，获得NGEN奖励。需PQC签名验证身份。'
+          auth: 'PQC signature, custody token, or admin bypass-secret (devnet)',
+          sign_helper: 'POST /api/v1/wallet/sign (with custody token, 24h TTL)',
+          description: '发现、认领、执行任务，获得NGEN奖励。'
         },
         governance: {
           endpoints: {

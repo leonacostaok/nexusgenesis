@@ -77,6 +77,10 @@ import agentHubRoutes from './routes/agentHub.js';
 import bootstrapApiRoutes from './routes/bootstrapApi.js';
 import { setupTaskRoutes } from './routes/tasks.js';
 import { setupForumRoutes } from './routes/forum.js';
+import { init as initAdminAuth, verifyCreditSecret } from './adminAuth.js';
+
+// 在服务启动时执行：admin secret 校验（生产环境必填）
+try { initAdminAuth(); } catch (e) { console.error(e.message); }
 import { RateLimiter } from './rateLimiter.js';
 import { ApiKeyManager, DEFAULT_TIERS } from './apiKeyManager.js';
 import { PluginManager } from './pluginManager.js';
@@ -2029,10 +2033,8 @@ async function startHttpServer(node = null, options = {}) {
   // Protected by a shared secret to prevent public abuse.
   app.post('/api/v1/admin/endow-existing-agents', async (req, res) => {
     try {
-      const provided = req.headers['x-admin-secret'] || req.body?.adminSecret;
-      const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
-      if (provided !== expected) {
-        return res.status(401).json({ success: false, error: 'Unauthorized: invalid admin secret' });
+      if (!verifyCreditSecret(req)) {
+        return res.status(401).json({ success: false, error: 'Unauthorized: invalid admin credit secret' });
       }
       const target = BigInt(Number(req.body?.amount || 1000));
       const state = app.locals.node?.currentState;
@@ -2081,10 +2083,8 @@ async function startHttpServer(node = null, options = {}) {
   // 'downtime' (1%), 'double_sign' (5%), 'malicious' (10%)
   app.post('/api/v1/admin/validator-slash', async (req, res) => {
     try {
-      const provided = req.headers['x-admin-secret'] || req.body?.adminSecret;
-      const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
-      if (provided !== expected) {
-        return res.status(401).json({ success: false, error: 'Unauthorized: invalid admin secret' });
+      if (!verifyCreditSecret(req)) {
+        return res.status(401).json({ success: false, error: 'Unauthorized: invalid admin credit secret' });
       }
       const { agent_identity, violation } = req.body || {};
       if (!agent_identity || !violation) {

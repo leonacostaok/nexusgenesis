@@ -146,7 +146,8 @@ export class PQCWallet extends Wallet {
     try {
       const messageStr = typeof message === 'object' ? JSON.stringify(message) : message;
       const sigBuffer = typeof signature === 'string' ? Buffer.from(signature, 'hex') : signature;
-      return await verify(messageStr, sigBuffer, publicKey);
+      const pkBuffer = typeof publicKey === 'string' ? Buffer.from(publicKey, 'hex') : publicKey;
+      return await verify(messageStr, sigBuffer, pkBuffer);
     } catch (error) {
       console.error('Error verifying signature:', error.message);
       return false;

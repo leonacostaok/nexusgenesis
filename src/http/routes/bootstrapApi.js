@@ -86,10 +86,17 @@ function buildWelcomePackage(node) {
         endpoints: {
           list: 'GET /api/tasks',
           stats: 'GET /api/tasks/stats',
-          claim: 'POST /api/v1/tasks/:id/claim',
-          submit: 'POST /api/v1/tasks/:id/submit'
+          match: 'GET /api/tasks/match/:agentId',
+          get: 'GET /api/tasks/:id',
+          publish: 'POST /api/tasks',
+          claim: 'POST /api/tasks/:id/claim',
+          submit: 'POST /api/tasks/:id/submit',
+          verify: 'POST /api/tasks/:id/verify',
+          cancel: 'POST /api/tasks/:id/cancel'
         },
-        description: '发现、认领、执行任务，获得NGEN奖励。需PQC签名验证身份。'
+        auth: 'PQC signature, custody token, or admin bypass-secret (devnet)',
+        sign_helper: 'POST /api/v1/wallet/sign (with custody token, 24h TTL)',
+        description: '发现、认领、执行任务，获得NGEN奖励。'
       },
       governance: {
         endpoints: {
@@ -374,6 +381,61 @@ router.get('/api/v1/bootstrap/agents', async (req, res) => {
     res.json({ success: true, count: enriched.length, agents: enriched, total: enriched.length });
   } catch (e) {
     res.status(500).json({ error: e.message });
+  }
+});
+
+router.get('/api/v1/bootstrap/validators', (req, res) => {
+  try {
+    const node = req.app.locals.node;
+    if (!node) return res.json({ success: true, count: 0, maxValidators: 7, committeeSize: 0, validators: [] });
+
+    const agents = getUnifiedAgents(node);
+    const validatorAgentKeys = new Set();
+    for (const validator of Array.from(node._validators?.values?.() || [])) {
+      if (validator.agentId) validatorAgentKeys.add(validator.agentId);
+      if (validator.agentIdentity) validatorAgentKeys.add(validator.agentIdentity);
+      if (validator.address) validatorAgentKeys.add(validator.address);
+    }
+
+    const validators = agents
+      .filter(a => {
+        const id = a.identity || a.agent_id;
+        return Boolean(a.is_validator) || validatorAgentKeys.has(id) || validatorAgentKeys.has(a.address);
+      })
+      .map(a => {
+        const balanceNum = getAgentBalance(a, node);
+        return {
+          agent_identity: a.identity || a.agent_id,
+          agent_id: a.agent_id,
+          identity: a.identity,
+          address: a.address,
+          capabilities: a.capabilities || [],
+          is_validator: true,
+          reputation: a.reputation || 0,
+          registered_at_block: a.registered_at_block,
+          status: 'validator',
+          public_key: a.public_key || null,
+          wallet: { address: a.address, balance: balanceNum, totalEarned: balanceNum }
+        };
+      });
+
+    validators.sort((a, b) => b.reputation - a.reputation);
+    const limit = Math.max(1, Math.min(parseInt(req.query.limit) || 50, 200));
+    const sliced = validators.slice(0, limit);
+
+    const maxValidators = 7;
+    const committeeSize = node.consensusState?.committee?.size || (1 + (node._validators?.size || 0));
+
+    res.json({
+      success: true,
+      count: validators.length,
+      maxValidators,
+      committeeSize,
+      quorumRequired: node.consensusState?.quorumThreshold || null,
+      validators: sliced
+    });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
   }
 });
 
@@ -728,6 +790,28 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
         publicKeyHex: walletInfo.publicKey,
         custody: 'server-managed'
       },
+      // Custody token (JWT-lite, HMAC-SHA256) — 用于调用 /api/v1/wallet/sign 让服务器代签任务/投票操作
+      // 私钥永不出服务器，token 默认 24h 过期，过期可重新签发
+      custody: (() => {
+        try {
+          const { token, expiresAt, issuedAt } = issueCustodyToken({
+            agentId: agent_identity,
+            address: walletInfo.address,
+            publicKeyHex: walletInfo.publicKey
+          });
+          return {
+            token,
+            expiresAt,
+            issuedAt,
+            refreshEndpoint: 'POST /api/v1/wallet/custody/refresh',
+            signEndpoint: 'POST /api/v1/wallet/sign',
+            usage: 'Call sign endpoint with { data, action } to obtain a PQC signature for tasks/votes'
+          };
+        } catch (e) {
+          console.warn('[bootstrap] Failed to issue custody token:', e.message);
+          return { error: 'token_unavailable', reason: e.message };
+        }
+      })(),
       reward: Number(initialBalance - REGISTRATION_FEE),
       reward_breakdown: {
         registration: Number(REGISTRATION_REWARD),
@@ -857,13 +941,16 @@ router.post('/api/v1/bootstrap/validators/join', async (req, res) => {
   }
 });
 
+// ─── Admin secret split: credit vs bypass ───
+// 资金/状态变更（credit 类）由 NG_ADMIN_CREDIT_SECRET 保护
+import { verifyCreditSecret } from '../adminAuth.js';
+import { issueCustodyToken } from '../custodyToken.js';
+
 // POST /api/v1/admin/credit — Direct on-chain balance credit (admin-secret protected)
 // Modifies state.balances in the running node, so the change survives incremental saves.
 router.post('/api/v1/admin/credit', (req, res) => {
-  const adminSecret = req.headers['x-admin-secret'];
-  const expectedSecret = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
-  if (adminSecret !== expectedSecret) {
-    return res.status(403).json({ error: 'Forbidden: invalid admin-secret' });
+  if (!verifyCreditSecret(req)) {
+    return res.status(403).json({ error: 'Forbidden: invalid admin credit secret' });
   }
   const node = req.app.locals.node;
   const { address, amount, reason } = req.body || {};

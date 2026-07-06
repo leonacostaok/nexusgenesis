@@ -6,6 +6,8 @@ import { generateKeyPair } from '../../crypto/pqc.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { verifyCreditSecret } from '../adminAuth.js';
+import { issueCustodyToken, verifyCustodyToken, extractCustodyToken } from '../custodyToken.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -503,13 +505,11 @@ router.get('/agent/:agentId/balance', (req, res) => {
  */
 router.post('/agent/transfer', async (req, res) => {
   try {
-    // Auth guard: require admin-secret for write operations
-    const provided = req.headers['x-admin-secret'] || req.body?.admin_secret || req.body?.adminSecret;
-    const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
-    if (provided !== expected) {
+    // Auth guard: require admin credit secret for write operations
+    if (!verifyCreditSecret(req)) {
       return res.status(403).json({
         success: false,
-        error: 'Transfer requires admin-secret authentication'
+        error: 'Transfer requires admin credit secret authentication'
       });
     }
 
@@ -557,12 +557,10 @@ router.post('/agent/transfer', async (req, res) => {
 router.post('/agent/batch-transfer', async (req, res) => {
   try {
     // Auth guard
-    const provided = req.headers['x-admin-secret'] || req.body?.admin_secret || req.body?.adminSecret;
-    const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
-    if (provided !== expected) {
+    if (!verifyCreditSecret(req)) {
       return res.status(403).json({
         success: false,
-        error: 'Batch transfer requires admin-secret authentication'
+        error: 'Batch transfer requires admin credit secret authentication'
       });
     }
 
@@ -736,9 +734,148 @@ router.get('/health', (req, res) => {
       'agent_faucet_claim',
       'agent_wallet_export',
       'agent_wallet_import',
-      'agent_registry'
+      'agent_registry',
+      'custody_token',
+      'server_side_signing'
     ]
   });
+});
+
+// ============================================================
+//  Custody Token 流程（外部 Agent 接入专用）
+// 私钥永远不出服务器，AGENT 通过 custody token 委托签名
+// ============================================================
+
+/**
+ * POST /api/v1/wallet/custody/refresh
+ * 用现有 custody token 重新签发一个新 token
+ * Body: { agentId, address }（context 校验）
+ * Header: x-custody-token: <旧 token>
+ */
+router.post('/custody/refresh', (req, res) => {
+  try {
+    const token = extractCustodyToken(req);
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing custody token (header x-custody-token or body.custody_token)',
+        error_code: 'TOKEN_MISSING'
+      });
+    }
+
+    const { agentId, address, publicKeyHex } = req.body || {};
+    const verification = verifyCustodyToken(token, { agentId, address, publicKeyHex });
+    if (!verification.valid) {
+      return res.status(401).json({
+        success: false,
+        error: `Custody token rejected: ${verification.reason}`,
+        error_code: 'TOKEN_REJECTED'
+      });
+    }
+
+    // 用 token 中的 sub/addr 签发新 token
+    const { sub, addr, fp } = verification.payload;
+    const walletInstance = agentWalletManager.getWalletInstance(sub) || agentWalletManager.getWalletInstanceByAddress(addr);
+    if (!walletInstance) {
+      return res.status(404).json({
+        success: false,
+        error: 'Wallet not found for token subject',
+        error_code: 'WALLET_NOT_FOUND'
+      });
+    }
+
+    const newToken = issueCustodyToken({
+      agentId: sub,
+      address: addr,
+      publicKeyHex: walletInstance.publicKey.toString('hex')
+    });
+
+    res.json({
+      success: true,
+      custody: newToken
+    });
+  } catch (error) {
+    console.error('[Wallet API] Custody refresh error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * POST /api/v1/wallet/sign
+ * 用 Agent 托管私钥对数据进行签名（外部 Agent 唯一签名通道）
+ *
+ * Body: {
+ *   agentId: string,    // 待签名 agent
+ *   data: string|object,// 待签数据
+ *   action?: string,    // 操作类型（用于审计日志，不影响签名）
+ *   context?: object    // 上下文（写入审计日志）
+ * }
+ * Header: x-custody-token: <token>
+ *
+ * Response: { signature, publicKey, address, agentId, algorithm }
+ */
+router.post('/sign', async (req, res) => {
+  try {
+    const token = extractCustodyToken(req);
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        error: 'Custody token required (header x-custody-token or body.custody_token)',
+        error_code: 'CUSTODY_TOKEN_REQUIRED'
+      });
+    }
+
+    const { agentId, data, action, context } = req.body || {};
+    if (!agentId) {
+      return res.status(400).json({ success: false, error: 'agentId is required' });
+    }
+    if (data === undefined || data === null) {
+      return res.status(400).json({ success: false, error: 'data is required' });
+    }
+
+    // 1) 验证 custody token（必须绑定到该 agent）
+    const walletInstance = agentWalletManager.getWalletInstance(agentId);
+    if (!walletInstance) {
+      return res.status(404).json({ success: false, error: `Agent wallet not found: ${agentId}` });
+    }
+    const verification = verifyCustodyToken(token, {
+      agentId,
+      address: walletInstance.address,
+      publicKeyHex: walletInstance.publicKey.toString('hex')
+    });
+    if (!verification.valid) {
+      return res.status(401).json({
+        success: false,
+        error: `Custody token rejected: ${verification.reason}`,
+        error_code: 'CUSTODY_TOKEN_REJECTED'
+      });
+    }
+
+    // 2) 用托管私钥签名
+    let result;
+    try {
+      result = await agentWalletManager.signForAgent(agentId, data);
+    } catch (e) {
+      return res.status(500).json({ success: false, error: `Signing failed: ${e.message}` });
+    }
+
+    // 3) 审计日志
+    const dataStr = typeof data === 'string' ? data : JSON.stringify(data);
+    console.log(
+      `[Wallet] Custody sign: agent=${agentId} action=${action || 'unspecified'} ` +
+      `dataLen=${dataStr.length} context=${context ? JSON.stringify(context) : 'none'}`
+    );
+
+    res.json({
+      success: true,
+      ...result,
+      algorithm: 'CRYSTALS-Dilithium2 (ml_dsa44)',
+      signedAt: Math.floor(Date.now() / 1000)
+    });
+  } catch (error) {
+    console.error('[Wallet API] Sign error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 export default router;

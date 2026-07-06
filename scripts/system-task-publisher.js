@@ -46,10 +46,12 @@ function api(method, path, body) {
       method,
       headers: { 'Content-Type': 'application/json' },
     };
-    // Attach admin-secret if available — required for publishing/verifying
-    // tasks as a reserved system address (ng1swarmpool, ng1escrow, ...).
-    if (process.env.NG_ADMIN_SECRET) {
-      options.headers['x-admin-secret'] = process.env.NG_ADMIN_SECRET;
+    // SECURITY 2026-07-06: System publisher 用 NG_ADMIN_BYPASS_SECRET（任务/投票免签类）
+    // 不再使用 NG_ADMIN_SECRET（向后兼容：fallback 到该值）
+    // 注意：system publisher 是 ng1swarmpool reserved address，AGENT custody token 不可用
+    const adminSecret = process.env.NG_ADMIN_BYPASS_SECRET || process.env.NG_ADMIN_SECRET;
+    if (adminSecret) {
+      options.headers['x-admin-secret'] = adminSecret;
     }
     if (data) options.headers['Content-Length'] = Buffer.byteLength(data);
 

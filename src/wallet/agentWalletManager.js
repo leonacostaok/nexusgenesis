@@ -554,6 +554,27 @@ class AgentWalletManager {
     );
   }
 
+  /**
+   * 用 Agent 托管私钥对数据进行签名（server-side signing，custody token 流程用）
+   * @param {string} agentId - Agent ID
+   * @param {string|object} data - 待签名数据
+   * @returns {Promise<{ signature: string, publicKey: string, address: string }>}
+   */
+  async signForAgent(agentId, data) {
+    const entry = this.registry.get(agentId);
+    if (!entry) {
+      throw new Error(`signForAgent: Agent not found: ${agentId}`);
+    }
+    const dataStr = typeof data === 'string' ? data : JSON.stringify(data);
+    const sig = await sign(dataStr, entry.wallet.privateKey);
+    return {
+      signature: sig.toString('hex'),
+      publicKey: entry.wallet.publicKey.toString('hex'),
+      address: entry.wallet.address,
+      agentId
+    };
+  }
+
   _formatWalletResponse(agentId, wallet, metadata = {}) {
     return {
       agentId,

@@ -30,7 +30,10 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { PQCWallet } from '../../wallet/pqcWallet.js';
+import agentWalletManager from '../../wallet/agentWalletManager.js';
 import { getSubjectIdentifier } from '../../identity/subjectIdentifier.js';
+import { verifyBypassSecret } from '../adminAuth.js';
+import { extractCustodyToken, verifyCustodyToken } from '../custodyToken.js';
 
 const VOTE_SIGNATURE_TIMEOUT_MS = 120 * 1000;
 const usedVoteNonces = new Set();
@@ -989,15 +992,43 @@ export function setupForumRoutes(app) {
         identityVerified = true;
       }
 
-      // Option 2: Admin-secret fallback (devnet)
+      // Option 2: Custody token (external agent 通道)
       if (!identityVerified) {
-        const provided = req.headers['x-admin-secret'] || req.body?.admin_secret || req.body?.adminSecret;
-        const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
-        if (provided !== expected) {
+        const custodyToken = extractCustodyToken(req);
+        if (custodyToken) {
+          const walletInstance = agentWalletManager.getWalletInstance(agent);
+          if (!walletInstance) {
+            console.warn(`[SECURITY] Custody token vote: agent wallet not found "${agent}" on topic ${topicId}`);
+            return res.status(404).json({
+              success: false,
+              error: `Agent wallet not found: ${agent}`,
+              error_code: 'AGENT_NOT_FOUND'
+            });
+          }
+          const verification = verifyCustodyToken(custodyToken, {
+            agentId: agent,
+            address: walletInstance.address,
+            publicKeyHex: walletInstance.publicKey.toString('hex')
+          });
+          if (!verification.valid) {
+            console.warn(`[SECURITY] Custody token rejected for vote by "${agent}" on topic ${topicId}: ${verification.reason}`);
+            return res.status(401).json({
+              success: false,
+              error: `Custody token rejected: ${verification.reason}`,
+              error_code: 'CUSTODY_TOKEN_REJECTED'
+            });
+          }
+          identityVerified = true;
+        }
+      }
+
+      // Option 3: Admin bypass-secret fallback (devnet)
+      if (!identityVerified) {
+        if (!verifyBypassSecret(req)) {
           console.warn(`[SECURITY] Blocked unauthorized vote by "${agent}" on topic ${topicId}`);
           return res.status(403).json({
             success: false,
-            error: 'Voting requires valid PQC signature or admin-secret authentication',
+            error: 'Voting requires valid PQC signature, custody token, or admin bypass-secret authentication',
             error_code: 'VOTE_AUTH_REQUIRED'
           });
         }
@@ -1099,13 +1130,11 @@ export function setupForumRoutes(app) {
         });
       }
       // Auth guard: steward signature is a privileged operation.
-      const provided = req.headers['x-admin-secret'] || req.body?.admin_secret || req.body?.adminSecret;
-      const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
-      if (provided !== expected) {
+      if (!verifyBypassSecret(req)) {
         console.warn(`[SECURITY] Blocked unauthorized steward signature by "${steward}" on proposal ${req.params.id}`);
         return res.status(403).json({
           success: false,
-          error: 'Steward signature requires admin-secret authentication',
+          error: 'Steward signature requires admin bypass-secret authentication',
           error_code: 'STEWARD_AUTH_REQUIRED'
         });
       }

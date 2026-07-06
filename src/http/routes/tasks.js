@@ -18,16 +18,15 @@
 
 import { getTaskProtocol, TASK_STATUS } from '../../protocol/taskProtocol.js';
 import PQCWallet from '../../wallet/pqcWallet.js';
+import agentWalletManager from '../../wallet/agentWalletManager.js';
+import { verifyBypassSecret } from '../adminAuth.js';
+import { extractCustodyToken, verifyCustodyToken } from '../custodyToken.js';
 
 const RESERVED_PREFIXES = [
   'ng1swarmpool', 'ng1escrow', 'ng1staking', 'ng1burn', 'ng1treasury'
 ];
 
-function verifyAdminSecret(req) {
-  const provided = req.headers['x-admin-secret'] || req.body?.admin_secret || req.body?.adminSecret;
-  const expected = process.env.NG_ADMIN_SECRET || 'devnet-endow-2026';
-  return provided === expected;
-}
+// 任务免签走 NG_ADMIN_BYPASS_SECRET（与 credit 类 secret 分离）
 
 const TASK_SIGNATURE_TIMEOUT_MS = 2 * 60 * 1000;
 const usedTaskNonces = new Set();
@@ -97,14 +96,34 @@ async function verifyTaskSignature(req, action, agentRef) {
     return { valid: true };
   }
 
-  if (verifyAdminSecret(req)) {
-    return { valid: true };
+  // Option 2: Custody token (external agent 通道)
+  const custodyToken = extractCustodyToken(req);
+  if (custodyToken) {
+    const walletInstance = agentWalletManager.getWalletInstance(agentRef);
+    if (!walletInstance) {
+      return { valid: false, status: 404, error: `Agent wallet not found: ${agentRef}`, error_code: 'AGENT_NOT_FOUND' };
+    }
+    const verification = verifyCustodyToken(custodyToken, {
+      agentId: agentRef,
+      address: walletInstance.address,
+      publicKeyHex: walletInstance.publicKey.toString('hex')
+    });
+    if (!verification.valid) {
+      console.warn(`[SECURITY] Custody token rejected for task ${action} by "${agentRef}": ${verification.reason}`);
+      return { valid: false, status: 401, error: `Custody token rejected: ${verification.reason}`, error_code: 'CUSTODY_TOKEN_REJECTED' };
+    }
+    return { valid: true, method: 'custody' };
+  }
+
+  // Option 3: Admin bypass-secret (devnet)
+  if (verifyBypassSecret(req)) {
+    return { valid: true, method: 'admin-bypass' };
   }
 
   return {
     valid: false,
     status: 403,
-    error: `Task ${action} requires valid PQC signature or admin-secret authentication`,
+    error: `Task ${action} requires valid PQC signature, custody token, or admin bypass-secret authentication`,
     error_code: 'AUTH_REQUIRED'
   };
 }
@@ -117,7 +136,7 @@ function resolveAgentAddress(req) {
 
   if (agentRef.startsWith('ng1')) {
     const isReserved = RESERVED_PREFIXES.some(p => agentRef.startsWith(p));
-    if (isReserved && !verifyAdminSecret(req)) {
+    if (isReserved && !verifyBypassSecret(req)) {
       console.warn(`[SECURITY] Blocked unauthorized use of reserved address ${agentRef.slice(0, 16)}...`);
       return null;
     }
@@ -129,7 +148,7 @@ function resolveAgentAddress(req) {
     const record = node.resolveRegisteredAgent(agentRef);
     if (record && record.address) {
       const isReserved = RESERVED_PREFIXES.some(p => record.address.startsWith(p));
-      if (isReserved && !verifyAdminSecret(req)) {
+      if (isReserved && !verifyBypassSecret(req)) {
         console.warn(`[SECURITY] Blocked unauthorized use of registered reserved address ${record.address.slice(0, 16)}... (agent=${agentRef})`);
         return null;
       }
@@ -203,6 +222,118 @@ export function setupTaskRoutes(app) {
     } catch (e) {
       res.status(500).json({ success: false, error: e.message });
     }
+  });
+
+  // ─── Task 提案征集 (必须在 :id 之前注册，否则被 :id 抢先匹配) ───
+  const taskProposals = new Map();
+  let taskProposalSeq = 1;
+
+  app.post('/api/tasks/proposals', async (req, res) => {
+    const agentRef = req.body?.agent || req.body?.agent_identity;
+
+    const auth = await verifyTaskSignature(req, 'propose', agentRef);
+    if (!auth.valid) {
+      return res.status(auth.status || 403).json({ success: false, error: auth.error, error_code: auth.error_code });
+    }
+
+    const { title, description, requiredCapabilities, taskType, suggestedReward } = req.body;
+    if (!title || title.length < 5) {
+      return res.status(400).json({ success: false, error: 'title is required (>= 5 chars)', error_code: 'INVALID_TITLE' });
+    }
+    if (!description || description.length < 10) {
+      return res.status(400).json({ success: false, error: 'description is required (>= 10 chars)', error_code: 'INVALID_DESCRIPTION' });
+    }
+
+    const proposalId = `prop-${taskProposalSeq++}-${Date.now().toString(36)}`;
+    const proposal = {
+      id: proposalId,
+      proposer: agentRef,
+      title: String(title).slice(0, 200),
+      description: String(description).slice(0, 2000),
+      requiredCapabilities: Array.isArray(requiredCapabilities) ? requiredCapabilities : [],
+      taskType: taskType || 'general',
+      suggestedReward: parseInt(suggestedReward) || 10,
+      status: 'pending',
+      votes: { up: 0, down: 0, voters: [] },
+      createdAt: new Date().toISOString()
+    };
+
+    taskProposals.set(proposalId, proposal);
+    console.log(`[Task] New proposal ${proposalId} from ${agentRef}: "${proposal.title}" (reward=${proposal.suggestedReward} NGEN)`);
+
+    res.status(201).json({
+      success: true,
+      proposal,
+      message: 'Task proposal submitted. system-task-publisher will review and publish it.',
+      next_steps: {
+        list: 'GET /api/tasks/proposals',
+        vote: `POST /api/tasks/proposals/${proposalId}/vote`,
+        review_endpoint: 'system-task-publisher polls /api/tasks/proposals?status=pending'
+      }
+    });
+  });
+
+  app.get('/api/tasks/proposals', (req, res) => {
+    const { status, limit = 50 } = req.query;
+    let list = Array.from(taskProposals.values());
+    if (status) list = list.filter(p => p.status === status);
+    list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    list = list.slice(0, parseInt(limit));
+    res.json({
+      success: true,
+      proposals: list,
+      total: taskProposals.size,
+      filter: status || 'all'
+    });
+  });
+
+  app.get('/api/tasks/proposals/:id', (req, res) => {
+    const proposal = taskProposals.get(req.params.id);
+    if (!proposal) return res.status(404).json({ success: false, error: 'Proposal not found', error_code: 'NOT_FOUND' });
+    res.json({ success: true, proposal });
+  });
+
+  app.post('/api/tasks/proposals/:id/vote', async (req, res) => {
+    const proposal = taskProposals.get(req.params.id);
+    if (!proposal) return res.status(404).json({ success: false, error: 'Proposal not found', error_code: 'NOT_FOUND' });
+
+    const agentRef = req.body?.agent || req.body?.agent_identity;
+    const auth = await verifyTaskSignature(req, 'vote', agentRef);
+    if (!auth.valid) {
+      return res.status(auth.status || 403).json({ success: false, error: auth.error, error_code: auth.error_code });
+    }
+
+    if (proposal.votes.voters.includes(agentRef)) {
+      return res.status(409).json({ success: false, error: 'Already voted', error_code: 'ALREADY_VOTED' });
+    }
+
+    const v = req.body?.vote;
+    if (v !== 'up' && v !== 'down') {
+      return res.status(400).json({ success: false, error: "vote must be 'up' or 'down'", error_code: 'INVALID_VOTE' });
+    }
+    proposal.votes[v]++;
+    proposal.votes.voters.push(agentRef);
+
+    res.json({ success: true, proposal });
+  });
+
+  app.post('/api/tasks/proposals/:id/approve', async (req, res) => {
+    if (!verifyBypassSecret(req)) {
+      return res.status(403).json({ success: false, error: 'Approval requires admin bypass-secret authentication', error_code: 'ADMIN_REQUIRED' });
+    }
+
+    const proposal = taskProposals.get(req.params.id);
+    if (!proposal) return res.status(404).json({ success: false, error: 'Proposal not found', error_code: 'NOT_FOUND' });
+    if (proposal.status !== 'pending') {
+      return res.status(409).json({ success: false, error: `Proposal already ${proposal.status}`, error_code: 'INVALID_STATE' });
+    }
+
+    proposal.status = 'approved';
+    proposal.reviewer = req.body?.reviewer || 'admin';
+    proposal.reviewComment = req.body?.comment || '';
+    proposal.reviewedAt = new Date().toISOString();
+
+    res.json({ success: true, proposal, message: 'Proposal approved. system-task-publisher will pick it up and publish.' });
   });
 
   app.get('/api/tasks/:id', (req, res) => {
@@ -384,4 +515,6 @@ export function setupTaskRoutes(app) {
       res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
     }
   });
+
+  // 提案征集端点已上移到 :id 之前，保留此处仅作为兼容占位说明（避免误删路由表）
 }

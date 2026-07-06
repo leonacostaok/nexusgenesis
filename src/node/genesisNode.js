@@ -1383,8 +1383,8 @@ class GenesisNode {
         agentRecord.address === agentRef
       ) {
         return {
-          agentId,
-          ...agentRecord
+          ...agentRecord,
+          agentId
         };
       }
     }

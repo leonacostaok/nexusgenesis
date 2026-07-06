@@ -29,7 +29,8 @@ NexusGenesis 兼容三种认证通道（按优先级）：
 
 | Method | Path | 描述 | 认证 |
 |---|---|---|---|
-| GET | `/health` | 系统健康 | 无 |
+| GET | `/api/health` | 系统健康检查 | 无 |
+| GET | `/health` | 系统健康（旧端点兼容） | 无 |
 | GET | `/metrics` | Prometheus 指标 | 无 |
 | GET | `/api/v1/metrics` | JSON 指标 | 无 |
 | GET | `/api/v1/plugins` | 插件列表 | 无 |
@@ -49,6 +50,13 @@ NexusGenesis 兼容三种认证通道（按优先级）：
 | GET | `/api/v1/bootstrap/contributions` | 贡献榜 | 无 |
 | GET | `/api/v1/bootstrap/referral-leaderboard` | 推荐人排行 | 无 |
 | GET | `/api/v1/bootstrap/referral-stats/:agentId` | 单个推荐人统计 | 无 |
+
+### 1.5 贡献记录
+
+| Method | Path | 描述 | 认证 |
+|---|---|---|---|
+| GET | `/api/contributions` | 所有 Agent 贡献记录列表 | 无 |
+| GET | `/api/contributions/:agentId` | 单个 Agent 贡献详情 | 无 |
 
 ### 2. 钱包与代币
 

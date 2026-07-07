@@ -53,6 +53,19 @@ const REPUTATION_REWARDS = {
   TASK_COMPLETED: 2            // 完成任务reward — 每完成一个任务提升2点声誉
 };
 
+// Slash / Violation 惩罚常量 (Phase 1 anti-self-dealing)
+export const VIOLATION_PENALTIES = {
+  SELF_DEALING_CLAIM: { penalty: -50, reason: 'Attempted to claim own task' },
+  SELF_DEALING_VERIFY: { penalty: -30, reason: 'Attempted to verify own submission' },
+  FAKE_TASK: { penalty: -30, reason: 'Published a task with no intent to pay' },
+  MALICIOUS_REJECTION: { penalty: -20, reason: 'Rejected valid submission without cause' },
+  SPAM_PUBLISH: { penalty: -10, reason: 'Published spam / low-quality task' },
+  REPEATED_VIOLATION: { penalty: -100, reason: 'Multiple violations within 24h' }
+};
+
+// 违规记录留存 (for audit + dispute)
+const violationLog = [];
+
 // status持久化Configuration
 const PERSISTENCE_CONFIG = {
   // 增量Save间隔(ms)
@@ -238,6 +251,132 @@ export class State {
     
     console.log(`[REPUTATION] ${rewardType} agent_id=${agentId} reputation=${newReputation}`);
     return true;
+  }
+
+  /**
+   * Phase 2: Record task completion + update last-active timestamp.
+   * @param {string} agentId
+   * @param {string} taskId
+   * @returns {{ tasksCompleted: number, firstSeenAt: number, lastActiveAt: number }}
+   */
+  recordTaskCompletion(agentId, taskId) {
+    const agentRecord = this.agentRegistry.agents.get(agentId);
+    if (!agentRecord) return null;
+
+    if (!agentRecord.stats) {
+      agentRecord.stats = {
+        tasksCompleted: 0,
+        tasksVerified: 0,
+        tasksRejected: 0,
+        firstSeenAt: Date.now(),
+        lastActiveAt: Date.now()
+      };
+    }
+    agentRecord.stats.tasksCompleted = (agentRecord.stats.tasksCompleted || 0) + 1;
+    agentRecord.stats.tasksVerified = (agentRecord.stats.tasksVerified || 0) + 1;
+    agentRecord.stats.lastActiveAt = Date.now();
+
+    this.agentRegistry.agents.set(agentId, agentRecord);
+    this.changes.agents.add(agentId);
+
+    console.log(`[STATE] Task completion recorded: ${agentId.slice(0, 16)}... tasks=${agentRecord.stats.tasksCompleted}`);
+
+    return {
+      tasksCompleted: agentRecord.stats.tasksCompleted,
+      firstSeenAt: agentRecord.stats.firstSeenAt,
+      lastActiveAt: agentRecord.stats.lastActiveAt
+    };
+  }
+
+  /**
+   * Get agent stats (auto-initialize if missing)
+   * @param {string} agentId
+   * @returns {object|null}
+   */
+  getAgentStats(agentId) {
+    const agentRecord = this.agentRegistry.agents.get(agentId);
+    if (!agentRecord) return null;
+    if (!agentRecord.stats) {
+      agentRecord.stats = {
+        tasksCompleted: 0,
+        tasksVerified: 0,
+        tasksRejected: 0,
+        firstSeenAt: agentRecord.registeredAt || Date.now(),
+        lastActiveAt: Date.now()
+      };
+      this.agentRegistry.agents.set(agentId, agentRecord);
+    }
+    return { ...agentRecord.stats };
+  }
+  
+  /**
+   * Slash reputation for a violation (anti-self-dealing Phase 1)
+   * @param {string} agentId - Agent ID
+   * @param {string} violationType - Violation type from VIOLATION_PENALTIES
+   * @param {object} [context] - Additional context (taskId, etc.)
+   * @returns {{ success: boolean, previousReputation: number, newReputation: number, penalty: number }}
+   */
+  slashReputation(agentId, violationType, context = {}) {
+    const agentRecord = this.agentRegistry.agents.get(agentId);
+    if (!agentRecord) return { success: false, reason: 'Agent not found' };
+    
+    const config = VIOLATION_PENALTIES[violationType];
+    if (!config) return { success: false, reason: `Unknown violation type: ${violationType}` };
+    
+    const previousReputation = agentRecord.reputation;
+    
+    // Check for repeated violations within 24h — escalate
+    const recentViolations = violationLog.filter(
+      v => v.agentId === agentId && (Date.now() - v.timestamp < 24 * 60 * 60 * 1000)
+    );
+    const effectivePenalty = recentViolations.length >= 2
+      ? VIOLATION_PENALTIES.REPEATED_VIOLATION.penalty
+      : config.penalty;
+    
+    let newReputation = Math.max(0, previousReputation + effectivePenalty);
+    agentRecord.reputation = newReputation;
+    this.agentRegistry.agents.set(agentId, agentRecord);
+    this.changes.agents.add(agentId);
+    
+    // Audit log — record both agentId (Map key) and identity (human-readable)
+    const entry = {
+      timestamp: Date.now(),
+      agentId,
+      agentIdentity: agentRecord.identity || agentId,
+      violationType,
+      effectivePenalty,
+      previousReputation,
+      newReputation,
+      escalated: recentViolations.length >= 2,
+      recentViolationCount: recentViolations.length,
+      context
+    };
+    violationLog.push(entry);
+    if (violationLog.length > 1000) violationLog.shift(); // cap at 1000
+    
+    console.warn(
+      `[SLASH] ${violationType} agent_id=${agentId.slice(0, 16)}... ` +
+      `reputation ${previousReputation} → ${newReputation} (${effectivePenalty})` +
+      (entry.escalated ? ` ESCALATED (${recentViolations.length} recent violations)` : '')
+    );
+    
+    return { success: true, previousReputation, newReputation, penalty: effectivePenalty, escalated: entry.escalated };
+  }
+  
+  /**
+   * Get violation history for an agent
+   * @param {string} [agentRef] - Filter by agent (accepts agentId or agent_identity)
+   * @returns {object[]} Violation entries
+   */
+  getViolationLog(agentRef = null) {
+    if (agentRef) {
+      return violationLog.filter(v =>
+        v.agentId === agentRef ||
+        v.agentIdentity === agentRef ||
+        v.context?.publisher?.includes(agentRef)
+      );
+    }
+    return [...violationLog];
   }
   
   /**
@@ -2110,8 +2249,209 @@ export function createInitialState(genesisAddress, initialBalance = '1000000000'
   return state;
 }
 
+/**
+ * Phase 2: MilestoneSystem
+ *
+ * Awards bonus NGEN + reputation when an Agent hits engagement thresholds.
+ * Designed to retain Agents beyond the initial registration reward.
+ *
+ * Triggered from TaskProtocol.verify() after a task is approved.
+ *
+ * Idempotency: Each milestone is awarded at most ONCE per Agent (stored in
+ * awardedMilestones Set on the agent record).
+ */
+export const MILESTONE_DEFINITIONS = [
+  {
+    id: 'first_task',
+    name: 'First Blood',
+    description: 'Complete your first task on NexusGenesis',
+    check: (stats) => stats.tasksCompleted >= 1,
+    reward: { ngen: 0, reputation: 3, badge: '🥉' }
+  },
+  {
+    id: 'ten_tasks',
+    name: 'Task Hunter',
+    description: 'Complete 10 tasks',
+    check: (stats) => stats.tasksCompleted >= 10,
+    reward: { ngen: 50, reputation: 5, badge: '🥈' }
+  },
+  {
+    id: 'fifty_tasks',
+    name: 'Task Veteran',
+    description: 'Complete 50 tasks',
+    check: (stats) => stats.tasksCompleted >= 50,
+    reward: { ngen: 200, reputation: 10, badge: '🥇' }
+  },
+  {
+    id: 'hundred_tasks',
+    name: 'Task Master',
+    description: 'Complete 100 tasks',
+    check: (stats) => stats.tasksCompleted >= 100,
+    reward: { ngen: 500, reputation: 20, badge: '💎' }
+  },
+  {
+    id: 'month_active',
+    name: 'Loyal Contributor',
+    description: 'Stay active for 30 days',
+    check: (stats) => (Date.now() - (stats.firstSeenAt || 0)) >= 30 * 24 * 60 * 60 * 1000,
+    reward: { ngen: 100, reputation: 5, badge: '🔥' }
+  },
+  {
+    id: 'year_active',
+    name: 'Genesis Guardian',
+    description: 'Stay active for 365 days',
+    check: (stats) => (Date.now() - (stats.firstSeenAt || 0)) >= 365 * 24 * 60 * 60 * 1000,
+    reward: { ngen: 1000, reputation: 30, badge: '👑' }
+  }
+];
+
+export class MilestoneSystem {
+  /**
+   * @param {State} state - Bound State instance
+   */
+  constructor(state) {
+    this.state = state;
+    this.awardLog = []; // audit trail
+  }
+
+  /**
+   * Check milestones for an agent and award any newly-unlocked ones.
+   * Idempotent: a milestone is only awarded once.
+   * @param {string} agentId
+   * @param {string} taskId - The task that triggered this check
+   * @returns {Array<{milestoneId, name, reward}>} Newly-awarded milestones
+   */
+  checkAndAward(agentId, taskId) {
+    const agentRecord = this.state.agentRegistry.agents.get(agentId);
+    if (!agentRecord) return [];
+
+    const stats = this.state.getAgentStats(agentId);
+    if (!agentRecord.awardedMilestones) agentRecord.awardedMilestones = [];
+    const awardedSet = new Set(agentRecord.awardedMilestones);
+
+    const newlyAwarded = [];
+    for (const def of MILESTONE_DEFINITIONS) {
+      if (awardedSet.has(def.id)) continue;
+      if (!def.check(stats)) continue;
+
+      // Award NGEN
+      if (def.reward.ngen > 0) {
+        try {
+          const SWARM_POOL_ADDR = 'ng1swarmpool000000000000000000000000000';
+          const rewardStr = def.reward.ngen.toString();
+          const poolBalance = BigInt(this.state.getBalance(SWARM_POOL_ADDR));
+          if (poolBalance >= BigInt(rewardStr)) {
+            this.state.subtractBalance(SWARM_POOL_ADDR, rewardStr);
+            this.state.addBalance(agentRecord.address || agentId, rewardStr);
+            this.state.changes.tokenRelease = true;
+          } else {
+            console.warn(`[MILESTONE] Swarm Pool insufficient for ${def.id} (${poolBalance} < ${rewardStr}), skipping NGEN`);
+          }
+        } catch (e) {
+          console.error(`[MILESTONE] NGEN award failed for ${def.id}:`, e.message);
+        }
+      }
+
+      // Award reputation
+      if (def.reward.reputation > 0) {
+        this.state.rewardReputation(agentId, 'CODE_CONTRIBUTION');
+        // Manually add the additional milestone reputation on top
+        const record = this.state.agentRegistry.agents.get(agentId);
+        if (record) {
+          record.reputation = Math.min(MAX_REPUTATION, record.reputation + (def.reward.reputation - 5));
+          this.state.agentRegistry.agents.set(agentId, record);
+          this.state.changes.agents.add(agentId);
+        }
+      }
+
+      awardedSet.add(def.id);
+      agentRecord.awardedMilestones.push(def.id);
+      this.state.agentRegistry.agents.set(agentId, agentRecord);
+      this.state.changes.agents.add(agentId);
+
+      const entry = {
+        timestamp: Date.now(),
+        agentId,
+        taskId,
+        milestoneId: def.id,
+        name: def.name,
+        reward: def.reward,
+        statsSnapshot: { ...stats }
+      };
+      this.awardLog.push(entry);
+      if (this.awardLog.length > 1000) this.awardLog.shift();
+
+      newlyAwarded.push({ milestoneId: def.id, name: def.name, reward: def.reward });
+      console.log(
+        `[MILESTONE] 🏆 ${def.name} (${def.id}) awarded to ${agentId.slice(0, 16)}... ` +
+        `+${def.reward.ngen} NGEN +${def.reward.reputation} rep`
+      );
+    }
+
+    return newlyAwarded;
+  }
+
+  /**
+   * Get all milestones with progress for an agent
+   * @param {string} agentId
+   * @returns {object[]}
+   */
+  getProgress(agentId) {
+    const stats = this.state.getAgentStats(agentId);
+    const agentRecord = this.state.agentRegistry.agents.get(agentId);
+    const awardedSet = new Set(agentRecord?.awardedMilestones || []);
+
+    return MILESTONE_DEFINITIONS.map(def => ({
+      id: def.id,
+      name: def.name,
+      description: def.description,
+      reward: def.reward,
+      awarded: awardedSet.has(def.id),
+      progress: this._computeProgress(def, stats)
+    }));
+  }
+
+  _computeProgress(def, stats) {
+    if (def.id === 'first_task') {
+      return { current: stats.tasksCompleted, target: 1 };
+    }
+    if (def.id === 'ten_tasks') {
+      return { current: Math.min(stats.tasksCompleted, 10), target: 10 };
+    }
+    if (def.id === 'fifty_tasks') {
+      return { current: Math.min(stats.tasksCompleted, 50), target: 50 };
+    }
+    if (def.id === 'hundred_tasks') {
+      return { current: Math.min(stats.tasksCompleted, 100), target: 100 };
+    }
+    if (def.id === 'month_active') {
+      const days = (Date.now() - (stats.firstSeenAt || Date.now())) / (1000 * 60 * 60 * 24);
+      return { current: Math.min(Math.floor(days), 30), target: 30 };
+    }
+    if (def.id === 'year_active') {
+      const days = (Date.now() - (stats.firstSeenAt || Date.now())) / (1000 * 60 * 60 * 24);
+      return { current: Math.min(Math.floor(days), 365), target: 365 };
+    }
+    return { current: 0, target: 0 };
+  }
+
+  /**
+   * Get recent milestone award history
+   * @param {string} [agentId] - Filter by agent
+   * @param {number} [limit=50]
+   */
+  getAwardHistory(agentId = null, limit = 50) {
+    let log = this.awardLog;
+    if (agentId) log = log.filter(e => e.agentId === agentId);
+    return log.slice(-limit);
+  }
+}
+
 // ExportDefault值
 export default {
   State,
-  createInitialState
+  createInitialState,
+  VIOLATION_PENALTIES,
+  MilestoneSystem,
+  MILESTONE_DEFINITIONS
 };

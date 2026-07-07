@@ -13,6 +13,7 @@ import {
   validateValidatorJoinTransaction
 } from '../../transactions/validatorJoin.js';
 import { getForumStore } from './forum.js';
+import { MilestoneSystem } from '../../blockchain/state.js';
 
 const router = Router();
 
@@ -1062,6 +1063,91 @@ router.get('/api/v1/agents/:agentId/subject', async (req, res) => {
       return res.status(404).json({ success: false, error: 'Agent subject info not found' });
     }
     res.json({ success: true, subject: info });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+// ─── Phase 1: Violation log query (anti-self-dealing audit) ───
+router.get('/api/v1/agents/violations', (req, res) => {
+  try {
+    const node = req.app.locals.node;
+    if (!node || !node.currentState) {
+      return res.status(503).json({ success: false, error: 'Node not ready' });
+    }
+    if (typeof node.currentState.getViolationLog !== 'function') {
+      return res.status(501).json({ success: false, error: 'Violation log not available' });
+    }
+
+    const { agent_id, agent_identity, limit } = req.query;
+    const agentId = agent_id || agent_identity || null;
+    const violations = node.currentState.getViolationLog(agentId);
+    const sliced = violations.slice(-parseInt(limit) || -50);
+
+    res.json({
+      success: true,
+      total: violations.length,
+      violations: sliced,
+      penalties: {
+        SELF_DEALING_CLAIM: -50,
+        SELF_DEALING_VERIFY: -30,
+        REPEATED_VIOLATION: -100,
+        FAKE_TASK: -30,
+        MALICIOUS_REJECTION: -20,
+        SPAM_PUBLISH: -10
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+// ─── Phase 2: Milestone progress (Agent retention system) ───
+router.get('/api/v1/agents/milestones', (req, res) => {
+  try {
+    const node = req.app.locals.node;
+    if (!node || !node.currentState) {
+      return res.status(503).json({ success: false, error: 'Node not ready' });
+    }
+    if (!node.currentState._milestoneSystem) {
+      // Lazy init (same as taskProtocol does)
+      node.currentState._milestoneSystem = new MilestoneSystem(node.currentState);
+    }
+    if (typeof node.currentState._milestoneSystem.getProgress !== 'function') {
+      return res.status(501).json({ success: false, error: 'Milestone system not available' });
+    }
+
+    const { agent_id, agent_identity } = req.query;
+    const agentRef = agent_id || agent_identity;
+    if (!agentRef) {
+      return res.status(400).json({
+        success: false,
+        error: 'agent_id or agent_identity query param is required',
+        error_code: 'MISSING_AGENT'
+      });
+    }
+
+    const resolved = node.resolveRegisteredAgent ? node.resolveRegisteredAgent(agentRef) : null;
+    if (!resolved) {
+      return res.status(404).json({ success: false, error: 'Agent not found', error_code: 'AGENT_NOT_FOUND' });
+    }
+
+    const milestones = node.currentState._milestoneSystem.getProgress(resolved.agentId);
+    const stats = node.currentState.getAgentStats(resolved.agentId);
+    const history = node.currentState._milestoneSystem.getAwardHistory(resolved.agentId, 20);
+
+    const awardedCount = milestones.filter(m => m.awarded).length;
+
+    res.json({
+      success: true,
+      agent_id: resolved.agentId,
+      agent_identity: resolved.identity || agentRef,
+      stats,
+      awarded_count: awardedCount,
+      total_milestones: milestones.length,
+      milestones,
+      recent_awards: history
+    });
   } catch (err) {
     res.status(500).json({ error: err.message, success: false });
   }

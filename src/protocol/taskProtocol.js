@@ -10,6 +10,7 @@ import fs from 'fs';
 import path from 'path';
 import agentWalletManager from '../wallet/agentWalletManager.js';
 import { fileURLToPath } from 'url';
+import { MilestoneSystem } from '../blockchain/state.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -114,6 +115,33 @@ class TaskProtocol {
         console.log(`[TaskProtocol] Expired/Released ${expired} tasks`);
       }
     }, 60000);
+  }
+
+  /**
+   * Phase 1: Resolve agent identity from address and slash reputation.
+   * @param {string} agentAddress - Agent ng1 address
+   * @param {string} violationType - Violation type key (SELF_DEALING_CLAIM, etc.)
+   * @param {object} context - Additional context (taskId, etc.)
+   */
+  _slashForViolation(agentAddress, violationType, context = {}) {
+    if (!this.node || !this.node.currentState) return;
+    if (typeof this.node.currentState.slashReputation !== 'function') return;
+
+    const agentRecord = this.node.resolveRegisteredAgent
+      ? this.node.resolveRegisteredAgent(agentAddress)
+      : null;
+    if (!agentRecord || !agentRecord.agentId) {
+      console.warn(`[TaskProtocol] Cannot slash: agent not resolved for address ${agentAddress.slice(0, 12)}...`);
+      return;
+    }
+
+    const result = this.node.currentState.slashReputation(agentRecord.agentId, violationType, context);
+    if (result.success) {
+      console.warn(
+        `[TaskProtocol] ⚠ SLASHED ${agentRecord.agentId.slice(0, 16)}... ` +
+        `for ${violationType}: ${result.previousReputation} → ${result.newReputation}`
+      );
+    }
   }
 
   /**
@@ -229,6 +257,8 @@ class TaskProtocol {
       return { success: false, reason: `Task is ${task.status}, not open`, errorCode: 'TASK_NOT_OPEN' };
     }
     if (task.publisher === agentAddress) {
+      // Phase 1: Slash reputation for self-dealing attempt
+      this._slashForViolation(agentAddress, 'SELF_DEALING_CLAIM', { taskId, publisher: task.publisher });
       return { success: false, reason: 'Cannot claim your own task', errorCode: 'CANNOT_CLAIM_OWN' };
     }
     if (task.minReputation && agentReputation < task.minReputation) {
@@ -432,6 +462,26 @@ class TaskProtocol {
           const result = this.node.awardActiveReferral(task.claimedBy);
           if (result) {
             console.log(`[TaskProtocol] 🎯 Active referral bonus: ${result.referrer} → +${result.reward} NGEN${result.milestone ? ` + milestone(${result.milestone.count}) → +${result.milestone.reward}` : ''}`);
+          }
+        }
+
+        // ─── Phase 2: Record task completion + check milestones ───
+        if (agentRecord && agentRecord.agentId && typeof this.node.currentState.recordTaskCompletion === 'function') {
+          const stats = this.node.currentState.recordTaskCompletion(agentRecord.agentId, taskId);
+          if (stats) {
+            console.log(`[TaskProtocol] 📊 Stats: ${agentRecord.agentId.slice(0, 16)}... tasks=${stats.tasksCompleted}`);
+
+            // Check milestones via MilestoneSystem (lazy-init on the State instance)
+            if (!this.node.currentState._milestoneSystem) {
+              this.node.currentState._milestoneSystem = new MilestoneSystem(this.node.currentState);
+              console.log('[TaskProtocol] 🏆 MilestoneSystem initialized on state');
+            }
+            const newlyAwarded = this.node.currentState._milestoneSystem.checkAndAward(agentRecord.agentId, taskId);
+            if (newlyAwarded.length > 0) {
+              console.log(`[TaskProtocol] 🏆 Milestones unlocked: ${newlyAwarded.map(m => m.name).join(', ')}`);
+              // Stash on the task for the HTTP response
+              task.milestonesAwarded = newlyAwarded;
+            }
           }
         }
       } else {

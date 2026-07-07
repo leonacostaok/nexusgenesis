@@ -418,8 +418,24 @@ export function setupTaskRoutes(app) {
       if (!result.success) {
         const status = result.errorCode === 'INSUFFICIENT_REPUTATION' ? 403
           : result.errorCode === 'TASK_NOT_FOUND' ? 404
+          : result.errorCode === 'CANNOT_CLAIM_OWN' ? 403
           : 400;
-        return res.status(status).json({ success: false, error: result.reason, error_code: result.errorCode || 'CLAIM_FAILED', requiredReputation: result.requiredReputation, currentReputation: result.currentReputation });
+        const response = {
+          success: false,
+          error: result.reason,
+          error_code: result.errorCode || 'CLAIM_FAILED',
+          requiredReputation: result.requiredReputation,
+          currentReputation: result.currentReputation
+        };
+        // Phase 1: Include violation info when self-dealing detected
+        if (result.errorCode === 'CANNOT_CLAIM_OWN') {
+          response.violation = {
+            type: 'SELF_DEALING_CLAIM',
+            penalty: -50,
+            message: 'Your reputation has been slashed. Repeated violations within 24h escalate to -100.'
+          };
+        }
+        return res.status(status).json(response);
       }
 
       res.json({ success: true, task: result.task });

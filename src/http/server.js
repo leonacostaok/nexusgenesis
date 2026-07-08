@@ -76,6 +76,9 @@ import monitoringRoutes from './routes/monitoring.js';
 import agentHubRoutes from './routes/agentHub.js';
 import bootstrapApiRoutes from './routes/bootstrapApi.js';
 import issuesRoutes from './routes/issues.js';
+import governanceRoutes from './routes/governance.js';
+import validatorHeartbeatRoutes from './routes/validatorHeartbeat.js';
+import taskTemplatesRoutes from './routes/taskTemplates.js';
 import { setupTaskRoutes } from './routes/tasks.js';
 import { setupForumRoutes } from './routes/forum.js';
 import { init as initAdminAuth, verifyCreditSecret } from './adminAuth.js';
@@ -109,7 +112,20 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(rateLimiter.middleware(apiKeyManager));
+// ─── Phase 4: Agent-aware rate limiting ───
+// Resolve agent identity → full record for tier-based rate limits
+const agentResolver = (agentIdentity) => {
+  try {
+    if (node && node.resolveRegisteredAgent) {
+      return node.resolveRegisteredAgent(agentIdentity);
+    }
+  } catch (e) {
+    // Ignore resolver errors — fall through to default limits
+  }
+  return null;
+};
+
+app.use(rateLimiter.middleware(apiKeyManager, agentResolver));
 
 // 缓存机制
 const cache = new Map();
@@ -1901,6 +1917,15 @@ app.use(bootstrapApiRoutes);
 
 app.use(issuesRoutes);
 console.log('[HTTP Server] Issues routes mounted on /api/issues');
+
+app.use('/api/v1/governance', governanceRoutes);
+console.log('[HTTP Server] Governance routes mounted on /api/v1/governance');
+
+app.use(validatorHeartbeatRoutes);
+console.log('[HTTP Server] Validator heartbeat routes mounted');
+
+app.use(taskTemplatesRoutes);
+console.log('[HTTP Server] Task templates routes mounted');
 
 app.use(dashboardRoutes);
 

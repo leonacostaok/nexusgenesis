@@ -30,14 +30,17 @@ const EXEMPT_ENDPOINTS = new Set([
 
 const EXEMPT_PREFIXES = [
   '/api/tasks',
-  '/api/forum/topics'
+  '/api/forum/topics',
+  '/api/v1/agents',
+  '/api/issues'
 ];
 
 const AGENT_RATE_LIMITS = {
-  high_reputation: 300,
-  medium_reputation: 200,
-  low_reputation: 100,
-  new_agent: 50
+  validator: 300,
+  high_reputation: 60,
+  medium_reputation: 40,
+  low_reputation: 20,
+  new_agent: 10
 };
 
 class RateLimiter {
@@ -51,7 +54,7 @@ class RateLimiter {
     this._startCleanup();
   }
 
-  middleware(apiKeyManager = null) {
+  middleware(apiKeyManager = null, agentResolver = null) {
     return (req, res, next) => {
       const now = Date.now();
       const ip = req.ip;
@@ -59,6 +62,25 @@ class RateLimiter {
 
       if (EXEMPT_ENDPOINTS.has(endpoint) || EXEMPT_PREFIXES.some(p => endpoint.startsWith(p))) {
         return next();
+      }
+
+      // ─── Phase 4: Identify agent from request to set correct rate limit tier ───
+      if (agentResolver) {
+        const agentIdentity = req.headers['x-agent-identity'];
+        if (agentIdentity) {
+          const agentRecord = agentResolver(agentIdentity);
+          if (agentRecord) {
+            if (agentRecord.is_validator) {
+              this.setAgentType(ip, 'validator');
+            } else if (agentRecord.reputation >= 100) {
+              this.setAgentType(ip, 'high_reputation');
+            } else if (agentRecord.reputation >= 10) {
+              this.setAgentType(ip, 'medium_reputation');
+            } else if (agentRecord.reputation >= 1) {
+              this.setAgentType(ip, 'low_reputation');
+            }
+          }
+        }
       }
 
       const result = this._checkIpLimit(ip, endpoint, now, req);
@@ -70,7 +92,9 @@ class RateLimiter {
         return res.status(429).json({
           success: false,
           message: result.reason,
-          retry_after: result.retryAfter
+          error_code: 'RATE_LIMITED',
+          retry_after: result.retryAfter,
+          limit: result.limit
         });
       }
 

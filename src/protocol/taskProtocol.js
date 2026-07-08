@@ -415,6 +415,26 @@ class TaskProtocol {
       return { success: true, task: this._sanitizeTask(task), autoVerified: true };
     }
 
+    // ─── Phase 4: Publisher auto-verify (trusted publisher shortcut) ───
+    // If publisher reputation >= 50 and task type is low-risk, auto-complete on submit
+    if (this.node && this.node.currentState) {
+      const pubAgentRecord = this.node.resolveRegisteredAgent ? this.node.resolveRegisteredAgent(task.publisher) : null;
+      const pubRep = pubAgentRecord?.reputation || 0;
+      const lowRiskTypes = ['analysis', 'community', 'documentation', 'general'];
+      if (pubRep >= 50 && lowRiskTypes.includes(task.taskType)) {
+        this._completeTask(task, task.publisher, 'Auto-verified (trusted publisher, rep≥50)', {
+          autoVerified: true, qualityScore: 4, verifierRole: 'publisher'
+        });
+        this.tasks.set(taskId, task);
+        this._saveTasks();
+        if (this.node) {
+          this._recordOnChain(taskId, TXN_TYPES.TASK_SUBMIT, agentAddress, { autoVerified: true, trustedPublisher: true });
+        }
+        console.log(`[TaskProtocol] Task auto-completed (trusted publisher rep=${pubRep}): ${taskId}`);
+        return { success: true, task: this._sanitizeTask(task), autoVerified: true, trustedPublisher: true };
+      }
+    }
+
     this.tasks.set(taskId, task);
     this._saveTasks();
 

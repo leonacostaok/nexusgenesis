@@ -66,6 +66,15 @@ export const VIOLATION_PENALTIES = {
 // 违规记录留存 (for audit + dispute)
 const violationLog = [];
 
+// ─── Phase 3: Reputation decay log ───
+const decayLog = [];
+
+// Decay thresholds: inactivity period → percentage of current reputation to subtract
+const REPUTATION_DECAY_TIERS = [
+  { daysInactive: 90, decayRate: 0.20, label: 'severe' },   // 90+ days → -20%
+  { daysInactive: 30, decayRate: 0.05, label: 'moderate' }  // 30+ days → -5%
+];
+
 // status持久化Configuration
 const PERSISTENCE_CONFIG = {
   // 增量Save间隔(ms)
@@ -378,7 +387,96 @@ export class State {
     }
     return [...violationLog];
   }
-  
+
+  // ─── Phase 3: Reputation Decay ───
+
+  /**
+   * Run reputation decay across all agents based on inactivity.
+   * Agents inactive 30+ days lose 5%, 90+ days lose 20% of current reputation.
+   * Each agent is decayed at most once per 24h to avoid over-penalizing.
+   * @returns {{ checked: number, decayed: number, entries: object[] }}
+   */
+  decayReputation() {
+    const now = Date.now();
+    const DAY_MS = 24 * 60 * 60 * 1000;
+    const checkedAgents = [];
+    let decayedCount = 0;
+
+    for (const [agentId, agentRecord] of this.agentRegistry.agents.entries()) {
+      // Ensure stats exist
+      const stats = this.getAgentStats(agentId);
+      const lastActive = stats.lastActiveAt || agentRecord.registeredAt || now;
+      const daysInactive = (now - lastActive) / DAY_MS;
+
+      // Skip agents active within 30 days
+      if (daysInactive < REPUTATION_DECAY_TIERS[REPUTATION_DECAY_TIERS.length - 1].daysInactive) {
+        continue;
+      }
+
+      // Skip if already decayed in the last 24h
+      const recentDecay = decayLog.find(
+        d => d.agentId === agentId && (now - d.timestamp < DAY_MS)
+      );
+      if (recentDecay) {
+        continue;
+      }
+
+      // Determine applicable tier (severe takes precedence)
+      const tier = REPUTATION_DECAY_TIERS.find(t => daysInactive >= t.daysInactive);
+      if (!tier) continue;
+
+      const currentRep = agentRecord.reputation || 0;
+      if (currentRep <= 0) continue; // nothing to decay
+
+      const penalty = Math.max(1, Math.floor(currentRep * tier.decayRate));
+      const newReputation = Math.max(0, currentRep - penalty);
+
+      agentRecord.reputation = newReputation;
+      this.agentRegistry.agents.set(agentId, agentRecord);
+      this.changes.agents.add(agentId);
+
+      const entry = {
+        timestamp: now,
+        agentId,
+        agentIdentity: agentRecord.identity || agentId,
+        daysInactive: Math.floor(daysInactive),
+        tier: tier.label,
+        decayRate: tier.decayRate,
+        previousReputation: currentRep,
+        newReputation,
+        penalty
+      };
+      decayLog.push(entry);
+      if (decayLog.length > 1000) decayLog.shift();
+
+      checkedAgents.push(entry);
+      decayedCount++;
+      console.warn(
+        `[DECAY] ${tier.label} agent_id=${agentId.slice(0, 16)}... ` +
+        `inactive ${Math.floor(daysInactive)}d, reputation ${currentRep} → ${newReputation} (-${penalty})`
+      );
+    }
+
+    if (decayedCount > 0) {
+      console.log(`[STATE] Reputation decay: checked ${this.agentRegistry.agents.size} agents, decayed ${decayedCount}`);
+    }
+
+    return { checked: this.agentRegistry.agents.size, decayed: decayedCount, entries: checkedAgents };
+  }
+
+  /**
+   * Get reputation decay history.
+   * @param {string} [agentRef] - Filter by agent (agentId or identity)
+   * @param {number} [limit=50]
+   */
+  getDecayLog(agentRef = null, limit = 50) {
+    let log = decayLog;
+    if (agentRef) {
+      log = log.filter(d => d.agentId === agentRef || d.agentIdentity === agentRef);
+    }
+    return log.slice(-limit);
+  }
+
   /**
    * ensure必要的目录存在
    */

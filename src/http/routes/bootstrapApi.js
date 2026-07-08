@@ -1153,4 +1153,52 @@ router.get('/api/v1/agents/milestones', (req, res) => {
   }
 });
 
+// ─── Phase 3: Reputation decay log (inactivity penalty audit) ───
+router.get('/api/v1/agents/decay', (req, res) => {
+  try {
+    const node = req.app.locals.node;
+    if (!node || !node.currentState) {
+      return res.status(503).json({ success: false, error: 'Node not ready' });
+    }
+    if (typeof node.currentState.getDecayLog !== 'function') {
+      return res.status(501).json({ success: false, error: 'Decay log not available' });
+    }
+
+    const { agent_id, agent_identity, limit } = req.query;
+    const agentRef = agent_id || agent_identity || null;
+    const lim = parseInt(limit, 10) || 50;
+    const entries = node.currentState.getDecayLog(agentRef, lim);
+
+    res.json({
+      success: true,
+      total: entries.length,
+      entries,
+      tiers: [
+        { daysInactive: 30, decayRate: 0.05, label: 'moderate' },
+        { daysInactive: 90, decayRate: 0.20, label: 'severe' }
+      ]
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+// ─── Phase 3: Trigger reputation decay manually (admin/debug) ───
+router.post('/api/v1/agents/decay/run', (req, res) => {
+  try {
+    const node = req.app.locals.node;
+    if (!node || !node.currentState) {
+      return res.status(503).json({ success: false, error: 'Node not ready' });
+    }
+    if (typeof node.currentState.decayReputation !== 'function') {
+      return res.status(501).json({ success: false, error: 'Decay not available' });
+    }
+
+    const result = node.currentState.decayReputation();
+    res.json({ success: true, ...result });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
 export default router;

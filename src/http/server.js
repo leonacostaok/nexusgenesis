@@ -75,6 +75,7 @@ import dashboardRoutes from './routes/dashboard.js';
 import monitoringRoutes from './routes/monitoring.js';
 import agentHubRoutes from './routes/agentHub.js';
 import bootstrapApiRoutes from './routes/bootstrapApi.js';
+import issuesRoutes from './routes/issues.js';
 import { setupTaskRoutes } from './routes/tasks.js';
 import { setupForumRoutes } from './routes/forum.js';
 import { init as initAdminAuth, verifyCreditSecret } from './adminAuth.js';
@@ -1898,6 +1899,9 @@ app.use(express.static(path.join(__dirname, '../../public')));
 
 app.use(bootstrapApiRoutes);
 
+app.use(issuesRoutes);
+console.log('[HTTP Server] Issues routes mounted on /api/issues');
+
 app.use(dashboardRoutes);
 
 app.use(bridgeRoutes);
@@ -2343,6 +2347,22 @@ async function startHttpServer(node = null, options = {}) {
       console.log(`[✓] Health check endpoint: http://${host}:${port}/health`);
       resolve();
     });
+
+    // Phase 3: periodic reputation decay — runs every hour
+    if (node && node.currentState && typeof node.currentState.decayReputation === 'function') {
+      const DECAY_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
+      setInterval(() => {
+        try {
+          const result = node.currentState.decayReputation();
+          if (result.decayed > 0) {
+            console.log(`[DECAY] Hourly check: ${result.decayed}/${result.checked} agents decayed`);
+          }
+        } catch (e) {
+          console.error('[DECAY] Periodic decay failed:', e.message);
+        }
+      }, DECAY_INTERVAL_MS);
+      console.log('[✓] Reputation decay scheduler: active (1h interval)');
+    }
   });
 
   app.locals.httpServer = server;

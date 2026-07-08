@@ -65,7 +65,7 @@ async function verifyTaskSignature(req, action, agentRef) {
     usedTaskNonces.add(nonceKey);
 
     const taskId = req.params?.id || '';
-    const { title, description, requiredCapabilities, reward, taskType, minReputation, submission, approved, feedback } = req.body;
+    const { title, description, requiredCapabilities, reward, taskType, minReputation, submission, approved, feedback, qualityScore } = req.body;
 
     const dataToSign = {
       action,
@@ -81,7 +81,8 @@ async function verifyTaskSignature(req, action, agentRef) {
       ...(minReputation !== undefined && { minReputation }),
       ...(submission !== undefined && { submission }),
       ...(approved !== undefined && { approved }),
-      ...(feedback !== undefined && { feedback })
+      ...(feedback !== undefined && { feedback }),
+      ...(qualityScore !== undefined && { qualityScore })
     };
     const signedData = JSON.stringify(dataToSign);
 
@@ -482,7 +483,7 @@ export function setupTaskRoutes(app) {
       const { agent_identity, agent, verifier } = req.body;
       const verifierRef = agent_identity || agent || verifier;
       const verifierAddress = resolveAgentAddress(req);
-      const { approved, feedback } = req.body;
+      const { approved, feedback, qualityScore } = req.body;
 
       if (!verifierAddress || !verifierRef) {
         return res.status(400).json({ success: false, error: 'verifier or agent_identity is required', error_code: 'MISSING_VERIFIER' });
@@ -496,13 +497,26 @@ export function setupTaskRoutes(app) {
         return res.status(authResult.status).json({ success: false, error: authResult.error, error_code: authResult.error_code, ...(authResult.hint ? { hint: authResult.hint } : {}) });
       }
 
-      const result = protocol.verify(verifierAddress, req.params.id, approved, feedback || '');
+      const verifyOptions = {};
+      if (qualityScore !== undefined) {
+        const qs = parseInt(qualityScore, 10);
+        if (Number.isInteger(qs) && qs >= 1 && qs <= 5) {
+          verifyOptions.qualityScore = qs;
+        }
+      }
+
+      const result = protocol.verify(verifierAddress, req.params.id, approved, feedback || '', verifyOptions);
 
       if (!result.success) {
         return res.status(400).json({ success: false, error: result.reason });
       }
 
-      res.json({ success: true, task: result.task });
+      res.json({
+        success: true,
+        task: result.task,
+        ...(result.requiresThirdParty ? { requiresThirdParty: true, message: result.message } : {}),
+        ...(result.requiresPublisherApproval ? { requiresPublisherApproval: true, message: result.message } : {})
+      });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
     }

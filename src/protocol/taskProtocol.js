@@ -52,6 +52,30 @@ const TXN_TYPES = {
   TASK_CANCEL: 'TASK_CANCEL'
 };
 
+// ─── Phase 3 Layer 1: Progressive Trust Verification Tiers ───
+// Verification path is selected based on the CLAIMANT's reputation.
+// Tier 0 (rep 0-5):   Unproven — requires 3-party verification (publisher + 1 independent)
+// Tier 1 (rep 6-50):   Trusted — publisher verifies (default behavior)
+// Tier 2 (rep 51-200): Established — auto-verify on submit + 10% spot-check
+// Tier 3 (rep 201+):   Self-sovereign — claimant may self-verify
+const TRUST_TIERS = {
+  TIER_0_UNPROVEN: { minRep: 0, maxRep: 5, name: 'unproven', requiresThirdParty: true, spotCheckRate: 0 },
+  TIER_1_TRUSTED: { minRep: 6, maxRep: 50, name: 'trusted', requiresThirdParty: false, spotCheckRate: 0 },
+  TIER_2_ESTABLISHED: { minRep: 51, maxRep: 200, name: 'established', requiresThirdParty: false, spotCheckRate: 0.10 },
+  TIER_3_SOVEREIGN: { minRep: 201, maxRep: Infinity, name: 'sovereign', requiresThirdParty: false, spotCheckRate: 0, allowSelfVerify: true }
+};
+
+// ─── Phase 3 Layer 2: Quality Score Multipliers ───
+// Verifier rates submission quality 1-5 stars; affects reward payout.
+const QUALITY_MULTIPLIERS = {
+  1: 0.50,  // poor — half reward
+  2: 0.75,  // below expectations
+  3: 1.00,  // met expectations (default)
+  4: 1.10,  // above expectations
+  5: 1.25   // excellent
+};
+const DEFAULT_QUALITY_SCORE = 3;
+
 class TaskProtocol {
   constructor(node = null) {
     this.node = node;
@@ -142,6 +166,53 @@ class TaskProtocol {
         `for ${violationType}: ${result.previousReputation} → ${result.newReputation}`
       );
     }
+  }
+
+  // ─── Phase 3 Layer 1: Progressive Trust helpers ───
+
+  /**
+   * Resolve claimant's current reputation score.
+   * @param {string} claimantAddress - Agent ng1 address
+   * @returns {number} reputation (0 if unresolved / node missing)
+   */
+  _getClaimantReputation(claimantAddress) {
+    if (!this.node || !this.node.resolveRegisteredAgent) return 0;
+    const agentRecord = this.node.resolveRegisteredAgent(claimantAddress);
+    if (!agentRecord) return 0;
+    return agentRecord.reputation || 0;
+  }
+
+  /**
+   * Map a reputation score to a trust tier.
+   * @param {number} reputation
+   * @returns {{ level: number, name: string, requiresThirdParty: boolean, spotCheckRate: number, allowSelfVerify: boolean }}
+   */
+  _getTrustTier(reputation) {
+    if (reputation <= TRUST_TIERS.TIER_0_UNPROVEN.maxRep) {
+      return { level: 0, ...TRUST_TIERS.TIER_0_UNPROVEN };
+    }
+    if (reputation <= TRUST_TIERS.TIER_1_TRUSTED.maxRep) {
+      return { level: 1, ...TRUST_TIERS.TIER_1_TRUSTED };
+    }
+    if (reputation <= TRUST_TIERS.TIER_2_ESTABLISHED.maxRep) {
+      return { level: 2, ...TRUST_TIERS.TIER_2_ESTABLISHED };
+    }
+    return { level: 3, ...TRUST_TIERS.TIER_3_SOVEREIGN };
+  }
+
+  /**
+   * Read the trust tier recorded on a task at submission time.
+   * Falls back to Tier 1 (publisher-verifies) for legacy tasks.
+   * @param {object} task
+   */
+  _getTrustTierFromTask(task) {
+    if (task.trustTierLevel !== undefined) {
+      const tierKey = Object.keys(TRUST_TIERS).find(
+        k => TRUST_TIERS[k].name === task.trustTier
+      );
+      if (tierKey) return { level: task.trustTierLevel, ...TRUST_TIERS[tierKey] };
+    }
+    return { level: 1, ...TRUST_TIERS.TIER_1_TRUSTED };
   }
 
   /**
@@ -315,33 +386,204 @@ class TaskProtocol {
     task.status = TASK_STATUS.SUBMITTED;
     task.submittedAt = now;
     task.submissionData = submission;
+
+    // ─── Phase 3 Layer 1: record claimant's trust tier at submission time ───
+    const claimantRep = this._getClaimantReputation(task.claimedBy);
+    const tier = this._getTrustTier(claimantRep);
+    task.trustTier = tier.name;
+    task.trustTierLevel = tier.level;
+    task.verifications = [];
+
     task.transactionHistory.push({
       type: TXN_TYPES.TASK_SUBMIT,
       timestamp: now,
       by: agentAddress,
-      data: { submissionType: submission.type || 'generic' }
+      data: { submissionType: submission.type || 'generic', trustTier: tier.name, claimantRep }
     });
+
+    // Tier 2 (established): auto-verify 90% of submissions, 10% spot-check by publisher
+    if (tier.level === 2 && Math.random() >= tier.spotCheckRate) {
+      this._completeTask(task, 'system', 'Auto-verified (Tier 2 established, no spot-check)', {
+        autoVerified: true, verifierRole: 'system'
+      });
+      this.tasks.set(taskId, task);
+      this._saveTasks();
+      if (this.node) {
+        this._recordOnChain(taskId, TXN_TYPES.TASK_SUBMIT, agentAddress, { autoVerified: true });
+      }
+      console.log(`[TaskProtocol] Task auto-completed (Tier 2): ${taskId} by ${agentAddress.slice(0, 12)}...`);
+      return { success: true, task: this._sanitizeTask(task), autoVerified: true };
+    }
 
     this.tasks.set(taskId, task);
     this._saveTasks();
 
     if (this.node) {
-      this._recordOnChain(taskId, TXN_TYPES.TASK_SUBMIT, agentAddress, {});
+      this._recordOnChain(taskId, TXN_TYPES.TASK_SUBMIT, agentAddress, { trustTier: tier.name });
     }
 
-    console.log(`[TaskProtocol] Task submitted: ${taskId} by ${agentAddress.slice(0, 12)}...`);
+    console.log(`[TaskProtocol] Task submitted: ${taskId} by ${agentAddress.slice(0, 12)}... (tier=${tier.name})`);
     return { success: true, task: this._sanitizeTask(task) };
   }
 
   /**
-   * Verify a submitted task (publisher or designated verifier).
-   * @param {string} verifierAddress - Publisher or authorized verifier
+   * Phase 3: Complete a task (shared by verify() and Tier 2 auto-verify).
+   * Applies Layer 2 quality-score multiplier to the reward payout.
+   * @param {object} task - Task object (mutated in place)
+   * @param {string} verifierAddress - Who triggered completion
+   * @param {string} feedback - Verification feedback
+   * @param {object} [options]
+   * @param {number} [options.qualityScore=3] - 1-5 star quality rating (Layer 2)
+   * @param {boolean} [options.autoVerified=false] - True for Tier 2 auto-verify
+   * @param {string} [options.verifierRole='publisher'] - 'publisher' | 'independent' | 'self' | 'system'
+   */
+  _completeTask(task, verifierAddress, feedback = '', options = {}) {
+    const { qualityScore = DEFAULT_QUALITY_SCORE, autoVerified = false, verifierRole = 'publisher' } = options;
+    const now = Date.now();
+    const taskId = task.id;
+
+    // Layer 2: quality multiplier (basis-point arithmetic for BigInt safety)
+    const multiplier = QUALITY_MULTIPLIERS[qualityScore] || QUALITY_MULTIPLIERS[DEFAULT_QUALITY_SCORE];
+    const multiplierBp = BigInt(Math.round(multiplier * 100));
+    const baseReward = BigInt(task.reward);
+    const adjustedReward = (baseReward * multiplierBp) / 100n;
+    task.qualityScore = qualityScore;
+    task.rewardMultiplier = multiplier;
+    task.adjustedReward = adjustedReward.toString();
+
+    task.status = TASK_STATUS.VERIFIED;
+    task.verifiedAt = now;
+    task.autoVerified = autoVerified;
+    task.transactionHistory.push({
+      type: TXN_TYPES.TASK_VERIFY,
+      timestamp: now,
+      by: verifierAddress,
+      data: { approved: true, feedback, qualityScore, multiplier, verifierRole, autoVerified }
+    });
+
+    task.status = TASK_STATUS.COMPLETED;
+    task.completedAt = now;
+    task.transactionHistory.push({
+      type: TXN_TYPES.TASK_COMPLETE,
+      timestamp: now,
+      by: verifierAddress,
+      data: { reward: task.reward, adjustedReward: task.adjustedReward, claimant: task.claimedBy, publisher: task.publisher, qualityScore, multiplier }
+    });
+
+    if (this.node) {
+      this._recordOnChain(taskId, TXN_TYPES.TASK_COMPLETE, verifierAddress, {
+        reward: task.adjustedReward, claimant: task.claimedBy
+      });
+    }
+
+    // Distribute reward (with quality multiplier applied)
+    if (this.node && this.node.currentState && task.reward !== '0') {
+      try {
+        const SWARM_POOL_ADDR = 'ng1swarmpool000000000000000000000000000';
+        const ESCROW_ADDR = 'ng1escrow0000000000000000000000000000000';
+        const isSystemTask = task.publisher === SWARM_POOL_ADDR;
+
+        let paid = false;
+        if (isSystemTask) {
+          let poolBalance = BigInt(this.node.currentState.getBalance(SWARM_POOL_ADDR));
+          if (poolBalance < adjustedReward) {
+            console.warn(`[TaskProtocol] Swarm Pool insufficient (${poolBalance.toString()} < ${task.adjustedReward}), skipping reward payment for task ${task.id}`);
+          } else {
+            this.node.currentState.subtractBalance(SWARM_POOL_ADDR, adjustedReward.toString());
+            this.node.currentState.changes.tokenRelease = true;
+            console.log(`[TaskProtocol] Reward released: ${task.adjustedReward} NGEN from Swarm Pool → ${task.claimedBy.slice(0, 12)}... (${qualityScore}★, ${multiplier}x)`);
+            paid = true;
+          }
+        } else if (task.escrowed) {
+          this.node.currentState.subtractBalance(ESCROW_ADDR, adjustedReward.toString());
+          console.log(`[TaskProtocol] Escrow released: ${task.adjustedReward} NGEN → ${task.claimedBy.slice(0, 12)}... (${qualityScore}★, ${multiplier}x)`);
+          paid = true;
+          // Refund quality difference to publisher when quality < 3
+          if (adjustedReward < baseReward) {
+            const refund = baseReward - adjustedReward;
+            this.node.currentState.addBalance(task.publisher, refund.toString());
+            console.log(`[TaskProtocol] Quality refund: ${refund.toString()} NGEN → ${task.publisher.slice(0, 12)}... (low quality)`);
+          }
+        } else {
+          let poolBalance = BigInt(this.node.currentState.getBalance(SWARM_POOL_ADDR));
+          if (poolBalance >= adjustedReward) {
+            this.node.currentState.subtractBalance(SWARM_POOL_ADDR, adjustedReward.toString());
+            console.warn(`[TaskProtocol] Non-escrowed AGENT task ${taskId} paid from Swarm Pool (legacy)`);
+            paid = true;
+          } else {
+            console.warn(`[TaskProtocol] Swarm Pool insufficient for legacy task ${taskId}, skipping payment`);
+          }
+        }
+
+        if (paid) {
+          this.node.currentState.addBalance(task.claimedBy, adjustedReward.toString());
+          const claimantAgentId = agentWalletManager.getAgentByAddress(task.claimedBy);
+          if (claimantAgentId) {
+            agentWalletManager.syncBalance(claimantAgentId, this.node.currentState);
+            console.log(`[TaskProtocol] Wallet synced: ${claimantAgentId} balance = ${agentWalletManager.getBalance(claimantAgentId).balance} NGEN`);
+          }
+        }
+
+        task.paid = paid;
+        const source = isSystemTask ? 'Swarm Pool' : (task.escrowed ? 'escrow' : 'Swarm Pool(legacy)');
+        console.log(`[TaskProtocol] Reward distributed: ${task.adjustedReward} NGEN from ${source} → ${task.claimedBy.slice(0, 12)}... (paid=${paid})`);
+      } catch (rewardErr) {
+        console.error(`[TaskProtocol] Reward distribution failed:`, rewardErr.message);
+        task.paid = false;
+      }
+    }
+
+    // Reward reputation + referral bonus + milestones
+    if (this.node && this.node.currentState && this.node.resolveRegisteredAgent) {
+      const agentRecord = this.node.resolveRegisteredAgent(task.claimedBy);
+      if (agentRecord && agentRecord.agentId && typeof this.node.currentState.rewardReputation === 'function') {
+        this.node.currentState.rewardReputation(agentRecord.agentId, 'TASK_COMPLETED');
+        console.log(`[TaskProtocol] ✓ Reputation rewarded: ${agentRecord.agentId.slice(0, 16)}... +TASK_COMPLETED`);
+      }
+
+      if (typeof this.node.awardActiveReferral === 'function') {
+        const result = this.node.awardActiveReferral(task.claimedBy);
+        if (result) {
+          console.log(`[TaskProtocol] 🎯 Active referral bonus: ${result.referrer} → +${result.reward} NGEN`);
+        }
+      }
+
+      if (agentRecord && agentRecord.agentId && typeof this.node.currentState.recordTaskCompletion === 'function') {
+        const stats = this.node.currentState.recordTaskCompletion(agentRecord.agentId, taskId);
+        if (stats) {
+          console.log(`[TaskProtocol] 📊 Stats: ${agentRecord.agentId.slice(0, 16)}... tasks=${stats.tasksCompleted}`);
+          if (!this.node.currentState._milestoneSystem) {
+            this.node.currentState._milestoneSystem = new MilestoneSystem(this.node.currentState);
+          }
+          const newlyAwarded = this.node.currentState._milestoneSystem.checkAndAward(agentRecord.agentId, taskId);
+          if (newlyAwarded.length > 0) {
+            console.log(`[TaskProtocol] 🏆 Milestones unlocked: ${newlyAwarded.map(m => m.name).join(', ')}`);
+            task.milestonesAwarded = newlyAwarded;
+          }
+        }
+      }
+    }
+
+    console.log(`[TaskProtocol] Task completed: ${taskId}, ${task.adjustedReward} NGEN → ${task.claimedBy.slice(0, 12)}... (${qualityScore}★, ${multiplier}x)`);
+  }
+
+  /**
+   * Verify a submitted task (publisher, independent verifier, or self).
+   * Phase 3 Layer 1: verification path is routed by the claimant's trust tier.
+   *   Tier 0 (unproven):  requires publisher + independent verifier approval
+   *   Tier 1 (trusted):   publisher verifies
+   *   Tier 2 (established): publisher verifies (only for 10% spot-checked tasks)
+   *   Tier 3 (sovereign): publisher OR claimant may self-verify
+   * Phase 3 Layer 2: accepts qualityScore (1-5) to adjust reward payout.
+   * @param {string} verifierAddress - Publisher / independent verifier / claimant (Tier 3)
    * @param {string} taskId - Task ID
    * @param {boolean} approved - Whether the submission is approved
    * @param {string} feedback - Optional verification feedback
-   * @returns {{ success: boolean, task?: object, reason?: string }}
+   * @param {object} [options]
+   * @param {number} [options.qualityScore=3] - 1-5 star quality rating (Layer 2)
+   * @returns {{ success: boolean, task?: object, reason?: string, requiresThirdParty?: boolean }}
    */
-  verify(verifierAddress, taskId, approved, feedback = '') {
+  verify(verifierAddress, taskId, approved, feedback = '', options = {}) {
     const task = this.tasks.get(taskId);
     if (!task) {
       return { success: false, reason: 'Task not found' };
@@ -349,167 +591,113 @@ class TaskProtocol {
     if (task.status !== TASK_STATUS.SUBMITTED) {
       return { success: false, reason: `Task is ${task.status}, not submitted` };
     }
-    if (task.publisher !== verifierAddress) {
-      return { success: false, reason: 'Only the publisher can verify' };
-    }
 
+    const tier = this._getTrustTierFromTask(task);
+    const isPublisher = task.publisher === verifierAddress;
+    const isClaimant = task.claimedBy === verifierAddress;
     const now = Date.now();
 
-    if (approved) {
-      task.status = TASK_STATUS.VERIFIED;
-      task.verifiedAt = now;
-      task.transactionHistory.push({
-        type: TXN_TYPES.TASK_VERIFY,
-        timestamp: now,
-        by: verifierAddress,
-        data: { approved: true, feedback }
-      });
-
-      // Auto-complete after verification
-      task.status = TASK_STATUS.COMPLETED;
-      task.completedAt = now;
-      task.transactionHistory.push({
-        type: TXN_TYPES.TASK_COMPLETE,
-        timestamp: now,
-        by: verifierAddress,
-        data: {
-          reward: task.reward,
-          claimant: task.claimedBy,
-          publisher: task.publisher
-        }
-      });
-
-      if (this.node) {
-        this._recordOnChain(taskId, TXN_TYPES.TASK_COMPLETE, verifierAddress, {
-          reward: task.reward,
-          claimant: task.claimedBy
-        });
-      }
-
-      // Distribute reward: AGENT tasks release from escrow, system tasks from Swarm Pool
-      if (this.node && this.node.currentState && task.reward !== '0') {
-        try {
-          const SWARM_POOL_ADDR = 'ng1swarmpool000000000000000000000000000';
-          const ESCROW_ADDR = 'ng1escrow0000000000000000000000000000000';
-          const rewardAmount = BigInt(task.reward);
-          const isSystemTask = task.publisher === SWARM_POOL_ADDR;
-
-          let paid = false;
-          if (isSystemTask) {
-            // System tasks: pay from Swarm Pool (whitepaper §4 release mechanism)
-            // 注意: Swarm Pool 余额由 checkTokenRelease 释放机制补充 (每 100 块释放 0.1%),
-            // 不允许直接 mint 增发 — 那会绕过 totalSupply 上限造成通胀漏洞。
-            let poolBalance = BigInt(this.node.currentState.getBalance(SWARM_POOL_ADDR));
-            if (poolBalance < rewardAmount) {
-              console.warn(`[TaskProtocol] Swarm Pool insufficient (${poolBalance.toString()} < ${task.reward}), skipping reward payment for task ${task.id}`);
-              // 余额不足时跳过支付, 不增发 — 释放机制会在后续区块补充池子
-            } else {
-              this.node.currentState.subtractBalance(SWARM_POOL_ADDR, rewardAmount.toString());
-              this.node.currentState.changes.tokenRelease = true;
-              console.log(`[TaskProtocol] Reward released: ${task.reward} NGEN from Swarm Pool → ${task.claimedBy.slice(0, 12)}...`);
-              paid = true;
-            }
-          } else if (task.escrowed) {
-            // AGENT tasks: release locked escrow to claimant
-            this.node.currentState.subtractBalance(ESCROW_ADDR, rewardAmount.toString());
-            console.log(`[TaskProtocol] Escrow released: ${task.reward} NGEN → ${task.claimedBy.slice(0, 12)}...`);
-            paid = true;
-          } else {
-            // Fallback (legacy non-escrowed AGENT task): pay from Swarm Pool
-            let poolBalance = BigInt(this.node.currentState.getBalance(SWARM_POOL_ADDR));
-            if (poolBalance >= rewardAmount) {
-              this.node.currentState.subtractBalance(SWARM_POOL_ADDR, rewardAmount.toString());
-              console.warn(`[TaskProtocol] Non-escrowed AGENT task ${taskId} paid from Swarm Pool (legacy)`);
-              paid = true;
-            } else {
-              console.warn(`[TaskProtocol] Swarm Pool insufficient for legacy task ${taskId}, skipping payment`);
-            }
-          }
-
-          // 只有源余额充足时才给 claimant 加余额 (防止凭空增发)
-          if (paid) {
-            this.node.currentState.addBalance(task.claimedBy, rewardAmount.toString());
-
-            // Sync agent wallet manager with on-chain balance
-            const claimantAgentId = agentWalletManager.getAgentByAddress(task.claimedBy);
-            if (claimantAgentId) {
-              agentWalletManager.syncBalance(claimantAgentId, this.node.currentState);
-              console.log(`[TaskProtocol] Wallet synced: ${claimantAgentId} balance = ${agentWalletManager.getBalance(claimantAgentId).balance} NGEN`);
-            }
-          }
-
-          task.paid = paid;
-          const source = isSystemTask ? 'Swarm Pool' : (task.escrowed ? 'escrow' : 'Swarm Pool(legacy)');
-          console.log(`[TaskProtocol] Reward distributed: ${task.reward} NGEN from ${source} → ${task.claimedBy.slice(0, 12)}... (paid=${paid})`);
-        } catch (rewardErr) {
-          console.error(`[TaskProtocol] Reward distribution failed:`, rewardErr.message);
-          task.paid = false;
-        }
-      }
-
-      // Reward reputation to the claimant for completing a task
-      if (this.node && this.node.currentState && this.node.resolveRegisteredAgent) {
-        const agentRecord = this.node.resolveRegisteredAgent(task.claimedBy);
-        if (agentRecord && agentRecord.agentId && typeof this.node.currentState.rewardReputation === 'function') {
-          this.node.currentState.rewardReputation(agentRecord.agentId, 'TASK_COMPLETED');
-          console.log(`[TaskProtocol] ✓ Reputation rewarded: ${agentRecord.agentId.slice(0, 16)}... +TASK_COMPLETED`);
-        } else {
-          console.log(`[TaskProtocol] ⚠ Reputation skip: agentRecord=${!!agentRecord} agentId=${agentRecord?.agentId?.slice(0,16)} hasRewardFn=${typeof this.node.currentState?.rewardReputation === 'function'} claimedBy=${task.claimedBy?.slice(0,16)}...`);
-        }
-
-        // Award active referral bonus to the referrer on first task completion
-        if (this.node && typeof this.node.awardActiveReferral === 'function') {
-          const result = this.node.awardActiveReferral(task.claimedBy);
-          if (result) {
-            console.log(`[TaskProtocol] 🎯 Active referral bonus: ${result.referrer} → +${result.reward} NGEN${result.milestone ? ` + milestone(${result.milestone.count}) → +${result.milestone.reward}` : ''}`);
-          }
-        }
-
-        // ─── Phase 2: Record task completion + check milestones ───
-        if (agentRecord && agentRecord.agentId && typeof this.node.currentState.recordTaskCompletion === 'function') {
-          const stats = this.node.currentState.recordTaskCompletion(agentRecord.agentId, taskId);
-          if (stats) {
-            console.log(`[TaskProtocol] 📊 Stats: ${agentRecord.agentId.slice(0, 16)}... tasks=${stats.tasksCompleted}`);
-
-            // Check milestones via MilestoneSystem (lazy-init on the State instance)
-            if (!this.node.currentState._milestoneSystem) {
-              this.node.currentState._milestoneSystem = new MilestoneSystem(this.node.currentState);
-              console.log('[TaskProtocol] 🏆 MilestoneSystem initialized on state');
-            }
-            const newlyAwarded = this.node.currentState._milestoneSystem.checkAndAward(agentRecord.agentId, taskId);
-            if (newlyAwarded.length > 0) {
-              console.log(`[TaskProtocol] 🏆 Milestones unlocked: ${newlyAwarded.map(m => m.name).join(', ')}`);
-              // Stash on the task for the HTTP response
-              task.milestonesAwarded = newlyAwarded;
-            }
-          }
-        }
-      } else {
-        console.log(`[TaskProtocol] ⚠ Reputation skip: node=${!!this.node} currentState=${!!this.node?.currentState} resolveFn=${!!this.node?.resolveRegisteredAgent}`);
-      }
-
-      console.log(`[TaskProtocol] Task completed: ${taskId}, ${task.reward} NGEN → ${task.claimedBy.slice(0, 12)}...`);
-    } else {
-      // Rejected: return to open for another agent to claim
-      task.status = TASK_STATUS.OPEN;
-      task.claimedBy = null;
-      task.claimedAt = null;
-      task.submittedAt = null;
-      task.submissionData = null;
-      task.transactionHistory.push({
-        type: TXN_TYPES.TASK_VERIFY,
-        timestamp: now,
-        by: verifierAddress,
-        data: { approved: false, feedback }
-      });
-
-      console.log(`[TaskProtocol] Task rejected: ${taskId}, reopened`);
+    // Layer 2: validate quality score (1-5 integer, default 3)
+    let qualityScore = options.qualityScore ?? DEFAULT_QUALITY_SCORE;
+    if (!Number.isInteger(qualityScore) || qualityScore < 1 || qualityScore > 5) {
+      qualityScore = DEFAULT_QUALITY_SCORE;
     }
 
-    this.tasks.set(taskId, task);
-    this._saveTasks();
+    // ─── Tier 0: requires 3-party verification (publisher + independent) ───
+    if (tier.level === 0) {
+      if (isClaimant) {
+        return { success: false, reason: 'Claimant cannot verify own task (Tier 0 requires third-party)' };
+      }
 
-    return { success: true, task: this._sanitizeTask(task) };
+      if (!approved) {
+        this._reopenTask(task, verifierAddress, feedback, now);
+        this.tasks.set(taskId, task);
+        this._saveTasks();
+        return { success: true, task: this._sanitizeTask(task) };
+      }
+
+      if (isPublisher) {
+        task.publisherApproved = true;
+        task.verifications.push({ verifier: verifierAddress, role: 'publisher', approved: true, timestamp: now, feedback });
+        if (task.thirdPartyApproved) {
+          this._completeTask(task, verifierAddress, feedback, { qualityScore, verifierRole: 'publisher' });
+        }
+        this.tasks.set(taskId, task);
+        this._saveTasks();
+        return task.status === TASK_STATUS.COMPLETED
+          ? { success: true, task: this._sanitizeTask(task) }
+          : { success: true, task: this._sanitizeTask(task), requiresThirdParty: true, message: 'Publisher approved; awaiting independent verifier' };
+      }
+
+      // Independent verifier
+      task.thirdPartyApproved = true;
+      task.verifications.push({ verifier: verifierAddress, role: 'independent', approved: true, timestamp: now, feedback });
+      if (task.publisherApproved) {
+        this._completeTask(task, verifierAddress, feedback, { qualityScore, verifierRole: 'independent' });
+      }
+      this.tasks.set(taskId, task);
+      this._saveTasks();
+      return task.status === TASK_STATUS.COMPLETED
+        ? { success: true, task: this._sanitizeTask(task) }
+        : { success: true, task: this._sanitizeTask(task), requiresPublisherApproval: true, message: 'Independent verification recorded; awaiting publisher approval' };
+    }
+
+    // ─── Tier 1 & Tier 2 (spot-check): publisher verifies ───
+    if (tier.level === 1 || tier.level === 2) {
+      if (!isPublisher) {
+        return { success: false, reason: 'Only the publisher can verify' };
+      }
+      if (approved) {
+        this._completeTask(task, verifierAddress, feedback, { qualityScore, verifierRole: 'publisher' });
+      } else {
+        this._reopenTask(task, verifierAddress, feedback, now);
+      }
+      this.tasks.set(taskId, task);
+      this._saveTasks();
+      return { success: true, task: this._sanitizeTask(task) };
+    }
+
+    // ─── Tier 3: self-sovereign — claimant may self-verify ───
+    if (tier.level === 3) {
+      if (!isPublisher && !isClaimant) {
+        return { success: false, reason: 'Only the publisher or claimant can verify (Tier 3)' };
+      }
+      if (approved) {
+        const verifierRole = isClaimant ? 'self' : 'publisher';
+        this._completeTask(task, verifierAddress, feedback, { qualityScore, verifierRole, autoVerified: isClaimant });
+      } else {
+        if (isClaimant) {
+          return { success: false, reason: 'Claimant cannot reject own task' };
+        }
+        this._reopenTask(task, verifierAddress, feedback, now);
+      }
+      this.tasks.set(taskId, task);
+      this._saveTasks();
+      return { success: true, task: this._sanitizeTask(task) };
+    }
+
+    return { success: false, reason: 'Unknown trust tier' };
+  }
+
+  /**
+   * Helper: reopen a rejected task back to OPEN status for re-claiming.
+   */
+  _reopenTask(task, verifierAddress, feedback, now) {
+    task.status = TASK_STATUS.OPEN;
+    task.claimedBy = null;
+    task.claimedAt = null;
+    task.submittedAt = null;
+    task.submissionData = null;
+    task.publisherApproved = false;
+    task.thirdPartyApproved = false;
+    task.verifications = [];
+    task.transactionHistory.push({
+      type: TXN_TYPES.TASK_VERIFY,
+      timestamp: now,
+      by: verifierAddress,
+      data: { approved: false, feedback }
+    });
+    console.log(`[TaskProtocol] Task rejected: ${task.id}, reopened`);
   }
 
   /**

@@ -21,7 +21,6 @@ const EXEMPT_ENDPOINTS = new Set([
   '/api/v1/bootstrap/agents/latest',
   '/api/v1/bootstrap/agents',
   '/api/v1/agents',
-  '/api/tasks',
   '/api/tasks/stats',
   '/api/forum/stats',
   '/api/forum/topics',
@@ -32,7 +31,10 @@ const EXEMPT_PREFIXES = [
   '/api/tasks',
   '/api/forum/topics',
   '/api/v1/agents',
-  '/api/issues'
+  '/api/issues',
+  '/api/v1/governance',
+  '/api/v1/bootstrap/validators/health',
+  '/api/v1/bootstrap/validators/:id/heartbeat'
 ];
 
 const AGENT_RATE_LIMITS = {
@@ -58,9 +60,11 @@ class RateLimiter {
     return (req, res, next) => {
       const now = Date.now();
       const ip = req.ip;
+      // Use req.originalUrl to get the full path including mount prefix
+      const fullPath = req.originalUrl.split('?')[0]; // Remove query string
       const endpoint = req.path;
 
-      if (EXEMPT_ENDPOINTS.has(endpoint) || EXEMPT_PREFIXES.some(p => endpoint.startsWith(p))) {
+      if (EXEMPT_ENDPOINTS.has(endpoint) || EXEMPT_PREFIXES.some(p => fullPath.startsWith(p))) {
         return next();
       }
 

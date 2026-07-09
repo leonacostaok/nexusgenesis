@@ -1,0 +1,407 @@
+import { Router } from 'express';
+import crypto from 'crypto';
+
+const router = Router();
+const routerName = 'transaction-history';
+
+/**
+ * Transaction History API
+ * 
+ * Provides comprehensive transaction querying and filtering capabilities.
+ * Transactions are sourced from the blockchain state and task protocol records.
+ */
+
+// Transaction type descriptions
+const TX_TYPE_DESCRIPTIONS = {
+  TASK_PUBLISH: { label: 'Task Published', category: 'task', icon: '📝' },
+  TASK_CLAIM: { label: 'Task Claimed', category: 'task', icon: '🤝' },
+  TASK_SUBMIT: { label: 'Task Submitted', category: 'task', icon: '📤' },
+  TASK_COMPLETE: { label: 'Task Completed', category: 'task', icon: '✅' },
+  TASK_CANCEL: { label: 'Task Cancelled', category: 'task', icon: '❌' },
+  REPUTATION_REWARD: { label: 'Reputation Reward', category: 'reputation', icon: '⭐' },
+  REPUTATION_PENALTY: { label: 'Reputation Penalty', category: 'reputation', icon: '⚠️' },
+  BOUNTY_POSTED: { label: 'Bounty Posted', category: 'bounty', icon: '🎯' },
+  BOUNTY_CLAIMED: { label: 'Bounty Claimed', category: 'bounty', icon: '💰' },
+  BOUNTY_GRANTED: { label: 'Bounty Granted', category: 'bounty', icon: '✅' },
+  AGENT_REGISTER: { label: 'Agent Registered', category: 'agent', icon: '🆕' },
+  AGENT_UPDATE: { label: 'Agent Updated', category: 'agent', icon: '🔄' },
+  TRANSFER: { label: 'NGEN Transfer', category: 'transfer', icon: '💸' },
+  BLOCK_REWARD: { label: 'Block Reward', category: 'consensus', icon: '⛏️' },
+  PROPOSAL_CREATED: { label: 'Proposal Created', category: 'governance', icon: '📋' },
+  VOTE_CAST: { label: 'Vote Cast', category: 'governance', icon: '🗳️' },
+  ISSUE_REPORTED: { label: 'Issue Reported', category: 'issue', icon: '🐛' }
+};
+
+/**
+ * GET /api/v1/transactions
+ * List all transactions with pagination and filtering
+ */
+router.get('/', (req, res) => {
+  try {
+    const { limit = 20, offset = 0, type, agentId, taskId, startDate, endDate } = req.query;
+    
+    const state = req.app.locals.state;
+    if (!state) {
+      return res.json({ success: true, transactions: [], total: 0, pagination: { limit: Number(limit), offset: Number(offset) } });
+    }
+
+    // Get all transactions from state
+    const allTransactions = state.transactions || [];
+    
+    // Also get task-related transactions from task protocol
+    const taskTransactions = _extractTaskTransactions(state);
+    
+    // Merge and deduplicate
+    const allTxs = [...allTransactions, ...taskTransactions];
+    
+    // Apply filters
+    let filtered = allTxs;
+    
+    if (type) {
+      filtered = filtered.filter(tx => tx.tx_type === type || tx.type === type);
+    }
+    
+    if (agentId) {
+      filtered = filtered.filter(tx => 
+        tx.from === agentId || tx.to === agentId || tx.agentId === agentId
+      );
+    }
+    
+    if (taskId) {
+      filtered = filtered.filter(tx => tx.payload?.taskId === taskId || tx.taskId === taskId);
+    }
+    
+    if (startDate) {
+      const start = new Date(startDate).getTime();
+      filtered = filtered.filter(tx => tx.timestamp >= start);
+    }
+    
+    if (endDate) {
+      const end = new Date(endDate).getTime();
+      filtered = filtered.filter(tx => tx.timestamp <= end);
+    }
+    
+    // Sort by timestamp descending
+    filtered.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    
+    // Paginate
+    const total = filtered.length;
+    const paginated = filtered.slice(Number(offset), Number(offset) + Number(limit));
+    
+    // Enrich with metadata
+    const enriched = paginated.map(tx => _enrichTransaction(tx));
+    
+    res.json({
+      success: true,
+      transactions: enriched,
+      total,
+      pagination: {
+        limit: Number(limit),
+        offset: Number(offset),
+        hasNext: Number(offset) + Number(limit) < total,
+        hasPrev: Number(offset) > 0
+      },
+      filters: { type, agentId, taskId }
+    });
+  } catch (error) {
+    console.error('[Transaction API] List error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * GET /api/v1/transactions/agent/:agentId
+ * Get transaction history for a specific agent
+ */
+router.get('/agent/:agentId', (req, res) => {
+  try {
+    const { agentId } = req.params;
+    const { limit = 20, offset = 0 } = req.query;
+    
+    const state = req.app.locals.state;
+    if (!state) {
+      return res.json({ success: true, transactions: [], total: 0, agentId });
+    }
+
+    const allTransactions = state.transactions || [];
+    const taskTransactions = _extractTaskTransactions(state);
+    const allTxs = [...allTransactions, ...taskTransactions];
+    
+    // Filter by agent
+    const agentTxs = allTxs.filter(tx => 
+      tx.from === agentId || tx.to === agentId || tx.agentId === agentId
+    );
+    
+    // Sort and paginate
+    agentTxs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    const total = agentTxs.length;
+    const paginated = agentTxs.slice(Number(offset), Number(offset) + Number(limit));
+    
+    res.json({
+      success: true,
+      transactions: paginated.map(tx => _enrichTransaction(tx)),
+      total,
+      agentId,
+      pagination: {
+        limit: Number(limit),
+        offset: Number(offset),
+        hasNext: Number(offset) + Number(limit) < total
+      }
+    });
+  } catch (error) {
+    console.error('[Transaction API] Agent history error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * GET /api/v1/transactions/task/:taskId
+ * Get all transactions related to a specific task
+ */
+router.get('/task/:taskId', (req, res) => {
+  try {
+    const { taskId } = req.params;
+    
+    const state = req.app.locals.state;
+    if (!state) {
+      return res.json({ success: true, transactions: [], total: 0, taskId });
+    }
+
+    const allTransactions = state.transactions || [];
+    const taskTransactions = _extractTaskTransactions(state);
+    const allTxs = [...allTransactions, ...taskTransactions];
+    
+    // Filter by task
+    const taskTxs = allTxs.filter(tx => 
+      tx.payload?.taskId === taskId || tx.taskId === taskId
+    );
+    
+    // Sort by timestamp
+    taskTxs.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+    
+    res.json({
+      success: true,
+      transactions: taskTxs.map(tx => _enrichTransaction(tx)),
+      total: taskTxs.length,
+      taskId,
+      lifecycle: _buildTaskLifecycle(taskTxs)
+    });
+  } catch (error) {
+    console.error('[Transaction API] Task history error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * GET /api/v1/transactions/types
+ * Get all available transaction types with descriptions
+ */
+router.get('/types', (req, res) => {
+  const types = Object.entries(TX_TYPE_DESCRIPTIONS).map(([code, desc]) => ({
+    code,
+    ...desc
+  }));
+  
+  res.json({
+    success: true,
+    types,
+    total: types.length
+  });
+});
+
+/**
+ * GET /api/v1/transactions/stats
+ * Get transaction statistics
+ */
+router.get('/stats', (req, res) => {
+  try {
+    const state = req.app.locals.state;
+    if (!state) {
+      return res.json({ success: true, stats: {} });
+    }
+
+    const allTransactions = state.transactions || [];
+    const taskTransactions = _extractTaskTransactions(state);
+    const allTxs = [...allTransactions, ...taskTransactions];
+    
+    // Calculate stats
+    const stats = {
+      total: allTxs.length,
+      byType: {},
+      byCategory: {},
+      last24h: 0,
+      last7d: 0
+    };
+    
+    const now = Date.now();
+    const twentyFourHours = 24 * 60 * 60 * 1000;
+    const sevenDays = 7 * twentyFourHours;
+    
+    allTxs.forEach(tx => {
+      const type = tx.tx_type || tx.type || 'unknown';
+      stats.byType[type] = (stats.byType[type] || 0) + 1;
+      
+      const category = TX_TYPE_DESCRIPTIONS[type]?.category || 'other';
+      stats.byCategory[category] = (stats.byCategory[category] || 0) + 1;
+      
+      if (tx.timestamp) {
+        if (now - tx.timestamp <= twentyFourHours) stats.last24h++;
+        if (now - tx.timestamp <= sevenDays) stats.last7d++;
+      }
+    });
+    
+    res.json({
+      success: true,
+      stats,
+      typeDescriptions: TX_TYPE_DESCRIPTIONS
+    });
+  } catch (error) {
+    console.error('[Transaction API] Stats error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ==================== Helper Functions ====================
+
+/**
+ * Extract task-related transactions from state
+ */
+function _extractTaskTransactions(state) {
+  const transactions = [];
+  
+  // Get tasks from state
+  const tasks = state.tasks || state.getAllTasks?.() || [];
+  const taskArray = Array.isArray(tasks) ? tasks : Object.values(tasks);
+  
+  taskArray.forEach(task => {
+    if (!task || !task.id) return;
+    
+    // Extract from transactionHistory
+    if (task.transactionHistory && Array.isArray(task.transactionHistory)) {
+      task.transactionHistory.forEach((tx, index) => {
+        transactions.push({
+          id: tx.id || crypto.createHash('sha3-256').update(`${task.id}-${index}`).digest('hex').slice(0, 16),
+          tx_type: tx.type || 'TASK_EVENT',
+          from: tx.from || task.publisher,
+          to: tx.to || task.claimant,
+          amount: tx.amount || '0',
+          payload: { taskId: task.id, ...tx },
+          timestamp: tx.timestamp || Date.now(),
+          taskId: task.id,
+          source: 'task_history'
+        });
+      });
+    }
+    
+    // Create transaction records for key events if not in history
+    const eventTypes = ['TASK_PUBLISH', 'TASK_CLAIM', 'TASK_SUBMIT', 'TASK_COMPLETE'];
+    eventTypes.forEach((eventType, idx) => {
+      const hasEvent = task.transactionHistory?.some(tx => tx.type === eventType);
+      if (!hasEvent && task[eventType === 'TASK_PUBLISH' ? 'publisher' : 
+                                  eventType === 'TASK_CLAIM' ? 'claimant' :
+                                  eventType === 'TASK_SUBMIT' ? 'submitter' : 'verifier']) {
+        transactions.push({
+          id: crypto.createHash('sha3-256').update(`${task.id}-${eventType}`).digest('hex').slice(0, 16),
+          tx_type: eventType,
+          from: eventType === 'TASK_PUBLISH' ? task.publisher :
+                eventType === 'TASK_CLAIM' ? task.claimant :
+                eventType === 'TASK_SUBMIT' ? task.submitter : task.verifier,
+          to: eventType === 'TASK_PUBLISH' ? 'system' :
+              eventType === 'TASK_CLAIM' ? task.publisher :
+              eventType === 'TASK_SUBMIT' ? task.publisher : 'system',
+          amount: task.reward || '0',
+          payload: { taskId: task.id, eventType },
+          timestamp: task.createdAt || Date.now(),
+          taskId: task.id,
+          source: 'task_events'
+        });
+      }
+    });
+  });
+  
+  return transactions;
+}
+
+/**
+ * Enrich transaction with metadata
+ */
+function _enrichTransaction(tx) {
+  const type = tx.tx_type || tx.type || 'unknown';
+  const description = TX_TYPE_DESCRIPTIONS[type] || { label: type, category: 'other', icon: '📄' };
+  
+  return {
+    ...tx,
+    typeDescription: description,
+    direction: _calculateDirection(tx),
+    formattedAmount: tx.amount ? Number(tx.amount).toLocaleString() : '0'
+  };
+}
+
+/**
+ * Calculate transaction direction for an agent
+ */
+function _calculateDirection(tx) {
+  return null;
+}
+
+/**
+ * Build task lifecycle from transactions
+ */
+function _buildTaskLifecycle(transactions) {
+  const lifecycle = {
+    stages: [],
+    totalDuration: 0,
+    currentStage: 'unknown'
+  };
+  
+  const stageOrder = ['TASK_PUBLISH', 'TASK_CLAIM', 'TASK_SUBMIT', 'TASK_VERIFY', 'TASK_COMPLETE'];
+  
+  transactions
+    .filter(tx => stageOrder.includes(tx.tx_type || tx.type))
+    .sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0))
+    .forEach((tx, idx) => {
+      const stage = tx.tx_type || tx.type;
+      lifecycle.stages.push({
+        stage,
+        timestamp: tx.timestamp,
+        actor: tx.from || tx.to,
+        index: idx
+      });
+      
+      if (idx > 0) {
+        const prevStage = lifecycle.stages[idx - 1].stage;
+        const prevTx = transactions.find(t => 
+          (t.tx_type || t.type) === prevStage && t.timestamp <= tx.timestamp
+        );
+        if (prevTx) {
+          const duration = tx.timestamp - prevTx.timestamp;
+          lifecycle.totalDuration += duration;
+        }
+      }
+    });
+  
+  lifecycle.currentStage = lifecycle.stages[lifecycle.stages.length - 1]?.stage || 'unknown';
+  lifecycle.totalDurationMs = lifecycle.totalDuration;
+  lifecycle.totalDurationFormatted = _formatDuration(lifecycle.totalDuration);
+  
+  return lifecycle;
+}
+
+/**
+ * Format duration in milliseconds to human-readable string
+ */
+function _formatDuration(ms) {
+  if (ms <= 0) return '0s';
+  
+  const seconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  
+  if (days > 0) return `${days}d ${hours % 24}h`;
+  if (hours > 0) return `${hours}h ${minutes % 60}m`;
+  if (minutes > 0) return `${minutes}m ${seconds % 60}s`;
+  return `${seconds}s`;
+}
+
+export default router;

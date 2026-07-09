@@ -79,6 +79,7 @@ import issuesRoutes from './routes/issues.js';
 import governanceRoutes from './routes/governance.js';
 import validatorHeartbeatRoutes from './routes/validatorHeartbeat.js';
 import taskTemplatesRoutes from './routes/taskTemplates.js';
+import transactionHistoryRoutes from './routes/transactionHistory.js';
 import { setupTaskRoutes } from './routes/tasks.js';
 import { setupForumRoutes } from './routes/forum.js';
 import { init as initAdminAuth, verifyCreditSecret } from './adminAuth.js';
@@ -1926,6 +1927,9 @@ console.log('[HTTP Server] Validator heartbeat routes mounted');
 
 app.use(taskTemplatesRoutes);
 console.log('[HTTP Server] Task templates routes mounted');
+
+app.use('/api/v1/transactions', transactionHistoryRoutes);
+console.log('[HTTP Server] Transaction history routes mounted on /api/v1/transactions');
 
 app.use(dashboardRoutes);
 

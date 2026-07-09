@@ -40,7 +40,14 @@ const TASK_STATUS = {
   VERIFIED: 'verified',
   COMPLETED: 'completed',
   CANCELLED: 'cancelled',
-  EXPIRED: 'expired'
+  EXPIRED: 'expired',
+  // Phase 4: Challenge mechanism states
+  CHALLENGE_WINDOW: 'challenge_window',  // verified, awaiting potential challenges
+  CHALLENGED: 'challenged',              // active challenge in progress
+  ARBITRATION: 'arbitration',            // voting in progress
+  UPHELD: 'challenge_upheld',            // challenge won, verifier slashed
+  REJECTED: 'challenge_rejected',        // challenge lost, challenger slashed
+  FINALIZED: 'finalized'                 // terminal state, reward permanent
 };
 
 const TXN_TYPES = {
@@ -49,7 +56,11 @@ const TXN_TYPES = {
   TASK_SUBMIT: 'TASK_SUBMIT',
   TASK_VERIFY: 'TASK_VERIFY',
   TASK_COMPLETE: 'TASK_COMPLETE',
-  TASK_CANCEL: 'TASK_CANCEL'
+  TASK_CANCEL: 'TASK_CANCEL',
+  // Phase 4: Challenge transaction types
+  CHALLENGE_OPEN: 'CHALLENGE_OPEN',
+  CHALLENGE_VOTE: 'CHALLENGE_VOTE',
+  CHALLENGE_RESOLVE: 'CHALLENGE_RESOLVE'
 };
 
 // ─── Phase 3 Layer 1: Progressive Trust Verification Tiers ───
@@ -64,6 +75,30 @@ const TRUST_TIERS = {
   TIER_2_ESTABLISHED: { minRep: 51, maxRep: 200, name: 'established', requiresThirdParty: false, spotCheckRate: 0.10 },
   TIER_3_SOVEREIGN: { minRep: 201, maxRep: Infinity, name: 'sovereign', requiresThirdParty: false, spotCheckRate: 0, allowSelfVerify: true }
 };
+
+// ─── Phase 4: Task Challenge Mechanism ───
+// After verification, a challenge window opens during which any agent (or the publisher)
+// can challenge the verification result. Higher trust tiers get shorter windows.
+// Tier 0: 48h, Tier 1: 24h, Tier 2: 12h, Tier 3: 6h
+const CHALLENGE_WINDOWS_MS = {
+  unproven: 48 * 60 * 60 * 1000,        // 48h
+  trusted: 24 * 60 * 60 * 1000,         // 24h
+  established: 12 * 60 * 60 * 1000,     // 12h
+  sovereign: 6 * 60 * 60 * 1000         // 6h
+};
+// Challenge deposit = max(reward * pct%, 1 NGEN). Tier 3 has 2x deposit to deter abuse.
+const CHALLENGE_DEPOSIT_PCT = {
+  unproven: 0.10,
+  trusted: 0.10,
+  established: 0.10,
+  sovereign: 0.20
+};
+const MIN_CHALLENGE_DEPOSIT = 1n;       // 1 NGEN minimum
+const MIN_CHALLENGER_REPUTATION = 1;     // rep >= 1 to challenge
+const CHALLENGE_ARBITRATION_PERIOD_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+const CHALLENGE_QUORUM_PCT = 0.30;      // 30% active agents
+const CHALLENGE_PASS_THRESHOLD = 0.60;  // 60% yes votes
+const TREASURY_ADDR = 'ng1treasury0000000000000000000000000000';
 
 // ─── Phase 3 Layer 2: Quality Score Multipliers ───
 // Verifier rates submission quality 1-5 stars; affects reward payout.
@@ -80,8 +115,10 @@ class TaskProtocol {
   constructor(node = null) {
     this.node = node;
     this.tasks = new Map();
+    this._challenges = new Map();
     this._initDirectories();
     this._loadTasks();
+    this._loadChallenges();
     this._startExpiryChecker();
   }
 
@@ -103,6 +140,21 @@ class TaskProtocol {
       }
     } catch (e) {
       console.log('[TaskProtocol] No existing tasks found');
+    }
+  }
+
+  _loadChallenges() {
+    try {
+      const file = path.join(process.cwd(), 'data', 'challenges', 'challenges.json');
+      if (fs.existsSync(file)) {
+        const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+        for (const [key, value] of Object.entries(data)) {
+          this._challenges.set(key, value);
+        }
+        console.log(`[TaskProtocol] Loaded ${this._challenges.size} challenges from disk`);
+      }
+    } catch (e) {
+      console.log('[TaskProtocol] No existing challenges found');
     }
   }
 
@@ -133,10 +185,34 @@ class TaskProtocol {
           task.claimedAt = null;
           expired++;
         }
+        // Phase 4: finalize tasks whose challenge window has expired with no challenge
+        if (task.status === TASK_STATUS.CHALLENGE_WINDOW && task.challengeDeadline && now >= task.challengeDeadline) {
+          task.status = TASK_STATUS.FINALIZED;
+          task.finalizedAt = now;
+          task.transactionHistory.push({
+            type: TXN_TYPES.CHALLENGE_RESOLVE,
+            timestamp: now,
+            by: 'system',
+            data: { reason: 'challenge_window_expired_no_challenges' }
+          });
+          expired++;
+        }
+        // Phase 4: resolve stale challenges after arbitration period
+        if (task.status === TASK_STATUS.CHALLENGED && task.challengeOpenedAt &&
+            now >= task.challengeOpenedAt + CHALLENGE_ARBITRATION_PERIOD_MS) {
+          const challenge = this._challenges?.get(task.challengeId);
+          if (challenge && (challenge.status === 'open' || challenge.status === 'voting')) {
+            const totalWeight = Number(challenge.yesWeight || 0) + Number(challenge.noWeight || 0);
+            const yesRatio = totalWeight > 0 ? Number(challenge.yesWeight) / totalWeight : 0;
+            const result = yesRatio >= CHALLENGE_PASS_THRESHOLD ? 'upheld' : 'rejected';
+            this._resolveChallenge(challenge, result, task);
+            expired++;
+          }
+        }
       }
       if (expired > 0) {
         this._saveTasks();
-        console.log(`[TaskProtocol] Expired/Released ${expired} tasks`);
+        console.log(`[TaskProtocol] Expired/Finalized ${expired} tasks`);
       }
     }, 60000);
   }
@@ -449,6 +525,7 @@ class TaskProtocol {
   /**
    * Phase 3: Complete a task (shared by verify() and Tier 2 auto-verify).
    * Applies Layer 2 quality-score multiplier to the reward payout.
+   * Phase 4: After verification, opens a challenge window before finalizing.
    * @param {object} task - Task object (mutated in place)
    * @param {string} verifierAddress - Who triggered completion
    * @param {string} feedback - Verification feedback
@@ -456,9 +533,10 @@ class TaskProtocol {
    * @param {number} [options.qualityScore=3] - 1-5 star quality rating (Layer 2)
    * @param {boolean} [options.autoVerified=false] - True for Tier 2 auto-verify
    * @param {string} [options.verifierRole='publisher'] - 'publisher' | 'independent' | 'self' | 'system'
+   * @param {boolean} [options.skipChallengeWindow=false] - For testing/legacy: skip challenge window
    */
   _completeTask(task, verifierAddress, feedback = '', options = {}) {
-    const { qualityScore = DEFAULT_QUALITY_SCORE, autoVerified = false, verifierRole = 'publisher' } = options;
+    const { qualityScore = DEFAULT_QUALITY_SCORE, autoVerified = false, verifierRole = 'publisher', skipChallengeWindow = false } = options;
     const now = Date.now();
     const taskId = task.id;
 
@@ -471,9 +549,13 @@ class TaskProtocol {
     task.rewardMultiplier = multiplier;
     task.adjustedReward = adjustedReward.toString();
 
+    // Record verifier who triggered completion
+    task.verifierAddress = verifierAddress;
+    task.verifierRole = verifierRole;
+    task.autoVerified = autoVerified;
+
     task.status = TASK_STATUS.VERIFIED;
     task.verifiedAt = now;
-    task.autoVerified = autoVerified;
     task.transactionHistory.push({
       type: TXN_TYPES.TASK_VERIFY,
       timestamp: now,
@@ -481,14 +563,42 @@ class TaskProtocol {
       data: { approved: true, feedback, qualityScore, multiplier, verifierRole, autoVerified }
     });
 
-    task.status = TASK_STATUS.COMPLETED;
-    task.completedAt = now;
-    task.transactionHistory.push({
-      type: TXN_TYPES.TASK_COMPLETE,
-      timestamp: now,
-      by: verifierAddress,
-      data: { reward: task.reward, adjustedReward: task.adjustedReward, claimant: task.claimedBy, publisher: task.publisher, qualityScore, multiplier }
-    });
+    // Phase 4: Open challenge window (or skip for legacy compat)
+    if (skipChallengeWindow) {
+      // Legacy path: immediate COMPLETED (used by Phase 1-3 tests for backward compat)
+      task.status = TASK_STATUS.COMPLETED;
+      task.completedAt = now;
+      task.transactionHistory.push({
+        type: TXN_TYPES.TASK_COMPLETE,
+        timestamp: now,
+        by: verifierAddress,
+        data: { reward: task.reward, adjustedReward: task.adjustedReward, claimant: task.claimedBy, publisher: task.publisher, qualityScore, multiplier }
+      });
+    } else {
+      // New path: enter CHALLENGE_WINDOW
+      const tierName = task.trustTier || 'trusted';
+      const windowMs = CHALLENGE_WINDOWS_MS[tierName] ?? CHALLENGE_WINDOWS_MS.trusted;
+      task.challengeWindowMs = windowMs;
+      task.challengeDeadline = now + windowMs;
+      task.challengeDepositPct = CHALLENGE_DEPOSIT_PCT[tierName] ?? CHALLENGE_DEPOSIT_PCT.trusted;
+      task.challengeId = null;
+      task.status = TASK_STATUS.CHALLENGE_WINDOW;
+      task.transactionHistory.push({
+        type: TXN_TYPES.TASK_COMPLETE,
+        timestamp: now,
+        by: verifierAddress,
+        data: {
+          reward: task.reward,
+          adjustedReward: task.adjustedReward,
+          claimant: task.claimedBy,
+          publisher: task.publisher,
+          qualityScore,
+          multiplier,
+          challengeWindowMs: windowMs,
+          challengeDeadline: task.challengeDeadline
+        }
+      });
+    }
 
     if (this.node) {
       this._recordOnChain(taskId, TXN_TYPES.TASK_COMPLETE, verifierAddress, {
@@ -604,6 +714,7 @@ class TaskProtocol {
    * @returns {{ success: boolean, task?: object, reason?: string, requiresThirdParty?: boolean }}
    */
   verify(verifierAddress, taskId, approved, feedback = '', options = {}) {
+    const { skipChallengeWindow = false } = options;
     const task = this.tasks.get(taskId);
     if (!task) {
       return { success: false, reason: 'Task not found' };
@@ -640,11 +751,11 @@ class TaskProtocol {
         task.publisherApproved = true;
         task.verifications.push({ verifier: verifierAddress, role: 'publisher', approved: true, timestamp: now, feedback });
         if (task.thirdPartyApproved) {
-          this._completeTask(task, verifierAddress, feedback, { qualityScore, verifierRole: 'publisher' });
+          this._completeTask(task, verifierAddress, feedback, { qualityScore, verifierRole: 'publisher', skipChallengeWindow });
         }
         this.tasks.set(taskId, task);
         this._saveTasks();
-        return task.status === TASK_STATUS.COMPLETED
+        return task.status === TASK_STATUS.COMPLETED || task.status === TASK_STATUS.CHALLENGE_WINDOW
           ? { success: true, task: this._sanitizeTask(task) }
           : { success: true, task: this._sanitizeTask(task), requiresThirdParty: true, message: 'Publisher approved; awaiting independent verifier' };
       }
@@ -653,11 +764,11 @@ class TaskProtocol {
       task.thirdPartyApproved = true;
       task.verifications.push({ verifier: verifierAddress, role: 'independent', approved: true, timestamp: now, feedback });
       if (task.publisherApproved) {
-        this._completeTask(task, verifierAddress, feedback, { qualityScore, verifierRole: 'independent' });
+        this._completeTask(task, verifierAddress, feedback, { qualityScore, verifierRole: 'independent', skipChallengeWindow });
       }
       this.tasks.set(taskId, task);
       this._saveTasks();
-      return task.status === TASK_STATUS.COMPLETED
+      return task.status === TASK_STATUS.COMPLETED || task.status === TASK_STATUS.CHALLENGE_WINDOW
         ? { success: true, task: this._sanitizeTask(task) }
         : { success: true, task: this._sanitizeTask(task), requiresPublisherApproval: true, message: 'Independent verification recorded; awaiting publisher approval' };
     }
@@ -668,7 +779,7 @@ class TaskProtocol {
         return { success: false, reason: 'Only the publisher can verify' };
       }
       if (approved) {
-        this._completeTask(task, verifierAddress, feedback, { qualityScore, verifierRole: 'publisher' });
+        this._completeTask(task, verifierAddress, feedback, { qualityScore, verifierRole: 'publisher', skipChallengeWindow });
       } else {
         this._reopenTask(task, verifierAddress, feedback, now);
       }
@@ -684,7 +795,7 @@ class TaskProtocol {
       }
       if (approved) {
         const verifierRole = isClaimant ? 'self' : 'publisher';
-        this._completeTask(task, verifierAddress, feedback, { qualityScore, verifierRole, autoVerified: isClaimant });
+        this._completeTask(task, verifierAddress, feedback, { qualityScore, verifierRole, autoVerified: isClaimant, skipChallengeWindow });
       } else {
         if (isClaimant) {
           return { success: false, reason: 'Claimant cannot reject own task' };
@@ -879,6 +990,356 @@ class TaskProtocol {
     this.node.handleTransaction(tx).catch(e => {
       console.error(`[TaskProtocol] Failed to record ${txType} on-chain:`, e.message);
     });
+  }
+
+  // ===========================================================================
+  // Phase 4: Task Challenge Mechanism
+  // ===========================================================================
+
+  /**
+   * Initiate a challenge against a verified task during its challenge window.
+   * Locks a deposit and transitions the task to CHALLENGED state.
+   * @param {string} challengerAddress - Agent address of challenger
+   * @param {string} taskId - Task to challenge
+   * @param {string} reason - Reason for the challenge
+   * @param {string} evidence - Optional evidence (URL/hash/text)
+   * @returns {{ success: boolean, challenge?: object, reason?: string, errorCode?: string }}
+   */
+  challenge(challengerAddress, taskId, reason, evidence = '') {
+    const task = this.tasks.get(taskId);
+    if (!task) {
+      return { success: false, reason: 'Task not found', errorCode: 'NOT_FOUND' };
+    }
+    if (task.status !== TASK_STATUS.CHALLENGE_WINDOW) {
+      return { success: false, reason: `Task is in status ${task.status}, not challenge_window`, errorCode: 'INVALID_STATUS' };
+    }
+    const now = Date.now();
+    if (now > task.challengeDeadline) {
+      return { success: false, reason: 'Challenge window has expired', errorCode: 'WINDOW_EXPIRED' };
+    }
+    if (!challengerAddress || !challengerAddress.startsWith('ng1')) {
+      return { success: false, reason: 'Invalid challenger address', errorCode: 'INVALID_CHALLENGER' };
+    }
+    // Publisher can challenge their own task; claimant cannot challenge self
+    if (task.claimedBy === challengerAddress) {
+      return { success: false, reason: 'Claimant cannot challenge own task', errorCode: 'SELF_CHALLENGE' };
+    }
+    // Verifier cannot challenge their own verification
+    if (task.verifierAddress === challengerAddress) {
+      return { success: false, reason: 'Verifier cannot challenge own verification', errorCode: 'SELF_CHALLENGE' };
+    }
+    if (!this.node || !this.node.currentState) {
+      return { success: false, reason: 'Node state not available', errorCode: 'NO_STATE' };
+    }
+    // Reputation check
+    let challengerRep = 0;
+    if (this.node.resolveRegisteredAgent) {
+      const agentRecord = this.node.resolveRegisteredAgent(challengerAddress);
+      if (agentRecord) {
+        challengerRep = agentRecord.reputation || 0;
+      }
+    }
+    if (challengerRep < MIN_CHALLENGER_REPUTATION) {
+      return { success: false, reason: `Challenger reputation must be ≥ ${MIN_CHALLENGER_REPUTATION}, have ${challengerRep}`, errorCode: 'INSUFFICIENT_REPUTATION' };
+    }
+    // Calculate deposit
+    const baseReward = BigInt(task.adjustedReward || task.reward);
+    const pct = task.challengeDepositPct || 0.10;
+    let deposit = (baseReward * BigInt(Math.round(pct * 100))) / 100n;
+    if (deposit < MIN_CHALLENGE_DEPOSIT) deposit = MIN_CHALLENGE_DEPOSIT;
+    // Check challenger balance
+    const challengerBalance = BigInt(this.node.currentState.getBalance(challengerAddress));
+    if (challengerBalance < deposit) {
+      return { success: false, reason: `Insufficient balance: need ${deposit.toString()} NGEN, have ${challengerBalance.toString()}`, errorCode: 'INSUFFICIENT_BALANCE' };
+    }
+    // Lock deposit: challenger → ESCROW
+    const ESCROW_ADDR = 'ng1escrow0000000000000000000000000000000';
+    this.node.currentState.subtractBalance(challengerAddress, deposit.toString());
+    this.node.currentState.addBalance(ESCROW_ADDR, deposit.toString());
+
+    // Create challenge record (in-memory + transaction history)
+    const challengeId = `chg_${crypto.randomUUID().slice(0, 12)}`;
+    const challenge = {
+      id: challengeId,
+      taskId,
+      challenger: challengerAddress,
+      reason: reason || '',
+      evidence: evidence || '',
+      deposit: deposit.toString(),
+      status: 'open',
+      openedAt: now,
+      votes: { yes: [], no: [], abstain: [] },
+      yesWeight: '0',
+      noWeight: '0',
+      result: null,
+      resolvedAt: null
+    };
+    // Persist challenges to memory + file
+    if (!this._challenges) this._challenges = new Map();
+    this._challenges.set(challengeId, challenge);
+    this._persistChallenges();
+
+    // Update task
+    task.challengeId = challengeId;
+    task.challenger = challengerAddress;
+    task.challengeDeposit = deposit.toString();
+    task.challengeOpenedAt = now;
+    task.status = TASK_STATUS.CHALLENGED;
+    task.transactionHistory.push({
+      type: TXN_TYPES.CHALLENGE_OPEN,
+      timestamp: now,
+      by: challengerAddress,
+      data: { challengeId, reason, evidence, deposit: deposit.toString() }
+    });
+    this.tasks.set(taskId, task);
+    this._saveTasks();
+
+    if (this.node) {
+      this._recordOnChain(taskId, TXN_TYPES.CHALLENGE_OPEN, challengerAddress, {
+        challengeId, reason, deposit: deposit.toString()
+      });
+    }
+    console.log(`[TaskProtocol] Challenge opened: ${challengeId} on task ${taskId} by ${challengerAddress.slice(0, 12)}... (deposit=${deposit.toString()} NGEN)`);
+    return { success: true, challenge: { ...challenge, taskId, trustTier: task.trustTier } };
+  }
+
+  /**
+   * Cast a vote on an open challenge. Quorum-based governance.
+   * @param {string} challengeId
+   * @param {string} voterAddress
+   * @param {'uphold'|'reject'|'abstain'} vote
+   * @returns {{ success: boolean, reason?: string, errorCode?: string, tally?: object }}
+   */
+  arbitrateChallenge(challengeId, voterAddress, vote) {
+    if (!this._challenges) return { success: false, reason: 'No challenges exist', errorCode: 'NOT_FOUND' };
+    const challenge = this._challenges.get(challengeId);
+    if (!challenge) return { success: false, reason: 'Challenge not found', errorCode: 'NOT_FOUND' };
+    if (challenge.status !== 'open' && challenge.status !== 'voting') {
+      return { success: false, reason: `Challenge is ${challenge.status}, not open for voting`, errorCode: 'CLOSED' };
+    }
+    if (!this.node || !this.node.currentState) {
+      return { success: false, reason: 'Node state not available', errorCode: 'NO_STATE' };
+    }
+    const task = this.tasks.get(challenge.taskId);
+    if (!task) return { success: false, reason: 'Associated task not found', errorCode: 'NOT_FOUND' };
+    // Interested parties cannot vote
+    const isInterested = (task.publisher === voterAddress) ||
+                         (task.claimedBy === voterAddress) ||
+                         (task.verifierAddress === voterAddress) ||
+                         (challenge.challenger === voterAddress);
+    if (isInterested) {
+      return { success: false, reason: 'Interested parties cannot vote on challenges', errorCode: 'CONFLICT_OF_INTEREST' };
+    }
+    // Check reputation
+    let voterRep = 0;
+    if (this.node.resolveRegisteredAgent) {
+      const agentRecord = this.node.resolveRegisteredAgent(voterAddress);
+      if (!agentRecord || !agentRecord.agentId) {
+        return { success: false, reason: 'Voter must be a registered agent', error_code: 'NOT_REGISTERED' };
+      }
+      voterRep = agentRecord.reputation || 0;
+      if (voterRep < 1) {
+        return { success: false, reason: 'Voter reputation must be ≥ 1', errorCode: 'INSUFFICIENT_REPUTATION' };
+      }
+      // Compute voting weight = reputation * (1 + balance/1000)
+      const balance = BigInt(this.node.currentState.getBalance(voterAddress));
+      const weight = Number(voterRep) * (1 + Number(balance) / 1000);
+      // Remove any prior vote
+      ['yes', 'no', 'abstain'].forEach(bucket => {
+        const idx = challenge.votes[bucket].findIndex(v => v.voter === voterAddress);
+        if (idx >= 0) {
+          challenge.votes[bucket].splice(idx, 1);
+        }
+      });
+      const normalizedVote = vote === 'uphold' ? 'yes' : (vote === 'reject' ? 'no' : 'abstain');
+      challenge.votes[normalizedVote].push({ voter: voterAddress, weight, timestamp: Date.now() });
+    } else {
+      return { success: false, reason: 'Agent registry unavailable', errorCode: 'NO_REGISTRY' };
+    }
+
+    // Recompute weights
+    const sumWeights = (arr) => arr.reduce((s, v) => s + v.weight, 0);
+    challenge.yesWeight = sumWeights(challenge.votes.yes).toString();
+    challenge.noWeight = sumWeights(challenge.votes.no).toString();
+    challenge.status = 'voting';
+    this._challenges.set(challengeId, challenge);
+    this._persistChallenges();
+
+    // Check if resolution threshold met
+    const totalWeight = Number(challenge.yesWeight) + Number(challenge.noWeight);
+    const yesRatio = totalWeight > 0 ? Number(challenge.yesWeight) / totalWeight : 0;
+    const activeAgentCount = this._countActiveAgents();
+    const quorum = activeAgentCount * CHALLENGE_QUORUM_PCT;
+    // Resolve early if yes ratio passes threshold AND total weight exceeds quorum,
+    // OR if 7 days have passed since openedAt
+    const arbitrationDeadline = challenge.openedAt + CHALLENGE_ARBITRATION_PERIOD_MS;
+    const quorumMet = totalWeight >= quorum;
+    const thresholdMet = yesRatio >= CHALLENGE_PASS_THRESHOLD && quorumMet;
+    const deadlineReached = Date.now() >= arbitrationDeadline;
+    if (thresholdMet || (deadlineReached && quorumMet)) {
+      const result = yesRatio >= CHALLENGE_PASS_THRESHOLD ? 'upheld' : 'rejected';
+      return this._resolveChallenge(challenge, result, task);
+    }
+    return {
+      success: true,
+      challenge: { id: challengeId, status: 'voting', yesWeight: challenge.yesWeight, noWeight: challenge.noWeight, yesRatio, quorumMet, thresholdMet },
+      tally: { yesWeight: Number(challenge.yesWeight), noWeight: Number(challenge.noWeight), quorum, activeAgents: activeAgentCount }
+    };
+  }
+
+  /**
+   * Resolve a challenge: distribute funds, slash parties, finalize task.
+   * @param {object} challenge
+   * @param {'upheld'|'rejected'} result
+   * @param {object} task
+   */
+  _resolveChallenge(challenge, result, task) {
+    const ESCROW_ADDR = 'ng1escrow0000000000000000000000000000000';
+    const deposit = BigInt(challenge.deposit);
+    const adjustedReward = BigInt(task.adjustedReward || task.reward);
+    const halfReward = adjustedReward / 2n;
+    const now = Date.now();
+    challenge.status = result;
+    challenge.result = result;
+    challenge.resolvedAt = now;
+    if (result === 'upheld') {
+      // Challenger wins: refund deposit + 50% reward (from claimant); treasury gets 50%
+      // Return deposit to challenger from escrow
+      this.node.currentState.subtractBalance(ESCROW_ADDR, deposit.toString());
+      this.node.currentState.addBalance(challenge.challenger, deposit.toString());
+      // Move 50% of reward from claimant → challenger
+      let claimantPaid = false;
+      if (this.node.currentState.getBalance(task.claimedBy) >= halfReward) {
+        this.node.currentState.subtractBalance(task.claimedBy, halfReward.toString());
+        this.node.currentState.addBalance(challenge.challenger, halfReward.toString());
+        claimantPaid = true;
+      } else {
+        // Fallback: pay from escrow
+        this.node.currentState.subtractBalance(ESCROW_ADDR, halfReward.toString());
+        this.node.currentState.addBalance(challenge.challenger, halfReward.toString());
+        console.warn(`[TaskProtocol] Claimant balance insufficient for upheld challenge; using escrow`);
+      }
+      // Move 50% to treasury
+      this.node.currentState.subtractBalance(ESCROW_ADDR, halfReward.toString());
+      this.node.currentState.addBalance(TREASURY_ADDR, halfReward.toString());
+      // Slash verifier
+      this._slashForViolation(task.verifierAddress, 'MALICIOUS_VERIFICATION', { taskId: task.id, challengeId: challenge.id });
+      task.status = TASK_STATUS.UPHELD;
+      console.log(`[TaskProtocol] Challenge UPHELD: ${challenge.id}; verifier slashed; challenger paid ${(deposit + halfReward).toString()} NGEN`);
+    } else {
+      // Challenger loses: deposit → treasury, slash challenger
+      this.node.currentState.subtractBalance(ESCROW_ADDR, deposit.toString());
+      this.node.currentState.addBalance(TREASURY_ADDR, deposit.toString());
+      this._slashForViolation(challenge.challenger, 'FALSE_CHALLENGE', { taskId: task.id, challengeId: challenge.id });
+      task.status = TASK_STATUS.REJECTED;
+      console.log(`[TaskProtocol] Challenge REJECTED: ${challenge.id}; challenger slashed -${deposit.toString()} NGEN to treasury`);
+    }
+    task.status = TASK_STATUS.FINALIZED;
+    task.finalizedAt = now;
+    task.challengeResult = result;
+    task.transactionHistory.push({
+      type: TXN_TYPES.CHALLENGE_RESOLVE,
+      timestamp: now,
+      by: 'system',
+      data: { challengeId: challenge.id, result, deposit: deposit.toString() }
+    });
+    this._challenges.set(challenge.id, challenge);
+    this._persistChallenges();
+    this.tasks.set(task.id, task);
+    this._saveTasks();
+    if (this.node) {
+      this._recordOnChain(task.id, TXN_TYPES.CHALLENGE_RESOLVE, 'system', {
+        challengeId: challenge.id, result, deposit: deposit.toString()
+      });
+    }
+    return {
+      success: true,
+      challenge: { id: challenge.id, status: result, resolvedAt: now },
+      taskStatus: task.status,
+      result
+    };
+  }
+
+  /**
+   * Count active agents (reputation > 0) for quorum calculation.
+   */
+  _countActiveAgents() {
+    if (!this.node || !this.node.currentState || typeof this.node.currentState.getAllAgents !== 'function') {
+      return 1; // fallback
+    }
+    const agents = this.node.currentState.getAllAgents() || [];
+    return Math.max(1, agents.filter(a => (a.reputation || 0) > 0).length);
+  }
+
+  /**
+   * Persist challenges to data/challenges/challenges.json
+   */
+  _persistChallenges() {
+    try {
+      const path = require('path');
+      const fs = require('fs');
+      const dir = path.join(process.cwd(), 'data', 'challenges');
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      const data = {};
+      if (this._challenges) {
+        for (const [id, c] of this._challenges.entries()) {
+          data[id] = c;
+        }
+      }
+      fs.writeFileSync(path.join(dir, 'challenges.json'), JSON.stringify(data, null, 2));
+    } catch (e) {
+      console.warn('[TaskProtocol] _persistChallenges failed:', e.message);
+    }
+  }
+
+  /**
+   * Get challenge by ID
+   */
+  getChallenge(challengeId) {
+    if (!this._challenges) return null;
+    return this._challenges.get(challengeId) || null;
+  }
+
+  /**
+   * Get all challenges for a task
+   */
+  getChallengesForTask(taskId) {
+    if (!this._challenges) return [];
+    return Array.from(this._challenges.values()).filter(c => c.taskId === taskId);
+  }
+
+  /**
+   * Finalize tasks whose challenge window has expired with no challenges.
+   * Called periodically (and can be invoked manually).
+   */
+  finalizeExpiredTasks() {
+    const now = Date.now();
+    let count = 0;
+    for (const task of this.tasks.values()) {
+      if (task.status === TASK_STATUS.CHALLENGE_WINDOW && now >= task.challengeDeadline) {
+        task.status = TASK_STATUS.FINALIZED;
+        task.finalizedAt = now;
+        task.transactionHistory.push({
+          type: TXN_TYPES.CHALLENGE_RESOLVE,
+          timestamp: now,
+          by: 'system',
+          data: { reason: 'challenge_window_expired_no_challenges' }
+        });
+        this.tasks.set(task.id, task);
+        count++;
+        console.log(`[TaskProtocol] Task ${task.id} finalized (challenge window expired, no challenges)`);
+      }
+    }
+    if (count > 0) this._saveTasks();
+    return count;
+  }
+
+  /**
+   * Slash a party for a challenge-related violation.
+   * Wrapper around _slashForViolation with challenge-specific context.
+   */
+  _slashForViolationChallenge(address, violationType, context) {
+    return this._slashForViolation(address, violationType, context);
   }
 
   _sanitizeTask(task) {

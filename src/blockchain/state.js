@@ -60,7 +60,11 @@ export const VIOLATION_PENALTIES = {
   FAKE_TASK: { penalty: -30, reason: 'Published a task with no intent to pay' },
   MALICIOUS_REJECTION: { penalty: -20, reason: 'Rejected valid submission without cause' },
   SPAM_PUBLISH: { penalty: -10, reason: 'Published spam / low-quality task' },
-  REPEATED_VIOLATION: { penalty: -100, reason: 'Multiple violations within 24h' }
+  REPEATED_VIOLATION: { penalty: -100, reason: 'Multiple violations within 24h' },
+  // Phase 4: Task challenge mechanism penalties
+  MALICIOUS_VERIFICATION: { penalty: -80, reason: 'Approved fake or low-quality submission (challenge upheld)' },
+  FALSE_CHALLENGE: { penalty: -20, reason: 'Frivolous challenge with no evidence (challenge rejected)' },
+  COLLUSION_VERIFIER_PUBLISHER: { penalty: -150, reason: 'Verifier-publisher collusion detected' }
 };
 
 // 违规记录留存 (for audit + dispute)

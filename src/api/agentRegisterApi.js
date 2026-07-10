@@ -195,12 +195,17 @@ router.get('/', async (req, res) => {
       _totalOnChain: allAgents.length,
       agents: agents.map(agent => {
         const address = agent.address;
-        // Prefer agentWalletManager (persistent, authoritative for agent wallets).
-        // Fall back to blockchain state if wallet manager has no record.
+        // Prefer on-chain balance (authoritative, reflects all transactions).
+        // Fall back to agentWalletManager only if on-chain returns 0/undefined.
+        const onChainBalance = state.getBalance?.(address);
         const walletInstance = agentWalletManager.getWalletInstanceByAddress(address)
           || (agent.identity ? agentWalletManager.getWalletInstance(agent.identity) : null)
           || agentWalletManager.getWalletInstance(agent.agent_id);
-        const balanceNum = Number(walletInstance?.balance ?? state.getBalance?.(address) ?? 0);
+        const balanceNum = Number(
+          (onChainBalance !== undefined && onChainBalance !== null && onChainBalance !== 0)
+            ? onChainBalance
+            : (walletInstance?.balance ?? 0)
+        );
 
         return {
           agent_id: agent.agent_id,

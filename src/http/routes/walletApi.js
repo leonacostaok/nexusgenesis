@@ -67,7 +67,34 @@ router.get('/balance/:address', (req, res) => {
       });
     }
 
-    // 优先从 AgentWalletManager 查找
+    // Prefer on-chain balance (authoritative, reflects all transactions)
+    // Fall back to AgentWalletManager only if on-chain returns 0/undefined
+    // (e.g. address not yet indexed by state). See dashboard consistency fix.
+    const state = req.app.locals.state;
+    const onChainRaw = state?.getBalance?.(address);
+    const onChainBalance = (onChainRaw !== undefined && onChainRaw !== null && onChainRaw !== 0)
+      ? onChainRaw
+      : null;
+
+    if (onChainBalance !== null) {
+      const balance = formatNgen(onChainBalance);
+      return res.json({
+        success: true,
+        wallet: {
+          address,
+          balance,
+          balanceFormatted: balance.toLocaleString(),
+          usdValue: (balance * getUsdRate()).toFixed(2),
+          usdValueType: 'testnet_virtual',
+          usdValueNote: 'Testnet virtual estimate — not a market price. NGEN has network utility value (staking, governance, task settlement), no fiat conversion commitment.',
+          symbol: NGEN_SYMBOL,
+          decimals: NGEN_DECIMALS,
+          source: 'blockchain'
+        }
+      });
+    }
+
+    // Fallback to AgentWalletManager (on-chain was 0/undefined)
     const agentId = agentWalletManager.getAgentByAddress(address);
     if (agentId) {
       const balanceResult = agentWalletManager.getBalance(agentId);
@@ -91,11 +118,8 @@ router.get('/balance/:address', (req, res) => {
       }
     }
 
-    // 回退到区块链状态
-    const state = req.app.locals.state;
-    const rawBalance = state?.getBalance?.(address) || state?.balances?.[address] || 0;
-    const balance = formatNgen(rawBalance);
-
+    // Final fallback: empty blockchain state
+    const balance = formatNgen(0);
     res.json({
       success: true,
       wallet: {

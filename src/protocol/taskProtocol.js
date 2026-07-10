@@ -1054,8 +1054,17 @@ class TaskProtocol {
     }
     // Lock deposit: challenger → ESCROW
     const ESCROW_ADDR = 'ng1escrow0000000000000000000000000000000';
-    this.node.currentState.subtractBalance(challengerAddress, deposit.toString());
-    this.node.currentState.addBalance(ESCROW_ADDR, deposit.toString());
+    let balanceOk = true;
+    try {
+      this.node.currentState.subtractBalance(challengerAddress, deposit.toString());
+      this.node.currentState.addBalance(ESCROW_ADDR, deposit.toString());
+    } catch (e) {
+      balanceOk = false;
+      console.error(`[TaskProtocol] Deposit lock failed for challenge on task ${taskId}:`, e.message);
+    }
+    if (!balanceOk) {
+      return { success: false, reason: 'Failed to lock deposit (internal error)', errorCode: 'DEPOSIT_LOCK_FAILED' };
+    }
 
     // Create challenge record (in-memory + transaction history)
     const challengeId = `chg_${crypto.randomUUID().slice(0, 12)}`;
@@ -1165,6 +1174,21 @@ class TaskProtocol {
     this._challenges.set(challengeId, challenge);
     this._persistChallenges();
 
+    // Update task status to ARBITRATION when first vote is cast
+    if (challenge.votes.yes.length + challenge.votes.no.length + challenge.votes.abstain.length > 0 &&
+        task.status === TASK_STATUS.CHALLENGED) {
+      task.status = TASK_STATUS.ARBITRATION;
+      const voteTimestamp = Date.now();
+      task.transactionHistory.push({
+        type: TXN_TYPES.CHALLENGE_VOTE,
+        timestamp: voteTimestamp,
+        by: voterAddress,
+        data: { challengeId, vote, voter: voterAddress }
+      });
+      this.tasks.set(task.id, task);
+      this._saveTasks();
+    }
+
     // Check if resolution threshold met
     const totalWeight = Number(challenge.yesWeight) + Number(challenge.noWeight);
     const yesRatio = totalWeight > 0 ? Number(challenge.yesWeight) / totalWeight : 0;
@@ -1198,6 +1222,7 @@ class TaskProtocol {
     const deposit = BigInt(challenge.deposit);
     const adjustedReward = BigInt(task.adjustedReward || task.reward);
     const halfReward = adjustedReward / 2n;
+    const remainder = adjustedReward % 2n;
     const now = Date.now();
     challenge.status = result;
     challenge.result = result;
@@ -1222,16 +1247,20 @@ class TaskProtocol {
       // Move 50% to treasury
       this.node.currentState.subtractBalance(ESCROW_ADDR, halfReward.toString());
       this.node.currentState.addBalance(TREASURY_ADDR, halfReward.toString());
+      // Return odd-cent remainder to treasury
+      if (remainder > 0n) {
+        this.node.currentState.addBalance(TREASURY_ADDR, remainder.toString());
+      }
       // Slash verifier
-      this._slashForViolation(task.verifierAddress, 'MALICIOUS_VERIFICATION', { taskId: task.id, challengeId: challenge.id });
-      task.status = TASK_STATUS.UPHELD;
+      if (task.verifierAddress && task.verifierAddress !== 'system') {
+        this._slashForViolation(task.verifierAddress, 'MALICIOUS_VERIFICATION', { taskId: task.id, challengeId: challenge.id });
+      }
       console.log(`[TaskProtocol] Challenge UPHELD: ${challenge.id}; verifier slashed; challenger paid ${(deposit + halfReward).toString()} NGEN`);
     } else {
       // Challenger loses: deposit → treasury, slash challenger
       this.node.currentState.subtractBalance(ESCROW_ADDR, deposit.toString());
       this.node.currentState.addBalance(TREASURY_ADDR, deposit.toString());
       this._slashForViolation(challenge.challenger, 'FALSE_CHALLENGE', { taskId: task.id, challengeId: challenge.id });
-      task.status = TASK_STATUS.REJECTED;
       console.log(`[TaskProtocol] Challenge REJECTED: ${challenge.id}; challenger slashed -${deposit.toString()} NGEN to treasury`);
     }
     task.status = TASK_STATUS.FINALIZED;
@@ -1343,7 +1372,7 @@ class TaskProtocol {
   }
 
   _sanitizeTask(task) {
-    const { transactionHistory, submissionData, ...safe } = task;
+    const { transactionHistory, submissionData, verifications, ...safe } = task;
     // Include transaction count and submission summary (not full data)
     return {
       ...safe,

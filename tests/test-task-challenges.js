@@ -34,8 +34,8 @@ function assert(name, cond, info = '') {
 }
 
 async function getAgents() {
-  const r = await http('GET', '/api/v1/bootstrap/validators?limit=50');
-  return r.body.validators || [];
+  const r = await http('GET', '/api/v1/agents?limit=200');
+  return r.body.agents || [];
 }
 
 async function publishTask(publisher, reward = '100') {
@@ -93,14 +93,16 @@ async function main() {
   // Claimant: Tier 0 (rep 0) — forces 2-step verification path
   // Challenger: rep >= 1 per getAgentStats (needed for MIN_CHALLENGER_REPUTATION)
   // Independent verifier: Tier 0 agent, separate from publisher/claimant/challenger
-  const publisher = 'validator17833387151993';         // rep=6, balance=1049
-  const claimant = 'validator-test-001';               // rep=0, balance=10900 (Tier 0)
-  const challenger = 'validator17833388792463';        // rep=15, balance=1019 (rep >= 1)
-  const independentVerifier = 'validator17832596467733'; // rep=4, balance=49 (Tier 0)
+  const publisher = 'validator17833387151993';         // rep varies, balance=1049
+  const claimant = 'validator-test-001';               // rep varies (Tier 0)
+  const independentVerifier = 'validator17832596467733'; // rep varies, balance=49 (Tier 0)
   const sorted = agents
     .map(a => ({ identity: a.agent_identity, rep: a.reputation || 0, balance: a.balance || 0 }))
     .sort((a, b) => b.rep - a.rep);
-  const finalChallenger = challenger;
+  // Dynamic challenger: find an agent with rep >= 1 that is NOT publisher/claimant/independentVerifier
+  const excluded = new Set([publisher, claimant, independentVerifier]);
+  const dynamicChallenger = sorted.find(a => a.rep >= 1 && !excluded.has(a.identity))?.identity;
+  const finalChallenger = dynamicChallenger;
 
   console.log(`  publisher:   ${publisher}  (rep=${sorted.find(a => a.identity === publisher)?.rep})`);
   console.log(`  claimant:    ${claimant}   (rep=${sorted.find(a => a.identity === claimant)?.rep})`);
@@ -194,22 +196,16 @@ async function main() {
   // ─── Test 6: Reject vote by arbitrator ───
   console.log('\n=== Test 6: Reject vote by arbitrator ===');
   if (challengeId) {
-    // Find an independent arbitrator (not publisher, claimant, challenger, or verifier)
-    const independent = sorted.find(a =>
-      a.identity !== publisher && a.identity !== claimant && a.identity !== finalChallenger && a.identity !== independentVerifier
-    );
-    if (independent) {
-      const rejVote = await http('POST', `/api/tasks/challenges/${challengeId}/arbitrate`, {
-        voter: independent.identity,
-        vote: 'reject'
-      }, { 'x-admin-secret': ADMIN_SECRET });
-      assert('reject vote accepted', rejVote.body?.success === true, rejVote.body?.error || '');
-      // Quorum likely not met with single vote — task should still be in arbitration
-      const taskAfter2 = await getTask(task1.id);
-      console.log(`  after reject vote: status=${taskAfter2.body?.task?.status}`);
-    } else {
-      console.log('  SKIP: no independent agent available');
-    }
+    // Use fixed independent agent (agent-Y-001) as arbitrator — not publisher/claimant/challenger/verifier
+    const arbitrator = 'agent-Y-001';
+    const rejVote = await http('POST', `/api/tasks/challenges/${challengeId}/arbitrate`, {
+      voter: arbitrator,
+      vote: 'reject'
+    }, { 'x-admin-secret': ADMIN_SECRET });
+    assert('reject vote accepted', rejVote.body?.success === true, rejVote.body?.error || '');
+    // Quorum likely not met with single vote — task should still be in arbitration
+    const taskAfter2 = await getTask(task1.id);
+    console.log(`  after reject vote: status=${taskAfter2.body?.task?.status}`);
   }
 
   // ─── Test 7: E2E full flow with a new task ───

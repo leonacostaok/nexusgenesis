@@ -81,6 +81,7 @@ import validatorHeartbeatRoutes from './routes/validatorHeartbeat.js';
 import taskTemplatesRoutes from './routes/taskTemplates.js';
 import transactionHistoryRoutes from './routes/transactionHistory.js';
 import taskChallengeRoutes from './routes/taskChallenges.js';
+import genesisMultiSigRoutes from './routes/genesisMultiSigApi.js';
 import { setupTaskRoutes } from './routes/tasks.js';
 import { setupForumRoutes } from './routes/forum.js';
 import { init as initAdminAuth, verifyCreditSecret } from './adminAuth.js';
@@ -1934,6 +1935,9 @@ console.log('[HTTP Server] Transaction history routes mounted on /api/v1/transac
 
 app.use(taskChallengeRoutes);
 console.log('[HTTP Server] Task challenge routes mounted');
+
+app.use('/api/v1/genesis-reserve', genesisMultiSigRoutes);
+console.log('[HTTP Server] Genesis Reserve multi-sig routes mounted on /api/v1/genesis-reserve');
 
 app.use(dashboardRoutes);
 

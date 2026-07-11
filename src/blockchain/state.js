@@ -23,6 +23,7 @@ import { promisify } from 'util';
 import AINVM from '../vm/ainvm.js';
 import { AuditState, applyAuditTransaction, AuditTransactionType } from './projectAudit.js';
 import { getSubjectIdentifier } from '../identity/subjectIdentifier.js';
+import { attachGenesisMultiSig, checkGenesisReserveWithMultiSig } from '../contracts/genesisMultiSig.js';
 
 // DevNet fund操作classProposal冷静期block数
 const TREASURY_COOLDOWN_BLOCKS = 5;
@@ -1655,26 +1656,17 @@ export class State {
   }
   
   /**
-   * Check并Execute Genesis Reserve TokenRelease
-   * @param {number} currentBlockHeight Currentblock height
+   * Check and Execute Genesis Reserve Token Release via Multi-Sig
+   * Replaces the old direct addBalance mechanism.
+   * When a milestone is reached, a multi-sig proposal is created instead
+   * of directly releasing funds. Funds are only transferred after 3-of-5
+   * signers approve.
+   *
+   * @param {number} currentBlockHeight Current block height
    */
   checkGenesisReserveRelease(currentBlockHeight) {
-    const genesisReserve = this.tokenReleaseState.genesisReserve;
-    for (const milestone of genesisReserve.milestones) {
-      if (currentBlockHeight >= milestone.block && !milestone.released) {
-        const unreleasedTokens = genesisReserve.totalTokens - genesisReserve.releasedTokens;
-        if (unreleasedTokens > 0n) {
-          const releaseAmount = unreleasedTokens * genesisReserve.releasePercentage / 100n;
-          if (releaseAmount > 0n) {
-            this.addBalance(genesisReserve.address, releaseAmount.toString());
-            genesisReserve.releasedTokens += releaseAmount;
-            milestone.released = true;
-            this.changes.tokenRelease = true;
-            console.log(`[TOKEN_RELEASE] Genesis Reserve released ${releaseAmount} tokens at block ${currentBlockHeight} (Milestone: ${milestone.description})`);
-          }
-        }
-      }
-    }
+    // Delegate to multi-sig system
+    checkGenesisReserveWithMultiSig(this, currentBlockHeight);
   }
   
   /**
@@ -2347,6 +2339,9 @@ export function createInitialState(genesisAddress, initialBalance = '1000000000'
   
   // InitializeTokenReleasestatus
   state.initializeTokenRelease();
+  
+  // Attach Genesis Reserve Multi-Sig Wallet
+  attachGenesisMultiSig(state, genesisReserveAddress);
   
   return state;
 }

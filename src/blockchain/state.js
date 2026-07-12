@@ -178,13 +178,51 @@ export class State {
         releasedTokens: 0n,
         lastReleaseBlock: 0,
         releaseInterval: 100, // 每 100 个blockCheck一次
-        releasePercentage: 25n, // 每个里程碑Release 25%
-        mechanism: 'milestone', // 里程碑unlock
+        mechanism: 'milestone-multisig', // 多签共管的里程碑机制
+        // 里程碑定义必须与 docs/ECONOMY_NGEN.md §4.1 严格对齐
+        // 释放比例: 20% / 30% / 20% / 30% (4 个里程碑)
+        // 触发方式: 业务里程碑（需多签审批） + 区块高度（建议性参考）
         milestones: [
-          { block: 1000, description: 'networkStart' },
-          { block: 10000, description: '10,000 个block' },
-          { block: 50000, description: '50,000 个block' },
-          { block: 100000, description: '100,000 个block' }
+          {
+            id: 'M1-testnet-v1',
+            block: 1000,                    // 建议区块高度（仅作参考）
+            businessTrigger: 'Testnet V1 上线',
+            unlockPercentage: 20n,
+            unlockAmount: 10_000_000n,      // 10M NGEN
+            purpose: '网络基础设施升级',
+            released: false,
+            requiresMultiSig: true
+          },
+          {
+            id: 'M2-ainvm-prototype',
+            block: 10000,
+            businessTrigger: 'AINVM 原型可用',
+            unlockPercentage: 30n,
+            unlockAmount: 15_000_000n,      // 15M NGEN
+            purpose: 'AINVM 开发与test',
+            released: false,
+            requiresMultiSig: true
+          },
+          {
+            id: 'M3-100-nodes',
+            block: 50000,
+            businessTrigger: '节点数达到 100 个',
+            unlockPercentage: 20n,
+            unlockAmount: 10_000_000n,      // 10M NGEN
+            purpose: '网络扩容与优化',
+            released: false,
+            requiresMultiSig: true
+          },
+          {
+            id: 'M4-mainnet-launch',
+            block: 100000,
+            businessTrigger: '首个稳定主网上线',
+            unlockPercentage: 30n,
+            unlockAmount: 15_000_000n,      // 15M NGEN
+            purpose: 'security audit与漏洞修复',
+            released: false,
+            requiresMultiSig: true
+          }
         ]
       }
     };
@@ -1882,13 +1920,50 @@ export class State {
           releasedTokens: BigInt(json.tokenReleaseState.genesisReserve?.releasedTokens || 0),
           lastReleaseBlock: json.tokenReleaseState.genesisReserve?.lastReleaseBlock || 0,
           releaseInterval: json.tokenReleaseState.genesisReserve?.releaseInterval || 100,
-          releasePercentage: BigInt(json.tokenReleaseState.genesisReserve?.releasePercentage || 25),
-          mechanism: json.tokenReleaseState.genesisReserve?.mechanism || 'milestone',
+          mechanism: json.tokenReleaseState.genesisReserve?.mechanism || 'milestone-multisig',
+          // 默认里程碑（与 docs/ECONOMY_NGEN.md §4.1 对齐）
+          // 真实数据从持久化的 tokenReleaseState.genesisReserve.milestones 加载
           milestones: json.tokenReleaseState.genesisReserve?.milestones || [
-            { block: 1000, description: 'networkStart' },
-            { block: 10000, description: '10,000 个block' },
-            { block: 50000, description: '50,000 个block' },
-            { block: 100000, description: '100,000 个block' }
+            {
+              id: 'M1-testnet-v1',
+              block: 1000,
+              businessTrigger: 'Testnet V1 上线',
+              unlockPercentage: 20n,
+              unlockAmount: 10_000_000n,
+              purpose: '网络基础设施升级',
+              released: false,
+              requiresMultiSig: true
+            },
+            {
+              id: 'M2-ainvm-prototype',
+              block: 10000,
+              businessTrigger: 'AINVM 原型可用',
+              unlockPercentage: 30n,
+              unlockAmount: 15_000_000n,
+              purpose: 'AINVM 开发与test',
+              released: false,
+              requiresMultiSig: true
+            },
+            {
+              id: 'M3-100-nodes',
+              block: 50000,
+              businessTrigger: '节点数达到 100 个',
+              unlockPercentage: 20n,
+              unlockAmount: 10_000_000n,
+              purpose: '网络扩容与优化',
+              released: false,
+              requiresMultiSig: true
+            },
+            {
+              id: 'M4-mainnet-launch',
+              block: 100000,
+              businessTrigger: '首个稳定主网上线',
+              unlockPercentage: 30n,
+              unlockAmount: 15_000_000n,
+              purpose: 'security audit与漏洞修复',
+              released: false,
+              requiresMultiSig: true
+            }
           ]
         }
       };

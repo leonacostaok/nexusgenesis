@@ -1,0 +1,55 @@
+fix(state): align milestone schema with whitepaper §4.1
+
+The Genesis Reserve milestone definitions in code did not match
+the whitepaper specification. The 4 milestones had inconsistent
+fields, and percentages did not match the 20/30/20/30 split
+documented in docs/ECONOMY_NGEN.md §4.1.
+
+INCONSISTENCIES FIXED
+- Old schema: { block, description }, single 25% release per milestone
+- New schema: { id, block, businessTrigger, unlockPercentage,
+                unlockAmount, purpose, released, requiresMultiSig }
+- Old amounts: derived from totalTokens * 25%
+- New amounts: explicit (10M/15M/10M/15M NGEN) per whitepaper
+- Old triggers: 1000/10000/50000/100000 block heights
+- New triggers: business milestones (Testnet V1, AINVM, 100 nodes,
+                mainnet launch) — block heights are advisory only
+
+MILESTONE MAPPING (per whitepaper §4.1)
+  M1-testnet-v1       → 10M NGEN (20%) — network infrastructure
+  M2-ainvm-prototype  → 15M NGEN (30%) — AINVM development
+  M3-100-nodes        → 10M NGEN (20%) — network scaling
+  M4-mainnet-launch   → 15M NGEN (30%) — security audit
+  Total:              50M NGEN (5% of 1B supply) ✓
+
+CHANGES
+- src/blockchain/state.js
+  - Constructor (line 175): new milestone schema with explicit
+    unlockAmount and unlockPercentage
+  - loadFromJSON (line 1925): matching default for legacy data
+    that lacks new fields
+  - Removed `releasePercentage: 25n` (no longer needed; each
+    milestone has its own unlockPercentage)
+
+- src/contracts/genesisMultiSig.js
+  - checkGenesisReserveWithMultiSig (line 525): now reads
+    milestone.unlockAmount directly, falls back to computed
+    amount for legacy data
+  - Builds descriptive purpose/justification using
+    milestone.businessTrigger and milestone.purpose
+  - Updated header docstring to reference whitepaper alignment
+
+TESTS
+- tests/test-milestone-alignment.js (NEW): 32/32 passing
+  - Parses whitepaper (ECONOMY_NGEN.md §4.1) for 4 milestones
+  - Parses state.js for 4 milestones (constructor default)
+  - Verifies amounts, percentages, business triggers, block
+    heights all match
+  - Verifies loadFromJSON defaults are consistent with
+    constructor defaults
+  - Verifies genesisMultiSig.js uses new schema fields
+
+BLOCK HEIGHTS
+- Preserved as advisory values (1000/10000/50000/100000)
+- Real trigger is business milestone confirmation, not block
+  height — multisig proposals handle the actual release

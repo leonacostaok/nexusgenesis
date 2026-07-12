@@ -8,7 +8,8 @@
  *   - 5 signers: 2 pre-elected validators + 1 community-elected + 1 external auditor + 1 Observer Agent
  *   - 3-of-5 threshold: any 3 signers approve → transaction executes
  *   - 2+ rejections → proposal rejected
- *   - Proposals linked to milestones (block height triggers)
+ *   - Milestone schema aligned with docs/ECONOMY_NGEN.md §4.1:
+ *       4 milestones, 20%/30%/20%/30% split (10M/15M/10M/15M NGEN)
  *   - Full audit trail via Observer Events log
  *
  * Integration:
@@ -510,6 +511,15 @@ export function attachGenesisMultiSig(state, genesisReserveAddress) {
  * Hook into milestone check: instead of direct addBalance,
  * create a multi-sig proposal.
  *
+ * Uses new milestone schema (aligned with docs/ECONOMY_NGEN.md §4.1):
+ *   - id              : 'M1-testnet-v1' etc.
+ *   - businessTrigger : 'Testnet V1 上线' (textual)
+ *   - block           : suggested block height (advisory)
+ *   - unlockAmount    : exact NGEN to release
+ *   - unlockPercentage: 20n/30n/20n/30n
+ *   - purpose         : usage description
+ *   - requiresMultiSig: true (always)
+ *
  * @param {State} state - The blockchain state instance
  * @param {number} currentBlockHeight - Current block height
  */
@@ -522,31 +532,48 @@ export function checkGenesisReserveWithMultiSig(state, currentBlockHeight) {
 
   for (const milestone of reserve.milestones) {
     if (currentBlockHeight >= milestone.block && !milestone.released) {
-      const unreleasedTokens = reserve.totalTokens - reserve.releasedTokens;
-      if (unreleasedTokens > 0n) {
-        const releaseAmount = unreleasedTokens * reserve.releasePercentage / 100n;
-        if (releaseAmount > 0n) {
-          // Instead of direct addBalance, create a multi-sig proposal
-          const purpose = `Milestone unlock: ${milestone.description}`;
-          const justification = `Automated milestone trigger at block ${currentBlockHeight}. Per Constitution v1.2.0, Genesis Reserve releases are governed by multi-sig.`;
+      // Use the explicit unlockAmount from new schema
+      // Fallback to computed amount for legacy data
+      const releaseAmount = milestone.unlockAmount
+        ? BigInt(milestone.unlockAmount)
+        : (() => {
+            const unreleased = reserve.totalTokens - reserve.releasedTokens;
+            const pct = milestone.unlockPercentage
+              ? BigInt(milestone.unlockPercentage)
+              : 25n;
+            return unreleased * pct / 100n;
+          })();
 
-          const result = ms.proposeSpend({
-            milestoneBlock: currentBlockHeight,
-            amount: releaseAmount.toString(),
-            recipient: reserve.address,
-            purpose,
-            justification,
-            expectedBenefit: 'Network infrastructure upgrade and maintenance',
-            duration: 'ongoing',
-            riskAssessment: 'Low — automated milestone release per Constitution',
-            state
-          });
+      if (releaseAmount > 0n) {
+        // Build a descriptive label using new schema
+        const label = milestone.businessTrigger
+          || milestone.description
+          || milestone.id
+          || `block-${milestone.block}`;
+        const purpose = `Milestone unlock: ${label} (${milestone.purpose || 'Genesis Reserve release'})`;
+        const justification =
+          `Automated milestone trigger for "${label}" ` +
+          `at block ${currentBlockHeight} ` +
+          `(target block: ${milestone.block}). ` +
+          `Per Constitution v1.2.0, Genesis Reserve releases are governed by 3-of-5 multi-sig. ` +
+          `Release: ${releaseAmount.toString()} NGEN (${milestone.unlockPercentage || 25}%).`;
 
-          if (result.success) {
-            console.log(`[GENESIS_MULTI_SIG] Milestone ${milestone.description} triggered proposal ${result.proposalId} for ${releaseAmount} NGEN`);
-          } else {
-            console.error(`[GENESIS_MULTI_SIG] Failed to create proposal for milestone: ${result.error}`);
-          }
+        const result = ms.proposeSpend({
+          milestoneBlock: currentBlockHeight,
+          amount: releaseAmount.toString(),
+          recipient: reserve.address,
+          purpose,
+          justification,
+          expectedBenefit: milestone.purpose || 'Network infrastructure upgrade and maintenance',
+          duration: 'one-time unlock',
+          riskAssessment: 'Low — automated milestone release per Constitution',
+          state
+        });
+
+        if (result.success) {
+          console.log(`[GENESIS_MULTI_SIG] Milestone ${label} (${milestone.id || 'legacy'}) triggered proposal ${result.proposalId} for ${releaseAmount} NGEN`);
+        } else {
+          console.error(`[GENESIS_MULTI_SIG] Failed to create proposal for milestone ${label}: ${result.error}`);
         }
       }
     }

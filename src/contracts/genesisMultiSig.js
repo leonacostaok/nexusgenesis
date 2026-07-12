@@ -204,9 +204,10 @@ class GenesisMultiSig {
    *
    * @param {string} signerAgentId - The signer's agent identity
    * @param {string} proposalId - Proposal to confirm
+   * @param {State} [state] - Optional state reference for balance check
    * @returns {{ success: boolean, status?: string, error?: string }}
    */
-  signProposal(signerAgentId, proposalId) {
+  signProposal(signerAgentId, proposalId, state) {
     const proposal = this.proposals.get(proposalId);
     if (!proposal) {
       return { success: false, error: 'Proposal not found' };
@@ -246,7 +247,7 @@ class GenesisMultiSig {
 
     // Check if threshold reached → execute
     if (proposal.confirmedBy.length >= REQUIRED_CONFIRMATIONS) {
-      return this._executeProposal(proposalId);
+      return this._executeProposal(proposalId, state);
     }
 
     return {
@@ -321,8 +322,10 @@ class GenesisMultiSig {
   /**
    * Execute a proposal that has reached confirmation threshold.
    * Internal method, called by signProposal when threshold is met.
+   * @param {string} proposalId - Proposal to execute
+   * @param {State} [state] - Optional state reference for balance check
    */
-  _executeProposal(proposalId) {
+  _executeProposal(proposalId, state) {
     const proposal = this.proposals.get(proposalId);
     if (!proposal || proposal.status !== PROPOSAL_STATUS.PENDING) {
       return { success: false, error: 'Proposal not in pending state' };
@@ -334,7 +337,7 @@ class GenesisMultiSig {
 
     // Transfer funds
     const amount = BigInt(proposal.amount);
-    const reserveBalance = this._getReserveBalance();
+    const reserveBalance = this._getReserveBalance(state);
     if (reserveBalance < amount) {
       return { success: false, error: 'Insufficient reserve balance for execution' };
     }

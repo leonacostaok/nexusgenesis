@@ -115,7 +115,7 @@ router.post('/sign', async (req, res) => {
       });
     }
 
-    const result = ms.signProposal(signerAgentId, proposalId);
+    const result = ms.signProposal(signerAgentId, proposalId, state);
 
     if (!result.success) {
       return res.status(400).json(result);

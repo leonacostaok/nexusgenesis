@@ -1,0 +1,57 @@
+feat(block-reward): Phase 1B — distribute via BLOCK_REWARD transactions
+
+Migrates block reward distribution from direct addBalance calls
+to per-validator BLOCK_REWARD transactions. Each validator's
+share is now a fully auditable tx in txHistory.
+
+CHANGES
+- src/node/genesisNode.js
+  - New method calculateBlockRewardShares(totalReward, proposerId)
+    Returns array of { address, amount, stake, totalStake,
+                       sharePercentage, isProposer }
+    Mirrors the old state.applyBlockReward logic but as data
+    preparation, not state mutation.
+  - createNewBlock: now calls calculateBlockRewardShares and
+    applies each share as a separate buildBlockReward tx
+    via state.applyTransaction
+  - Imported buildBlockReward from utils/transactionBuilder.js
+
+LOGIC
+- Collect all active validators with locked stake
+- If no validators: full 50 NGEN to proposer
+- Otherwise: distribute proportional to stake
+  (rewardAmount * validatorStake / totalStake)
+- Integer division remainder → proposer
+- If proposer not in validator set: remainder creates a new share
+- If proposer IS a validator: remainder adds to their existing share
+
+BENEFITS
+- Every block reward is now a BLOCK_REWARD tx in txHistory
+- Per-validator share is auditable (amount, stake, %, isProposer)
+- No code change to state.js's low-level balance methods
+- Backward compatible: existing 79 Phase 1A tests pass
+
+TESTS (test-block-reward-tx.js, 40/40 passing)
+- Test 1: No validators → full reward to proposer (6 cases)
+- Test 2: Single validator = proposer (3 cases)
+- Test 3: Multiple validators (stake proportional) (10 cases)
+- Test 4: Integer division remainder (3 cases)
+- Test 5: Proposer not in validator set, gets remainder (4 cases)
+- Test 6: Validator with 0 stake excluded (3 cases)
+- Test 7: buildBlockReward produces valid tx (6 cases)
+- Test 8: Audit trail completeness (3 cases)
+- Test 9: No double-counting across 10 blocks (2 cases)
+
+VERIFICATION
+- Phase 1A: 79/79 still passing
+- Phase 1B: 40/40 passing
+- Milestone: 32/32 still passing
+- Wallet encryption: 33/33 still passing
+- Total: 184/184 passing
+
+NEXT PHASE
+- Phase 1C: Convert other addBalance sites
+  - agentRegisterApi.js (REGISTRATION_MINT)
+  - taskApi.js (TASK_REWARD)
+  - walletApi.js (TRANSFER + tax)
+  - rewardApi.js (EARLY_BIRD + REFERRAL_REWARD)

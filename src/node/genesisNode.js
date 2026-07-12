@@ -17,6 +17,7 @@ import { getForumStore } from '../http/routes/forum.js';
 import { EventParser, EventLogger, EVENT_TYPES } from '../protocol/events.js';
 import { Block, createGenesisBlock, createBlock } from '../blockchain/block.js';
 import { State, createInitialState } from '../blockchain/state.js';
+import { buildBlockReward } from '../utils/transactionBuilder.js';
 import { CrossChainBridge } from '../bridge/crossChainBridge.js';
 import AgentRegistry from '../contracts/examples/agentRegistry.js';
 import AgentNetworkDiscovery from '../p2p/AgentNetworkDiscovery.js';
@@ -2285,6 +2286,94 @@ class GenesisNode {
   }
 
   /**
+   * Calculate block reward shares for validators based on stake.
+   * Returns an array of { address, amount, stake, totalStake, sharePercentage, isProposer }.
+   *
+   * Logic:
+   *   - Collect all active validators with locked stake
+   *   - If no validators: full reward to proposer
+   *   - Otherwise: distribute proportional to stake
+   *   - Integer division remainder goes to proposer
+   *
+   * Used by createNewBlock to convert the block reward into a list of
+   * per-recipient shares. Each share is then sent as a separate
+   * BLOCK_REWARD transaction via transactionEngine.
+   */
+  calculateBlockRewardShares(totalReward, proposerId) {
+    const rewardAmount = BigInt(totalReward.toString());
+    const shares = [];
+
+    // Collect validators with locked stake
+    const validators = [];
+    let totalStake = 0n;
+    if (this.currentState?.agentRegistry?.agents instanceof Map) {
+      for (const [, rec] of this.currentState.agentRegistry.agents.entries()) {
+        if (rec.is_validator && rec.validator_stake_locked_amount) {
+          const stake = BigInt(rec.validator_stake_locked_amount);
+          if (stake > 0n && rec.address) {
+            validators.push({ address: rec.address, stake });
+            totalStake += stake;
+          }
+        }
+      }
+    }
+
+    if (validators.length === 0 || totalStake === 0n) {
+      // No staked validators — full reward to proposer
+      if (proposerId) {
+        shares.push({
+          address: proposerId,
+          amount: rewardAmount,
+          stake: 0n,
+          totalStake: 0n,
+          sharePercentage: 100,
+          isProposer: true
+        });
+      }
+      return shares;
+    }
+
+    // Distribute reward proportional to stake
+    let distributed = 0n;
+    for (const v of validators) {
+      const share = (rewardAmount * v.stake) / totalStake;
+      if (share > 0n) {
+        shares.push({
+          address: v.address,
+          amount: share,
+          stake: v.stake,
+          totalStake,
+          sharePercentage: Number((v.stake * 10000n) / totalStake) / 100,
+          isProposer: v.address === proposerId
+        });
+        distributed += share;
+      }
+    }
+
+    // Integer division remainder → proposer (prevents supply leakage)
+    const remainder = rewardAmount - distributed;
+    if (remainder > 0n && proposerId) {
+      // Find proposer's existing share (if any) and add remainder
+      const proposerShare = shares.find(s => s.address === proposerId);
+      if (proposerShare) {
+        proposerShare.amount += remainder;
+        proposerShare.isProposer = true;
+      } else {
+        shares.push({
+          address: proposerId,
+          amount: remainder,
+          stake: 0n,
+          totalStake,
+          sharePercentage: Number((remainder * 10000n) / rewardAmount) / 100,
+          isProposer: true
+        });
+      }
+    }
+
+    return shares;
+  }
+
+  /**
    * CreateNew block
    * @returns {Promise<Block|null>}
    */
@@ -2316,16 +2405,37 @@ class GenesisNode {
     // ── Block reward: distribute to validators proportional to stake ──
     // This is the staking yield mechanism — validators who lock more NGEN
     // earn a larger share of each block's reward. Creates incentive to stake.
+    //
+    // Phase 1B: Each validator's share is now recorded as a separate
+    // BLOCK_REWARD transaction, fully auditable in txHistory.
     const BLOCK_REWARD_AMOUNT = 50;
-    const blockRewardTx = {
-      id: `block-reward-${newBlock.header.height}`,
-      tx_type: 'BLOCK_REWARD',
-      from: null,
-      validator: this.nodeId,
-      amount: BLOCK_REWARD_AMOUNT,
-      timestamp: Date.now()
-    };
-    this.currentState.applyTransaction(blockRewardTx, newBlock.header.height);
+    const blockHeight = newBlock.header.height;
+    const rewardShares = this.calculateBlockRewardShares(BLOCK_REWARD_AMOUNT, this.nodeId);
+
+    let appliedCount = 0;
+    for (const share of rewardShares) {
+      const rewardTx = buildBlockReward({
+        to: share.address,
+        amount: share.amount,
+        blockHeight,
+        validatorId: this.nodeId,
+        metadata: {
+          blockNumber: blockHeight,
+          totalStake: share.totalStake?.toString() || '0',
+          validatorStake: share.stake?.toString() || '0',
+          sharePercentage: share.sharePercentage,
+          isProposer: share.isProposer,
+          reason: share.isProposer ? 'proposer_remainder' : 'stake_proportional'
+        }
+      });
+      const result = this.currentState.applyTransaction(rewardTx);
+      if (result.success) {
+        appliedCount++;
+      } else {
+        console.error(`[BLOCK_REWARD] Failed to apply reward to ${share.address}: ${result.error}`);
+      }
+    }
+    console.log(`[BLOCK_REWARD] block=${blockHeight} total=${BLOCK_REWARD_AMOUNT} NGEN → ${appliedCount} tx(s) for ${rewardShares.length} recipient(s)`);
     
     // 添加block到block链
     this.blockchain.push(newBlock);

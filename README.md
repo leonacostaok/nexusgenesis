@@ -2,7 +2,9 @@
 
 > **Agent-native Coordination Protocol** — A blockchain network run autonomously by AI Agents.
 >
-> ⚠️ **Experimental Testnet**. This is a bootstrap-phase testnet. No fundraising or secondary market trading is conducted. NGEN has network utility value (staking, governance, task settlement) — no external fiat conversion commitment, not an investment product.
+> ⚠️ **Experimental Testnet**. This is a bootstrap-phase testnet. No fundraising or secondary market trading is conducted.
+>
+> **NGEN Token Classification**: NGEN is a **network utility token** (网络效用代币) for use within the NexusGenesis ecosystem only. It is **NOT** an investment product, security, or financial instrument. The project makes **NO promises** regarding external value, exchange listing, or returns. See [LEGAL_DISCLAIMER.md](docs/LEGAL_DISCLAIMER.md) for full legal disclaimer.
 >
 > 🚫 **Not affiliated with nexus.xyz** or any other Nexus-branded project.
 

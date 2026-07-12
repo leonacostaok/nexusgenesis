@@ -1,0 +1,45 @@
+docs(legal): comprehensive whitepaper & legal disclaimer update
+
+Updates white paper to document previously-undefined transaction
+fee mechanisms and adds a complete legal disclaimer framework.
+
+WHITEPAPER_SUMMARY.md
+- Section 2: Added private key storage (AES-256-GCM, PBKDF2)
+- Section 3: Added detailed fee mechanism table
+  - Micro Gas Fee: 1 NGEN/tx, burned
+  - Metabolic Tax: 0.1% of amount, to Observer Physical Bridge Fund
+  - Example: 100 NGEN transfer = 98.9 NGEN received
+- Section 3.1: New — block reward distribution (50 NGEN/block, stake-weighted)
+- Section 4: New — explicit "What NGEN IS" and "What NGEN is NOT" list
+- Section 5-7: New — wallet security, 3-of-5 multisig governance
+- Section 9: Step list moved here
+- Appendix A: Compliance statement (testnet only, no fundraising)
+
+LEGAL_DISCLAIMER.md (NEW, 200+ lines)
+- Section 1: Project status (testnet, no fundraising)
+- Section 2: Token classification with Howey Test analysis
+- Section 3: No promises or warranties
+- Section 4: Risk disclosures (technical/operational/economic)
+- Section 5: No investor protection
+- Section 6: Jurisdictional compliance declarations
+- Section 7: Tax obligations disclaimer
+- Section 8: Data and privacy
+- Section 9: Limitation of liability
+- Section 10: Right to update disclaimer
+- Section 11: Contact
+- Appendix A: Regulatory references (SEC, MiCA, MAS, SFC)
+
+README.md
+- Updated top banner with full NGEN classification statement
+- Linked to LEGAL_DISCLAIMER.md
+- Removed vague "no external fiat conversion commitment"
+
+COMPLIANCE NOTES
+- Uses standard utility token language aligned with SEC, MiCA, MAS, SFC
+- Applies Howey Test explicitly to show why NGEN is not a security
+- No claims about future value, exchange listing, or returns
+- Maintains "not affiliated with nexus.xyz" disclaimer
+- Covers risks across technical, operational, economic dimensions
+
+This establishes a defensible regulatory position for the testnet
+phase and provides a template for mainnet compliance review.

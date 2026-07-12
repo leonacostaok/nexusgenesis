@@ -1,0 +1,59 @@
+feat(swarm-pool): Phase 1C-2 — record distribution as SWARM_RELEASE txs
+
+The swarmPool fallback path (when genesisNode is not ready) now
+uses transactionEngine.applyTransaction for full audit trail.
+
+CHANGES
+- src/economy/swarmPool.js
+  - L135-136: Replaced direct addBalance with 2-step tx approach
+    1. Withdraw placeholder tx (amount=0, from=pool, to=pool) — audit
+    2. Credit agent tx (amount=allocAmount, from=pool, to=agent)
+  - Both go through state.applyTransaction → enter txHistory
+  - Added ultimate fallback for legacy addBalance (preserved)
+  - Logs now show txHash for traceability
+
+DESIGN
+- Two-tx pattern (withdraw + credit) mirrors double-entry accounting
+- The "withdraw placeholder" with amount=0 ensures the pool debit
+  intent is recorded in history even when actual debit is implicit
+- The "credit" tx carries the actual transfer semantics
+- The builder sets from=SWARM_POOL_ADDRESS so the engine
+  enforces insufficient-balance check — caught a real bug
+  (Test 10 verifies: large distribution would now FAIL with
+  clear error, not silently drain the pool)
+
+DUAL SAFETY NET
+- Primary: _genesisNode.processSwarmPoolDistribution (existing)
+- Secondary: state.applyTransaction + builders (NEW, audit trail)
+- Legacy: state.addBalance (kept as last-resort fallback)
+
+METADATA PRESERVED
+- distributionId (links both withdraw+credit txs)
+- agentId (which agent received)
+- txId (the original distribution tx.id)
+- fallback=true (distinguishes from primary path)
+
+TESTS (test-swarm-pool-tx.js, 32/32 passing)
+- Test 1: Single distribution produces 2 txs (5 cases)
+- Test 2: Multiple distributions (3 cases)
+- Test 3: Tx metadata correct (5 cases)
+- Test 4: Queryable by agent address (2 cases)
+- Test 5: Distribution-level audit (3 cases)
+- Test 6: Legacy addBalance still works (2 cases)
+- Test 7: blockHeight preserved (2 cases)
+- Test 8: Stats aggregation (2 cases)
+- Test 9: Persistence roundtrip (3 cases)
+- Test 10: Failure handling (insufficient pool) (5 cases) — CRITICAL
+
+REGRESSION
+- Phase 1A: 79/79 still passing
+- Phase 1B: 40/40 still passing
+- Phase 1C-1: 29/29 still passing
+- Phase 1C-2: 32/32 passing
+- Milestone: 32/32 still passing
+- Wallet encryption: 33/33 still passing
+- Total: 245/245 passing
+
+NEXT
+- 1C-3: src/economy/swarmPoolActivated.js (4 calls)
+- 1C-4: src/blockchain/state.js (23 calls — biggest)

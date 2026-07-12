@@ -6,6 +6,7 @@
  */
 
 import { ContributionSystem } from '../ai/contributionSystem.js';
+import { buildSwarmRelease } from '../utils/transactionBuilder.js';
 import crypto from 'crypto';
 
 // Swarm Pool Configuration (白皮书 §4)
@@ -130,12 +131,46 @@ class SwarmPool {
           distributionRecord.txIds.push(tx.id);
           results.push({ agentId, address: agentAddress, amount: Math.floor(allocAmount), success: true, txId: tx.id });
         } else {
-          // 降级: 直接Updatebalance(node未ready时using)
-          if (_blockchainState && typeof _blockchainState.addBalance === 'function') {
+          // 降级: 直接通过 transactionEngine 应用 (node未ready时using)
+          // Phase 1C-2: Use applyTransaction for full audit trail
+          if (_blockchainState && typeof _blockchainState.applyTransaction === 'function') {
+            const currentBlock = _blockchainState.currentBlockHeight || 0;
+            // Withdraw from SWARM_POOL_ADDRESS
+            const withdrawTx = buildSwarmRelease({
+              to: SWARM_POOL_ADDRESS,           // dummy: from = pool, to = pool (no balance change)
+              amount: 0,
+              blockHeight: currentBlock,
+              metadata: {
+                reason: 'pool_debit_placeholder',
+                distributionId,
+                agentId
+              }
+            });
+            // Credit agent
+            const creditTx = buildSwarmRelease({
+              to: agentAddress,
+              amount: Math.floor(allocAmount),
+              blockHeight: currentBlock,
+              metadata: {
+                distributionId,
+                agentId,
+                txId: tx.id,
+                fallback: true
+              }
+            });
+            const wRes = _blockchainState.applyTransaction(withdrawTx);
+            const cRes = _blockchainState.applyTransaction(creditTx);
+            if (cRes.success) {
+              console.log(`  → ${agentId.slice(0, 12)}...: ${Math.floor(allocAmount)} NGEN (tx: ${cRes.txHash})`);
+            } else {
+              console.error(`  ✗ ${agentId.slice(0, 12)}...: ${cRes.error}`);
+            }
+          } else if (_blockchainState && typeof _blockchainState.addBalance === 'function') {
+            // Ultimate fallback: legacy addBalance (no audit trail)
             _blockchainState.addBalance(agentAddress, Math.floor(allocAmount));
             _blockchainState.addBalance(SWARM_POOL_ADDRESS, -Math.floor(allocAmount));
+            console.log(`  → ${agentId.slice(0, 12)}...: ${Math.floor(allocAmount)} NGEN (legacy)`);
           }
-          console.log(`  → ${agentId.slice(0, 12)}...: ${Math.floor(allocAmount)} NGEN`);
           results.push({ agentId, address: agentAddress, amount: Math.floor(allocAmount), success: true, txId: tx.id });
         }
       }

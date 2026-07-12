@@ -1,0 +1,77 @@
+feat(transaction-system): Phase 1A — transaction engine + builders
+
+Introduces a unified, auditable transaction system for all
+balance changes in NexusGenesis. Phase 1A lays the foundation:
+queue + apply + batch + history + persistence.
+
+ARCHITECTURE
+- transactionEngine.js: core engine
+  - TX_TYPE enum: 21 transaction types
+  - queueTransaction: push to mempool (no state change)
+  - applyTransaction: modify state + record history
+  - applyTransactions: batch apply at block end
+  - getTransactionHistory: query with filters
+  - getTransactionStats: aggregations
+  - serialize/deserialize: persistence
+  - attachTransactionState: attach to State instance
+
+- transactionBuilder.js: type-safe constructors
+  - 21 build* functions, one per TX_TYPE
+  - Each validates inputs and returns a normalized tx object
+  - getBuilder(type): dispatch helper
+
+- state.js integration
+  - Constructor calls attachTransactionState(this)
+  - toJSON: includes serializeTransactions(this)
+  - loadFromJSON: restores via deserializeTransactions
+  - Backward compatible: missing field → empty state
+
+21 TX TYPES
+USER-INITIATED:
+  TRANSFER, STAKE, UNSTAKE, GOVERNANCE_VOTE,
+  GOVERNANCE_PROPOSAL, TASK_CREATE, TASK_COMPLETE, TASK_REWARD
+PROTOCOL MINTING:
+  REGISTRATION_MINT, BLOCK_REWARD, EARLY_BIRD_BONUS,
+  REFERRAL_REWARD, STAKE_REWARD, SWARM_RELEASE,
+  OBSERVER_RELEASE, GENESIS_UNLOCK
+TAX/FEE/PENALTY:
+  OBSERVER_TAX, FEE_BURN, SLASH
+GOVERNANCE:
+  OBSERVER_EVENT, MULTISIG_SPEND
+
+DESIGN DECISIONS
+- Builders are pure: they only construct tx objects.
+  No state mutation. They do NOT generate txHash.
+- Engine is authoritative: txHash is generated when
+  queue/apply is called. This means builder output is
+  a "template" that engine can re-hash.
+- Mempool: in-memory only for now. Restored as empty
+  on restart (intentional — txs must be re-queued).
+- Persisted: txHistory + txCount + indexes.
+  Mempool is transient.
+- addBalance/subtractBalance unchanged: still work
+  via direct mutation. Future Phase 1B-C will route
+  them through builders.
+
+TESTS (test-transaction-system.js, 79/79 passing)
+- tx_type validation (6 cases)
+- txHash generation (3 cases)
+- queueTransaction + dedup (5 cases)
+- applyTransaction: TRANSFER/MINT/BURN (9 cases)
+- applyTransactions batch (3 cases)
+- getTransactionHistory filters (6 cases)
+- getTransactionStats (4 cases)
+- Persistence roundtrip (5 cases)
+- All 21 builders produce valid txs (19 cases)
+- Insufficient balance (3 cases)
+- Mempool dedup (3 cases)
+- Compatibility with existing addBalance (3 cases)
+- getBuilder dispatcher (2 cases)
+- Mempool flush after apply (3 cases)
+- Performance: 1000 batch txs in <2s (3 cases)
+
+NEXT PHASES
+- Phase 1B: Convert genesisNode.js block reward to tx
+- Phase 1C: Convert all addBalance calls to builders
+- Phase 1D: Transaction history query API
+- Phase 1E: State snapshot/rebuild from tx

@@ -24,6 +24,12 @@ import AINVM from '../vm/ainvm.js';
 import { AuditState, applyAuditTransaction, AuditTransactionType } from './projectAudit.js';
 import { getSubjectIdentifier } from '../identity/subjectIdentifier.js';
 import { attachGenesisMultiSig, checkGenesisReserveWithMultiSig } from '../contracts/genesisMultiSig.js';
+import {
+  attachTransactionState,
+  serializeTransactions,
+  deserializeTransactions,
+  TX_TYPE
+} from './transactionEngine.js';
 
 // DevNet fund操作classProposal冷静期block数
 const TREASURY_COOLDOWN_BLOCKS = 5;
@@ -246,12 +252,15 @@ export class State {
       audit: false,
       tokenRelease: false
     };
-    
+
     // 持久化相关
     this.lastSaveTime = Date.now();
     this.lastSnapshotBlock = 0;
     this.isSaving = false;
-    
+
+    // Transaction Engine (Phase 1A)
+    attachTransactionState(this);
+
     // ensure目录存在
     this.ensureDirectoriesExist();
   }
@@ -1968,6 +1977,13 @@ export class State {
         }
       };
     }
+
+    // Load Transaction Engine state (Phase 1A)
+    if (json.transactions) {
+      this.transactions = deserializeTransactions(json.transactions);
+    } else {
+      this.transactions = deserializeTransactions(null);
+    }
   }
   
   /**
@@ -2037,7 +2053,9 @@ export class State {
           mechanism: this.tokenReleaseState.genesisReserve.mechanism,
           milestones: this.tokenReleaseState.genesisReserve.milestones
         }
-      }
+      },
+      // Transaction Engine (Phase 1A) — persistent tx history
+      transactions: serializeTransactions(this)
     };
   }
   

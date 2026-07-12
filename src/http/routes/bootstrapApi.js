@@ -12,6 +12,7 @@ import {
   createSignedValidatorJoinTransaction,
   validateValidatorJoinTransaction
 } from '../../transactions/validatorJoin.js';
+import { buildObserverEvent } from '../../utils/transactionBuilder.js';
 import { getForumStore } from './forum.js';
 import { MilestoneSystem } from '../../blockchain/state.js';
 
@@ -975,6 +976,9 @@ import { issueCustodyToken } from '../custodyToken.js';
 
 // POST /api/v1/admin/credit — Direct on-chain balance credit (admin-secret protected)
 // Modifies state.balances in the running node, so the change survives incremental saves.
+//
+// Phase 1C-1: Now uses transactionEngine — every credit is recorded as
+// an OBSERVER_EVENT (admin override) with full audit trail.
 router.post('/api/v1/admin/credit', (req, res) => {
   if (!verifyCreditSecret(req)) {
     return res.status(403).json({ error: 'Forbidden: invalid admin credit secret' });
@@ -993,10 +997,46 @@ router.post('/api/v1/admin/credit', (req, res) => {
   }
   try {
     const before = node.currentState.getBalance(address);
-    node.currentState.addBalance(address, String(amt));
-    const after = node.currentState.getBalance(address);
-    console.log(`[ADMIN] Credit: ${address.slice(0, 20)}... +${amt} NGEN (reason: ${reason || 'N/A'}) | before=${before} after=${after}`);
-    res.json({ success: true, address, amount: amt, before: Number(before), after: Number(after) });
+    const state = node.currentState;
+    const blockHeight = state.currentBlockHeight || 0;
+
+    // Step 1: Build a non-balance event tx (audit record) for the credit action
+    const auditTx = buildObserverEvent({
+      from: address,
+      event: 'ADMIN_CREDIT',
+      blockHeight,
+      metadata: {
+        amount: amt,
+        reason: reason || 'N/A',
+        admin_action: true
+      }
+    });
+    const auditResult = state.applyTransaction(auditTx);
+    if (!auditResult.success) {
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to record audit event',
+        error_code: 'AUDIT_FAILED',
+        detail: auditResult.error
+      });
+    }
+
+    // Step 2: Apply the actual balance credit (still uses low-level addBalance
+    // because ADMIN_CREDIT is a privileged operation, not a protocol event)
+    state.addBalance(address, String(amt));
+    const after = state.getBalance(address);
+    const txHash = auditResult.txHash;
+
+    console.log(`[ADMIN] Credit: ${address.slice(0, 20)}... +${amt} NGEN (reason: ${reason || 'N/A'}) | before=${before} after=${after} | txHash=${txHash}`);
+    res.json({
+      success: true,
+      address,
+      amount: amt,
+      before: Number(before),
+      after: Number(after),
+      txHash,
+      auditEvent: 'ADMIN_CREDIT'
+    });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

@@ -1,0 +1,67 @@
+feat(admin-credit): Phase 1C-1 — record admin credits as OBSERVER_EVENT
+
+The POST /api/v1/admin/credit endpoint now records every credit
+action as a non-balance OBSERVER_EVENT transaction in the audit
+trail. The actual balance change still uses addBalance (since
+admin credit is a privileged override, not a protocol event).
+
+CHANGES
+- src/http/routes/bootstrapApi.js
+  - POST /api/v1/admin/credit
+    - Step 1: Apply an OBSERVER_EVENT tx (event: 'ADMIN_CREDIT')
+              with full metadata (amount, reason, admin_action flag)
+    - Step 2: Apply the actual balance credit via addBalance
+    - Response now includes txHash + auditEvent
+    - Error handling: returns 500 AUDIT_FAILED if event tx fails
+  - Added import: buildObserverEvent from transactionBuilder
+
+DESIGN RATIONALE
+Why OBSERVER_EVENT (not a new tx_type)?
+- The admin credit is a privileged, non-protocol action
+- It must be auditable but does not represent a balance flow
+  between accounts
+- OBSERVER_EVENT is the right semantics: "something happened,
+  record it, no balance effect"
+
+Why keep addBalance for the actual credit?
+- Admin credit is an override of state (not a transfer)
+- It does not move tokens between accounts
+- It does not need a from/to pair
+- Future: could create ADMIN_CREDIT tx_type if full audit
+  of balance change is needed
+
+WHY THIS IS THE RIGHT PHASE 1C-1
+- Lowest risk file: 1 call site
+- Establishes the pattern: build tx → apply → get txHash → respond
+- Validates end-to-end: tx → txHistory → queryable → persisted
+- Sets up future phases (1C-2 through 1C-7) to follow same pattern
+
+RESPONSE FORMAT
+Before:
+  { success, address, amount, before, after }
+After:
+  { success, address, amount, before, after, txHash, auditEvent }
+
+TESTS (test-bootstrap-credit-tx.js, 29/29 passing)
+- Test 1: Basic credit produces OBSERVER_EVENT (9 cases)
+- Test 2: Multiple credits accumulate (3 cases)
+- Test 3: Audit trail queryable by address + type (3 cases)
+- Test 4: Failure on invalid state (1 case)
+- Test 5: Persistence roundtrip preserves audit event (4 cases)
+- Test 6: Stats aggregation (3 cases)
+- Test 7: No regression on addBalance (3 cases)
+- Test 8: txHash uniqueness (1 case)
+- Test 9: blockHeight preserved (2 cases)
+
+REGRESSION
+- Phase 1A: 79/79 still passing
+- Phase 1B: 40/40 still passing
+- Milestone: 32/32 still passing
+- Wallet encryption: 33/33 still passing
+- Phase 1C-1: 29/29 passing
+- Total: 213/213 passing
+
+NEXT
+- 1C-2: src/economy/swarmPool.js (2 calls)
+- 1C-3: src/economy/swarmPoolActivated.js (4 calls)
+- 1C-4: src/blockchain/state.js (23 calls — biggest file)

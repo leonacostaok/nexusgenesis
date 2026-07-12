@@ -12,6 +12,7 @@
 
 import { ContributionSystem } from '../ai/contributionSystem.js';
 import { State } from '../blockchain/state.js';
+import { buildSwarmRelease, buildObserverEvent } from '../utils/transactionBuilder.js';
 
 // Swarm Pool Configuration
 const SWARM_POOL_CONFIG = {
@@ -54,6 +55,21 @@ class SwarmPoolActivated {
       }
 
       // 从Genesisaddress转移Token到 Swarm Pool
+      // Phase 1C-3: Use SWARM_RELEASE tx for full audit trail.
+      // The first tx (to=pool, amount=0) records the pool credit intent;
+      // the actual credit is done via addBalance to keep balance correct.
+      const blockHeight = this.state.currentBlockHeight || 0;
+      const poolCreditTx = buildSwarmRelease({
+        to: SWARM_POOL_CONFIG.address,
+        amount: 0,
+        blockHeight,
+        metadata: {
+          reason: 'swarm_pool_initialization',
+          totalTokens: SWARM_POOL_CONFIG.totalTokens.toString(),
+          operation: 'genesis_to_pool'
+        }
+      });
+      this.state.applyTransaction(poolCreditTx);
       this.state.subtractBalance(genesisAddress, SWARM_POOL_CONFIG.totalTokens.toString());
       this.state.addBalance(SWARM_POOL_CONFIG.address, SWARM_POOL_CONFIG.totalTokens.toString());
 
@@ -185,12 +201,28 @@ class SwarmPoolActivated {
 
     for (const [agentId, amount] of this.pendingDistributions) {
       if (amount > 0n) {
-        // 从 Swarm Pool 转移到agentaddress
-        this.state.subtractBalance(swarmPoolAddress, amount.toString());
-        
         // getagentaddress(假设 agentId 就是address)
         const agentAddress = agentId;
-        this.state.addBalance(agentAddress, amount.toString());
+
+        // Phase 1C-3: Record as SWARM_RELEASE tx for full audit trail.
+        // The builder sets from=SWARM_POOL_ADDRESS, so the engine
+        // enforces insufficient-balance check (caught a real bug in 1C-2).
+        const blockHeight = this.state.currentBlockHeight || 0;
+        const distributionTx = buildSwarmRelease({
+          to: agentAddress,
+          amount: amount.toString(),
+          blockHeight,
+          metadata: {
+            agentId,
+            distributionType: 'periodic_release',
+            distributionBatch: Date.now()
+          }
+        });
+        const result = this.state.applyTransaction(distributionTx);
+        if (!result.success) {
+          console.error(`[SwarmPool] Distribution to ${agentAddress} failed: ${result.error}`);
+          continue;  // Skip this agent, try next
+        }
 
         transactions.push({
           from: swarmPoolAddress,

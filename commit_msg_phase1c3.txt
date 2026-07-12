@@ -1,0 +1,58 @@
+feat(swarm-pool-activated): Phase 1C-3 — use SWARM_RELEASE txs
+
+swarmPoolActivated.js now records pool initialization and per-agent
+distributions as SWARM_RELEASE transactions in the audit trail.
+This catches a real double-entry accounting bug (insufficient pool
+balance was previously a silent failure).
+
+CHANGES
+- src/economy/swarmPoolActivated.js
+  - L57-74 (initialize):
+    Records a SWARM_RELEASE audit tx (to=pool, amount=0) marking the
+    intent of pool credit. The actual balance move is still
+    subtractBalance(genesis) + addBalance(pool) — we don't change
+    the operational logic, only add the audit record.
+  - L202-225 (executeDistribution):
+    Each agent distribution now goes through:
+    buildSwarmRelease(to=agent, amount=N) → state.applyTransaction
+    The builder sets from=SWARM_POOL_ADDRESS, so the engine handles
+    pool debit + agent credit atomically. No more silent negative
+    pool balances — the engine rejects with clear error.
+  - Failed distributions are skipped (continue) so one bad
+    distribution doesn't break the whole batch.
+
+KEY IMPROVEMENT
+- Before: `state.subtractBalance(pool, X)` where X > pool balance
+  would set pool to a negative number silently. No audit trail.
+- After: `state.applyTransaction(buildSwarmRelease(...))` checks
+  pool balance via the engine. If insufficient, returns error
+  with explicit reason. tx recorded as status=failed.
+
+METADATA PRESERVED
+- Initialization: reason, totalTokens, operation
+- Distribution: agentId, distributionType, distributionBatch
+
+TESTS (test-swarm-pool-activated-tx.js, 44/44 passing)
+- Test 1: Pool initialization (7 cases)
+- Test 2: Init fails on insufficient genesis (2 cases)
+- Test 3: Per-agent distribution (7 cases)
+- Test 4: Distribution tx metadata (4 cases)
+- Test 5: Insufficient pool blocks distribution (5 cases) — CRITICAL
+- Test 6: Zero-amount entries skipped (4 cases)
+- Test 7: Full init + distribution flow (5 cases)
+- Test 8: Audit query by type (3 cases)
+- Test 9: Persistence roundtrip (3 cases)
+- Test 10: Stats aggregation (2 cases)
+
+REGRESSION
+- Phase 1A: 79/79 still passing
+- Phase 1B: 40/40 still passing
+- Phase 1C-1: 29/29 still passing
+- Phase 1C-2: 32/32 still passing
+- Phase 1C-3: 44/44 passing
+- Milestone: 32/32 still passing
+- Wallet encryption: 33/33 still passing
+- Total: 289/289 passing
+
+NEXT
+- 1C-4: src/blockchain/state.js (23 calls — biggest file)

@@ -1,0 +1,47 @@
+feat(wallet): AES-256-GCM encrypted private key storage
+
+Implements industry-standard authenticated encryption for agent
+private keys at rest, replacing the legacy plaintext storage in
+data/wallets/agent_wallet_registry.json.
+
+SECURITY IMPROVEMENTS
+- AES-256-GCM (authenticated encryption, prevents tampering)
+- PBKDF2-HMAC-SHA512 key derivation (310,000 iterations, OWASP 2023)
+- Per-encryption random salt (32 bytes) + IV (12 bytes)
+- Auth tag (16 bytes) detects ciphertext modification
+
+NEW FILE
+- src/wallet/walletEncryption.js
+  - encryptPrivateKey() / decryptPrivateKey() core API
+  - verifyPassword() helper
+  - isValidEnvelope() validation
+  - getEncryptionInfo() for inspection
+  - WalletEncryptionError class
+
+CHANGES
+- src/wallet/pqcWallet.js
+  - save() / load() now support encryptedPrivateKey envelope
+  - exportEncrypted() / importEncrypted() upgraded from AES-256-CBC to
+    AES-256-GCM with backward-compat fallback (_importLegacyCBC)
+  - Wallet API surface unchanged for callers
+
+- src/wallet/agentWalletManager.js
+  - New master key management: NG_WALLET_MASTER_KEY env var
+    (production), or auto-generated .wallet_master_key file (dev)
+  - _loadRegistry() decrypts private keys on load, migrates
+    legacy plaintext keys to encrypted form on first save
+  - _saveRegistry() writes only encrypted envelopes (no plaintext)
+  - File mode 0600 (owner read/write only) for both master key
+    and registry
+
+TESTS
+- tests/test-wallet-encryption.js: 33/33 passing
+  - Roundtrip, wrong password rejection, tamper detection
+  - Envelope validation, weak password rejection
+  - PQCWallet integration, legacy CBC backward compat
+  - Semantic security (different IV/salt per encryption)
+
+MIGRATION
+- On next server start, existing plaintext keys are auto-encrypted
+  with the new master key
+- No data loss; all balances / nonces / metadata preserved

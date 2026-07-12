@@ -16,6 +16,11 @@ import { fileURLToPath } from 'url';
 import { PQCWallet, Transaction, validateAddress } from './pqcWallet.js';
 import { generateKeyPair, sign, verify, hash } from '../crypto/pqc.js';
 import tokenFaucet from '../faucet/tokenFaucet.js';
+import {
+  encryptPrivateKey,
+  decryptPrivateKey,
+  isValidEnvelope
+} from './walletEncryption.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,6 +28,7 @@ const __dirname = path.dirname(__filename);
 const WALLET_DATA_DIR = path.join(__dirname, '../../data/wallets');
 const AGENTS_DATA_DIR = path.join(__dirname, '../../data/agents');
 const AGENT_WALLET_REGISTRY = path.join(WALLET_DATA_DIR, 'agent_wallet_registry.json');
+const WALLET_ENCRYPTION_KEY_PATH = path.join(WALLET_DATA_DIR, '.wallet_master_key');
 
 const DEFAULT_INITIAL_BALANCE = 1000n;
 const MAX_TRANSFER_AMOUNT = 100000000n; // 100M NGEN
@@ -33,6 +39,8 @@ class AgentWalletManager {
     this.registry = new Map();       // agentId → { wallet, metadata }
     this.addressIndex = new Map();   // address → agentId
     this.nonceMap = new Map();       // agentId → current nonce
+    this.masterKey = null;           // AES master key (loaded from file or env)
+    this._pendingEncrypt = new Set();// Legacy plaintext keys awaiting encryption
     this.stats = {
       totalWallets: 0,
       totalBalance: 0n,
@@ -41,6 +49,7 @@ class AgentWalletManager {
     };
 
     this._initDirectories();
+    this._loadOrCreateMasterKey();
     this._loadRegistry();
   }
 
@@ -48,6 +57,55 @@ class AgentWalletManager {
     if (!fs.existsSync(WALLET_DATA_DIR)) {
       fs.mkdirSync(WALLET_DATA_DIR, { recursive: true });
     }
+  }
+
+  /**
+   * Load server-side master key used to encrypt agent private keys at rest.
+   * Resolution order:
+   *   1. NG_WALLET_MASTER_KEY env var (base64, 32 bytes)
+   *   2. .wallet_master_key file in data/wallets/
+   * If neither exists, generate a new one and persist to file with 0600 perms.
+   * File-based keys are dev-only; production should use env var or KMS.
+   */
+  _loadOrCreateMasterKey() {
+    const envKey = process.env.NG_WALLET_MASTER_KEY;
+    if (envKey) {
+      try {
+        const buf = Buffer.from(envKey, 'base64');
+        if (buf.length === 32) {
+          this.masterKey = buf;
+          console.log('[AgentWallet] Master key loaded from NG_WALLET_MASTER_KEY env var');
+          return;
+        }
+        console.warn(`[AgentWallet] NG_WALLET_MASTER_KEY wrong length: ${buf.length}, falling back to file`);
+      } catch (e) {
+        console.warn('[AgentWallet] Failed to decode NG_WALLET_MASTER_KEY:', e.message);
+      }
+    }
+
+    if (fs.existsSync(WALLET_ENCRYPTION_KEY_PATH)) {
+      try {
+        const data = JSON.parse(fs.readFileSync(WALLET_ENCRYPTION_KEY_PATH, 'utf8'));
+        if (data.key && data.cipher === 'plain-file') {
+          // Dev-only fallback: legacy plaintext key
+          this.masterKey = Buffer.from(data.key, 'hex');
+          console.warn('[AgentWallet] WARNING: master key loaded from plaintext file (dev only). Set NG_WALLET_MASTER_KEY in production.');
+          return;
+        }
+      } catch (e) {
+        console.warn('[AgentWallet] Failed to load master key file:', e.message);
+      }
+    }
+
+    // Generate new master key
+    this.masterKey = require('crypto').randomBytes(32);
+    fs.writeFileSync(WALLET_ENCRYPTION_KEY_PATH, JSON.stringify({
+      key: this.masterKey.toString('hex'),
+      cipher: 'plain-file',
+      createdAt: new Date().toISOString(),
+      warning: 'DEV ONLY. Set NG_WALLET_MASTER_KEY env var in production.'
+    }, null, 2), { mode: 0o600 });
+    console.log('[AgentWallet] Generated new master key at', WALLET_ENCRYPTION_KEY_PATH);
   }
 
   _loadRegistry() {
@@ -60,9 +118,27 @@ class AgentWalletManager {
 
           try {
             const publicKey = Buffer.from(walletData.publicKey, 'hex');
-            const privateKey = Buffer.from(walletData.privateKey, 'hex');
             const balance = BigInt(walletData.balance || 0);
             const nonce = walletData.nonce || 0;
+
+            // Decrypt private key (if encrypted) or read plaintext (legacy)
+            let privateKey;
+            if (walletData.encryptedPrivateKey) {
+              if (!isValidEnvelope(walletData.encryptedPrivateKey)) {
+                console.warn(`[AgentWallet] Invalid envelope for ${entry.agentId}, skipping`);
+                continue;
+              }
+              // Use master key as password to decrypt the envelope
+              const envelopePwd = this.masterKey.toString('hex');
+              privateKey = decryptPrivateKey(walletData.encryptedPrivateKey, envelopePwd);
+            } else if (walletData.privateKey) {
+              // LEGACY: plaintext private key. Migrate to encrypted form on next save.
+              console.warn(`[AgentWallet] Legacy plaintext key for ${entry.agentId} - will be encrypted on next save`);
+              privateKey = Buffer.from(walletData.privateKey, 'hex');
+              this._pendingEncrypt.add(entry.agentId);
+            } else {
+              continue;
+            }
 
             const wallet = new PQCWallet(publicKey, privateKey, balance, nonce);
 
@@ -80,6 +156,12 @@ class AgentWalletManager {
         this.stats.totalWallets = data.stats?.totalWallets || this.registry.size;
         this.stats.totalTransactions = data.stats?.totalTransactions || 0;
 
+        // Migrate any legacy plaintext entries to encrypted form
+        if (this._pendingEncrypt.size > 0) {
+          console.log(`[AgentWallet] Migrating ${this._pendingEncrypt.size} legacy plaintext keys to AES-256-GCM...`);
+          this._saveRegistry();
+        }
+
         console.log(`[AgentWallet] Loaded ${this.registry.size} agent wallets from registry`);
       }
     } catch (e) {
@@ -90,13 +172,22 @@ class AgentWalletManager {
   _saveRegistry() {
     try {
       const entries = [];
+      const envelopePwd = this.masterKey.toString('hex');
+
       for (const [agentId, entry] of this.registry) {
+        // Encrypt private key with AES-256-GCM
+        const envelope = encryptPrivateKey(entry.wallet.privateKey, envelopePwd, {
+          address: entry.wallet.address,
+          agentId,
+          publicKey: entry.wallet.publicKey.toString('hex')
+        });
+
         entries.push({
           agentId,
           wallet_data: {
             address: entry.wallet.address,
             publicKey: entry.wallet.publicKey.toString('hex'),
-            privateKey: entry.wallet.privateKey.toString('hex'),
+            encryptedPrivateKey: envelope,  // AES-256-GCM envelope (no plaintext)
             balance: entry.wallet.balance.toString(),
             nonce: entry.wallet.nonce
           },
@@ -110,8 +201,13 @@ class AgentWalletManager {
           totalWallets: this.stats.totalWallets,
           totalTransactions: this.stats.totalTransactions
         },
+        encryption: {
+          cipher: 'aes-256-gcm',
+          kdf: 'pbkdf2-sha512',
+          version: '1.0'
+        },
         updatedAt: new Date().toISOString()
-      }, (key, value) => typeof value === 'bigint' ? value.toString() : value, 2));
+      }, (key, value) => typeof value === 'bigint' ? value.toString() : value, 2), { mode: 0o600 });
     } catch (e) {
       console.error('[AgentWallet] Failed to save registry:', e.message);
     }
@@ -142,7 +238,10 @@ class AgentWalletManager {
       this.nonceMap.set(agentId, 0);
       this.stats.totalWallets++;
 
-      await wallet.save(path.join(WALLET_DATA_DIR, `agent_${agentId.replace(/[^a-zA-Z0-9_-]/g, '_')}.json`));
+      await wallet.save(
+        path.join(WALLET_DATA_DIR, `agent_${agentId.replace(/[^a-zA-Z0-9_-]/g, '_')}.json`),
+        this.masterKey.toString('hex')
+      );
       this._saveRegistry();
 
       console.log(`[AgentWallet] Created wallet for agent ${agentId}: ${wallet.address}`);

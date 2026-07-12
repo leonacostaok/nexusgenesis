@@ -9,6 +9,12 @@ import crypto from 'crypto';
 import { Wallet } from './wallet.js';
 import { generateAddress, validateAddress } from './addressUtils.js';
 import { generateKeyPair, sign, verify, hash } from '../crypto/pqc.js';
+import {
+  encryptPrivateKey,
+  decryptPrivateKey,
+  isValidEnvelope,
+  WalletEncryptionError
+} from './walletEncryption.js';
 
 /**
  * PQC钱包class
@@ -53,20 +59,34 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 从文件Load钱包
+   * 从文件Load钱包 (supports encrypted and legacy plaintext)
    * @param {string} filePath 文件路径
+   * @param {string} masterKeyHex - 32-byte master key as hex (required if encrypted)
    * @returns {Promise<PQCWallet>} 钱包instance
    */
-  static async load(filePath) {
+  static async load(filePath, masterKeyHex = null) {
     try {
       const data = await fs.readFile(filePath, 'utf8');
       const walletData = JSON.parse(data);
-      
+
       const publicKey = Buffer.from(walletData.publicKey, 'hex');
-      const privateKey = Buffer.from(walletData.privateKey, 'hex');
       const balance = BigInt(walletData.balance || 0);
       const nonce = walletData.nonce || 0;
-      
+
+      // Decrypt or read legacy
+      let privateKey;
+      if (walletData.encryptedPrivateKey) {
+        if (!masterKeyHex) {
+          throw new Error('Master key required to decrypt wallet file');
+        }
+        privateKey = decryptPrivateKey(walletData.encryptedPrivateKey, masterKeyHex);
+      } else if (walletData.privateKey) {
+        // LEGACY: plaintext private key
+        privateKey = Buffer.from(walletData.privateKey, 'hex');
+      } else {
+        throw new Error('No private key found in wallet file');
+      }
+
       return new PQCWallet(publicKey, privateKey, balance, nonce);
     } catch (error) {
       console.error('Error loading PQC wallet:', error.message);
@@ -75,24 +95,38 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * Save钱包到文件
+   * Save钱包到文件 (AES-256-GCM encrypted)
    * @param {string} filePath 文件路径
+   * @param {string} masterKeyHex - 32-byte master key as hex (server-managed)
    * @returns {Promise<void>}
    */
-  async save(filePath) {
+  async save(filePath, masterKeyHex = null) {
     try {
       const walletData = {
         address: this.address,
         publicKey: this.publicKey.toString('hex'),
-        privateKey: this.privateKey.toString('hex'),
-        balance: this.balance.toString()
+        balance: this.balance.toString(),
+        nonce: this.nonce,
+        savedAt: new Date().toISOString()
       };
-      
+
+      // Encrypt private key with master key (server-side storage)
+      if (masterKeyHex) {
+        const envelope = encryptPrivateKey(this.privateKey, masterKeyHex, {
+          address: this.address,
+          publicKey: this.publicKey.toString('hex')
+        });
+        walletData.encryptedPrivateKey = envelope;
+      } else {
+        // No master key: use legacy plaintext (backward compat, NOT recommended)
+        walletData.privateKey = this.privateKey.toString('hex');
+      }
+
       // ensure目录存在
       const dir = path.dirname(filePath);
       await fs.mkdir(dir, { recursive: true });
-      
-      await fs.writeFile(filePath, JSON.stringify(walletData, null, 2));
+
+      await fs.writeFile(filePath, JSON.stringify(walletData, null, 2), { mode: 0o600 });
     } catch (error) {
       console.error('Error saving PQC wallet:', error.message);
       throw error;
@@ -215,35 +249,45 @@ export class PQCWallet extends Wallet {
   }
 
   /**
-   * 加密Export钱包
+   * 加密Export钱包 (AES-256-GCM + PBKDF2)
    * @param {string} password 加密密码
-   * @returns {object} 加密后的钱包data
+   * @returns {object} 加密的envelope
    */
   exportEncrypted(password) {
-    const salt = crypto.randomBytes(16);
-    const key = crypto.pbkdf2Sync(password, salt, 100000, 32, 'sha512');
-    const iv = crypto.randomBytes(16);
-
-    const privateKeyHex = this.privateKey.toString('hex');
-    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
-    let ciphertext = cipher.update(privateKeyHex, 'utf8', 'hex');
-    ciphertext += cipher.final('hex');
-
-    return {
-      ciphertext,
-      salt: salt.toString('hex'),
-      iv: iv.toString('hex'),
+    return encryptPrivateKey(this.privateKey, password, {
       address: this.address,
       publicKey: this.publicKey.toString('hex')
-    };
+    });
   }
 
   /**
-   * 从加密dataImport钱包
-   * @param {object} encrypted 加密的钱包data
-   * @returns {PQCWallet} 钱包instance
+   * 从加密envelopeImport钱包 (AES-256-GCM)
+   * @param {object} envelope 加密的envelope
+   * @param {string} password 解密密码
+   * @returns {PQCWallet|null} 钱包instance
    */
-  static importEncrypted(encrypted, password) {
+  static importEncrypted(envelope, password) {
+    try {
+      if (!isValidEnvelope(envelope)) {
+        // Backward compat: try old CBC format
+        if (envelope && envelope.ciphertext && envelope.salt && envelope.iv && !envelope.authTag) {
+          return PQCWallet._importLegacyCBC(envelope, password);
+        }
+        return null;
+      }
+      const privateKey = decryptPrivateKey(envelope, password);
+      const publicKey = Buffer.from(envelope.metadata.publicKey, 'hex');
+      return new PQCWallet(publicKey, privateKey, 0n);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  /**
+   * Legacy CBC format importer (for backward compat with old data)
+   * @private
+   */
+  static _importLegacyCBC(encrypted, password) {
     try {
       const salt = Buffer.from(encrypted.salt, 'hex');
       const iv = Buffer.from(encrypted.iv, 'hex');
@@ -255,8 +299,7 @@ export class PQCWallet extends Wallet {
 
       const privateKey = Buffer.from(privateKeyHex, 'hex');
       const publicKey = Buffer.from(encrypted.publicKey, 'hex');
-
-      return Reflect.construct(PQCWallet, [publicKey, privateKey, 0n]);
+      return new PQCWallet(publicKey, privateKey, 0n);
     } catch (error) {
       return null;
     }

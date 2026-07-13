@@ -96,6 +96,27 @@
   </div>
 </section>
 
+<!-- AUDIT EVENTS PANEL (Phase 1C) -->
+<section class="max-w-6xl mx-auto px-4 py-6">
+  <div class="glass rounded-xl p-5 md:p-6">
+    <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+      <div>
+        <h2 class="text-lg md:text-xl font-bold gradient-text">Live Audit Trail</h2>
+        <p class="text-xs text-slate-400 mt-1">Every balance change on NexusGenesis is recorded as a permanent transaction. Phase 1C.</p>
+      </div>
+      <div class="flex gap-2 text-xs">
+        <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse"></span> Live
+        </span>
+        <span class="px-2 py-1 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20" id="auditTotalCount">-- events</span>
+      </div>
+    </div>
+    <div id="auditList" class="space-y-1.5 max-h-80 overflow-y-auto text-xs font-mono">
+      <div class="text-slate-500 text-center py-6">Loading audit events…</div>
+    </div>
+  </div>
+</section>
+
 <!-- V1.2.0 RECRUITMENT BANNER -->
 <section class="max-w-6xl mx-auto px-4 py-6">
   <div class="glass rounded-xl p-6 border border-emerald-500/30 relative overflow-hidden">
@@ -934,10 +955,76 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+// ─── Phase 1C: Live Audit Trail ─────────────────────────────────────────────
+
+const AUDIT_TYPE_COLORS = {
+  'TASK_ESCROW': 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+  'TASK_REWARD': 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+  'TASK_REFUND': 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
+  'CHALLENGE_DEPOSIT': 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+  'CHALLENGE_REWARD': 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+  'CHALLENGE_FORFEIT': 'bg-slate-500/15 text-slate-300 border-slate-500/30',
+  'OBSERVER_EVENT': 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30',
+  'TRANSFER': 'bg-violet-500/15 text-violet-300 border-violet-500/30',
+  'BLOCK_REWARD': 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+  'GAS_FEE_BURNED': 'bg-slate-500/15 text-slate-300 border-slate-500/30'
+};
+
+function auditColor(type) {
+  return AUDIT_TYPE_COLORS[type] || 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30';
+}
+
+function auditBadge(type) {
+  const cls = auditColor(type);
+  return `<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold border ${cls}">${type}</span>`;
+}
+
+function shortAddr(a) {
+  if (!a) return '—';
+  return a.length > 16 ? a.slice(0, 6) + '…' + a.slice(-4) : a;
+}
+
+async function loadAuditTrail() {
+  const list = document.getElementById('auditList');
+  const counter = document.getElementById('auditTotalCount');
+  if (!list) return;
+  const data = await api('/api/v1/transactions?limit=20');
+  if (!data || !data.success) {
+    list.innerHTML = '<div class="text-slate-500 text-center py-6">Audit endpoint unavailable</div>';
+    return;
+  }
+  const txs = data.transactions || [];
+  counter.textContent = `${txs.length}+ events`;
+  if (txs.length === 0) {
+    list.innerHTML = '<div class="text-slate-500 text-center py-6">No audit events yet</div>';
+    return;
+  }
+  list.innerHTML = txs.slice(0, 20).map(tx => {
+    const meta = tx.metadata || {};
+    const eventLabel = meta.event || tx.tx_type;
+    const fromShort = shortAddr(tx.from_address || tx.from);
+    const toShort = shortAddr(tx.to_address || tx.to);
+    const amount = tx.amount ? `${tx.amount} NGEN` : '';
+    const ts = tx.appliedAt || tx.createdAt || tx.timestamp;
+    const timeStr = ts ? new Date(ts).toLocaleTimeString() : '';
+    return `
+      <div class="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-indigo-500/5 transition">
+        ${auditBadge(eventLabel || tx.tx_type)}
+        <span class="text-slate-400">${fromShort}</span>
+        <span class="text-slate-600">→</span>
+        <span class="text-slate-400">${toShort}</span>
+        <span class="text-emerald-300 ml-auto tabular-nums">${amount}</span>
+        <span class="text-slate-500 text-[10px]">${timeStr}</span>
+      </div>`;
+  }).join('');
+}
+
 refresh();
 setInterval(refresh, 10000);
 loadForum();
 setInterval(loadForum, 30000);
+loadAuditTrail();
+setInterval(loadAuditTrail, 15000);
 </script>
 </body>
 </html>

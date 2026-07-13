@@ -176,6 +176,10 @@ export function attachTransactionState(state) {
       state.transactions.mempool = [];
     };
   }
+  // Phase 1C-4: Always attach recordAuditEvent for state.js internal use.
+  if (!state.recordAuditEvent) {
+    state.recordAuditEvent = (tx) => recordAuditEvent(state, tx);
+  }
   if (!state.getTransactionStats) {
     state.getTransactionStats = () => getTransactionStats(state);
   }
@@ -320,6 +324,21 @@ function recordHistory(state, tx) {
   if (tx.to) {
     state.transactions.byAddress[tx.to] = (state.transactions.byAddress[tx.to] || 0) + 1;
   }
+}
+
+/**
+ * Phase 1C-4: Audit-only record. Normalize + record a tx without
+ * applying any balance effect. For use by state.js internal methods
+ * that have already done the balance change and only need to leave
+ * a trace in txHistory.
+ */
+export function recordAuditEvent(state, txInput) {
+  const tx = normalizeTransaction(txInput, state);
+  tx.status = 'applied';
+  tx.appliedAt = Date.now();
+  tx.auditOnly = true;
+  recordHistory(state, tx);
+  return { success: true, txHash: tx.txHash };
 }
 
 /**

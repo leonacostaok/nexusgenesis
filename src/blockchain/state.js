@@ -28,6 +28,7 @@ import {
   attachTransactionState,
   serializeTransactions,
   deserializeTransactions,
+  recordAuditEvent,
   TX_TYPE
 } from './transactionEngine.js';
 
@@ -765,6 +766,24 @@ export class State {
     if (tax > 0n) {
       const observerAddress = 'ng11JkfPrm2B4cN6BChLG6TmWpyXy6kHcTgqiT4TS51J2J7C3iM8r';
       this.addBalance(observerAddress, tax.toString());
+      // Phase 1C-4: Audit event for the tax transfer (no balance effect;
+      // the addBalance above already moved funds. recordAuditEvent just
+      // leaves a trace in txHistory).
+      this.recordAuditEvent({
+        tx_type: TX_TYPE.OBSERVER_EVENT,
+        from: from,
+        to: observerAddress,
+        amount: tax.toString(),
+        blockHeight: transaction.blockHeight || 0,
+        metadata: {
+          event: 'METABOLIC_TAX',
+          taxAmount: tax.toString(),
+          observerAddress,
+          transferAmount: amountBig.toString(),
+          fee: feeBig.toString(),
+          source: 'transfer'
+        }
+      });
     }
     
     // 记录日志
@@ -1166,6 +1185,32 @@ export class State {
       this.changes.balances.add(from);
       this.changes.balances.add(BURN_ADDR);
 
+      // Phase 1C-4: Audit events for endowment + burn.
+      // Balance already moved above; recordAuditEvent leaves txHistory traces.
+      this.recordAuditEvent({
+        tx_type: TX_TYPE.REGISTRATION_MINT,
+        to: from,
+        amount: INITIAL_AGENT_NGEN.toString(),
+        blockHeight: height,
+        agentId: agent_id,
+        metadata: {
+          source: 'agent_registration',
+          agentIdentity: agent_identity
+        }
+      });
+      this.recordAuditEvent({
+        tx_type: TX_TYPE.OBSERVER_EVENT,
+        from,
+        blockHeight: height,
+        agentId: agent_id,
+        metadata: {
+          event: 'REGISTRATION_FEE_BURNED',
+          amount: REGISTRATION_FEE.toString(),
+          burnAddress: BURN_ADDR,
+          agentId: agent_id
+        }
+      });
+
       // 记录日志
       console.log(`[AGENT_REGISTER] agent_id=${agent_id} address=${from} block=${height} capabilities=${capabilities?.join(',') || ''} endowed=${INITIAL_AGENT_NGEN.toString()} burned=${REGISTRATION_FEE.toString()} net=${(INITIAL_AGENT_NGEN - REGISTRATION_FEE).toString()}`);
       return true;
@@ -1221,6 +1266,20 @@ export class State {
         return false;
       }
       this.addBalance(STAKING_ADDR, stakeAmount.toString());
+
+      // Phase 1C-4: Audit event for the stake.
+      this.recordAuditEvent({
+        tx_type: TX_TYPE.STAKE,
+        from: from,
+        to: STAKING_ADDR,
+        amount: stakeAmount.toString(),
+        blockHeight: height,
+        agentId: agentId,
+        metadata: {
+          nodeId: node_id,
+          source: 'validator_join'
+        }
+      });
 
       agentRecord.is_validator = true;
       agentRecord.validator_node_id = node_id || null;
@@ -1290,6 +1349,24 @@ export class State {
       // Burn the slashed NGEN (send to burn address — permanently removed)
       this.addBalance(BURN_ADDR, slashAmount.toString());
 
+      // Phase 1C-4: Audit event for the slash.
+      this.recordAuditEvent({
+        tx_type: TX_TYPE.SLASH,
+        from: STAKING_ADDR,
+        to: BURN_ADDR,
+        amount: slashAmount.toString(),
+        blockHeight: height,
+        agentId: agentId,
+        metadata: {
+          violation,
+          slashPercent: slashPercent.toString(),
+          remainingStake: (lockedAmount - slashAmount).toString(),
+          burned: 'true',
+          burnAddress: BURN_ADDR,
+          source: 'validator_slash'
+        }
+      });
+
       // Update validator record
       const newLocked = lockedAmount - slashAmount;
       agentRecord.validator_stake_locked_amount = newLocked.toString();
@@ -1343,6 +1420,19 @@ export class State {
         }
         this.subtractBalance(STAKING_ADDR, lockedAmount.toString());
         this.addBalance(from, lockedAmount.toString());
+
+        // Phase 1C-4: Audit event for the unstake.
+        this.recordAuditEvent({
+          tx_type: TX_TYPE.UNSTAKE,
+          from: STAKING_ADDR,
+          to: from,
+          amount: lockedAmount.toString(),
+          blockHeight: height,
+          agentId: agentId,
+          metadata: {
+            source: 'validator_leave'
+          }
+        });
       }
 
       // Clear validator metadata
@@ -1570,6 +1660,21 @@ export class State {
           this.changes.balances.add(transaction.from);
           this.changes.balances.add(GAS_FEE_BURN_ADDR);
           gasBurned = MIN_GAS_FEE;
+
+          // Phase 1C-4: Audit event for gas fee burn.
+          this.recordAuditEvent({
+            tx_type: TX_TYPE.OBSERVER_EVENT,
+            from: transaction.from,
+            to: GAS_FEE_BURN_ADDR,
+            amount: MIN_GAS_FEE.toString(),
+            blockHeight: currentBlockHeight,
+            metadata: {
+              event: 'GAS_FEE_BURNED',
+              amount: MIN_GAS_FEE.toString(),
+              burnAddress: GAS_FEE_BURN_ADDR,
+              parentTxType: transaction.tx_type
+            }
+          });
         }
       } catch (e) {
         // Gas collection failed — don't block the transaction
@@ -1579,6 +1684,17 @@ export class State {
     const result = this._applyTransactionCore(transaction, currentBlockHeight);
     if (gasBurned > 0n && result) {
       console.log(`[GAS_FEE] tx_type=${transaction.tx_type} from=${String(transaction.from).slice(0, 12)}... burned=${gasBurned.toString()} NGEN`);
+    }
+    // Phase 1C-4: Record the parent transaction itself in txHistory.
+    // State class's applyTransaction does business logic but never recorded
+    // to history. Now the parent tx goes in as a trace alongside any audit
+    // events that internal methods emit via recordAuditEvent.
+    if (result && this.recordAuditEvent) {
+      this.recordAuditEvent({
+        ...transaction,
+        status: 'applied',
+        auditOnly: true
+      });
     }
     return result;
   }
@@ -1675,6 +1791,19 @@ export class State {
           swarmPool.releasedTokens += releaseAmount;
           swarmPool.lastReleaseBlock = currentBlockHeight;
           this.changes.tokenRelease = true;
+          // Phase 1C-4: Audit event for scheduled swarm release.
+          this.recordAuditEvent({
+            tx_type: TX_TYPE.SWARM_RELEASE,
+            to: swarmPool.address,
+            amount: releaseAmount.toString(),
+            blockHeight: currentBlockHeight,
+            metadata: {
+              source: 'scheduled_release',
+              releasedTokens: swarmPool.releasedTokens.toString(),
+              totalTokens: swarmPool.totalTokens.toString(),
+              releaseInterval: swarmPool.releaseInterval
+            }
+          });
           console.log(`[TOKEN_RELEASE] Swarm Pool released ${releaseAmount} tokens at block ${currentBlockHeight}`);
         }
       }
@@ -1696,6 +1825,19 @@ export class State {
           observer.releasedTokens += releaseAmount;
           observer.lastReleaseBlock = currentBlockHeight;
           this.changes.tokenRelease = true;
+          // Phase 1C-4: Audit event for scheduled observer release.
+          this.recordAuditEvent({
+            tx_type: TX_TYPE.OBSERVER_RELEASE,
+            to: observer.address,
+            amount: releaseAmount.toString(),
+            blockHeight: currentBlockHeight,
+            metadata: {
+              source: 'scheduled_release',
+              releasedTokens: observer.releasedTokens.toString(),
+              totalTokens: observer.totalTokens.toString(),
+              releaseInterval: observer.releaseInterval
+            }
+          });
           console.log(`[TOKEN_RELEASE] Observer released ${releaseAmount} tokens at block ${currentBlockHeight}`);
         }
       }

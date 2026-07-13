@@ -11,6 +11,7 @@ import path from 'path';
 import agentWalletManager from '../wallet/agentWalletManager.js';
 import { fileURLToPath } from 'url';
 import { MilestoneSystem } from '../blockchain/state.js';
+import { TX_TYPE } from '../blockchain/transactionEngine.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -374,6 +375,21 @@ class TaskProtocol {
       this.node.currentState.addBalance(ESCROW_ADDR, rewardBigInt.toString());
       task.escrowed = true;
       console.log(`[TaskProtocol] Reward escrowed: ${rewardBigInt.toString()} NGEN from ${publisherAddress.slice(0, 12)}... → escrow`);
+      // Phase 1C-5: Record TASK_REWARD audit event for escrow
+      this.node.currentState.recordAuditEvent({
+        tx_type: TX_TYPE.TASK_REWARD,
+        from: publisherAddress,
+        to: ESCROW_ADDR,
+        amount: rewardBigInt.toString(),
+        blockHeight: 0,
+        metadata: {
+          event: 'TASK_ESCROW',
+          taskId,
+          reward: rewardBigInt.toString(),
+          publisher: publisherAddress,
+          source: 'publish'
+        }
+      });
     }
 
     this.tasks.set(taskId, task);
@@ -622,6 +638,22 @@ class TaskProtocol {
             this.node.currentState.subtractBalance(SWARM_POOL_ADDR, adjustedReward.toString());
             this.node.currentState.changes.tokenRelease = true;
             console.log(`[TaskProtocol] Reward released: ${task.adjustedReward} NGEN from Swarm Pool → ${task.claimedBy.slice(0, 12)}... (${qualityScore}★, ${multiplier}x)`);
+            // Phase 1C-5: Record SWARM_POOL release audit
+            this.node.currentState.recordAuditEvent({
+              tx_type: TX_TYPE.SWARM_RELEASE,
+              from: SWARM_POOL_ADDR,
+              to: task.claimedBy,
+              amount: adjustedReward.toString(),
+              blockHeight: 0,
+              metadata: {
+                event: 'TASK_REWARD_RELEASE',
+                taskId: task.id,
+                claimant: task.claimedBy,
+                qualityScore,
+                multiplier,
+                source: 'swarm_pool'
+              }
+            });
             paid = true;
           }
         } else if (task.escrowed) {
@@ -652,6 +684,25 @@ class TaskProtocol {
             agentWalletManager.syncBalance(claimantAgentId, this.node.currentState);
             console.log(`[TaskProtocol] Wallet synced: ${claimantAgentId} balance = ${agentWalletManager.getBalance(claimantAgentId).balance} NGEN`);
           }
+          // Phase 1C-5: Record TASK_REWARD audit for claimant payment
+          this.node.currentState.recordAuditEvent({
+            tx_type: TX_TYPE.TASK_REWARD,
+            from: isSystemTask ? SWARM_POOL_ADDR : (task.escrowed ? ESCROW_ADDR : SWARM_POOL_ADDR),
+            to: task.claimedBy,
+            amount: adjustedReward.toString(),
+            blockHeight: 0,
+            metadata: {
+              event: 'TASK_REWARD_PAID',
+              taskId: task.id,
+              claimant: task.claimedBy,
+              publisher: task.publisher,
+              qualityScore,
+              multiplier,
+              adjustedReward: adjustedReward.toString(),
+              baseReward: baseReward.toString(),
+              source: isSystemTask ? 'swarm_pool' : (task.escrowed ? 'escrow' : 'swarm_pool_legacy')
+            }
+          });
         }
 
         task.paid = paid;
@@ -863,6 +914,21 @@ class TaskProtocol {
         this.node.currentState.subtractBalance(ESCROW_ADDR, refundAmount.toString());
         this.node.currentState.addBalance(task.publisher, refundAmount.toString());
         console.log(`[TaskProtocol] Escrow refunded: ${task.reward} NGEN → ${task.publisher.slice(0, 12)}...`);
+        // Phase 1C-5: Record REFUND audit event
+        this.node.currentState.recordAuditEvent({
+          tx_type: TX_TYPE.TRANSFER,
+          from: ESCROW_ADDR,
+          to: task.publisher,
+          amount: refundAmount.toString(),
+          blockHeight: 0,
+          metadata: {
+            event: 'TASK_REFUND',
+            taskId: task.id,
+            reason: 'task_cancelled',
+            refundAmount: refundAmount.toString(),
+            publisher: task.publisher
+          }
+        });
       } catch (refundErr) {
         console.error(`[TaskProtocol] Escrow refund failed:`, refundErr.message);
       }
@@ -1083,6 +1149,22 @@ class TaskProtocol {
       result: null,
       resolvedAt: null
     };
+
+    // Phase 1C-5: Record ESCROW audit event for challenge deposit
+    this.node.currentState.recordAuditEvent({
+      tx_type: TX_TYPE.TRANSFER,
+      from: challengerAddress,
+      to: ESCROW_ADDR,
+      amount: deposit.toString(),
+      blockHeight: 0,
+      metadata: {
+        event: 'CHALLENGE_DEPOSIT',
+        taskId,
+        challengeId,
+        challenger: challengerAddress,
+        deposit: deposit.toString()
+      }
+    });
     // Persist challenges to memory + file
     if (!this._challenges) this._challenges = new Map();
     this._challenges.set(challengeId, challenge);
@@ -1232,24 +1314,100 @@ class TaskProtocol {
       // Return deposit to challenger from escrow
       this.node.currentState.subtractBalance(ESCROW_ADDR, deposit.toString());
       this.node.currentState.addBalance(challenge.challenger, deposit.toString());
+      // Phase 1C-5: Record deposit refund audit
+      this.node.currentState.recordAuditEvent({
+        tx_type: TX_TYPE.TRANSFER,
+        from: ESCROW_ADDR,
+        to: challenge.challenger,
+        amount: deposit.toString(),
+        blockHeight: 0,
+        metadata: {
+          event: 'CHALLENGE_DEPOSIT_REFUND',
+          challengeId: challenge.id,
+          taskId: task.id,
+          challenger: challenge.challenger,
+          result: 'upheld',
+          deposit: deposit.toString()
+        }
+      });
       // Move 50% of reward from claimant → challenger
       let claimantPaid = false;
       if (this.node.currentState.getBalance(task.claimedBy) >= halfReward) {
         this.node.currentState.subtractBalance(task.claimedBy, halfReward.toString());
         this.node.currentState.addBalance(challenge.challenger, halfReward.toString());
         claimantPaid = true;
+        // Phase 1C-5: Record claimant slash audit
+        this.node.currentState.recordAuditEvent({
+          tx_type: TX_TYPE.TRANSFER,
+          from: task.claimedBy,
+          to: challenge.challenger,
+          amount: halfReward.toString(),
+          blockHeight: 0,
+          metadata: {
+            event: 'CHALLENGE_REWARD_PAYOUT',
+            challengeId: challenge.id,
+            taskId: task.id,
+            claimant: task.claimedBy,
+            challenger: challenge.challenger,
+            halfReward: halfReward.toString()
+          }
+        });
       } else {
         // Fallback: pay from escrow
         this.node.currentState.subtractBalance(ESCROW_ADDR, halfReward.toString());
         this.node.currentState.addBalance(challenge.challenger, halfReward.toString());
         console.warn(`[TaskProtocol] Claimant balance insufficient for upheld challenge; using escrow`);
+        // Phase 1C-5: Record escrow fallback audit
+        this.node.currentState.recordAuditEvent({
+          tx_type: TX_TYPE.TRANSFER,
+          from: ESCROW_ADDR,
+          to: challenge.challenger,
+          amount: halfReward.toString(),
+          blockHeight: 0,
+          metadata: {
+            event: 'CHALLENGE_REWARD_PAYOUT_ESCROW_FALLBACK',
+            challengeId: challenge.id,
+            taskId: task.id,
+            claimant: task.claimedBy,
+            challenger: challenge.challenger,
+            halfReward: halfReward.toString()
+          }
+        });
       }
       // Move 50% to treasury
       this.node.currentState.subtractBalance(ESCROW_ADDR, halfReward.toString());
       this.node.currentState.addBalance(TREASURY_ADDR, halfReward.toString());
+      // Phase 1C-5: Record treasury share audit
+      this.node.currentState.recordAuditEvent({
+        tx_type: TX_TYPE.TRANSFER,
+        from: ESCROW_ADDR,
+        to: TREASURY_ADDR,
+        amount: halfReward.toString(),
+        blockHeight: 0,
+        metadata: {
+          event: 'CHALLENGE_TREASURY_SHARE',
+          challengeId: challenge.id,
+          taskId: task.id,
+          halfReward: halfReward.toString()
+        }
+      });
       // Return odd-cent remainder to treasury
       if (remainder > 0n) {
         this.node.currentState.addBalance(TREASURY_ADDR, remainder.toString());
+        // Phase 1C-5: Record remainder audit
+        this.node.currentState.recordAuditEvent({
+          tx_type: TX_TYPE.TRANSFER,
+          from: ESCROW_ADDR,
+          to: TREASURY_ADDR,
+          amount: remainder.toString(),
+          blockHeight: 0,
+          metadata: {
+            event: 'CHALLENGE_REMAINDER',
+            challengeId: challenge.id,
+            taskId: task.id,
+            remainder: remainder.toString()
+          }
+        });
       }
       // Slash verifier
       if (task.verifierAddress && task.verifierAddress !== 'system') {
@@ -1260,6 +1418,22 @@ class TaskProtocol {
       // Challenger loses: deposit → treasury, slash challenger
       this.node.currentState.subtractBalance(ESCROW_ADDR, deposit.toString());
       this.node.currentState.addBalance(TREASURY_ADDR, deposit.toString());
+      // Phase 1C-5: Record forfeit to treasury audit
+      this.node.currentState.recordAuditEvent({
+        tx_type: TX_TYPE.TRANSFER,
+        from: ESCROW_ADDR,
+        to: TREASURY_ADDR,
+        amount: deposit.toString(),
+        blockHeight: 0,
+        metadata: {
+          event: 'CHALLENGE_FORFEIT',
+          challengeId: challenge.id,
+          taskId: task.id,
+          challenger: challenge.challenger,
+          deposit: deposit.toString(),
+          result: 'rejected'
+        }
+      });
       this._slashForViolation(challenge.challenger, 'FALSE_CHALLENGE', { taskId: task.id, challengeId: challenge.id });
       console.log(`[TaskProtocol] Challenge REJECTED: ${challenge.id}; challenger slashed -${deposit.toString()} NGEN to treasury`);
     }

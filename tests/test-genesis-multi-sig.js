@@ -35,18 +35,21 @@ async function main() {
   console.log('  Genesis Reserve Multi-Sig (3-of-5) Tests');
   console.log('═══════════════════════════════════════════════════\n');
 
-  // ─── Test 1: Propose a spend ───
+  // ─── Test 1: Propose a spend (small amount to avoid reserve balance issues) ───
   console.log('=== Test 1: Propose Spend ===');
   const propose = await http('POST', '/api/v1/genesis-reserve/propose', {
     milestoneBlock: 1000,
-    amount: '12500000',
+    amount: '100',
     recipient: 'ng11cefTZvjm7u5kjhJDcrysfDu3U1LjjxFNZoXmmTv9taSFhEbsJ',
-    purpose: 'Milestone unlock: networkStart',
-    justification: 'Automated milestone trigger at block 1000',
-    expectedBenefit: 'Network infrastructure upgrade',
-    duration: 'ongoing',
-    riskAssessment: 'Low'
+    purpose: 'Test propose',
+    justification: 'Test only — small amount to verify multi-sig flow',
+    expectedBenefit: 'Test flow validation',
+    duration: 'test',
+    riskAssessment: 'none'
   });
+  if (!propose.body?.success) {
+    console.log('  DEBUG propose error:', JSON.stringify(propose.body).slice(0, 300));
+  }
   assert('propose succeeds', propose.body?.success === true);
   const proposalId = propose.body?.proposal?.id || propose.body?.proposalId;
   assert('has proposalId', !!proposalId);

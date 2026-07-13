@@ -25,6 +25,12 @@ const REQUIRED_CONFIRMATIONS = 3;       // 3-of-5 threshold
 const MAX_PROPOSAL_AMOUNT = '50000000'; // 50M NGEN (entire reserve, single-proposal cap)
 const COOLDOWN_BLOCKS = 100;            // 100 blocks between proposal submissions by same agent
 
+import fs from 'fs';
+import path from 'path';
+
+const PERSISTENCE_DIR = 'data/genesis_reserve';
+const PERSISTENCE_FILE = 'state.json';
+
 // Pre-defined signers (Agent addresses)
 // Signer 1 & 2: First two validators (swarm-atlas, swarm-beacon)
 // Signer 3: Community-elected (placeholder, filled by governance)
@@ -105,7 +111,85 @@ class GenesisMultiSig {
     // Daily spend tracker: { dateStr: totalSpent }
     this.dailySpend = new Map();
 
+    // Attempt to load persisted state; non-fatal if missing
+    this._loadFromDisk();
+
     console.log(`[GENESIS_MULTI_SIG] Initialized v${this.version} for reserve address: ${genesisReserveAddress}`);
+  }
+
+  // ─── Persistence ──────────────────────────────────────────────────────────
+
+  /**
+   * Get the absolute path to the persistence file.
+   * Uses process.cwd() so it resolves relative to project root regardless of CWD.
+   */
+  _persistencePath() {
+    return path.join(process.cwd(), PERSISTENCE_DIR, PERSISTENCE_FILE);
+  }
+
+  /**
+   * Serialize Maps and Sets to plain objects/arrays, then write to disk.
+   * Non-blocking best-effort: errors are logged but not thrown.
+   */
+  _saveToDisk() {
+    try {
+      const data = {
+        version: this.version,
+        genesisReserveAddress: this.genesisReserveAddress,
+        proposalCounter: this.proposalCounter,
+        signers: Array.from(this.signers.entries()).map(([id, s]) => ({
+          agentId: s.agentId,
+          address: s.address,
+          role: s.role,
+          status: s.status,
+          registeredAt: s.registeredAt,
+          confirmations: Array.from(s.confirmations || []),
+          rejections: Array.from(s.rejections || [])
+        })),
+        proposals: Array.from(this.proposals.entries()),
+        auditLog: this.auditLog.slice(-1000), // cap to last 1000 events to bound file size
+        dailySpend: Array.from(this.dailySpend.entries())
+      };
+      const dir = path.join(process.cwd(), PERSISTENCE_DIR);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(this._persistencePath(), JSON.stringify(data, null, 2), 'utf8');
+    } catch (e) {
+      console.warn(`[GENESIS_MULTI_SIG] _saveToDisk failed: ${e.message}`);
+    }
+  }
+
+  /**
+   * Restore state from disk if available. Missing/corrupt file = no-op.
+   */
+  _loadFromDisk() {
+    try {
+      const file = this._persistencePath();
+      if (!fs.existsSync(file)) {
+        console.log(`[GENESIS_MULTI_SIG] No persistence file at ${file}, starting fresh`);
+        return;
+      }
+      const raw = fs.readFileSync(file, 'utf8');
+      const data = JSON.parse(raw);
+      if (data.version !== this.version) {
+        console.warn(`[GENESIS_MULTI_SIG] Version mismatch (file=${data.version}, current=${this.version}), ignoring`);
+        return;
+      }
+      this.proposalCounter = data.proposalCounter || 0;
+      this.dailySpend = new Map(data.dailySpend || []);
+      this.auditLog = Array.isArray(data.auditLog) ? data.auditLog : [];
+      if (Array.isArray(data.proposals)) {
+        for (const [id, p] of data.proposals) {
+          this.proposals.set(id, {
+            ...p,
+            confirmedBy: p.confirmedBy || [],
+            rejectedBy: p.rejectedBy || []
+          });
+        }
+      }
+      console.log(`[GENESIS_MULTI_SIG] Restored ${this.proposals.size} proposals, ${this.auditLog.length} audit events from ${file}`);
+    } catch (e) {
+      console.warn(`[GENESIS_MULTI_SIG] _loadFromDisk failed (non-fatal): ${e.message}`);
+    }
   }
 
   // ─── Public API ──────────────────────────────────────────────────────────
@@ -186,6 +270,7 @@ class GenesisMultiSig {
     };
 
     this.proposals.set(proposalId, proposal);
+    this._saveToDisk();
 
     // Log to audit
     this._auditLog('PROPOSE_SPEND', {
@@ -239,6 +324,7 @@ class GenesisMultiSig {
 
     // Record confirmation
     proposal.confirmedBy.push(signerAgentId);
+    this._saveToDisk();
     this._auditLog('SIGN_PROPOSAL', {
       proposalId,
       signerAgentId,
@@ -295,6 +381,7 @@ class GenesisMultiSig {
 
     // Record rejection
     proposal.rejectedBy.push(signerAgentId);
+    this._saveToDisk();
     this._auditLog('SIGN_PROPOSAL', {
       proposalId,
       signerAgentId,
@@ -306,6 +393,7 @@ class GenesisMultiSig {
     // Check if 2+ rejections → reject proposal
     if (proposal.rejectedBy.length >= 2) {
       proposal.status = PROPOSAL_STATUS.REJECTED;
+      this._saveToDisk();
       this._auditLog('REJECT_PROPOSAL', {
         proposalId,
         reason: `Rejected by ${proposal.rejectedBy.length} signers: ${proposal.rejectedBy.join(', ')}`
@@ -360,6 +448,7 @@ class GenesisMultiSig {
     proposal.status = PROPOSAL_STATUS.EXECUTED;
     proposal.executedAt = Date.now();
     proposal.txHash = `tx-gr-${proposalId}-${Date.now()}`;
+    this._saveToDisk();
 
     this._auditLog('EXECUTE_PROPOSAL', {
       proposalId,
@@ -391,6 +480,7 @@ class GenesisMultiSig {
     }
 
     proposal.status = PROPOSAL_STATUS.CANCELLED;
+    this._saveToDisk();
     this._auditLog('CANCEL_PROPOSAL', { proposalId, signerAgentId });
     return { success: true };
   }

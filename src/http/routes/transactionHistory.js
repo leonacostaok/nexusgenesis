@@ -46,7 +46,7 @@ router.get('/', (req, res) => {
     }
 
     // Get all transactions from state
-    const allTransactions = state.transactions || [];
+    const allTransactions = _getAllStateTransactions(state);
     
     // Also get task-related transactions from task protocol
     const taskTransactions = _extractTaskTransactions(state);
@@ -123,10 +123,10 @@ router.get('/agent/:agentId', (req, res) => {
       return res.json({ success: true, transactions: [], total: 0, agentId });
     }
 
-    const allTransactions = state.transactions || [];
+    const allTransactions = _getAllStateTransactions(state);
     const taskTransactions = _extractTaskTransactions(state);
     const allTxs = [...allTransactions, ...taskTransactions];
-    
+
     // Filter by agent
     const agentTxs = allTxs.filter(tx => 
       tx.from === agentId || tx.to === agentId || tx.agentId === agentId
@@ -167,10 +167,10 @@ router.get('/task/:taskId', (req, res) => {
       return res.json({ success: true, transactions: [], total: 0, taskId });
     }
 
-    const allTransactions = state.transactions || [];
+    const allTransactions = _getAllStateTransactions(state);
     const taskTransactions = _extractTaskTransactions(state);
     const allTxs = [...allTransactions, ...taskTransactions];
-    
+
     // Filter by task
     const taskTxs = allTxs.filter(tx => 
       tx.payload?.taskId === taskId || tx.taskId === taskId
@@ -220,10 +220,10 @@ router.get('/stats', (req, res) => {
       return res.json({ success: true, stats: {} });
     }
 
-    const allTransactions = state.transactions || [];
+    const allTransactions = _getAllStateTransactions(state);
     const taskTransactions = _extractTaskTransactions(state);
     const allTxs = [...allTransactions, ...taskTransactions];
-    
+
     // Calculate stats
     const stats = {
       total: allTxs.length,
@@ -262,6 +262,22 @@ router.get('/stats', (req, res) => {
 });
 
 // ==================== Helper Functions ====================
+
+/**
+ * Safely extract transactions array from state.transactions.
+ * state.transactions can be either:
+ *   - An array (legacy)
+ *   - An object { txHistory, mempool, txCount, byType, byAddress } (Phase 1A+)
+ */
+function _getAllStateTransactions(state) {
+  if (!state) return [];
+  const t = state.transactions;
+  if (!t) return [];
+  if (Array.isArray(t)) return t;
+  if (Array.isArray(t.txHistory)) return t.txHistory;
+  if (Array.isArray(t.mempool)) return t.mempool;
+  return [];
+}
 
 /**
  * Extract task-related transactions from state

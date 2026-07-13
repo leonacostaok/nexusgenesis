@@ -1479,8 +1479,6 @@ class TaskProtocol {
    */
   _persistChallenges() {
     try {
-      const path = require('path');
-      const fs = require('fs');
       const dir = path.join(process.cwd(), 'data', 'challenges');
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       const data = {};

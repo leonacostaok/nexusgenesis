@@ -12,6 +12,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import { PQCWallet, Transaction, validateAddress } from './pqcWallet.js';
 import { generateKeyPair, sign, verify, hash } from '../crypto/pqc.js';
@@ -98,7 +99,7 @@ class AgentWalletManager {
     }
 
     // Generate new master key
-    this.masterKey = require('crypto').randomBytes(32);
+    this.masterKey = crypto.randomBytes(32);
     fs.writeFileSync(WALLET_ENCRYPTION_KEY_PATH, JSON.stringify({
       key: this.masterKey.toString('hex'),
       cipher: 'plain-file',

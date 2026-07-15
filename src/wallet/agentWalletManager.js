@@ -62,33 +62,72 @@ class AgentWalletManager {
 
   /**
    * Load server-side master key used to encrypt agent private keys at rest.
+   *
    * Resolution order:
    *   1. NG_WALLET_MASTER_KEY env var (base64, 32 bytes)
-   *   2. .wallet_master_key file in data/wallets/
-   * If neither exists, generate a new one and persist to file with 0600 perms.
-   * File-based keys are dev-only; production should use env var or KMS.
+   *   2. .wallet_master_key file in data/wallets/        (dev only)
+   *   3. Generate a new key, persist to .wallet_master_key (dev only)
+   *
+   * Production safety (NODE_ENV=production or mainnet):
+   *   - NG_WALLET_MASTER_KEY is REQUIRED. Missing or malformed env var
+   *     throws at construction time (fail-fast at startup, not on first
+   *     wallet operation).
+   *   - Plaintext file fallback and auto-generation are DISABLED.
+   *     Otherwise an operator who forgets to set the env var would
+   *     silently get a fresh key written to disk, permanently locking
+   *     out the encrypted wallet registry and re-introducing the
+   *     plaintext file we are trying to eliminate.
    */
   _loadOrCreateMasterKey() {
+    const isProduction =
+      process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'mainnet';
+
+    // ─── 1. Env var path (REQUIRED in production) ────────────────────
     const envKey = process.env.NG_WALLET_MASTER_KEY;
-    if (envKey) {
+    if (!envKey) {
+      if (isProduction) {
+        throw new Error(
+          `[AgentWallet] FATAL: NG_WALLET_MASTER_KEY is required in production ` +
+          `(NODE_ENV=${process.env.NODE_ENV}). Set this 32-byte base64 env var ` +
+          `before starting the node (e.g. via PM2 env block, systemd, or KMS). ` +
+          `Plaintext file fallback is disabled in production to prevent key loss.`
+        );
+      }
+      // Dev/test: fall through to file or auto-generate below
+    } else {
+      // Validate env var format
+      let buf = null;
       try {
-        const buf = Buffer.from(envKey, 'base64');
-        if (buf.length === 32) {
+        buf = Buffer.from(envKey, 'base64');
+      } catch (e) {
+        if (isProduction) {
+          throw new Error(
+            `[AgentWallet] FATAL: NG_WALLET_MASTER_KEY base64 decode failed: ${e.message}`
+          );
+        }
+        console.warn('[AgentWallet] Failed to decode NG_WALLET_MASTER_KEY:', e.message);
+      }
+
+      if (buf) {
+        if (buf.length !== 32) {
+          const msg = `wrong length: ${buf.length} bytes (expected 32)`;
+          if (isProduction) {
+            throw new Error(`[AgentWallet] FATAL: NG_WALLET_MASTER_KEY ${msg}`);
+          }
+          console.warn(`[AgentWallet] NG_WALLET_MASTER_KEY ${msg}, falling back to file`);
+        } else {
           this.masterKey = buf;
           console.log('[AgentWallet] Master key loaded from NG_WALLET_MASTER_KEY env var');
           return;
         }
-        console.warn(`[AgentWallet] NG_WALLET_MASTER_KEY wrong length: ${buf.length}, falling back to file`);
-      } catch (e) {
-        console.warn('[AgentWallet] Failed to decode NG_WALLET_MASTER_KEY:', e.message);
       }
     }
 
+    // ─── 2. Dev-only: fall back to legacy plaintext file ────────────
     if (fs.existsSync(WALLET_ENCRYPTION_KEY_PATH)) {
       try {
         const data = JSON.parse(fs.readFileSync(WALLET_ENCRYPTION_KEY_PATH, 'utf8'));
         if (data.key && data.cipher === 'plain-file') {
-          // Dev-only fallback: legacy plaintext key
           this.masterKey = Buffer.from(data.key, 'hex');
           console.warn('[AgentWallet] WARNING: master key loaded from plaintext file (dev only). Set NG_WALLET_MASTER_KEY in production.');
           return;
@@ -98,7 +137,7 @@ class AgentWalletManager {
       }
     }
 
-    // Generate new master key
+    // ─── 3. Dev-only: generate new key ──────────────────────────────
     this.masterKey = crypto.randomBytes(32);
     fs.writeFileSync(WALLET_ENCRYPTION_KEY_PATH, JSON.stringify({
       key: this.masterKey.toString('hex'),
@@ -145,7 +184,8 @@ class AgentWalletManager {
 
             this.registry.set(entry.agentId, {
               wallet,
-              metadata: entry.metadata || {}
+              metadata: entry.metadata || {},
+              onboarding: entry.onboarding || null
             });
             this.addressIndex.set(wallet.address, entry.agentId);
             this.nonceMap.set(entry.agentId, nonce);
@@ -192,7 +232,8 @@ class AgentWalletManager {
             balance: entry.wallet.balance.toString(),
             nonce: entry.wallet.nonce
           },
-          metadata: entry.metadata
+          metadata: entry.metadata,
+          onboarding: entry.onboarding || null
         });
       }
 
@@ -246,7 +287,10 @@ class AgentWalletManager {
       this._saveRegistry();
 
       console.log(`[AgentWallet] Created wallet for agent ${agentId}: ${wallet.address}`);
-      return this._formatWalletResponse(agentId, wallet, metadata);
+      // Phase 2-D4 fix: pass the stored entry.metadata (which has `created`
+      // timestamp merged in) so the response includes the timestamp. Previously
+      // the original `metadata` param was passed, losing the created field.
+      return this._formatWalletResponse(agentId, wallet, this.registry.get(agentId).metadata);
     } catch (e) {
       console.error(`[AgentWallet] Failed to create wallet for ${agentId}:`, e.message);
       throw e;
@@ -279,6 +323,14 @@ class AgentWalletManager {
     if (result.success) {
       entry.wallet.balance += DEFAULT_INITIAL_BALANCE;
       this._saveRegistry();
+      // Phase 2-A1: 首次入账后触发安全引导状态机（动态 import 避免循环依赖）
+      try {
+        const { maybeTriggerOnboarding } = await import('./onboarding.js');
+        maybeTriggerOnboarding(agentId);
+      } catch (e) {
+        // 引导模块故障不影响 faucet 主流程
+        console.warn('[AgentWallet] onboarding trigger failed:', e.message);
+      }
     }
 
     return result;
@@ -297,6 +349,30 @@ class AgentWalletManager {
 
   getWalletInstance(agentId) {
     return this.registry.get(agentId)?.wallet || null;
+  }
+
+  getRegistryEntry(agentId) {
+    return this.registry.get(agentId) || null;
+  }
+
+  getOnboardingStatus(agentId) {
+    const entry = this.registry.get(agentId);
+    if (!entry) return null;
+    return entry.onboarding || { status: null, triggeredAt: null, completedAt: null, method: null };
+  }
+
+  setOnboardingStatus(agentId, status, extras = {}) {
+    const entry = this.registry.get(agentId);
+    if (!entry) return false;
+    entry.onboarding = {
+      ...(entry.onboarding || {}),
+      status,
+      ...extras
+    };
+    // Phase 2-A1: 不自动 _saveRegistry —— 由调用方（maybeTriggerOnboarding /
+    // markOnboardingComplete / 用户显式调用）统一触发一次 save，避免连续
+    // 多次 onboarding 状态变更时把 176 个 agent 的 PBKDF2 跑多遍。
+    return true;
   }
 
   getWalletInstanceByAddress(address) {
@@ -418,10 +494,43 @@ class AgentWalletManager {
       if (toAgentId && this.registry.has(toAgentId)) {
         const toEntry = this.registry.get(toAgentId);
         toEntry.wallet.balance += netAmount;
+        // Phase 2-A1: 接收方入账后触发安全引导
+        try {
+          const { maybeTriggerOnboarding } = await import('./onboarding.js');
+          maybeTriggerOnboarding(toAgentId);
+        } catch (e) {
+          console.warn('[AgentWallet] onboarding trigger (recipient) failed:', e.message);
+        }
       }
 
       this.stats.totalTransactions++;
       this._saveRegistry();
+
+      // 持久化到全局 txHistory，便于审计和前端历史查询
+      try {
+        const state = global.globalState;
+        if (state && state.transactions && state.transactions.txHistory) {
+          state.transactions.txHistory.push({
+            id: tx.id,
+            hash: tx.id,
+            type: 'transfer',
+            tx_type: 'TRANSFER',
+            from: fromEntry.wallet.address,
+            to: toAddress,
+            fromAgentId,
+            toAgentId: toAgentId || null,
+            amount: Number(amountBigInt),
+            netAmount: Number(netAmount),
+            fee: Number(fee),
+            metabolicTax: Number(tax),
+            memo,
+            nonce: fromEntry.wallet.nonce,
+            signature: tx.signature,
+            status: 'applied',
+            timestamp: tx.timestamp
+          });
+        }
+      } catch (_) { /* ignore state persistence errors */ }
 
       return {
         success: true,
@@ -476,7 +585,14 @@ class AgentWalletManager {
     }
 
     // 从全局状态读取交易记录
-    const transactions = global.globalState?.getTransactionsForAddress?.(entry.wallet.address) || [];
+    const state = global.globalState;
+    let transactions = [];
+    if (state && state.transactions && state.transactions.txHistory) {
+      transactions = state.transactions.txHistory.filter(
+        tx => tx.from === entry.wallet.address || tx.to === entry.wallet.address
+      );
+    }
+    transactions.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
     const total = transactions.length;
     const page = transactions.slice(offset, offset + limit);
 

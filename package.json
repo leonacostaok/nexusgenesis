@@ -12,10 +12,17 @@
     "node2": "node src/node/node2.js",
     "devnet": "node scripts/start_mainnet.js",
     "wallet": "node src/wallet/cli.js",
+    "wallet:export": "node scripts/wallet-export.mjs",
+    "wallet:import": "node scripts/wallet-import.mjs",
     "wallet:py": "python genesis_wallet.py",
     "migrate:agents": "node src/scripts/migrateAgentRegistryIdentity.js",
     "test": "node --test test/*.test.js",
     "test:security": "node --test test/security.test.js",
+    "test:onboarding": "node tests/test-onboarding-api.js && node tests/test-onboarding-e2e.js",
+    "test:wallets": "node tests/test-custody-token.js && node tests/test-wallet-sign-http.js && node tests/test-admin-auth-production.js && node tests/test-agent-wallet-manager.js",
+    "test:backup": "node tests/test-master-key-backup.js",
+    "test:banner": "node tests/test-onboarding-banner.js",
+    "test:wallet-page": "node tests/test-wallet-page-bugfixes.js",
     "cli": "node cli.js"
   },
   "bin": {

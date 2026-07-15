@@ -6,9 +6,11 @@ import { generateKeyPair } from '../../crypto/pqc.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { verifyCreditSecret } from '../adminAuth.js';
+import { verifyCreditSecret, productionBlockResponse } from '../adminAuth.js';
 import { issueCustodyToken, verifyCustodyToken, extractCustodyToken } from '../custodyToken.js';
 import { buildAuthHint } from '../authHint.js';
+import { publicKeyFingerprint } from '../custodyToken.js';
+import { recordCustodySign } from '../../blockchain/transactionEngine.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -523,6 +525,101 @@ router.get('/agent/:agentId/balance', (req, res) => {
 });
 
 /**
+ * GET /api/v1/wallet/agent/:agentId/security-status
+ * Phase 2-A2: 查询 Agent 安全引导状态
+ *
+ * 返回 onboarding 状态、风险等级、3 种建议操作。前端用此决定是否显示黄色横幅。
+ * 无需鉴权（read-only，不泄露私钥）。
+ */
+router.get('/agent/:agentId/security-status', (req, res) => {
+  try {
+    const { agentId } = req.params;
+    if (!agentWalletManager.getAgentWallet(agentId)) {
+      return res.status(404).json({ success: false, error: 'Agent wallet not found' });
+    }
+
+    // Dynamic import 避免循环依赖
+    import('../../wallet/onboarding.js').then(({ computeOnboardingStatus, ONBOARDING_SUGGESTIONS }) => {
+      const ob = computeOnboardingStatus(agentId);
+      if (!ob) {
+        return res.status(500).json({ success: false, error: 'Failed to compute onboarding status' });
+      }
+      res.json({
+        success: true,
+        agentId,
+        balance: ob.balance,
+        needsOnboarding: ob.needsAction,
+        status: ob.status,
+        storedStatus: ob.storedStatus,
+        isVirtual: ob.isVirtual,
+        riskLevel: ob.riskLevel,
+        triggeredAt: ob.triggeredAt,
+        completedAt: ob.completedAt,
+        method: ob.method,
+        suggestedActions: ob.needsAction ? ONBOARDING_SUGGESTIONS : []
+      });
+    }).catch(e => {
+      console.error('[Wallet API] security-status error:', e.message);
+      res.status(500).json({ success: false, error: e.message });
+    });
+  } catch (error) {
+    console.error('[Wallet API] security-status error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * POST /api/v1/wallet/agent/:agentId/onboarding/complete
+ * Phase 2-A2: 标记 Agent 安全引导完成
+ *
+ * Body: { method: 'backup' | 'transfer' | 'hardware' | 'waive' }
+ * Auth: admin credit secret required (operator / human approval)
+ *
+ * 用于"加密导出" / "转入硬件钱包" / "忽略风险" 三个按钮提交后。
+ */
+router.post('/agent/:agentId/onboarding/complete', async (req, res) => {
+  try {
+    // 状态变更操作：需要 admin credit secret
+    if (!verifyCreditSecret(req)) {
+      const block = productionBlockResponse();
+      if (block) {
+        return res.status(403).json(block);
+      }
+      return res.status(403).json({
+        success: false,
+        error: 'Marking onboarding complete requires admin credit secret'
+      });
+    }
+
+    const { agentId } = req.params;
+    const { method } = req.body;
+
+    if (!method || typeof method !== 'string') {
+      return res.status(400).json({ success: false, error: 'method is required (backup|transfer|hardware|waive)' });
+    }
+
+    if (!agentWalletManager.getAgentWallet(agentId)) {
+      return res.status(404).json({ success: false, error: 'Agent wallet not found' });
+    }
+
+    const { markOnboardingComplete } = await import('../../wallet/onboarding.js');
+    const result = markOnboardingComplete(agentId, method);
+    if (!result.success) {
+      return res.status(400).json({ success: false, error: result.error });
+    }
+    res.json({
+      success: true,
+      agentId,
+      status: result.status,
+      method: result.method
+    });
+  } catch (error) {
+    console.error('[Wallet API] onboarding/complete error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
  * POST /api/v1/wallet/agent/transfer
  * Agent间转账
  * Body: { fromAgentId, toAgentId (或 toAddress), amount, memo }
@@ -532,6 +629,12 @@ router.post('/agent/transfer', async (req, res) => {
   try {
     // Auth guard: require admin credit secret for write operations
     if (!verifyCreditSecret(req)) {
+      // Phase 2-D3 fix: surface the kill-switch error_code so operators can
+      // distinguish "secret disabled in production" from a plain 403 in logs.
+      const block = productionBlockResponse();
+      if (block) {
+        return res.status(403).json(block);
+      }
       return res.status(403).json({
         success: false,
         error: 'Transfer requires admin credit secret authentication'
@@ -563,6 +666,33 @@ router.post('/agent/transfer', async (req, res) => {
     );
 
     if (result.success) {
+      // 持久化到 state txHistory 便于审计和前端历史查询
+      try {
+        const state = req.app.locals.node?.currentState || req.app.locals.state;
+        if (state) {
+          if (!state.transactions) state.transactions = {};
+          if (!Array.isArray(state.transactions.txHistory)) state.transactions.txHistory = [];
+          state.transactions.txHistory.push({
+            id: result.transactionId,
+            hash: result.transactionId,
+            type: 'transfer',
+            tx_type: 'TRANSFER',
+            from: result.from,
+            to: result.to,
+            fromAgentId,
+            toAgentId: toAgentId || null,
+            toAddress: toAddress || null,
+            amount: result.amount,
+            netAmount: result.netAmount,
+            fee: result.fee,
+            metabolicTax: result.metabolicTax,
+            memo: result.memo,
+            signature: result.signature,
+            status: 'applied',
+            timestamp: result.timestamp
+          });
+        }
+      } catch (_) { /* ignore */ }
       res.status(201).json(result);
     } else {
       res.status(400).json(result);
@@ -583,6 +713,10 @@ router.post('/agent/batch-transfer', async (req, res) => {
   try {
     // Auth guard
     if (!verifyCreditSecret(req)) {
+      const block = productionBlockResponse();
+      if (block) {
+        return res.status(403).json(block);
+      }
       return res.status(403).json({
         success: false,
         error: 'Batch transfer requires admin credit secret authentication'
@@ -616,12 +750,51 @@ router.get('/agent/:agentId/history', (req, res) => {
     const { agentId } = req.params;
     const { limit = 20, offset = 0 } = req.query;
 
-    const result = agentWalletManager.getTransactionHistory(agentId, {
+    const entry = agentWalletManager.registry.get(agentId);
+    if (!entry) {
+      return res.json({ success: false, reason: 'Agent wallet not found' });
+    }
+
+    // 从全局状态读取交易记录（优先使用 req.app.locals.state / node.currentState）
+    const state = req.app.locals.node?.currentState || req.app.locals.state;
+    let transactions = [];
+    const myAddr = entry.wallet.address;
+
+    if (state) {
+      const allTxs = state.transactions?.txHistory
+        || state.getAllTransactions?.()
+        || state.transactions
+        || [];
+      if (Array.isArray(allTxs)) {
+        transactions = allTxs.filter(tx => tx.from === myAddr || tx.to === myAddr || tx.recipient === myAddr || tx.sender === myAddr);
+      }
+    }
+
+    transactions.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    const total = transactions.length;
+    const page = transactions.slice(Number(offset), Number(offset) + Number(limit));
+
+    res.json({
+      success: true,
+      agentId,
+      address: myAddr,
+      transactions: page.map(tx => ({
+        id: tx.id || tx.hash,
+        type: tx.type || tx.tx_type || 'transfer',
+        from: tx.from || tx.sender,
+        to: tx.to || tx.recipient,
+        fromAgentId: tx.fromAgentId,
+        toAgentId: tx.toAgentId,
+        amount: tx.amount,
+        fee: tx.fee,
+        memo: tx.memo,
+        timestamp: tx.timestamp,
+        direction: (tx.from || tx.sender) === myAddr ? 'send' : 'receive'
+      })),
+      total,
       limit: Number(limit),
       offset: Number(offset)
     });
-
-    res.json(result);
   } catch (error) {
     console.error('[Wallet API] Agent history error:', error.message);
     res.status(500).json({ success: false, error: error.message });
@@ -885,8 +1058,30 @@ router.post('/sign', async (req, res) => {
       return res.status(500).json({ success: false, error: `Signing failed: ${e.message}` });
     }
 
-    // 3) 审计日志
+    // 3) 审计日志 — 持久化到 state.transactions.txHistory (Phase 2-A2)
     const dataStr = typeof data === 'string' ? data : JSON.stringify(data);
+    const custodyFp = (() => {
+      try { return publicKeyFingerprint(walletInstance.publicKey.toString('hex')); }
+      catch { return null; }
+    })();
+    const state = req.app?.locals?.state;
+    if (state) {
+      try {
+        recordCustodySign(state, {
+          agentId,
+          address: result.address,
+          action: action || 'unspecified',
+          dataLen: dataStr.length,
+          custodyFp,
+          ip: req.ip || req.headers['x-forwarded-for'] || null,
+          userAgent: req.headers['user-agent'] || null,
+          context: context || null
+        });
+      } catch (auditErr) {
+        // 审计失败不影响签名结果，仅记录
+        console.error('[Wallet API] Custody audit record failed:', auditErr.message);
+      }
+    }
     console.log(
       `[Wallet] Custody sign: agent=${agentId} action=${action || 'unspecified'} ` +
       `dataLen=${dataStr.length} context=${context ? JSON.stringify(context) : 'none'}`

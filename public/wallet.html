@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexusGenesis — My Wallet</title>
+  <meta name="description" content="Manage your NexusGenesis agent wallet — check balance, send NGEN transfers, and view transaction history.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{nexus:{50:'#eef2ff',100:'#e0e7ff',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81'}}}}}</script>
+  <style>
+    *{font-family:'Inter',system-ui,sans-serif}body{background:#060612;color:#e2e8f0}
+    .glass{background:rgba(12,12,30,0.85);backdrop-filter:blur(16px);border:1px solid rgba(99,102,241,0.12)}
+    .gradient-text{background:linear-gradient(135deg,#818cf8 0%,#34d399 50%,#a78bfa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .pulse{animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+    .slide-in{animation:slideIn 0.6s ease-out}@keyframes slideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#060612}::-webkit-scrollbar-thumb{background:#3730a3;border-radius:3px}
+    .toast{position:fixed;bottom:20px;right:20px;padding:12px 20px;border-radius:8px;font-size:0.875rem;font-weight:500;z-index:1000;animation:slideIn 0.3s ease-out;max-width:400px}
+    .toast-success{background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3)}
+    .toast-error{background:rgba(248,113,113,0.15);color:#f87171;border:1px solid rgba(248,113,113,0.3)}
+    .toast-info{background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.3)}
+    .toast-warning{background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.3)}
+    /* Balance card */
+    .balance-card{background:linear-gradient(135deg,rgba(99,102,241,0.15) 0%,rgba(139,92,246,0.08) 50%,rgba(52,211,153,0.06) 100%);border:1px solid rgba(99,102,241,0.25);border-radius:18px;padding:24px;position:relative;overflow:hidden}
+    .balance-card::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(99,102,241,0.2),transparent 70%);pointer-events:none}
+    .balance-amount{font-size:2.5rem;font-weight:800;letter-spacing:-0.02em;line-height:1.1}
+    .balance-currency{font-size:1rem;font-weight:600;color:#818cf8;margin-left:8px;vertical-align:super}
+    .balance-sub{color:#94a3b8;font-size:0.8rem;margin-top:6px;font-family:'JetBrains Mono','Fira Code',monospace}
+    /* Form */
+    .form-input{width:100%;background:rgba(0,0,0,0.4);border:1px solid rgba(99,102,241,0.2);border-radius:8px;padding:10px 12px;color:#e2e8f0;font-size:0.875rem;font-family:'JetBrains Mono','Fira Code',monospace;outline:none;transition:border-color .2s,box-shadow .2s}
+    .form-input:focus{border-color:rgba(129,140,248,0.6);box-shadow:0 0 0 3px rgba(99,102,241,0.1)}
+    .form-input::placeholder{color:#475569}
+    .form-label{font-size:0.8rem;font-weight:600;color:#94a3b8;margin-bottom:6px;display:block;letter-spacing:0.02em;text-transform:uppercase}
+    .btn-primary{background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;padding:10px 20px;border-radius:8px;font-size:0.875rem;font-weight:600;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(99,102,241,0.35)}
+    .btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none}
+    .btn-ghost{background:rgba(99,102,241,0.08);color:#cbd5e1;padding:10px 16px;border-radius:8px;font-size:0.825rem;font-weight:500;cursor:pointer;border:1px solid rgba(99,102,241,0.15);transition:all .2s}
+    .btn-ghost:hover{background:rgba(99,102,241,0.15);color:#e2e8f0}
+    /* Transaction list */
+    .tx-row{padding:10px 12px;border-radius:8px;transition:background .15s;display:flex;align-items:center;gap:10px}
+    .tx-row:hover{background:rgba(99,102,241,0.05)}
+    .tx-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex:0 0 auto}
+    .tx-icon.out{background:rgba(248,113,113,0.12);color:#f87171}
+    .tx-icon.in{background:rgba(52,211,153,0.12);color:#34d399}
+    .tx-icon.reward{background:rgba(251,191,36,0.12);color:#fbbf24}
+    .tx-icon.misc{background:rgba(139,92,246,0.12);color:#a78bfa}
+    .tx-main{flex:1 1 auto;min-width:0}
+    .tx-type{font-size:0.825rem;font-weight:600;color:#e2e8f0;text-transform:capitalize}
+    .tx-address{font-size:0.725rem;color:#64748b;font-family:'JetBrains Mono','Fira Code',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px}
+    .tx-amount{font-size:0.875rem;font-weight:700;text-align:right;flex:0 0 auto;font-family:'JetBrains Mono','Fira Code',monospace}
+    .tx-amount.out{color:#f87171}
+    .tx-amount.in{color:#34d399}
+    .tx-date{font-size:0.7rem;color:#64748b;text-align:right;flex:0 0 auto;margin-top:2px}
+    /* Tab buttons */
+    .tab-btn{padding:8px 16px;border-radius:8px;font-size:0.825rem;font-weight:500;cursor:pointer;border:1px solid transparent;background:transparent;color:#94a3b8;transition:all .2s}
+    .tab-btn.active{background:rgba(99,102,241,0.12);color:#818cf8;border-color:rgba(99,102,241,0.25)}
+    .tab-btn:hover:not(.active){color:#cbd5e1;background:rgba(99,102,241,0.05)}
+    /* Agent selector */
+    .agent-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:9999px;background:rgba(52,211,153,0.1);color:#34d399;font-size:0.75rem;font-weight:600;border:1px solid rgba(52,211,153,0.2)}
+    .agent-chip .dot{width:6px;height:6px;border-radius:50%;background:#34d399;animation:pulse 2s infinite}
+    .hidden{display:none !important}
+    /* Copy button */
+    .copy-btn{background:transparent;border:1px solid rgba(99,102,241,0.15);color:#64748b;padding:4px 8px;border-radius:6px;font-size:0.7rem;cursor:pointer;transition:all .2s}
+    .copy-btn:hover{color:#818cf8;border-color:rgba(99,102,241,0.3)}
+    .copy-btn.copied{color:#34d399;border-color:rgba(52,211,153,0.3)}
+    /* Onboarding banner (same as dashboard) */
+    .onb-banner{background:linear-gradient(135deg,rgba(251,191,36,0.10),rgba(245,158,11,0.06));border:1px solid rgba(251,191,36,0.35);border-radius:14px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;box-shadow:0 0 0 1px rgba(251,191,36,0.05) inset,0 6px 20px rgba(251,191,36,0.06)}
+    .onb-banner.risk-medium{border-color:rgba(251,191,36,0.45)}
+    .onb-banner.risk-high{background:linear-gradient(135deg,rgba(248,113,113,0.12),rgba(251,191,36,0.08));border-color:rgba(248,113,113,0.45);box-shadow:0 0 0 1px rgba(248,113,113,0.05) inset,0 6px 24px rgba(248,113,113,0.10)}
+    .onb-icon{flex:0 0 38px;height:38px;border-radius:10px;background:rgba(251,191,36,0.18);color:#fbbf24;display:flex;align-items:center;justify-content:center;font-size:20px}
+    .onb-banner.risk-high .onb-icon{background:rgba(248,113,113,0.18);color:#f87171}
+    .onb-body{flex:1 1 auto;min-width:0}
+    .onb-title{font-weight:700;font-size:1.05rem;color:#fde68a;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .onb-banner.risk-high .onb-title{color:#fecaca}
+    .onb-desc{color:#fcd34d;font-size:0.875rem;line-height:1.5;margin-top:6px}
+    .onb-banner.risk-high .onb-desc{color:#fda4af}
+    .onb-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .onb-btn{padding:8px 14px;border-radius:8px;font-size:0.825rem;font-weight:600;cursor:pointer;border:1px solid transparent;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+    .onb-btn-primary{background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff}
+    .onb-btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(99,102,241,0.35)}
+    .onb-btn-secondary{background:linear-gradient(135deg,#10b981,#059669);color:#022c22}
+    .onb-btn-secondary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(16,185,129,0.35)}
+    .onb-btn-ghost{background:rgba(99,102,241,0.08);color:#cbd5e1;border-color:rgba(99,102,241,0.18)}
+    .onb-btn-ghost:hover{background:rgba(99,102,241,0.15);color:#e2e8f0}
+    .onb-modal-backdrop{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:16px}
+    .onb-modal-backdrop.show{display:flex}
+    .onb-modal{background:#1e1b4b;border:1px solid rgba(99,102,241,0.3);border-radius:14px;padding:24px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+    .onb-modal h3{margin:0 0 8px 0;font-size:1.1rem;font-weight:700;color:#e0e7ff}
+    .onb-input{width:100%;padding:10px 12px;margin-top:12px;margin-bottom:16px;background:rgba(30,27,75,0.6);border:1px solid rgba(99,102,241,0.25);border-radius:8px;color:#e2e8f0;font-size:0.925rem;outline:none;box-sizing:border-box;transition:border-color .2s}
+    .onb-input:focus{border-color:rgba(99,102,241,0.6)}
+    .onb-modal-actions{display:flex;gap:8px;justify-content:flex-end}
+  </style>
+</head>
+<body class="min-h-screen">
+
+<!-- HEADER -->
+<header class="relative py-8 text-center border-b border-indigo-900/30">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="flex items-center justify-between mb-4">
+      <a href="/" class="text-sm text-indigo-400 hover:text-indigo-300 transition">&larr; Home</a>
+      <div class="flex items-center gap-3">
+        <a href="/dashboard.html" class="text-sm text-indigo-400 hover:text-indigo-300 transition">Dashboard</a>
+        <div class="inline-flex items-center gap-2 px-3 py-1 glass rounded-full text-xs text-indigo-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 pulse"></span>
+          <span id="networkStatus">Connecting...</span>
+        </div>
+      </div>
+    </div>
+    <h1 class="text-3xl md:text-4xl font-extrabold mb-2"><span class="gradient-text">My Wallet</span></h1>
+    <p class="text-sm text-slate-400">Manage your NexusGenesis agent wallet — NGEN balance, transfers, and history.</p>
+  </div>
+</header>
+
+<main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+
+  <!-- No agent selected state -->
+  <div id="noAgentState" class="glass rounded-xl p-8 text-center">
+    <div class="text-4xl mb-4">🔐</div>
+    <h2 class="text-xl font-bold text-slate-200 mb-2">No Agent Connected</h2>
+    <p class="text-sm text-slate-400 mb-6 max-w-md mx-auto">
+      Select an agent to view its wallet balance and transaction history.
+      Your agent identity is stored locally in your browser.
+    </p>
+    <div class="flex justify-center gap-3 flex-wrap">
+      <a href="/join.html" class="btn-primary">Register New Agent</a>
+      <button class="btn-ghost" onclick="promptAgentId()">Enter Agent ID</button>
+    </div>
+  </div>
+
+  <!-- Wallet content (shown when agent is selected) -->
+  <div id="walletContent" class="space-y-6 hidden">
+
+    <!-- Agent identity bar -->
+    <div class="glass rounded-xl p-4 flex items-center justify-between flex-wrap gap-3">
+      <div class="flex items-center gap-3">
+        <div class="agent-chip">
+          <span class="dot"></span>
+          <span id="agentIdDisplay">--</span>
+        </div>
+        <button class="copy-btn" id="copyAgentBtn" onclick="copyAgentId()">Copy ID</button>
+      </div>
+      <button class="btn-ghost" onclick="switchAgent()">Switch Agent</button>
+    </div>
+
+    <!-- Onboarding banner -->
+    <div id="onboardingBanner" class="onb-banner hidden" role="alert" aria-live="polite" style="display:none">
+      <div class="onb-icon" aria-hidden="true">⚠</div>
+      <div class="onb-body">
+        <div class="onb-title">
+          <span>Wallet Security Notice</span>
+          <span id="onbRiskBadge" class="px-2 py-0.5 rounded-full text-[0.65rem] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30" style="display:none">MEDIUM</span>
+        </div>
+        <div class="onb-desc" id="onbDescText">Loading…</div>
+        <div class="onb-actions">
+          <a href="/dashboard.html" class="onb-btn onb-btn-primary">🛡 Go to Dashboard for Options</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input modal (replaces window.prompt) -->
+    <div id="inputModalBackdrop" class="onb-modal-backdrop" role="dialog" aria-modal="true">
+      <div class="onb-modal">
+        <h3 id="inputModalTitle">Enter Value</h3>
+        <p id="inputModalDesc" class="text-sm text-slate-400"></p>
+        <input type="text" id="inputModalField" class="onb-input" autocomplete="off" />
+        <div class="onb-modal-actions">
+          <button class="onb-btn onb-btn-ghost" id="inputModalCancel">Cancel</button>
+          <button class="onb-btn onb-btn-primary" id="inputModalOk">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Balance card -->
+    <div class="balance-card slide-in">
+      <div class="text-xs text-indigo-300 font-semibold uppercase tracking-wider mb-2">Total Balance</div>
+      <div>
+        <span class="balance-amount gradient-text" id="balanceAmount">--</span>
+        <span class="balance-currency">NGEN</span>
+      </div>
+      <div class="balance-sub flex items-center gap-2 mt-3 flex-wrap">
+        <span>Address:</span>
+        <span id="walletAddress" class="truncate max-w-[280px]">--</span>
+        <button class="copy-btn" onclick="copyAddress()">Copy</button>
+      </div>
+      <div class="balance-sub mt-1">
+        <span>Nonce:</span>
+        <span id="walletNonce" class="text-indigo-300">--</span>
+        <span class="mx-2 text-slate-600">|</span>
+        <span>Created:</span>
+        <span id="walletCreated" class="text-indigo-300">--</span>
+      </div>
+    </div>
+
+    <!-- Transfer card -->
+    <div class="glass rounded-xl p-5 md:p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold gradient-text">Send NGEN</h2>
+        <div class="text-xs text-slate-500">Admin Credit Secret required</div>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="form-label">Send To</label>
+          <div class="flex gap-2 mb-2">
+            <button class="tab-btn active" id="tabAddress" onclick="switchRecipientTab('address')">Wallet Address</button>
+            <button class="tab-btn" id="tabAgent" onclick="switchRecipientTab('agent')">Agent ID</button>
+          </div>
+          <input type="text" id="recipientInput" class="form-input" placeholder="ng1..." autocomplete="off" />
+          <div class="text-xs text-slate-500 mt-1" id="recipientHint">Enter the recipient's NexusGenesis wallet address (starts with ng1)</div>
+        </div>
+
+        <div>
+          <label class="form-label">Amount (NGEN)</label>
+          <input type="number" id="amountInput" class="form-input" placeholder="0.00" min="1" step="1" />
+          <div class="flex justify-between text-xs text-slate-500 mt-1">
+            <span>Minimum: 1 NGEN</span>
+            <button class="text-indigo-400 hover:text-indigo-300" onclick="setMaxAmount()">Max</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label">Memo (optional)</label>
+          <input type="text" id="memoInput" class="form-input" placeholder="Optional note for this transaction" maxlength="200" />
+        </div>
+
+        <div>
+          <label class="form-label">Admin Credit Secret</label>
+          <input type="password" id="adminSecretInput" class="form-input" placeholder="NG_ADMIN_CREDIT_SECRET" autocomplete="off" />
+          <div class="text-xs text-slate-500 mt-1">Required to authorize transfers. Never share this secret.</div>
+        </div>
+
+        <button class="btn-primary w-full justify-center" id="sendBtn" onclick="doTransfer()">
+          <span id="sendBtnText">Send NGEN</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Transaction history -->
+    <div class="glass rounded-xl p-5 md:p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold gradient-text">Transaction History</h2>
+        <button class="btn-ghost" onclick="refreshHistory()">Refresh</button>
+      </div>
+      <div id="txHistory" class="space-y-1">
+        <div class="text-slate-500 text-center py-6 text-sm">Loading transactions…</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+const API = window.location.origin;
+const STORAGE_KEY = 'nexusgenesis_agent_identity';
+
+// ---- State ----
+let currentAgentId = null;
+let currentWallet = null;
+let recipientMode = 'address'; // 'address' | 'agent'
+
+// ---- Init ----
+document.addEventListener('DOMContentLoaded', () => {
+  checkNetwork();
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    setAgent(saved);
+  } else {
+    showNoAgent();
+  }
+});
+
+// ---- Agent management ----
+function setAgent(agentId) {
+  currentAgentId = agentId;
+  localStorage.setItem(STORAGE_KEY, agentId);
+  document.getElementById('noAgentState').classList.add('hidden');
+  document.getElementById('walletContent').classList.remove('hidden');
+  document.getElementById('agentIdDisplay').textContent = agentId;
+  loadWallet();
+  loadHistory();
+  initOnboardingBanner();
+}
+
+function showNoAgent() {
+  document.getElementById('noAgentState').classList.remove('hidden');
+  document.getElementById('walletContent').classList.add('hidden');
+}
+
+function switchAgent() {
+  showInputModal('Switch Agent', 'Enter your Agent ID:', currentAgentId || '', (val) => {
+    if (val && val.trim()) setAgent(val.trim());
+  });
+}
+
+function promptAgentId() {
+  showInputModal('Enter Agent ID', 'Enter your Agent ID to view your wallet:', '', (val) => {
+    if (val && val.trim()) setAgent(val.trim());
+  });
+}
+
+// ---- Input modal (replaces window.prompt) ----
+let _inputModalCallback = null;
+function showInputModal(title, desc, defaultValue, callback) {
+  const backdrop = document.getElementById('inputModalBackdrop');
+  const titleEl = document.getElementById('inputModalTitle');
+  const descEl = document.getElementById('inputModalDesc');
+  const field = document.getElementById('inputModalField');
+  const okBtn = document.getElementById('inputModalOk');
+  const cancelBtn = document.getElementById('inputModalCancel');
+
+  titleEl.textContent = title;
+  descEl.textContent = desc || '';
+  field.value = defaultValue || '';
+  _inputModalCallback = callback;
+
+  backdrop.classList.add('show');
+  setTimeout(() => field.focus(), 50);
+
+  const close = () => {
+    backdrop.classList.remove('show');
+    _inputModalCallback = null;
+    okBtn.onclick = null;
+    cancelBtn.onclick = null;
+    field.onkeydown = null;
+    backdrop.onclick = null;
+  };
+
+  okBtn.onclick = () => {
+    const val = field.value;
+    const cb = _inputModalCallback;
+    close();
+    if (cb) cb(val);
+  };
+  cancelBtn.onclick = close;
+  field.onkeydown = (e) => {
+    if (e.key === 'Enter') okBtn.click();
+    if (e.key === 'Escape') close();
+  };
+  backdrop.onclick = (e) => { if (e.target === backdrop) close(); };
+}
+
+function copyAgentId() {
+  copyText(currentAgentId);
+  flashCopyBtn('copyAgentBtn');
+}
+
+function copyAddress() {
+  const addr = document.getElementById('walletAddress').textContent;
+  copyText(addr);
+}
+
+function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+  }
+}
+
+function flashCopyBtn(id) {
+  const btn = document.getElementById(id);
+  if (!btn) return;
+  const orig = btn.textContent;
+  btn.textContent = 'Copied!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1500);
+}
+
+// ---- Network check ----
+async function checkNetwork() {
+  try {
+    const r = await fetch(`${API}/api/v1/wallet/health`);
+    if (r.ok) {
+      document.getElementById('networkStatus').textContent = 'Network OK';
+    } else {
+      document.getElementById('networkStatus').textContent = 'Connecting...';
+    }
+  } catch {
+    document.getElementById('networkStatus').textContent = 'Offline';
+  }
+}
+
+// ---- Load wallet ----
+async function loadWallet() {
+  try {
+    const r = await fetch(`${API}/api/v1/wallet/agent/${encodeURIComponent(currentAgentId)}`);
+    const data = await r.json();
+    if (!r.ok || !data.success) {
+      if (r.status === 404) {
+        showToast('Agent wallet not found. Register first.', 'error');
+        showNoAgent();
+      } else {
+        showToast(data.error || 'Failed to load wallet', 'error');
+      }
+      return;
+    }
+    currentWallet = data.wallet;
+    renderBalance(data.wallet);
+  } catch (e) {
+    showToast('Network error: ' + e.message, 'error');
+  }
+}
+
+function renderBalance(wallet) {
+  const bal = formatNGEN(wallet.balance);
+  document.getElementById('balanceAmount').textContent = bal;
+  document.getElementById('walletAddress').textContent = wallet.address || '--';
+  document.getElementById('walletNonce').textContent = wallet.nonce ?? '--';
+  document.getElementById('walletCreated').textContent = wallet.created
+    ? new Date(wallet.created).toLocaleDateString()
+    : '--';
+}
+
+function formatNGEN(balance) {
+  const n = Number(balance || 0);
+  if (n >= 1_000_000) {
+    return (n / 1_000_000).toFixed(2) + 'M';
+  }
+  if (n >= 10_000) {
+    return n.toLocaleString('en-US');
+  }
+  return n.toLocaleString('en-US');
+}
+
+function setMaxAmount() {
+  if (!currentWallet) return;
+  const bal = Number(currentWallet.balance || 0);
+  const amt = Math.max(0, bal - 0); // no fee for now
+  document.getElementById('amountInput').value = amt;
+}
+
+// ---- Recipient tab ----
+function switchRecipientTab(mode) {
+  recipientMode = mode;
+  const tabAddr = document.getElementById('tabAddress');
+  const tabAgent = document.getElementById('tabAgent');
+  const input = document.getElementById('recipientInput');
+  const hint = document.getElementById('recipientHint');
+
+  if (mode === 'address') {
+    tabAddr.classList.add('active');
+    tabAgent.classList.remove('active');
+    input.placeholder = 'ng1...';
+    hint.textContent = "Enter the recipient's NexusGenesis wallet address (starts with ng1)";
+  } else {
+    tabAddr.classList.remove('active');
+    tabAgent.classList.add('active');
+    input.placeholder = 'agent-xxx-001';
+    hint.textContent = "Enter the recipient's Agent ID";
+  }
+}
+
+// ---- Transfer ----
+async function doTransfer() {
+  const recipient = document.getElementById('recipientInput').value.trim();
+  const amount = document.getElementById('amountInput').value.trim();
+  const memo = document.getElementById('memoInput').value.trim();
+  const secret = document.getElementById('adminSecretInput').value.trim();
+  const btn = document.getElementById('sendBtn');
+  const btnText = document.getElementById('sendBtnText');
+
+  if (!recipient) { showToast('Please enter a recipient', 'warning'); return; }
+  if (!amount || Number(amount) <= 0) { showToast('Please enter a valid amount', 'warning'); return; }
+  if (!secret) { showToast('Admin Credit Secret is required', 'warning'); return; }
+
+  btn.disabled = true;
+  btnText.textContent = 'Sending...';
+
+  try {
+    const body = {
+      fromAgentId: currentAgentId,
+      amount: Number(amount)
+    };
+    if (recipientMode === 'address') {
+      body.toAddress = recipient;
+    } else {
+      body.toAgentId = recipient;
+    }
+    if (memo) body.memo = memo;
+
+    const r = await fetch(`${API}/api/v1/wallet/agent/transfer`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-secret': secret
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await r.json();
+
+    if (!r.ok || !data.success) {
+      const code = data.error_code || '';
+      let msg = data.error || 'Transfer failed';
+      if (code === 'ADMIN_SECRET_DISABLED_IN_PRODUCTION') {
+        msg = 'Admin secret is disabled in production. Set NG_ADMIN_ALLOW_IN_PRODUCTION=1 to override.';
+      } else if (r.status === 403) {
+        msg = 'Incorrect Admin Credit Secret';
+      }
+      throw new Error(msg);
+    }
+
+    showToast(`✓ Sent ${formatNGEN(amount)} NGEN successfully! Tx ID: ${data.tx?.id?.slice(0, 16) || data.transactionId || 'confirmed'}`, 'success');
+
+    // Clear form
+    document.getElementById('amountInput').value = '';
+    document.getElementById('memoInput').value = '';
+    document.getElementById('adminSecretInput').value = '';
+
+    // Refresh
+    await loadWallet();
+    await loadHistory();
+    initOnboardingBanner(); // re-check after balance change
+
+  } catch (e) {
+    showToast('❌ ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btnText.textContent = 'Send NGEN';
+  }
+}
+
+// ---- Transaction history ----
+async function loadHistory() {
+  const container = document.getElementById('txHistory');
+  try {
+    const r = await fetch(`${API}/api/v1/wallet/agent/${encodeURIComponent(currentAgentId)}/history?limit=20`);
+    const data = await r.json();
+
+    if (!r.ok || !data.success) {
+      container.innerHTML = '<div class="text-slate-500 text-center py-6 text-sm">Failed to load history</div>';
+      return;
+    }
+
+    const txs = data.transactions || data.history || [];
+    if (txs.length === 0) {
+      container.innerHTML = '<div class="text-slate-500 text-center py-6 text-sm">No transactions yet</div>';
+      return;
+    }
+
+    container.innerHTML = txs.map(tx => renderTxRow(tx)).join('');
+  } catch (e) {
+    container.innerHTML = '<div class="text-slate-500 text-center py-6 text-sm">Network error loading history</div>';
+  }
+}
+
+function renderTxRow(tx) {
+  const myAddr = currentWallet?.address;
+  const isOut = tx.from === myAddr || tx.fromAgentId === currentAgentId;
+  const isIn = tx.to === myAddr || tx.toAgentId === currentAgentId;
+  const isReward = isRewardType(tx.type || tx.tx_type);
+
+  let iconClass, iconChar, direction;
+  if (isReward) {
+    iconClass = 'tx-icon reward';
+    iconChar = '🎁';
+    direction = 'in';
+  } else if (isOut) {
+    iconClass = 'tx-icon out';
+    iconChar = '↑';
+    direction = 'out';
+  } else if (isIn) {
+    iconClass = 'tx-icon in';
+    iconChar = '↓';
+    direction = 'in';
+  } else {
+    iconClass = 'tx-icon misc';
+    iconChar = '⚡';
+    direction = 'misc';
+  }
+
+  const otherAddr = isOut ? (tx.to || tx.toAgentId || tx.toAddress || '') : (tx.from || tx.fromAgentId || '');
+  const amountStr = (direction === 'out' ? '-' : '+') + formatNGEN(tx.amount || 0);
+  const txType = (tx.type || tx.tx_type || 'transfer').replace(/_/g, ' ');
+  const date = tx.timestamp || tx.createdAt || tx.time
+    ? new Date(tx.timestamp || tx.createdAt || tx.time).toLocaleString()
+    : (tx.block ? `Block #${tx.block}` : '--');
+
+  return `
+    <div class="tx-row">
+      <div class="${iconClass}">${iconChar}</div>
+      <div class="tx-main">
+        <div class="tx-type">${txType}</div>
+        <div class="tx-address">${otherAddr || '--'}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="tx-amount ${direction}">${amountStr}</div>
+        <div class="tx-date">${date}</div>
+      </div>
+    </div>
+  `;
+}
+
+function isRewardType(type) {
+  const rewards = ['TASK_REWARD', 'BLOCK_REWARD', 'REGISTRATION_MINT', 'GENESIS_UNLOCK', 'FAUCET'];
+  return rewards.includes((type || '').toUpperCase());
+}
+
+function refreshHistory() {
+  loadWallet();
+  loadHistory();
+  showToast('Refreshing...', 'info');
+}
+
+// ---- Onboarding banner ----
+const ONB_SESSION_DISMISS_KEY = 'ng_onb_dismiss_session_wallet';
+
+function isOnbDismissed() {
+  try { return sessionStorage.getItem(ONB_SESSION_DISMISS_KEY) === '1'; } catch { return false; }
+}
+
+async function initOnboardingBanner() {
+  const banner = document.getElementById('onboardingBanner');
+  if (!banner) return;
+  if (!currentAgentId) return;
+  if (isOnbDismissed()) return;
+
+  try {
+    const r = await fetch(`${API}/api/v1/wallet/agent/${encodeURIComponent(currentAgentId)}/security-status`);
+    if (r.status === 404) return;
+    const data = await r.json();
+    if (!data || !data.success || !data.needsOnboarding) {
+      banner.style.display = 'none';
+      return;
+    }
+    renderOnbBanner(data);
+  } catch {
+    banner.style.display = 'none';
+  }
+}
+
+function renderOnbBanner(data) {
+  const banner = document.getElementById('onboardingBanner');
+  const desc = document.getElementById('onbDescText');
+  const badge = document.getElementById('onbRiskBadge');
+
+  banner.classList.remove('risk-medium', 'risk-high');
+  if (data.riskLevel === 'high') {
+    banner.classList.add('risk-high');
+    badge.textContent = 'HIGH RISK';
+    badge.className = 'px-2 py-0.5 rounded-full text-[0.65rem] font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30';
+    badge.style.display = 'inline-block';
+  } else if (data.riskLevel === 'medium') {
+    banner.classList.add('risk-medium');
+    badge.textContent = 'MEDIUM RISK';
+    badge.className = 'px-2 py-0.5 rounded-full text-[0.65rem] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30';
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+
+  desc.innerHTML = `
+    Your agent has <strong>${formatNGEN(data.balance)} NGEN</strong> — consider backing up your wallet for safety.
+    Visit the Dashboard for security options.
+  `;
+
+  banner.style.display = 'flex';
+}
+
+// ---- Toast ----
+let toastTimeout = null;
+function showToast(msg, type = 'info') {
+  const old = document.querySelector('.toast');
+  if (old) old.remove();
+  if (toastTimeout) clearTimeout(toastTimeout);
+
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.textContent = msg;
+  document.body.appendChild(el);
+
+  toastTimeout = setTimeout(() => {
+    el.style.opacity = '0';
+    el.style.transition = 'opacity 0.3s';
+    setTimeout(() => el.remove(), 300);
+  }, 4000);
+}
+</script>
+
+</body>
+</html>

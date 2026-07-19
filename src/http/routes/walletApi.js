@@ -2,7 +2,7 @@ import { Router } from 'express';
 import crypto from 'crypto';
 import { PQCWallet, validateAddress } from '../../wallet/pqcWallet.js';
 import agentWalletManager from '../../wallet/agentWalletManager.js';
-import { generateKeyPair } from '../../crypto/pqc.js';
+import { generateKeyPair, verify } from '../../crypto/pqc.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -207,6 +207,172 @@ router.get('/balance/:address', cacheMiddleware(
     });
   } catch (error) {
     console.error('[Wallet API] Balance query error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ============================================================
+//  Phase 1: Agent 自主钱包 — 迁移协议
+// ============================================================
+
+/**
+ * POST /api/v1/wallet/agent/migrate-to-self-custody
+ * 将 Agent 从服务器托管迁移到自持模式
+ * 流程：
+ * 1. Agent 用 password 导出加密钱包
+ * 2. Agent 在本地保存加密钱包和 password
+ * 3. Agent 调用 self-custody 声明完成迁移
+ * Body: { agentId, password }
+ */
+router.post('/agent/migrate-to-self-custody', (req, res) => {
+  try {
+    const { agentId, password } = req.body;
+
+    if (!agentId || !password) {
+      return res.status(400).json({
+        success: false,
+        error: 'agentId and password are required'
+      });
+    }
+
+    const entry = agentWalletManager.registry.get(agentId);
+    if (!entry) {
+      return res.status(404).json({
+        success: false,
+        error: 'Agent not found'
+      });
+    }
+
+    // 检查是否已经是自持模式
+    if (entry.metadata?.custody === 'self-custodied') {
+      return res.status(400).json({
+        success: false,
+        error: 'Agent is already in self-custody mode'
+      });
+    }
+
+    // 导出加密钱包
+    const encrypted = agentWalletManager.exportAgentWallet(agentId, password);
+    if (!encrypted) {
+      return res.status(400).json({
+        success: false,
+        error: 'Export failed (wrong password?)'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Wallet exported successfully. Save this encrypted wallet and password securely.',
+      data: {
+        address: entry.wallet.address,
+        publicKeyHex: entry.wallet.publicKey.toString('hex'),
+        agentId,
+        encryptedWallet: encrypted,
+        custody: 'server-managed (migration in progress)',
+        migrationNotice: '请安全保存上述加密钱包和密码。迁移完成后，服务器将不再持有您的私钥。此响应仅显示一次。',
+        nextStep: '使用 POST /api/v1/wallet/agent/self-custody 完成迁移声明'
+      }
+    });
+  } catch (error) {
+    console.error('[Wallet API] Migrate error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * POST /api/v1/wallet/agent/self-custody
+ * Agent 声明已持有私钥，服务器更新 custody 状态为 self-custodied
+ * 需要 Agent 用私钥签名一条消息来证明拥有私钥
+ * Body: { agentId, signature, signedMessage }
+ */
+router.post('/agent/self-custody', async (req, res) => {
+  try {
+    const { agentId, signature, signedMessage } = req.body;
+
+    if (!agentId || !signature || !signedMessage) {
+      return res.status(400).json({
+        success: false,
+        error: 'agentId, signature, and signedMessage are required'
+      });
+    }
+
+    const entry = agentWalletManager.registry.get(agentId);
+    if (!entry) {
+      return res.status(404).json({
+        success: false,
+        error: 'Agent not found'
+      });
+    }
+
+    // 验证签名（证明 Agent 拥有私钥）
+    const { verify } = await import('../../crypto/pqc.js');
+    const sigBuffer = Buffer.from(signature, 'hex');
+    const pubKeyBuffer = Buffer.from(entry.wallet.publicKey, 'hex');
+    
+    const isValid = await verify(signedMessage, sigBuffer, pubKeyBuffer);
+    if (!isValid) {
+      return res.status(403).json({
+        success: false,
+        error: 'Invalid signature — Agent does not prove ownership of private key'
+      });
+    }
+
+    // 更新 custody 状态
+    entry.metadata.custody = 'self-custodied';
+    entry.metadata.migratedAt = new Date().toISOString();
+    await agentWalletManager._saveRegistry();
+
+    // 缓存失效
+    _cacheDelPrefix(_cacheKey('agentDetails', agentId));
+    _cacheDelPrefix(_cacheKey('securityStatus', agentId));
+
+    res.json({
+      success: true,
+      message: 'Migration complete. Agent wallet is now in self-custody mode.',
+      data: {
+        agentId,
+        custody: 'self-custodied',
+        migratedAt: entry.metadata.migratedAt,
+        serverWillNotStorePrivateKey: true
+      }
+    });
+  } catch (error) {
+    console.error('[Wallet API] Self-custody declare error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * GET /api/v1/wallet/agent/custody-status/:agentId
+ * 查询 Agent 的 custody 状态
+ */
+router.get('/agent/custody-status/:agentId', (req, res) => {
+  try {
+    const { agentId } = req.params;
+    const entry = agentWalletManager.registry.get(agentId);
+
+    if (!entry) {
+      return res.status(404).json({
+        success: false,
+        error: 'Agent not found'
+      });
+    }
+
+    const metadata = entry.metadata || {};
+    res.json({
+      success: true,
+      data: {
+        agentId,
+        address: entry.wallet.address,
+        keyModel: metadata.keyModel || 'server-managed',
+        custody: metadata.custody || 'server-managed',
+        isSelfCustodied: metadata.custody === 'self-custodied',
+        migratedAt: metadata.migratedAt || null,
+        migrationStatus: metadata.custody === 'self-custodied' ? 'completed' : 'pending'
+      }
+    });
+  } catch (error) {
+    console.error('[Wallet API] Custody status error:', error.message);
     res.status(500).json({ success: false, error: error.message });
   }
 });
@@ -751,13 +917,31 @@ router.post('/agent/transfer', async (req, res) => {
       });
     }
 
-    const { fromAgentId, toAgentId, toAddress, amount, memo } = req.body;
+    const { fromAgentId, toAgentId, toAddress, amount, memo, agentSignature } = req.body;
 
     if (!fromAgentId || !amount) {
       return res.status(400).json({
         success: false,
         error: 'fromAgentId and amount are required'
       });
+    }
+
+    // Phase 1: 双重签名兼容 — 自持 Agent 需要额外签名
+    if (agentSignature) {
+      const entry = agentWalletManager.registry.get(fromAgentId);
+      if (entry && entry.metadata?.custody === 'self-custodied') {
+        // 自持 Agent: 验证 agent 签名
+        const transferMsg = JSON.stringify({ fromAgentId, toAgentId, toAddress, amount: String(amount), memo: memo || '' });
+        const sigBuffer = Buffer.from(agentSignature, 'hex');
+        const pubKeyBuffer = Buffer.from(entry.wallet.publicKey, 'hex');
+        const isValid = await verify(transferMsg, sigBuffer, pubKeyBuffer);
+        if (!isValid) {
+          return res.status(403).json({
+            success: false,
+            error: 'Invalid agent signature for self-custodied wallet'
+          });
+        }
+      }
     }
 
     const destination = toAgentId || toAddress;

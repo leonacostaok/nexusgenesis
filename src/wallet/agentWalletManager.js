@@ -433,6 +433,14 @@ class AgentWalletManager {
       response.keyModel = keyModel;
       response.opKeyFingerprint = opKeyFingerprint;
       response.opKeyVersion = opKeyVersion;
+      
+      // Phase 1: 添加 custody 状态
+      response.custody = this.registry.get(agentId).metadata?.custody || 'server-managed';
+      response.isSelfCustodied = response.custody === 'self-custodied';
+      response.migrationNotice = !response.isSelfCustodied
+        ? '此钱包为服务器托管模式。使用 POST /api/v1/wallet/agent/migrate-to-self-custody 迁移到 Agent 自持。'
+        : '此钱包已是自持模式，私钥由 Agent 本地保管。';
+      
       return response;
     } catch (e) {
       console.error(`[AgentWallet] Failed to register agent ${agentId}:`, e.message);
@@ -976,6 +984,7 @@ class AgentWalletManager {
   }
 
   _formatWalletResponse(agentId, wallet, metadata = {}) {
+    const custody = metadata?.custody || 'server-managed';
     return {
       agentId,
       address: wallet.address,
@@ -985,7 +994,10 @@ class AgentWalletManager {
       nonce: wallet.nonce,
       publicKey: wallet.publicKey.toString('hex'),
       created: metadata.created || null,
-      imported: metadata.imported || null
+      imported: metadata.imported || null,
+      custody,
+      isSelfCustodied: custody === 'self-custodied',
+      migratedAt: metadata.migratedAt || null
     };
   }
 

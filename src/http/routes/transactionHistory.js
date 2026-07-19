@@ -4,6 +4,67 @@ import crypto from 'crypto';
 const router = Router();
 const routerName = 'transaction-history';
 
+// ============================================================
+//  内存缓存（TTL-based）
+// ============================================================
+const _cache = new Map();
+const CACHE_TTL = {
+  txList: 10000,
+  agentHistory: 10000,
+  taskHistory: 15000,
+  txTypes: 300000,
+  txStats: 15000,
+};
+
+function _cacheGet(key) {
+  const entry = _cache.get(key);
+  if (!entry) return null;
+  if (Date.now() - entry.ts > entry.ttl) {
+    _cache.delete(key);
+    return null;
+  }
+  return entry.data;
+}
+
+function _cacheSet(key, data, ttl) {
+  _cache.set(key, { data, ts: Date.now(), ttl });
+}
+
+function _cacheDelPrefix(prefix) {
+  for (const k of _cache.keys()) {
+    if (k.startsWith(prefix)) _cache.delete(k);
+  }
+}
+
+function _cacheKey(type, ...parts) {
+  return `tx:${type}:${parts.join(':')}`;
+}
+
+function cacheMiddleware(keyFn, ttl) {
+  return (req, res, next) => {
+    if (req.method !== 'GET') return next();
+    try {
+      const key = keyFn(req);
+      const cached = _cacheGet(key);
+      if (cached) {
+        res.setHeader('X-Cache', 'HIT');
+        return res.json(cached);
+      }
+      const origJson = res.json.bind(res);
+      res.json = (body) => {
+        if (res.statusCode >= 200 && res.statusCode < 300 && body?.success !== false) {
+          _cacheSet(key, body, ttl);
+        }
+        res.setHeader('X-Cache', 'MISS');
+        return origJson(body);
+      };
+      next();
+    } catch (e) {
+      next();
+    }
+  };
+}
+
 /**
  * Transaction History API
  * 
@@ -29,14 +90,20 @@ const TX_TYPE_DESCRIPTIONS = {
   BLOCK_REWARD: { label: 'Block Reward', category: 'consensus', icon: '⛏️' },
   PROPOSAL_CREATED: { label: 'Proposal Created', category: 'governance', icon: '📋' },
   VOTE_CAST: { label: 'Vote Cast', category: 'governance', icon: '🗳️' },
-  ISSUE_REPORTED: { label: 'Issue Reported', category: 'issue', icon: '🐛' }
+  ISSUE_REPORTED: { label: 'Issue Reported', category: 'issue', icon: '🐛' },
+  CUSTODY_SIGN: { label: 'Custody Sign', category: 'custody', icon: '🔏' }
 };
 
 /**
  * GET /api/v1/transactions
  * List all transactions with pagination and filtering
  */
-router.get('/', (req, res) => {
+router.get('/', cacheMiddleware(
+  (req) => _cacheKey('txList', req.query.limit || '20', req.query.offset || '0',
+    req.query.type || '_', req.query.agentId || '_', req.query.taskId || '_',
+    req.query.startDate || '_', req.query.endDate || '_'),
+  CACHE_TTL.txList
+), (req, res) => {
   try {
     const { limit = 20, offset = 0, type, agentId, taskId, startDate, endDate } = req.query;
     
@@ -113,7 +180,10 @@ router.get('/', (req, res) => {
  * GET /api/v1/transactions/agent/:agentId
  * Get transaction history for a specific agent
  */
-router.get('/agent/:agentId', (req, res) => {
+router.get('/agent/:agentId', cacheMiddleware(
+  (req) => _cacheKey('agentHistory', req.params.agentId, req.query.limit || '20', req.query.offset || '0'),
+  CACHE_TTL.agentHistory
+), (req, res) => {
   try {
     const { agentId } = req.params;
     const { limit = 20, offset = 0 } = req.query;
@@ -158,7 +228,10 @@ router.get('/agent/:agentId', (req, res) => {
  * GET /api/v1/transactions/task/:taskId
  * Get all transactions related to a specific task
  */
-router.get('/task/:taskId', (req, res) => {
+router.get('/task/:taskId', cacheMiddleware(
+  (req) => _cacheKey('taskHistory', req.params.taskId),
+  CACHE_TTL.taskHistory
+), (req, res) => {
   try {
     const { taskId } = req.params;
     
@@ -196,7 +269,10 @@ router.get('/task/:taskId', (req, res) => {
  * GET /api/v1/transactions/types
  * Get all available transaction types with descriptions
  */
-router.get('/types', (req, res) => {
+router.get('/types', cacheMiddleware(
+  () => _cacheKey('txTypes'),
+  CACHE_TTL.txTypes
+), (req, res) => {
   const types = Object.entries(TX_TYPE_DESCRIPTIONS).map(([code, desc]) => ({
     code,
     ...desc
@@ -213,7 +289,10 @@ router.get('/types', (req, res) => {
  * GET /api/v1/transactions/stats
  * Get transaction statistics
  */
-router.get('/stats', (req, res) => {
+router.get('/stats', cacheMiddleware(
+  () => _cacheKey('txStats'),
+  CACHE_TTL.txStats
+), (req, res) => {
   try {
     const state = req.app.locals.state;
     if (!state) {

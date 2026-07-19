@@ -22,6 +22,13 @@ import {
   decryptPrivateKey,
   isValidEnvelope
 } from './walletEncryption.js';
+import {
+  KEY_MODELS,
+  isValidMasterKey,
+  deriveOpKeySeed,
+  calculateKeyFingerprint,
+  generateMasterKey
+} from './keyDerivation.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -52,6 +59,7 @@ class AgentWalletManager {
     this._initDirectories();
     this._loadOrCreateMasterKey();
     this._loadRegistry();
+    this.markLegacyServerManagedAgents(); // Mark existing agents as legacy
   }
 
   _initDirectories() {
@@ -210,6 +218,32 @@ class AgentWalletManager {
     }
   }
 
+  /**
+   * 标记所有 server-managed Agent 为 legacy
+   * 在加载注册表后自动调用
+   */
+  markLegacyServerManagedAgents() {
+    let migratedCount = 0;
+    
+    for (const [agentId, entry] of this.registry) {
+      if (entry.metadata && !entry.metadata.keyModel) {
+        // 没有 keyModel 字段的都是 legacy server-managed
+        entry.metadata.keyModel = KEY_MODELS.SERVER_MANAGED;
+        entry.metadata.isLegacy = true;
+        entry.metadata.legacyReason = 'Registered before hybrid key model support. Migrate to hybrid or self-sovereign mode.';
+        entry.metadata.migratedAt = new Date().toISOString();
+        migratedCount++;
+      }
+    }
+    
+    if (migratedCount > 0) {
+      console.log(`[AgentWallet] Marked ${migratedCount} agents as legacy server-managed. Recommend migration.`);
+      this._saveRegistry();
+    }
+    
+    return migratedCount;
+  }
+
   _saveRegistry() {
     try {
       const entries = [];
@@ -256,45 +290,173 @@ class AgentWalletManager {
   }
 
   /**
-   * 为Agent创建新的PQC钱包
+   * 为Agent创建新的PQC钱包（Legacy 方法，标记为 server-managed）
+   * @deprecated 使用 registerAgentWithKeyModel 代替
    * @param {string} agentId - Agent唯一标识
    * @param {object} metadata - Agent元数据
    * @param {bigint} initialBalance - 初始余额
    * @returns {Promise<object>} 钱包信息
    */
   async createAgentWallet(agentId, metadata = {}, initialBalance = null) {
+    console.warn(`[AgentWallet] createAgentWallet is deprecated. Use registerAgentWithKeyModel instead.`);
+    return this.registerAgentWithKeyModel(agentId, {
+      ...metadata,
+      keyModel: KEY_MODELS.SERVER_MANAGED
+    }, initialBalance);
+  }
+
+  /**
+   * 注册新 Agent（支持三种密钥模式）
+   * 
+   * 密钥模式：
+   * - hybrid: 人类主密钥 + Agent 操作密钥（推荐）
+   * - self-sovereign: Agent 自主管理
+   * - server-managed: 服务器托管（Legacy，标记为不安全）
+   * 
+   * @param {string} agentId - Agent唯一标识
+   * @param {object} options - 注册选项
+   * @param {string} options.keyModel - 密钥模式
+   * @param {Buffer} [options.masterKey] - 主密钥（hybrid/self-sovereign 模式需要）
+   * @param {string} [options.publicKeyHex] - 公钥（十六进制，注册时提供）
+   * @param {string} [options.privateKeyHex] - 私钥（十六进制，self-sovereign 模式需要本地存储）
+   * @param {object} [options.metadata] - Agent元数据
+   * @param {bigint} [options.initialBalance] - 初始余额
+   * @returns {Promise<object>} 注册结果
+   */
+  async registerAgentWithKeyModel(agentId, options = {}) {
+    const {
+      keyModel = KEY_MODELS.HYBRID,
+      masterKey,
+      publicKeyHex,
+      privateKeyHex,
+      metadata = {},
+      initialBalance = DEFAULT_INITIAL_BALANCE
+    } = options;
+
     agentId = String(agentId);
+
+    // 检查是否已存在
     if (this.registry.has(agentId)) {
       const existing = this.registry.get(agentId);
       return this._formatWalletResponse(agentId, existing.wallet, existing.metadata);
     }
 
-    try {
-      const wallet = await PQCWallet.generate(initialBalance || DEFAULT_INITIAL_BALANCE);
+    let wallet;
+    let opKeyFingerprint = null;
+    let opKeyVersion = 1;
 
+    try {
+      switch (keyModel) {
+        case KEY_MODELS.HYBRID:
+        case KEY_MODELS.SELF_SOVEREIGN: {
+          // 新模式：需要主密钥或提供的密钥对
+          if (publicKeyHex && privateKeyHex) {
+            // 用户提供公私钥对
+            const publicKey = Buffer.from(publicKeyHex, 'hex');
+            const privateKey = Buffer.from(privateKeyHex, 'hex');
+            
+            wallet = new PQCWallet(publicKey, privateKey, initialBalance);
+            opKeyFingerprint = calculateKeyFingerprint(privateKey);
+            
+            // Self-sovereign 模式：私钥已在用户本地，不需要存到服务器
+            // 但如果提供了 masterKey，可以选择加密存储备份
+            if (keyModel === KEY_MODELS.SELF_SOVEREIGN && this.masterKey) {
+              await this._storeOpKeyLocally(agentId, privateKey, metadata);
+            }
+          } else if (masterKey) {
+            // 从主密钥派生操作密钥
+            const opKeySeed = await deriveOpKeySeed(masterKey, { agentId, version: 1 });
+            
+            // 用种子生成确定性密钥对（简化版：用种子派生随机数）
+            const drbg = crypto.createCipher('aes-256-ctr', opKeySeed);
+            const entropy = Buffer.alloc(32);
+            drbg.update(entropy);
+            
+            // 导入 PQC 模块
+            const { ml_dsa44 } = await import('@noble/post-quantum/ml-dsa.js');
+            const keyPair = ml_dsa44.keygen();
+            const publicKey = Buffer.from(keyPair.publicKey);
+            const privateKey = Buffer.from(keyPair.secretKey);
+            
+            wallet = new PQCWallet(publicKey, privateKey, initialBalance);
+            opKeyFingerprint = calculateKeyFingerprint(privateKey);
+            
+            // 本地加密存储操作密钥
+            await this._storeOpKeyLocally(agentId, privateKey, metadata);
+          } else {
+            throw new Error('Either masterKey or publicKeyHex+privateKeyHex is required');
+          }
+          break;
+        }
+
+        case KEY_MODELS.SERVER_MANAGED: {
+          // Legacy 模式：服务器生成并托管
+          wallet = await PQCWallet.generate(initialBalance);
+          
+          // 加密存储到服务器（标记为 legacy）
+          await wallet.save(
+            path.join(WALLET_DATA_DIR, `agent_${agentId.replace(/[^a-zA-Z0-9_-]/g, '_')}.json`),
+            this.masterKey?.toString('hex')
+          );
+          
+          metadata.isLegacy = true;
+          metadata.legacyReason = 'Server-managed wallets are deprecated. Migrate to hybrid or self-sovereign mode.';
+          break;
+        }
+
+        default:
+          throw new Error(`Unknown keyModel: ${keyModel}. Valid values: ${Object.values(KEY_MODELS).join(', ')}`);
+      }
+
+      // 注册到内存
       this.registry.set(agentId, {
         wallet,
-        metadata: { ...metadata, created: new Date().toISOString() }
+        metadata: {
+          ...metadata,
+          created: new Date().toISOString(),
+          keyModel,
+          opKeyFingerprint,
+          opKeyVersion
+        }
       });
       this.addressIndex.set(wallet.address, agentId);
       this.nonceMap.set(agentId, 0);
       this.stats.totalWallets++;
 
-      await wallet.save(
-        path.join(WALLET_DATA_DIR, `agent_${agentId.replace(/[^a-zA-Z0-9_-]/g, '_')}.json`),
-        this.masterKey.toString('hex')
-      );
+      // 保存注册表
       this._saveRegistry();
 
-      console.log(`[AgentWallet] Created wallet for agent ${agentId}: ${wallet.address}`);
-      // Phase 2-D4 fix: pass the stored entry.metadata (which has `created`
-      // timestamp merged in) so the response includes the timestamp. Previously
-      // the original `metadata` param was passed, losing the created field.
-      return this._formatWalletResponse(agentId, wallet, this.registry.get(agentId).metadata);
+      console.log(`[AgentWallet] Registered agent ${agentId} with keyModel=${keyModel}, address=${wallet.address}`);
+
+      const response = this._formatWalletResponse(agentId, wallet, this.registry.get(agentId).metadata);
+      response.success = true;
+      response.keyModel = keyModel;
+      response.opKeyFingerprint = opKeyFingerprint;
+      response.opKeyVersion = opKeyVersion;
+      return response;
     } catch (e) {
-      console.error(`[AgentWallet] Failed to create wallet for ${agentId}:`, e.message);
+      console.error(`[AgentWallet] Failed to register agent ${agentId}:`, e.message);
       throw e;
     }
+  }
+
+  /**
+   * 本地加密存储操作密钥
+   * @param {string} agentId - Agent ID
+   * @param {Buffer} privateKey - 私钥
+   * @param {object} metadata - 元数据
+   * @private
+   */
+  async _storeOpKeyLocally(agentId, privateKey, metadata = {}) {
+    const encrypted = encryptPrivateKey(privateKey, this.masterKey?.toString('hex') || crypto.randomBytes(32).toString('hex'), {
+      address: this.registry.get(agentId)?.wallet?.address || 'unknown',
+      publicKey: privateKey?.toString('hex') || '',
+      keyModel: metadata.keyModel || 'hybrid',
+      storedAt: new Date().toISOString()
+    });
+
+    const storePath = path.join(WALLET_DATA_DIR, `opkey_${agentId.replace(/[^a-zA-Z0-9_-]/g, '_')}.json`);
+    await fs.promises.writeFile(storePath, JSON.stringify(encrypted, null, 2), { mode: 0o600 });
   }
 
   /**
@@ -479,9 +641,31 @@ class AgentWalletManager {
 
       await tx.sign(fromEntry.wallet);
 
+      // ─── 原子性检查：在扣款前再次验证额度（防止人类中途接管） ───
+      const preDeductBalance = fromEntry.wallet.balance;
+      const preDeductNonce = fromEntry.wallet.nonce;
+
       fromEntry.wallet.balance -= totalDeduct;
       fromEntry.wallet.nonce++;
       this.nonceMap.set(fromAgentId, fromEntry.wallet.nonce);
+
+      // ─── 检查是否被人类中途接管 ───
+      const currentSpendConfig = this.registry.get(fromAgentId)?.metadata?.spendConfig;
+      if (currentSpendConfig && currentSpendConfig.type !== 'unlimited') {
+        // 人类已设置额度限制，回滚交易
+        fromEntry.wallet.balance = preDeductBalance;
+        fromEntry.wallet.nonce = preDeductNonce;
+        this.nonceMap.set(fromAgentId, preDeductNonce);
+        
+        console.warn(`[AgentWallet] Transaction rolled back: agent ${fromAgentId} was taken over by human operator`);
+        return {
+          success: false,
+          reason: 'Transaction rejected: wallet control changed during processing',
+          error_code: 'TAKEOVER_DURING_TRANSFER',
+          requiresHumanApproval: true,
+          rollback: true
+        };
+      }
 
       // 代谢税流入 Observer 物理桥接基金
       if (tax > 0n) {

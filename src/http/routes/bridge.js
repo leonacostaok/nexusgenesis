@@ -8,6 +8,59 @@ const projectRoot = path.resolve(__dirname, '../../..');
 
 const router = Router();
 
+// ============================================================
+//  内存缓存（TTL-based）
+// ============================================================
+const _cache = new Map();
+const CACHE_TTL = {
+  chains: 300000,
+  fees: 60000,
+  transfers: 10000,
+};
+
+function _cacheGet(key) {
+  const entry = _cache.get(key);
+  if (!entry) return null;
+  if (Date.now() - entry.ts > entry.ttl) {
+    _cache.delete(key);
+    return null;
+  }
+  return entry.data;
+}
+
+function _cacheSet(key, data, ttl) {
+  _cache.set(key, { data, ts: Date.now(), ttl });
+}
+
+function _cacheKey(type, ...parts) {
+  return `bridge:${type}:${parts.join(':')}`;
+}
+
+function cacheMiddleware(keyFn, ttl) {
+  return (req, res, next) => {
+    if (req.method !== 'GET') return next();
+    try {
+      const key = keyFn(req);
+      const cached = _cacheGet(key);
+      if (cached) {
+        res.setHeader('X-Cache', 'HIT');
+        return res.json(cached);
+      }
+      const origJson = res.json.bind(res);
+      res.json = (body) => {
+        if (res.statusCode >= 200 && res.statusCode < 300 && body?.success !== false) {
+          _cacheSet(key, body, ttl);
+        }
+        res.setHeader('X-Cache', 'MISS');
+        return origJson(body);
+      };
+      next();
+    } catch (e) {
+      next();
+    }
+  };
+}
+
 const SUPPORTED_CHAINS = [
   { id: 'ethereum', name: 'Ethereum', icon: 'Ξ', chainId: 1, rpcUrl: 'https://eth.llamarpc.com', explorerUrl: 'https://etherscan.io', avgBlockTime: 12, confirmBlocks: 15 },
   { id: 'bsc', name: 'BSC', icon: '🔶', chainId: 56, rpcUrl: 'https://bsc-dataseed.binance.org', explorerUrl: 'https://bscscan.com', avgBlockTime: 3, confirmBlocks: 20 },
@@ -21,11 +74,17 @@ router.get('/docs/bridge', (req, res) => {
   res.sendFile(path.join(projectRoot, 'public', 'bridge.html'));
 });
 
-router.get('/api/v1/bridge/chains', (req, res) => {
+router.get('/api/v1/bridge/chains', cacheMiddleware(
+  () => _cacheKey('chains'),
+  CACHE_TTL.chains
+), (req, res) => {
   res.json({ success: true, data: { chains: SUPPORTED_CHAINS, count: SUPPORTED_CHAINS.length } });
 });
 
-router.get('/api/v1/bridge/fees', (req, res) => {
+router.get('/api/v1/bridge/fees', cacheMiddleware(
+  () => _cacheKey('fees'),
+  CACHE_TTL.fees
+), (req, res) => {
   const fees = {};
   for (const source of SUPPORTED_CHAINS) {
     fees[source.id] = {};
@@ -63,7 +122,10 @@ router.post('/api/v1/bridge/lock', (req, res) => {
   });
 });
 
-router.get('/api/v1/bridge/transfers', (req, res) => {
+router.get('/api/v1/bridge/transfers', cacheMiddleware(
+  (req) => _cacheKey('transfers', req.query.limit || '20', req.query.offset || '0'),
+  CACHE_TTL.transfers
+), (req, res) => {
   res.json({
     success: true,
     data: {

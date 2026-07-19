@@ -69,7 +69,11 @@ function issueCustodyToken({ agentId, address, publicKeyHex, ttlSeconds }) {
   if (!agentId || !address || !publicKeyHex) {
     throw new Error('issueCustodyToken: agentId, address, publicKeyHex are required');
   }
-  const ttl = ttlSeconds || DEFAULT_TOKEN_TTL_SECONDS;
+  // Phase 2-D1 fix: distinguish "TTL not provided" (undefined) from "TTL=0".
+  // The previous `ttlSeconds || DEFAULT` would treat 0 as falsy and fall back
+  // to the 24h default — silently giving callers a 24h token when they asked
+  // for "no expiry / already expired".
+  const ttl = (typeof ttlSeconds === 'number') ? ttlSeconds : DEFAULT_TOKEN_TTL_SECONDS;
   const now = Math.floor(Date.now() / 1000);
   const exp = now + ttl;
 

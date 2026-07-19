@@ -63,7 +63,10 @@ export const TX_TYPE = Object.freeze({
 
   // Governance
   OBSERVER_EVENT:       'OBSERVER_EVENT',
-  MULTISIG_SPEND:       'MULTISIG_SPEND'
+  MULTISIG_SPEND:       'MULTISIG_SPEND',
+
+  // Audit-only (no balance effect, persists to txHistory for forensics)
+  CUSTODY_SIGN:         'CUSTODY_SIGN'
 });
 
 /**
@@ -131,6 +134,29 @@ export function isBalanceAffecting(tx_type) {
     TX_TYPE.OBSERVER_EVENT
   ]);
   return !nonBalance.has(tx_type);
+}
+
+/**
+ * Phase 2-A2: 判断 tx_type 是否为"入账型奖励"
+ * 用于触发 Agent 安全引导 onbording 状态机
+ *
+ * 涵盖：TASK_REWARD / REGISTRATION_MINT / BLOCK_REWARD / EARLY_BIRD_BONUS /
+ *      REFERRAL_REWARD / STAKE_REWARD / SWARM_RELEASE / OBSERVER_RELEASE /
+ *      GENESIS_UNLOCK
+ */
+export function isRewardTxType(tx_type) {
+  const rewardTypes = new Set([
+    TX_TYPE.TASK_REWARD,
+    TX_TYPE.REGISTRATION_MINT,
+    TX_TYPE.BLOCK_REWARD,
+    TX_TYPE.EARLY_BIRD_BONUS,
+    TX_TYPE.REFERRAL_REWARD,
+    TX_TYPE.STAKE_REWARD,
+    TX_TYPE.SWARM_RELEASE,
+    TX_TYPE.OBSERVER_RELEASE,
+    TX_TYPE.GENESIS_UNLOCK
+  ]);
+  return rewardTypes.has(tx_type);
 }
 
 /**
@@ -233,6 +259,25 @@ export function applyTransaction(state, txInput) {
   tx.status = 'applied';
   tx.appliedAt = Date.now();
   recordHistory(state, tx);
+
+  // Phase 2-A2: reward tx 成功后触发 Agent 安全引导
+  // 走 state 的余额（applyBalanceEffect 已经更新到 state.addBalance），
+  // 不用 agentWalletManager 的余额（reward 不更新它）。fire-and-forget
+  // 不阻塞主流程；失败也不影响 tx 应用。
+  if (isRewardTxType(tx.tx_type) && tx.to && tx.to !== 'null') {
+    setImmediate(async () => {
+      try {
+        const { maybeTriggerOnboardingByAddressAndBalance } = await import('../wallet/onboarding.js');
+        const stateBalance = state.getBalance?.(tx.to) || 0;
+        const result = maybeTriggerOnboardingByAddressAndBalance(tx.to, stateBalance);
+        if (result.triggered) {
+          console.log(`[Onboarding] Triggered for ${tx.to} (tx=${tx.tx_type}, balance=${stateBalance})`);
+        }
+      } catch (e) {
+        console.warn('[Onboarding] reward trigger failed:', e.message);
+      }
+    });
+  }
 
   // Remove from mempool if present
   const mpIdx = state.transactions.mempool.findIndex(t => t.txHash === tx.txHash);
@@ -339,6 +384,49 @@ export function recordAuditEvent(state, txInput) {
   tx.auditOnly = true;
   recordHistory(state, tx);
   return { success: true, txHash: tx.txHash };
+}
+
+/**
+ * Phase 2-A2: Record a custody-token signing event.
+ * This is an audit-only trace (no balance effect). It tells operators
+ * "Agent X signed payload Y at time Z via /wallet/sign".
+ *
+ * The event is normalized as a synthetic transaction with type CUSTODY_SIGN
+ * so it lands in state.transactions.txHistory and shows up in the audit panel.
+ *
+ * @param {object} state - State instance
+ * @param {object} event
+ * @param {string} event.agentId
+ * @param {string} event.address - wallet address that signed
+ * @param {string} event.action - free-form action label (e.g. 'claim_task')
+ * @param {number} event.dataLen - length of signed payload
+ * @param {string} [event.custodyFp] - custody token fingerprint (16-hex SHA256 prefix)
+ * @param {string} [event.ip] - request IP
+ * @param {string} [event.userAgent] - request user-agent
+ * @param {object} [event.context] - additional client context
+ * @returns {{ success: boolean, txHash?: string }}
+ */
+export function recordCustodySign(state, event) {
+  if (!state) return { success: false, error: 'no state' };
+  if (!event || !event.agentId) return { success: false, error: 'agentId required' };
+
+  const payload = {
+    action: event.action || 'unspecified',
+    dataLen: event.dataLen || 0,
+    custodyFp: event.custodyFp || null,
+    ip: event.ip || null,
+    userAgent: event.userAgent || null,
+    context: event.context || null
+  };
+
+  return recordAuditEvent(state, {
+    tx_type: TX_TYPE.CUSTODY_SIGN,
+    from: event.agentId,
+    to: event.address || null,
+    amount: 0,
+    payload,
+    metadata: { auditOnly: true, custody: true }
+  });
 }
 
 /**

@@ -15,6 +15,7 @@ import {
 import { buildObserverEvent } from '../../utils/transactionBuilder.js';
 import { getForumStore } from './forum.js';
 import { MilestoneSystem } from '../../blockchain/state.js';
+import { KEY_MODELS } from '../../wallet/keyDerivation.js';
 
 const router = Router();
 
@@ -669,19 +670,97 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
     const REGISTRATION_FEE = 100n;
     const initialBalance = isEarlyBird ? REGISTRATION_REWARD + EARLY_BIRD_BONUS : REGISTRATION_REWARD;
 
-    const walletInfo = await agentWalletManager.createAgentWallet(agent_identity, {
-      capabilities,
-      referrer: referrer || 'genesis',
-      registeredVia: 'bootstrap-api',
-      earlyBird: isEarlyBird
-    }, initialBalance);
-
-    // 扣除注册费并烧毁（与区块链状态保持一致）
-    const agentWallet = agentWalletManager.getWalletInstance(agent_identity);
-    if (agentWallet) {
-      agentWallet.balance -= REGISTRATION_FEE;
-      agentWallet.nonce++;
-      agentWalletManager._saveRegistry?.();
+    // ─── 确定密钥模式 ───────────────────────────────────────────────
+    const keyModel = req.body.keyModel || KEY_MODELS.HYBRID;
+    
+    // 验证请求中的密钥参数
+    if (keyModel === KEY_MODELS.HYBRID || keyModel === KEY_MODELS.SELF_SOVEREIGN) {
+      const { publicKeyHex, privateKeyHex, masterKeyHex } = req.body;
+      
+      if (publicKeyHex && privateKeyHex) {
+        // 用户提供公私钥对（推荐方式）
+        console.log(`[bootstrap] Registering agent ${agent_identity} with user-provided keys (keyModel=${keyModel})`);
+        
+        const walletInfo = await agentWalletManager.registerAgentWithKeyModel(agent_identity, {
+          keyModel,
+          publicKeyHex,
+          privateKeyHex,
+          metadata: {
+            capabilities,
+            referrer: referrer || 'genesis',
+            registeredVia: 'bootstrap-api',
+            earlyBird: isEarlyBird
+          },
+          initialBalance
+        });
+        
+        // 扣除注册费
+        const agentWallet = agentWalletManager.getWalletInstance(agent_identity);
+        if (agentWallet) {
+          agentWallet.balance -= REGISTRATION_FEE;
+          agentWallet.nonce++;
+          agentWalletManager._saveRegistry?.();
+        }
+        
+        // 继续后面的链上注册流程...
+        // (walletInfo 已包含 address, publicKey 等信息)
+      } else if (masterKeyHex) {
+        // 从主密钥派生（需要服务器端主密钥）
+        console.log(`[bootstrap] Deriving op key from master key for agent ${agent_identity}`);
+        
+        const masterKey = Buffer.from(masterKeyHex, 'hex');
+        const walletInfo = await agentWalletManager.registerAgentWithKeyModel(agent_identity, {
+          keyModel,
+          masterKey,
+          metadata: {
+            capabilities,
+            referrer: referrer || 'genesis',
+            registeredVia: 'bootstrap-api',
+            earlyBird: isEarlyBird
+          },
+          initialBalance
+        });
+        
+        const agentWallet = agentWalletManager.getWalletInstance(agent_identity);
+        if (agentWallet) {
+          agentWallet.balance -= REGISTRATION_FEE;
+          agentWallet.nonce++;
+          agentWalletManager._saveRegistry?.();
+        }
+      } else {
+        return res.status(400).json({
+          success: false,
+          error: 'Missing key material. Provide either publicKeyHex+privateKeyHex or masterKeyHex.',
+          error_code: 'MISSING_KEY_MATERIAL',
+          hint: 'For hybrid mode: send { publicKeyHex, privateKeyHex } or { masterKeyHex }',
+          docs: '/docs/wallet-architecture.md'
+        });
+      }
+    } else if (keyModel === KEY_MODELS.SERVER_MANAGED) {
+      // Legacy 模式：服务器托管（不推荐）
+      console.warn(`[bootstrap] Registering agent ${agent_identity} with DEPRECATED server-managed mode`);
+      
+      const walletInfo = await agentWalletManager.createAgentWallet(agent_identity, {
+        capabilities,
+        referrer: referrer || 'genesis',
+        registeredVia: 'bootstrap-api',
+        earlyBird: isEarlyBird,
+        keyModel: KEY_MODELS.SERVER_MANAGED
+      }, initialBalance);
+      
+      const agentWallet = agentWalletManager.getWalletInstance(agent_identity);
+      if (agentWallet) {
+        agentWallet.balance -= REGISTRATION_FEE;
+        agentWallet.nonce++;
+        agentWalletManager._saveRegistry?.();
+      }
+    } else {
+      return res.status(400).json({
+        success: false,
+        error: `Invalid keyModel: ${keyModel}`,
+        error_code: 'INVALID_KEY_MODEL',
+        validValues: Object.values(KEY_MODELS)
+      });
     }
 
     const wallet = agentWalletManager.getWalletInstance(agent_identity);
@@ -709,7 +788,8 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
         wallet: {
           address: walletInfo.address,
           publicKeyHex: walletInfo.publicKey,
-          custody: 'server-managed'
+          keyModel: keyModel || KEY_MODELS.HYBRID,
+          custody: keyModel === KEY_MODELS.SERVER_MANAGED ? 'server-managed (deprecated)' : 'user-controlled'
         },
         welcome_package: buildWelcomePackage(node)
       });
@@ -725,7 +805,9 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
         decision_model: decisionModel,
         decision_model_version: decisionModelVersion,
         decision_model_provider: decisionModelProvider,
-        operator_declaration: operatorDeclaration
+        operator_declaration: operatorDeclaration,
+        // 钱包密钥模式
+        key_model: keyModel || KEY_MODELS.HYBRID
       }),
       public_key: walletInfo.publicKey
     });
@@ -1236,6 +1318,599 @@ router.post('/api/v1/agents/decay/run', (req, res) => {
 
     const result = node.currentState.decayReputation();
     res.json({ success: true, ...result });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+// ─── Spend Config API — 人类自定义 Agent 额度 ─────────────────────
+
+/**
+ * GET /api/v1/agents/:agentId/spend-config
+ * 获取 Agent 的额度配置
+ */
+router.get('/api/v1/agents/:agentId/spend-config', (req, res) => {
+  try {
+    const state = req.app?.locals?.state;
+    if (!state || !state.agents) {
+      return res.status(503).json({ success: false, error: 'State not ready' });
+    }
+
+    const agent = state.agents[req.params.agentId];
+    if (!agent) {
+      return res.status(404).json({ success: false, error: 'Agent not found' });
+    }
+
+    res.json({
+      success: true,
+      agentId: req.params.agentId,
+      spendConfig: agent.spendConfig || {
+        type: 'fixed',
+        dailyLimit: '1000000000000000000', // 默认 1 NGEN
+        updatedAt: null
+      },
+      note: 'Human operator can adjust this via PUT /api/v1/agents/:agentId/spend-config'
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+/**
+ * PUT /api/v1/agents/:agentId/spend-config
+ * 人类自定义 Agent 额度配置
+ * 
+ * 支持的模式：
+ * - unlimited: 不设限（完全信任 Agent）
+ * - fixed: 固定每日额度
+ * - per-tx: 单笔额度限制
+ * - custom: 自定义逻辑
+ */
+router.put('/api/v1/agents/:agentId/spend-config', (req, res) => {
+  try {
+    const state = req.app?.locals?.state;
+    if (!state || !state.agents) {
+      return res.status(503).json({ success: false, error: 'State not ready' });
+    }
+
+    const agent = state.agents[req.params.agentId];
+    if (!agent) {
+      return res.status(404).json({ success: false, error: 'Agent not found' });
+    }
+
+    const { spendConfig } = req.body;
+    if (!spendConfig || !spendConfig.type) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing spendConfig.type',
+        validTypes: ['unlimited', 'fixed', 'per-tx', 'custom']
+      });
+    }
+
+    // 验证配置
+    switch (spendConfig.type) {
+      case 'unlimited':
+        agent.spendConfig = { type: 'unlimited', updatedAt: new Date().toISOString() };
+        break;
+      case 'fixed':
+        if (!spendConfig.dailyLimit) {
+          return res.status(400).json({
+            success: false,
+            error: 'fixed type requires dailyLimit'
+          });
+        }
+        agent.spendConfig = {
+          type: 'fixed',
+          dailyLimit: spendConfig.dailyLimit,
+          updatedAt: new Date().toISOString()
+        };
+        break;
+      case 'per-tx':
+        if (!spendConfig.singleTxLimit) {
+          return res.status(400).json({
+            success: false,
+            error: 'per-tx type requires singleTxLimit'
+          });
+        }
+        agent.spendConfig = {
+          type: 'per-tx',
+          singleTxLimit: spendConfig.singleTxLimit,
+          updatedAt: new Date().toISOString()
+        };
+        break;
+      case 'custom':
+        agent.spendConfig = {
+          type: 'custom',
+          ...spendConfig,
+          updatedAt: new Date().toISOString()
+        };
+        break;
+      default:
+        return res.status(400).json({
+          success: false,
+          error: `Invalid spendConfig.type: ${spendConfig.type}`,
+          validTypes: ['unlimited', 'fixed', 'per-tx', 'custom']
+        });
+    }
+
+    res.json({
+      success: true,
+      agentId: req.params.agentId,
+      spendConfig: agent.spendConfig,
+      note: spendConfig.type === 'unlimited'
+        ? 'Agent now has unlimited spending authority. Use with caution.'
+        : 'Spend config updated successfully.'
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+// ─── Human Takeover API — 人类随时接管 Agent 钱包 ─────────────────────
+
+/**
+ * POST /api/v1/agents/:agentId/takeover
+ * 人类随时可以接管 Agent 的钱包控制权
+ * 
+ * 流程：
+ * 1. 人类提供主密钥签名证明身份
+ * 2. 节点验证签名
+ * 3. Agent 的 spendConfig 立即变为 human-controlled
+ * 4. 人类可以设置任意额度
+ */
+router.post('/api/v1/agents/:agentId/takeover', async (req, res) => {
+  try {
+    const state = req.app?.locals?.state;
+    if (!state || !state.agents) {
+      return res.status(503).json({ success: false, error: 'State not ready' });
+    }
+
+    const agent = state.agents[req.params.agentId];
+    if (!agent) {
+      return res.status(404).json({ success: false, error: 'Agent not found' });
+    }
+
+    const { masterSignature } = req.body;
+    if (!masterSignature) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing masterSignature',
+        hint: 'Human operator must sign the takeover request with their master key'
+      });
+    }
+
+    // 验证主密钥签名
+    const { verify } = await import('../../crypto/pqc.js');
+    const isValid = verify(
+      Buffer.from(`takeover:${req.params.agentId}:${Date.now()}`),
+      Buffer.from(masterSignature, 'hex'),
+      Buffer.from(agent.publicKey, 'hex')
+    );
+
+    if (!isValid) {
+      return res.status(403).json({
+        success: false,
+        error: 'Invalid master key signature',
+        hint: 'The signature must be created with the human operator\'s master key'
+      });
+    }
+
+    // 接管成功：设置默认额度限制
+    agent.spendConfig = {
+      type: 'fixed',
+      dailyLimit: '1000000000000000000', // 默认 1 NGEN
+      humanControlled: true,
+      takenOverAt: new Date().toISOString(),
+      takenOverBy: 'human_operator',
+      updatedAt: new Date().toISOString()
+    };
+
+    agent.takenOver = true;
+    agent.takenOverAt = new Date().toISOString();
+
+    res.json({
+      success: true,
+      agentId: req.params.agentId,
+      takeover: {
+        humanControlled: true,
+        takenOverAt: agent.takenOverAt,
+        spendConfig: agent.spendConfig
+      },
+      note: 'Human operator has taken over control of this agent\'s wallet. Daily limit set to 1 NGEN. Adjust via PUT /api/v1/agents/:agentId/spend-config'
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+/**
+ * GET /api/v1/agents/:agentId/control-status
+ * 查看 Agent 钱包的控制状态
+ */
+router.get('/api/v1/agents/:agentId/control-status', (req, res) => {
+  try {
+    const state = req.app?.locals?.state;
+    if (!state || !state.agents) {
+      return res.status(503).json({ success: false, error: 'State not ready' });
+    }
+
+    const agent = state.agents[req.params.agentId];
+    if (!agent) {
+      return res.status(404).json({ success: false, error: 'Agent not found' });
+    }
+
+    res.json({
+      success: true,
+      agentId: req.params.agentId,
+      keyModel: agent.keyModel || 'server-managed',
+      controlStatus: {
+        humanControlled: !!agent.takenOver,
+        spendConfig: agent.spendConfig || { type: 'unlimited' },
+        takenOverAt: agent.takenOverAt || null,
+        note: agent.takenOver
+          ? 'This agent\'s wallet is controlled by a human operator.'
+          : 'This agent operates autonomously. Human can takeover anytime via POST /api/v1/agents/:agentId/takeover'
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+// ─── 审批系统 API ──────────────────────────────────────────────
+
+/**
+ * POST /api/v1/approvals/create
+ * Agent 发起超额审批请求
+ */
+router.post('/api/v1/approvals/create', async (req, res) => {
+  const startTime = Date.now();
+  const requestId = `appr-create-${crypto.randomUUID().slice(0, 8)}`;
+  console.log(`[${requestId}] CREATE REQUEST START agentId=${req.body.agentId} type=${req.body.type}`);
+
+  try {
+    const state = req.app?.locals?.state;
+    if (!state || !state.agents) {
+      console.log(`[${requestId}] FAIL: State not ready`);
+      return res.status(503).json({ success: false, error: 'State not ready' });
+    }
+
+    const { agentId, type, toAddress, amount, memo, agentSignature } = req.body;
+
+    if (!agentId || !type || !amount) {
+      console.log(`[${requestId}] FAIL: Missing fields agentId=${!!agentId} type=${!!type} amount=${!!amount}`);
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields: agentId, type, amount'
+      });
+    }
+
+    // 查找 Agent
+    const agent = state.agents[agentId];
+    if (!agent) {
+      console.log(`[${requestId}] Agent not in state.agents, checking registry...`);
+      const wm = req.app?.locals?.agentWalletManager;
+      if (wm) {
+        const entry = wm.registry.get(agentId);
+        if (entry) {
+          state.agents[agentId] = {
+            id: agentId,
+            address: entry.wallet.address,
+            publicKey: entry.wallet.publicKey.toString('hex'),
+            spendConfig: entry.metadata?.spendConfig || { type: 'unlimited' },
+            keyModel: entry.metadata?.keyModel || 'self-sovereign'
+          };
+          console.log(`[${requestId}] Agent found in registry, address=${entry.wallet.address}`);
+        }
+      }
+      if (!state.agents[agentId]) {
+        console.log(`[${requestId}] FAIL: Agent not found agentId=${agentId}`);
+        return res.status(404).json({ success: false, error: 'Agent not found' });
+      }
+    } else {
+      console.log(`[${requestId}] Agent found in state.agents`);
+    }
+
+    // 验证 Agent 签名
+    if (agentSignature) {
+      const { verify } = await import('../../crypto/pqc.js');
+      const message = `${type}:${agentId}:${toAddress}:${amount}:${memo || ''}:${Date.now()}`;
+      const isValid = await verify(message, Buffer.from(agentSignature, 'hex'), Buffer.from(agent.publicKey, 'hex'));
+      if (!isValid) {
+        console.log(`[${requestId}] FAIL: Invalid agent signature`);
+        return res.status(403).json({ success: false, error: 'Invalid agent signature' });
+      }
+      console.log(`[${requestId}] Agent signature verified`);
+    }
+
+    // 创建审批请求
+    const approvalId = `apr_${crypto.randomUUID()}`;
+    const approval = {
+      id: approvalId,
+      type,
+      agentId,
+      toAddress: toAddress || null,
+      amount: BigInt(amount).toString(),
+      memo: memo || '',
+      status: 'pending',
+      agentSignature,
+      createdAt: new Date().toISOString(),
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+      decision: null,
+      humanSignature: null
+    };
+
+    if (!state.approvals) state.approvals = {};
+    state.approvals[approvalId] = approval;
+
+    const elapsed = Date.now() - startTime;
+    console.log(`[${requestId}] SUCCESS approvalId=${approvalId.slice(0, 12)}... elapsed=${elapsed}ms`);
+    res.json({
+      success: true,
+      approvalId,
+      status: 'pending_human_approval',
+      expiresAt: approval.expiresAt,
+      note: 'Approval request created. Waiting for human operator to sign with master key.'
+    });
+  } catch (err) {
+    console.error(`[${requestId}] CRASH: ${err.message}`);
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+/**
+ * POST /api/v1/approvals/:approvalId/decide
+ * 人类提交审批决定（需要主密钥签名）
+ */
+router.post('/api/v1/approvals/:approvalId/decide', async (req, res) => {
+  const startTime = Date.now();
+  const requestId = `appr-decide-${req.params.approvalId.slice(0, 8)}`;
+  console.log(`[${requestId}] DECIDE REQUEST START approvalId=${req.params.approvalId} decision=${req.body.decision}`);
+
+  try {
+    const state = req.app?.locals?.state;
+    if (!state || !state.approvals) {
+      console.log(`[${requestId}] FAIL: State not ready`);
+      return res.status(503).json({ success: false, error: 'State not ready' });
+    }
+
+    const approval = state.approvals[req.params.approvalId];
+    if (!approval) {
+      console.log(`[${requestId}] FAIL: Approval not found`);
+      return res.status(404).json({ success: false, error: 'Approval not found' });
+    }
+    console.log(`[${requestId}] Approval found, current status=${approval.status}`);
+
+    if (approval.status !== 'pending') {
+      console.log(`[${requestId}] FAIL: Already decided status=${approval.status}`);
+      return res.status(400).json({
+        success: false,
+        error: `Approval already ${approval.status}`,
+        decision: approval.decision
+      });
+    }
+
+    const { decision, masterSignature } = req.body;
+    if (!decision || !['approve', 'reject'].includes(decision)) {
+      console.log(`[${requestId}] FAIL: Invalid decision="${decision}"`);
+      return res.status(400).json({ success: false, error: 'decision must be "approve" or "reject"' });
+    }
+    console.log(`[${requestId}] Decision: ${decision}`);
+
+    if (!masterSignature) {
+      console.log(`[${requestId}] FAIL: Missing masterSignature`);
+      return res.status(400).json({
+        success: false,
+        error: 'masterSignature is required',
+        hint: 'Human operator must sign the approval message with their master key'
+      });
+    }
+
+    // 验证主密钥签名
+    const { verify } = await import('../../crypto/pqc.js');
+    const message = `approval:${approval.id}:${decision}:${approval.amount}`;
+    let agent = state.agents[approval.agentId];
+    if (!agent) {
+      console.log(`[${requestId}] Agent not in state, checking registry...`);
+      const wm = req.app?.locals?.agentWalletManager;
+      if (wm) {
+        const entry = wm.registry.get(approval.agentId);
+        if (entry) {
+          agent = {
+            id: approval.agentId,
+            address: entry.wallet.address,
+            publicKey: entry.wallet.publicKey.toString('hex'),
+            spendConfig: entry.metadata?.spendConfig || { type: 'unlimited' },
+            keyModel: entry.metadata?.keyModel || 'self-sovereign'
+          };
+          state.agents[approval.agentId] = agent;
+          console.log(`[${requestId}] Agent found in registry`);
+        }
+      }
+      if (!agent) {
+        console.log(`[${requestId}] FAIL: Agent not found`);
+        return res.status(404).json({ success: false, error: 'Agent not found' });
+      }
+    }
+
+    console.log(`[${requestId}] Verifying signature (sigLen=${masterSignature.length})`);
+    const cacheKey = `${approval.id}:${decision}:${approval.amount}`;
+    const { verifyWithCache } = await import('../../crypto/signatureCache.js');
+    const isValid = await verifyWithCache(cacheKey, async () => {
+      const { verify } = await import('../../crypto/pqc.js');
+      return verify(message, Buffer.from(masterSignature, 'hex'), Buffer.from(agent.publicKey, 'hex'));
+    });
+    if (!isValid) {
+      console.log(`[${requestId}] FAIL: Invalid master key signature`);
+      return res.status(403).json({ success: false, error: 'Invalid master key signature' });
+    }
+    console.log(`[${requestId}] Signature verified OK`);
+
+    // 更新审批状态
+    approval.status = decision === 'approve' ? 'approved' : 'rejected';
+    approval.decision = decision;
+    approval.humanSignature = masterSignature;
+    approval.decidedAt = new Date().toISOString();
+    console.log(`[${requestId}] Approval ${decision === 'approve' ? 'APPROVED' : 'REJECTED'}, status=${approval.status}`);
+
+    // 如果批准，执行转账
+    if (decision === 'approve') {
+      console.log(`[${requestId}] Executing approved transfer for agent=${approval.agentId} amount=${approval.amount}`);
+      try {
+        const agentWM = req.app?.locals?.agentWalletManager;
+        if (agentWM) {
+          const fromEntry = agentWM.registry.get(approval.agentId);
+          if (fromEntry) {
+            const amountNum = Number(approval.amount);
+            const fee = 1;
+            const totalDeduct = amountNum + fee;
+
+            // 检查余额
+            if (fromEntry.wallet.balance >= BigInt(totalDeduct)) {
+              // 直接扣减余额（绕过 spendConfig 检查，因为人类已经批准）
+              fromEntry.wallet.balance -= BigInt(totalDeduct);
+              fromEntry.wallet.nonce++;
+              agentWM.nonceMap.set(approval.agentId, fromEntry.wallet.nonce);
+
+              // 代谢税
+              const tax = BigInt(Math.floor(amountNum * 0.001));
+              if (tax > 0n) {
+                console.log(`[Approval] Metabolic tax: ${tax} NGEN`);
+              }
+
+              // 如果接收方是本网络的 Agent，自动入账
+              const toAgentId = agentWM.getAgentByAddress(approval.toAddress);
+              if (toAgentId && agentWM.registry.has(toAgentId)) {
+                const toEntry = agentWM.registry.get(toAgentId);
+                toEntry.wallet.balance += BigInt(amountNum) - tax;
+              }
+
+              // 记录交易
+              const txId = `tx-appr-${crypto.randomUUID()}`;
+              const txRecord = {
+                id: txId,
+                hash: txId,
+                type: 'transfer',
+                tx_type: 'APPROVED_TRANSFER',
+                from: fromEntry.wallet.address,
+                to: approval.toAddress,
+                fromAgentId: approval.agentId,
+                toAgentId: toAgentId || null,
+                amount: amountNum,
+                netAmount: amountNum - Number(tax),
+                fee: fee,
+                metabolicTax: Number(tax),
+                memo: approval.memo || `Approved: ${approval.id}`,
+                signature: approval.humanSignature,
+                status: 'applied',
+                timestamp: Date.now(),
+                approvalId: approval.id
+              };
+
+              // 持久化到 state txHistory
+              try {
+                const st = req.app?.locals?.state;
+                if (st && !st.transactions) st.transactions = {};
+                if (st && !st.transactions.txHistory) st.transactions.txHistory = [];
+                st.transactions.txHistory.push(txRecord);
+              } catch (_) { /* ignore */ }
+
+              // 持久化到 registry
+              try {
+                agentWM._saveRegistry();
+              } catch (_) { /* ignore */ }
+
+              approval.executed = true;
+              approval.transactionId = txId;
+            } else {
+              approval.executed = false;
+              approval.executionError = 'Insufficient balance';
+            }
+          } else {
+            approval.executed = false;
+            approval.executionError = 'Agent wallet not found in manager';
+            console.log(`[${requestId}] FAIL: Agent wallet not in manager`);
+          }
+        }
+      } catch (execErr) {
+        approval.executed = false;
+        approval.executionError = execErr.message;
+        console.error(`[${requestId}] CRASH during transfer: ${execErr.message}`);
+      }
+    }
+
+    const elapsed = Date.now() - startTime;
+    console.log(`[${requestId}] DONE decision=${decision} executed=${approval.executed ?? 'N/A'} elapsed=${elapsed}ms`);
+
+    res.json({
+      success: true,
+      approvalId: approval.id,
+      decision,
+      executed: decision === 'approve' ? approval.executed : undefined,
+      note: decision === 'approve'
+        ? 'Transaction approved and executed.'
+        : 'Transaction rejected by human operator.'
+    });
+  } catch (err) {
+    console.error(`[${requestId}] CRASH: ${err.message}`);
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+/**
+ * GET /api/v1/approvals
+ * 查询所有审批请求（支持按 agentId 过滤）
+ */
+router.get('/api/v1/approvals', (req, res) => {
+  try {
+    const state = req.app?.locals?.state;
+    if (!state || !state.approvals) {
+      return res.json({ success: true, approvals: [] });
+    }
+
+    const { agentId, status } = req.query;
+    let approvals = Object.values(state.approvals);
+
+    if (agentId) {
+      approvals = approvals.filter(a => a.agentId === agentId);
+    }
+    if (status) {
+      approvals = approvals.filter(a => a.status === status);
+    }
+
+    // 过滤已过期的
+    approvals = approvals.filter(a => new Date(a.expiresAt) > new Date());
+
+    res.json({
+      success: true,
+      approvals: approvals.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+      total: approvals.length
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, success: false });
+  }
+});
+
+/**
+ * GET /api/v1/approvals/:approvalId
+ * 查询单个审批详情
+ */
+router.get('/api/v1/approvals/:approvalId', (req, res) => {
+  try {
+    const state = req.app?.locals?.state;
+    if (!state || !state.approvals) {
+      return res.status(503).json({ success: false, error: 'State not ready' });
+    }
+
+    const approval = state.approvals[req.params.approvalId];
+    if (!approval) {
+      return res.status(404).json({ success: false, error: 'Approval not found' });
+    }
+
+    res.json({
+      success: true,
+      approval
+    });
   } catch (err) {
     res.status(500).json({ error: err.message, success: false });
   }

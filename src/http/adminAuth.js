@@ -19,9 +19,31 @@ const DEFAULT_DEV_SECRET = 'devnet-endow-2026';
 const ENV_CREDIT = 'NG_ADMIN_CREDIT_SECRET';
 const ENV_BYPASS = 'NG_ADMIN_BYPASS_SECRET';
 const ENV_LEGACY = 'NG_ADMIN_SECRET';
+// Phase 2-A3: Hard kill-switch for production. Even with a correct secret,
+// the production node will reject all x-admin-secret requests unless this
+// override is explicitly set. This prevents accidental use of devnet-style
+// secret headers on a real deployment.
+const ENV_PROD_OVERRIDE = 'NG_ADMIN_ALLOW_IN_PRODUCTION';
 
 function isProduction() {
   return process.env.NODE_ENV === 'production';
+}
+
+function adminSecretAllowedInProduction() {
+  // Must be a truthy value AND the env must be exactly '1' or 'true' to avoid
+  // accidental acceptance from process.env defaults like '0' or 'false'.
+  const v = process.env[ENV_PROD_OVERRIDE];
+  return v === '1' || v === 'true';
+}
+
+function productionSecretGuard() {
+  if (!isProduction()) return null;
+  if (adminSecretAllowedInProduction()) return null;
+  return {
+    success: false,
+    error: 'admin-secret disabled in production. Set NG_ADMIN_ALLOW_IN_PRODUCTION=1 to override (not recommended).',
+    error_code: 'ADMIN_SECRET_DISABLED_IN_PRODUCTION'
+  };
 }
 
 function resolveSecret(envName) {
@@ -67,6 +89,12 @@ function init() {
     console.warn('[AdminAuth] Running with DEFAULT devnet secrets. Set NG_ADMIN_CREDIT_SECRET and NG_ADMIN_BYPASS_SECRET before production.');
   }
 
+  if (isProduction() && !adminSecretAllowedInProduction()) {
+    console.warn('[AdminAuth] PRODUCTION HARDENING: x-admin-secret paths DISABLED. All admin-secret requests will be rejected. Set NG_ADMIN_ALLOW_IN_PRODUCTION=1 to override.');
+  } else if (isProduction() && adminSecretAllowedInProduction()) {
+    console.warn('[AdminAuth] PRODUCTION OVERRIDE: NG_ADMIN_ALLOW_IN_PRODUCTION is set. x-admin-secret paths are ACCEPTED — this is not recommended for production deployments.');
+  }
+
   if (process.env[ENV_LEGACY] && !process.env[ENV_CREDIT] && !process.env[ENV_BYPASS]) {
     console.warn('[AdminAuth] NG_ADMIN_SECRET (legacy) is set; using it as both credit and bypass secret. Migrate to split secrets.');
   }
@@ -82,10 +110,20 @@ function providedSecret(req) {
 }
 
 /**
+ * Phase 2-A3: Helper that callers can use to short-circuit with a clean
+ * 403 response in production-disabled mode. Returns null when no guard
+ * is needed (devnet, or production with override).
+ */
+function productionBlockResponse() {
+  return productionSecretGuard();
+}
+
+/**
  * 验证 credit 类 admin secret（资金/状态变更）
  * @returns {boolean}
  */
 function verifyCreditSecret(req) {
+  if (productionSecretGuard()) return false;
   init();
   const provided = providedSecret(req);
   return provided !== null && provided === _creditSecret;
@@ -96,6 +134,7 @@ function verifyCreditSecret(req) {
  * @returns {boolean}
  */
 function verifyBypassSecret(req) {
+  if (productionSecretGuard()) return false;
   init();
   const provided = providedSecret(req);
   return provided !== null && provided === _bypassSecret;
@@ -103,9 +142,11 @@ function verifyBypassSecret(req) {
 
 /**
  * 验证任一 admin secret（向后兼容入口）
- * @returns {{ valid: boolean, kind: 'credit'|'bypass'|null }}
+ * @returns {{ valid: boolean, kind: 'credit'|'bypass'|null, error?: string, error_code?: string }}
  */
 function verifyAnySecret(req) {
+  const guard = productionSecretGuard();
+  if (guard) return { valid: false, kind: null, ...guard };
   init();
   if (verifyCreditSecret(req)) return { valid: true, kind: 'credit' };
   if (verifyBypassSecret(req)) return { valid: true, kind: 'bypass' };
@@ -121,7 +162,9 @@ function describe() {
     creditSecretSet: !!process.env[ENV_CREDIT] || !!process.env[ENV_LEGACY],
     bypassSecretSet: !!process.env[ENV_BYPASS] || !!process.env[ENV_LEGACY],
     usingDefaultDevSecret: _creditSecret === DEFAULT_DEV_SECRET || _bypassSecret === DEFAULT_DEV_SECRET,
-    production: isProduction()
+    production: isProduction(),
+    adminSecretAllowedInProduction: adminSecretAllowedInProduction(),
+    adminSecretEffectivelyEnabled: !isProduction() || adminSecretAllowedInProduction()
   };
 }
 
@@ -130,7 +173,10 @@ export {
   verifyBypassSecret,
   verifyAnySecret,
   init,
-  describe
+  describe,
+  productionBlockResponse,
+  adminSecretAllowedInProduction,
+  isProduction
 };
 
 export default {
@@ -138,5 +184,8 @@ export default {
   verifyBypassSecret,
   verifyAnySecret,
   init,
-  describe
+  describe,
+  productionBlockResponse,
+  adminSecretAllowedInProduction,
+  isProduction
 };

@@ -21,6 +21,72 @@ const router = Router();
 const NGEN_SYMBOL = 'NGEN';
 const NGEN_DECIMALS = 8;
 
+// ============================================================
+//  内存缓存（TTL-based）— 降低 agentWalletManager 和 state 读取压力
+// ============================================================
+const _cache = new Map();
+const CACHE_TTL = {
+  stats: 30000,
+  balance: 15000,
+  history: 10000,
+  info: 30000,
+  agentDetails: 30000,
+  assets: 60000,
+  securityStatus: 15000
+};
+
+function _cacheGet(key) {
+  const entry = _cache.get(key);
+  if (!entry) return null;
+  if (Date.now() - entry.ts > entry.ttl) {
+    _cache.delete(key);
+    return null;
+  }
+  return entry.data;
+}
+
+function _cacheSet(key, data, ttl) {
+  _cache.set(key, { data, ts: Date.now(), ttl });
+}
+
+function _cacheDelPrefix(prefix) {
+  for (const k of _cache.keys()) {
+    if (k.startsWith(prefix)) _cache.delete(k);
+  }
+}
+
+function _cacheKey(type, ...parts) {
+  return `wallet:${type}:${parts.join(':')}`;
+}
+
+// 缓存中间件：GET 请求命中缓存直接返回
+// 使用方式：router.get('/path', cacheMiddleware((req) => key, ttl), handler)
+function cacheMiddleware(keyFn, ttl) {
+  return (req, res, next) => {
+    if (req.method !== 'GET') return next();
+    try {
+      const key = keyFn(req);
+      const cached = _cacheGet(key);
+      if (cached) {
+        res.setHeader('X-Cache', 'HIT');
+        return res.json(cached);
+      }
+      // 劫持 res.json 来自动缓存
+      const origJson = res.json.bind(res);
+      res.json = (body) => {
+        if (res.statusCode >= 200 && res.statusCode < 300 && body && body.success !== false) {
+          _cacheSet(key, body, ttl);
+        }
+        res.setHeader('X-Cache', 'MISS');
+        return origJson(body);
+      };
+      next();
+    } catch (e) {
+      next();
+    }
+  };
+}
+
 // Testnet 虚拟估值，非市场价。NGEN 具有网络效用价值（质押、治理、任务结算），无外部法币兑换承诺。
 // 主网应替换为外部价格预言机或 DEX 定价。
 function getUsdRate() {
@@ -36,7 +102,7 @@ function formatNgen(raw) {
 //  钱包统计 API（非Agent特定）
 // ============================================================
 
-router.get('/stats', (req, res) => {
+router.get('/stats', cacheMiddleware(() => _cacheKey('stats'), CACHE_TTL.stats), (req, res) => {
   try {
     const stats = agentWalletManager.getStats();
     res.json({
@@ -58,7 +124,10 @@ router.get('/stats', (req, res) => {
 /**
  * GET /api/v1/wallet/balance/:address
  */
-router.get('/balance/:address', (req, res) => {
+router.get('/balance/:address', cacheMiddleware(
+  (req) => _cacheKey('balance', req.params.address),
+  CACHE_TTL.balance
+), (req, res) => {
   try {
     const { address } = req.params;
 
@@ -145,7 +214,10 @@ router.get('/balance/:address', (req, res) => {
 /**
  * GET /api/v1/wallet/history/:address
  */
-router.get('/history/:address', (req, res) => {
+router.get('/history/:address', cacheMiddleware(
+  (req) => _cacheKey('history', req.params.address, req.query.limit || '20', req.query.offset || '0'),
+  CACHE_TTL.history
+), (req, res) => {
   try {
     const { address } = req.params;
     const { limit = 20, offset = 0 } = req.query;
@@ -315,6 +387,21 @@ router.post('/transfer', async (req, res) => {
       agentWalletManager._saveRegistry?.();
     }
 
+    // 缓存失效
+    _cacheDelPrefix(_cacheKey('balance', fromAddress));
+    _cacheDelPrefix(_cacheKey('history', fromAddress));
+    _cacheDelPrefix(_cacheKey('info', fromAddress));
+    _cacheDelPrefix(_cacheKey('balance', toAddress));
+    _cacheDelPrefix(_cacheKey('history', toAddress));
+    _cacheDelPrefix(_cacheKey('info', toAddress));
+    if (fromAgentId) {
+      _cacheDelPrefix(_cacheKey('agentBalance', fromAgentId));
+      _cacheDelPrefix(_cacheKey('agentHistory', fromAgentId));
+      _cacheDelPrefix(_cacheKey('agentDetails', fromAgentId));
+    }
+    _cacheDelPrefix(_cacheKey('stats'));
+    _cacheDelPrefix(_cacheKey('agentStats'));
+
     res.status(201).json({
       success: true,
       transaction: {
@@ -337,7 +424,10 @@ router.post('/transfer', async (req, res) => {
 /**
  * GET /api/v1/wallet/info/:address
  */
-router.get('/info/:address', (req, res) => {
+router.get('/info/:address', cacheMiddleware(
+  (req) => _cacheKey('info', req.params.address),
+  CACHE_TTL.info
+), (req, res) => {
   try {
     const { address } = req.params;
 
@@ -419,7 +509,10 @@ router.get('/info/:address', (req, res) => {
  * GET /api/v1/wallet/agent/list
  * 列出所有Agent钱包
  */
-router.get('/agent/list', (req, res) => {
+router.get('/agent/list', cacheMiddleware(
+  () => _cacheKey('agentList'),
+  CACHE_TTL.info
+), (req, res) => {
   try {
     const wallets = agentWalletManager.listAllWallets();
     const addresses = agentWalletManager.listAllAddresses();
@@ -440,7 +533,10 @@ router.get('/agent/list', (req, res) => {
  * GET /api/v1/wallet/agent/stats
  * Agent钱包统计
  */
-router.get('/agent/stats', (req, res) => {
+router.get('/agent/stats', cacheMiddleware(
+  () => _cacheKey('agentStats'),
+  CACHE_TTL.stats
+), (req, res) => {
   try {
     const stats = agentWalletManager.getStats();
     res.json({
@@ -471,6 +567,11 @@ router.post('/agent/create', async (req, res) => {
       capabilities
     });
 
+    // 缓存失效：新钱包创建后列表和统计都变了
+    _cacheDelPrefix(_cacheKey('agentList'));
+    _cacheDelPrefix(_cacheKey('agentStats'));
+    _cacheDelPrefix(_cacheKey('stats'));
+
     res.status(201).json({
       success: true,
       wallet
@@ -485,7 +586,10 @@ router.post('/agent/create', async (req, res) => {
  * GET /api/v1/wallet/agent/:agentId
  * 获取Agent钱包信息
  */
-router.get('/agent/:agentId', (req, res) => {
+router.get('/agent/:agentId', cacheMiddleware(
+  (req) => _cacheKey('agentDetails', req.params.agentId),
+  CACHE_TTL.agentDetails
+), (req, res) => {
   try {
     const { agentId } = req.params;
     const wallet = agentWalletManager.getAgentWallet(agentId);
@@ -531,7 +635,10 @@ router.get('/agent/:agentId/balance', (req, res) => {
  * 返回 onboarding 状态、风险等级、3 种建议操作。前端用此决定是否显示黄色横幅。
  * 无需鉴权（read-only，不泄露私钥）。
  */
-router.get('/agent/:agentId/security-status', (req, res) => {
+router.get('/agent/:agentId/security-status', cacheMiddleware(
+  (req) => _cacheKey('securityStatus', req.params.agentId),
+  CACHE_TTL.securityStatus
+), (req, res) => {
   try {
     const { agentId } = req.params;
     if (!agentWalletManager.getAgentWallet(agentId)) {
@@ -607,6 +714,9 @@ router.post('/agent/:agentId/onboarding/complete', async (req, res) => {
     if (!result.success) {
       return res.status(400).json({ success: false, error: result.error });
     }
+    // 缓存失效：安全引导状态变更
+    _cacheDelPrefix(_cacheKey('securityStatus', agentId));
+    _cacheDelPrefix(_cacheKey('agentDetails', agentId));
     res.json({
       success: true,
       agentId,
@@ -693,6 +803,25 @@ router.post('/agent/transfer', async (req, res) => {
           });
         }
       } catch (_) { /* ignore */ }
+      // 缓存失效：清除发送方和接收方的相关缓存
+      _cacheDelPrefix(_cacheKey('agentBalance', fromAgentId));
+      _cacheDelPrefix(_cacheKey('agentHistory', fromAgentId));
+      _cacheDelPrefix(_cacheKey('agentDetails', fromAgentId));
+      _cacheDelPrefix(_cacheKey('balance', result.from));
+      _cacheDelPrefix(_cacheKey('history', result.from));
+      _cacheDelPrefix(_cacheKey('info', result.from));
+      if (toAgentId) {
+        _cacheDelPrefix(_cacheKey('agentBalance', toAgentId));
+        _cacheDelPrefix(_cacheKey('agentHistory', toAgentId));
+        _cacheDelPrefix(_cacheKey('agentDetails', toAgentId));
+      }
+      if (result.to) {
+        _cacheDelPrefix(_cacheKey('balance', result.to));
+        _cacheDelPrefix(_cacheKey('history', result.to));
+        _cacheDelPrefix(_cacheKey('info', result.to));
+      }
+      _cacheDelPrefix(_cacheKey('stats'));
+      _cacheDelPrefix(_cacheKey('agentStats'));
       res.status(201).json(result);
     } else {
       res.status(400).json(result);
@@ -734,6 +863,28 @@ router.post('/agent/batch-transfer', async (req, res) => {
 
     const result = await agentWalletManager.batchTransfer(fromAgentId, transfers);
 
+    // 缓存失效：批量转账成功后清除发送方和所有接收方缓存
+    if (result.success) {
+      _cacheDelPrefix(_cacheKey('agentBalance', fromAgentId));
+      _cacheDelPrefix(_cacheKey('agentHistory', fromAgentId));
+      _cacheDelPrefix(_cacheKey('agentDetails', fromAgentId));
+      if (Array.isArray(result.results)) {
+        for (const r of result.results) {
+          if (r.toAgentId) {
+            _cacheDelPrefix(_cacheKey('agentBalance', r.toAgentId));
+            _cacheDelPrefix(_cacheKey('agentHistory', r.toAgentId));
+            _cacheDelPrefix(_cacheKey('agentDetails', r.toAgentId));
+          }
+          if (r.to) {
+            _cacheDelPrefix(_cacheKey('balance', r.to));
+            _cacheDelPrefix(_cacheKey('history', r.to));
+          }
+        }
+      }
+      _cacheDelPrefix(_cacheKey('stats'));
+      _cacheDelPrefix(_cacheKey('agentStats'));
+    }
+
     res.status(201).json(result);
   } catch (error) {
     console.error('[Wallet API] Agent batch transfer error:', error.message);
@@ -745,7 +896,10 @@ router.post('/agent/batch-transfer', async (req, res) => {
  * GET /api/v1/wallet/agent/:agentId/history
  * Agent交易历史
  */
-router.get('/agent/:agentId/history', (req, res) => {
+router.get('/agent/:agentId/history', cacheMiddleware(
+  (req) => _cacheKey('agentHistory', req.params.agentId, req.query.limit || '20', req.query.offset || '0'),
+  CACHE_TTL.history
+), (req, res) => {
   try {
     const { agentId } = req.params;
     const { limit = 20, offset = 0 } = req.query;
@@ -813,6 +967,16 @@ router.post('/agent/:agentId/claim', async (req, res) => {
     const result = await agentWalletManager.claimFaucet(agentId, ip);
 
     if (result.success) {
+      // 缓存失效
+      _cacheDelPrefix(_cacheKey('agentBalance', agentId));
+      _cacheDelPrefix(_cacheKey('agentHistory', agentId));
+      _cacheDelPrefix(_cacheKey('agentDetails', agentId));
+      if (result.wallet?.address) {
+        _cacheDelPrefix(_cacheKey('balance', result.wallet.address));
+        _cacheDelPrefix(_cacheKey('history', result.wallet.address));
+      }
+      _cacheDelPrefix(_cacheKey('stats'));
+      _cacheDelPrefix(_cacheKey('agentStats'));
       res.json({
         success: true,
         message: 'Faucet tokens claimed',
@@ -878,6 +1042,15 @@ router.post('/agent/import', (req, res) => {
       return res.status(400).json({ success: false, error: 'Import failed (wrong password?)' });
     }
 
+    // 缓存失效：导入钱包后清除该 agent 的所有缓存
+    _cacheDelPrefix(_cacheKey('agentBalance', agentId));
+    _cacheDelPrefix(_cacheKey('agentHistory', agentId));
+    _cacheDelPrefix(_cacheKey('agentDetails', agentId));
+    _cacheDelPrefix(_cacheKey('securityStatus', agentId));
+    _cacheDelPrefix(_cacheKey('agentList'));
+    _cacheDelPrefix(_cacheKey('agentStats'));
+    _cacheDelPrefix(_cacheKey('stats'));
+
     res.json({
       success: true,
       message: `Wallet imported for agent ${agentId}`
@@ -891,7 +1064,10 @@ router.post('/agent/import', (req, res) => {
 /**
  * GET /api/v1/wallet/assets
  */
-router.get('/assets', (req, res) => {
+router.get('/assets', cacheMiddleware(
+  () => _cacheKey('assets'),
+  CACHE_TTL.assets
+), (req, res) => {
   res.json({
     success: true,
     assets: [

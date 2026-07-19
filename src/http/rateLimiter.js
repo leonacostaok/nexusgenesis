@@ -7,7 +7,13 @@ const RATE_LIMIT_BY_ENDPOINT = {
   '/api/agents/register': 50,
   '/api/agents/openai': 80,
   '/api/agents/anthropic': 80,
-  '/api/agents/heartbeat': 120
+  '/api/agents/heartbeat': 120,
+  // Wallet read endpoints — generous limits for frontend UX
+  '/wallet/health': 200,
+  '/wallet/stats': 100,
+  '/wallet/assets': 100,
+  '/wallet/agent/list': 60,
+  '/wallet/agent/stats': 60
 };
 
 const EXEMPT_ENDPOINTS = new Set([
@@ -37,12 +43,36 @@ const EXEMPT_PREFIXES = [
   '/api/v1/bootstrap/validators/:id/heartbeat'
 ];
 
+const PERMISSIVE_PREFIXES = [
+  '/api/v1/wallet/health',
+  '/api/v1/wallet/stats',
+  '/api/v1/wallet/assets',
+  '/api/v1/wallet/balance/',
+  '/api/v1/wallet/history/',
+  '/api/v1/wallet/info/',
+  '/api/v1/wallet/agent/',
+  '/api/wallet/health',
+  '/api/wallet/stats',
+  '/api/wallet/assets',
+  '/api/wallet/balance/',
+  '/api/wallet/history/',
+  '/api/wallet/info/',
+  '/api/wallet/agent/',
+  '/api/v1/transactions',
+  '/api/v1/bridge/chains',
+  '/api/v1/bridge/status',
+  '/api/v1/bridge/validators',
+  '/api/v1/bridge/transfers/',
+  '/api/v1/bridge/events',
+  '/api/v1/bridge/light-client/status'
+];
+
 const AGENT_RATE_LIMITS = {
   validator: 300,
-  high_reputation: 60,
-  medium_reputation: 40,
-  low_reputation: 20,
-  new_agent: 10
+  high_reputation: 120,
+  medium_reputation: 80,
+  low_reputation: 50,
+  new_agent: 30
 };
 
 class RateLimiter {
@@ -87,7 +117,7 @@ class RateLimiter {
         }
       }
 
-      const result = this._checkIpLimit(ip, endpoint, now, req);
+      const result = this._checkIpLimit(ip, endpoint, now, req, fullPath);
       if (!result.allowed) {
         this.totalBlocked++;
         res.setHeader('Retry-After', result.retryAfter);
@@ -129,24 +159,54 @@ class RateLimiter {
     };
   }
 
-  _checkIpLimit(ip, endpoint, now, req) {
+  _checkIpLimit(ip, endpoint, now, req, fullPath) {
+    // Permissive paths: GET requests to wallet read endpoints
+    // Use ipMax limit directly, do not consume agent tier quota
+    const isPermissive = req.method === 'GET' &&
+      PERMISSIVE_PREFIXES.some(p => fullPath.startsWith(p));
+
     if (!this.ipRecords.has(ip)) {
       this.ipRecords.set(ip, {
-        count: 1,
+        count: 0,
+        permissiveCount: 0,
         lastReset: now,
         endpoints: { [endpoint]: 1 },
         agentType: 'new_agent'
       });
+      if (isPermissive) {
+        this.ipRecords.get(ip).permissiveCount = 1;
+      } else {
+        this.ipRecords.get(ip).count = 1;
+      }
       return { allowed: true, limit: this.ipMax, remaining: this.ipMax - 1 };
     }
 
     const info = this.ipRecords.get(ip);
 
     if (now - info.lastReset > this.window) {
-      info.count = 1;
+      info.count = 0;
+      info.permissiveCount = 0;
       info.lastReset = now;
       info.endpoints = { [endpoint]: 1 };
+      if (isPermissive) {
+        info.permissiveCount = 1;
+      } else {
+        info.count = 1;
+      }
       return { allowed: true, limit: this.ipMax, remaining: this.ipMax - 1 };
+    }
+
+    if (isPermissive) {
+      info.permissiveCount++;
+      if (info.permissiveCount > this.ipMax) {
+        const retryAfter = Math.ceil((this.window - (now - info.lastReset)) / 1000);
+        return { allowed: false, reason: 'IP rate limit exceeded', retryAfter, limit: this.ipMax, remaining: 0 };
+      }
+      return {
+        allowed: true,
+        limit: this.ipMax,
+        remaining: this.ipMax - info.permissiveCount
+      };
     }
 
     info.count++;
@@ -190,7 +250,7 @@ class RateLimiter {
     for (const [ip, info] of this.ipRecords.entries()) {
       if (now - info.lastReset < this.window) {
         activeIPs++;
-        totalRequests += info.count;
+        totalRequests += info.count + (info.permissiveCount || 0);
       }
     }
 

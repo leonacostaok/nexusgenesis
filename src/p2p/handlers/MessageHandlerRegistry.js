@@ -4,6 +4,7 @@ import { TransactionHandler } from './TransactionHandler.js';
 import { HandshakeHandler } from './HandshakeHandler.js';
 import { BlockchainMessageHandler, NodeListHandler } from './BlockchainMessageHandler.js';
 import { LightClientMessageHandler } from './LightClientMessageHandler.js';
+import { StateSyncMessageHandler } from './StateSyncMessageHandler.js';
 
 /**
  * MessageHandlerRegistry
@@ -50,6 +51,10 @@ export class MessageHandlerRegistry {
     this.register('PROTOCOL_ERROR', new BlockchainMessageHandler(this.p2pServer));
     this.register('PONG', new BlockchainMessageHandler(this.p2pServer));
     this.register('PING', new BlockchainMessageHandler(this.p2pServer));
+    
+    // 状态同步MessageHandler
+    this.register('STATE_SYNC_REQUEST', new StateSyncMessageHandler(this.p2pServer));
+    this.register('STATE_SYNC_RESPONSE', new StateSyncMessageHandler(this.p2pServer));
     
     // 轻客户端MessageHandler
     this.register('LIGHT_CLIENT_HELLO', new LightClientMessageHandler(this.p2pServer));

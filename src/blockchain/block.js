@@ -115,10 +115,11 @@ export class Block {
 export function createGenesisBlock() {
   const genesisTransactions = [];
   
+  // Fixed timestamp for deterministic genesis block hash
   return new Block(
     '0x0000000000000000000000000000000000000000000000000000000000000000',
     0,
-    Date.now(),
+    0,
     genesisTransactions
   );
 }

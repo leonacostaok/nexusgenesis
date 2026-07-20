@@ -1960,7 +1960,8 @@ console.log('[HTTP Server] AINVM contract routes mounted on /api/v1/ainvm');
 
 // Wallet REST API
 app.use('/api/v1/wallet', walletRoutes);
-console.log('[HTTP Server] Wallet routes mounted on /api/v1/wallet');
+app.use('/api/wallet', walletRoutes);
+console.log('[HTTP Server] Wallet routes mounted on /api/v1/wallet and /api/wallet (compat)');
 
 app.use('/api/v1/hub', agentHubRoutes);
 console.log('[HTTP Server] Agent Hub routes mounted on /api/v1/hub');

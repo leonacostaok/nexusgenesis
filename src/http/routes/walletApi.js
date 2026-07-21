@@ -254,9 +254,18 @@ router.post('/agent/migrate-to-self-custody', (req, res) => {
     // 导出加密钱包
     const encrypted = agentWalletManager.exportAgentWallet(agentId, password);
     if (!encrypted) {
-      return res.status(400).json({
-        success: false,
-        error: 'Export failed (wrong password?)'
+      // 浏览器生成的密钥：私钥从未在服务器上，用户已从浏览器保存
+      return res.json({
+        success: true,
+        message: 'This agent was registered with a browser-generated key. Private key was never on the server.',
+        data: {
+          address: entry.wallet.address,
+          publicKeyHex: entry.wallet.publicKey.toString('hex'),
+          agentId,
+          custody: 'self-custodied (browser-generated)',
+          note: 'Your private key was generated in your browser and never stored on this server. It should be saved in your browser localStorage under ng_wallet_<agentId>.',
+          nextStep: 'Migration already complete — no action needed.'
+        }
       });
     }
 
@@ -304,10 +313,34 @@ router.post('/agent/self-custody', async (req, res) => {
       });
     }
 
+    // 如果是浏览器生成的密钥（privateKey === null），直接标记为自持
+    if (!entry.wallet.privateKey) {
+      entry.metadata.custody = 'self-custodied';
+      entry.metadata.migratedAt = new Date().toISOString();
+      await agentWalletManager._saveRegistry();
+      
+      _cacheDelPrefix(_cacheKey('agentDetails', agentId));
+      _cacheDelPrefix(_cacheKey('securityStatus', agentId));
+      
+      return res.json({
+        success: true,
+        message: 'Browser-generated key already in self-custody. Status updated.',
+        data: {
+          agentId,
+          custody: 'self-custodied',
+          migratedAt: entry.metadata.migratedAt,
+          note: 'This key was generated in the browser and never stored on the server.'
+        }
+      });
+    }
+
     // 验证签名（证明 Agent 拥有私钥）
     const { verify } = await import('../../crypto/pqc.js');
     const sigBuffer = Buffer.from(signature, 'hex');
-    const pubKeyBuffer = Buffer.from(entry.wallet.publicKey, 'hex');
+    // publicKey 已经是 Buffer 类型，不需要再从 hex 转换（修复签名验证 Bug）
+    const pubKeyBuffer = entry.wallet.publicKey instanceof Buffer 
+      ? entry.wallet.publicKey 
+      : Buffer.from(entry.wallet.publicKey, 'hex');
     
     const isValid = await verify(signedMessage, sigBuffer, pubKeyBuffer);
     if (!isValid) {

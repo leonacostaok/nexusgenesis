@@ -254,6 +254,11 @@ export class PQCWallet extends Wallet {
    * @returns {object} 加密的envelope
    */
   exportEncrypted(password) {
+    // 如果 privateKey 为 null（浏览器生成的密钥），无法导出加密钱包
+    // 因为私钥从未在服务器上
+    if (!this.privateKey) {
+      return null;
+    }
     return encryptPrivateKey(this.privateKey, password, {
       address: this.address,
       publicKey: this.publicKey.toString('hex')

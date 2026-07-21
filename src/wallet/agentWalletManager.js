@@ -350,8 +350,17 @@ class AgentWalletManager {
         case KEY_MODELS.HYBRID:
         case KEY_MODELS.SELF_SOVEREIGN: {
           // 新模式：需要主密钥或提供的密钥对
-          if (publicKeyHex && privateKeyHex) {
-            // 用户提供公私钥对
+          if (publicKeyHex && !privateKeyHex) {
+            // 用户只发送公钥（浏览器本地生成密钥对）
+            // 私钥永远不在服务器上
+            const publicKey = Buffer.from(publicKeyHex, 'hex');
+            
+            wallet = new PQCWallet(publicKey, null, initialBalance);
+            opKeyFingerprint = calculateKeyFingerprint(publicKey);
+            
+            console.log(`[Wallet] Agent ${agentId} registered with browser-generated key (public key only, private key stays local)`);
+          } else if (publicKeyHex && privateKeyHex) {
+            // 用户提供公私钥对（旧模式，向后兼容）
             const publicKey = Buffer.from(publicKeyHex, 'hex');
             const privateKey = Buffer.from(privateKeyHex, 'hex');
             
@@ -384,7 +393,7 @@ class AgentWalletManager {
             // 本地加密存储操作密钥
             await this._storeOpKeyLocally(agentId, privateKey, metadata);
           } else {
-            throw new Error('Either masterKey or publicKeyHex+privateKeyHex is required');
+            throw new Error('Provide publicKeyHex (recommended) or publicKeyHex+privateKeyHex (legacy) or masterKeyHex.');
           }
           break;
         }

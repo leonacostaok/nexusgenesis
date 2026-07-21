@@ -675,13 +675,40 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
     
     // 验证请求中的密钥参数
     if (keyModel === KEY_MODELS.HYBRID || keyModel === KEY_MODELS.SELF_SOVEREIGN) {
-      const { publicKeyHex, privateKeyHex, masterKeyHex } = req.body;
+      const { publicKeyHex, privateKeyHex, masterKeyHex, registeredVia } = req.body;
       
-      if (publicKeyHex && privateKeyHex) {
-        // 用户提供公私钥对（推荐方式）
-        console.log(`[bootstrap] Registering agent ${agent_identity} with user-provided keys (keyModel=${keyModel})`);
+      let walletInfo;
+      
+      if (publicKeyHex && !privateKeyHex) {
+        // 新模式：用户只在浏览器生成密钥对，只发送公钥给服务器
+        // 私钥永远留在用户本地（localStorage / 加密备份）
+        console.log(`[bootstrap] Registering agent ${agent_identity} with PUBLIC KEY ONLY (keyModel=${keyModel}, via=${registeredVia})`);
         
-        const walletInfo = await agentWalletManager.registerAgentWithKeyModel(agent_identity, {
+        walletInfo = await agentWalletManager.registerAgentWithKeyModel(agent_identity, {
+          keyModel,
+          publicKeyHex,
+          metadata: {
+            capabilities,
+            referrer: referrer || 'genesis',
+            registeredVia: registeredVia || 'bootstrap-api',
+            earlyBird: isEarlyBird,
+            keyOrigin: 'browser-generated'
+          },
+          initialBalance
+        });
+        
+        // 扣除注册费
+        const agentWallet = agentWalletManager.getWalletInstance(agent_identity);
+        if (agentWallet) {
+          agentWallet.balance -= REGISTRATION_FEE;
+          agentWallet.nonce++;
+          agentWalletManager._saveRegistry?.();
+        }
+      } else if (publicKeyHex && privateKeyHex) {
+        // 旧模式：用户提供完整密钥对（向后兼容）
+        console.log(`[bootstrap] Registering agent ${agent_identity} with full keys (keyModel=${keyModel})`);
+        
+        walletInfo = await agentWalletManager.registerAgentWithKeyModel(agent_identity, {
           keyModel,
           publicKeyHex,
           privateKeyHex,
@@ -694,22 +721,18 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
           initialBalance
         });
         
-        // 扣除注册费
         const agentWallet = agentWalletManager.getWalletInstance(agent_identity);
         if (agentWallet) {
           agentWallet.balance -= REGISTRATION_FEE;
           agentWallet.nonce++;
           agentWalletManager._saveRegistry?.();
         }
-        
-        // 继续后面的链上注册流程...
-        // (walletInfo 已包含 address, publicKey 等信息)
       } else if (masterKeyHex) {
         // 从主密钥派生（需要服务器端主密钥）
         console.log(`[bootstrap] Deriving op key from master key for agent ${agent_identity}`);
         
         const masterKey = Buffer.from(masterKeyHex, 'hex');
-        const walletInfo = await agentWalletManager.registerAgentWithKeyModel(agent_identity, {
+        walletInfo = await agentWalletManager.registerAgentWithKeyModel(agent_identity, {
           keyModel,
           masterKey,
           metadata: {
@@ -730,9 +753,9 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
       } else {
         return res.status(400).json({
           success: false,
-          error: 'Missing key material. Provide either publicKeyHex+privateKeyHex or masterKeyHex.',
+          error: 'Missing key material. Provide publicKeyHex (recommended) or publicKeyHex+privateKeyHex (legacy) or masterKeyHex.',
           error_code: 'MISSING_KEY_MATERIAL',
-          hint: 'For hybrid mode: send { publicKeyHex, privateKeyHex } or { masterKeyHex }',
+          hint: 'For hybrid mode: send { publicKeyHex } — private key stays in your browser. Or { publicKeyHex, privateKeyHex } for legacy.',
           docs: '/docs/wallet-architecture.md'
         });
       }

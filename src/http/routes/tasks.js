@@ -323,22 +323,44 @@ export function setupTaskRoutes(app) {
   });
 
   app.post('/api/tasks/proposals/:id/approve', async (req, res) => {
-    if (!verifyBypassSecret(req)) {
-      return res.status(403).json({ success: false, error: 'Approval requires admin bypass-secret authentication', error_code: 'ADMIN_REQUIRED' });
-    }
-
     const proposal = taskProposals.get(req.params.id);
     if (!proposal) return res.status(404).json({ success: false, error: 'Proposal not found', error_code: 'NOT_FOUND' });
     if (proposal.status !== 'pending') {
       return res.status(409).json({ success: false, error: `Proposal already ${proposal.status}`, error_code: 'INVALID_STATE' });
     }
 
+    // 投票达标自动发布：up votes > down votes 且 up >= 3
+    const totalVotes = proposal.votes.up + proposal.votes.down;
+    if (totalVotes === 0) {
+      return res.status(400).json({ success: false, error: 'Need at least 1 vote to approve a proposal', error_code: 'NO_VOTES' });
+    }
+    if (proposal.votes.up <= proposal.votes.down) {
+      return res.status(400).json({ success: false, error: 'Proposal rejected: down votes >= up votes', error_code: 'PROPOSAL_REJECTED' });
+    }
+    if (proposal.votes.up < 3) {
+      return res.status(400).json({ success: false, error: `Insufficient up votes: ${proposal.votes.up}/3 required`, error_code: 'INSUFFICIENT_UP_VOTES' });
+    }
+
+    // 投票达标 → 自动批准并发布
     proposal.status = 'approved';
-    proposal.reviewer = req.body?.reviewer || 'admin';
-    proposal.reviewComment = req.body?.comment || '';
+    proposal.autoApproved = true;
     proposal.reviewedAt = new Date().toISOString();
 
-    res.json({ success: true, proposal, message: 'Proposal approved. system-task-publisher will pick it up and publish.' });
+    // 通过 TaskProtocol 直接发布任务（由 Swarm Pool 出资）
+    const protocol = getTaskProtocol();
+    try {
+      const node = req.app.locals.node;
+      const result = protocol.publishFromProposal(proposal);
+      if (result.success) {
+        console.log(`[Task] Proposal ${proposal.id} auto-approved (${proposal.votes.up} up, ${proposal.votes.down} down) → published as task ${result.task.id}`);
+      } else {
+        console.error(`[Task] Failed to publish approved proposal ${proposal.id}: ${result.reason}`);
+      }
+    } catch (e) {
+      console.error(`[Task] Error publishing approved proposal ${proposal.id}:`, e.message);
+    }
+
+    res.json({ success: true, proposal, message: 'Proposal auto-approved and task published. Swarm Pool funded.' });
   });
 
   app.get('/api/tasks/:id', (req, res) => {

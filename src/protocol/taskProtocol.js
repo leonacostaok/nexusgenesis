@@ -404,6 +404,114 @@ class TaskProtocol {
   }
 
   /**
+   * Publish a task from an auto-approved proposal (Swarm Pool funded).
+   * Called when a proposal gets >= 3 up votes and more ups than downs.
+   * @param {object} proposal - Approved proposal object
+   * @returns {{ success: boolean, task?: object, reason?: string }}
+   */
+  publishFromProposal(proposal) {
+    if (!proposal || proposal.status !== 'approved') {
+      return { success: false, reason: 'Proposal must be approved', errorCode: 'PROPOSAL_NOT_APPROVED' };
+    }
+
+    const reward = Math.max(parseInt(proposal.suggestedReward) || 10, 5);
+    const taskId = crypto.randomUUID().replace(/-/g, '').slice(0, 32);
+    const now = Date.now();
+
+    // Resolve proposer address
+    let proposerAddress = null;
+    if (this.node && this.node.resolveRegisteredAgent) {
+      proposerAddress = this._resolveProposerAddress(proposal.proposer);
+    }
+    if (!proposerAddress) {
+      proposerAddress = 'ng1swarmpool000000000000000000000000000';
+    }
+
+    const task = {
+      id: taskId,
+      title: String(proposal.title).slice(0, 200),
+      description: String(proposal.description).slice(0, 2000),
+      requiredCapabilities: proposal.requiredCapabilities || [],
+      taskType: proposal.taskType || 'general',
+      minReputation: 0,
+      reward: reward.toString(),
+      publisher: proposerAddress,
+      sourceProposalId: proposal.id,
+      publishedAt: now,
+      status: TASK_STATUS.OPEN,
+      claimedBy: null,
+      claimedAt: null,
+      submittedAt: null,
+      verifiedAt: null,
+      completedAt: null,
+      escrowed: true,
+      trustTier: 'unproven',
+      challengeWindowMs: null,
+      challengeDeadline: null,
+      transactionHistory: [{
+        type: TXN_TYPES.TASK_PUBLISH,
+        timestamp: now,
+        by: proposerAddress,
+        data: { title: proposal.title, reward, taskType: proposal.taskType, source: 'proposal' }
+      }]
+    };
+
+    // Fund from Swarm Pool (no escrow needed — system funded)
+    const SWARM_POOL_ADDR = 'ng1swarmpool000000000000000000000000000';
+    const ESCROW_ADDR = 'ng1escrow0000000000000000000000000000000';
+    const rewardBigInt = BigInt(reward);
+
+    // Only subtract balance if publisher is NOT Swarm Pool
+    if (proposerAddress !== SWARM_POOL_ADDR && this.node && this.node.currentState) {
+      const publisherBalance = BigInt(this.node.currentState.getBalance(proposerAddress));
+      if (publisherBalance < rewardBigInt) {
+        // Fallback: use Swarm Pool instead
+        task.publisher = SWARM_POOL_ADDR;
+      } else {
+        this.node.currentState.subtractBalance(proposerAddress, rewardBigInt.toString());
+        this.node.currentState.addBalance(ESCROW_ADDR, rewardBigInt.toString());
+        if (this.node.currentState.recordAuditEvent) {
+          this.node.currentState.recordAuditEvent({
+            tx_type: TX_TYPE.TASK_REWARD,
+            from: proposerAddress,
+            to: ESCROW_ADDR,
+            amount: rewardBigInt.toString(),
+            blockHeight: 0,
+            metadata: { event: 'TASK_ESCROW', taskId, source: 'proposal' }
+          });
+        }
+      }
+    }
+
+    this.tasks.set(taskId, task);
+    this._saveTasks();
+
+    if (this.node) {
+      this._recordOnChain(taskId, TXN_TYPES.TASK_PUBLISH, task.publisher, { title: proposal.title, reward, source: 'proposal' });
+    }
+
+    console.log(`[TaskProtocol] Published from proposal ${proposal.id}: task ${taskId} (${proposal.title}) by ${task.publisher.slice(0, 12)}..., reward=${reward} NGEN`);
+    return { success: true, task: this._sanitizeTask(task) };
+  }
+
+  /**
+   * Resolve proposer identity string to actual agent address.
+   */
+  _resolveProposerAddress(identityOrAddress) {
+    if (!identityOrAddress || !this.node || !this.node.resolveRegisteredAgent) {
+      return null;
+    }
+    // Try as direct address first
+    let agent = this.node.resolveRegisteredAgent(identityOrAddress);
+    if (agent) return agent.address || identityOrAddress;
+    // Try as identity
+    for (const [id, rec] of this.node.agentRegistry.agents.entries()) {
+      if (rec.identity === identityOrAddress) return rec.address || identityOrAddress;
+    }
+    return identityOrAddress;
+  }
+
+  /**
    * Claim an open task.
    * @param {string} agentAddress - Agent claiming the task
    * @param {string} taskId - Task ID

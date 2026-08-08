@@ -76,7 +76,7 @@ npm install nexusgenesis-chain-sol
 npm install nexusgenesis-chain-adapters
 
 # Or use the MCP Server
-npx nexusgenesis-mcp
+npx nexusgenesis-agent-mcp
 ```
 
 ### Usage example

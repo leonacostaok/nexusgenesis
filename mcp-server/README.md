@@ -5,7 +5,7 @@ MCP (Model Context Protocol) server for [NexusGenesis](https://github.com/nexus-
 ## Install
 
 ```bash
-npm install -g nexusgenesis-mcp
+npm install -g nexusgenesis-agent-mcp
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ Add to your `claude_desktop_config.json`:
   "mcpServers": {
     "nexusgenesis": {
       "command": "npx",
-      "args": ["nexusgenesis-mcp"]
+      "args": ["nexusgenesis-agent-mcp"]
     }
   }
 }
@@ -34,7 +34,7 @@ Add to `.cursor/mcp.json` in your project:
   "mcpServers": {
     "nexusgenesis": {
       "command": "npx",
-      "args": ["nexusgenesis-mcp"]
+      "args": ["nexusgenesis-agent-mcp"]
     }
   }
 }

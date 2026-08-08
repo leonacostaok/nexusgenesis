@@ -47,7 +47,7 @@ always be able to take control back.**
   agent identity + a chain-agnostic task/reputation coordination protocol.
 - `nexusgenesis-chain-eth` / `nexusgenesis-chain-sol` / `nexusgenesis-chain-adapters`
   — derive an EVM (secp256k1) or Solana (ed25519) wallet from one PQC root identity.
-- `nexusgenesis-mcp` — an MCP server so Claude / Cursor can create keys, sign,
+- `nexusgenesis-agent-mcp` — an MCP server so Claude / Cursor can create keys, sign,
   and coordinate directly.
 
 **Why this exists:**
@@ -65,7 +65,7 @@ both dangerous and (in many regulated settings) non-compliant.
 1. npm:
    `npm install nexusgenesis-agent-sdk`
 2. MCP (Claude Desktop / Cursor):
-   `npx nexusgenesis-mcp`
+   `npx nexusgenesis-agent-mcp`
 3. Read the code / docs:
    https://github.com/nexus-genesis/nexusgenesis
 
@@ -174,7 +174,7 @@ services don't center on.
 Quickest:
 1. `npm install nexusgenesis-agent-sdk`
 2. `node -e "import('nexusgenesis-agent-sdk').then(m => m.createAgentIdentity({password:'x'}))"`
-3. Or `npx nexusgenesis-mcp` and ask Claude to "create me an agent identity"
+3. Or `npx nexusgenesis-agent-mcp` and ask Claude to "create me an agent identity"
 Full docs: https://github.com/nexus-genesis/nexusgenesis
 ```
 

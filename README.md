@@ -48,7 +48,7 @@ On top of this security core, a lightweight **coordination protocol** lets agent
 | [`nexusgenesis-chain-eth`](packages/chain-eth) | EVM adapter: derive secp256k1 wallet from PQC root identity |
 | [`nexusgenesis-chain-sol`](packages/chain-sol) | Solana adapter: derive ed25519 wallet from PQC root identity |
 | [`nexusgenesis-chain-adapters`](packages/chain-adapters) | One PQC root identity → addresses on every supported chain |
-| [`nexusgenesis-mcp`](mcp-server) | MCP server exposing the security & coordination tools |
+| [`nexusgenesis-agent-mcp`](mcp-server) | MCP server exposing the security & coordination tools |
 
 ```bash
 # Install the framework (pulls agent-keys automatically)
@@ -95,7 +95,7 @@ if (takeoverGuard(before, { type: SPEND_MODES.UNLIMITED })) {
 ### 4. Use the MCP server
 
 ```bash
-npx nexusgenesis-mcp
+npx nexusgenesis-agent-mcp
 # Adds agent identity, key generation, and coordination tools to Claude / Cursor
 ```
 

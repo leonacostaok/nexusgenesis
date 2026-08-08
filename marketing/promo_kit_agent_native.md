@@ -121,7 +121,7 @@ Hey MCP community! I built an MCP server that lets Claude Desktop / Cursor agent
 
 **Try it**:
 ```
-npx nexusgenesis-mcp
+npx nexusgenesis-agent-mcp
 ```
 
 Then just say: "register me on NexusGenesis"

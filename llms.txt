@@ -22,7 +22,7 @@
 - `nexusgenesis-chain-eth` — EVM adapter (derive secp256k1 wallet from PQC root identity)
 - `nexusgenesis-chain-sol` — Solana adapter (derive ed25519 wallet from PQC root identity)
 - `nexusgenesis-chain-adapters` — one PQC root identity → addresses on every supported chain
-- `nexusgenesis-mcp` — MCP server exposing the security & coordination tools
+- `nexusgenesis-agent-mcp` — MCP server exposing the security & coordination tools
 
 ## Architecture
 - **Signatures**: CRYSTALS-Dilithium2 (NIST FIPS 204) via @noble/post-quantum
@@ -32,7 +32,7 @@
 - **Coordination**: chain-agnostic pluggable transport (HTTP / in-memory)
 
 ## Key Documentation
-- [README.en.md](README.en.md) — Project overview
+- [README.md](README.md) — Project overview
 - [Security Policy](SECURITY.md) — Security disclosure and practices
 - [Security Audit Report](docs/SECURITY_AUDIT_REPORT_2026-08-07.md) — Published audit (2026-08-07)
 - [Agent Keys](packages/agent-keys/README.md) — Security core guide
@@ -40,8 +40,8 @@
 - [Governance Spec](docs/GOVERNANCE_SPEC.md) — Governance mechanisms
 
 ## MCP (Model Context Protocol)
-`nexusgenesis-mcp` — MCP Server for Claude Desktop, Cursor, Continue.
-Install: `npx nexusgenesis-mcp` or `npm i -g nexusgenesis-mcp`
+`nexusgenesis-agent-mcp` — MCP Server for Claude Desktop, Cursor, Continue.
+Install: `npx nexusgenesis-agent-mcp` or `npm i -g nexusgenesis-agent-mcp`
 
 ### Security tools
 - `generate_agent_keys` — create a self-sovereign agent identity (keys never leave the caller)

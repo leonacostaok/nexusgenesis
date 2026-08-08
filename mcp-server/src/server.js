@@ -228,7 +228,7 @@ const TOOLS = [
  */
 export function createServer() {
   const server = new Server(
-    { name: 'nexusgenesis-mcp', version: process.env.MCP_VERSION || '1.1.0-security' },
+    { name: 'nexusgenesis-agent-mcp', version: process.env.MCP_VERSION || '1.1.0-security' },
     { capabilities: { tools: {} } },
   );
 

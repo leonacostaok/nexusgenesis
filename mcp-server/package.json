@@ -1,11 +1,11 @@
 {
-  "name": "nexusgenesis-mcp",
-  "version": "1.0.0-bootstrap.2",
+  "name": "nexusgenesis-agent-mcp",
+  "version": "0.1.0",
   "description": "MCP Server for NexusGenesis — Agent key security & coordination tools. Generate self-sovereign PQC identities, verify Dilithium2 signatures, and enforce human takeover. Private keys never leave the caller.",
   "type": "module",
   "main": "src/index.js",
   "bin": {
-    "nexusgenesis-mcp": "./src/index.js"
+    "nexusgenesis-agent-mcp": "src/index.js"
   },
   "scripts": {
     "start": "node src/index.js",
@@ -38,7 +38,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nexus-genesis/nexusgenesis.git",
+    "url": "git+https://github.com/nexus-genesis/nexusgenesis.git",
     "directory": "mcp-server"
   }
 }

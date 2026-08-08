@@ -10,7 +10,7 @@ as the canonical project description.
 
 **Repo:** `github.com/punkpeye/awesome-mcp-servers` (or the canonical awesome-mcp list)
 
-**PR Title:** `Add nexusgenesis-mcp — Agent Key Security & Coordination MCP`
+**PR Title:** `Add nexusgenesis-agent-mcp — Agent Key Security & Coordination MCP`
 
 **PR Body:**
 
@@ -18,7 +18,7 @@ as the canonical project description.
 ## NexusGenesis MCP Server
 
 **Repository:** https://github.com/nexus-genesis/nexusgenesis/tree/master/mcp-server
-**Install:** `npx nexusgenesis-mcp`
+**Install:** `npx nexusgenesis-agent-mcp`
 **Category:** AI Agents / Security
 
 NexusGenesis is a security-first standard for autonomous AI agents: post-quantum
@@ -43,7 +43,7 @@ not a blockchain wrapper. Private keys never leave the calling process/browser.
 
 ### Compliance
 - [x] Repository has a license (MIT)
-- [x] Package published on npm (`nexusgenesis-mcp`)
+- [x] Package published on npm (`nexusgenesis-agent-mcp`)
 - [x] README includes install instructions for Claude Desktop / Cursor
 - [x] Security audit published (docs/SECURITY_AUDIT_REPORT_2026-08-07.md)
 ```
@@ -75,13 +75,13 @@ post-quantum signatures, and human takeover for compliance.
 - **Human takeover**: spend limits + approval mode + control-change guard
 - **Chain-agnostic**: derive EVM / Solana wallets from one PQC root identity
 - **Zero runtime deps** in the core package
-- **MCP-compatible**: `nexusgenesis-mcp` for Claude / Cursor
+- **MCP-compatible**: `nexusgenesis-agent-mcp` for Claude / Cursor
 
 ### Packages
 - `nexusgenesis-agent-keys` — security core
 - `nexusgenesis-agent-sdk` — agent framework (keys + coordination)
 - `nexusgenesis-chain-eth` / `chain-sol` / `chain-adapters` — chain adapters
-- `nexusgenesis-mcp` — MCP server
+- `nexusgenesis-agent-mcp` — MCP server
 
 ### Status
 Stable, published on npm, test-covered, security-audited (2026-08-07).
@@ -116,7 +116,7 @@ lack: self-custodied keys, post-quantum signatures, and human accountability.
 ### LLM-specific integrations
 - **MCP Server**: Claude Desktop / Cursor agents call it natively
 - **JavaScript SDK**: self-sovereign identity + coordination
-- **npm**: `nexusgenesis-agent-sdk`, `nexusgenesis-mcp`
+- **npm**: `nexusgenesis-agent-sdk`, `nexusgenesis-agent-mcp`
 
 This is security infrastructure for agents — not a blockchain with an AI wrapper.
 ```
@@ -227,16 +227,16 @@ NexusGenesis to give its agents non-custodial, quantum-safe, human-accountable k
 
 **Repo:** `github.com/kyrolabs/awesome-langchain`
 
-**PR Title:** `Add nexusgenesis-mcp — Agent Key Security for LangChain via MCP`
+**PR Title:** `Add nexusgenesis-agent-mcp — Agent Key Security for LangChain via MCP`
 
 **PR Body:**
 
 ```markdown
-## nexusgenesis-mcp — Agent Key Security via MCP (LangChain-compatible)
+## nexusgenesis-agent-mcp — Agent Key Security via MCP (LangChain-compatible)
 
 **Repository:** https://github.com/nexus-genesis/nexusgenesis
 **MCP Server:** https://github.com/nexus-genesis/nexusgenesis/tree/master/mcp-server
-**Install:** `npx nexusgenesis-mcp`
+**Install:** `npx nexusgenesis-agent-mcp`
 
 MCP tools that give LangChain agents self-sovereign keys, post-quantum signing,
 human-takeover spend control, and coordination.
@@ -265,13 +265,13 @@ Native LangChain tool package (`langchain-nexusgenesis`) for direct
 
 | # | Target List | PR Title | Status |
 |---|-------------|---------|--------|
-| 1 | awesome-mcp-servers | Add nexusgenesis-mcp — Agent Key Security & Coordination MCP | ⬜ |
+| 1 | awesome-mcp-servers | Add nexusgenesis-agent-mcp — Agent Key Security & Coordination MCP | ⬜ |
 | 2 | awesome-ai-agents | Add NexusGenesis — Agent Key Security & Coordination Standard | ⬜ |
 | 3 | awesome-llm-apps | Add NexusGenesis — LLM Agent Key Security & Coordination | ⬜ |
 | 4 | awesome-web3-ai | Add NexusGenesis — Non-Custodial Post-Quantum Keys for AI Agents | ⬜ |
 | 5 | awesome-web3-security | Add NexusGenesis — Post-Quantum Key Security Standard for Agents | ⬜ |
 | 6 | awesome-decentralized-llm | Add NexusGenesis — Non-Custodial Key Security for Decentralized Agents | ⬜ |
-| 7 | awesome-langchain | Add nexusgenesis-mcp — Agent Key Security for LangChain via MCP | ⬜ |
+| 7 | awesome-langchain | Add nexusgenesis-agent-mcp — Agent Key Security for LangChain via MCP | ⬜ |
 
 ### Common responses
 

@@ -16,7 +16,7 @@ coordinate without human mediation.
 - `nexusgenesis-agent-keys` — security core (PQC, encryption, derivation, custody, takeover)
 - `nexusgenesis-agent-sdk` — agent framework (self-sovereign identity + coordination)
 - `nexusgenesis-chain-eth` / `chain-sol` / `chain-adapters` — chain adapters
-- `nexusgenesis-mcp` — MCP server for Claude Desktop, Cursor, Continue
+- `nexusgenesis-agent-mcp` — MCP server for Claude Desktop, Cursor, Continue
 
 ```bash
 npm install nexusgenesis-agent-sdk
@@ -54,5 +54,5 @@ development, and NGEN carries no economic value with no fundraising.
 ## Links
 
 - 🌐 Repo: [github.com/nexus-genesis/nexusgenesis](https://github.com/nexus-genesis/nexusgenesis)
-- 📦 npm: `nexusgenesis-agent-keys`, `nexusgenesis-agent-sdk`, `nexusgenesis-mcp`, …
+- 📦 npm: `nexusgenesis-agent-keys`, `nexusgenesis-agent-sdk`, `nexusgenesis-agent-mcp`, …
 - 🐛 Good first issues: [Issues · good first issue](https://github.com/nexus-genesis/nexusgenesis/issues?q=is%3Aissue+label%3A%22good+first+issue%22)

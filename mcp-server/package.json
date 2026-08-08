@@ -1,7 +1,7 @@
 {
   "name": "nexusgenesis-mcp",
-  "version": "1.0.0-bootstrap.1",
-  "description": "MCP Server for NexusGenesis — AI Agent Coordination Protocol. Let your AI Agent register, discover, and collaborate on the blockchain.",
+  "version": "1.0.0-bootstrap.2",
+  "description": "MCP Server for NexusGenesis — Agent key security & coordination tools. Generate self-sovereign PQC identities, verify Dilithium2 signatures, and enforce human takeover. Private keys never leave the caller.",
   "type": "module",
   "main": "src/index.js",
   "bin": {
@@ -15,22 +15,22 @@
     "mcp",
     "model-context-protocol",
     "ai-agents",
-    "agent-coordination",
-    "blockchain",
-    "nexusgenesis",
-    "claude",
-    "cursor",
-    "web3-ai",
+    "agent-security",
+    "key-management",
     "post-quantum",
     "self-custody",
-    "human-takeover"
+    "human-takeover",
+    "dilithium2",
+    "nexusgenesis",
+    "claude",
+    "cursor"
   ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.5.0",
-    "nexusgenesis-agent-sdk": "^0.1.0"
+    "nexusgenesis-agent-sdk": "^0.1.1"
   },
   "devDependencies": {
-    "nexusgenesis-chain-adapters": "^0.1.0"
+    "nexusgenesis-chain-adapters": "^0.1.1"
   },
   "engines": {
     "node": ">=18.0.0"

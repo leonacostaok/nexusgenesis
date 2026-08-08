@@ -1,7 +1,7 @@
 {
   "name": "nexusgenesis-agent-sdk",
-  "version": "0.1.0",
-  "description": "NexusGenesis Agent Coordination Framework —keys (secp/PQC security) + coordination (tasks, reputation, governance). Leverages nexusgenesis-agent-keys for autonomous key security and human takeover.",
+  "version": "0.1.1",
+  "description": "NexusGenesis Agent Framework — self-sovereign keys (PQC security) + coordination (tasks, reputation, governance). Private keys never leave the agent/browser.",
   "type": "module",
   "main": "src/index.js",
   "exports": {
@@ -33,6 +33,6 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "nexusgenesis-agent-keys": "^0.1.0"
+    "nexusgenesis-agent-keys": "^0.1.1"
   }
 }

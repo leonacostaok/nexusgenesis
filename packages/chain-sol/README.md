@@ -25,18 +25,22 @@ console.log(wallet.address); // base58, e.g. "6PTLJh1AkMM..."
 // From a PQC private key (quantum-resistant root):
 const sol = deriveSolWalletFromPQC(pqcPrivateKey);
 
-// Sign / verify (ed25519):
-const sig = signMessage('hello', sol.keypair.subarray(0, 32)); // 64 bytes
+// Sign / verify (ed25519) — consistent with chain-eth, use privateKeyHex:
+const sig = signMessage('hello', Buffer.from(sol.privateKeyHex, 'hex')); // 64 bytes
 verifyMessage('hello', sig, Buffer.from(sol.publicKeyHex, 'hex')); // true
 ```
 
 ## API
 
 - `deriveSolPrivateKey(seed)` — domain-separated HKDF → 32-byte ed25519 key
-- `deriveSolWallet(seed)` → `{ publicKeyHex, address, keypair }`
+- `deriveSolWallet(seed)` → `{ privateKeyHex, publicKeyHex, address, keypair }`
 - `deriveSolWalletFromPQC(pqcPrivateKey)` → SOL wallet from a Dilithium2 key
 - `signMessage(message, privateKey)` / `verifyMessage(message, sig, publicKey)`
 - `addressFromPublicKey(pubkey)` / `publicKeyFromAddress(address)`
+
+> `privateKeyHex` is the preferred signing key — identical shape to
+> `chain-eth`'s `deriveEthWallet`. `keypair` (64-byte Buffer) is retained for
+> backward compatibility.
 
 ## Concept
 

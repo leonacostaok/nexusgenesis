@@ -49,12 +49,13 @@ export function addressFromPublicKey(publicKey) {
 /**
  * Derive a SOL wallet from a 32-byte seed.
  * @param {Buffer|Uint8Array} seed
- * @returns {{ publicKeyHex: string, address: string, keypair: Buffer }}
+ * @returns {{ privateKeyHex: string, publicKeyHex: string, address: string, keypair: Buffer }}
  */
 export function deriveSolWallet(seed) {
   const privateKey = deriveSolPrivateKey(seed);
   const publicKey = ed25519.getPublicKey(privateKey);
   return {
+    privateKeyHex: privateKey.toString('hex'),
     publicKeyHex: Buffer.from(publicKey).toString('hex'),
     address: addressFromPublicKey(publicKey),
     keypair: Buffer.concat([privateKey, Buffer.from(publicKey)])
@@ -64,7 +65,7 @@ export function deriveSolWallet(seed) {
 /**
  * Derive a SOL wallet from an agent's PQC private key.
  * @param {Buffer|Uint8Array} pqcPrivateKey
- * @returns {{ publicKeyHex: string, address: string, keypair: Buffer }}
+ * @returns {{ privateKeyHex: string, publicKeyHex: string, address: string, keypair: Buffer }}
  */
 export function deriveSolWalletFromPQC(pqcPrivateKey) {
   const seed = Buffer.from(sha256(Buffer.from(pqcPrivateKey)));

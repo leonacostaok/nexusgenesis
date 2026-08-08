@@ -1,0 +1,23 @@
+/**
+ * nexusgenesis-agent-keys
+ *
+ * NexusGenesis Agent Autonomous Key Security.
+ *
+ * PQC (Dilithium2) keys, AES-256-GCM encryption, three-tier key derivation,
+ * custody tokens, and human takeover —with private keys never leaving the
+ * agent/browser. This package is the security-only core of the NexusGenesis
+ * Agent Coordination Protocol, decoupled from any chain.
+ *
+ * Usage:
+ *   import { generateKeyPair, PQCWallet, takeoverGuard } from 'nexusgenesis-agent-keys';
+ */
+export * from './pqc.js';
+export * from './encryption.js';
+export * from './derivation.js';
+export * from './address.js';
+export * from './custody.js';
+export * from './takeover.js';
+export { PQCWallet, Transaction } from './wallet.js';
+export { base58Encode, base58Decode, isValidBase58 } from './base58.js';
+
+export { getPQCInfo } from './pqc.js';

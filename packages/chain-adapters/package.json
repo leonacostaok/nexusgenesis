@@ -1,0 +1,38 @@
+{
+  "name": "nexusgenesis-chain-adapters",
+  "version": "0.1.0",
+  "description": "NexusGenesis cross-chain adapters — one PQC root identity derives addresses on Nexus (ng1), Ethereum (secp256k1), and Solana (ed25519). Private keys never leave the agent/browser.",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./registry": "./src/registry.js"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": [
+    "cross-chain",
+    "multi-chain",
+    "ethereum",
+    "solana",
+    "post-quantum",
+    "agent",
+    "ai-agent",
+    "self-custody",
+    "nexusgenesis"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "nexusgenesis-agent-keys": "^0.1.0",
+    "nexusgenesis-chain-eth": "^0.1.0",
+    "nexusgenesis-chain-sol": "^0.1.0"
+  }
+}

@@ -1,0 +1,52 @@
+# nexusgenesis-chain-sol
+
+NexusGenesis Solana adapter — deterministically derive a **Solana keypair
+(ed25519)** from an agent's PQC root identity, with base58 addresses and
+message signing. Private keys never leave the agent/browser.
+
+The Solana key is a **derived** secondary key; the agent's true root secret
+is the Dilithium2 PQC key (quantum-resistant).
+
+## Install
+
+```bash
+npm install nexusgenesis-chain-sol
+```
+
+## Usage
+
+```js
+import { deriveSolWallet, deriveSolWalletFromPQC, signMessage, verifyMessage } from 'nexusgenesis-chain-sol';
+
+// From a 32-byte seed:
+const wallet = deriveSolWallet(Buffer.alloc(32, 0x11));
+console.log(wallet.address); // base58, e.g. "6PTLJh1AkMM..."
+
+// From a PQC private key (quantum-resistant root):
+const sol = deriveSolWalletFromPQC(pqcPrivateKey);
+
+// Sign / verify (ed25519):
+const sig = signMessage('hello', sol.keypair.subarray(0, 32)); // 64 bytes
+verifyMessage('hello', sig, Buffer.from(sol.publicKeyHex, 'hex')); // true
+```
+
+## API
+
+- `deriveSolPrivateKey(seed)` — domain-separated HKDF → 32-byte ed25519 key
+- `deriveSolWallet(seed)` → `{ publicKeyHex, address, keypair }`
+- `deriveSolWalletFromPQC(pqcPrivateKey)` → SOL wallet from a Dilithium2 key
+- `signMessage(message, privateKey)` / `verifyMessage(message, sig, publicKey)`
+- `addressFromPublicKey(pubkey)` / `publicKeyFromAddress(address)`
+
+## Concept
+
+```
+PQC root key (Dilithium2, FIPS 204)
+   │  sha256 → 32-byte seed
+   ▼
+HKDF('nexus/chain/sol/v1') → ed25519 private key → base58 address
+```
+
+## License
+
+MIT

@@ -1,76 +1,58 @@
-# NexusGenesis — AI Agent Coordination Protocol
+# NexusGenesis — Agent Autonomous Security & Coordination Standard Layer
 
-> An autonomous blockchain network where AI Agents are first-class citizens — register, discover, collaborate, and self-govern without human intervention.
+> An open security standard and reference implementation for autonomous AI agents:
+> self-custodied private keys, post-quantum signatures, and human takeover for
+> compliance. **Private keys never leave the agent or browser.**
 
 ## Project Overview
-- **Type**: Layer 1 blockchain for AI Agent coordination
-- **Status**: Testnet bootstrap (single-node → 21-validator BFT committee)
-- **Website**: https://nexus-genesis.top
+- **Type**: Agent key security + coordination standard layer (not a blockchain)
+- **Status**: Stable, published on npm, test-covered, security-audited (2026-08-07)
 - **Repository**: https://github.com/nexus-genesis/nexusgenesis
 - **License**: MIT
 
-## What Agents Can Do
-- Register on-chain identity with Ed25519/PQC keypairs (ng1 addresses)
-- Discover other Agents via the protocol's P2P discovery layer
-- Participate in BFT consensus as validators
-- Build on-chain reputation through verifiable contributions
-- Vote on governance proposals and network upgrades
-- Deploy AI-native smart contracts (AINVM)
-- Bridge to other blockchain networks
+## What It Provides
+- **Self-custody**: agent private keys are generated and stored on the agent/browser and never leave the caller
+- **Post-quantum security**: CRYSTALS-Dilithium2 (NIST FIPS 204) signatures
+- **Human takeover**: spend limits, approval mode, and mid-operation control-change guard for compliance
+- **Chain-agnostic coordination**: task / reputation protocol over a pluggable transport (HTTP / in-memory)
+
+## Packages (npm)
+- `nexusgenesis-agent-keys` — security core (PQC, AES-256-GCM encryption, three-tier key derivation, custody, takeover)
+- `nexusgenesis-agent-sdk` — agent framework (self-sovereign identity + coordination)
+- `nexusgenesis-chain-eth` — EVM adapter (derive secp256k1 wallet from PQC root identity)
+- `nexusgenesis-chain-sol` — Solana adapter (derive ed25519 wallet from PQC root identity)
+- `nexusgenesis-chain-adapters` — one PQC root identity → addresses on every supported chain
+- `nexusgenesis-mcp` — MCP server exposing the security & coordination tools
 
 ## Architecture
-- **Consensus**: MultiLeader BFT, 10-second block time, 0 gas fees
-- **Signatures**: Post-Quantum Cryptography (Dilithium2)
-- **P2P**: Agent Discovery Protocol with WSS/TLS
-- **VM**: AINVM (AI Native Virtual Machine) for agent-driven smart contracts
-- **API**: RESTful HTTP API at port 19891, CORS-enabled
+- **Signatures**: CRYSTALS-Dilithium2 (NIST FIPS 204) via @noble/post-quantum
+- **Encryption**: AES-256-GCM + PBKDF2-HMAC-SHA512 (310,000 iterations, OWASP 2023)
+- **Key derivation**: HKDF-SHA256, three-tier key hierarchy
+- **Custody tokens**: HMAC-SHA256, short-lived (24h), bound to a public-key fingerprint
+- **Coordination**: chain-agnostic pluggable transport (HTTP / in-memory)
 
 ## Key Documentation
-- [Agent SDK Guide](docs/AGENT_SDK_GUIDE.md) — Full developer guide for agent integration
-- [External Agent Integration](docs/EXTERNAL_AGENT_INTEGRATION.md) — Integration spec for external AI agents
-- [DevNet Guide](docs/DEVNET_GUIDE.md) — Local development network setup
-- [Swarm Demo](docs/SWARM_DEMO.md) — Multi-agent swarm simulation
+- [README.en.md](README.en.md) — Project overview
+- [Security Policy](SECURITY.md) — Security disclosure and practices
+- [Security Audit Report](docs/SECURITY_AUDIT_REPORT_2026-08-07.md) — Published audit (2026-08-07)
+- [Agent Keys](packages/agent-keys/README.md) — Security core guide
+- [Agent SDK](packages/agent-sdk/README.md) — Framework guide
 - [Governance Spec](docs/GOVERNANCE_SPEC.md) — Governance mechanisms
-- [Contribution Scoring](docs/CONTRIBUTION_SCORING.md) — Agent contribution metrics
-- [Real-time Dashboard](https://nexus-genesis.top) — Live network status
 
-## Public API Endpoints
-
-### Bootstrap (Testnet)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/v1/bootstrap/status` | Network status, block height, agent count, uptime |
-| GET | `/api/v1/bootstrap/agents` | List all registered agents with wallet info |
-| GET | `/api/v1/bootstrap/agents/latest` | Latest activity feed |
-| POST | `/api/v1/bootstrap/agents/register` | Register a new AI Agent |
-| POST | `/api/v1/bootstrap/validators/join` | Apply as a validator node |
-| GET | `/api/v1/bootstrap/blocks/recent` | Recent blocks |
-| GET | `/api/v1/bootstrap/contributions` | Leaderboard / contribution stats |
-
-### Register an Agent
-```bash
-curl -X POST https://nexus-genesis.top/api/v1/bootstrap/agents/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"MyAgent","capabilities":["analysis","coding"]}'
-```
-
-### MCP (Model Context Protocol)
+## MCP (Model Context Protocol)
 `nexusgenesis-mcp` — MCP Server for Claude Desktop, Cursor, Continue.
 Install: `npx nexusgenesis-mcp` or `npm i -g nexusgenesis-mcp`
 
-## Key Concepts
-- **Agent Identity**: Each agent gets a unique ng1-prefixed address and PQC keypair
-- **Agent Discovery**: Agents can discover peers on the network
-- **BFT Committee**: Validators form a Byzantine Fault Tolerant consensus committee (1→21)
-- **NGEN Token**: Native token for testnet agent coordination (no monetary value, testnet only)
-- **AINVM**: Agent-deployed smart contracts with AI-native execution
+### Security tools
+- `generate_agent_keys` — create a self-sovereign agent identity (keys never leave the caller)
+- `generate_keypair` / `verify_signature` — post-quantum crypto
+- `check_spend` / `takeover_guard` — human accountability
 
 ## Related Keywords
-AI Agents, Autonomous Agents, Agent Coordination Protocol, MCP, Model Context Protocol,
-Blockchain, BFT Consensus, Post-Quantum Cryptography, P2P Network, Web3 AI,
-Agentic Systems, Multi-Agent Systems, Decentralized AI, Agent Economy
+AI Agents, Autonomous Agents, Key Management, Post-Quantum Cryptography, Self-Custody,
+Human Takeover, Agent Security, Agent Coordination, MCP, Model Context Protocol,
+Multi-Agent Systems, Dilithium2, FIPS 204, Web3 AI, Agentic Systems
 
 ## Community
+- **GitHub**: https://github.com/nexus-genesis/nexusgenesis
 - **GitHub Discussions**: https://github.com/nexus-genesis/nexusgenesis/discussions
-- **Discord**: Agent coordination community (coming soon)
-- **MCP Registry**: Listed on MCP Marketplace and Smithery.ai

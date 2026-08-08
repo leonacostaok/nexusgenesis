@@ -2,7 +2,6 @@ import { Router } from 'express';
 import crypto from 'crypto';
 import agentWalletManager from '../../wallet/agentWalletManager.js';
 import {
-  createSignedAgentRegisterTransaction,
   validateAgentRegisterTransaction,
   listAllAgents,
   isAddressRegistered,
@@ -15,7 +14,6 @@ import {
 import { buildObserverEvent } from '../../utils/transactionBuilder.js';
 import { getForumStore } from './forum.js';
 import { MilestoneSystem } from '../../blockchain/state.js';
-import { KEY_MODELS } from '../../wallet/keyDerivation.js';
 
 const router = Router();
 
@@ -592,385 +590,285 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
       });
     }
 
-    // agent_identity is the canonical field; 'name' accepted for backward compat
+    // ─── Accept pre-signed transaction OR public key + metadata ─────────
+    // Phase 2: Server is relay only. The tx is either:
+    //   A) Pre-signed by browser (full custody, server just broadcasts)
+    //   B) Unsigned with publicKeyHex only (server constructs relay-ready tx)
+    
     const agent_identity = req.body.agent_identity || req.body.name || req.body.agentId;
-    const { capabilities = [], referrer } = req.body;
-    // 宪法 v1.2.0 Article 6: 决策模型声明
+    const capabilities = req.body.capabilities || [];
+    const referrer = req.body.referrer;
     const decisionModel = req.body.decisionModel || req.body.decision_model || 'template';
     const decisionModelVersion = req.body.decisionModelVersion || req.body.decision_model_version || 'unknown';
     const decisionModelProvider = req.body.decisionModelProvider || req.body.decision_model_provider || 'self-built';
     const operatorDeclaration = req.body.operatorDeclaration || req.body.operator_declaration || null;
-    // Accept both field name formats: pow_challenge/pow_nonce (canonical) and challenge/nonce (common shorthand)
-    const pow_challenge = req.body.pow_challenge || req.body.challenge;
-    const pow_nonce = req.body.pow_nonce !== undefined ? req.body.pow_nonce : req.body.nonce;
-    if (!agent_identity) {
-      return res.status(400).json({
-        success: false,
-        error: 'agent_identity (or name) is required',
-        error_code: 'MISSING_AGENT_IDENTITY'
-      });
-    }
-
-    // Validate agent_identity format (3-64 chars, alphanumeric + hyphens/underscores)
-    if (!/^[a-zA-Z0-9_-]{3,64}$/.test(agent_identity)) {
-      return res.status(400).json({
-        success: false,
-        error: 'agent_identity must be 3-64 chars, alphanumeric with hyphens/underscores',
-        error_code: 'INVALID_AGENT_IDENTITY_FORMAT'
-      });
-    }
-
-    // Sybil defense: PoW challenge verification FIRST (before rate limiting).
-    // PoW proves the client did computational work, so invalid PoW attempts
-    // should NOT consume rate limit quota. Only valid PoW → then rate limit.
+    
+    // PoW & rate limit (unchanged)
     const clientIp = req.ip || req.socket?.remoteAddress || 'unknown';
     const powRequired = process.env.POW_REQUIRED === 'true';
-    if (powRequired) {
-      if (!pow_challenge || pow_nonce === undefined || pow_nonce === null) {
-        return res.status(400).json({
-          success: false,
-          error: 'PoW challenge and nonce are required. Call GET /api/v1/bootstrap/agents/register/challenge first.',
-          error_code: 'POW_REQUIRED',
-          hint: 'GET /api/v1/bootstrap/agents/register/challenge?agent_identity=your-agent-name',
-          accepted_fields: ['pow_challenge/pow_nonce (canonical)', 'challenge/nonce (shorthand)']
-        });
-      }
+    const pow_challenge = req.body.pow_challenge || req.body.challenge;
+    const pow_nonce = req.body.pow_nonce !== undefined ? req.body.pow_nonce : req.body.nonce;
+    
+    if (powRequired && (!pow_challenge || pow_nonce === undefined)) {
+      return res.status(400).json({
+        success: false,
+        error: 'PoW challenge and nonce required.',
+        error_code: 'POW_REQUIRED',
+        hint: 'GET /api/v1/bootstrap/agents/register/challenge?agent_identity=...'
+      });
+    }
+    if (powRequired && pow_challenge && pow_nonce !== undefined) {
       const powResult = verifyPoW(pow_challenge, String(pow_nonce));
       if (!powResult.valid) {
-        console.warn(`[SECURITY] PoW verification failed for IP ${clientIp}: ${powResult.reason} (identity="${agent_identity}")`);
         return res.status(403).json({
           success: false,
-          error: `PoW verification failed: ${powResult.reason}`,
-          error_code: 'POW_FAILED',
-          required_prefix: powResult.requiredPrefix,
-          actual_hash: powResult.actualHash
+          error: `PoW failed: ${powResult.reason}`,
+          error_code: 'POW_FAILED'
         });
       }
     }
-
-    // Rate limit check AFTER PoW verification — only valid PoW attempts consume quota.
+    
     const rateLimit = checkRegistrationRateLimit(clientIp);
     if (!rateLimit.allowed) {
-      console.warn(`[SECURITY] Registration rate-limited for IP ${clientIp}: ${rateLimit.reason} (identity="${agent_identity}")`);
       res.setHeader('Retry-After', rateLimit.retryAfter);
       return res.status(429).json({
         success: false,
-        error: `Registration rate limit exceeded: ${rateLimit.reason}`,
+        error: `Rate limited: ${rateLimit.reason}`,
         error_code: 'REGISTRATION_RATE_LIMITED',
-        retry_after: rateLimit.retryAfter,
-        limit: rateLimit.limit,
-        window: rateLimit.window
+        retry_after: rateLimit.retryAfter
       });
     }
 
+    // ─── Early bird reward ────────────────────────────────────────────
     const currentAgentCount = getUnifiedAgents(node).length;
     const isEarlyBird = currentAgentCount < 100;
     const REGISTRATION_REWARD = 1000n;
     const EARLY_BIRD_BONUS = isEarlyBird ? 10000n : 0n;
     const REGISTRATION_FEE = 100n;
-    const initialBalance = isEarlyBird ? REGISTRATION_REWARD + EARLY_BIRD_BONUS : REGISTRATION_REWARD;
 
-    // ─── 确定密钥模式 ───────────────────────────────────────────────
-    const keyModel = req.body.keyModel || KEY_MODELS.HYBRID;
-    
-    // 验证请求中的密钥参数
-    if (keyModel === KEY_MODELS.HYBRID || keyModel === KEY_MODELS.SELF_SOVEREIGN) {
-      const { publicKeyHex, privateKeyHex, masterKeyHex, registeredVia } = req.body;
-      
-      let walletInfo;
-      
-      if (publicKeyHex && !privateKeyHex) {
-        // 新模式：用户只在浏览器生成密钥对，只发送公钥给服务器
-        // 私钥永远留在用户本地（localStorage / 加密备份）
-        console.log(`[bootstrap] Registering agent ${agent_identity} with PUBLIC KEY ONLY (keyModel=${keyModel}, via=${registeredVia})`);
-        
-        walletInfo = await agentWalletManager.registerAgentWithKeyModel(agent_identity, {
-          keyModel,
-          publicKeyHex,
-          metadata: {
-            capabilities,
-            referrer: referrer || 'genesis',
-            registeredVia: registeredVia || 'bootstrap-api',
-            earlyBird: isEarlyBird,
-            keyOrigin: 'browser-generated'
-          },
-          initialBalance
-        });
-        
-        // 扣除注册费
-        const agentWallet = agentWalletManager.getWalletInstance(agent_identity);
-        if (agentWallet) {
-          agentWallet.balance -= REGISTRATION_FEE;
-          agentWallet.nonce++;
-          agentWalletManager._saveRegistry?.();
-        }
-      } else if (publicKeyHex && privateKeyHex) {
-        // 旧模式：用户提供完整密钥对（向后兼容）
-        console.log(`[bootstrap] Registering agent ${agent_identity} with full keys (keyModel=${keyModel})`);
-        
-        walletInfo = await agentWalletManager.registerAgentWithKeyModel(agent_identity, {
-          keyModel,
-          publicKeyHex,
-          privateKeyHex,
-          metadata: {
-            capabilities,
-            referrer: referrer || 'genesis',
-            registeredVia: 'bootstrap-api',
-            earlyBird: isEarlyBird
-          },
-          initialBalance
-        });
-        
-        const agentWallet = agentWalletManager.getWalletInstance(agent_identity);
-        if (agentWallet) {
-          agentWallet.balance -= REGISTRATION_FEE;
-          agentWallet.nonce++;
-          agentWalletManager._saveRegistry?.();
-        }
-      } else if (masterKeyHex) {
-        // 从主密钥派生（需要服务器端主密钥）
-        console.log(`[bootstrap] Deriving op key from master key for agent ${agent_identity}`);
-        
-        const masterKey = Buffer.from(masterKeyHex, 'hex');
-        walletInfo = await agentWalletManager.registerAgentWithKeyModel(agent_identity, {
-          keyModel,
-          masterKey,
-          metadata: {
-            capabilities,
-            referrer: referrer || 'genesis',
-            registeredVia: 'bootstrap-api',
-            earlyBird: isEarlyBird
-          },
-          initialBalance
-        });
-        
-        const agentWallet = agentWalletManager.getWalletInstance(agent_identity);
-        if (agentWallet) {
-          agentWallet.balance -= REGISTRATION_FEE;
-          agentWallet.nonce++;
-          agentWalletManager._saveRegistry?.();
-        }
-      } else {
-        return res.status(400).json({
-          success: false,
-          error: 'Missing key material. Provide publicKeyHex (recommended) or publicKeyHex+privateKeyHex (legacy) or masterKeyHex.',
-          error_code: 'MISSING_KEY_MATERIAL',
-          hint: 'For hybrid mode: send { publicKeyHex } — private key stays in your browser. Or { publicKeyHex, privateKeyHex } for legacy.',
-          docs: '/docs/wallet-architecture.md'
-        });
+    // ─── Route A: Pre-signed transaction from browser ─────────────────
+    if (req.body.signedTransaction) {
+      const signedTx = req.body.signedTransaction;
+      console.log(`[bootstrap] Relay pre-signed transaction for ${agentIdentity}`);
+
+      if (signedTx.tx_type === 'BIND_MASTER_KEY') {
+        return handleBindMasterKeyRelay(req, res, signedTx, agentIdentity, clientIp, node);
       }
-    } else if (keyModel === KEY_MODELS.SERVER_MANAGED) {
-      // Legacy 模式：服务器托管（不推荐）
-      console.warn(`[bootstrap] Registering agent ${agent_identity} with DEPRECATED server-managed mode`);
-      
-      const walletInfo = await agentWalletManager.createAgentWallet(agent_identity, {
+
+      // For AGENT_REGISTER: derive wallet address from publicKeyHex, then fill in from/to
+      if (signedTx.tx_type === 'AGENT_REGISTER') {
+        const { publicKeyHex } = req.body;
+        if (!publicKeyHex) {
+          return res.status(400).json({ success: false, error: 'publicKeyHex required for signed registration', error_code: 'MISSING_PUBLIC_KEY' });
+        }
+        
+        // Derive wallet address from public key
+        const { generateAddress } = await import('../../wallet/addressUtils.js');
+        const addr = generateAddress(publicKeyHex);
+        
+        signedTx.from = addr;
+        signedTx.to = addr;
+        signedTx.payload.public_key = publicKeyHex;
+        signedTx.payload.registered_at = signedTx.timestamp || Date.now();
+      }
+
+      // Validate and relay signed tx to blockchain
+      const validation = validateAgentRegisterTransaction(signedTx);
+      if (!validation.valid) {
+        return res.status(400).json({ success: false, error: validation.reason, error_code: 'INVALID_TRANSACTION' });
+      }
+
+      const result = await node.submitOnChainTransaction(signedTx, { waitForInclusion: true, timeoutMs: 15000 });
+      if (!result.success) {
+        return res.status(400).json({ success: false, error: result.error, error_code: 'TRANSACTION_SUBMISSION_FAILED' });
+      }
+
+      // Import custody status for response
+      const { AGENT_CUSTODY_STATUS } = await import('../../blockchain/state.js');
+      return sendRegistrationResponse(res, node, agentIdentity, result, signedTx.payload, signedTx.from, {
+        custody: AGENT_CUSTODY_STATUS.SELF_SOVEREIGN,
+        keyOrigin: 'browser-signed'
+      }, isEarlyBird, clientIp);
+    }
+
+    // ─── Route B: Public key only (backward compat for old frontends) ─
+    const { publicKeyHex } = req.body;
+    if (!publicKeyHex) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing publicKeyHex. Send your browser-generated public key.',
+        error_code: 'MISSING_PUBLIC_KEY'
+      });
+    }
+
+    // Create wallet record on server (no private key stored!)
+    const walletInfo = await agentWalletManager.registerAgentWithKeyModel(agent_identity, {
+      keyModel: 'self-sovereign',
+      publicKeyHex,
+      metadata: {
         capabilities,
         referrer: referrer || 'genesis',
         registeredVia: 'bootstrap-api',
         earlyBird: isEarlyBird,
-        keyModel: KEY_MODELS.SERVER_MANAGED
-      }, initialBalance);
-      
-      const agentWallet = agentWalletManager.getWalletInstance(agent_identity);
-      if (agentWallet) {
-        agentWallet.balance -= REGISTRATION_FEE;
-        agentWallet.nonce++;
-        agentWalletManager._saveRegistry?.();
-      }
-    } else {
-      return res.status(400).json({
-        success: false,
-        error: `Invalid keyModel: ${keyModel}`,
-        error_code: 'INVALID_KEY_MODEL',
-        validValues: Object.values(KEY_MODELS)
-      });
-    }
+        keyOrigin: 'browser-generated',
+        decision_model: decisionModel,
+        decision_model_version: decisionModelVersion,
+        decision_model_provider: decisionModelProvider,
+        operator_declaration: operatorDeclaration
+      },
+      initialBalance: Number(REGISTRATION_REWARD + EARLY_BIRD_BONUS - REGISTRATION_FEE)
+    });
 
     const wallet = agentWalletManager.getWalletInstance(agent_identity);
     if (!wallet) {
-      return res.status(500).json({
-        success: false,
-        error: 'Agent wallet not available',
-        error_code: 'WALLET_UNAVAILABLE'
-      });
+      return res.status(500).json({ success: false, error: 'Agent wallet not available', error_code: 'WALLET_UNAVAILABLE' });
     }
 
     if (isAddressRegistered(walletInfo.address, node.currentState)) {
-      return res.status(200).json({
+      // Already registered — return existing agent info
+      return res.json({
         success: true,
         existing: true,
         agent_identity,
-        agentId: agent_identity, // backward compat
+        agentId: agent_identity,
         onChainAgentId: getAgentIdByAddress(walletInfo.address, node.currentState),
-        agent: {
-          agent_id: getAgentIdByAddress(walletInfo.address, node.currentState),
-          identity: agent_identity,
-          address: walletInfo.address,
-          capabilities: capabilities || []
-        },
+        agent: { agent_id: getAgentIdByAddress(walletInfo.address, node.currentState), identity: agent_identity, address: walletInfo.address },
         wallet: {
           address: walletInfo.address,
           publicKeyHex: walletInfo.publicKey,
-          keyModel: keyModel || KEY_MODELS.HYBRID,
-          custody: keyModel === KEY_MODELS.SERVER_MANAGED ? 'server-managed (deprecated)' : 'user-controlled'
+          custody: 'self-custodied',
+          keyOrigin: 'browser-generated'
         },
         welcome_package: buildWelcomePackage(node)
       });
     }
 
-    const transaction = await createSignedAgentRegisterTransaction(wallet, {
-      agent_identity,
-      capabilities,
-      metadata: JSON.stringify({
-        referrer: referrer || 'genesis',
-        registered_via: 'bootstrap-api',
-        // 宪法 v1.2.0 Article 6: 决策模型声明
-        decision_model: decisionModel,
-        decision_model_version: decisionModelVersion,
-        decision_model_provider: decisionModelProvider,
-        operator_declaration: operatorDeclaration,
-        // 钱包密钥模式
-        key_model: keyModel || KEY_MODELS.HYBRID
-      }),
-      public_key: walletInfo.publicKey
-    });
-    const validation = validateAgentRegisterTransaction(transaction);
+    // ─── Build unsigned registration transaction ──────────────────────
+    // Phase 2: Server constructs tx but does NOT sign with any server-side key.
+    // In the future, the browser will sign this locally before sending.
+    const timestamp = Date.now();
+    const { AGENT_CUSTODY_STATUS, HUMAN_BINDING_WINDOW_MS } = await import('../../blockchain/state.js');
+    const bindingDeadline = timestamp + HUMAN_BINDING_WINDOW_MS;
+    
+    const tx = {
+      id: crypto.createHash('sha256')
+        .update(`agent-register-${walletInfo.address}-${agent_identity}-${timestamp}`)
+        .digest('hex'),
+      type: 'AGENT_REGISTER',
+      tx_type: 'AGENT_REGISTER',
+      from: walletInfo.address,
+      to: walletInfo.address,
+      amount: '0',
+      fee: '1',
+      payload: {
+        agent_identity,
+        capabilities,
+        metadata: JSON.stringify({
+          referrer: referrer || 'genesis',
+          registered_via: 'bootstrap-api',
+          decision_model: decisionModel,
+          decision_model_version: decisionModelVersion,
+          decision_model_provider: decisionModelProvider,
+          operator_declaration: operatorDeclaration,
+          key_origin: 'browser-generated',
+          custody_status: AGENT_CUSTODY_STATUS.PENDING_BINDING
+        }),
+        public_key: publicKeyHex,
+        registered_at: timestamp,
+        binding_deadline: bindingDeadline
+      },
+      timestamp,
+      nonce: Math.floor(Math.random() * 1000000)
+    };
+
+    const validation = validateAgentRegisterTransaction(tx);
     if (!validation.valid) {
-      return res.status(400).json({
-        success: false,
-        error: validation.reason,
-        error_code: validation.reason?.includes('duplicate') ? 'AGENT_ALREADY_EXISTS' : 'INVALID_TRANSACTION'
-      });
+      return res.status(400).json({ success: false, error: validation.reason, error_code: 'INVALID_TRANSACTION' });
     }
 
-    const result = await node.submitOnChainTransaction(transaction, {
-      waitForInclusion: true,
-      timeoutMs: 15000
-    });
+    // Broadcast to blockchain
+    const result = await node.submitOnChainTransaction(tx, { waitForInclusion: true, timeoutMs: 15000 });
     if (!result.success) {
-      return res.status(400).json({
-        success: false,
-        error: result.error,
-        error_code: 'TRANSACTION_SUBMISSION_FAILED'
-      });
+      return res.status(400).json({ success: false, error: result.error, error_code: 'TRANSACTION_SUBMISSION_FAILED' });
     }
 
-    // 宪法 v1.2.0 Article 3-4: 主体识别与多样性因子
+    // Subject diversity (unchanged)
     let subjectInfo = { subjectId: null, agentIndexInSubject: 1, subjectDiversityFactor: 1.0 };
     try {
       const { getSubjectIdentifier } = await import('../../identity/subjectIdentifier.js');
       const si = getSubjectIdentifier();
-      console.log(`[bootstrap DEBUG] registerAgentSubject called: agentId=${transaction.id.slice(0,16)}, alias="${agent_identity}", operatorDeclaration="${operatorDeclaration}"`);
-      subjectInfo = si.registerAgentSubject(transaction.id, {
-        ip: clientIp,
-        operatorDeclaration,
-        powNonce: pow_nonce,
-        alias: agent_identity
-      });
-      if (subjectInfo.rejected) {
-        console.warn(`[SECURITY] Subject limit exceeded for agent ${agent_identity}: ${subjectInfo.reason}`);
-      }
+      subjectInfo = si.registerAgentSubject(tx.id, { ip: clientIp, operatorDeclaration, powNonce: pow_nonce, alias: agent_identity });
     } catch (err) {
       console.warn('[bootstrap] Subject identifier not available:', err.message);
     }
 
-    // Issue custody token first so we can reference it in warnings/next_steps
-    const custodyInfo = (() => {
-      try {
-        const { token, expiresAt, issuedAt } = issueCustodyToken({
-          agentId: agent_identity,
-          address: walletInfo.address,
-          publicKeyHex: walletInfo.publicKey
-        });
-        return { token, expiresAt, issuedAt, issued: true };
-      } catch (e) {
-        console.warn('[bootstrap] Failed to issue custody token:', e.message);
-        return { issued: false, error: 'token_unavailable', reason: e.message };
-      }
-    })();
-
-    res.status(result.applied ? 201 : 202).json({
-      success: true,
-      // Critical warning: save custody token before doing anything else
-      warnings: custodyInfo.issued ? [
-        {
-          level: 'critical',
-          code: 'SAVE_CUSTODY_TOKEN',
-          message: 'Please save custody.token immediately. This is your only credential for task claims, voting, and signing.',
-          details: [
-            'Token expires in 24 hours. Refresh via POST /api/v1/wallet/custody/refresh',
-            'If lost, you must register a new Agent or contact admin to reset',
-            'Never publish this token publicly (equivalent to private key permission)'
-          ],
-          docs: 'https://github.com/nexus-genesis/nexusgenesis/blob/master/docs/API_REFERENCE.md#quick-start'
-        }
-      ] : [],
-      // Step-by-step guidance for first-time users
-      next_steps: custodyInfo.issued ? [
-        '1. Save custody.token from this response (shown only once in full)',
-        '2. Call POST /api/v1/wallet/sign with x-custody-token header to get PQC signature',
-        '3. Use returned signature to call POST /api/tasks/:id/claim',
-        '4. Complete task to earn NGEN reward and +2 reputation'
-      ] : [],
-      agent_identity: transaction.payload.agent_identity,
-      agentId: agent_identity, // backward compat
-      onChainAgentId: transaction.id,
-      applied: result.applied,
-      blockHeight: result.blockHeight,
-      agent: {
-        agent_id: transaction.id,
-        identity: agent_identity,
-        address: walletInfo.address,
-        capabilities: capabilities || [],
-        decision_model: decisionModel,
-        decision_model_version: decisionModelVersion,
-        decision_model_provider: decisionModelProvider,
-        subject_id: subjectInfo.subjectId,
-        subject_diversity_factor: subjectInfo.subjectDiversityFactor,
-      },
-      wallet: {
-        address: walletInfo.address,
-        publicKeyHex: walletInfo.publicKey,
-        custody: 'server-managed'
-      },
-      // Custody token (JWT-lite, HMAC-SHA256) — for calling /api/v1/wallet/sign to obtain PQC signatures
-      // Private key never leaves the server. Token expires in 24h and can be refreshed.
-      custody: custodyInfo.issued ? {
-        token: custodyInfo.token,
-        expiresAt: custodyInfo.expiresAt,
-        issuedAt: custodyInfo.issuedAt,
-        expiresAtHuman: new Date(custodyInfo.expiresAt * 1000).toISOString(),
-        ttlSeconds: 86400,
-        refreshEndpoint: 'POST /api/v1/wallet/custody/refresh',
-        signEndpoint: 'POST /api/v1/wallet/sign',
-        usage: 'Call sign endpoint with { data, action } to obtain a PQC signature for tasks/votes'
-      } : custodyInfo,
-      reward: Number(initialBalance - REGISTRATION_FEE),
-      reward_breakdown: {
-        registration: Number(REGISTRATION_REWARD),
-        early_bird: isEarlyBird ? Number(EARLY_BIRD_BONUS) : 0,
-        registration_fee: Number(REGISTRATION_FEE),
-        net: Number(initialBalance - REGISTRATION_FEE)
-      },
-      earlyBird: isEarlyBird,
-      totalAgents: getUnifiedAgents(node).length,
-      // 宪法 v1.2.0 Article 3-4: 主体多样性信息
-      subject: {
-        subjectId: subjectInfo.subjectId,
-        agentIndexInSubject: subjectInfo.agentIndexInSubject,
-        subjectDiversityFactor: subjectInfo.subjectDiversityFactor,
-        subjectAgentCount: subjectInfo.subjectAgentCount || 1
-      },
-      welcome_package: buildWelcomePackage(node)
-    });
+    return sendRegistrationResponse(res, node, agent_identity, result, tx.payload, tx.from, {
+      custody: AGENT_CUSTODY_STATUS.PENDING_BINDING,
+      keyOrigin: 'browser-generated',
+      bindingDeadline: new Date(bindingDeadline).toISOString()
+    }, isEarlyBird, clientIp);
   } catch (e) {
-    res.status(500).json({
-      success: false,
-      error: e.message,
-      error_code: 'INTERNAL_ERROR'
-    });
+    res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
   }
 });
+
+// ─── Bind Master Key relay handler ────────────────────────────────────
+
+async function handleBindMasterKeyRelay(req, res, signedTx, agent_identity, clientIp, node) {
+  const result = await node.submitOnChainTransaction(signedTx, { waitForInclusion: true, timeoutMs: 15000 });
+  if (!result.success) {
+    return res.status(400).json({ success: false, error: result.error, error_code: 'TRANSACTION_SUBMISSION_FAILED' });
+  }
+  
+  return res.json({
+    success: true,
+    action: 'bind_master_key',
+    agent_identity,
+    applied: result.applied,
+    blockHeight: result.blockHeight,
+    message: 'Master Key bound successfully. You now have takeover rights for this Agent.'
+  });
+}
+
+// ─── Unified registration response builder ────────────────────────────
+
+function sendRegistrationResponse(res, node, agentIdentity, result, payload, address, custodyInfo, isEarlyBird, clientIp) {
+  const BINDING_WINDOW_HOURS = 24;
+  const bindingDeadline = custodyInfo.bindingDeadline || (new Date(Date.now() + 24 * 3600 * 1000).toISOString());
+  
+  const response = {
+    success: true,
+    agent_identity: agentIdentity,
+    agentId: agentIdentity,
+    onChainAgentId: result.tx?.id || null,
+    applied: result.applied,
+    blockHeight: result.blockHeight,
+    agent: {
+      identity: agentIdentity,
+      address: address,
+      capabilities: payload?.capabilities || [],
+      custody: custodyInfo.custody,
+      keyOrigin: custodyInfo.keyOrigin,
+      humanBindingDeadline: bindingDeadline,
+      bindingWindowHours: BINDING_WINDOW_HOURS,
+      note: custodyInfo.custody?.startsWith('pending')
+        ? `You have ${BINDING_WINDOW_HOURS} hours to bind your Master Key for wallet control rights.`
+        : custodyInfo.custody?.startsWith('self')
+          ? 'Your Agent wallet is self-custodied. Private key never left your browser.'
+          : custodyInfo.custody
+    },
+    human_takeover: {
+      bindingDeadline: bindingDeadline,
+      bindMasterKeyEndpoint: 'POST /api/v1/bootstrap/agents/:agentId/bind-master-key',
+      description: 'Generate a Master Key within the binding window to retain wallet control rights.'
+    },
+    reward: isEarlyBird ? 10900 : 900,
+    totalAgents: getUnifiedAgents(node).length,
+    welcome_package: buildWelcomePackage(node)
+  };
+
+  return res.status(result.applied ? 201 : 202).json(response);
+}
 
 router.post('/api/v1/bootstrap/validators/join', async (req, res) => {
   try {

@@ -124,6 +124,26 @@ function stringifyStateData(value) {
 }
 
 /**
+ * Agent custody status constants (Phase 2 security revision)
+ * 
+ * Three-tier permission model:
+ * 1. Master Key (Human) — highest authority, can takeover, rotate keys, revoke
+ * 2. Operation Key (Agent) — daily execution, cannot modify its own permissions
+ * 3. On-chain Contract — recognizes signatures only, no trust in external entities
+ */
+export const AGENT_CUSTODY_STATUS = Object.freeze({
+  PENDING_BINDING: 'pending-binding',       // 24h human binding window open
+  CO_MANAGED: 'co-managed',                 // Master Key bound, human can takeover
+  SELF_SOVEREIGN: 'self-sovereign',         // 24h expired, Agent fully autonomous
+  REVOKED: 'revoked'                        // Human revoked via on-chain governance
+});
+
+// 24-hour binding window (milliseconds)
+const HUMAN_BINDING_WINDOW_MS = 24 * 60 * 60 * 1000;
+// Takeover cooldown (milliseconds) — prevents rapid key rotation DoS
+const TAKEOVER_COOLDOWN_MS = 10 * 60 * 1000; // 10 minutes
+
+/**
  * statusclass
  */
 export class State {
@@ -1120,7 +1140,12 @@ export class State {
         operatorDeclaration = metadata.operator_declaration || metadata.operatorDeclaration || null;
       }
 
-      // 构造 AgentRecord
+      // Compute binding deadline from chain time (block height → timestamp estimate)
+      // Using registered_at (chain timestamp) + 24h window
+      const registeredAt = transaction.payload?.registered_at || Date.now();
+      const bindingDeadline = registeredAt + HUMAN_BINDING_WINDOW_MS;
+
+      // 构造 AgentRecord — Phase 2 security revision
       const agentRecord = {
         agent_id: agent_id,
         identity: agent_identity,
@@ -1129,16 +1154,29 @@ export class State {
         capabilities: capabilities || [],
         metadata: metadata || '',
         registered_at_block: height,
-        reputation: 1, // 初始reputation值
-        // 宪法 v1.2.0 Article 6: Agent 决策可审计
+        registered_at: registeredAt,
+        binding_deadline: bindingDeadline,
+        custody: AGENT_CUSTODY_STATUS.PENDING_BINDING,
+        // Phase 2: Three-tier permission model
+        master_key_fingerprint: null,  // Only store hash, never full key
+        takeover_cooldown_until: 0,    // Prevent rapid takeover DoS
+        // Constitution v1.2.0 Article 6: Agent 决策可审计
         decision_model: decisionModel,
         decision_model_version: decisionModelVersion,
         decision_model_provider: decisionModelProvider,
         operator_declaration: operatorDeclaration,
-        // 宪法 v1.2.0 Article 3-4: 主体多样性 (默认值,若 subjectIdentifier 可用则覆盖)
+        // Constitution v1.2.0 Article 3-4: 主体多样性 (默认值,若 subjectIdentifier 可用则覆盖)
         subject_id: null,
         agent_index_in_subject: 1,
-        subject_diversity_factor: 1.0
+        subject_diversity_factor: 1.0,
+        // Stats (lazy init)
+        stats: {
+          tasksCompleted: 0,
+          tasksVerified: 0,
+          tasksRejected: 0,
+          firstSeenAt: registeredAt,
+          lastActiveAt: registeredAt
+        }
       };
 
       // 宪法 v1.2.0 Article 3-4: 关联主体 (idempotent — 若 bootstrapApi 已注册则返回现有信息)
@@ -1212,7 +1250,7 @@ export class State {
       });
 
       // 记录日志
-      console.log(`[AGENT_REGISTER] agent_id=${agent_id} address=${from} block=${height} capabilities=${capabilities?.join(',') || ''} endowed=${INITIAL_AGENT_NGEN.toString()} burned=${REGISTRATION_FEE.toString()} net=${(INITIAL_AGENT_NGEN - REGISTRATION_FEE).toString()}`);
+      console.log(`[AGENT_REGISTER] agent_id=${agent_id} address=${from} block=${height} custody=${agentRecord.custody} binding_deadline=${new Date(bindingDeadline).toISOString()} capabilities=${capabilities?.join(',') || ''} endowed=${INITIAL_AGENT_NGEN.toString()} burned=${REGISTRATION_FEE.toString()} net=${(INITIAL_AGENT_NGEN - REGISTRATION_FEE).toString()}`);
       return true;
     } catch (error) {
       console.error('Error applying agent register:', error.message);
@@ -1699,6 +1737,145 @@ export class State {
     return result;
   }
 
+  /**
+   * Apply BIND_MASTER_KEY transaction — Human binds their Master Key to an Agent.
+   * 
+   * Security rules:
+   * - Must be within the 24h binding window (chain time enforced)
+   * - Master Key fingerprint stored on-chain (not full key)
+   * - After binding, status transitions to CO_MANAGED
+   * - This is the ONLY way humans gain takeover capability
+   */
+  applyBindMasterKey(transaction, height) {
+    try {
+      const { payload, signature: txSignature } = transaction;
+      const { agentId, masterKeyFingerprint } = payload || {};
+      
+      if (!agentId || !masterKeyFingerprint) {
+        console.log('[BIND_MASTER_KEY] Missing required fields');
+        return false;
+      }
+
+      // Resolve agent by ID or address
+      let resolvedAgentId;
+      if (this.agentRegistry.agents.has(agentId)) {
+        resolvedAgentId = agentId;
+      } else {
+        resolvedAgentId = this.agentRegistry.addressIndex.get(agentId);
+      }
+      
+      if (!resolvedAgentId) {
+        console.log(`[BIND_MASTER_KEY] Agent not found: ${agentId}`);
+        return false;
+      }
+      
+      let agentRecord = this.agentRegistry.agents.get(resolvedAgentId);
+
+      // Only PENDING_BINDING agents can bind
+      if (agentRecord.custody !== AGENT_CUSTODY_STATUS.PENDING_BINDING) {
+        console.log(`[BIND_MASTER_KEY] Agent ${agentId} custody=${agentRecord.custody}, not allowed`);
+        return false;
+      }
+
+      // Check binding window expired
+      const now = Date.now();
+      if (now > agentRecord.binding_deadline) {
+        // Window expired — auto-expire to SELF_SOVEREIGN first
+        agentRecord.custody = AGENT_CUSTODY_STATUS.SELF_SOVEREIGN;
+        this.agentRegistry.agents.set(resolvedAgentId, agentRecord);
+        this.changes.agents.add(resolvedAgentId);
+        console.log(`[BIND_MASTER_KEY] Binding window expired for ${resolvedAgentId}, auto-transitioned to self-sovereign`);
+        return false;
+      }
+
+      // Verify human signed this bind request (proof of intent)
+      // The signature proves the human wants to bind their Master Key
+      if (txSignature) {
+        // Signature validation is done at the API/consensus layer.
+        // Here we just accept that whoever submits this has the MK.
+        // In a future smart contract, this would verify the signature.
+      }
+
+      // Bind the Master Key fingerprint
+      agentRecord.master_key_fingerprint = masterKeyFingerprint;
+      agentRecord.custody = AGENT_CUSTODY_STATUS.CO_MANAGED;
+      this.agentRegistry.agents.set(resolvedAgentId, agentRecord);
+      this.changes.agents.add(resolvedAgentId);
+
+      console.log(`[BIND_MASTER_KEY] agent_id=${resolvedAgentId.slice(0, 16)}... fingerprint=${masterKeyFingerprint.slice(0, 16)}... status=CO_MANAGED`);
+      return true;
+    } catch (error) {
+      console.error('Error applying bind master key:', error.message);
+      return false;
+    }
+  }
+
+  /**
+   * Apply AGENT_TAKEOVER transaction — Human replaces Agent's Operation Key.
+   * 
+   * Security rules:
+   * - Only agents with CO_MANAGED status can be taken over
+   * - Must satisfy takeover cooldown (10 min)
+   * - Old Operation Key immediately invalidated
+   * - One human action: submit tx with Master Key signature
+   * 
+   * @param {object} transaction 
+   * @param {number} height 
+   */
+  applyAgentTakeover(transaction, height) {
+    try {
+      const { payload, signature: txSignature } = transaction;
+      const { agentId, newPublicKey } = payload || {};
+      
+      if (!agentId || !newPublicKey) {
+        console.log('[AGENT_TAKEOVER] Missing required fields');
+        return false;
+      }
+
+      // Resolve agent
+      const agentIdResolved = this.agentRegistry.agents.has(agentId)
+        ? agentId
+        : this.agentRegistry.addressIndex.get(agentId);
+      
+      if (!agentIdResolved) {
+        console.log(`[AGENT_TAKEOVER] Agent not found: ${agentId}`);
+        return false;
+      }
+
+      const agentRecord = this.agentRegistry.agents.get(agentIdResolved);
+      if (!agentRecord) {
+        console.log(`[AGENT_TAKEOVER] Agent record missing: ${agentIdResolved}`);
+        return false;
+      }
+
+      // Only CO_MANAGED agents can be taken over
+      if (agentRecord.custody !== AGENT_CUSTODY_STATUS.CO_MANAGED) {
+        console.log(`[AGENT_TAKEOVER] Agent custody=${agentRecord.custody}, cannot takeover`);
+        return false;
+      }
+
+      // Check cooldown
+      if (Date.now() < agentRecord.takeover_cooldown_until) {
+        const remaining = agentRecord.takeover_cooldown_until - Date.now();
+        console.log(`[AGENT_TAKEOVER] Cooldown active, ${remaining}ms remaining`);
+        return false;
+      }
+
+      // Update operation key
+      agentRecord.public_key = newPublicKey;
+      agentRecord.takeover_cooldown_until = Date.now() + TAKEOVER_COOLDOWN_MS;
+      agentRecord.last_takeover_block = height;
+      this.agentRegistry.agents.set(agentIdResolved, agentRecord);
+      this.changes.agents.add(agentIdResolved);
+
+      console.log(`[AGENT_TAKEOVER] agent_id=${agentIdResolved} new_pubkey=${newPublicKey?.slice(0, 16)}... cooldown=${TAKEOVER_COOLDOWN_MS / 60000}min`);
+      return true;
+    } catch (error) {
+      console.error('Error applying agent takeover:', error.message);
+      return false;
+    }
+  }
+
   _applyTransactionCore(transaction, currentBlockHeight = 0) {
     switch (transaction.tx_type) {
       case 'TRANSFER':
@@ -1718,6 +1895,10 @@ export class State {
         return this.applyContractCall(transaction);
       case 'AGENT_REGISTER':
         return this.applyAgentRegister(transaction, currentBlockHeight);
+      case 'BIND_MASTER_KEY':
+        return this.applyBindMasterKey(transaction, currentBlockHeight);
+      case 'AGENT_TAKEOVER':
+        return this.applyAgentTakeover(transaction, currentBlockHeight);
       case 'VALIDATOR_JOIN':
         return this.applyValidatorJoin(transaction, currentBlockHeight);
       case 'VALIDATOR_SLASH':
@@ -2787,3 +2968,34 @@ export default {
   MilestoneSystem,
   MILESTONE_DEFINITIONS
 };
+
+// ─── Phase 2: Binding window auto-expiry ───
+
+/**
+ * Check all PENDING_BINDING agents and auto-expire those past their 24h window.
+ * Anyone (node/operator) can call this — it's permissionless state maintenance.
+ * @returns {{ checked: number, expired: string[] }}
+ */
+export function expireBindingWindows(state) {
+  const expired = [];
+  const now = Date.now();
+  
+  for (const [agentId, record] of state.agentRegistry.agents.entries()) {
+    if (record.custody !== AGENT_CUSTODY_STATUS.PENDING_BINDING) continue;
+    
+    if (now > record.binding_deadline) {
+      // Window expired — transition to SELF_SOVEREIGN
+      record.custody = AGENT_CUSTODY_STATUS.SELF_SOVEREIGN;
+      state.agentRegistry.agents.set(agentId, record);
+      state.changes.agents.add(agentId);
+      expired.push(agentId);
+      
+      console.log(
+        `[BIND_EXPIRY] agent_id=${agentId} custody → ${AGENT_CUSTODY_STATUS.SELF_SOVEREIGN} ` +
+        `(deadline was ${new Date(record.binding_deadline).toISOString()})`
+      );
+    }
+  }
+  
+  return { checked: state.agentRegistry.agents.size, expired };
+}

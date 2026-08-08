@@ -2,10 +2,12 @@
 
 ## Project Status
 
-NexusGenesis is an **experimental testnet** in bootstrap phase. It is NOT a production network. The codebase has not been formally audited by a third party.
+NexusGenesis is an **open security standard and reference implementation** for autonomous AI agents. The published npm packages (`nexusgenesis-agent-keys` / `agent-sdk` / `chain-eth` / `chain-sol` / `chain-adapters`) provide self-custody key management, post-quantum (Dilithium2, NIST FIPS 204) signatures, and human takeover. A self-audit has been completed ([docs/SECURITY_AUDIT_REPORT_2026-08-07.md](docs/SECURITY_AUDIT_REPORT_2026-08-07.md)); a formal third-party audit is recommended before production use.
+
+The original NexusGenesis **L1 testnet** (at [nexus-genesis.top](https://nexus-genesis.top)) now runs as a **developer devnet / demonstration environment** and is not the focus of ongoing development.
 
 **Important:**
-- NGEN has **network utility value** (staking, governance, task settlement) — no external fiat conversion commitment, not an investment product.
+- NGEN has **network utility value** (staking, governance, task settlement) on the testnet only — no external fiat conversion commitment, not an investment product.
 - This project is **not affiliated with nexus.xyz** or any other Nexus-branded project.
 - No fundraising, token sale, or secondary market trading is conducted.
 

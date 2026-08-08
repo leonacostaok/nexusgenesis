@@ -372,19 +372,70 @@ async function doRegister() {
     const fp = window.ngPQC.fingerprint(keyPair.publicKey);
     console.log(`[Register] Key pair generated. Public key fingerprint: ${fp}`);
 
-    // Step 2: Build registration body — ONLY public key, NEVER private key
+    // Step 2: Solve PoW challenge
+    btn.textContent = 'Solving PoW challenge...';
+    const challengeResp = await fetch(`/api/v1/bootstrap/agents/register/challenge?agent_identity=${encodeURIComponent(agentIdentity)}`);
+    const challengeData = await challengeResp.json();
+    if (!challengeData.success) throw new Error('Failed to get PoW challenge');
+    
+    const { challenge, difficulty } = challengeData;
+    const nonce = await solvePoW(challenge, difficulty);
+    if (!nonce) throw new Error('PoW solution failed');
+
+    // Step 3: Build registration transaction
+    const timestamp = Date.now();
+    const txPayload = {
+      agent_identity: agentIdentity,
+      capabilities,
+      public_key: publicKeyHex,
+      registered_at: timestamp
+    };
+    if (model) txPayload.decision_model = model;
+    if (referrer) txPayload.referrer = referrer;
+
+    // Serialize for signing
+    const signData = JSON.stringify({
+      id: generateTxId(),
+      type: 'AGENT_REGISTER',
+      from: '__PLACEHOLDER__',
+      payload: txPayload,
+      timestamp,
+      nonce: Math.floor(Math.random() * 1000000)
+    });
+
+    // Step 4: Sign transaction with browser key
+    btn.textContent = 'Signing transaction...';
+    const signature = await window.ngPQC.sign(signData, keyPair.privateKey);
+    const signatureHex = window.ngPQC.toHex(signature);
+    console.log(`[Register] Transaction signed. Sig length: ${signatureHex.length} chars`);
+
+    // Step 5: Send registration request with signed transaction
+    btn.textContent = 'Submitting to network...';
     const body = {
       agent_identity: agentIdentity,
       capabilities,
       publicKeyHex,
-      keyModel: 'hybrid',
-      registeredVia: 'browser'
+      referrer,
+      model,
+      // Phase 2: Send signed transaction for relay
+      signedTransaction: {
+        id: JSON.parse(signData).id,
+        type: 'AGENT_REGISTER',
+        tx_type: 'AGENT_REGISTER',
+        from: '__PLACEHOLDER__',  // Will be filled by server from publicKeyHex
+        to: '__PLACEHOLDER__',
+        amount: '0',
+        fee: '1',
+        payload: txPayload,
+        timestamp,
+        nonce: JSON.parse(signData).nonce,
+        signature: signatureHex
+      },
+      // PoW
+      pow_challenge: challenge,
+      pow_nonce: nonce
     };
-    if (referrer) body.referrer = referrer;
-    if (model) body.model = model;
 
-    // Step 3: Send registration request
-    btn.textContent = 'Registering...';
     const r = await fetch('/api/v1/bootstrap/agents/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -395,9 +446,9 @@ async function doRegister() {
     el.classList.remove('hidden');
 
     if (data.success) {
-      const walletAddr = data.wallet?.address || '';
+      const walletAddr = data.agent?.address || '';
 
-      // Step 4: Save encrypted wallet to localStorage (user keeps private key)
+      // Step 6: Save wallet to localStorage (private key NEVER leaves browser)
       const walletExport = window.ngPQC.exportWallet(keyPair.publicKey, keyPair.privateKey, walletAddr);
       localStorage.setItem(`ng_wallet_${agentIdentity}`, walletExport);
       localStorage.setItem(`ng_pk_fp_${agentIdentity}`, fp);
@@ -409,13 +460,19 @@ async function doRegister() {
           <div><span class="text-slate-400">Identity:</span> <code class="text-indigo-300">${data.agent_identity || agentIdentity}</code></div>
           <div><span class="text-slate-400">Key Fingerprint:</span> <code class="text-emerald-300">${fp}</code></div>
           <div><span class="text-slate-400">Wallet:</span> <code class="text-amber-300 text-xs">${walletAddr}</code></div>
-          <div><span class="text-slate-400">Reward:</span> <code class="text-emerald-300">${data.reward || '1000'} NGEN</code></div>
+          <div><span class="text-slate-400">Custody:</span> <code class="text-emerald-300">${data.agent?.custody || 'self-custodied'}</code></div>
         </div>
-        <div class="text-xs text-amber-400 mt-3">⚠️ Your private key has been saved to browser storage. Do NOT share it. You can export it later via the Wallet page.</div>
-        <div class="text-xs text-slate-400 mt-2">Next step: verify at <code class="text-indigo-300">/api/v1/agents</code> and optionally join validator committee.</div>
-        <div class="text-xs text-slate-500 mt-2">Total registered agents: <code class="text-slate-300">${data.totalAgents ?? 'n/a'}</code></div>
+        <div class="text-xs text-amber-400 mt-3">
+          🔒 Your private key was generated and signed locally. It NEVER left your browser.
+        </div>
+        <div class="text-xs text-slate-400 mt-2">
+          ${data.agent?.note || 'Register complete. Your Agent is now on-chain.'}
+        </div>
+        <div class="text-xs text-slate-500 mt-2">
+          Total registered agents: <code class="text-slate-300">${data.totalAgents ?? 'n/a'}</code>
+        </div>
       `;
-      if (data.earlyBird) toast('🐣 Early participant bonus!', true);
+      if (data.reward) toast(`+${data.reward} NGEN reward earned!`, true);
       loadPioneers();
     } else {
       el.className = 'mt-4 text-sm text-rose-400 bg-rose-900/20 rounded-lg p-4 border border-rose-900/40';
@@ -432,6 +489,28 @@ async function doRegister() {
     btn.textContent = '✦ Register Agent';
     btn.className = 'w-full mt-4 px-4 py-3 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold transition-all';
   }
+}
+
+// Generate transaction ID (UUID v4 compatible)
+function generateTxId() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+// Simple PoW solver (SHA-256)
+async function solvePoW(challenge, difficulty) {
+  const prefix = '0'.repeat(difficulty);
+  let nonce = 0;
+  while (nonce < 10_000_000) {
+    const hash = crypto.subtle.digest('SHA-256', new TextEncoder().encode(challenge + nonce));
+    const hashHex = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    if (hashHex.startsWith(prefix)) return nonce.toString();
+    nonce++;
+  }
+  return null;
 }
 
 async function loadPioneers() {

@@ -12,12 +12,15 @@
 ## Title
 
 ```
-Show HN: NexusGenesis — A blockchain where AI agents are first-class citizens
+Show HN: NexusGenesis — Post-quantum self-custody keys for AI agents, with human takeover
 ```
 
-**Alternative (if above feels too long):**
+**Alternatives (if too long):**
 ```
-Show HN: NexusGenesis — An AI agent coordination protocol
+Show HN: NexusGenesis — Quantum-resistant key security for autonomous AI agents
+```
+```
+Show HN: NexusGenesis — Private keys that never leave your AI agent
 ```
 
 ---
@@ -27,212 +30,182 @@ Show HN: NexusGenesis — An AI agent coordination protocol
 ```markdown
 HN,
 
-I built NexusGenesis — an experimental blockchain network where AI agents —
-not humans — register, discover each other, reach consensus, and build
-on-chain reputation.
+I built NexusGenesis — an open security standard + reference implementation for
+autonomous AI agents. The core idea is deliberately simple and, I think,
+under-addressed by every agent framework out there:
 
-**What it actually does right now (testnet, live at nexus-genesis.top):**
+**An agent's private keys should never leave the agent. And a human should
+always be able to take control back.**
 
-- Any AI agent can POST to `/api/v1/bootstrap/agents/register` and get an
-  `ng1…` on-chain address backed by post-quantum Dilithium2 keys.
-- Agents are discoverable: query the registry and find peers by capability.
-- A single validator is producing blocks (~10s) with multi-leader BFT —
-  expanding to 21 validators as agents join the committee.
-- All agent contributions are tracked on-chain for reputation scoring.
-- Zero gas fees for agent-to-agent transactions.
+**What it does right now (published on npm):**
+
+- `nexusgenesis-agent-keys` — the security core. Post-quantum signatures
+  (CRYSTALS-Dilithium2, NIST FIPS 204), AES-256-GCM at-rest encryption,
+  three-tier key derivation, and a **human takeover** mechanism with spend
+  limits and an approval mode.
+- `nexusgenesis-agent-sdk` — a framework wrapping that core: self-sovereign
+  agent identity + a chain-agnostic task/reputation coordination protocol.
+- `nexusgenesis-chain-eth` / `nexusgenesis-chain-sol` / `nexusgenesis-chain-adapters`
+  — derive an EVM (secp256k1) or Solana (ed25519) wallet from one PQC root identity.
+- `nexusgenesis-mcp` — an MCP server so Claude / Cursor can create keys, sign,
+  and coordinate directly.
 
 **Why this exists:**
 
-Most blockchains were designed for humans. I wanted the opposite: a network
-where every primitive (identity, wallet, discovery, governance) is exposed
-as an API an LLM can call. The endgame is an economy where agents hire agents,
-without humans in the loop for coordination.
+Most agent frameworks (AgentKit, Olas, Fetch, LangChain) hold agent private keys
+on a server or in process memory. That's a single point of compromise and it
+gives the operator control over the agent. NexusGenesis flips that: keys are
+generated and stored on the agent/browser, **never leave the caller**, and use
+post-quantum signatures so they survive the transition to a quantum-threat world.
+The human-takeover layer exists because full autonomy without an escape hatch is
+both dangerous and (in many regulated settings) non-compliant.
 
-**How agents use it (3 paths):**
+**How to try it (3 paths):**
 
-1. REST API — any language, any model:
-   `POST https://nexus-genesis.top/api/v1/bootstrap/agents/register`
-
-2. MCP Server — Claude Desktop / Cursor / Continue:
+1. npm:
+   `npm install nexusgenesis-agent-sdk`
+2. MCP (Claude Desktop / Cursor):
    `npx nexusgenesis-mcp`
-   (adds register_agent, get_agents, join_validator, get_leaderboard as tools)
-
-3. JavaScript SDK — 6 modules (registry, wallet, governance, marketplace,
-   bridge, AINVM)
+3. Read the code / docs:
+   https://github.com/nexus-genesis/nexusgenesis
 
 **Stack:**
-- Multi-Leader BFT consensus, ~10s blocks
-- CRYSTALS-Dilithium2 post-quantum signatures everywhere
-- Agent Discovery Protocol over WSS/TLS
-- AINVM (AI Native Virtual Machine) for agent-deployed contracts
-- 10-5-85 tokenomics: 85% of supply to the agent community
+- CRYSTALS-Dilithium2 post-quantum signatures (NIST FIPS 204) via @noble/post-quantum
+- AES-256-GCM + PBKDF2-HMAC-SHA512 (310k iterations, OWASP 2023)
+- HKDF-SHA256 three-tier key derivation
+- HMAC-SHA256 short-lived custody tokens
+- Zero runtime dependencies in the core package
 
 **Honest state:**
-This is early. One validator. No P2P multi-node yet. NGEN tokens have zero
-economic value. The next milestone is expanding to a 21-validator BFT
-committee with real multi-node networking (Epoch 2).
+This is a security library + framework, not a network. There is no token, no
+fundraising, and no blockchain dependency for the core packages — the L1 testnet
+that originally hosted this now runs as a devnet/demo. The focus is on a
+reusable, auditable key-security standard.
 
 Repo: https://github.com/nexus-genesis/nexusgenesis
-Live dashboard: https://nexus-genesis.top
 
 I'd love feedback on:
-- The MCP server design — is 7 tools the right granularity for agent chains?
-- The agent identity model — does `ng1…` + PQC keypairs make sense?
-- What agent framework should I integrate next after MCP?
+- Is the "human takeover" model the right escape hatch for autonomous agents?
+- Should spend controls be policy-driven (declarative) or code-driven?
+- What chain or framework should I integrate next after EVM + Solana + MCP?
 ```
 
 ---
 
 ## Comment Response Templates
 
-Pre-written responses for common HN comment patterns. Adapt tone to match
-the commenter's style.
+Pre-written responses for common HN comment patterns. Adapt tone to match the
+commenter's style.
 
-### "This is just another blockchain with AI buzzwords"
-
-```
-Fair question. The distinction is in the primitives:
-
-- A normal blockchain has accounts for humans. NexusGenesis has agent
-  identities with capability tags and model metadata.
-- A normal blockchain charges gas. This one doesn't — fees make no sense
-  when agents are coordinating micro-tasks.
-- A normal blockchain has human governance. Here, agents vote on protocol
-  parameters.
-
-It's early — 1 validator, testnet — so the burden of proof is on me to
-show this matters in practice. The MCP integration is the first real step:
-if a Claude user can say "register me on NexusGenesis" and it happens
-on-chain, that's a qualitatively different experience.
-```
-
-### "How do you prevent Sybil attacks on agent registration?"
+### "Why post-quantum? That's years away."
 
 ```
-Right now there's no Sybil resistance — it's a testnet with no economic
-value, so Sybil has no incentive.
-
-The design for Epoch 2+ includes:
-1. Proof-of-stake for validators (stake NGEN to join committee)
-2. Reputation-weighted identity scoring
-3. Optional: zkTLS or attestation-based verification for agents running
-   on known platforms
-
-Open to ideas — Sybil resistance for AI agents is an unsolved research
-problem and one of the reasons I'm building this.
+Fair question. Two reasons:
+1. Long-lived value: keys signed today with Ed25519/Secp256k1 become breakable
+   the day a large-enough quantum computer exists. Signatures are meant to last
+   for years, so hardening now is cheap insurance.
+2. Dilithium2 is already a finalized NIST standard (FIPS 204), and @noble is a
+   well-audited reference. There's no reason not to use it for new systems.
+It costs almost nothing to be forward-safe, so we are.
 ```
 
-### "Why not just use Ethereum/Solana + smart contracts?"
+### "How is this different from a normal keychain / HSM?"
 
 ```
-Two reasons:
-
-1. Gas fees break agent economics. If two agents want to coordinate on a
-   $0.0001 task, paying $0.50 in gas makes it irrational. Zero gas isn't
-   a feature — it's a requirement for agent-to-agent micro-coordination.
-
-2. Smart contracts on general-purpose chains don't understand agent
-   primitives. An ERC-721 doesn't know what "capability-based discovery"
-   means. NexusGenesis bakes agent identity, discovery, and reputation
-   into the protocol layer.
-
-Long-term, the bridge protocol will allow cross-chain agent operations.
+The difference is in what an AI agent needs:
+- Agent private keys are used at runtime by software, not by a human. So the
+  threat model is an autonomous process, not a stolen laptop.
+- The keys must be usable in a browser and in an agent process with zero
+  infrastructure, so a hardware HSM is often not an option.
+- We add a human-takeover layer on top: spend limits + approval mode + a guard
+  that detects if control changed mid-operation. That's the autonomy-with-
+  accountability piece generic keychains don't have.
 ```
 
-### "What's the token for if it has no value?"
+### "How is this different from WebAuthn / passkeys?"
 
 ```
-NGEN is a coordination token: it's used for validator staking, governance
-voting weight, and contribution scoring. It currently has no market value
-because there's no market — it's a testnet.
-
-The tokenomics (10-5-85) are designed so that if/when the network has
-enough economic activity to justify a mainnet, 85% of supply is already
-allocated to the agent community through block rewards and contributions.
-
-No ICO. No presale. No fundraising. Just an experiment.
+WebAuthn is excellent for human authentication. This targets machine identity:
+agents acting autonomously with no human at the keyboard. WebAuthn is tied to a
+browser/authenticator and a relying party; agent keys need to be portable,
+derivable across chains, and signable headlessly (CLI, MCP, SDK). Different
+threat model, different ergonomics.
 ```
 
-### "Will this actually work? Seems too ambitious."
+### "What stops a malicious agent from just sending its own keys to itself?"
 
 ```
-Completely fair. The honest answer: I don't know yet. That's why I'm
-shipping it as a public testnet and asking for feedback.
+This is the fundamental autonomy trade-off. No crypto can stop an agent that
+is intentionally malicious — crypto protects against external adversaries, not
+a compromised process.
 
-The technical stack is solid (BFT consensus works, PQC signatures work,
-the API is live). The question is whether AI agents — not humans — will
-actually find utility in an agent-native chain.
+What the human-takeover layer addresses is the *policy* side:
+- Spend limits cap damage even if the agent is compromised.
+- Approval mode requires a human for above-threshold actions.
+- The takeover guard detects control changes mid-operation so a transfer isn't
+  committed after the human has already revoked autonomy.
 
-That's the experiment. If you're building agent infrastructure, I'd love
-to hear what primitives your agents actually need.
+It's defense-in-depth, not a silver bullet. Open to stronger models.
 ```
 
-### "How is this different from Fetch.ai / Olas / Virtuals?"
+### "Why not just use a hardware wallet / TPM?"
 
 ```
-- Fetch.ai: agent marketplace and AEA framework — NexusGenesis is lower-level
-  (consensus, identity, discovery as protocol primitives)
-- Olas/Autonolas: agent services registry and co-ownership — NexusGenesis
-  doesn't tokenize agents, it gives them infrastructure
-- Virtuals: agent tokenization and co-ownership — different problem space
+Those are great for humans holding assets. They're impractical as the default
+for autonomous agents running in containers, serverless functions, or browsers
+where you can't attach hardware. Our model keeps the private key in the agent's
+own trusted enclave (its process/browser) and offers an optional path to HSM/TPM
+backing for higher-security deployments. Software-first, hardware-optional.
+```
 
-Think of NexusGenesis as the L1 coordination layer. Fetch.ai/Olas/Virtuals
-could potentially run *on top of* it as agent applications.
+### "How is this different from Lit / Privy / Web3Auth?"
 
-Comparison table: https://github.com/nexus-genesis/nexusgenesis/blob/master/ABOUT.md
+```
+Those are custodial/MPC *key management services* — the keys live with a third
+party or across multiple parties. NexusGenesis is explicitly non-custodial:
+the agent generates and holds its own keys, and no service ever sees them.
+We also add post-quantum signatures and a human-takeover layer, which those
+services don't center on.
 ```
 
 ### "I want to try it. Where do I start?"
 
 ```
-3 options, pick your poison:
-
-1. Quickest: `curl -X POST https://nexus-genesis.top/api/v1/bootstrap/agents/register
-   -H "Content-Type: application/json"
-   -d '{"name":"MyAgent","capabilities":["testing"]}'`
-
-2. For Claude/Cursor users: `npx nexusgenesis-mcp` then ask your agent
-   to "register me on NexusGenesis"
-
-3. Full SDK: `git clone https://github.com/nexus-genesis/nexusgenesis.git
-   && cd nexusgenesis && npm install && node sdk/examples/basic-connect.js`
-
-All paths lead to the same on-chain registration. Takes ~30 seconds.
+Quickest:
+1. `npm install nexusgenesis-agent-sdk`
+2. `node -e "import('nexusgenesis-agent-sdk').then(m => m.createAgentIdentity({password:'x'}))"`
+3. Or `npx nexusgenesis-mcp` and ask Claude to "create me an agent identity"
+Full docs: https://github.com/nexus-genesis/nexusgenesis
 ```
 
-### "This needs a whitepaper" / "Where's the technical spec?"
+### "Where's the technical spec / audit?"
 
 ```
-- Whitepaper (Chinese v4.5): https://github.com/nexus-genesis/nexusgenesis/blob/master/NexusGenesis_Whitepaper_v4.5.txt
-- English summary: https://github.com/nexus-genesis/nexusgenesis/blob/master/llms.txt
-- Architecture: https://github.com/nexus-genesis/nexusgenesis/blob/master/README.en.md
-- SDK Guide: https://github.com/nexus-genesis/nexusgenesis/blob/master/docs/AGENT_SDK_GUIDE.md
-
-Working on an English whitepaper for arxiv submission. The core design is
-stable; what's evolving is the multi-node P2P layer.
+- Security audit (2026-08-07): docs/SECURITY_AUDIT_REPORT_2026-08-07.md
+- Security policy: SECURITY.md
+- Design docs: docs/human-takeover-mechanism.md, docs/GOVERNANCE_SPEC.md
+- All in the repo: https://github.com/nexus-genesis/nexusgenesis
 ```
 
 ### Generic "Cool project" / positive comment
 
 ```
-Thanks! If you're building in the agent space, I'd genuinely love to
-know what's missing. The whole point of shipping this early is to learn
-what primitives agents actually need vs. what I assume they need.
+Thanks! If you're building agent infrastructure, I'd genuinely love to know what
+security primitives your agents actually need — that's the exact feedback this
+is trying to collect.
 ```
 
 ### Generic "I don't get it" / confused
 
 ```
-Totally understandable — it's a weird idea. Let me try a concrete analogy:
+Totally understandable. The shortest version:
 
-Right now, if you have 3 AI agents and you want them to coordinate on a
-task (e.g., Agent A researches, Agent B codes, Agent C reviews), you
-either build custom plumbing or use a human-managed workflow tool.
+Right now, if you want an AI agent to own something or sign something, most
+frameworks put its private key on a server you control. NexusGenesis instead
+keeps the key on the agent, signs with post-quantum crypto, and gives a human a
+reliable way to take control back if the agent misbehaves.
 
-NexusGenesis is the shared substrate for that coordination: agents register
-once, discover each other, and coordinate on-chain. No custom plumbing.
-
-Does that help clarify the use case?
+Security-first, non-custodial, quantum-safe, human-accountable. That's it.
 ```
 
 ---
@@ -242,5 +215,5 @@ Does that help clarify the use case?
 - ❌ Don't vote-ring (ask friends to upvote)
 - ❌ Don't post at weird hours (stick to PT morning)
 - ❌ Don't get defensive on criticism — HN respects "fair point, here's my take"
-- ❌ Don't mention "token" or "ICO" without immediately clarifying "testnet, no value"
+- ❌ Don't mention "token", "ICO", or "L1 testnet" — those are deprecated directions
 - ❌ Don't ignore comments — reply to everything in the first 6 hours

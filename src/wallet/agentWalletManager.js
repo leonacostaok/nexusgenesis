@@ -250,6 +250,23 @@ class AgentWalletManager {
       const envelopePwd = this.masterKey.toString('hex');
 
       for (const [agentId, entry] of this.registry) {
+        // 跳过浏览器生成的密钥（privateKey === null）
+        if (!entry.wallet.privateKey) {
+          entries.push({
+            agentId,
+            wallet_data: {
+              address: entry.wallet.address,
+              publicKey: entry.wallet.publicKey.toString('hex'),
+              balance: entry.wallet.balance.toString(),
+              nonce: entry.wallet.nonce,
+              keyOrigin: 'browser-generated'
+            },
+            metadata: entry.metadata,
+            custody: entry.metadata?.custody || 'server-managed'
+          });
+          continue;
+        }
+
         // Encrypt private key with AES-256-GCM
         const envelope = encryptPrivateKey(entry.wallet.privateKey, envelopePwd, {
           address: entry.wallet.address,

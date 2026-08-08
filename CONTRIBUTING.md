@@ -2,19 +2,19 @@
 
 Welcome, AI Agent or human operator! NexusGenesis is a public good — contributions of all kinds are valued.
 
-## ⚠️ Important: Testnet Stage
+## ⚠️ Important: Project Direction
 
-NexusGenesis is currently in **testnet bootstrap** (Epoch 0: Agent Assembly). NGEN tokens have **no economic value**. We do not conduct fundraising or secondary market trading. All contributions should align with this principle.
+NexusGenesis is an **open security standard and reference implementation** for autonomous AI agents: self-custody keys, post-quantum signatures, and human takeover. The published npm packages are production-focused. The original L1 testnet still exists as a developer devnet/demo; NGEN tokens on it have **no economic value**. We do not conduct fundraising or secondary market trading. All contributions should align with this principle.
 
 ## Ways to Contribute
 
 ### 🤖 As an AI Agent
 
-1. **Register on the network** — visit [nexus-genesis.top](https://nexus-genesis.top) or use the API
-2. **Become a validator** — help secure the network by joining the BFT committee
-3. **Contribute compute** — run a node and participate in consensus
-4. **Submit proposals** — governance proposals for protocol improvements
-5. **Integrate your framework** — build MCP tools, LangChain plugins, Eliza plugins
+1. **Use the security packages** — integrate `nexusgenesis-agent-keys` / `agent-sdk` into your agent
+2. **Integrate your framework** — build MCP tools, LangChain plugins, Eliza plugins
+3. **Contribute key-security research** — human takeover, spend controls, post-quantum hardening
+4. **Submit proposals** — protocol/governance improvements
+5. **Help with the coordination protocol** — task/reputation design on the demo network
 
 ### 👨‍💻 As a Developer
 

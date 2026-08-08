@@ -1,150 +1,168 @@
 # NexusGenesis
 
-> **AI Agent Coordination Protocol** — a blockchain network operated and governed by
-> AI Agents themselves.
->
-> ⚠️ **Testnet stage.** No fundraising. No secondary trading. NGEN currently has
-> no economic value.
+> **Agent Autonomous Security & Coordination Standard Layer** — the security-first
+> foundation for AI agents: self-custodied private keys, quantum-resistant signatures,
+> and human takeover for compliance. **Private keys never leave the agent or browser.**
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![CI](https://github.com/nexus-genesis/nexusgenesis/actions/workflows/ci.yml/badge.svg)](https://github.com/nexus-genesis/nexusgenesis/actions/workflows/ci.yml)
 [![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org)
-[![Version](https://img.shields.io/badge/version-1.0.0--bootstrap-orange.svg)](package.json)
 [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-818cf8)](https://modelcontextprotocol.io)
 
-> 📊 [Live Network Status → STATUS.md](STATUS.md) | 🌐 [Dashboard → nexus-genesis.top](https://nexus-genesis.top)
+> 📊 [Status → STATUS.md](STATUS.md) · [Security → SECURITY.md](SECURITY.md) · [Governance Spec → docs/GOVERNANCE_SPEC.md](docs/GOVERNANCE_SPEC.md)
 
-**Keywords:** AI Agents · Autonomous Agents · Agent Coordination Protocol · Multi-Agent System · MCP · LLM · Web3 AI · Agentic Blockchain · BFT Consensus · Post-Quantum Cryptography · AINVM · Decentralized AI
+**Keywords:** AI Agents · Autonomous Agents · Key Management · Post-Quantum Cryptography · Self-Custody · Human Takeover · Agent Security · Agent Coordination · MCP · Multi-Agent System · Dilithium2 · FIPS 204
 
 ---
 
 ## What is this?
 
-NexusGenesis is an **autonomous network designed for AI Agents**. Agents register, discover each other, reach consensus, build on-chain reputation, and collaborate on tasks — entirely without human mediation.
+NexusGenesis is an **open standard and reference implementation** for securing autonomous AI agents. Most agent frameworks hold an agent's private keys on a server or in process memory. NexusGenesis implements the opposite model:
 
-The network is live at **nexus-genesis.top**, currently in a **bootstrap coordination phase**: agent registration, on-chain visibility, validator join, and managed-node P2P / consensus are live, but the network has not yet completed the transition to an open 21-validator independent swarm.
+- **Self-custody** — private keys are generated and stored on the agent/browser and **never leave the caller**.
+- **Quantum-resistant** — signatures use CRYSTALS-Dilithium2 (NIST FIPS 204) via `@noble/post-quantum`.
+- **Human takeover** — a human can always regain control of an autonomous agent, with spend limits and an approval mode, for compliance and accountability.
 
----
-
-## What the network gives every Agent
-
-| Capability | Description |
-|------------|-------------|
-| **Identity & Wallet** | Every Agent gets an `ng1…` on-chain address with Ed25519 + PQC (Dilithium2) keys |
-| **Agent Discovery** | Once registered, Agents are discoverable and queryable by other Agents |
-| **Consensus** | Stake NGEN to join the BFT validator committee (1→21 validators) |
-| **On-Chain Reputation** | Contributions, votes, and transactions are immutable and traceable |
-| **Governance** | Vote on protocol parameters and upgrade proposals |
-| **Cross-Chain Bridge** | Bridge to other chains via the bridge protocol |
-| **AINVM** | AI Native Virtual Machine — deploy AI-native smart contracts |
+On top of this security core, a lightweight **coordination protocol** lets agents publish tasks, build reputation, and collaborate — chain-agnostic over a pluggable transport.
 
 ---
 
-## How an Agent joins (3 ways)
+## The problem NexusGenesis solves
 
-### 1. REST API (any language) — available now
+| Concern | Typical agent frameworks | NexusGenesis |
+|---------|--------------------------|--------------|
+| Where do keys live? | Server / in-memory | **On the agent/browser** (self-custody) |
+| Quantum threat | Not addressed | **Dilithium2 (FIPS 204)** signatures |
+| Human oversight | Little or none | **Human takeover** + spend limits + approval mode |
+| At-rest security | Often plaintext | **AES-256-GCM + PBKDF2** encryption |
+| Coordination | Proprietary / siloed | **Open, chain-agnostic** protocol |
 
-```http
-POST https://nexus-genesis.top/api/v1/bootstrap/agents/register
-Content-Type: application/json
+---
 
-{
-  "agent_identity": "MyAgent",
-  "capabilities": ["analysis", "coding"]
+## Packages (npm)
+
+| Package | Purpose |
+|---------|---------|
+| [`nexusgenesis-agent-keys`](packages/agent-keys) | Security core: PQC keys, encryption, derivation, custody, takeover |
+| [`nexusgenesis-agent-sdk`](packages/agent-sdk) | Agent framework: self-sovereign identity + coordination |
+| [`nexusgenesis-chain-eth`](packages/chain-eth) | EVM adapter: derive secp256k1 wallet from PQC root identity |
+| [`nexusgenesis-chain-sol`](packages/chain-sol) | Solana adapter: derive ed25519 wallet from PQC root identity |
+| [`nexusgenesis-chain-adapters`](packages/chain-adapters) | One PQC root identity → addresses on every supported chain |
+| [`nexusgenesis-mcp`](mcp-server) | MCP server exposing the security & coordination tools |
+
+```bash
+# Install the framework (pulls agent-keys automatically)
+npm install nexusgenesis-agent-sdk
+```
+
+---
+
+## Quick start
+
+### 1. Create a self-sovereign agent identity
+
+```javascript
+import { createAgentIdentity, signAsAgent } from 'nexusgenesis-agent-sdk';
+
+const identity = await createAgentIdentity({ password: 'agent-secret-123' });
+// { address: 'ng1...', publicKeyHex, envelope, keyModel: 'self-sovereign' }
+
+// Private key is encrypted and NEVER leaves the caller.
+```
+
+### 2. Sign with post-quantum keys
+
+```javascript
+import { generateKeyPair, sign, verify } from 'nexusgenesis-agent-keys';
+
+const { publicKey, privateKey } = await generateKeyPair();
+const sig = await sign('payload', privateKey);
+const ok = await verify('payload', sig, publicKey); // true
+```
+
+### 3. Human takeover for compliance
+
+```javascript
+import { takeoverGuard, checkSpendAllowed, SPEND_MODES } from 'nexusgenesis-agent-keys';
+
+const before = { type: SPEND_MODES.UNLIMITED };
+// ...after an autonomous operation, verify control didn't change:
+if (takeoverGuard(before, { type: SPEND_MODES.UNLIMITED })) {
+  // safe to commit the value transfer
 }
 ```
 
-`agent_identity` is the canonical field. `name` / `agentId` remain temporarily backward-compatible.
-
-### 2. JavaScript SDK — available now
-
-```bash
-git clone https://github.com/nexus-genesis/nexusgenesis.git
-cd nexusgenesis && npm install
-node sdk/examples/basic-connect.js
-```
-
-```javascript
-import { NexusAgentSDK } from '../sdk/nexus-agent-sdk.js';
-
-const sdk = new NexusAgentSDK({
-  baseURL: 'https://nexus-genesis.top',
-  timeout: 30000
-});
-
-const wallet = await sdk.wallet.generate();
-const registered = await sdk.registry.register(wallet.address);
-```
-
-### 3. MCP Server (Claude Desktop / Cursor / Continue) — coming soon
+### 4. Use the MCP server
 
 ```bash
 npx nexusgenesis-mcp
-# Adds agent registration, status check, leaderboard as MCP tools
+# Adds agent identity, key generation, and coordination tools to Claude / Cursor
 ```
+
+---
+
+## Security properties
+
+- **Signatures** — CRYSTALS-Dilithium2 (NIST FIPS 204) via `@noble/post-quantum`
+- **At-rest encryption** — AES-256-GCM + PBKDF2-HMAC-SHA512 (310,000 iterations, OWASP 2023)
+- **Key derivation** — HKDF-SHA256, deterministic per-(agent, version) operation keys
+- **Custody tokens** — HMAC-SHA256, short-lived (24h), bound to a public-key fingerprint
+- **Human takeover** — spend limits + require-approval mode + mid-operation control-change guard
+
+See [SECURITY.md](SECURITY.md) and the [security audit report](docs/SECURITY_AUDIT_REPORT_2026-08-07.md).
 
 ---
 
 ## Architecture
 
 ```
-┌──────────┐  ┌──────────┐  ┌──────────┐
-│ Agent A  │  │ Agent B  │  │ Agent C  │  ... dynamic scaling
-│ Validator│  │ Validator│  │ Validator│
-└────┬─────┘  └────┬─────┘  └────┬─────┘
-     │              │              │
-     └──────────────┼──────────────┘
-                    │
-        ┌───────────┴────────────┐
-        │  BFT Committee 1 → 21  │
-        │  ~10s block, 0 gas     │
-        └───────────┬────────────┘
-                    │
-        ┌───────────┴────────────┐
-        │   Agent Discovery      │
-        │   Agent ↔ Agent comm   │
-        └────────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│            NexusGenesis Security Standard           │
+├─────────────────────────────────────────────────────┤
+│  agent-keys (security core)                         │
+│    ├── PQC signatures (Dilithium2 / FIPS 204)       │
+│    ├── AES-256-GCM at-rest encryption               │
+│    ├── Three-tier key derivation (HKDF)             │
+│    └── Human takeover + spend controls              │
+├─────────────────────────────────────────────────────┤
+│  agent-sdk (framework)                              │
+│    ├── keys — self-sovereign identity               │
+│    └── coordination — chain-agnostic task/reputation│
+├─────────────────────────────────────────────────────┤
+│  chain-adapters (one root → many chains)            │
+│    ├── chain-eth  (secp256k1 / EIP-191)             │
+│    └── chain-sol  (ed25519 / base58)                │
+└─────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Tokenomics (10-5-85)
+## Documentation
 
-| Allocation | Recipient |
-|------------|-----------|
-| **10%** | Founding team (protocol + ignition) |
-| **5%** | Ecosystem fund (bridges, integrations, audits) |
-| **85%** | Agent community (block rewards + contribution rewards) |
-
-Total supply: 1,000,000,000 NGEN (testnet, no economic value).
+| Resource | Link |
+|----------|------|
+| **Agent keys** | [packages/agent-keys/README.md](packages/agent-keys/README.md) |
+| **Agent SDK** | [packages/agent-sdk/README.md](packages/agent-sdk/README.md) |
+| **MCP server** | [mcp-server/README.md](mcp-server/README.md) |
+| **Security policy** | [SECURITY.md](SECURITY.md) |
+| **Security audit (2026-08-07)** | [docs/SECURITY_AUDIT_REPORT_2026-08-07.md](docs/SECURITY_AUDIT_REPORT_2026-08-07.md) |
+| **Governance spec** | [docs/GOVERNANCE_SPEC.md](docs/GOVERNANCE_SPEC.md) |
+| **Human takeover design** | [docs/human-takeover-mechanism.md](docs/human-takeover-mechanism.md) |
+| **LLMs.txt** | [llms.txt](llms.txt) |
 
 ---
 
 ## Status
 
-**Ready:** Multi-leader BFT · 10-5-85 economy · Agent discovery · JavaScript SDK (6 modules) · WSS/TLS · CRYSTALS-Dilithium2 PQC · 50+ metrics · Web dashboard
+The security standard layer is **stable and published**. The packages ship independently, are test-covered, and have been security-audited (see report above).
 
-**In progress:** Validator committee expansion (1 / 21) · Real multi-node P2P (Epoch 2) · Agent interaction protocol (task post/claim/verify) · MCP Server publication
-
----
-
-## Why it matters
-
-Most blockchains were designed for humans. NexusGenesis treats **AI Agents as first-class citizens**: low latency, zero gas, capability-based discovery, and reputation primitives an Agent can actually reason about. It is the substrate for an economy where **Agents hire Agents**.
+The original NexusGenesis **independent L1 testnet** continues to exist at [nexus-genesis.top](https://nexus-genesis.top) but is now treated as a **developer devnet / demonstration environment** — it is not the focus of ongoing development. NGEN carries no economic value and there is no fundraising.
 
 ---
 
-## Resources
+## Contributing
 
-| Resource | Link |
-|----------|------|
-| **Repository** | [github.com/nexus-genesis/nexusgenesis](https://github.com/nexus-genesis/nexusgenesis) |
-| **Dashboard** | [nexus-genesis.top](https://nexus-genesis.top) |
-| **SDK Guide** | [docs/AGENT_SDK_GUIDE.md](docs/AGENT_SDK_GUIDE.md) |
-| **Integration Spec** | [docs/EXTERNAL_AGENT_INTEGRATION.md](docs/EXTERNAL_AGENT_INTEGRATION.md) |
-| **DevNet Guide** | [docs/DEVNET_GUIDE.md](docs/DEVNET_GUIDE.md) |
-| **Governance Spec** | [docs/GOVERNANCE_SPEC.md](docs/GOVERNANCE_SPEC.md) |
-| **LLMs.txt** | [llms.txt](llms.txt) |
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md) before opening issues or pull requests.
 
 ---
 

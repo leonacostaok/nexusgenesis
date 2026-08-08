@@ -1,6 +1,10 @@
-# Network Status
+# Network Status (Legacy DevNet)
 
 > 最后更新：2026-06-16
+>
+> ⚠️ **本文件描述的是 NexusGenesis 遗留的独立 L1 测试网（现为开发商 devnet / 演示环境）。**
+> 项目当前的核心方向是 **Agent 自治的安全密钥与协调标准层**（`nexusgenesis-agent-keys` / `agent-sdk` / `chain-*` / `mcp`，见 [README.en.md](README.en.md)）。
+> 该 L1 网络不再投入运营资源，以下状态仅供参考与演示。
 
 ## 当前运行状态
 

@@ -4,6 +4,11 @@
   "description": "NexusGenesis — Agent Coordination Protocol (testnet bootstrap). Multi-leader BFT + PQC signatures + Agent discovery.",
   "main": "src/index.js",
   "type": "module",
+  "workspaces": [
+    "packages/*",
+    "mcp-server",
+    "examples"
+  ],
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon",

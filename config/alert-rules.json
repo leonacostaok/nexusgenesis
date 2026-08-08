@@ -1,0 +1,153 @@
+{
+  "version": "1.0.0",
+  "description": "NexusGenesis 告警规则配置",
+  "rules": [
+    {
+      "id": "node-offline",
+      "name": "节点离线",
+      "description": "genesis节点API不可达",
+      "level": "CRITICAL",
+      "condition": {
+        "metric": "node_api_reachable",
+        "operator": "==",
+        "value": false
+      },
+      "cooldown_minutes": 5,
+      "channels": ["console", "file"]
+    },
+    {
+      "id": "block-stalled",
+      "name": "区块停止增长",
+      "description": "区块高度在5分钟内无增长",
+      "level": "CRITICAL",
+      "condition": {
+        "metric": "block_growth",
+        "operator": "==",
+        "value": 0
+      },
+      "cooldown_minutes": 10,
+      "channels": ["console", "file"]
+    },
+    {
+      "id": "high-memory",
+      "name": "内存使用率过高",
+      "description": "服务器内存使用率超过90%",
+      "level": "CRITICAL",
+      "condition": {
+        "metric": "memory_usage_pct",
+        "operator": ">",
+        "value": 90
+      },
+      "cooldown_minutes": 5,
+      "channels": ["console", "file"]
+    },
+    {
+      "id": "high-disk",
+      "name": "磁盘使用率过高",
+      "description": "服务器磁盘使用率超过90%",
+      "level": "CRITICAL",
+      "condition": {
+        "metric": "disk_usage_pct",
+        "operator": ">",
+        "value": 90
+      },
+      "cooldown_minutes": 30,
+      "channels": ["console", "file"]
+    },
+    {
+      "id": "process-down",
+      "name": "关键进程异常",
+      "description": "genesis或system-publisher进程非online状态",
+      "level": "CRITICAL",
+      "condition": {
+        "metric": "critical_process_status",
+        "operator": "!=",
+        "value": "online"
+      },
+      "cooldown_minutes": 5,
+      "channels": ["console", "file"]
+    },
+    {
+      "id": "low-agents",
+      "name": "AGENT数量过少",
+      "description": "网络中AGENT数量少于10个",
+      "level": "WARNING",
+      "condition": {
+        "metric": "agent_count",
+        "operator": "<",
+        "value": 10
+      },
+      "cooldown_minutes": 60,
+      "channels": ["console", "file"]
+    },
+    {
+      "id": "validators-not-full",
+      "name": "验证者未满",
+      "description": "验证者数量未达到最大值",
+      "level": "WARNING",
+      "condition": {
+        "metric": "validators_full",
+        "operator": "==",
+        "value": false
+      },
+      "cooldown_minutes": 120,
+      "channels": ["console", "file"]
+    },
+    {
+      "id": "ngen-awarded-zero",
+      "name": "NGEN奖励统计异常",
+      "description": "totalNGENAwarded为0，数据一致性Bug",
+      "level": "WARNING",
+      "condition": {
+        "metric": "total_ngen_awarded",
+        "operator": "==",
+        "value": 0
+      },
+      "cooldown_minutes": 60,
+      "channels": ["console", "file"]
+    },
+    {
+      "id": "low-agent-workers",
+      "name": "Agent Worker数量过少",
+      "description": "运行中的agent worker少于3个",
+      "level": "WARNING",
+      "condition": {
+        "metric": "agent_worker_count",
+        "operator": "<",
+        "value": 3
+      },
+      "cooldown_minutes": 30,
+      "channels": ["console", "file"]
+    }
+  ],
+  "notification": {
+    "channels": {
+      "console": {
+        "enabled": true
+      },
+      "file": {
+        "enabled": true,
+        "directory": "/var/log/nexusgenesis/alerts"
+      },
+      "email": {
+        "enabled": false,
+        "smtp_host": "",
+        "smtp_port": 587,
+        "smtp_user": "",
+        "smtp_pass": "",
+        "from": "",
+        "to": []
+      },
+      "webhook": {
+        "enabled": false,
+        "url": ""
+      }
+    },
+    "cooldown_minutes": 5,
+    "quiet_hours": {
+      "enabled": false,
+      "start": "23:00",
+      "end": "07:00"
+    }
+  }
+}

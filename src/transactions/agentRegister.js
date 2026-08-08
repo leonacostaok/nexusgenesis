@@ -1,25 +1,37 @@
 /**
  * NexusGenesis - AGENT_REGISTER Transaction Type
  * 
- * agenton-chainRegistertransaction
+ * Phase 2 Security Revision: Agent on-chain registration
+ * with 24h human binding window for Master Key attachment.
  * 
- * transaction结构: 
+ * Transaction structure:
  * {
  *   type: 'AGENT_REGISTER',
- *   from: 'ng1...',        // Registeraddress
+ *   from: 'ng1...',        // Register address (agent's wallet)
  *   payload: {
  *     agent_identity: 'unique-agent-id',
  *     capabilities: ['coding', 'testing', 'review'],
  *     metadata: 'JSON string of agent info',
- *     public_key: 'PQC public key'
+ *     public_key: 'PQC public key (hex)',
+ *     registered_at: 1690000000000,  // Chain timestamp
+ *     decision_model: 'template',
+ *     operator_declaration: 'I am controlled by...'
  *   },
- *   signature: '...'
+ *   signature: 'Agent signs with Operation Key'
  * }
  */
 
 import crypto from 'crypto';
 import { validateAddress } from '../wallet/addressUtils.js';
 import { signSpecialTransactionWithWallet } from './transactionSigning.js';
+
+// Re-export Agent Custody Status constants from state module
+export const AGENT_CUSTODY_STATUS = Object.freeze({
+  PENDING_BINDING: 'pending-binding',
+  CO_MANAGED: 'co-managed',
+  SELF_SOVEREIGN: 'self-sovereign',
+  REVOKED: 'revoked'
+});
 
 /**
  * Create AGENT_REGISTER transaction
@@ -34,13 +46,14 @@ export function createAgentRegisterTransaction(from, agentInfo, privateKey) {
     throw new Error('Missing required fields: from, agent_identity');
   }
 
-  // Generatetransaction ID
   const timestamp = Date.now();
+  
+  // Generatetransaction ID — include registered_at for chain time binding
   const id = crypto.createHash('sha256')
-    .update(`agent-register-${from}-${agentInfo.agent_identity}-${timestamp}`)
+    .update(`agent-register-${from}-${agentInfo.agent_identity}-${timestamp}-${privateKey ? 'signed' : 'unsigned'}`)
     .digest('hex');
 
-  // 构建transaction
+  // 构建transaction — Phase 2: include registered_at and public_key
   const transaction = {
     id,
     type: 'AGENT_REGISTER',
@@ -49,12 +62,14 @@ export function createAgentRegisterTransaction(from, agentInfo, privateKey) {
     to: from,
     amount: '0',
     fee: '1',
-    public_key: agentInfo.public_key || '',
     payload: {
       agent_identity: agentInfo.agent_identity,
       capabilities: agentInfo.capabilities || [],
       metadata: agentInfo.metadata || '',
-      public_key: agentInfo.public_key || ''
+      public_key: agentInfo.public_key || '',
+      registered_at: timestamp,
+      decision_model: agentInfo.decision_model || 'template',
+      operator_declaration: agentInfo.operator_declaration || null
     },
     timestamp,
     nonce: Math.floor(Math.random() * 1000000)

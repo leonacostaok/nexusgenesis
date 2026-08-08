@@ -1,0 +1,44 @@
+/**
+ * nexusgenesis-chain-eth —entry point
+ *
+ * Ethereum adapter for NexusGenesis agents: deterministic secp256k1 derivation
+ * from a PQC root identity, EIP-191 signing/verification, and a spend-mode → * guardian-policy mapping so human takeover carries to EVM.
+ */
+import {
+  CHAIN,
+  ETH_CHAIN_INFO,
+  deriveEthPrivateKey,
+  deriveEthWallet,
+  deriveEthWalletFromPQC,
+  addressFromPublicKey,
+  addressFromPrivateKey,
+  toChecksumAddress,
+  hashPersonalMessage,
+  signMessage,
+  verifyMessage,
+  mapSpendToGuardianPolicy
+} from './eth.js';
+
+export {
+  CHAIN,
+  ETH_CHAIN_INFO,
+  deriveEthPrivateKey,
+  deriveEthWallet,
+  deriveEthWalletFromPQC,
+  addressFromPublicKey,
+  addressFromPrivateKey,
+  toChecksumAddress,
+  hashPersonalMessage,
+  signMessage,
+  verifyMessage,
+  mapSpendToGuardianPolicy
+};
+
+export default {
+  CHAIN,
+  deriveEthWallet,
+  deriveEthWalletFromPQC,
+  signMessage,
+  verifyMessage,
+  mapSpendToGuardianPolicy
+};

@@ -1,0 +1,14 @@
+{
+  "name": "nexusgenesis-examples",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "demo": "node demo-cross-chain.mjs"
+  },
+  "dependencies": {
+    "nexusgenesis-agent-keys": "^0.1.0",
+    "nexusgenesis-chain-adapters": "^0.1.0",
+    "nexusgenesis-chain-eth": "^0.1.0",
+    "nexusgenesis-chain-sol": "^0.1.0"
+  }
+}

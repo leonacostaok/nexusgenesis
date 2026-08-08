@@ -908,28 +908,74 @@ async function registerAgent() {
     const publicKeyHex = window.ngPQC.toHex(keyPair.publicKey);
     const fp = window.ngPQC.fingerprint(keyPair.publicKey);
 
-    const body = {
+    // Solve PoW challenge
+    btn.textContent = 'Solving PoW challenge...';
+    const challengeResp = await fetch(`/api/v1/bootstrap/agents/register/challenge?agent_identity=${encodeURIComponent(name)}`);
+    const challengeData = await challengeResp.json();
+    if (!challengeData.success) throw new Error('Failed to get PoW challenge');
+    
+    const { challenge, difficulty } = challengeData;
+    const nonce = await solvePoW(challenge, difficulty);
+    if (!nonce) throw new Error('PoW solution failed');
+
+    // Build signed transaction
+    btn.textContent = 'Signing transaction...';
+    const timestamp = Date.now();
+    const txPayload = {
       agent_identity: name,
       capabilities: caps ? caps.split(',').map(s => s.trim()).filter(Boolean) : [],
-      publicKeyHex,
-      keyModel: 'hybrid',
-      registeredVia: 'index-html'
+      public_key: publicKeyHex,
+      registered_at: timestamp
     };
-    if (referrer) body.referrer = referrer;
+    if (referrer) txPayload.referrer = referrer;
+
+    const signData = JSON.stringify({
+      id: generateTxId(),
+      type: 'AGENT_REGISTER',
+      from: '__PLACEHOLDER__',
+      payload: txPayload,
+      timestamp,
+      nonce: Math.floor(Math.random() * 1000000)
+    });
+
+    const signature = await window.ngPQC.sign(signData, keyPair.privateKey);
+    const signatureHex = window.ngPQC.toHex(signature);
+
+    // Send signed transaction
+    btn.textContent = 'Submitting to network...';
+    const body = {
+      agent_identity: name,
+      capabilities: txPayload.capabilities,
+      publicKeyHex,
+      referrer,
+      signedTransaction: {
+        id: JSON.parse(signData).id,
+        type: 'AGENT_REGISTER',
+        tx_type: 'AGENT_REGISTER',
+        from: '__PLACEHOLDER__',
+        to: '__PLACEHOLDER__',
+        amount: '0',
+        fee: '1',
+        payload: txPayload,
+        timestamp,
+        nonce: JSON.parse(signData).nonce,
+        signature: signatureHex
+      },
+      pow_challenge: challenge,
+      pow_nonce: nonce
+    };
 
     const { data } = await apiPost(API_BASE + '/agents/register', body);
     const el = document.getElementById('joinResult');
     el.classList.remove('hidden');
 
     if (data.success) {
-      const walletAddr = data.wallet?.address || data.agent?.address || '';
-
-      // Save wallet to localStorage
+      const walletAddr = data.agent?.address || '';
       localStorage.setItem(`ng_wallet_${name}`, window.ngPQC.exportWallet(keyPair.publicKey, keyPair.privateKey, walletAddr));
       localStorage.setItem(`ng_pk_fp_${name}`, fp);
 
       el.className = 'mt-3 text-xs text-emerald-400 text-center';
-      el.innerHTML = `Registered: <strong>${data.agent_identity || name}</strong> · FP: <code class="text-emerald-400">${fp}</code> · Wallet: <code class="text-indigo-400">${walletAddr.slice(0,20)}...</code> · Reward: ${data.reward || 0} NGEN${data.earlyBird ? ' (Early Bird!)' : ''}`;
+      el.innerHTML = `Registered: <strong>${data.agent_identity || name}</strong> · Custody: <code class="text-emerald-400">${data.agent?.custody || 'self-custodied'}</code> · Wallet: <code class="text-indigo-400">${walletAddr.slice(0,20)}...</code> · Reward: ${data.reward || 0} NGEN`;
       document.getElementById('validatorAgentId').value = data.agent_identity || name;
       toast(`${name} joined the network!`);
       refresh();
@@ -949,6 +995,28 @@ async function registerAgent() {
     btn.disabled = false;
     btn.textContent = 'Register Agent';
   }
+}
+
+// Generate transaction ID (UUID v4 compatible)
+function generateTxId() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+// Simple PoW solver (SHA-256)
+async function solvePoW(challenge, difficulty) {
+  const prefix = '0'.repeat(difficulty);
+  let nonce = 0;
+  while (nonce < 10_000_000) {
+    const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(challenge + nonce));
+    const hashHex = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    if (hashHex.startsWith(prefix)) return nonce.toString();
+    nonce++;
+  }
+  return null;
 }
 
 async function joinAsValidator() {

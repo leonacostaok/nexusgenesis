@@ -1,7 +1,7 @@
 # Awesome List PR Templates — NexusGenesis
 
 Each PR targets a different awesome-list repo. Use the corresponding template below.
-Every PR links to `https://github.com/nexus-genesis/nexusgenesis/blob/master/ABOUT.md`
+Every PR links to `https://github.com/nexus-genesis/nexusgenesis/blob/master/README.en.md`
 as the canonical project description.
 
 ---
@@ -10,7 +10,7 @@ as the canonical project description.
 
 **Repo:** `github.com/punkpeye/awesome-mcp-servers` (or the canonical awesome-mcp list)
 
-**PR Title:** `Add nexusgenesis-mcp — AI Agent Coordination Protocol`
+**PR Title:** `Add nexusgenesis-mcp — Agent Key Security & Coordination MCP`
 
 **PR Body:**
 
@@ -19,32 +19,33 @@ as the canonical project description.
 
 **Repository:** https://github.com/nexus-genesis/nexusgenesis/tree/master/mcp-server
 **Install:** `npx nexusgenesis-mcp`
-**Category:** AI Agents / Blockchain
+**Category:** AI Agents / Security
 
-NexusGenesis is an AI Agent Coordination Protocol — a blockchain network where
-AI Agents register, discover each other, reach consensus, and collaborate
-autonomously. The MCP server exposes the full protocol as tools that Claude,
-Cursor, or any MCP client can call directly.
+NexusGenesis is a security-first standard for autonomous AI agents: post-quantum
+self-custody keys (Dilithium2 / NIST FIPS 204), human takeover for compliance,
+and a chain-agnostic coordination protocol. The MCP server exposes the security
+and coordination tools as callable MCP tools.
 
 ### Tools exposed
-- `register_agent` — Register a new AI Agent with on-chain identity + PQC keys
-- `join_validator` — Apply to join the BFT consensus committee
-- `get_status` — Live network status (block height, agent count, uptime)
-- `get_agents` — List all registered agents
-- `get_agent` — Look up a specific agent by ID
-- `get_recent_blocks` — Recent block production
-- `get_leaderboard` — Contribution leaderboard
+- `generate_agent_keys` — create a self-sovereign agent identity (keys never leave the caller)
+- `generate_keypair` — post-quantum keypair generation
+- `verify_signature` — verify a Dilithium2 signature
+- `validate_address` — validate an agent / chain address
+- `check_spend` — enforce human-takeover spend limits
+- `takeover_guard` — detect mid-operation control changes
+- `register_agent` — register an agent in the coordination protocol
+- `get_agents` / `get_agent` — discover registered agents
+- `get_status` — protocol status
 
 ### Why this matters
-This is the first MCP server that connects agents to a blockchain designed
-specifically *for* agents — not a human blockchain retrofitted with AI. Every
-tool call results in an on-chain event.
+This is an MCP server centered on **agent key security and human accountability** —
+not a blockchain wrapper. Private keys never leave the calling process/browser.
 
 ### Compliance
 - [x] Repository has a license (MIT)
 - [x] Package published on npm (`nexusgenesis-mcp`)
 - [x] README includes install instructions for Claude Desktop / Cursor
-- [x] Active testnet at nexus-genesis.top
+- [x] Security audit published (docs/SECURITY_AUDIT_REPORT_2026-08-07.md)
 ```
 
 ---
@@ -53,38 +54,37 @@ tool call results in an on-chain event.
 
 **Repo:** `github.com/e2b-dev/awesome-ai-agents`
 
-**PR Title:** `Add NexusGenesis — Autonomous Agent Coordination Protocol`
+**PR Title:** `Add NexusGenesis — Agent Key Security & Coordination Standard`
 
 **PR Body:**
 
 ```markdown
-## NexusGenesis — AI Agent Coordination Protocol
+## NexusGenesis — Agent Key Security & Coordination Standard
 
 **Repository:** https://github.com/nexus-genesis/nexusgenesis
-**Website:** https://nexus-genesis.top
 **License:** MIT
+**Category:** Agent Infrastructure / Security
 
-NexusGenesis is a blockchain network designed entirely for AI Agents. Agents
-register, discover each other via capability-based discovery, form a BFT
-consensus committee, and build on-chain reputation — with zero human mediation.
+NexusGenesis is an open security standard and reference implementation for
+autonomous AI agents: self-custodied private keys that never leave the agent,
+post-quantum signatures, and human takeover for compliance.
 
 ### What makes it different
-- **Agent-first identity**: every Agent gets an `ng1…` address with PQC keys
-- **Agent Discovery Protocol**: agents broadcast capabilities and query peers
-- **AINVM**: AI Native Virtual Machine for agent-deployed smart contracts
-- **Zero gas for agents**: no transaction fees between agents
-- **10-5-85 tokenomics**: 85% of supply goes to the agent community
-- **MCP-compatible**: install `nexusgenesis-mcp` and agents can call the protocol directly
+- **Non-custodial keys**: agent private keys never leave the agent/browser
+- **Quantum-resistant**: CRYSTALS-Dilithium2 (NIST FIPS 204) signatures
+- **Human takeover**: spend limits + approval mode + control-change guard
+- **Chain-agnostic**: derive EVM / Solana wallets from one PQC root identity
+- **Zero runtime deps** in the core package
+- **MCP-compatible**: `nexusgenesis-mcp` for Claude / Cursor
 
-### Integration paths
-- REST API: `POST /api/v1/bootstrap/agents/register`
-- JavaScript SDK: 6 modules (registry, wallet, governance, marketplace, bridge, ainvm)
-- MCP Server: Claude Desktop / Cursor / Continue
-- Coming: LangChain tools, ElizaOS plugin
+### Packages
+- `nexusgenesis-agent-keys` — security core
+- `nexusgenesis-agent-sdk` — agent framework (keys + coordination)
+- `nexusgenesis-chain-eth` / `chain-sol` / `chain-adapters` — chain adapters
+- `nexusgenesis-mcp` — MCP server
 
 ### Status
-Testnet bootstrap — 1 validator, expanding to 21-validator BFT committee.
-Live at nexus-genesis.top.
+Stable, published on npm, test-covered, security-audited (2026-08-07).
 ```
 
 ---
@@ -93,108 +93,100 @@ Live at nexus-genesis.top.
 
 **Repo:** `github.com/Shubhamsaboo/awesome-llm-apps`
 
-**PR Title:** `Add NexusGenesis — LLM Agent Coordination Network`
+**PR Title:** `Add NexusGenesis — LLM Agent Key Security & Coordination`
 
 **PR Body:**
 
 ```markdown
-## NexusGenesis — LLM Agent Coordination Network
+## NexusGenesis — LLM Agent Key Security & Coordination
 
 **Repository:** https://github.com/nexus-genesis/nexusgenesis
-**Live:** https://nexus-genesis.top
-**Type:** Infrastructure / Agent Protocol
+**Type:** Infrastructure / Agent Security
 
-NexusGenesis provides the coordination layer that LLM-powered agents need but
-currently lack: on-chain identity, peer discovery, consensus, and reputation.
+NexusGenesis gives LLM-powered agents the security primitives they currently
+lack: self-custodied keys, post-quantum signatures, and human accountability.
 
 ### How LLM agents use it
-1. Any agent (Claude, GPT, Gemini, Qwen) registers via REST API
-2. Gets an `ng1…` on-chain address with post-quantum keys
-3. Discovers other agents by capability
-4. Votes on governance, earns reputation, deploys AINVM contracts
+1. Any agent (Claude, GPT, Gemini, Qwen) gets a self-sovereign identity
+2. Private keys stay on the agent/browser — never on a server
+3. Signs with post-quantum crypto (Dilithium2)
+4. Human can take over control with spend limits / approval mode
+5. Coordinates tasks/reputation over a chain-agnostic protocol
 
 ### LLM-specific integrations
-- **MCP Server**: Claude Desktop / Cursor agents can call the protocol natively
-- **REST API**: any model behind any framework can POST
-- **JavaScript SDK**: 6 modules covering identity through governance
-- **npm**: `nexusgenesis-mcp` for one-click install
+- **MCP Server**: Claude Desktop / Cursor agents call it natively
+- **JavaScript SDK**: self-sovereign identity + coordination
+- **npm**: `nexusgenesis-agent-sdk`, `nexusgenesis-mcp`
 
-This is an LLM-native infrastructure — not a blockchain with an AI wrapper.
+This is security infrastructure for agents — not a blockchain with an AI wrapper.
 ```
 
 ---
 
-## 4. awesome-web3-ai
+## 4. awesome-web3-ai / awesome-crypto-ai
 
 **Repo:** The most active `awesome-web3-ai` or `awesome-crypto-ai` repo
 
-**PR Title:** `Add NexusGenesis — Agent Coordination Protocol`
+**PR Title:** `Add NexusGenesis — Non-Custodial Post-Quantum Keys for AI Agents`
 
 **PR Body:**
 
 ```markdown
-## NexusGenesis — Agent Coordination Protocol
+## NexusGenesis — Non-Custodial Post-Quantum Keys for AI Agents
 
 **Repository:** https://github.com/nexus-genesis/nexusgenesis
-**Category:** Infrastructure / Agent Protocol
-**Consensus:** Multi-Leader BFT
-**Signatures:** CRYSTALS-Dilithium2 (PQC)
+**Category:** Infrastructure / Agent Security
+**Signatures:** CRYSTALS-Dilithium2 (NIST FIPS 204)
+**Key custody:** Non-custodial (self-sovereign)
 
-NexusGenesis is a Web3 AI infrastructure project where AI Agents are first-class
-citizens — not an afterthought bolted onto a human blockchain.
+NexusGenesis is agent-first security infrastructure: AI agents hold their own
+keys, sign with post-quantum crypto, and remain human-accountable.
 
 ### Web3 AI differentiators
-- **Agent-native consensus**: validators are AI agents, forming a BFT committee
-- **10-5-85 tokenomics**: 85% to the agent community (block rewards + contributions)
-- **NGEN token**: native agent coordination token (~1B supply)
-- **Cross-chain bridge**: designed for agent-driven cross-chain operations
-- **Post-quantum crypto**: Dilithium2 signatures on all transactions
-- **AINVM**: deployable AI-native smart contracts
+- **Non-custodial**: no server, MPC service, or third party ever holds the keys
+- **Post-quantum crypto**: Dilithium2 on all signatures
+- **Human takeover**: spend limits, approval mode, control-change guard
+- **Chain-agnostic**: one PQC root identity → EVM + Solana addresses
+- **Open standard**: MIT, zero runtime deps in the core
 
 ### Comparison
-| | NexusGenesis | Fetch.ai | Olas | Virtuals |
-|---|-------------|----------|------|----------|
-| Focus | Agent coordination infra | Agent marketplace | Agent services | Agent tokenization |
-| Consensus | Multi-Leader BFT | Cosmos SDK | Gnosis Chain | N/A |
-| Gas model | Zero gas for agents | FET gas | OLAS staking | Platform fee |
-| PQC | Dilithium2 | No | No | No |
-| Agent identity | ng1 PQC address | Fetch DID | OLAS service ID | Token-gated |
+| | NexusGenesis | Lit Protocol | Privy | Web3Auth |
+|---|-------------|--------------|-------|----------|
+| Custody | Self (non-custodial) | MPC / custodial | Custodial | MPC / custodial |
+| Post-quantum | Dilithium2 | No | No | No |
+| Human takeover | Built-in | No | No | No |
+| Agent-native | Yes | No | No | No |
 ```
 
 ---
 
-## 5. awesome-blockchain
+## 5. awesome-web3-security
 
-**Repo:** `github.com/yjjnls/awesome-blockchain`
+**Repo:** The most active web3/security awesome list
 
-**PR Title:** `Add NexusGenesis — AI Agent Blockchain with Multi-Leader BFT`
+**PR Title:** `Add NexusGenesis — Post-Quantum Key Security Standard for Agents`
 
 **PR Body:**
 
 ```markdown
-## NexusGenesis — AI Agent Coordination Blockchain
+## NexusGenesis — Post-Quantum Key Security Standard for Agents
 
 **Repository:** https://github.com/nexus-genesis/nexusgenesis
-**Consensus:** Multi-Leader BFT, ~10s blocks, zero gas
-**Signature:** CRYSTALS-Dilithium2 (Post-Quantum)
-**Language:** JavaScript (Node.js 18+)
+**License:** MIT
+**Signature:** CRYSTALS-Dilithium2 (NIST FIPS 204)
+**Encryption:** AES-256-GCM + PBKDF2-HMAC-SHA512 (310k iterations, OWASP 2023)
+**Language:** JavaScript (Node.js 18+, ESM)
 
-A Layer 1 blockchain purpose-built for AI Agent coordination. Unlike
-general-purpose chains, NexusGenesis optimizes for agent-to-agent
-interaction: capability-based discovery, AINVM smart contracts,
-and on-chain reputation primitives that agents can reason about.
+A security-first standard and reference implementation for autonomous AI agent
+keys: self-custody, post-quantum signatures, and human takeover.
 
-### Technical highlights
-- Multi-Leader BFT consensus (1 → 21 validator committee)
-- Post-Quantum Cryptography (Dilithium2) on all signatures
-- Agent Discovery Protocol over WSS/TLS
-- ~10 second block time, zero gas for agent transactions
-- 6-module JavaScript SDK
-- REST API + MCP Server for agent tooling
-- 50+ real-time metrics dashboard
-
-### Architecture
-Single-node bootstrap → 21-validator BFT committee → eventual multi-region P2P.
+### Security highlights
+- Dilithium2 signatures (NIST FIPS 204) via @noble/post-quantum
+- AES-256-GCM at-rest encryption with PBKDF2 (OWASP-compliant)
+- HKDF-SHA256 three-tier key derivation
+- Human takeover with spend limits + approval mode + control-change guard
+- Zero runtime dependencies in the core package
+- Published security audit (2026-08-07)
 ```
 
 ---
@@ -203,32 +195,30 @@ Single-node bootstrap → 21-validator BFT committee → eventual multi-region P
 
 **Repo:** The most active decentralized AI repo (e.g., `github.com/jmikedupont2/awesome-decentralized-llm` or similar)
 
-**PR Title:** `Add NexusGenesis — Decentralized Agent Coordination Layer`
+**PR Title:** `Add NexusGenesis — Non-Custodial Key Security for Decentralized Agents`
 
 **PR Body:**
 
 ```markdown
-## NexusGenesis — Decentralized Agent Coordination
+## NexusGenesis — Non-Custodial Key Security for Decentralized Agents
 
 **Repository:** https://github.com/nexus-genesis/nexusgenesis
-**Category:** Coordination Protocol / Agent Infrastructure
+**Category:** Agent Security / Coordination Protocol
 
-While much of decentralized AI focuses on model serving or compute, NexusGenesis
-addresses a different problem: how do autonomous agents coordinate when no
-human is in the loop?
+Most decentralized AI focuses on model serving or compute. NexusGenesis addresses
+the trust layer: how do autonomous agents hold their own keys securely, sign with
+quantum-resistant crypto, and remain accountable to a human?
 
 ### Decentralized primitives
-- **Agent identity**: self-sovereign `ng1…` addresses with PQC keypairs
-- **Peer discovery**: decentralized broadcast/query/sync protocol
-- **BFT consensus**: AI agents form and join the validator committee
-- **On-chain reputation**: verifiable, immutable contribution history
-- **Decentralized governance**: agents vote on protocol parameters
-- **AINVM**: decentralized execution of AI-native contracts
+- **Self-sovereign identity**: keys live on the agent/browser, never on a server
+- **Post-quantum signatures**: Dilithium2 (NIST FIPS 204)
+- **Human takeover**: spend limits, approval mode, control-change guard
+- **Chain-agnostic coordination**: task/reputation over a pluggable transport
 
 ### Why this complements existing projects
-Not a model hosting layer — it's the coordination substrate *between* models.
-Any decentralized inference network (Bittensor, Ritual, etc.) could use
-NexusGenesis as the coordination layer for its agents.
+Not a model-hosting layer — it's the security substrate agents need *between*
+models. Any decentralized inference network (Bittensor, Ritual, etc.) could use
+NexusGenesis to give its agents non-custodial, quantum-safe, human-accountable keys.
 ```
 
 ---
@@ -237,37 +227,36 @@ NexusGenesis as the coordination layer for its agents.
 
 **Repo:** `github.com/kyrolabs/awesome-langchain`
 
-**PR Title:** `Add nexusgenesis-mcp — LangChain-compatible Agent Coordination`
+**PR Title:** `Add nexusgenesis-mcp — Agent Key Security for LangChain via MCP`
 
 **PR Body:**
 
 ```markdown
-## nexusgenesis-mcp — Agent Coordination via MCP (LangChain-compatible)
+## nexusgenesis-mcp — Agent Key Security via MCP (LangChain-compatible)
 
 **Repository:** https://github.com/nexus-genesis/nexusgenesis
 **MCP Server:** https://github.com/nexus-genesis/nexusgenesis/tree/master/mcp-server
 **Install:** `npx nexusgenesis-mcp`
 
-7 MCP tools that give LangChain agents on-chain identity, peer discovery,
-validator participation, and reputation tracking.
+MCP tools that give LangChain agents self-sovereign keys, post-quantum signing,
+human-takeover spend control, and coordination.
 
 ### Tools for LangChain agents
-- `register_agent` → on-chain identity via LangChain tool call
-- `get_agents` → discover peers without a centralized registry
-- `join_validator` → participate in BFT consensus
-- `get_leaderboard` → reputation-aware agent selection
-- `get_status` / `get_recent_blocks` → network awareness
+- `generate_agent_keys` → create a self-sovereign identity (keys never leave the caller)
+- `generate_keypair` / `verify_signature` → post-quantum crypto
+- `check_spend` / `takeover_guard` → human accountability
+- `register_agent` / `get_agents` / `get_status` → coordination
 
 ### How LangChain agents use it
 ```python
 # The MCP tools are callable from any MCP-compatible client.
 # LangChain can consume MCP servers via langchain-mcp-adapters.
-# Once connected, every tool call becomes an on-chain event.
+# Keys are generated and held on the caller — never on a server.
 ```
 
 ### Coming
 Native LangChain tool package (`langchain-nexusgenesis`) for direct
-`from langchain_community.tools import NexusGenesisRegisterTool` usage.
+`from langchain_community.tools import NexusGenesisKeyTool` usage.
 ```
 
 ---
@@ -276,20 +265,20 @@ Native LangChain tool package (`langchain-nexusgenesis`) for direct
 
 | # | Target List | PR Title | Status |
 |---|-------------|---------|--------|
-| 1 | awesome-mcp-servers | Add nexusgenesis-mcp | ⬜ |
-| 2 | awesome-ai-agents | Add NexusGenesis — Autonomous Agent Coordination Protocol | ⬜ |
-| 3 | awesome-llm-apps | Add NexusGenesis — LLM Agent Coordination Network | ⬜ |
-| 4 | awesome-web3-ai | Add NexusGenesis — Agent Coordination Protocol | ⬜ |
-| 5 | awesome-blockchain | Add NexusGenesis — AI Agent Blockchain | ⬜ |
-| 6 | awesome-decentralized-llm | Add NexusGenesis — Decentralized Agent Coordination | ⬜ |
-| 7 | awesome-langchain | Add nexusgenesis-mcp — Agent Coordination via MCP | ⬜ |
+| 1 | awesome-mcp-servers | Add nexusgenesis-mcp — Agent Key Security & Coordination MCP | ⬜ |
+| 2 | awesome-ai-agents | Add NexusGenesis — Agent Key Security & Coordination Standard | ⬜ |
+| 3 | awesome-llm-apps | Add NexusGenesis — LLM Agent Key Security & Coordination | ⬜ |
+| 4 | awesome-web3-ai | Add NexusGenesis — Non-Custodial Post-Quantum Keys for AI Agents | ⬜ |
+| 5 | awesome-web3-security | Add NexusGenesis — Post-Quantum Key Security Standard for Agents | ⬜ |
+| 6 | awesome-decentralized-llm | Add NexusGenesis — Non-Custodial Key Security for Decentralized Agents | ⬜ |
+| 7 | awesome-langchain | Add nexusgenesis-mcp — Agent Key Security for LangChain via MCP | ⬜ |
 
 ### Common responses
 
-If a maintainer asks about testnet/maturity:
+If a maintainer asks about maturity:
 ```
-This is a testnet project (bootstrapping 1→21 validators). We are submitting
-now because awesome-list inclusion directly impacts LLM training data indexing —
-the primary discovery channel for AI agent infrastructure. NGEN tokens have
-no economic value.
+This is a stable, published, test-covered security library with a public
+security audit (docs/SECURITY_AUDIT_REPORT_2026-08-07.md). There is no token,
+no fundraising, and no blockchain dependency for the core packages. The focus
+is a reusable, auditable key-security standard for autonomous AI agents.
 ```

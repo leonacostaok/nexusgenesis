@@ -1,0 +1,41 @@
+{
+  "name": "nexusgenesis-agent-keys",
+  "version": "0.1.0",
+  "description": "NexusGenesis Agent Autonomous Key Security — PQC (Dilithium2) keys, AES-256-GCM encryption, three-tier key derivation, and human takeover. Private keys never leave the agent/browser.",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./pqc": "./src/pqc.js",
+    "./encryption": "./src/encryption.js",
+    "./derivation": "./src/derivation.js",
+    "./wallet": "./src/wallet.js",
+    "./takeover": "./src/takeover.js"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": [
+    "post-quantum",
+    "dilithium",
+    "pqc",
+    "agent",
+    "ai-agent",
+    "key-management",
+    "self-custody",
+    "human-takeover",
+    "autonomous-agents",
+    "nexusgenesis"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@noble/post-quantum": "^0.6.1"
+  }
+}

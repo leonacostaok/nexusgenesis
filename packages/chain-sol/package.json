@@ -26,6 +26,11 @@
     "nexusgenesis"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nexus-genesis/nexusgenesis.git",
+    "directory": "packages/chain-sol"
+  },
   "engines": {
     "node": ">=18.0.0"
   },

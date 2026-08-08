@@ -29,6 +29,11 @@
     "nexusgenesis"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nexus-genesis/nexusgenesis.git",
+    "directory": "packages/agent-sdk"
+  },
   "engines": {
     "node": ">=18.0.0"
   },

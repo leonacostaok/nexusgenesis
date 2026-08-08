@@ -9,6 +9,13 @@
 import crypto from 'node:crypto';
 import { ml_dsa44 } from '@noble/post-quantum/ml-dsa.js';
 
+// @noble/hashes (bundled by @noble/post-quantum) reads secure randomness from
+// globalThis.crypto.getRandomValues, which is only defined globally on Node 19+.
+// Polyfill it on older runtimes (Node 18) so keygen works everywhere.
+if (typeof globalThis.crypto === 'undefined' || typeof globalThis.crypto.getRandomValues !== 'function') {
+  globalThis.crypto = crypto.webcrypto;
+}
+
 // ml_dsa44 / Dilithium2 key & signature lengths (bytes)
 export const DILITHIUM2_PUBLIC_KEY_LENGTH = 1312;
 export const DILITHIUM2_PRIVATE_KEY_LENGTH = 2560;

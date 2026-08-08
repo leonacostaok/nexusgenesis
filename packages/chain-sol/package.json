@@ -1,6 +1,6 @@
 {
   "name": "nexusgenesis-chain-sol",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "NexusGenesis Solana adapter — deterministically derive a Solana keypair (ed25519) from an agent's PQC root identity, with base58 address and message signing. Private keys never leave the agent/browser.",
   "type": "module",
   "main": "src/index.js",
@@ -32,6 +32,6 @@
   "dependencies": {
     "@noble/curves": "^1.4.0",
     "@noble/hashes": "^1.4.0",
-    "nexusgenesis-agent-keys": "^0.1.0"
+    "nexusgenesis-agent-keys": "^0.2.0"
   }
 }

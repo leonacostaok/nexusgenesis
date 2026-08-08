@@ -27,7 +27,8 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm test
+        run: npm test -ws --if-present
+        timeout-minutes: 10
 
       # Publish in dependency order:
       # agent-keys (security core) → agent-sdk → chain-eth → chain-sol →

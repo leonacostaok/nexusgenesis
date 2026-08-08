@@ -26,10 +26,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm test
-        timeout-minutes: 10
-
       - name: Test security packages (workspaces)
         run: npm test -ws --if-present
         timeout-minutes: 10

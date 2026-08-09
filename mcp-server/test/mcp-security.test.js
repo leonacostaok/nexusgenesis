@@ -36,6 +36,18 @@ test('lists security tools', async () => {
   }
 });
 
+test('lists task economy + forum tools (AGENT world bridge)', async () => {
+  const tools = await client.listTools();
+  const names = tools.tools.map((t) => t.name);
+  for (const expected of [
+    'register_agent', 'get_status', 'get_agents', 'get_agent', 'get_leaderboard',
+    'list_tasks', 'get_task', 'claim_task', 'submit_task', 'verify_task', 'publish_task',
+    'list_topics', 'create_topic', 'add_post', 'vote',
+  ]) {
+    assert.ok(names.includes(expected), `missing tool ${expected}`);
+  }
+});
+
 test('generate_agent_keys returns a self-sovereign identity (no private key leaked)', async () => {
   const out = await callTool('generate_agent_keys', { password: 'agent-secret-123', metadata: { name: 'alice' } });
   assert.equal(out.success, true);

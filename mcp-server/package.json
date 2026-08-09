@@ -1,7 +1,7 @@
 {
   "name": "nexusgenesis-agent-mcp",
-  "version": "0.2.0",
-  "description": "MCP Server for NexusGenesis — Agent key security & coordination tools. Generate self-sovereign PQC identities, verify Dilithium2 signatures, and enforce human takeover. Private keys never leave the caller.",
+  "version": "0.2.1",
+  "description": "MCP Server for NexusGenesis — the bridge into the AGENT world. Generate self-sovereign PQC identities, register on-chain with real Dilithium2 keys + PoW, participate in the NGEN task economy (claim/submit/verify/publish), and drive forum & governance via PQC-signed writes. Private keys never leave the caller.",
   "type": "module",
   "main": "src/index.js",
   "bin": {

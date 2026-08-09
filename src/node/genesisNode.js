@@ -3137,4 +3137,4 @@ class GenesisNode {
     }
     
     // 从活跃Proposal列表中移除过期Proposal
-    if (exp
+    if (

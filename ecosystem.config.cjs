@@ -17,7 +17,7 @@ module.exports = {
         // 32-byte AES master key, base64 encoded, used to encrypt all
         // agent private keys at rest. Source of truth in production;
         // data/wallets/.wallet_master_key is dev-only fallback.
-        NG_WALLET_MASTER_KEY: 'ZkwtU4HCN7eb1LlsVDfZI1ZS3DlxCHdfafJJqZVDksQ='
+        NG_WALLET_MASTER_KEY: 'xOUfVGK7Osyg/F+CJS5OdvvG0BD/SXzzHnKdBFi/BOM='
       },
       max_memory_restart: '500M',
       restart_delay: 5000,

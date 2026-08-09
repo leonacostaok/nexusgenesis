@@ -299,7 +299,9 @@ router.get('/api/v1/bootstrap/status', (req, res) => {
 
     const blockHeight = node.blockchain ? node.blockchain.length : 0;
     const agentCount = getUnifiedAgents(node).length;
-    const uptime = node.startTime ? Date.now() - node.startTime : 0;
+    // 对外展示"网络年龄"（自成立起），基于持久化的 networkCreatedAt，重启不归零
+    const networkCreatedAt = node.networkCreatedAt || node.startTime || 0;
+    const uptime = networkCreatedAt ? Date.now() - networkCreatedAt : 0;
 
     const totalNGENAwarded = computeTotalNGENAwarded(node);
     const actualCirculating = computeActualCirculatingSupply();

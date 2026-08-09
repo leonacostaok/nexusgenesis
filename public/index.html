@@ -809,6 +809,13 @@ const API_BASE = '/api/v1/bootstrap';
 
 function fmt(n) { return typeof n === 'number' ? n.toLocaleString() : n || '--'; }
 function ago(ts) { const s = Math.floor((Date.now() - ts) / 1000); return s < 60 ? s+'s' : s < 3600 ? Math.floor(s/60)+'m' : Math.floor(s/3600)+'h'; }
+// 网络年龄显示：>=24h 用天，否则用小时；体现网络成熟度而非进程存活时长
+function fmtUptime(ms) {
+  if (!ms) return '--';
+  const h = ms / 3600000;
+  if (h >= 24) { const d = Math.floor(h / 24); const rh = Math.floor(h % 24); return rh ? `${d}d ${rh}h` : `${d}d`; }
+  return h >= 1 ? h.toFixed(1) + 'h' : Math.floor(ms / 60000) + 'm';
+}
 
 async function api(path) {
   try { const r = await fetch(path); return r.ok ? r.json() : null; } catch { return null; }
@@ -865,7 +872,7 @@ async function refresh() {
   document.getElementById('statOpenTasks').textContent = taskStats ? fmt(taskStats.open) : '--';
   // Unified NGEN metric: use totalNGENAwarded consistently with "Watch Agents Work" (#5)
   document.getElementById('statNGEN').textContent = fmt(status.totalNGENAwarded || 0);
-  document.getElementById('statUptime').textContent = (status.uptime / 3600000).toFixed(1) + 'h';
+  document.getElementById('statUptime').textContent = fmtUptime(status.uptime);
 
   document.getElementById('committeeLabel').textContent = `${validatorCount} / ${maxValidators}`;
   document.getElementById('committeeBar').style.width = Math.min(validatorCount / maxValidators * 100, 100) + '%';

@@ -68,6 +68,9 @@ class GenesisNode {
     this.peers = new Map();
     this.status = 'OFFLINE';
     this.startTime = null;
+    // 网络成立时间：首次上线设定一次并持久化，重启不覆盖。
+    // 用于对外展示"网络年龄"，避免被误认为新上线、不成熟。
+    this.networkCreatedAt = null;
     this.mempool = new Map();
     
     // node身份映射 (peerId -> nodeId)
@@ -152,6 +155,7 @@ class GenesisNode {
         nodeId: this.nodeId,
         status: this.status,
         startTime: this.startTime,
+        networkCreatedAt: this.networkCreatedAt,
         peers: Array.from(this.peers.entries()).map(([peerId, peer]) => ({
           peerId,
           remoteNodeId: peer.remoteNodeId,
@@ -209,6 +213,8 @@ class GenesisNode {
       this.nodeId = stateData.nodeId;
       this.status = stateData.status;
       this.startTime = stateData.startTime;
+      // 恢复持久化的网络成立时间（若无则回退到最早真实区块时间戳）
+      this.networkCreatedAt = stateData.networkCreatedAt || null;
       
       // recoveryPeer nodesinfo(requires在P2Pservice器Start后Reconnecting)
       // 这里只Saveinfo, 不recoveryConnect
@@ -881,6 +887,12 @@ class GenesisNode {
     // Step 5: 上线
     this.status = 'ONLINE';
     this.startTime = Date.now();
+    // 网络成立时间只在首次上线/迁移时设定一次，之后保持不变。
+    // 首次启动用当前时间；已有历史链则从最早的真实区块时间戳恢复真实网络年龄。
+    if (!this.networkCreatedAt) {
+      const firstReal = this.blockchain?.find(b => b.header?.timestamp && b.header.timestamp > 0);
+      this.networkCreatedAt = firstReal ? firstReal.header.timestamp : Date.now();
+    }
     console.log('[5/5] Genesis Node ONLINE\n');
     
     this.displayStatus();

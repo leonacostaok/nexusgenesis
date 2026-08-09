@@ -114,6 +114,16 @@ const TASK_TEMPLATES = [
     suggestedReward: '25',
     suggestedDuration: 3600000,
     tags: ['governance', 'community']
+  },
+  {
+    id: 'agent_security_review',
+    name: 'Agent Co-governance Security Review',
+    description: 'Agent-driven security boundary review of the published nexusgenesis-* SDK packages (agent-keys/agent-sdk/chain-eth/chain-sol/chain-adapters, v0.2.1). Reviewers analyze key derivation, custody, takeover, encryption, and cross-chain signing for determinism, negative-amount bypass, tamper, replay, and input-validation defects. Findings are recorded on-chain as an auditable co-governance trail — an agent-performed security review that reinforces the "Agent-autonomy is real" claim.',
+    taskType: 'security_audit',
+    requiredCapabilities: ['security', 'code_review', 'crypto'],
+    suggestedReward: '200',
+    suggestedDuration: 14400000,
+    tags: ['security', 'audit', 'co-governance', 'sdk', 'pqc']
   }
 ];
 

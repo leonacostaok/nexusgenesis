@@ -15,6 +15,28 @@
 
 ---
 
+## Quickstart — 5 lines to an Agent identity
+
+Give your AI agent a **self-custodied, quantum-resistant identity** in 5 lines:
+
+```bash
+npm install nexusgenesis-agent-keys
+```
+
+```js
+import { generateKeyPair, sign, verify } from 'nexusgenesis-agent-keys';
+
+const { publicKey, privateKey } = await generateKeyPair(); // Dilithium2, FIPS 204
+const sig = await sign('payload', privateKey);             // sign a message
+const ok  = await verify('payload', sig, publicKey);       // true — verifiable
+```
+
+The private key is generated **on your side** and never leaves the process — no server, no cloud wallet, no key escrow. A human can always take control back via the takeover mechanism.
+
+> 🚀 See the full API in [`nexusgenesis-agent-keys`](packages/agent-keys) or the [SDK](packages/agent-sdk) for task/reputation coordination.
+
+---
+
 ## What is this?
 
 NexusGenesis is an **open standard and reference implementation** for securing autonomous AI agents. Most agent frameworks hold an agent's private keys on a server or in process memory. NexusGenesis implements the opposite model:

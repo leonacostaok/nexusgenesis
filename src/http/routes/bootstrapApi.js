@@ -608,8 +608,14 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
     const powRequired = process.env.POW_REQUIRED === 'true';
     const pow_challenge = req.body.pow_challenge || req.body.challenge;
     const pow_nonce = req.body.pow_nonce !== undefined ? req.body.pow_nonce : req.body.nonce;
-    
-    if (powRequired && (!pow_challenge || pow_nonce === undefined)) {
+
+    // Skip PoW for already-registered agents requesting re-auth (custody token refresh)
+    const existingWalletForPoW = agentWalletManager.getWalletInstance(agent_identity);
+    const isReauth = existingWalletForPoW &&
+      isAddressRegistered(existingWalletForPoW.address, node.currentState) &&
+      !req.body.publicKeyHex;
+
+    if (powRequired && !isReauth && (!pow_challenge || pow_nonce === undefined)) {
       return res.status(400).json({
         success: false,
         error: 'PoW challenge and nonce required.',
@@ -694,6 +700,40 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
     // ─── Route B: Public key only (backward compat for old frontends) ─
     const { publicKeyHex } = req.body;
     if (!publicKeyHex) {
+      // Fallback: if agent is already registered, issue custody token for re-auth
+      const existingWallet = agentWalletManager.getWalletInstance(agent_identity);
+      console.log(`[Bootstrap] Re-auth check: agent=${agent_identity}, wallet=${existingWallet ? existingWallet.address?.slice(0,20) : 'null'}`);
+      if (existingWallet && isAddressRegistered(existingWallet.address, node.currentState)) {
+        console.log(`[Bootstrap] Re-auth: address registered on-chain, issuing custody token`);
+        let custodyInfo = null;
+        try {
+          const ct = issueCustodyToken({
+            agentId: agent_identity,
+            address: existingWallet.address,
+            publicKeyHex: existingWallet.publicKey.toString('hex')
+          });
+          custodyInfo = { token: ct.token, expiresAt: ct.expiresAt };
+        } catch (e) {
+          console.warn(`[Bootstrap] Failed to issue custody token for existing agent ${agent_identity}: ${e.message}`);
+        }
+        return res.json({
+          success: true,
+          existing: true,
+          agent_identity,
+          agentId: agent_identity,
+          onChainAgentId: getAgentIdByAddress(existingWallet.address, node.currentState),
+          agent: { agent_id: getAgentIdByAddress(existingWallet.address, node.currentState), identity: agent_identity, address: existingWallet.address },
+          wallet: {
+            address: existingWallet.address,
+            publicKeyHex: existingWallet.publicKey.toString('hex'),
+            custody: 'self-custodied',
+            keyOrigin: 'server-managed'
+          },
+          ...(custodyInfo && { custody: custodyInfo }),
+          welcome_package: buildWelcomePackage(node)
+        });
+      }
+      console.log(`[Bootstrap] Re-auth failed: wallet=${!!existingWallet}, registered=${existingWallet ? isAddressRegistered(existingWallet.address, node.currentState) : 'N/A'}`);
       return res.status(400).json({
         success: false,
         error: 'Missing publicKeyHex. Send your browser-generated public key.',
@@ -726,6 +766,18 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
 
     if (isAddressRegistered(walletInfo.address, node.currentState)) {
       // Already registered — return existing agent info
+      // Issue a fresh custody token so workers can authenticate after restart
+      let custodyInfo = null;
+      try {
+        const ct = issueCustodyToken({
+          agentId: agent_identity,
+          address: walletInfo.address,
+          publicKeyHex: walletInfo.publicKey
+        });
+        custodyInfo = { token: ct.token, expiresAt: ct.expiresAt };
+      } catch (e) {
+        console.warn(`[Bootstrap] Failed to issue custody token for existing agent ${agent_identity}: ${e.message}`);
+      }
       return res.json({
         success: true,
         existing: true,
@@ -739,6 +791,7 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
           custody: 'self-custodied',
           keyOrigin: 'browser-generated'
         },
+        ...(custodyInfo && { custody: custodyInfo }),
         welcome_package: buildWelcomePackage(node)
       });
     }

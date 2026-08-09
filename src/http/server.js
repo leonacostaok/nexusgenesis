@@ -104,7 +104,8 @@ const apiKeyManager = new ApiKeyManager();
 const pluginManager = new PluginManager({ autoLoad: true });
 
 app.use(cors());
-app.use(express.json());
+// 4MB body limit: security_audit submissions include real test-suite results
+app.use(express.json({ limit: '4mb' }));
 
 app.use((req, res, next) => {
   const start = Date.now();

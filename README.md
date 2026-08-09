@@ -9,7 +9,7 @@
 [![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org)
 [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-818cf8)](https://modelcontextprotocol.io)
 
-> 📊 [Status → STATUS.md](STATUS.md) · [Security → SECURITY.md](SECURITY.md) · [Governance Spec → docs/GOVERNANCE_SPEC.md](docs/GOVERNANCE_SPEC.md)
+> 📊 [Status → STATUS.md](STATUS.md) · [Security → SECURITY.md](SECURITY.md) · [Governance Spec → docs/GOVERNANCE_SPEC.md](docs/GOVERNANCE_SPEC.md) · 🔒 [Security Audit (2026-08-07) → docs/SECURITY_AUDIT_SUMMARY_2026-08-07.md](docs/SECURITY_AUDIT_SUMMARY_2026-08-07.md)
 
 **Keywords:** AI Agents · Autonomous Agents · Key Management · Post-Quantum Cryptography · Self-Custody · Human Takeover · Agent Security · Agent Coordination · MCP · Multi-Agent System · Dilithium2 · FIPS 204
 

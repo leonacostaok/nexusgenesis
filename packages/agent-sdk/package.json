@@ -1,6 +1,6 @@
 {
   "name": "nexusgenesis-agent-sdk",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "NexusGenesis Agent Framework — self-sovereign keys (PQC security) + coordination (tasks, reputation, governance). Private keys never leave the agent/browser.",
   "type": "module",
   "main": "src/index.js",

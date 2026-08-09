@@ -7,6 +7,40 @@
 
 ## [Unreleased]
 
+### 2026-08-09 — v0.2.1 安全修复补丁（npm 包）
+
+针对已发布的 `nexusgenesis-*` 五个 SDK 包的安全边界审计（2026-08-07）已完成修复验证，
+本轮将版本号统一推进到 **0.2.1**（patch），固化安全修复成果。完整修复明细见
+[安全审计报告](docs/SECURITY_AUDIT_REPORT_2026-08-07.md) 与
+[公开摘要](docs/SECURITY_AUDIT_SUMMARY_2026-08-07.md)。
+
+> ⚠️ 说明：审计报告原文建议发布 `0.1.1`，但该报告撰写时版本尚在 `0.1.x`；
+> 到发布时修复已包含于已上线的 `0.2.0`。为避免倒退，本补丁统一发布为 `0.2.1`。
+
+#### 🐛 安全修复（Security Fixes）
+
+- **`fix(keys)` [CRITICAL]**：`generateKeyPairFromSeed` 忽略传入 seed 改用系统熵，导致
+  三层密钥派生无法确定性恢复（备份/多节点/轮换失效）。现改为将 seed 传入
+  `ml_dsa44.keygen(seed)`，经 FIPS 204 SHAKE256 种子扩展实现真正确定性。
+- **`fix(keys)` [HIGH]**：`checkSpendAllowed` 负数额绕过（`amount=-5` / `spentToday<0`
+  可绕过消费上限）。现增加前置校验，拒绝负数与非法输入。
+- **`fix(keys)` [HIGH]**：`createAgentIdentity` 曾使用硬编码默认密码
+  `'default-agent-password'`，任何知情者可解密未显式设密码的身份。现强制要求 ≥8 字符密码。
+- **`fix(keys)` [MEDIUM]**：`BigInt(NaN)` 抛 `RangeError` 可致拒绝服务，已拒绝非安全整数。
+- **`fix(keys)` [LOW]**：`encryptPrivateKey` 拒绝空私钥（`keyLength:0`）。
+- **`fix(keys)` [MEDIUM]**：KDF 迭代次数被篡改降级、托管令牌篡改/过期 —— 均以测试锁定行为。
+
+#### 🧪 测试
+
+- 新增 14 项安全边界测试（`packages/agent-keys/test/security-boundary.test.js`）。
+- 全量 64 项测试通过（含 agent-keys 17、安全边界 14、agent-sdk 6、chain-eth 9、chain-sol 6、chain-adapters 5、MCP 集成 7）。
+
+#### 📦 版本
+
+- `nexusgenesis-agent-keys` / `agent-sdk` / `chain-eth` / `chain-sol` / `chain-adapters` → **0.2.1**
+
+---
+
 ### 2026-07-06 — 代币回收与 Swarm Agent 经济模型修复
 
 本次发布修复了 Swarm Agent Worker 凭空获得 50,000,000 NGEN 初始余额的历史遗留问题，

@@ -1,6 +1,6 @@
 {
   "name": "nexusgenesis-chain-adapters",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "NexusGenesis cross-chain adapters — one PQC root identity derives addresses on Nexus (ng1), Ethereum (secp256k1), and Solana (ed25519). Private keys never leave the agent/browser.",
   "type": "module",
   "main": "src/index.js",

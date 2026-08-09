@@ -3138,4 +3138,5 @@ class GenesisNode {
     
     // 从活跃Proposal列表中移除过期Proposal
     if (expiredProposals.length > 0) {
-      this.governanceState.activeProposals = this.governanceState.active
+      this.governanceState.activeProposals = this.governanceState.activeProposals.filter(
+        id =>

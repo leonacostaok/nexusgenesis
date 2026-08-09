@@ -1202,7 +1202,16 @@ class GenesisNode {
     
     // 4. Sign存在Verify
     if (!tx.signature) {
-      return { valid: false, reason: 'Missing signature' };
+      // AGENT_REGISTER 首次注册为自证式密钥建立：全新地址尚无链上历史密钥可校验，
+      // 其自身携带的 public_key 即身份本身（自托管模型）。因此仅在"未注册地址 +
+      // 携带公钥"的首次注册场景下豁免签名，其余情况一律要求签名。
+      const isFirstRegistration =
+        tx.tx_type === 'AGENT_REGISTER' &&
+        !(this.currentState?.agentRegistry?.addressIndex?.has(tx.from)) &&
+        (tx.public_key || tx.payload?.public_key);
+      if (!isFirstRegistration) {
+        return { valid: false, reason: 'Missing signature' };
+      }
     }
     
     // 5. timestampVerify
@@ -1212,11 +1221,13 @@ class GenesisNode {
     
     // 6. Processing AGENT_REGISTER transaction的public key提取
     let publicKey = this.getCachedPublicKey(tx.from);
-    
-    if (!publicKey && tx.public_key) {
+
+    // 公钥可能位于顶层（API 直传）或 payload 内（浏览器签名路径），两者都解析
+    const pubKeyHex = tx.public_key || tx.payload?.public_key;
+    if (!publicKey && pubKeyHex) {
       // 从特殊 transaction 中提取 public key
       try {
-        publicKey = Buffer.from(tx.public_key, 'hex');
+        publicKey = Buffer.from(pubKeyHex, 'hex');
         // 缓存public key
         this.cachePublicKey(tx.from, publicKey);
         console.log(`[SECURITY] Extracted and cached public key for ${tx.from}`);
@@ -1226,7 +1237,7 @@ class GenesisNode {
     }
     
     // 7. SignVerify
-    if (publicKey) {
+    if (publicKey && tx.signature) {
       // 构建Signdata - using与 PQCWallet.signTransaction 相同的格式
       // 直接using整个 tx 对象, 与 PQCWallet.signTransaction 保持一致
       const txData = { ...tx };
@@ -3127,38 +3138,4 @@ class GenesisNode {
     
     // 从活跃Proposal列表中移除过期Proposal
     if (expiredProposals.length > 0) {
-      this.governanceState.activeProposals = this.governanceState.activeProposals.filter(
-        id => !expiredProposals.includes(id)
-      );
-      
-      // Savestatus
-      this.saveState();
-    }
-  }
-}
-
-// Auto-start only when this module is run directly
-if (import.meta.url.includes(process.argv[1].replace(/\\/g, '/')) || import.meta.url === `file://${process.argv[1]}`) {
-  console.log('Starting Genesis Node...');
-  const node = new GenesisNode();
-  node.initialize().then(() => {
-    console.log('Genesis Node initialized successfully');
-  }).catch(err => {
-    console.error('Fatal error:', err);
-    console.error('Error stack:', err.stack);
-    process.exit(1);
-  });
-  
-  // 防止进程退出
-  process.on('SIGINT', () => {
-    console.log('Received SIGINT, shutting down...');
-    node.shutdown().catch(err => console.error('Error during shutdown:', err));
-  });
-  
-  process.on('SIGTERM', () => {
-    console.log('Received SIGTERM, shutting down...');
-    node.shutdown().catch(err => console.error('Error during shutdown:', err));
-  });
-}
-
-export { GenesisNode };
+      this.governanceState.activeProposals = this.governanceState.active

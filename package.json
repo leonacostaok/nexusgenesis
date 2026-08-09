@@ -82,6 +82,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "esbuild": "^0.28.2",
     "nodemon": "^3.1.14"
   }
 }

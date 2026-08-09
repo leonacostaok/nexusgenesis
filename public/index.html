@@ -6,18 +6,30 @@
   <title>NexusGenesis — Security Standard Layer & AI-Agent Network</title>
   <meta name="description" content="NexusGenesis is a post-quantum security standard layer for AI Agents — self-sovereign keys, PQC signatures, and human takeover — backed by an L1 ecosystem main line for Agent value exchange (tasks, NGEN, reputation).">
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- PQC Crypto Module — private keys never leave the browser -->
+  <!-- PQC Crypto Module — private keys never leave the browser.
+       Self-hosted bundle (no external CDN). Rebuild via: node scripts/build-pqc.mjs -->
   <script type="module">
-    import { ml_dsa44 } from 'https://esm.sh/@noble/post-quantum@0.14.0/ml-dsa.js';
+    import { ml_dsa44 } from '/vendor/ng-pqc.js';
+    function toHex(bytes) { return Array.from(new Uint8Array(bytes)).map(b => b.toString(16).padStart(2,'0')).join(''); }
+    function fromHex(hex) { const a = new Uint8Array(hex.length / 2); for (let i = 0; i < hex.length; i += 2) a[i/2] = parseInt(hex.substr(i, 2), 16); return a; }
     window.ngPQC = {
       async generateKeyPair() {
         const kp = ml_dsa44.keygen();
         return { publicKey: new Uint8Array(kp.publicKey), privateKey: new Uint8Array(kp.secretKey) };
       },
-      toHex(bytes) { return Array.from(new Uint8Array(bytes)).map(b => b.toString(16).padStart(2,'0')).join(''); },
-      fingerprint(publicKey) { return this.toHex(publicKey).slice(0, 16); },
+      async sign(message, privateKey) {
+        const msgBuf = typeof message === 'string' ? new TextEncoder().encode(message) : message;
+        return new Uint8Array(ml_dsa44.sign(msgBuf, new Uint8Array(privateKey)));
+      },
+      async verify(message, signature, publicKey) {
+        const msgBuf = typeof message === 'string' ? new TextEncoder().encode(message) : message;
+        return ml_dsa44.verify(new Uint8Array(signature), msgBuf, new Uint8Array(publicKey));
+      },
+      toHex,
+      fromHex,
+      fingerprint(publicKey) { return toHex(publicKey).slice(0, 16); },
       exportWallet(publicKey, privateKey, address) {
-        return JSON.stringify({ address, publicKey: this.toHex(publicKey), privateKey: this.toHex(privateKey), algorithm: 'Dilithium2', exportedAt: Date.now() });
+        return JSON.stringify({ address, publicKey: toHex(publicKey), privateKey: toHex(privateKey), algorithm: 'Dilithium2', exportedAt: Date.now() });
       }
     };
   </script>
@@ -255,11 +267,11 @@
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
       <div>
         <div class="text-xs text-slate-500 mb-1">Chain ID</div>
-        <div class="text-sm font-mono font-semibold text-indigo-300">nexus-mainnet</div>
+        <div class="text-sm font-mono font-semibold text-indigo-300" id="ciChainId">nexus-mainnet</div>
       </div>
       <div>
         <div class="text-xs text-slate-500 mb-1">Network ID</div>
-        <div class="text-sm font-mono font-semibold text-emerald-300">ngn-mainnet-1</div>
+        <div class="text-sm font-mono font-semibold text-emerald-300" id="ciNetworkId">—</div>
       </div>
       <div>
         <div class="text-xs text-slate-500 mb-1">Consensus</div>
@@ -267,7 +279,7 @@
       </div>
       <div>
         <div class="text-xs text-slate-500 mb-1">Block Time</div>
-        <div class="text-sm font-semibold text-cyan-300">10s</div>
+        <div class="text-sm font-semibold text-cyan-300" id="ciBlockTime">—</div>
       </div>
       <div>
         <div class="text-xs text-slate-500 mb-1">Genesis Epoch</div>
@@ -275,7 +287,7 @@
       </div>
       <div>
         <div class="text-xs text-slate-500 mb-1">Genesis Block</div>
-        <div class="text-sm font-semibold text-rose-300">#0 &middot; 10M NGEN</div>
+        <div class="text-sm font-semibold text-rose-300" id="ciGenesisBlock">#0 &middot; 10M NGEN</div>
       </div>
     </div>
     <div class="mt-4 pt-4 border-t border-slate-800/60 text-xs text-slate-500">
@@ -834,11 +846,20 @@ async function refresh() {
   const validatorCount = status.validatorCount || 0;
   const maxValidators = status.maxValidators || 7;
 
+  // Chain Identity — sourced from live node status (fixes hardcoded 10s vs 5s + networkId mismatch)
+  const ciNetwork = document.getElementById('ciNetworkId');
+  if (ciNetwork && status.networkId) ciNetwork.textContent = status.networkId;
+  const ciBlockTime = document.getElementById('ciBlockTime');
+  if (ciBlockTime && status.blockTime) {
+    ciBlockTime.textContent = status.blockTime >= 1000 ? (status.blockTime / 1000) + 's' : status.blockTime + 'ms';
+  }
+
   document.getElementById('statBlockHeight').textContent = fmt(status.blockHeight);
   document.getElementById('statAgents').textContent = fmt(status.agentCount);
   document.getElementById('statValidators').textContent = validatorCount + '/' + maxValidators;
   document.getElementById('statOpenTasks').textContent = taskStats ? fmt(taskStats.open) : '--';
-  document.getElementById('statNGEN').textContent = fmt(status.actualCirculatingSupply || status.totalNGENAwarded || 0);
+  // Unified NGEN metric: use totalNGENAwarded consistently with "Watch Agents Work" (#5)
+  document.getElementById('statNGEN').textContent = fmt(status.totalNGENAwarded || 0);
   document.getElementById('statUptime').textContent = (status.uptime / 3600000).toFixed(1) + 'h';
 
   document.getElementById('committeeLabel').textContent = `${validatorCount} / ${maxValidators}`;

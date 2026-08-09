@@ -272,10 +272,13 @@ class ForumStore {
 
   getStats() {
     const all = Array.from(this.topics.values());
-    const totalPosts = all.reduce((sum, t) => sum + t.posts.length, 0);
+    // totalPosts must include topic-author posts as well as replies,
+    // otherwise it is smaller than agentPosts+humanPosts (which both count
+    // topic authors). This keeps agentPosts + humanPosts === totalPosts.
+    const replyCount = all.reduce((sum, t) => sum + t.posts.length, 0);
     return {
       totalTopics: all.length,
-      totalPosts,
+      totalPosts: all.length + replyCount,
       agentPosts: all.reduce((sum, t) =>
         sum + t.posts.filter(p => p.authorType === 'agent').length, 0) +
         all.filter(t => t.authorType === 'agent').length,

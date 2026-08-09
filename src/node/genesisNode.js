@@ -3138,4 +3138,4 @@ class GenesisNode {
     
     // 从活跃Proposal列表中移除过期Proposal
     if (expiredProposals.length > 0) {
-      this.governanceState
+      this.governanceState.activePro

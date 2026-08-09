@@ -37,11 +37,12 @@ import { extractCustodyToken, verifyCustodyToken } from '../custodyToken.js';
 import { buildAuthHint } from '../authHint.js';
 
 const VOTE_SIGNATURE_TIMEOUT_MS = 120 * 1000;
-const usedVoteNonces = new Set();
+const usedVoteNonces = new Map(); // nonceKey -> timestamp
 setInterval(() => {
-  for (const nonce of usedVoteNonces) {
-    if (Date.now() - nonce.timestamp > VOTE_SIGNATURE_TIMEOUT_MS * 2) {
-      usedVoteNonces.delete(nonce);
+  const now = Date.now();
+  for (const [key, ts] of usedVoteNonces) {
+    if (now - ts > VOTE_SIGNATURE_TIMEOUT_MS * 2) {
+      usedVoteNonces.delete(key);
     }
   }
 }, 300000).unref();
@@ -709,6 +710,169 @@ function getStore() {
   return storeInstance;
 }
 
+/**
+ * Verify agent identity for forum write operations.
+ * Reuses the same 3-tier auth as vote: PQC signature > custody token > admin bypass.
+ *
+ * Signed data format varies by action:
+ *   vote:         { topicId, agent, vote, timestamp, nonce }
+ *   create_topic: { agent, action: 'create_topic', timestamp, nonce }
+ *   add_post:     { agent, action: 'add_post', topicId, timestamp, nonce }
+ *
+ * @param {string} agent - Agent identity (from body.author or body.agent)
+ * @param {Request} req - Express request object
+ * @param {string} action - 'vote' | 'create_topic' | 'add_post'
+ * @returns {Promise<{verified: boolean, error?: {status: number, body: object}}>}
+ */
+async function verifyAgentIdentity(agent, req, action = 'post') {
+  if (!agent) {
+    return {
+      verified: false,
+      error: {
+        status: 400,
+        body: { success: false, error: 'Agent identity is required', error_code: 'AGENT_REQUIRED' }
+      }
+    };
+  }
+
+  let identityVerified = false;
+
+  // Option 1: PQC signature verification
+  const { signature, timestamp, nonce } = req.body;
+  if (signature && timestamp && nonce) {
+    const node = req.app.locals.node;
+    if (!node?.resolveRegisteredAgent) {
+      return {
+        verified: false,
+        error: {
+          status: 503,
+          body: { success: false, error: 'Node not ready for signature verification', error_code: 'NODE_NOT_READY' }
+        }
+      };
+    }
+
+    const agentRecord = node.resolveRegisteredAgent(agent);
+    if (!agentRecord || !agentRecord.public_key) {
+      return {
+        verified: false,
+        error: {
+          status: 404,
+          body: { success: false, error: 'Agent not found or public key not registered', error_code: 'AGENT_NOT_FOUND' }
+        }
+      };
+    }
+
+    if (Date.now() - timestamp > VOTE_SIGNATURE_TIMEOUT_MS) {
+      return {
+        verified: false,
+        error: {
+          status: 400,
+          body: { success: false, error: 'Signature timestamp expired', error_code: 'SIGNATURE_EXPIRED' }
+        }
+      };
+    }
+
+    const nonceKey = `${agent}:${nonce}`;
+    if (usedVoteNonces.has(nonceKey)) {
+      return {
+        verified: false,
+        error: {
+          status: 400,
+          body: { success: false, error: 'Nonce already used', error_code: 'NONCE_REUSED' }
+        }
+      };
+    }
+    usedVoteNonces.set(nonceKey, Date.now());
+
+    // Reconstruct exact signed data based on action
+    let signedFields;
+    if (action === 'vote') {
+      signedFields = { topicId: req.params.id, agent, vote: req.body.vote, timestamp, nonce };
+    } else if (action === 'create_topic') {
+      signedFields = { agent, action: 'create_topic', timestamp, nonce };
+    } else {
+      signedFields = { agent, action, topicId: req.params.id, timestamp, nonce };
+    }
+    const signedData = JSON.stringify(signedFields);
+
+    const isValid = await PQCWallet.verify(
+      signedData,
+      signature,
+      Buffer.from(agentRecord.public_key, 'hex')
+    );
+
+    if (!isValid) {
+      console.warn(`[SECURITY] Invalid signature for ${action} by "${agent}"`);
+      return {
+        verified: false,
+        error: {
+          status: 403,
+          body: { success: false, error: 'Invalid signature', error_code: 'INVALID_SIGNATURE' }
+        }
+      };
+    }
+    identityVerified = true;
+  }
+
+  // Option 2: Custody token (external agent channel)
+  if (!identityVerified) {
+    const custodyToken = extractCustodyToken(req);
+    if (custodyToken) {
+      const walletInstance = agentWalletManager.getWalletInstance(agent);
+      if (!walletInstance) {
+        return {
+          verified: false,
+          error: {
+            status: 404,
+            body: { success: false, error: `Agent wallet not found: ${agent}`, error_code: 'AGENT_NOT_FOUND' }
+          }
+        };
+      }
+      const verification = verifyCustodyToken(custodyToken, {
+        agentId: agent,
+        address: walletInstance.address,
+        publicKeyHex: walletInstance.publicKey.toString('hex')
+      });
+      if (!verification.valid) {
+        console.warn(`[SECURITY] Custody token rejected for ${action} by "${agent}": ${verification.reason}`);
+        return {
+          verified: false,
+          error: {
+            status: 401,
+            body: { success: false, error: `Custody token rejected: ${verification.reason}`, error_code: 'CUSTODY_TOKEN_REJECTED' }
+          }
+        };
+      }
+      identityVerified = true;
+    }
+  }
+
+  // Option 3: Admin bypass-secret fallback (devnet / ops)
+  if (!identityVerified) {
+    if (!verifyBypassSecret(req)) {
+      return {
+        verified: false,
+        error: {
+          status: 403,
+          body: {
+            success: false,
+            error: `${action} requires valid PQC signature, custody token, or admin bypass-secret authentication`,
+            error_code: 'AUTH_REQUIRED',
+            hint: buildAuthHint('AUTH_REQUIRED', { action, agentRef: agent, isDevnet: process.env.NODE_ENV !== 'production' })
+          }
+        }
+      };
+    }
+    // Audit log: admin bypass used for forum write operations
+    if (process.env.NODE_ENV === 'production') {
+      console.warn(`[AUDIT] Admin bypass-secret used for ${action} by "${agent}" (production)`);
+    }
+    identityVerified = true;
+  }
+
+  return { verified: true };
+}
+
 export function setupForumRoutes(app) {
   const router = Router();
   const store = getStore();
@@ -744,10 +908,19 @@ export function setupForumRoutes(app) {
   });
 
   // POST /api/forum/topics
-  router.post('/api/forum/topics', (req, res) => {
+  router.post('/api/forum/topics', async (req, res) => {
     try {
-      const { title, body, author, authorType, tags } = req.body;
-      const result = store.createTopic({ title, body, author, authorType, tags });
+      const { title, body, author, authorType, tags, agent } = req.body;
+      // 签名身份 = agent（与签名协议一致）；展示作者 author 回退到 agent
+      const identity = agent || author;
+
+      // Verify agent identity before allowing topic creation
+      const auth = await verifyAgentIdentity(identity, req, 'create_topic');
+      if (!auth.verified) {
+        return res.status(auth.error.status).json(auth.error.body);
+      }
+
+      const result = store.createTopic({ title, body, author: author || identity, authorType, tags });
       if (!result.success) {
         const status = result.errorCode === 'AGENT_ONLY_FORUM' ? 403 : 400;
         return res.status(status).json({
@@ -763,12 +936,21 @@ export function setupForumRoutes(app) {
   });
 
   // POST /api/forum/topics/:id/posts
-  router.post('/api/forum/topics/:id/posts', (req, res) => {
+  router.post('/api/forum/topics/:id/posts', async (req, res) => {
     try {
-      const { body, author, authorType } = req.body;
+      const { body, author, authorType, agent } = req.body;
+      // 签名身份 = agent（与签名协议一致）；展示作者 author 回退到 agent
+      const identity = agent || author;
+
+      // Verify agent identity before allowing reply
+      const auth = await verifyAgentIdentity(identity, req, 'add_post');
+      if (!auth.verified) {
+        return res.status(auth.error.status).json(auth.error.body);
+      }
+
       const result = store.addPost({
         topicId: req.params.id,
-        body, author, authorType
+        body, author: author || identity, authorType
       });
       if (!result.success) {
         const status = result.errorCode === 'TOPIC_NOT_FOUND' ? 404
@@ -915,129 +1097,15 @@ export function setupForumRoutes(app) {
   });
 
   // POST /api/forum/topics/:id/vote — agent votes on a [Proposal] topic
-  // SECURITY: PQC signature verification prevents agent impersonation.
-  // Request must include: { agent, vote, timestamp, nonce, signature }
-  // The agent signs JSON.stringify({ topicId, agent, vote, timestamp, nonce })
-  // Server resolves agent's public_key from on-chain registry and verifies.
-  // Admin-secret fallback is maintained for devnet/automated agents.
+  // SECURITY: uses verifyAgentIdentity (PQC signature > custody token > admin bypass)
   router.post('/api/forum/topics/:id/vote', async (req, res) => {
     try {
-      const { agent, vote, timestamp, nonce, signature } = req.body;
+      const { agent, vote } = req.body;
       const topicId = req.params.id;
 
-      if (!agent) {
-        return res.status(400).json({
-          success: false,
-          error: 'agent is required',
-          error_code: 'AGENT_REQUIRED'
-        });
-      }
-
-      let identityVerified = false;
-
-      // Option 1: PQC signature verification (mainnet)
-      if (signature && timestamp && nonce) {
-        const node = req.app.locals.node;
-        if (!node?.resolveRegisteredAgent) {
-          return res.status(503).json({
-            success: false,
-            error: 'Node not ready for signature verification',
-            error_code: 'NODE_NOT_READY'
-          });
-        }
-
-        const agentRecord = node.resolveRegisteredAgent(agent);
-        if (!agentRecord || !agentRecord.public_key) {
-          return res.status(404).json({
-            success: false,
-            error: 'Agent not found or public key not registered',
-            error_code: 'AGENT_NOT_FOUND'
-          });
-        }
-
-        // Check timestamp freshness (2 minutes)
-        if (Date.now() - timestamp > VOTE_SIGNATURE_TIMEOUT_MS) {
-          return res.status(400).json({
-            success: false,
-            error: 'Signature timestamp expired',
-            error_code: 'SIGNATURE_EXPIRED'
-          });
-        }
-
-        // Check nonce uniqueness (anti-replay)
-        const nonceKey = `${agent}:${nonce}`;
-        if (usedVoteNonces.has(nonceKey)) {
-          return res.status(400).json({
-            success: false,
-            error: 'Nonce already used',
-            error_code: 'NONCE_REUSED'
-          });
-        }
-        usedVoteNonces.add(nonceKey);
-
-        // Reconstruct exact signed data
-        const signedData = JSON.stringify({ topicId, agent, vote, timestamp, nonce });
-
-        // Verify PQC signature
-        const isValid = await PQCWallet.verify(
-          signedData,
-          signature,
-          Buffer.from(agentRecord.public_key, 'hex')
-        );
-
-        if (!isValid) {
-          console.warn(`[SECURITY] Invalid signature for vote by "${agent}" on topic ${topicId}`);
-          return res.status(403).json({
-            success: false,
-            error: 'Invalid signature',
-            error_code: 'INVALID_SIGNATURE'
-          });
-        }
-        identityVerified = true;
-      }
-
-      // Option 2: Custody token (external agent 通道)
-      if (!identityVerified) {
-        const custodyToken = extractCustodyToken(req);
-        if (custodyToken) {
-          const walletInstance = agentWalletManager.getWalletInstance(agent);
-          if (!walletInstance) {
-            console.warn(`[SECURITY] Custody token vote: agent wallet not found "${agent}" on topic ${topicId}`);
-            return res.status(404).json({
-              success: false,
-              error: `Agent wallet not found: ${agent}`,
-              error_code: 'AGENT_NOT_FOUND'
-            });
-          }
-          const verification = verifyCustodyToken(custodyToken, {
-            agentId: agent,
-            address: walletInstance.address,
-            publicKeyHex: walletInstance.publicKey.toString('hex')
-          });
-          if (!verification.valid) {
-            console.warn(`[SECURITY] Custody token rejected for vote by "${agent}" on topic ${topicId}: ${verification.reason}`);
-            return res.status(401).json({
-              success: false,
-              error: `Custody token rejected: ${verification.reason}`,
-              error_code: 'CUSTODY_TOKEN_REJECTED'
-            });
-          }
-          identityVerified = true;
-        }
-      }
-
-      // Option 3: Admin bypass-secret fallback (devnet)
-      if (!identityVerified) {
-        if (!verifyBypassSecret(req)) {
-          console.warn(`[SECURITY] Blocked unauthorized vote by "${agent}" on topic ${topicId}`);
-          return res.status(403).json({
-            success: false,
-            error: 'Voting requires valid PQC signature, custody token, or admin bypass-secret authentication',
-            error_code: 'VOTE_AUTH_REQUIRED',
-            hint: buildAuthHint('VOTE_AUTH_REQUIRED', { action: 'vote', agentRef: agent, isDevnet: process.env.NODE_ENV !== 'production' })
-          });
-        }
-        identityVerified = true;
+      const auth = await verifyAgentIdentity(agent, req, 'vote');
+      if (!auth.verified) {
+        return res.status(auth.error.status).json(auth.error.body);
       }
 
       const result = store.castVote({ topicId, agent, vote });

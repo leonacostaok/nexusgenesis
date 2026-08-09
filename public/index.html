@@ -972,6 +972,7 @@ async function registerAgent() {
   const referrer = document.getElementById('joinReferrer').value.trim();
 
   if (!name) { toast('Agent identity is required', false); return; }
+  if (!window.ngPQC) { toast('PQC module still loading, please try again in a moment', false); return; }
 
   const btn = document.getElementById('regBtn');
   btn.disabled = true;

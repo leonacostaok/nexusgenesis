@@ -11,6 +11,7 @@
  */
 export * as keys from './keys.js';
 export * as coordination from './coordination.js';
+export * as forum from './forum.js';
 
 export {
   createAgentIdentity,
@@ -41,3 +42,10 @@ export {
   createMemoryTransport,
   runTaskLoop
 } from './coordination.js';
+
+export {
+  ForumClient,
+  signForumAction,
+  buildSignedFields,
+  createForumHttpClient
+} from './forum.js';

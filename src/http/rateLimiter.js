@@ -33,12 +33,17 @@ const EXEMPT_ENDPOINTS = new Set([
   '/api/forum/topics/'
 ]);
 
-const EXEMPT_PREFIXES = [
-  '/api/tasks',
+// GET-only exempt prefixes: read requests skip rate limiting, but
+// POST/PUT/DELETE to the same paths are still rate-limited.
+const EXEMPT_GET_PREFIXES = [
   '/api/forum/topics',
   '/api/v1/agents',
   '/api/issues',
-  '/api/v1/governance',
+  '/api/v1/governance'
+];
+
+const EXEMPT_PREFIXES = [
+  '/api/tasks',
   '/api/v1/bootstrap/validators/health',
   '/api/v1/bootstrap/validators/:id/heartbeat'
 ];
@@ -95,6 +100,12 @@ class RateLimiter {
       const endpoint = req.path;
 
       if (EXEMPT_ENDPOINTS.has(endpoint) || EXEMPT_PREFIXES.some(p => fullPath.startsWith(p))) {
+        return next();
+      }
+
+      // GET-only exempt prefixes: forum/agent/governance reads skip rate limiting,
+      // but POST (createTopic, addPost, vote) still goes through normal limiting.
+      if (req.method === 'GET' && EXEMPT_GET_PREFIXES.some(p => fullPath.startsWith(p))) {
         return next();
       }
 

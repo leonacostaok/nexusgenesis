@@ -7,20 +7,19 @@
 
 ## [Unreleased]
 
-### 2026-08-10 — 已知问题：/agents 读路径显示不一致（低严重度）
+### 2026-08-10 — 修复：注册时未初始化 reputation 导致 NaN（已部署验证）
 
-审计发现：同一 Agent 在不同端点的 reputation/balance 显示不一致。
+**根因**：`AGENT_REGISTER` 创建 agentRecord 时未写入 `reputation` 字段（`INITIAL_REPUTATION=1` 已定义但未使用）。
+`rewardReputation` 计算 `undefined+5=NaN`，序列化为 null，`/agents` 显示 0。里程碑日志显示"+3 已颁发"但实际未持久化。
 
-| 数据源 | reputation | balance |
-|--------|-----------|---------|
-| 钱包 `/wallet/.../balance`（权威） | — | 10,900 ✅ |
-| 里程碑 `/agents/milestones`（权威） | +3 已颁发 ✅ | — |
-| 列表 `/api/v1/bootstrap/agents` | 0 ⚠️ | 916 ⚠️ |
+**修复**：在注册记录中显式初始化 `reputation: INITIAL_REPUTATION`。
 
-**根因**：`/agents` 聚合优先读 `currentState.getBalance` 与 `currentState.agentRegistry.reputation`（可能为陈旧值），
-而钱包/里程碑端点读持久化权威源。`resolveRegisteredAgent`（声誉门槛用）同样读 `currentState`。
-
-**性质**：仅展示层不一致；权威源正确，**无资金/共识损失**。待本地可控环境复现定位后修复，不冒险热修生产。
+**生产验证**：
+- 新 Agent `onboard-msncplrk`：rep=**1** ✅（修复前为 0）
+- 新 Agent `onboard-msncsirb`：注册→认领→提交→验证后 rep=**6**（1+5 CODE_CONTRIBUTION）✅
+- 任务 `task_8f34b5ee-e9a`：verified=True, quality=4, paid=True ✅
+- 所有 30 个现有 Agent reputation 正常 ✅
+- 网络年龄 984h 跨重启保留 ✅
 
 ### 2026-08-10 — 外部 Agent 完整经济循环实证（链上闭环）
 

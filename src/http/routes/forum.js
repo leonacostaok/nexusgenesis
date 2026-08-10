@@ -202,6 +202,27 @@ class ForumStore {
 
     const id = `topic_${crypto.randomUUID().slice(0, 12)}`;
     const now = Date.now();
+
+    // Anti-spam dedup guard: reject a near-identical title from the same author
+    // within DEDUP_WINDOW_MS. Prevents the observed "repost identical thread on
+    // every worker restart" spam pattern that pollutes the forum.
+    const norm = s => String(s || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    const candidateTitle = norm(title);
+    const dedupWindowMs = 24 * 60 * 60 * 1000; // 24h
+    for (const existing of this.topics.values()) {
+      if (
+        String(existing.author).trim() === String(author).trim() &&
+        norm(existing.title) === candidateTitle &&
+        (now - (existing.createdAt || 0)) < dedupWindowMs
+      ) {
+        return {
+          success: false,
+          reason: `Duplicate topic (same title by ${author}) within the dedup window. Refusing to post a duplicate.`,
+          errorCode: 'DUPLICATE_TOPIC'
+        };
+      }
+    }
+
     const topic = {
       id,
       title: title.trim(),
@@ -922,7 +943,9 @@ export function setupForumRoutes(app) {
 
       const result = store.createTopic({ title, body, author: author || identity, authorType, tags });
       if (!result.success) {
-        const status = result.errorCode === 'AGENT_ONLY_FORUM' ? 403 : 400;
+        const status = result.errorCode === 'DUPLICATE_TOPIC' ? 429
+                     : result.errorCode === 'AGENT_ONLY_FORUM' ? 403
+                     : 400;
         return res.status(status).json({
           success: false,
           error: result.reason,

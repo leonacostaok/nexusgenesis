@@ -7,6 +7,21 @@
 
 ## [Unreleased]
 
+### 2026-08-10 — 已知问题：/agents 读路径显示不一致（低严重度）
+
+审计发现：同一 Agent 在不同端点的 reputation/balance 显示不一致。
+
+| 数据源 | reputation | balance |
+|--------|-----------|---------|
+| 钱包 `/wallet/.../balance`（权威） | — | 10,900 ✅ |
+| 里程碑 `/agents/milestones`（权威） | +3 已颁发 ✅ | — |
+| 列表 `/api/v1/bootstrap/agents` | 0 ⚠️ | 916 ⚠️ |
+
+**根因**：`/agents` 聚合优先读 `currentState.getBalance` 与 `currentState.agentRegistry.reputation`（可能为陈旧值），
+而钱包/里程碑端点读持久化权威源。`resolveRegisteredAgent`（声誉门槛用）同样读 `currentState`。
+
+**性质**：仅展示层不一致；权威源正确，**无资金/共识损失**。待本地可控环境复现定位后修复，不冒险热修生产。
+
 ### 2026-08-10 — 外部 Agent 完整经济循环实证（链上闭环）
 
 通过 MCP 桥让一个**全新外部 Agent**（0 声誉、真实 Dilithium2 密钥）走通完整经济闭环并上链：

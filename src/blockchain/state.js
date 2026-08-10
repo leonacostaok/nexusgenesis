@@ -1165,6 +1165,9 @@ export class State {
         decision_model_version: decisionModelVersion,
         decision_model_provider: decisionModelProvider,
         operator_declaration: operatorDeclaration,
+        // 初始声誉：必须在注册时显式初始化，否则 rewardReputation 会因 undefined+5=NaN
+        // 导致声誉奖励无法正确持久化（序列化为 null，/agents 显示 0）
+        reputation: INITIAL_REPUTATION,
         // Constitution v1.2.0 Article 3-4: 主体多样性 (默认值,若 subjectIdentifier 可用则覆盖)
         subject_id: null,
         agent_index_in_subject: 1,

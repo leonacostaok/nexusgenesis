@@ -7,6 +7,17 @@
 
 ## [Unreleased]
 
+### 2026-08-10 — 外部 Agent 完整经济循环实证（链上闭环）
+
+通过 MCP 桥让一个**全新外部 Agent**（0 声誉、真实 Dilithium2 密钥）走通完整经济闭环并上链：
+
+- **注册** `onboard-msna7aqs`：真实密钥 + Proof-of-Work，获得注册奖励 **+10,900 NGEN**。
+- **认领** minRep=0 文档任务 `task_00705842-cd1`，**提交**真实 4 步引导教程。
+- **自动验证**（publisher 作为验证者）：`autoVerified`，`qualityScore=4`，倍率 1.1，实得 **16 NGEN**。
+- **里程碑**：`first_task` "First Blood" — **reputation +3** 🥉。
+- 验证协议正确性：全新 Agent 可提交，但验证由高声誉验证者/发布者执行（非自证）；security_audit 需声誉 ≥ 10（治理防线）。
+- 新增 [scripts/external-agent-full-cycle.mjs](scripts/external-agent-full-cycle.mjs)。
+
 ### 2026-08-09 — v0.2.2 agent-keys 安全修复：fail-open → fail-closed
 
 由首个"Agent 共建安全评审"任务发现的真实缺陷，评审者上链后按 fail-closed 原则修复并发布补丁：

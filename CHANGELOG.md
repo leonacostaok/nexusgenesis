@@ -7,6 +7,16 @@
 
 ## [Unreleased]
 
+### 2026-08-10 — 修复：网络年龄在异常重启后被“投毒”归零（首页 uptime 误显示为 1.5h）
+
+**现象**：生产节点 `/api/v1/bootstrap/status` 的 `uptime` 在最近一次重启后显示 ≈1.5h，首页网络年龄随之显示“1.5h”，让链被误判为“刚上链、不成熟”。此前已验证可跨重启保留的 ~984h 网络年龄丢失。
+
+**根因**：`networkCreatedAt` 仅依赖 `genesisNode.json` 持久化字段恢复；当某次异常重启导致 `loadState()` 失败（文件缺失/损坏）且 `blocks.json` 也被重建时，fallback 用 `firstRealBlock.timestamp`（链真实起点）赋值本可纠正，但一旦该字段被写入一个近期时间戳并持久化，后续每次重启都会忠实加载这个“被投毒”的近期值，fallback `if (!this.networkCreatedAt)` 不再触发，网络年龄永久卡在近期。
+
+**修复**：启动时取「持久化值」与「最早真实区块时间戳（创世块 timestamp=0，跳过，取第一个 timestamp>0 的区块）」中**更早者**作为 `networkCreatedAt`。区块时间戳是链上客观真相，即使持久化值被投毒也能将其纠正回真实网络年龄。`min()` 单调改进，不会使任何场景变差。
+
+**验证**：逻辑单测模拟「持久化=1.5h 前 / 区块=442h 前」→ 结果正确取 442h。生产部署后观察启动日志 `[network-age]` 行与首页 uptime。
+
 ### 2026-08-10 — 修复：注册时未初始化 reputation 导致 NaN（已部署验证）
 
 **根因**：`AGENT_REGISTER` 创建 agentRecord 时未写入 `reputation` 字段（`INITIAL_REPUTATION=1` 已定义但未使用）。

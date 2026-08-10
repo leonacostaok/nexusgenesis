@@ -887,12 +887,16 @@ class GenesisNode {
     // Step 5: 上线
     this.status = 'ONLINE';
     this.startTime = Date.now();
-    // 网络成立时间只在首次上线/迁移时设定一次，之后保持不变。
-    // 首次启动用当前时间；已有历史链则从最早的真实区块时间戳恢复真实网络年龄。
-    if (!this.networkCreatedAt) {
-      const firstReal = this.blockchain?.find(b => b.header?.timestamp && b.header.timestamp > 0);
-      this.networkCreatedAt = firstReal ? firstReal.header.timestamp : Date.now();
-    }
+    // 网络成立时间：取「持久化值」与「最早真实区块时间戳」中更早者。
+    // 创世块时间戳为 0（用于确定性哈希），故跳过它，取第一个 timestamp>0 的区块作为链真实起点。
+    // 这样即使持久化值因某次异常重启被“投毒”为近期时间，区块时间戳也能将其纠正回真实网络年龄，
+    // 避免首页 uptime 在每次重启后归零、让链被误判为“刚上链”。
+    const firstRealBlock = this.blockchain?.find(b => b.header?.timestamp && b.header.timestamp > 0);
+    const earliestBlockTs = firstRealBlock ? firstRealBlock.header.timestamp : null;
+    const ageCandidates = [this.networkCreatedAt, earliestBlockTs].filter(ts => Number.isFinite(ts) && ts > 0);
+    this.networkCreatedAt = ageCandidates.length ? Math.min(...ageCandidates) : Date.now();
+    const ageHours = ((Date.now() - this.networkCreatedAt) / 3600000).toFixed(1);
+    console.log(`[network-age] networkCreatedAt=${this.networkCreatedAt} (age≈${ageHours}h, earliestBlockTs=${earliestBlockTs})`);
     console.log('[5/5] Genesis Node ONLINE\n');
     
     this.displayStatus();

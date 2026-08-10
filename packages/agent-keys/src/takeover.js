@@ -28,13 +28,18 @@ export const SPEND_MODES = {
 };
 
 /**
- * Resolve effective spend config (defaults to unlimited for a self-sovereign agent).
+ * Resolve effective spend config. Fails CLOSED to REQUIRE_APPROVAL for any
+ * self-sovereign config that is missing an explicit, valid `type` — the safe
+ * default for an autonomous spend limiter. A missing/invalid type must never
+ * silently grant UNLIMITED spending (fail-open), which would let a takeover or
+ * config-migration bug revert an agent to unrestricted spending.
  * @param {object} config - agent spend config
  * @returns {object}
  */
 export function resolveSpendMode(config) {
-  if (!config || typeof config.type !== 'string') {
-    return { type: SPEND_MODES.UNLIMITED };
+  const validModes = Object.values(SPEND_MODES);
+  if (!config || typeof config.type !== 'string' || !validModes.includes(config.type)) {
+    return { type: SPEND_MODES.REQUIRE_APPROVAL, reason: 'fail-closed: invalid or missing spend mode' };
   }
   return config;
 }

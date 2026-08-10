@@ -20,6 +20,7 @@ import {
   issueCustodyToken,
   verifyCustodyToken,
   checkSpendAllowed,
+  resolveSpendMode,
   takeoverGuard,
   takeoverWallet,
   SPEND_MODES
@@ -56,6 +57,22 @@ test('[HIGH] negative amount cannot bypass an unlimited check', () => {
   // Unlimited still rejects negative amounts (never a valid spend).
   assert.equal(checkSpendAllowed({ type: 'unlimited' }, { amount: -100 }).allowed, false);
 });
+
+// ─── Fail-open vs fail-closed default ───────────────────────────────────
+test('[HIGH] missing/invalid spend mode fails CLOSED (never unlimited)', () => {
+  const missing = resolveSpendMode(undefined);
+  const nullType = resolveSpendMode({ type: null });
+  const bogusType = resolveSpendMode({ type: 'not-a-mode' });
+  const missingType = resolveSpendMode({ maxPerTx: 100 });
+  for (const r of [missing, nullType, bogusType, missingType]) {
+    assert.equal(r.type, 'require-approval', 'must fail closed to require-approval');
+    assert.equal(checkSpendAllowed(r, { amount: 1 }).allowed, false, 'must not allow spending');
+  }
+  // A valid explicit mode still works as expected.
+  assert.equal(resolveSpendMode({ type: 'unlimited' }).type, 'unlimited');
+  assert.equal(checkSpendAllowed({ type: 'limit', maxPerTx: 100 }, { amount: 50 }).allowed, true);
+});
+
 
 test('[HIGH] negative amount must NOT bypass a per-tx limit', () => {
   // A negative amount is always < maxPerTx, so must be rejected explicitly.

@@ -7,6 +7,17 @@
 
 ## [Unreleased]
 
+### 2026-08-09 — v0.2.2 agent-keys 安全修复：fail-open → fail-closed
+
+由首个"Agent 共建安全评审"任务发现的真实缺陷，评审者上链后按 fail-closed 原则修复并发布补丁：
+
+- **[HIGH] `resolveSpendMode` fail-open 缺陷**（[takeover.js](packages/agent-keys/src/takeover.js#L39-L45)）：
+  此前当 `config.type` 缺失/非字符串时**静默返回 `unlimited`**，会让丢失 type 字段或被接管竞态影响的
+  Agent 意外回到无限制消费。现改为 **fail-closed** —— 无效/缺失模式一律回落为 `require-approval`。
+- 新增安全边界测试锁定该行为，`agent-keys` 测试全绿（32/32）。
+- 发布 `nexusgenesis-agent-keys@0.2.2`。
+- 该缺陷由 `task_5ca06d22-f38` / `task_7bf28b18-52e` 安全评审任务识别并记录上链（多 Agent 共治实证）。
+
 ### 2026-08-09 — v0.2.1 MCP Server：AGENT 世界接入桥（nexusgenesis-agent-mcp）
 
 将 MCP Server 升级为真正的"AGENT 世界入口"，任何 AI Agent（Claude/Cursor/任意 MCP 客户端）可

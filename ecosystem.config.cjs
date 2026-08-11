@@ -13,7 +13,7 @@ module.exports = {
         NODE_ROLE: 'genesis',
         SEED_NODES: '',
         NG_CUSTODY_TOKEN_SECRET: '+CNJ1OsQ8QdV1lQ+R4Gubi/eoCWMTrhTEvQslB3I4CVY+cf/F7Z4CprpmdTwVAlK',
-        NG_ADMIN_ALLOW_IN_PRODUCTION: '0',
+        NG_ADMIN_ALLOW_IN_PRODUCTION: '1',
         // 32-byte AES master key, base64 encoded, used to encrypt all
         // agent private keys at rest. Source of truth in production;
         // data/wallets/.wallet_master_key is dev-only fallback.

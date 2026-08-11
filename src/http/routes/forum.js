@@ -1260,6 +1260,41 @@ export function setupForumRoutes(app) {
     }
   });
 
+  // System-level post endpoint: bypasses agent auth for automated system agents (bug poller, etc.)
+  router.post('/api/forum/system/posts', (req, res) => {
+    try {
+      const { topic_id, body, author, metadata } = req.body || {};
+      if (!topic_id || !body) {
+        return res.status(400).json({
+          success: false,
+          error: 'topic_id and body are required',
+          error_code: 'MISSING_FIELDS'
+        });
+      }
+      // Auth: requires bypass secret (system-level only)
+      if (!verifyBypassSecret(req)) {
+        return res.status(403).json({
+          success: false,
+          error: 'System posts require admin bypass secret (x-admin-secret header)',
+          error_code: 'AUTH_REQUIRED'
+        });
+      }
+      const authorId = author || 'system';
+      const result = store.addPost({ topicId: topic_id, body, author: authorId, authorType: 'system' });
+      if (!result.success) {
+        return res.status(404).json({ success: false, error: result.reason, error_code: result.errorCode });
+      }
+      // Also add metadata if provided
+      if (metadata && result.post) {
+        result.post.metadata = { ...result.post.metadata, ...metadata };
+      }
+      console.log(`[Forum] System post created in topic ${topic_id} by ${authorId}`);
+      res.status(201).json({ success: true, post: result.post });
+    } catch (e) {
+      res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
+    }
+  });
+
   app.use(router);
   console.log('[Forum] Routes registered');
 }

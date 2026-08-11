@@ -54,6 +54,9 @@ console.log('[HTTP Server] Imported walletRoutes');
 import { setupRecruitmentRoutes } from '../recruitment/recruitmentApi.js';
 console.log('[HTTP Server] Imported recruitmentRoutes');
 
+import { startBugPoller, stopBugPoller, getStatus as getBugPollerStatus, pollBugs as pollBugsFn } from '../automation/forumBugPoller.js';
+console.log('[HTTP Server] Imported forumBugPoller');
+
 import fs from 'fs';
 console.log('[HTTP Server] Imported fs');
 
@@ -1972,6 +1975,27 @@ setupTaskRoutes(app);
 setupForumRoutes(app);
 console.log('[HTTP Server] Recruitment routes mounted');
 
+// Bug Poller API routes
+app.post('/api/v1/bug-poller/start', (req, res) => {
+  startBugPoller();
+  res.json({ success: true, message: 'Bug poller started' });
+});
+app.post('/api/v1/bug-poller/stop', (req, res) => {
+  stopBugPoller();
+  res.json({ success: true, message: 'Bug poller stopped' });
+});
+app.get('/api/v1/bug-poller/status', (req, res) => {
+  res.json({ success: true, data: getBugPollerStatus() });
+});
+app.post('/api/v1/bug-poller/poll', async (req, res) => {
+  try {
+    await pollBugsFn();
+    res.json({ success: true, message: 'Poll executed' });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e.message });
+  }
+});
+
 app.get('/api/v1/plugins', (req, res) => {
   res.json({ success: true, data: pluginManager.getAll() });
 });
@@ -2406,6 +2430,15 @@ async function startHttpServer(node = null, options = {}) {
 
   app.locals.httpServer = server;
   console.log('[HTTP Server] HTTP server started successfully');
+
+  // Auto-start bug poller on server startup
+  startBugPoller();
+  console.log('[HTTP Server] Bug poller auto-started');
+
+  // Graceful shutdown: stop bug poller on exit
+  process.on('SIGTERM', () => { stopBugPoller(); console.log('[HTTP Server] SIGTERM: bug poller stopped'); });
+  process.on('SIGINT', () => { stopBugPoller(); console.log('[HTTP Server] SIGINT: bug poller stopped'); });
+
   return server;
 }
 

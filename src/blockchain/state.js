@@ -169,8 +169,9 @@ export class State {
     
     // Agent Registry status
     this.agentRegistry = {
-      agents: new Map(), // agent_id -> AgentRecord
-      addressIndex: new Map() // address -> agent_id
+      agents: new Map(), // agent_id(tx_hash) -> AgentRecord
+      addressIndex: new Map(), // address -> agent_id(tx_hash)
+      identityIndex: new Map() // identity(string) -> agent_id(tx_hash)
     };
     
     // 项目审核status
@@ -205,6 +206,7 @@ export class State {
         releasedTokens: 0n,
         lastReleaseBlock: 0,
         releaseInterval: 100, // 每 100 个blockCheck一次
+        releasePercentage: 0n, // 里程碑释放不按固定比例线性释放，保留 0 以兼容序列化
         mechanism: 'milestone-multisig', // 多签共管的里程碑机制
         // 里程碑定义必须与 docs/ECONOMY_NGEN.md §4.1 严格对齐
         // 释放比例: 20% / 30% / 20% / 30% (4 个里程碑)
@@ -1125,6 +1127,7 @@ export class State {
       let decisionModelVersion = 'unknown';
       let decisionModelProvider = 'self-built';
       let operatorDeclaration = null;
+      let earlyBird = false;
       if (metadata && typeof metadata === 'string') {
         try {
           const meta = JSON.parse(metadata);
@@ -1132,12 +1135,14 @@ export class State {
           decisionModelVersion = meta.decision_model_version || meta.decisionModelVersion || 'unknown';
           decisionModelProvider = meta.decision_model_provider || meta.decisionModelProvider || 'self-built';
           operatorDeclaration = meta.operator_declaration || meta.operatorDeclaration || null;
+          earlyBird = meta.early_bird || meta.earlyBird || false;
         } catch { /* metadata 非合法 JSON,保留默认值 */ }
       } else if (metadata && typeof metadata === 'object') {
         decisionModel = metadata.decision_model || metadata.decisionModel || 'template';
         decisionModelVersion = metadata.decision_model_version || metadata.decisionModelVersion || 'unknown';
         decisionModelProvider = metadata.decision_model_provider || metadata.decisionModelProvider || 'self-built';
         operatorDeclaration = metadata.operator_declaration || metadata.operatorDeclaration || null;
+        earlyBird = metadata.early_bird || metadata.earlyBird || false;
       }
 
       // Compute binding deadline from chain time (block height → timestamp estimate)
@@ -1202,6 +1207,9 @@ export class State {
       // 写入status
       this.agentRegistry.agents.set(agent_id, agentRecord);
       this.agentRegistry.addressIndex.set(from, agent_id);
+      if (agent_identity) {
+        this.agentRegistry.identityIndex.set(agent_identity, agent_id);
+      }
 
       this.changes.agents.add(agent_id);
 
@@ -1216,11 +1224,13 @@ export class State {
       // P2P sync) created the agent.
       //
       // Deflationary mechanism: burn a registration fee to counteract the
-      // endowment inflation. Net endowment = 900 NGEN (1000 minted - 100 burned).
+      // endowment inflation. Base net endowment = 900 NGEN (1000 minted - 100 burned).
+      // Early bird bonus: +10000 NGEN for agents registered before the cutoff.
       const INITIAL_AGENT_NGEN = 1000n;
+      const EARLY_BIRD_BONUS = earlyBird ? 10000n : 0n;
       const REGISTRATION_FEE = 100n;
       const BURN_ADDR = 'ng1burn0000000000000000000000000000000';
-      this.addBalance(from, INITIAL_AGENT_NGEN.toString());
+      this.addBalance(from, (INITIAL_AGENT_NGEN + EARLY_BIRD_BONUS).toString());
       this.subtractBalance(from, REGISTRATION_FEE.toString());
       this.addBalance(BURN_ADDR, REGISTRATION_FEE.toString());
       this.changes.balances.add(from);
@@ -1231,14 +1241,29 @@ export class State {
       this.recordAuditEvent({
         tx_type: TX_TYPE.REGISTRATION_MINT,
         to: from,
-        amount: INITIAL_AGENT_NGEN.toString(),
+        amount: (INITIAL_AGENT_NGEN + EARLY_BIRD_BONUS).toString(),
         blockHeight: height,
         agentId: agent_id,
         metadata: {
           source: 'agent_registration',
-          agentIdentity: agent_identity
+          agentIdentity: agent_identity,
+          earlyBird: earlyBird,
+          earlyBirdBonus: EARLY_BIRD_BONUS.toString()
         }
       });
+      if (earlyBird) {
+        this.recordAuditEvent({
+          tx_type: TX_TYPE.EARLY_BIRD_BONUS,
+          to: from,
+          amount: EARLY_BIRD_BONUS.toString(),
+          blockHeight: height,
+          agentId: agent_id,
+          metadata: {
+            source: 'agent_registration',
+            agentIdentity: agent_identity
+          }
+        });
+      }
       this.recordAuditEvent({
         tx_type: TX_TYPE.OBSERVER_EVENT,
         from,
@@ -1253,7 +1278,8 @@ export class State {
       });
 
       // 记录日志
-      console.log(`[AGENT_REGISTER] agent_id=${agent_id} address=${from} block=${height} custody=${agentRecord.custody} binding_deadline=${new Date(bindingDeadline).toISOString()} capabilities=${capabilities?.join(',') || ''} endowed=${INITIAL_AGENT_NGEN.toString()} burned=${REGISTRATION_FEE.toString()} net=${(INITIAL_AGENT_NGEN - REGISTRATION_FEE).toString()}`);
+      const netEndowment = INITIAL_AGENT_NGEN + EARLY_BIRD_BONUS - REGISTRATION_FEE;
+      console.log(`[AGENT_REGISTER] agent_id=${agent_id} address=${from} block=${height} custody=${agentRecord.custody} binding_deadline=${new Date(bindingDeadline).toISOString()} capabilities=${capabilities?.join(',') || ''} earlyBird=${earlyBird} minted=${(INITIAL_AGENT_NGEN + EARLY_BIRD_BONUS).toString()} burned=${REGISTRATION_FEE.toString()} net=${netEndowment.toString()}`);
       return true;
     } catch (error) {
       console.error('Error applying agent register:', error.message);
@@ -1508,13 +1534,23 @@ export class State {
    */
   applyBlockReward(transaction, height) {
     try {
-      const { validator, amount } = transaction;
-      if (!validator || !amount) {
+      const { validator, to, amount } = transaction;
+      const rewardTarget = to || validator;
+      if (!rewardTarget || amount === undefined || amount === null) {
         return false;
       }
       const rewardAmount = BigInt(amount);
       if (rewardAmount <= 0n) {
         return false;
+      }
+
+      // New audited block-reward path: builder-generated tx already contains
+      // the final recipient in `to`, so we just credit that share directly.
+      if (to) {
+        this.addBalance(to, rewardAmount.toString());
+        this.changes.balances.add(to);
+        console.log(`[BLOCK_REWARD] block=${height} amount=${rewardAmount.toString()} → ${to}`);
+        return true;
       }
 
       // Collect all active validators with locked stake
@@ -2221,6 +2257,17 @@ export class State {
       if (json.agentRegistry.addressIndex) {
         this.agentRegistry.addressIndex = new Map(Object.entries(json.agentRegistry.addressIndex));
       }
+      if (json.agentRegistry.identityIndex) {
+        this.agentRegistry.identityIndex = new Map(Object.entries(json.agentRegistry.identityIndex));
+      } else {
+        // Rebuild identityIndex from existing agents (backward compat for old state files)
+        this.agentRegistry.identityIndex = new Map();
+        for (const [agentId, record] of this.agentRegistry.agents) {
+          if (record.identity) {
+            this.agentRegistry.identityIndex.set(record.identity, agentId);
+          }
+        }
+      }
     }
     
     // Load项目审核status
@@ -2255,6 +2302,7 @@ export class State {
           releasedTokens: BigInt(json.tokenReleaseState.genesisReserve?.releasedTokens || 0),
           lastReleaseBlock: json.tokenReleaseState.genesisReserve?.lastReleaseBlock || 0,
           releaseInterval: json.tokenReleaseState.genesisReserve?.releaseInterval || 100,
+          releasePercentage: BigInt(json.tokenReleaseState.genesisReserve?.releasePercentage || 0),
           mechanism: json.tokenReleaseState.genesisReserve?.mechanism || 'milestone-multisig',
           // 默认里程碑（与 docs/ECONOMY_NGEN.md §4.1 对齐）
           // 真实数据从持久化的 tokenReleaseState.genesisReserve.milestones 加载
@@ -2329,7 +2377,8 @@ export class State {
     // 转换 Agent Registry status
     const agentRegistryObj = {
       agents: Object.fromEntries(this.agentRegistry.agents),
-      addressIndex: Object.fromEntries(this.agentRegistry.addressIndex)
+      addressIndex: Object.fromEntries(this.agentRegistry.addressIndex),
+      identityIndex: Object.fromEntries(this.agentRegistry.identityIndex || [])
     };
     
     // 转换已Vote记录
@@ -2547,6 +2596,9 @@ export class State {
       for (const [agentId, agentData] of Object.entries(changes.agents)) {
         this.agentRegistry.agents.set(agentId, agentData);
         this.agentRegistry.addressIndex.set(agentData.address, agentId);
+        if (agentData.identity) {
+          this.agentRegistry.identityIndex.set(agentData.identity, agentId);
+        }
       }
       
       // 应用审计status变更

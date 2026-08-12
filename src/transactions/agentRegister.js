@@ -227,7 +227,18 @@ export function isAddressRegistered(address, state) {
  * @returns {object|null} agentinfo
  */
 export function getAgentInfo(agentId, state) {
-  return state.agentRegistry.agents.get(agentId) || null;
+  // Try direct lookup by tx hash first
+  let agent = state.agentRegistry.agents.get(agentId);
+  if (agent) return agent;
+  // Fall back to identity string lookup
+  if (state.agentRegistry.identityIndex) {
+    const resolvedId = state.agentRegistry.identityIndex.get(agentId);
+    if (resolvedId) {
+      agent = state.agentRegistry.agents.get(resolvedId);
+      if (agent) return agent;
+    }
+  }
+  return null;
 }
 
 /**

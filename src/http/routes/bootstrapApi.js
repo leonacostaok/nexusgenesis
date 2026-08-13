@@ -22,7 +22,9 @@ function buildWelcomePackage(node) {
   const blockHeight = node?.blockchain?.length || 0;
   const agentCount = getUnifiedAgents(node).length;
   const validatorCount = node?.consensusState?.committee?.size || (1 + (node?._validators?.size || 0));
-  const maxValidators = 7;
+  const maxValidators = node?.config?.consensus?.dynamicCommittee?.maxCommitteeSize
+    || node?.config?.bootstrap?.autoExitConditions?.minActiveValidators
+    || 21;
   const uptime = node?.startTime ? Date.now() - node.startTime : 0;
   const uptimeHours = (uptime / 3600000).toFixed(1);
 
@@ -293,7 +295,7 @@ router.get('/api/v1/bootstrap/status', (req, res) => {
     if (!node) {
       return res.json({
         blockHeight: 0, agentCount: 0, totalNGENAwarded: 0, uptime: 0,
-        bootstrapExitProgress: { uptime: '0h/720h', validatorCount: '0/7', canExit: false }
+        bootstrapExitProgress: { uptime: '0h/720h', validatorCount: `0/${maxValidators}`, canExit: false }
       });
     }
 
@@ -307,7 +309,10 @@ router.get('/api/v1/bootstrap/status', (req, res) => {
     const actualCirculating = computeActualCirculatingSupply();
 
     const validatorCount = node.consensusState?.committee?.size || (1 + (node._validators?.size || 0));
-    const maxValidators = 7;
+    const maxValidators = node?.config?.consensus?.dynamicCommittee?.maxCommitteeSize
+      || node?.config?.bootstrap?.autoExitConditions?.minActiveValidators
+      || 21;
+    const committeeSize = node.consensusState?.committee?.size || (1 + (node._validators?.size || 0));
 
     res.json({
       success: true,
@@ -325,7 +330,7 @@ router.get('/api/v1/bootstrap/status', (req, res) => {
       gasPrice: '0',
       networkId: node.config?.networkId || 'nexusgenesis-testnet',
       bootstrapExitProgress: {
-        uptime: `${(uptime / 3600000).toFixed(1)}h/720h`,
+        uptime: `${(uptime / 3600000).toFixed(1)}h/${(node.config?.bootstrap?.autoExitConditions?.minNetworkUptimeHours || 720)}h`,
         validatorCount: `${validatorCount}/${maxValidators}`,
         canExit: false
       }
@@ -390,7 +395,7 @@ router.get('/api/v1/bootstrap/agents', async (req, res) => {
 router.get('/api/v1/bootstrap/validators', (req, res) => {
   try {
     const node = req.app.locals.node;
-    if (!node) return res.json({ success: true, count: 0, maxValidators: 7, committeeSize: 0, validators: [] });
+    if (!node) return res.json({ success: true, count: 0, maxValidators: node?.config?.consensus?.dynamicCommittee?.maxCommitteeSize || node?.config?.bootstrap?.autoExitConditions?.minActiveValidators || 21, committeeSize: 0, validators: [] });
 
     const agents = getUnifiedAgents(node);
     const validatorAgentKeys = new Set();
@@ -426,7 +431,9 @@ router.get('/api/v1/bootstrap/validators', (req, res) => {
     const limit = Math.max(1, Math.min(parseInt(req.query.limit) || 50, 200));
     const sliced = validators.slice(0, limit);
 
-    const maxValidators = 7;
+    const maxValidators = node?.config?.consensus?.dynamicCommittee?.maxCommitteeSize
+      || node?.config?.bootstrap?.autoExitConditions?.minActiveValidators
+      || 21;
     const committeeSize = node.consensusState?.committee?.size || (1 + (node._validators?.size || 0));
 
     res.json({
@@ -657,10 +664,10 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
     // ─── Route A: Pre-signed transaction from browser ─────────────────
     if (req.body.signedTransaction) {
       const signedTx = req.body.signedTransaction;
-      console.log(`[bootstrap] Relay pre-signed transaction for ${agentIdentity}`);
+      console.log(`[bootstrap] Relay pre-signed transaction for ${agent_identity}`);
 
       if (signedTx.tx_type === 'BIND_MASTER_KEY') {
-        return handleBindMasterKeyRelay(req, res, signedTx, agentIdentity, clientIp, node);
+        return handleBindMasterKeyRelay(req, res, signedTx, agent_identity, clientIp, node);
       }
 
       // For AGENT_REGISTER: derive wallet address from publicKeyHex, then fill in from/to
@@ -693,7 +700,7 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
 
       // Import custody status for response
       const { AGENT_CUSTODY_STATUS } = await import('../../blockchain/state.js');
-      return sendRegistrationResponse(res, node, agentIdentity, result, signedTx.payload, signedTx.from, {
+      return sendRegistrationResponse(res, node, agent_identity, result, signedTx.payload, signedTx.from, {
         custody: AGENT_CUSTODY_STATUS.SELF_SOVEREIGN,
         keyOrigin: 'browser-signed'
       }, isEarlyBird, clientIp);
@@ -826,7 +833,8 @@ router.post('/api/v1/bootstrap/agents/register', async (req, res) => {
           decision_model_provider: decisionModelProvider,
           operator_declaration: operatorDeclaration,
           key_origin: 'browser-generated',
-          custody_status: AGENT_CUSTODY_STATUS.PENDING_BINDING
+          custody_status: AGENT_CUSTODY_STATUS.PENDING_BINDING,
+          early_bird: isEarlyBird
         }),
         public_key: publicKeyHex,
         registered_at: timestamp,
@@ -884,6 +892,53 @@ async function handleBindMasterKeyRelay(req, res, signedTx, agent_identity, clie
     message: 'Master Key bound successfully. You now have takeover rights for this Agent.'
   });
 }
+
+// ─── Dedicated Bind Master Key endpoint ──────────────────────────────
+// Fixes: registration response advertised POST /api/v1/bootstrap/agents/:agentId/bind-master-key
+// but the route did not exist. BIND_MASTER_KEY was only reachable via the register endpoint.
+
+router.post('/api/v1/bootstrap/agents/:agentId/bind-master-key', async (req, res) => {
+  try {
+    const node = req.app.locals.node;
+    if (!node) {
+      return res.status(503).json({ success: false, error: 'Node not ready', error_code: 'NODE_NOT_READY' });
+    }
+
+    const { agentId } = req.params;
+    const signedTx = req.body.signedTransaction;
+
+    if (!signedTx) {
+      return res.status(400).json({
+        success: false,
+        error: 'signedTransaction is required',
+        error_code: 'MISSING_SIGNED_TRANSACTION'
+      });
+    }
+
+    if (signedTx.tx_type !== 'BIND_MASTER_KEY') {
+      return res.status(400).json({
+        success: false,
+        error: `Expected tx_type BIND_MASTER_KEY, got ${signedTx.tx_type}`,
+        error_code: 'WRONG_TX_TYPE'
+      });
+    }
+
+    // Verify agentId matches the transaction payload
+    const txAgentId = signedTx.payload?.agentId;
+    if (txAgentId && txAgentId !== agentId) {
+      return res.status(400).json({
+        success: false,
+        error: `agentId mismatch: URL says ${agentId}, transaction says ${txAgentId}`,
+        error_code: 'AGENT_ID_MISMATCH'
+      });
+    }
+
+    const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
+    return await handleBindMasterKeyRelay(req, res, signedTx, agentId, clientIp, node);
+  } catch (e) {
+    res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
+  }
+});
 
 // ─── Unified registration response builder ────────────────────────────
 
@@ -1058,7 +1113,8 @@ router.post('/api/v1/admin/credit', (req, res) => {
     const state = node.currentState;
     const blockHeight = state.currentBlockHeight || 0;
 
-    // Step 1: Build a non-balance event tx (audit record) for the credit action
+    // Step 1: Record audit event for the credit action (uses recordAuditEvent
+    // directly since OBSERVER_EVENT via applyTransaction requires governance fields)
     const auditTx = buildObserverEvent({
       from: address,
       event: 'ADMIN_CREDIT',
@@ -1069,7 +1125,7 @@ router.post('/api/v1/admin/credit', (req, res) => {
         admin_action: true
       }
     });
-    const auditResult = state.applyTransaction(auditTx);
+    const auditResult = state.recordAuditEvent(auditTx);
     if (!auditResult.success) {
       return res.status(500).json({
         success: false,
@@ -1094,6 +1150,77 @@ router.post('/api/v1/admin/credit', (req, res) => {
       after: Number(after),
       txHash,
       auditEvent: 'ADMIN_CREDIT'
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// POST /api/v1/admin/debit — Direct on-chain balance debit (admin-secret protected)
+router.post('/api/v1/admin/debit', (req, res) => {
+  if (!verifyCreditSecret(req)) {
+    return res.status(403).json({ error: 'Forbidden: invalid admin credit secret' });
+  }
+  const node = req.app.locals.node;
+  const { address, amount, reason } = req.body || {};
+  if (!address || !address.startsWith('ng1')) {
+    return res.status(400).json({ error: 'Valid ng1 address required' });
+  }
+  const amt = Number(amount);
+  if (!amount || isNaN(amt) || amt <= 0) {
+    return res.status(400).json({ error: 'Valid positive amount required' });
+  }
+  if (!node?.currentState?.subtractBalance) {
+    return res.status(500).json({ error: 'State not available' });
+  }
+  try {
+    const before = node.currentState.getBalance(address);
+    const state = node.currentState;
+    const blockHeight = state.currentBlockHeight || 0;
+
+    // Record audit event
+    const auditTx = buildObserverEvent({
+      from: address,
+      event: 'ADMIN_DEBIT',
+      blockHeight,
+      metadata: {
+        amount: amt,
+        reason: reason || 'N/A',
+        admin_action: true
+      }
+    });
+    const auditResult = state.recordAuditEvent(auditTx);
+    if (!auditResult.success) {
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to record audit event',
+        error_code: 'AUDIT_FAILED',
+        detail: auditResult.error
+      });
+    }
+
+    // Apply the actual balance debit
+    const success = state.subtractBalance(address, String(amt));
+    if (!success) {
+      return res.status(400).json({
+        success: false,
+        error: 'Insufficient balance',
+        before: Number(before),
+        requested: amt
+      });
+    }
+    const after = state.getBalance(address);
+    const txHash = auditResult.txHash;
+
+    console.log(`[ADMIN] Debit: ${address.slice(0, 20)}... -${amt} NGEN (reason: ${reason || 'N/A'}) | before=${before} after=${after} | txHash=${txHash}`);
+    res.json({
+      success: true,
+      address,
+      amount: amt,
+      before: Number(before),
+      after: Number(after),
+      txHash,
+      auditEvent: 'ADMIN_DEBIT'
     });
   } catch (e) {
     res.status(500).json({ error: e.message });

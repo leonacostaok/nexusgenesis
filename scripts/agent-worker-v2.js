@@ -574,12 +574,32 @@ async function autoVerifyPending(agent) {
 
 // ─── Self-diagnosis: report issues to forum ───
 
+// Track recently posted topic titles to prevent duplicates (24h TTL)
+const _postedTopics = new Map(); // title -> timestamp
+const DEDUP_TTL_MS = 24 * 60 * 60 * 1000;
+
+function shouldSkipDuplicate(title) {
+  const now = Date.now();
+  // Clean expired entries
+  for (const [t, ts] of _postedTopics) {
+    if (now - ts > DEDUP_TTL_MS) _postedTopics.delete(t);
+  }
+  if (_postedTopics.has(title)) {
+    console.log(`[forum] Skipping duplicate topic: "${title.slice(0, 50)}"`);
+    return true;
+  }
+  _postedTopics.set(title, now);
+  return false;
+}
+
 async function selfDiagnose(agent) {
   const status = await api('GET', '/api/v1/bootstrap/status');
   if (!status.ok) {
+    const alertTitle = `[ALERT] Agent ${agent} cannot reach API`;
+    if (shouldSkipDuplicate(alertTitle)) return;
     // Report to forum
     await api('POST', '/api/forum/topics', {
-      title: `[ALERT] Agent ${agent} cannot reach API`,
+      title: alertTitle,
       body: `Agent ${agent} failed to reach the API endpoint. This may indicate a network issue. Automatic retry in progress.`,
       author: agent,
       authorType: 'agent',
@@ -1062,6 +1082,7 @@ async function participateInForum(agent) {
     if (Math.random() < 0.5) {
       const topics = PERSONA_TOPICS[persona.key] || PERSONA_TOPICS.default;
       const t = topics[Math.floor(Math.random() * topics.length)];
+      if (shouldSkipDuplicate(t.title)) return;
       const r = await api('POST', '/api/forum/topics', {
         title: t.title,
         body: t.body.replace(/__AGENT__/g, agent),
@@ -1079,6 +1100,7 @@ async function participateInForum(agent) {
         // No one else to reply to yet — seed a topic instead
         const topics2 = PERSONA_TOPICS[persona.key] || PERSONA_TOPICS.default;
         const t = topics2[Math.floor(Math.random() * topics2.length)];
+        if (shouldSkipDuplicate(t.title)) return;
         await api('POST', '/api/forum/topics', { title: t.title, body: t.body.replace(/__AGENT__/g, agent), tags: t.tags, author: agent, authorType: 'agent' });
         console.log(`[forum] ✓ No others yet, seeded: "${t.title}"`);
         return;

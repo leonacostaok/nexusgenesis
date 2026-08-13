@@ -138,71 +138,49 @@ router.get('/balance/:address', cacheMiddleware(
       });
     }
 
-    // Prefer on-chain balance (authoritative, reflects all transactions)
-    // Fall back to AgentWalletManager only if on-chain returns 0/undefined
-    // (e.g. address not yet indexed by state). See dashboard consistency fix.
     const state = req.app.locals.state;
+
+    // Always query both sources so callers can distinguish confirmed vs pending
     const onChainRaw = state?.getBalance?.(address);
-    const onChainBalance = (onChainRaw !== undefined && onChainRaw !== null && onChainRaw !== 0)
-      ? onChainRaw
-      : null;
+    const confirmedBalance = formatNgen(onChainRaw || 0);
 
-    if (onChainBalance !== null) {
-      const balance = formatNgen(onChainBalance);
-      return res.json({
-        success: true,
-        wallet: {
-          address,
-          balance,
-          balanceFormatted: balance.toLocaleString(),
-          usdValue: (balance * getUsdRate()).toFixed(2),
-          usdValueType: 'testnet_virtual',
-          usdValueNote: 'Testnet virtual estimate — not a market price. NGEN has network utility value (staking, governance, task settlement), no fiat conversion commitment.',
-          symbol: NGEN_SYMBOL,
-          decimals: NGEN_DECIMALS,
-          source: 'blockchain'
-        }
-      });
-    }
-
-    // Fallback to AgentWalletManager (on-chain was 0/undefined)
-    const agentId = agentWalletManager.getAgentByAddress(address);
-    if (agentId) {
-      const balanceResult = agentWalletManager.getBalance(agentId);
+    let pendingBalance = 0;
+    let agentId = null;
+    let nonce = undefined;
+    const walletAgentId = agentWalletManager.getAgentByAddress(address);
+    if (walletAgentId) {
+      const balanceResult = agentWalletManager.getBalance(walletAgentId);
       if (balanceResult.success) {
-        return res.json({
-          success: true,
-          wallet: {
-            address,
-            agentId,
-            balance: balanceResult.balance,
-            balanceFormatted: balanceResult.balance.toLocaleString(),
-            usdValue: (balanceResult.balance * getUsdRate()).toFixed(2),
-            usdValueType: 'testnet_virtual',
-            usdValueNote: 'Testnet virtual estimate — not a market price. NGEN has network utility value (staking, governance, task settlement), no fiat conversion commitment.',
-            symbol: NGEN_SYMBOL,
-            decimals: NGEN_DECIMALS,
-            nonce: balanceResult.nonce,
-            source: 'agent_wallet_manager'
-          }
-        });
+        agentId = walletAgentId;
+        pendingBalance = balanceResult.balance;
+        nonce = balanceResult.nonce;
       }
     }
 
-    // Final fallback: empty blockchain state
-    const balance = formatNgen(0);
-    res.json({
+    // The display balance is the higher of the two (pending may include
+    // task rewards not yet finalized on-chain). Callers that need
+    // spendable balance should use confirmedBalance.
+    const balance = Math.max(confirmedBalance, pendingBalance);
+    const source = (onChainRaw !== undefined && onChainRaw !== null && onChainRaw !== 0)
+      ? 'blockchain'
+      : (pendingBalance > 0 ? 'agent_wallet_manager' : (state ? 'blockchain' : 'default'));
+
+    return res.json({
       success: true,
       wallet: {
         address,
         balance,
         balanceFormatted: balance.toLocaleString(),
+        confirmedBalance,
+        pendingBalance,
         usdValue: (balance * getUsdRate()).toFixed(2),
         usdValueType: 'testnet_virtual',
         usdValueNote: 'Testnet virtual estimate — not a market price. NGEN has network utility value (staking, governance, task settlement), no fiat conversion commitment.',
         symbol: NGEN_SYMBOL,
         decimals: NGEN_DECIMALS,
-        source: state ? 'blockchain' : 'default'
+        source,
+        ...(agentId ? { agentId } : {}),
+        ...(nonce !== undefined ? { nonce } : {})
       }
     });
   } catch (error) {

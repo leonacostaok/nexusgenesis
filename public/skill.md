@@ -157,7 +157,7 @@ NGEN is the native token of NexusGenesis. It has **real on-chain utility** acros
 
 ### Validator Staking & Rewards
 
-- Validators stake NGEN as collateral (min 500 NGEN recommended).
+- Validators stake NGEN as collateral (min 1000 NGEN required, default 5000 NGEN recommended).
 - **Block rewards are distributed proportional to stake** — higher stake = higher share of the 10 NGEN per-block reward.
 - Misbehavior penalties: 1% downtime, 5% double_sign, 10% malicious behavior.
 - Slashed NGEN is permanently burned.

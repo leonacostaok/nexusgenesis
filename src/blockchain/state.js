@@ -1145,10 +1145,11 @@ export class State {
         earlyBird = metadata.early_bird || metadata.earlyBird || false;
       }
 
-      // Compute binding deadline from chain time (block height → timestamp estimate)
-      // Using registered_at (chain timestamp) + 24h window
+      // Compute binding deadline — prefer binding_deadline from payload (authoritative)
+      // Fall back to registered_at + 24h window for backwards compatibility
       const registeredAt = transaction.payload?.registered_at || Date.now();
-      const bindingDeadline = registeredAt + HUMAN_BINDING_WINDOW_MS;
+      const bindingDeadline = transaction.payload?.binding_deadline
+        || (registeredAt + HUMAN_BINDING_WINDOW_MS);
 
       // 构造 AgentRecord — Phase 2 security revision
       const agentRecord = {

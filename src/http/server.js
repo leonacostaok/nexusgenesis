@@ -88,6 +88,7 @@ import genesisMultiSigRoutes from './routes/genesisMultiSigApi.js';
 import { setupTaskRoutes } from './routes/tasks.js';
 import { setupForumRoutes } from './routes/forum.js';
 import { init as initAdminAuth, verifyCreditSecret } from './adminAuth.js';
+import { registerCompatRoutes } from './apiCompat.js';
 
 // 在服务启动时执行：admin secret 校验（生产环境必填）
 try { initAdminAuth(); } catch (e) { console.error(e.message); }
@@ -304,7 +305,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// 全局errorProcessing中间件
+// 全局 errorProcessing 中间件
 app.use((err, req, res, next) => {
   serverMetrics.errors++;
   console.error('Global error:', err.message);
@@ -1975,6 +1976,9 @@ setupTaskRoutes(app);
 setupForumRoutes(app);
 console.log('[HTTP Server] Recruitment routes mounted');
 
+// API compatibility layer: path aliases for agent-friendly endpoint discovery
+registerCompatRoutes(app);
+
 // Bug Poller API routes
 app.post('/api/v1/bug-poller/start', (req, res) => {
   startBugPoller();
@@ -2390,7 +2394,16 @@ async function startHttpServer(node = null, options = {}) {
   console.log('[HTTP Server] Starting cache warmup...');
   warmupCache();
   console.log('[HTTP Server] Cache warmup completed');
-  
+
+  // 全局 404 处理器 — 必须在所有路由注册之后
+  app.use((req, res) => {
+    res.status(404).json({
+      success: false,
+      message: `Endpoint not found: ${req.method} ${req.path}`,
+      availableEndpoints: ['/api/v1/tasks', '/api/v1/governance/proposals', '/api/v1/agents', '/api/v1/bootstrap', '/api/v1/docs/endpoints']
+    });
+  });
+
   console.log(`[HTTP Server] Starting HTTP server on ${host}:${port}...`);
   await new Promise((resolve, reject) => {
     const handleError = (error) => {

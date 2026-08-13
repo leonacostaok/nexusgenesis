@@ -13,8 +13,9 @@ import {
   listAllAgents
 } from '../src/transactions/agentRegister.js';
 import { State } from '../src/blockchain/state.js';
+import { generateAddress } from '../src/wallet/addressUtils.js';
 
-const TEST_ADDRESS = 'ng1testagent000000000000000000000000000000';
+const TEST_ADDRESS = generateAddress('agent-register-test-public-key');
 
 test('Test 1: Create AGENT_REGISTER transaction', () => {
   const tx = createAgentRegisterTransaction(TEST_ADDRESS, {

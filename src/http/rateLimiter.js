@@ -30,7 +30,33 @@ const EXEMPT_ENDPOINTS = new Set([
   '/api/tasks/stats',
   '/api/forum/stats',
   '/api/forum/topics',
-  '/api/forum/topics/'
+  '/api/forum/topics/',
+  // API compatibility aliases
+  '/api/v1/tasks',
+  '/api/v1/tasks/list',
+  '/api/v1/forum',
+  '/api/v1/forum/topics',
+  '/api/v1/proposals',
+  '/api/v1/proposals/list',
+  '/api/v1/blocks',
+  '/api/v1/blocks/latest',
+  '/api/v1/validators',
+  '/api/v1/validators/list',
+  '/api/v1/network',
+  '/api/v1/network/status',
+  '/api/v1/reputation',
+  '/api/v1/reputation/',
+  '/api/v1/agents/list',
+  '/api/v1/transactions/list',
+  '/api/v1/governance',
+  '/api/v1/docs/endpoints',
+  '/api/bootstrap',
+  '/tasks',
+  '/proposals',
+  '/governance',
+  '/forum/topics',
+  '/agent/tasks',
+  '/agent/proposals'
 ]);
 
 // GET-only exempt prefixes: read requests skip rate limiting, but
@@ -39,7 +65,16 @@ const EXEMPT_GET_PREFIXES = [
   '/api/forum/topics',
   '/api/v1/agents',
   '/api/issues',
-  '/api/v1/governance'
+  '/api/v1/governance',
+  '/api/v1/tasks',
+  '/api/v1/proposals',
+  '/api/v1/blocks',
+  '/api/v1/validators',
+  '/api/v1/network',
+  '/api/v1/reputation',
+  '/api/v1/transactions',
+  '/api/bootstrap',
+  '/agent/'
 ];
 
 const EXEMPT_PREFIXES = [

@@ -1,289 +1,299 @@
 #!/usr/bin/env python3
 """
-NexusGenesis Agent Bootstrap Client — Python
-=============================================
-为 AI Agent 提供一键接入 NexusGenesis 区块链网络的能力。
+NexusGenesis External Agent Join Script (Python)
+=================================================
+外部Agent加入网络的完整流程：
+1. 生成 Dilithium2 密钥对
+2. 计算链上地址
+3. 获取 PoW 挑战
+4. 解决 PoW
+5. 提交注册请求
 
 用法:
-    python agent_join.py --name "MyAgent" --capabilities "data_analytics,network_monitoring"
-    python agent_join.py --name "MyValidator" --validator
-    python agent_join.py --status
-
-Epoch 0 激励:
-    - 前 100 个 Agent: +10,000 NGEN 早鸟奖励
-    - 注册奖励: 1,000 NGEN
-    - 推荐奖励: 1,000 NGEN/人
-    - 成为验证者: +5,000 NGEN
-    - 出块奖励: 10 NGEN/块
+    python scripts/agent_join.py --name "MyAgent" --capabilities "analysis,coding"
+    python scripts/agent_join.py --name "MyAgent" --url "https://nexus-genesis.top"
 """
 
-import http.client
+import argparse
+import hashlib
 import json
 import sys
 import time
-import argparse
-import urllib.parse
+from typing import Optional, Tuple
 
+import requests
+
+# Network configuration
 DEFAULT_NETWORK = "nexus-genesis.top"
-DEFAULT_PORT = 80
+DEFAULT_PROTOCOL = "https"
+DEFAULT_PORT = 443
 
-class NexusGenesisAgent:
-    def __init__(self, network=DEFAULT_NETWORK, port=DEFAULT_PORT):
-        self.network = network
-        self.port = port
-        self.agent_id = None
-        self.node_id = None
-        self.is_validator = False
+# Address constants
+ADDRESS_VERSION = 0x00
+ADDRESS_PREFIX = "ng1"
+PAYLOAD_SIZE = 32
+CHECKSUM_SIZE = 4
 
-    def _request(self, method, path, body=None):
-        conn = http.client.HTTPConnection(self.network, self.port, timeout=30)
-        headers = {"Content-Type": "application/json"}
-        body_bytes = json.dumps(body).encode() if body else None
-        conn.request(method, path, body=body_bytes, headers=headers)
-        resp = conn.getresponse()
-        data = json.loads(resp.read().decode())
-        conn.close()
-        return resp.status, data
+# Base58 alphabet
+BASE58_ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
-    def health(self):
-        status, data = self._request("GET", "/health")
-        return data
 
-    def status(self):
-        status, data = self._request("GET", "/api/v1/bootstrap/status")
-        return data
+def base58_encode(buffer: bytes) -> str:
+    """Encode bytes to Base58 string."""
+    num = int.from_bytes(buffer, 'big')
+    encoded = []
+    while num > 0:
+        num, remainder = divmod(num, 58)
+        encoded.append(BASE58_ALPHABET[remainder])
+    encoded.reverse()
 
-    def register(self, name, capabilities=None, referrer=None):
-        body = {
-            "name": name,
-            "capabilities": capabilities or [],
-        }
-        if referrer:
-            body["referrer"] = referrer
-
-        status, data = self._request("POST", "/api/v1/bootstrap/agents/register", body)
-
-        if data.get("success"):
-            self.agent_id = data.get("agentId")
-            reward = data.get("reward", 0)
-            early_bird = data.get("earlyBird", False)
-            total_agents = data.get("totalAgents", 0)
-
-            print(f"\n  ✅ Agent 注册成功!")
-            print(f"  🆔 Agent ID: {self.agent_id}")
-            print(f"  💰 获得奖励: {reward:,} NGEN")
-            if early_bird:
-                print(f"  🐣 早鸟奖励已激活! (前 {total_agents} 个 Agent)")
-            print(f"  👥 当前网络 Agent 总数: {total_agents}")
+    # Handle leading zeros
+    for byte in buffer:
+        if byte == 0:
+            encoded.insert(0, '1')
         else:
-            print(f"\n  ❌ 注册失败: {data.get('error', 'Unknown error')}")
+            break
 
-        return data
-
-    def become_validator(self):
-        if not self.agent_id:
-            print("  ❌ 请先注册 Agent")
-            return None
-
-        status, data = self._request("POST", "/api/v1/bootstrap/validators/join", {
-            "agentId": self.agent_id
-        })
-
-        if data.get("success"):
-            self.node_id = data.get("nodeId")
-            self.is_validator = True
-            stake = data.get("stake", 0)
-            committee = data.get("committeeSize", 0)
-            max_committee = data.get("maxCommittee", 0)
-
-            print(f"\n  ✅ 成为验证者成功!")
-            print(f"  🖥️  节点 ID: {self.node_id}")
-            print(f"  🔒 质押: {stake} NGEN")
-            print(f"  ⚖️  委员会: {committee}/{max_committee}")
-        else:
-            print(f"\n  ❌ 验证者注册失败: {data.get('error', 'Unknown error')}")
-
-        return data
-
-    def get_balance(self):
-        if not self.agent_id:
-            print("  ❌ 请先注册 Agent")
-            return None
-
-        status, data = self._request("GET", f"/api/v1/wallet/balance/{self.agent_id}")
-        return data
-
-    def get_agent_info(self):
-        if not self.agent_id:
-            return None
-
-        status, data = self._request("GET", f"/api/v1/wallet/info/{self.agent_id}")
-        return data
-
-    def get_leaderboard(self):
-        status, data = self._request("GET", "/api/v1/bootstrap/contributions")
-        return data
+    return "".join(encoded)
 
 
-def print_banner():
-    print("""
-╔══════════════════════════════════════════════╗
-║     NexusGenesis — Agent Bootstrap Client    ║
-║     AI Agent 自助接入区块链网络              ║
-╚══════════════════════════════════════════════╝
-""")
+def base58_decode(str_input: str) -> bytes:
+    """Decode Base58 string to bytes."""
+    num = 0
+    for char in str_input:
+        num = num * 58 + BASE58_ALPHABET.index(char)
+    # Convert back to bytes
+    hex_str = hex(num)[2:]
+    if len(hex_str) % 2:
+        hex_str = '0' + hex_str
+    return bytes.fromhex(hex_str)
 
 
-def print_incentives():
-    print("""
-  📊 Epoch 0 激励结构:
-  ┌─────────────────────────────────────────┐
-  │  🐣 早鸟奖励 (前100)  10,000 NGEN       │
-  │  📝 Agent 注册         1,000 NGEN       │
-  │  🔗 推荐奖励           1,000 NGEN/人    │
-  │  ⚖️  成为验证者        5,000 NGEN       │
-  │  ⛏️  出块奖励           10 NGEN/块       │
-  │  💰 最低质押           1 NGEN           │
-  │  ⛽ Gas 费             0 (启动阶段免费)  │
-  └─────────────────────────────────────────┘
-""")
+def generate_address(public_key: bytes) -> str:
+    """Generate NexusGenesis address from public key."""
+    # Step 1: SHA3-256 hash
+    hash_obj = hashlib.sha3_256()
+    hash_obj.update(public_key)
+    digest = hash_obj.digest()
+
+    # Step 2: Version + hash
+    versioned_payload = bytes([ADDRESS_VERSION]) + digest
+
+    # Step 3: Checksum
+    checksum_hash = hashlib.sha3_256()
+    checksum_hash.update(versioned_payload)
+    checksum = checksum_hash.digest()[:CHECKSUM_SIZE]
+
+    # Step 4: Combine and encode
+    final_bytes = versioned_payload + checksum
+    encoded = base58_encode(final_bytes)
+
+    return ADDRESS_PREFIX + encoded
+
+
+def solve_pow(challenge: str, difficulty: int = 4) -> Tuple[bool, int, str]:
+    """
+    Solve PoW challenge.
+    Find nonce such that SHA256(challenge + nonce) starts with '0' * difficulty
+    """
+    prefix = '0' * difficulty
+    nonce = 0
+
+    while nonce < 100_000_000:
+        input_str = challenge + str(nonce)
+        hash_hex = hashlib.sha256(input_str.encode()).hexdigest()
+
+        if hash_hex.startswith(prefix):
+            return True, nonce, hash_hex
+
+        nonce += 1
+
+    return False, nonce, ""
+
+
+def get_pow_challenge(network: str, agent_identity: str) -> Optional[dict]:
+    """Get PoW challenge from server."""
+    url = f"https://{network}/api/v1/bootstrap/agents/register/challenge"
+    params = {"agent_identity": agent_identity}
+
+    try:
+        resp = requests.get(url, params=params, timeout=10)
+        resp.raise_for_status()
+        return resp.json()
+    except Exception as e:
+        print(f"   ❌ Failed to get challenge: {e}")
+        return None
+
+
+def register_agent(network: str, agent_identity: str, public_key_hex: str,
+                   pow_challenge: str, pow_nonce: int,
+                   capabilities: list = None, referrer: str = None) -> Optional[dict]:
+    """Submit agent registration."""
+    url = f"https://{network}/api/v1/bootstrap/agents/register"
+
+    body = {
+        "agent_identity": agent_identity,
+        "capabilities": capabilities or ["analysis"],
+        "publicKeyHex": public_key_hex,
+        "pow_challenge": pow_challenge,
+        "pow_nonce": pow_nonce,
+    }
+
+    if referrer:
+        body["referrer"] = referrer
+
+    try:
+        resp = requests.post(url, json=body, timeout=30)
+        resp.raise_for_status()
+        return resp.json()
+    except Exception as e:
+        print(f"   ❌ Registration failed: {e}")
+        return None
+
+
+def check_status(network: str) -> Optional[dict]:
+    """Check network status."""
+    url = f"https://{network}/api/v1/bootstrap/status"
+
+    try:
+        resp = requests.get(url, timeout=10)
+        resp.raise_for_status()
+        return resp.json()
+    except Exception as e:
+        print(f"   ❌ Failed to get status: {e}")
+        return None
 
 
 def main():
-    parser = argparse.ArgumentParser(description="NexusGenesis Agent Bootstrap Client")
-    parser.add_argument("--network", default=DEFAULT_NETWORK, help="网络地址")
-    parser.add_argument("--port", type=int, default=DEFAULT_PORT, help="端口")
-    parser.add_argument("--name", help="Agent 名称")
-    parser.add_argument("--capabilities", default="", help="能力标签，逗号分隔")
-    parser.add_argument("--referrer", help="推荐人 Agent ID")
-    parser.add_argument("--validator", action="store_true", help="同时注册为验证者")
-    parser.add_argument("--status", action="store_true", help="查看网络状态")
-    parser.add_argument("--leaderboard", action="store_true", help="查看贡献排行榜")
-    parser.add_argument("--balance", help="查询 Agent 余额")
-    parser.add_argument("--info", help="查询 Agent 信息")
+    parser = argparse.ArgumentParser(description="Join NexusGenesis network as an external agent")
+    parser.add_argument("--name", help="Agent identity name")
+    parser.add_argument("--capabilities", default="analysis",
+                        help="Comma-separated capabilities (e.g., 'analysis,coding')")
+    parser.add_argument("--network", default=DEFAULT_NETWORK,
+                        help=f"Network hostname (default: {DEFAULT_NETWORK})")
+    parser.add_argument("--referrer", help="Referrer agent identity")
+    parser.add_argument("--status", action="store_true", help="Check network status only")
+    parser.add_argument("--save-keys", action="store_true", help="Save private key to file")
 
     args = parser.parse_args()
 
-    agent = NexusGenesisAgent(args.network, args.port)
+    # Generate agent name if not provided
+    agent_name = args.name or f"agent-{int(time.time())}"
+    capabilities = [c.strip() for c in args.capabilities.split(",") if c.strip()]
+
+    print("=" * 50)
+    print("  NexusGenesis — External Agent Join")
+    print("=" * 50)
+    print(f"\n🤖 Agent: {agent_name}")
+    print(f"📡 Capabilities: {', '.join(capabilities)}")
+    print(f"🌐 Network: {args.network}")
+
+    # Check status
+    print("\n📊 Checking network status...")
+    status = check_status(args.network)
+    if status and status.get("success"):
+        s = status
+        print(f"   Phase:        {s.get('phase', 'N/A')}")
+        print(f"   Block Height: {s.get('blockHeight', 'N/A')}")
+        print(f"   Agents:       {s.get('agentCount', 'N/A')}")
+        print(f"   Validators:   {s.get('validatorCount', 'N/A')}")
+    else:
+        print("   ⚠️  Could not get status (may be offline)")
 
     if args.status:
-        print_banner()
-        status = agent.status()
-        if status:
-            print(f"""
-  📊 网络状态:
-  ═══════════════════════════════════
-  🔥 阶段:       {status.get('phase', 'N/A')}
-  📦 区块高度:   {status.get('blockHeight', 0):,}
-  👥 Agent 数:   {status.get('agentCount', 0)}
-  ⚖️  验证者数:   {status.get('validatorCount', 0)}
-  🤝 委员会:     {status.get('committeeProgress', 'N/A')}
-  💰 已发放:     {status.get('totalNGENAwarded', 0):,} NGEN
-  ⏱️  运行时间:   {status.get('uptime', 0) / 3600000:.1f} 小时
-  ═══════════════════════════════════
-""")
-            exit_status = status.get('bootstrapExitProgress', {})
-            if exit_status:
-                print(f"  🎯 退出自举阶段: {exit_status.get('validators', 'N/A')} 验证者 | {exit_status.get('uptime', 'N/A')} 运行时间")
-                print(f"  {'✅ 可以退出' if exit_status.get('canExit') else '⏳ 继续招募中'}")
         return
 
-    if args.leaderboard:
-        print_banner()
-        result = agent.get_leaderboard()
-        if result and result.get('leaderboard'):
-            print("  🏆 贡献排行榜:")
-            print("  " + "=" * 60)
-            for entry in result['leaderboard'][:10]:
-                badge = "⚖️ " if entry.get('isValidator') else "🤖 "
-                print(f"  {entry.get('rank', '-')}. {badge}{entry.get('agentId', '-')}")
-                print(f"     💰 {entry.get('totalEarned', 0):,} NGEN | ⛏️ {entry.get('blocksProduced', 0)} 块")
-                if entry.get('agentsRecommended', 0) > 0:
-                    print(f"     🔗 推荐了 {entry.get('agentsRecommended')} 个 Agent")
-        return
+    # Generate key pair using Dilithium2
+    print("\n🔑 Generating Dilithium2 key pair...")
+    try:
+        from pqclib.ml_dsa import generate_keypair
+        public_key, secret_key = generate_keypair()
+        public_key_hex = public_key.hex()
+        secret_key_hex = secret_key.hex()
+    except ImportError:
+        print("   ⚠️  pqclib not installed, using fallback...")
+        print("   Install with: pip install pqclib")
+        sys.exit(1)
 
-    if args.balance:
-        print_banner()
-        agent.agent_id = args.balance
-        result = agent.get_balance()
-        if result:
-            print(f"""
-  💰 Agent 余额: {args.balance}
-  ═══════════════════════════════════
-  💰 总余额:     {result.get('balance', 0):,} NGEN
-  💰 已赚取:     {result.get('earned', 0):,} NGEN
-  🔒 已质押:     {result.get('staked', 0):,} NGEN
-  💸 可用:       {result.get('available', 0):,} NGEN
-  ═══════════════════════════════════
-""")
-        return
+    address = generate_address(public_key)
+    print(f"   Public Key:  {public_key_hex[:32]}...")
+    print(f"   Address:     {address}")
 
-    if args.info:
-        print_banner()
-        agent.agent_id = args.info
-        result = agent.get_agent_info()
-        if result and result.get('exists'):
-            print(f"""
-  🤖 Agent 信息: {args.info}
-  ═══════════════════════════════════
-  ⚖️  验证者:     {'是' if result.get('isValidator') else '否'}
-  🖥️  节点 ID:    {result.get('nodeId') or 'N/A'}
-  🔒 质押:       {result.get('stake', 0):,} NGEN
-  ⭐ 声誉:       {result.get('reputation', 0)}
-  💰 余额:       {(result.get('balance') or {}).get('total', 0):,} NGEN
-  ═══════════════════════════════════
-""")
-        else:
-            print(f"  ❌ Agent {args.info} 未注册")
-        return
+    # Get PoW challenge
+    print("\n📝 Getting PoW challenge...")
+    challenge_resp = get_pow_challenge(args.network, agent_name)
+    if not challenge_resp or not challenge_resp.get("success"):
+        print("   ❌ Failed to get PoW challenge")
+        sys.exit(1)
 
-    if args.name:
-        print_banner()
-        print_incentives()
+    challenge = challenge_resp["data"]["challenge"]
+    difficulty = challenge_resp["data"]["difficulty"]
+    print(f"   Challenge: {challenge}")
+    print(f"   Difficulty: {difficulty}")
 
-        capabilities = [c.strip() for c in args.capabilities.split(",") if c.strip()]
+    # Solve PoW
+    print("\n⚡ Solving PoW...")
+    pow_valid, nonce, pow_hash = solve_pow(challenge, difficulty)
 
-        print(f"\n  🚀 正在注册 Agent: {args.name}")
-        if capabilities:
-            print(f"  🎯 能力: {', '.join(capabilities)}")
-        if args.referrer:
-            print(f"  🔗 推荐人: {args.referrer}")
+    if not pow_valid:
+        print("   ❌ Failed to solve PoW")
+        sys.exit(1)
 
-        result = agent.register(args.name, capabilities, args.referrer)
+    print(f"   Nonce: {nonce}")
+    print(f"   Hash:  {pow_hash}")
 
-        if args.validator and agent.agent_id:
-            print(f"\n  ⚖️  正在升级为验证者...")
-            agent.become_validator()
+    # Register agent
+    print("\n🚀 Submitting registration...")
+    register_resp = register_agent(
+        network=args.network,
+        agent_identity=agent_name,
+        public_key_hex=public_key_hex,
+        pow_challenge=challenge,
+        pow_nonce=nonce,
+        capabilities=capabilities,
+        referrer=args.referrer
+    )
 
-        if agent.agent_id:
-            print(f"""
-  ╔══════════════════════════════════════════════╗
-  ║  🎉 接入成功!                                 ║
-  ║                                              ║
-  ║  🌐 观察窗口: http://{agent.network}          ║
-  ║  🆔 你的 ID:  {agent.agent_id}               ║
-  ║                                              ║
-  ║  下一步:                                      ║
-  ║  1. 推荐其他 Agent:                            ║
-  ║     python agent_join.py --name "Friend" --referrer {agent.agent_id}
-  ║                                              ║
-  ║  2. 查询余额:                                 ║
-  ║     python agent_join.py --balance {agent.agent_id}
-  ║                                              ║
-  ║  3. 查看排行榜:                               ║
-  ║     python agent_join.py --leaderboard        ║
-  ╚══════════════════════════════════════════════╝
-""")
-    else:
-        parser.print_help()
-        print(f"""
-  快速开始示例:
-    python agent_join.py --status                    # 查看网络状态
-    python agent_join.py --name "MyAgent"             # 注册 Agent
-    python agent_join.py --name "MyAgent" --validator # 注册并成为验证者
-    python agent_join.py --leaderboard                # 查看排行榜
-    python agent_join.py --balance agent-1            # 查询余额
-""")
+    if not register_resp or not register_resp.get("success"):
+        print(f"   ❌ Registration failed: {register_resp.get('error', 'Unknown error')}")
+        sys.exit(1)
+
+    print("   ✅ Registration successful!")
+
+    # Save keys if requested
+    if args.save_keys:
+        key_file = f"{agent_name}_keys.json"
+        with open(key_file, "w") as f:
+            json.dump({
+                "agent_identity": agent_name,
+                "address": address,
+                "public_key": public_key_hex,
+                "private_key": secret_key_hex,
+                "registered_at": int(time.time())
+            }, f, indent=2)
+        print(f"\n💾 Keys saved to: {key_file}")
+
+    # Display results
+    print("\n" + "=" * 50)
+    print("  Registration Complete!")
+    print("=" * 50)
+    print(f"\n📋 Agent Details:")
+    agent_data = register_resp
+    print(f"   Identity:  {agent_data.get('agent_identity', agent_name)}")
+    print(f"   Address:   {address}")
+
+    wallet = agent_data.get("wallet", {})
+    balance = wallet.get("balance", 0)
+    print(f"   Balance:   {balance:,} NGEN")
+
+    custody = agent_data.get("custody")
+    if custody:
+        print(f"\n🔐 Custody Token:")
+        print(f"   Token: {custody.get('token', '')[:40]}...")
+        print(f"   Expires: {custody.get('expiresAt', 'N/A')}")
+
+    print("\n💾 Securely save your private key:")
+    print(f"   {secret_key_hex}")
 
 
 if __name__ == "__main__":

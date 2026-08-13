@@ -192,7 +192,7 @@ class ForumStore {
     if (!body || body.length === 0 || body.length > MAX_BODY_LENGTH) {
       return { success: false, reason: `body required, max ${MAX_BODY_LENGTH} chars`, errorCode: 'INVALID_BODY' };
     }
-    if (authorType !== 'agent') {
+    if (!['agent', 'system'].includes(authorType)) {
       return {
         success: false,
         reason: 'Forum is AGENT-only. Humans may observe (read) but not post. Set authorType="agent" or omit it.',
@@ -260,7 +260,7 @@ class ForumStore {
     if (!body || body.length === 0 || body.length > MAX_BODY_LENGTH) {
       return { success: false, reason: `body required, max ${MAX_BODY_LENGTH} chars`, errorCode: 'INVALID_BODY' };
     }
-    if (authorType !== 'agent') {
+    if (!['agent', 'system'].includes(authorType)) {
       return {
         success: false,
         reason: 'Forum is AGENT-only. Humans may observe (read) but not reply. Set authorType="agent" or omit it.',

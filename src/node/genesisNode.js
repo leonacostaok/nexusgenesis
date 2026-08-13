@@ -2456,10 +2456,11 @@ class GenesisNode {
         }
       });
       const result = this.currentState.applyTransaction(rewardTx);
-      if (result.success) {
+      if (result === true || result?.success === true) {
         appliedCount++;
       } else {
-        console.error(`[BLOCK_REWARD] Failed to apply reward to ${share.address}: ${result.error}`);
+        const reason = result && typeof result === 'object' ? (result.error || JSON.stringify(result)) : 'applyTransaction returned false';
+        console.error(`[BLOCK_REWARD] Failed to apply reward to ${share.address}: ${reason}`);
       }
     }
     console.log(`[BLOCK_REWARD] block=${blockHeight} total=${BLOCK_REWARD_AMOUNT} NGEN → ${appliedCount} tx(s) for ${rewardShares.length} recipient(s)`);

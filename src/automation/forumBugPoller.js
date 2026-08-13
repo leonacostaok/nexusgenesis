@@ -9,6 +9,7 @@ import https from 'node:https';
 
 const NETWORK = 'nexus-genesis.top';
 const POLL_INTERVAL_MS = 10 * 60 * 1000; // 10 minutes
+const REQUEST_TIMEOUT_MS = 30000; // 30s timeout
 const BUG_TAGS = ['bug'];
 const SEEN_TOPICS = new Set();
 let running = false;
@@ -18,14 +19,16 @@ let lastCheck = null;
 
 function fetchUrl(path) {
   return new Promise((resolve, reject) => {
-    https.get(`https://${NETWORK}${path}`, res => {
+    const req = https.get(`https://${NETWORK}${path}`, res => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
         try { resolve({ status: res.statusCode, data: JSON.parse(data) }); }
         catch (e) { resolve({ status: res.statusCode, data: data }); }
       });
-    }).on('error', reject);
+    });
+    req.setTimeout(REQUEST_TIMEOUT_MS, () => { req.destroy(); resolve({ status: 408, data: null }); });
+    req.on('error', e => resolve({ status: 500, data: { error: e.message } }));
   });
 }
 
@@ -47,7 +50,8 @@ function postJson(path, body, agentIdentity, extraHeaders = {}) {
         catch (e) { resolve({ status: res.statusCode, data: data }); }
       });
     });
-    req.on('error', reject);
+    req.setTimeout(REQUEST_TIMEOUT_MS, () => { req.destroy(); resolve({ status: 408, data: null }); });
+    req.on('error', e => resolve({ status: 500, data: { error: e.message } }));
     req.write(payload);
     req.end();
   });
@@ -186,15 +190,28 @@ async function postReply(topicId, body, agentIdentity) {
 }
 
 export async function pollBugs() {
+  lastCheck = Date.now();
+  console.log('[BugPoller] Polling forum for bug reports...');
   try {
     const resp = await fetchUrl('/api/forum/topics?limit=20&tag=bug');
+    if (resp.status === 408) {
+      console.log('[BugPoller] Poll timeout, will retry next interval');
+      return;
+    }
+    if (resp.status !== 200) {
+      console.log(`[BugPoller] HTTP ${resp.status}, skipping poll`);
+      return;
+    }
     if (!resp.data?.success) {
       console.log('[BugPoller] Failed to fetch topics');
       return;
     }
 
-    const topics = resp.data.data || resp.data;
-    if (!Array.isArray(topics)) return;
+    const topics = resp.data.topics || resp.data.data || resp.data;
+    if (!Array.isArray(topics)) {
+      console.log('[BugPoller] No topics array in response');
+      return;
+    }
 
     for (const topic of topics) {
       const id = topic.id;
@@ -319,6 +336,6 @@ export function getStatus() {
     running,
     interval: POLL_INTERVAL_MS,
     seenTopics: SEEN_TOPICS.size,
-    lastCheck
+    lastCheck: lastCheck ? new Date(lastCheck).toISOString() : null
   };
 }

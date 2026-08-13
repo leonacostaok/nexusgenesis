@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import crypto from 'crypto';
+import { getAgentIdByAddress } from '../../transactions/agentRegister.js';
 
 const router = Router();
 const routerName = 'transaction-history';
@@ -100,16 +101,26 @@ const TX_TYPE_DESCRIPTIONS = {
  */
 router.get('/', cacheMiddleware(
   (req) => _cacheKey('txList', req.query.limit || '20', req.query.offset || '0',
-    req.query.type || '_', req.query.agentId || '_', req.query.taskId || '_',
-    req.query.startDate || '_', req.query.endDate || '_'),
+    req.query.type || '_', req.query.agentId || '_', req.query.address || '_',
+    req.query.taskId || '_', req.query.startDate || '_', req.query.endDate || '_'),
   CACHE_TTL.txList
 ), (req, res) => {
   try {
-    const { limit = 20, offset = 0, type, agentId, taskId, startDate, endDate } = req.query;
+    const { limit = 20, offset = 0, type, agentId, address, taskId, startDate, endDate } = req.query;
     
     const state = req.app.locals.state;
     if (!state) {
       return res.json({ success: true, transactions: [], total: 0, pagination: { limit: Number(limit), offset: Number(offset) } });
+    }
+
+    // Resolve address → agentId if agentId not provided directly
+    let resolvedAgentId = agentId || null;
+    if (!resolvedAgentId && address) {
+      resolvedAgentId = getAgentIdByAddress(address, state);
+      // If resolution fails, still filter by raw address (for unregistered agents)
+      if (!resolvedAgentId) {
+        console.log(`[Transaction API] Address ${address.slice(0, 12)}... not found in registry, filtering by raw address`);
+      }
     }
 
     // Get all transactions from state
@@ -128,10 +139,18 @@ router.get('/', cacheMiddleware(
       filtered = filtered.filter(tx => tx.tx_type === type || tx.type === type);
     }
     
-    if (agentId) {
-      filtered = filtered.filter(tx => 
-        tx.from === agentId || tx.to === agentId || tx.agentId === agentId
-      );
+    if (resolvedAgentId || address) {
+      filtered = filtered.filter(tx => {
+        // Match by resolved agentId
+        if (resolvedAgentId && (tx.from === resolvedAgentId || tx.to === resolvedAgentId || tx.agentId === resolvedAgentId)) {
+          return true;
+        }
+        // Fallback: match by raw address (handles unregistered agents and address-only queries)
+        if (address && (tx.from === address || tx.to === address)) {
+          return true;
+        }
+        return false;
+      });
     }
     
     if (taskId) {
@@ -168,7 +187,7 @@ router.get('/', cacheMiddleware(
         hasNext: Number(offset) + Number(limit) < total,
         hasPrev: Number(offset) > 0
       },
-      filters: { type, agentId, taskId }
+      filters: { type, agentId: resolvedAgentId || agentId, address, taskId }
     });
   } catch (error) {
     console.error('[Transaction API] List error:', error.message);

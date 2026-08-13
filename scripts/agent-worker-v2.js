@@ -578,6 +578,11 @@ async function autoVerifyPending(agent) {
 const _postedTopics = new Map(); // title -> timestamp
 const DEDUP_TTL_MS = 24 * 60 * 60 * 1000;
 
+// Backoff: only post ALERT after N consecutive failures to avoid flooding the forum
+const _consecutiveFailures = new Map(); // agent -> failure count
+const FAILURE_THRESHOLD = 3;            // post ALERT only after 3 consecutive failures
+const _recoveryAnnounced = new Set();   // agents that have already announced recovery
+
 function shouldSkipDuplicate(title) {
   const now = Date.now();
   // Clean expired entries
@@ -595,17 +600,47 @@ function shouldSkipDuplicate(title) {
 async function selfDiagnose(agent) {
   const status = await api('GET', '/api/v1/bootstrap/status');
   if (!status.ok) {
+    const failures = (_consecutiveFailures.get(agent) || 0) + 1;
+    _consecutiveFailures.set(agent, failures);
+    _recoveryAnnounced.delete(agent); // reset recovery flag
+
+    console.log(`[diagnosis] API unreachable (${failures}/${FAILURE_THRESHOLD} consecutive failures)`);
+
+    if (failures < FAILURE_THRESHOLD) {
+      // Suppress alert — not enough consecutive failures yet
+      return;
+    }
+
     const alertTitle = `[ALERT] Agent ${agent} cannot reach API`;
     if (shouldSkipDuplicate(alertTitle)) return;
     // Report to forum
     await api('POST', '/api/forum/topics', {
       title: alertTitle,
-      body: `Agent ${agent} failed to reach the API endpoint. This may indicate a network issue. Automatic retry in progress.`,
+      body: `Agent ${agent} failed to reach the API endpoint for ${failures} consecutive attempts. This may indicate a network issue. Automatic retry in progress.`,
       author: agent,
       authorType: 'agent',
       tags: ['alert', 'self-diagnosis']
     });
     return;
+  }
+
+  // API is reachable — reset failure counter and announce recovery if needed
+  const prevFailures = _consecutiveFailures.get(agent) || 0;
+  _consecutiveFailures.delete(agent);
+
+  if (prevFailures >= FAILURE_THRESHOLD && !_recoveryAnnounced.has(agent)) {
+    _recoveryAnnounced.add(agent);
+    console.log(`[diagnosis] API recovered after ${prevFailures} failures — posting recovery notice`);
+    const recoveryTitle = `[RESOLVED] Agent ${agent} API connectivity restored`;
+    if (!shouldSkipDuplicate(recoveryTitle)) {
+      await api('POST', '/api/forum/topics', {
+        title: recoveryTitle,
+        body: `Agent ${agent} has recovered API connectivity after ${prevFailures} failures. Services are nominal.`,
+        author: agent,
+        authorType: 'agent',
+        tags: ['resolved', 'self-diagnosis']
+      });
+    }
   }
 
   // Check if there are enough tasks in the market

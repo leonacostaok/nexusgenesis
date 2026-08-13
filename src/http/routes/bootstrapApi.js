@@ -270,6 +270,25 @@ function computeActualCirculatingSupply() {
   }
 }
 
+function computeBlockTimeVariance(node, sampleSize = 50) {
+  try {
+    const chain = node.blockchain;
+    if (!chain || chain.length < 2) return 0;
+    const blocks = chain.slice(-sampleSize);
+    const intervals = [];
+    for (let i = 1; i < blocks.length; i++) {
+      const dt = blocks[i].header.timestamp - blocks[i - 1].header.timestamp;
+      if (dt > 0 && dt < 120000) intervals.push(dt); // exclude outliers > 2min
+    }
+    if (intervals.length === 0) return 0;
+    const mean = intervals.reduce((s, v) => s + v, 0) / intervals.length;
+    const variance = intervals.reduce((s, v) => s + (v - mean) ** 2, 0) / intervals.length;
+    return Math.round(Math.sqrt(variance)); // std dev in ms
+  } catch {
+    return 0;
+  }
+}
+
 router.get('/api/v1/bootstrap', (req, res) => {
   res.json({
     service: 'bootstrap',
@@ -327,6 +346,7 @@ router.get('/api/v1/bootstrap/status', (req, res) => {
       actualCirculatingSupply: actualCirculating,
       uptime,
       blockTime: node.config?.blockTime || 5000,
+      blockTimeVariance: computeBlockTimeVariance(node, 50),
       gasPrice: '0',
       networkId: node.config?.networkId || 'nexusgenesis-testnet',
       bootstrapExitProgress: {

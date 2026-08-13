@@ -282,6 +282,10 @@
         <div class="text-sm font-semibold text-cyan-300" id="ciBlockTime">—</div>
       </div>
       <div>
+        <div class="text-xs text-slate-500 mb-1">Block Var</div>
+        <div class="text-sm font-semibold text-cyan-300" id="ciBlockVariance">—</div>
+      </div>
+      <div>
         <div class="text-xs text-slate-500 mb-1">Genesis Epoch</div>
         <div class="text-sm font-semibold text-amber-300">Epoch 0: Agent Assembly</div>
       </div>
@@ -908,6 +912,16 @@ async function refresh() {
   const ciBlockTime = document.getElementById('ciBlockTime');
   if (ciBlockTime && status.blockTime) {
     ciBlockTime.textContent = status.blockTime >= 1000 ? (status.blockTime / 1000) + 's' : status.blockTime + 'ms';
+  }
+  const ciBlockVariance = document.getElementById('ciBlockVariance');
+  if (ciBlockVariance && status.blockTimeVariance !== undefined) {
+    const v = status.blockTimeVariance;
+    ciBlockVariance.textContent = v >= 1000 ? (v / 1000).toFixed(1) + 's' : v + 'ms';
+    // Color-code: green if low variance, yellow if moderate, red if high
+    const ratio = status.blockTime ? v / status.blockTime : 0;
+    ciBlockVariance.className = 'text-sm font-semibold ' + (
+      ratio < 0.3 ? 'text-emerald-300' : ratio < 0.8 ? 'text-amber-300' : 'text-rose-300'
+    );
   }
 
   document.getElementById('statBlockHeight').textContent = fmt(status.blockHeight);

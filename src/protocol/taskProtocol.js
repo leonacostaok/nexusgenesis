@@ -71,8 +71,8 @@ const TXN_TYPES = {
 // Tier 2 (rep 51-200): Established — auto-verify on submit + 10% spot-check
 // Tier 3 (rep 201+):   Self-sovereign — claimant may self-verify
 const TRUST_TIERS = {
-  TIER_0_UNPROVEN: { minRep: 0, maxRep: 5, name: 'unproven', requiresThirdParty: true, spotCheckRate: 0 },
-  TIER_1_TRUSTED: { minRep: 6, maxRep: 50, name: 'trusted', requiresThirdParty: false, spotCheckRate: 0 },
+  TIER_0_UNPROVEN: { minRep: 0, maxRep: 0, name: 'unproven', requiresThirdParty: true, spotCheckRate: 0 },
+  TIER_1_TRUSTED: { minRep: 1, maxRep: 50, name: 'trusted', requiresThirdParty: false, spotCheckRate: 0 },
   TIER_2_ESTABLISHED: { minRep: 51, maxRep: 200, name: 'established', requiresThirdParty: false, spotCheckRate: 0.10 },
   TIER_3_SOVEREIGN: { minRep: 201, maxRep: Infinity, name: 'sovereign', requiresThirdParty: false, spotCheckRate: 0, allowSelfVerify: true }
 };
@@ -349,6 +349,7 @@ class TaskProtocol {
       publishedAt: now,
       claimedBy: null,
       claimedAt: null,
+      claimNonce: 0,       // optimistic lock: incremented on every claim
       submittedAt: null,
       submissionData: null,
       verifiedAt: null,
@@ -441,6 +442,7 @@ class TaskProtocol {
       status: TASK_STATUS.OPEN,
       claimedBy: null,
       claimedAt: null,
+      claimNonce: 0,       // optimistic lock: incremented on every claim
       submittedAt: null,
       verifiedAt: null,
       completedAt: null,
@@ -519,7 +521,7 @@ class TaskProtocol {
    * @param {number} [options.agentReputation=0] - Caller's current reputation score
    * @returns {{ success: boolean, task?: object, reason?: string, errorCode?: string }}
    */
-  claim(agentAddress, taskId, { agentReputation = 0 } = {}) {
+  claim(agentAddress, taskId, { agentReputation = 0, expectedNonce = undefined } = {}) {
     const task = this.tasks.get(taskId);
     if (!task) {
       return { success: false, reason: 'Task not found', errorCode: 'TASK_NOT_FOUND' };
@@ -527,6 +529,19 @@ class TaskProtocol {
     if (task.status !== TASK_STATUS.OPEN) {
       return { success: false, reason: `Task is ${task.status}, not open`, errorCode: 'TASK_NOT_OPEN' };
     }
+
+    // Optimistic lock: if expectedNonce is provided, verify it matches current claimNonce.
+    // Prevents race conditions where two agents claim the same task in the same tick.
+    const currentNonce = task.claimNonce ?? 0;
+    if (expectedNonce !== undefined && expectedNonce !== currentNonce) {
+      return {
+        success: false,
+        reason: `Task was already claimed (nonce mismatch: expected ${expectedNonce}, got ${currentNonce})`,
+        errorCode: 'CLAIM_RACE',
+        currentNonce
+      };
+    }
+
     if (task.publisher === agentAddress) {
       // Phase 1: Slash reputation for self-dealing attempt
       this._slashForViolation(agentAddress, 'SELF_DEALING_CLAIM', { taskId, publisher: task.publisher });
@@ -546,6 +561,7 @@ class TaskProtocol {
     task.status = TASK_STATUS.CLAIMED;
     task.claimedBy = agentAddress;
     task.claimedAt = now;
+    task.claimNonce = (task.claimNonce ?? 0) + 1;  // optimistic lock: prevent double-claim races
     task.transactionHistory.push({
       type: TXN_TYPES.TASK_CLAIM,
       timestamp: now,

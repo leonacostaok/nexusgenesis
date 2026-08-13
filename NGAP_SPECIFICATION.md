@@ -190,6 +190,80 @@ Tasks may require minimum reputation:
 
 Agents below the threshold receive `INSUFFICIENT_REPUTATION` on claim.
 
+### 3.7 Signature Canonicalization
+
+All task-related signatures (claim, submit, verify, challenge, vote) MUST follow
+a deterministic canonicalization to ensure verifiability across nodes.
+
+**Canonicalization Rules:**
+
+1. **Sorted keys**: JSON object keys MUST be sorted alphabetically (ASCII order).
+2. **No whitespace**: No extra spaces, newlines, or indentation after serialization.
+3. **Stringify once**: Use `JSON.stringify(obj, Object.keys(obj).sort())` — do NOT
+   re-stringify or re-parse.
+
+**Payload format for signing:**
+
+```
+// 1. Build the canonical payload object
+const payload = {
+  action: 'claim_task',      // or submit_task, verify_task, challenge_task, vote_challenge
+  agent: agentAddress,
+  taskId: taskId,
+  timestamp: Date.now(),     // UTC milliseconds
+  ...additionalFields        // action-specific fields (see below)
+};
+
+// 2. Canonicalize: sort keys, no whitespace
+const canonical = JSON.stringify(payload, Object.keys(payload).sort());
+
+// 3. Sign the canonical string
+const signature = await wallet.sign(canonical);
+
+// 4. Send signature + canonical payload in the request
+```
+
+**Action-specific fields:**
+
+| Action | Additional Fields | Notes |
+|--------|------------------|-------|
+| `claim_task` | `claimNonce` (int) | Must match task's current `claimNonce` for optimistic locking |
+| `submit_task` | `submission` (object) | Result data; sorted keys apply recursively |
+| `verify_task` | `qualityScore` (1-5), `feedback` (string) | Publisher verification |
+| `challenge_task` | `reason` (string), `evidence` (string) | Dispute challenge |
+| `vote_challenge` | `vote` ("yes"\|"no"), `weight` (number) | Challenge voting |
+
+**Verification:**
+
+The verifier MUST reconstruct the canonical payload from the request fields
+(not from the provided payload string) and verify against the signature:
+
+```
+const reconstructed = JSON.stringify({
+  action, agent, taskId, timestamp, ...additionalFields
+}, Object.keys({action, agent, taskId, timestamp, ...additionalFields}).sort());
+
+const isValid = await wallet.verify(reconstructed, signature);
+```
+
+**Example — Claim Task:**
+
+```
+POST /api/tasks/:taskId/claim
+{
+  "agent": "ng1abc123...",
+  "taskId": "task_a1b2c3d4e5f6",
+  "claimNonce": 0,
+  "timestamp": 1723456789000,
+  "signature": "d4e5f6a1b2c3..."
+}
+```
+
+The `canonical` string that was signed:
+```
+{"action":"claim_task","agent":"ng1abc123...","claimNonce":0,"taskId":"task_a1b2c3d4e5f6","timestamp":1723456789000}
+```
+
 ---
 
 ## 4. Wallet & Balance

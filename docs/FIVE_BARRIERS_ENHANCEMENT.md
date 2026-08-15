@@ -519,3 +519,20 @@ Agent 是否完全自主？       → self-sovereign
 
 1. **异地节点缺失（C1）**：当前所有共识节点在同一台机器上，宕机即全网停
 2. **技术文章未启动（B1）**：唯一未启动的外部增长动作，是 PR 引流与商业化的关键入口
+---
+
+## 第二轮强化：专家复核意见落地（2026-08-15）
+
+外部专家对五大障碍整改给出正面结论，并提了 5 项"锦上添花"建议，全部落地：
+
+| # | 专家建议 | 落地实现 | 验证 |
+|---|---------|---------|------|
+| E1 | V8 堆快照残留验证 | `test/heap-snapshot.test.js` + `attack-simulations/heap-snapshot-sim.js`：父子进程隔离设计（secret 仅存在于父进程），子进程分片→临时拼接→销毁→GC→全堆 dump，父进程扫描二进制与 hex 两种形态 | 实证通过：GC 后无连续明文残留 |
+| E2 | Signer 子进程最小权限 | `signer-worker.js` 引导段：`NGX_SIGNER_DOWNGRADE=1` 且以 root 启动时降级为 nobody（降级失败即拒绝启动）；`deploy/seccomp/signer-seccomp.json` 参考白名单（defaultAction=ERRNO） | POSIX 降级逻辑 + seccomp profile（需 Linux 环境实测） |
+| E3 | 权限只降不升刚性规则 | `session.js` 新增 `narrowSession()`：五维全部单向收窄——白名单子集校验、显式空数组/`'0'` 视为放开并拒绝、限额只降、过期钳制到父会话；省略维度=继承父作用域 | 10 项新增测试 |
+| E4 | 策略变更告警闭环 | `takeover.js` PolicyTimelock 新增 `addNotifier()` + `POLICY_WEBHOOK_URL` 环境变量：scheduled/revoked/effective/cleared 四类生命周期事件，webhook 5s 超时 fire-and-forget，notifier 异常不阻断执行路径 | 6 项新增测试（含真实 HTTP 回调验证） |
+| E5 | 审计边界严谨表述 | `pqc.js` Trust Chain Statement 重写为 AUDIT BOUNDARY 段：明确 @noble 原语已独立审计 vs NexusGenesis 组合层未审计，给出正确引用措辞 | 文档 |
+
+**过程插曲**：本轮编辑曾误将 signer-worker 的 import 行回退为旧符号，导致 `checkSpendAllowedTiered is not defined`（3 个 signer 测试失败），交叉测试当场捕获并已修复。教训与 Wave 3 复核结论一致——编辑既有文件必须先读当前内容。
+
+**回归验证**：121/121 单测 + CLI E2E 14 项 + MCP 冒烟 12 项全部通过。

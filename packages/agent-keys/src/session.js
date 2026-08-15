@@ -141,6 +141,108 @@ export function createSessionKey(issuerKey, {
   };
 }
 
+// --- Monotonic Narrowing (权限只降不升) --------------------------------------
+//
+// Rigid rule: once a session key is issued, any session derived from it may
+// only NARROW privileges — never widen them. A derived session that asks for
+// a contract/method/chain outside the parent scope, a higher maxPerTx /
+// maxDaily, or a later expiry is rejected outright. This prevents a
+// compromised agent from "re-issuing itself" broader permissions.
+
+/**
+ * Check whether `child` array is a subset of `parent` array.
+ * Empty parent array means "unrestricted" (everything allowed).
+ */
+function isSubsetOrUnrestricted(child, parent) {
+  if (!parent || parent.length === 0) return true;   // parent unrestricted
+  if (!child || child.length === 0) return false;    // child unrestricted = widening
+  const parentSet = new Set(parent);
+  return child.every(item => parentSet.has(item));
+}
+
+/**
+ * Check whether a child numeric limit narrows (or equals) the parent's.
+ * '0' means "no limit" — a child limit of '0' under a limited parent is
+ * an escalation and must be rejected.
+ */
+function isNarrowerOrEqual(childVal, parentVal) {
+  let c, p;
+  try {
+    c = BigInt(childVal ?? '0');
+    p = BigInt(parentVal ?? '0');
+  } catch {
+    return false;
+  }
+  if (p === 0n) return true;      // parent unlimited → any child limit ok
+  if (c === 0n) return false;     // child unlimited under limited parent = widening
+  return c <= p;
+}
+
+/**
+ * Derive a NARROWED session key from an existing one.
+ *
+ * Enforces monotonic privilege reduction:
+ *   - agentId must match the parent
+ *   - parent must not be expired
+ *   - contract/method/chain whitelists must be subsets of the parent's
+ *   - maxPerTx / maxDaily must be ≤ the parent's (never '0' under a limit)
+ *   - expiry clamped to the parent's expiry (never later)
+ *
+ * @param {object} parentSession - The parent session key token
+ * @param {object} narrower - Requested scope (same shape as createSessionKey)
+ * @param {Buffer|string} issuerKey - Master key that re-signs the narrowed session
+ * @returns {object} new (narrower) session key token
+ * @throws {Error} if the requested scope widens any dimension
+ */
+export function narrowSession(parentSession, narrower, issuerKey) {
+  if (!parentSession || parentSession.type !== 'session_key') {
+    throw new TypeError('parentSession must be a session key token');
+  }
+  if (Date.now() >= parentSession.expiresAt) {
+    throw new Error('parent session is expired — cannot derive');
+  }
+  if (narrower.agentId !== parentSession.agentId) {
+    throw new Error('agentId mismatch — derived session must keep the parent agentId');
+  }
+
+  // Dimension resolution: an OMITTED dimension inherits the parent's value
+  // (equal scope — not a widening). An EXPLICIT empty array / '0' means
+  // "unrestricted", which under a limited parent IS a widening and throws.
+  const resolve = (key) =>
+    Object.prototype.hasOwnProperty.call(narrower, key) ? narrower[key] : parentSession[key];
+
+  // Whitelist subsets
+  for (const dim of ['allowedContracts', 'allowedMethods', 'allowedChains']) {
+    const child = resolve(dim) || [];
+    const parent = parentSession[dim] || [];
+    if (!isSubsetOrUnrestricted(child, parent)) {
+      throw new Error(`${dim} widening rejected: session keys may only narrow privileges`);
+    }
+  }
+
+  // Numeric ceilings
+  for (const field of ['maxPerTx', 'maxDaily']) {
+    if (!isNarrowerOrEqual(resolve(field) ?? '0', parentSession[field] || '0')) {
+      throw new Error(`${field} widening rejected: session keys may only narrow privileges`);
+    }
+  }
+
+  // Expiry: clamp to parent expiry — never later
+  const parentRemainingMs = parentSession.expiresAt - Date.now();
+  const requestedTtl = typeof narrower.ttl === 'number' ? narrower.ttl : parentRemainingMs;
+  const ttl = Math.min(requestedTtl, parentRemainingMs);
+
+  return createSessionKey(issuerKey, {
+    agentId: parentSession.agentId,
+    allowedContracts: resolve('allowedContracts'),
+    allowedMethods: resolve('allowedMethods'),
+    allowedChains: resolve('allowedChains'),
+    maxPerTx: resolve('maxPerTx'),
+    maxDaily: resolve('maxDaily'),
+    ttl,
+  });
+}
+
 // --- Access Control ----------------------------------------------------------
 
 /**

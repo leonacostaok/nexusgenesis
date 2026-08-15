@@ -5,12 +5,23 @@
  * Signatures and keys are quantum-resistant; private keys never leave the caller.
  *
  * ─── Trust Chain Statement (W2-7) ──────────────────────────────────
- *   @noble/post-quantum is the only PQC dependency. The @noble family
- *   (paulmillr) is the most widely audited JS cryptography stack:
- *     - @noble/hashes: 12M+ weekly npm downloads, used by MetaMask, ethers.js
- *     - @noble/curves: 5M+ weekly downloads, used by Ethereum consensus clients
- *     - @noble/post-quantum: implements FIPS 204 (ML-DSA draft) and FIPS 205
- *     - No WASM, no native bindings, no build step — pure JS, auditable
+ *   AUDIT BOUNDARY — read this carefully before citing audits:
+ *
+ *   ✅ Audited primitives: the underlying @noble libraries
+ *      (@noble/hashes, @noble/curves — independently audited; 12M+/5M+
+ *      weekly npm downloads, used by MetaMask, ethers.js, Ethereum
+ *      consensus clients).
+ *      @noble/post-quantum implements FIPS 204/205; it is newer and
+ *      carries fewer formal audit cycles than its siblings.
+ *
+ *   ❌ NOT audited: this package's upper-layer composition (ShardedSecret,
+ *      Signer IPC, session keys, tiered policies). NexusGenesis wrapper
+ *      code has NOT been independently audited. Noble's audits do NOT
+ *      extend to this codebase. A Code4rena competitive audit is planned
+ *      (see docs/governance/PROPOSAL_AUDIT_BUDGET.md).
+ *
+ *   Correct citation: "built on audited @noble primitives; NexusGenesis
+ *   composition layer pending audit" — anything stronger is a misclaim.
  *
  *   Supply chain risk: npm package provenance + Sigstore verification
  *   recommended at deploy time. See SECURITY.md for attestation setup.

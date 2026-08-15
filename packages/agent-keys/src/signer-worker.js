@@ -38,6 +38,27 @@ import { checkSpendAllowedTiered } from './takeover.js';
 // Immediately disable core dumps in the child process.
 disableCoreDumps();
 
+// Least privilege: drop to an unprivileged account before handling any key
+// material. Enabled with NGX_SIGNER_DOWNGRADE=1 when started as root
+// (containers / system daemons). POSIX only — on Windows this is a no-op.
+//
+// Pair with the reference seccomp profile at deploy/seccomp/signer-seccomp.json
+// (Docker `--security-opt seccomp=...`) to also constrain the syscall surface.
+try {
+  if (
+    process.env.NGX_SIGNER_DOWNGRADE === '1' &&
+    typeof process.getuid === 'function' &&
+    process.getuid() === 0
+  ) {
+    process.setgid('nobody');
+    process.setuid('nobody');
+    console.error('[signer-worker] privileges dropped to nobody');
+  }
+} catch (err) {
+  console.error(`[signer-worker] privilege downgrade FAILED, refusing to continue: ${err.message}`);
+  process.exit(1);
+}
+
 // ─── State ───────────────────────────────────────────────────────────────
 let sharded = null;     // ShardedSecret holding the private key
 let publicKey = null;   // Public key (Buffer)

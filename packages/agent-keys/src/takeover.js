@@ -199,14 +199,64 @@ export function checkSpendAllowedTiered(config, ctx = {}) {
 export class PolicyTimelock {
   /**
    * @param {number} [policyTimelockMs=POLICY_TIMELOCK_MS] - Time-lock delay in ms
+   * @param {object} [options]
+   * @param {string} [options.webhookUrl] - Optional webhook for change events.
+   *   Falls back to the POLICY_WEBHOOK_URL environment variable.
+   *   A time-lock only buys a处置 window; an alert is what makes humans
+   *   actually look — completing the detect → delay → respond loop.
    */
-  constructor(policyTimelockMs = POLICY_TIMELOCK_MS) {
+  constructor(policyTimelockMs = POLICY_TIMELOCK_MS, options = {}) {
     if (typeof policyTimelockMs !== 'number' || policyTimelockMs < 0) {
       throw new TypeError('policyTimelockMs must be a non-negative number');
+    }
+    if (options && typeof options !== 'object') {
+      throw new TypeError('options must be an object');
     }
     /** @type {Map<string, { agentId: string, newPolicy: object, scheduledAt: number, createdAt: number }>} */
     this._pending = new Map();
     this._policyTimelockMs = policyTimelockMs;
+    /** @type {Array<(event: object) => void>} */
+    this._notifiers = [];
+    this._webhookUrl = (options.webhookUrl || process.env.POLICY_WEBHOOK_URL || null);
+  }
+
+  /**
+   * Register a synchronous notifier callback invoked on every lifecycle event:
+   *   policy_change_scheduled / policy_change_revoked / policy_change_effective
+   *   / policy_changes_cleared
+   * Exceptions thrown by notifiers are swallowed — alerting must never
+   * break the enforcement path.
+   * @param {(event: object) => void} fn
+   * @returns {this}
+   */
+  addNotifier(fn) {
+    if (typeof fn !== 'function') throw new TypeError('notifier must be a function');
+    this._notifiers.push(fn);
+    return this;
+  }
+
+  /**
+   * Emit a lifecycle event to registered notifiers and (if configured) POST
+   * it to the webhook. Webhook delivery is fire-and-forget with a 5s timeout;
+   * failures are logged to stderr only.
+   * @param {object} event
+   */
+  _emit(event) {
+    for (const fn of this._notifiers) {
+      try { fn({ ...event }); } catch { /* notifier errors must not propagate */ }
+    }
+    if (this._webhookUrl && typeof fetch === 'function') {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 5000);
+      fetch(this._webhookUrl, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ source: 'nexusgenesis-agent-keys', ...event }),
+        signal: controller.signal,
+      })
+        .catch(err => console.error(`[PolicyTimelock] webhook delivery failed: ${err.message}`))
+        .finally(() => clearTimeout(timer));
+    }
   }
 
   /**
@@ -236,6 +286,15 @@ export class PolicyTimelock {
       createdAt: now
     });
 
+    this._emit({
+      event: 'policy_change_scheduled',
+      agentId,
+      changeId,
+      effectiveAt: scheduledAt,
+      timelockMs: this._policyTimelockMs,
+      newPolicy: { ...newPolicy },
+    });
+
     return { changeId, effectiveAt: scheduledAt };
   }
 
@@ -259,6 +318,7 @@ export class PolicyTimelock {
       return { revoked: false, reason: 'change already effective' };
     }
     this._pending.delete(changeId);
+    this._emit({ event: 'policy_change_revoked', agentId: change.agentId, changeId });
     return { revoked: true };
   }
 
@@ -277,6 +337,12 @@ export class PolicyTimelock {
           changeId,
           agentId: change.agentId,
           newPolicy: { ...change.newPolicy }
+        });
+        this._emit({
+          event: 'policy_change_effective',
+          agentId: change.agentId,
+          changeId,
+          newPolicy: { ...change.newPolicy },
         });
       }
     }
@@ -320,6 +386,7 @@ export class PolicyTimelock {
   clearAll() {
     const count = this._pending.size;
     this._pending.clear();
+    if (count > 0) this._emit({ event: 'policy_changes_cleared', count });
     return count;
   }
 }

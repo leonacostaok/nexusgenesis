@@ -92,7 +92,9 @@ helm uninstall signer --namespace nexusgenesis
 ### Build
 
 ```bash
-docker build -t nexusgenesis/signer:latest packages/agent-keys-cli
+# Build context MUST be the repository root (the CLI's file: dependency on
+# ../agent-keys lives outside its own subtree)
+docker build -f packages/agent-keys-cli/Dockerfile -t nexusgenesis/signer:latest .
 ```
 
 ### Run
@@ -193,20 +195,29 @@ npx nexusgenesis generate-key "strong-password" > key.json
 
 ### Key format
 
+Output of `generate-key` — `envelope` is the value produced by
+`encryptPrivateKey()` (see `packages/agent-keys/src/encryption.js`):
+
 ```json
 {
   "publicKey": "0x...",
   "envelope": {
+    "envelope": 1,
     "version": 1,
-    "ciphertext": "...",
-    "iv": "...",
-    "salt": "...",
-    "authTag": "...",
+    "kdf": {
+      "algorithm": "pbkdf2-sha512",
+      "iterations": 310000,
+      "salt": "…hex…",
+      "keyLength": 32
+    },
+    "cipher": "aes-256-gcm",
+    "iv": "…hex…",
+    "ciphertext": "…hex…",
+    "authTag": "…hex…",
     "metadata": {
-      "publicKey": "...",
-      "algorithm": "aes-256-gcm",
-      "kdf": "pbkdf2-sha512",
-      "kdfIterations": 310000
+      "publicKey": "…hex…",
+      "createdAt": "2026-08-15T00:00:00.000Z",
+      "keyLength": 2560
     }
   }
 }
@@ -257,12 +268,16 @@ npx nexusgenesis generate-key "strong-password" > key.json
 ### Health check
 
 ```bash
-# Process check
-pgrep -f "node" || exit 1
+# Process-level check (container / bare metal)
+pgrep -f "node" || echo "signer not running"
 
-# Or use the signer daemon's built-in health
-echo '{"type":"ping"}' | node src/cli.js serve
+# Kubernetes: probes are exec-based (see Helm chart values)
+kubectl get pods -n nexusgenesis
+kubectl describe pod -n nexusgenesis -l app=nexusgenesis-signer
 ```
+
+> NOTE: the signer daemon communicates over stdio IPC and does **not** listen
+> on a network port. There is no HTTP health endpoint to curl.
 
 ### Prometheus metrics (future)
 

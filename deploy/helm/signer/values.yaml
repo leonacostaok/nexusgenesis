@@ -14,9 +14,8 @@ keyEnvelope:
   secretKey: envelope    # Key within the secret
   passwordKey: password  # Key for the password
 
-service:
-  type: ClusterIP
-  port: 3000
+# NOTE: no Service is defined — the signer communicates over stdio IPC only
+# and does not listen on any network port.
 
 resources:
   limits:
@@ -26,11 +25,7 @@ resources:
     cpu: "100m"
     memory: "64Mi"
 
-# seccomp profile for hardened signer
-seccompProfile:
-  type: RuntimeDefault
-
-# Pod security context
+# Pod security context (seccomp is set per-container below)
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: 1000

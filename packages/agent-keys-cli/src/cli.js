@@ -41,13 +41,22 @@ import path from 'node:path';
 
 disableCoreDumps();
 
+// Base spend policy for the sign command: no per-tx/daily ceilings (operator
+// scopes those via session keys), but three-tier gradient authorization is
+// ALWAYS enforced — small auto-signs, medium is timelocked, large requires
+// human approval. Tier thresholds come from takeover.js defaults (10/100).
+const SIGN_POLICY = { type: 'limit', maxPerTx: '0', maxDaily: '0' };
+
 // ─── Helpers ────────────────────────────────────────────────────────────
 
 function loadKey(envelopeFile, password) {
   if (!envelopeFile) throw new Error('--envelope is required');
   if (!password) throw new Error('--password is required');
   const raw = fs.readFileSync(envelopeFile, 'utf-8');
-  const envelope = JSON.parse(raw);
+  const parsed = JSON.parse(raw);
+  // Accept both the bare envelope and the full generate-key output
+  // ({ publicKey, envelope }) — unwrap the latter.
+  const envelope = parsed.envelope && parsed.envelope.cipher ? parsed.envelope : parsed;
   if (!isValidEnvelope(envelope)) throw new Error('Invalid envelope file');
   const privateKey = decryptPrivateKey(envelope, password);
   return new ShardedSecret(privateKey);
@@ -68,11 +77,20 @@ const COMMANDS = {
   },
 
   async 'sign'([hashHex], { envelope, password, amount }) {
+    if (typeof hashHex !== 'string' || !/^0x[0-9a-fA-F]+$/.test(hashHex)) {
+      throw new Error('Invalid hash: must be a 0x-hex string');
+    }
     const sharded = loadKey(envelope, password);
-    if (amount) {
-      const check = checkSpendAllowedTiered({ type: 'limit', maxPerTx: '0' }, { amount });
+    if (amount !== undefined) {
+      // Tiered authorization: medium tier (10-100) is NOT signed immediately —
+      // the 24h time-lock must elapse first; large tier requires human approval.
+      const check = checkSpendAllowedTiered(SIGN_POLICY, { amount });
       if (!check.allowed) {
         console.error(`Policy denied: ${check.reason}`);
+        process.exit(1);
+      }
+      if (check.timelockMs) {
+        console.error(`Timelocked: amount is in medium tier. Signature withheld until ${new Date(check.scheduledAt).toISOString()} (24h revocation window).`);
         process.exit(1);
       }
     }
@@ -135,24 +153,42 @@ const COMMANDS = {
 
   async 'tier'([amount]) {
     if (!amount) throw new Error('Usage: nexusgenesis tier <amount>');
-    const tier = resolveTier({ amount });
+    const tier = resolveTier(amount);
     print(tier);
   },
 
   async 'benchmark'() {
-    console.log('Running PQC benchmark...');
-    const { default: bench } = await import('../../agent-keys/bench/pqc-benchmark.js');
-    // bench runs on import; no extra action needed
+    console.log('PQC benchmark lives in the agent-keys package:');
+    console.log('  cd packages/agent-keys && node bench/pqc-benchmark.js');
   },
 
   async 'serve'([], opts) {
-    const sharded = loadKey(opts.envelope, opts.password);
+    // Envelope/password resolution: CLI flags first, then env vars (Docker/
+    // Kubernetes friendly: KEY_ENVELOPE_FILE + KEY_PASSWORD + IDLE_TIMEOUT_MS).
+    const envelopeFile = opts.envelope || process.env.KEY_ENVELOPE_FILE || '/app/key.json';
+    const password = opts.password || process.env.KEY_PASSWORD;
+    const idleTimeoutMs = opts['idle-timeout']
+      ? parseInt(opts['idle-timeout'], 10)
+      : (process.env.IDLE_TIMEOUT_MS ? parseInt(process.env.IDLE_TIMEOUT_MS, 10) : undefined);
+
+    if (!fs.existsSync(envelopeFile)) {
+      throw new Error(`Key envelope file not found: ${envelopeFile} (use --envelope or KEY_ENVELOPE_FILE)`);
+    }
+    if (!password) {
+      throw new Error('Password required (--password or KEY_PASSWORD env)');
+    }
+
     const signer = await spawnSigner({
-      envelope: JSON.parse(fs.readFileSync(opts.envelope, 'utf-8')),
-      password: opts.password,
-      idleTimeoutMs: opts['idle-timeout'] ? parseInt(opts['idle-timeout']) : undefined,
+      // Accept both the bare envelope and the full generate-key output
+      // ({ publicKey, envelope }) — unwrap the latter.
+      envelope: (() => {
+        const parsed = JSON.parse(fs.readFileSync(envelopeFile, 'utf-8'));
+        return parsed.envelope && parsed.envelope.cipher ? parsed.envelope : parsed;
+      })(),
+      password,
+      idleTimeoutMs,
     });
-    console.error('[signer-daemon] Started on stdio, waiting for requests...');
+    console.error(`[signer-daemon] Started (envelope: ${envelopeFile}), idle timeout: ${idleTimeoutMs ?? 'default 5min'}`);
     // Keep alive
     process.on('SIGINT', async () => {
       await signer.close();
@@ -162,8 +198,9 @@ const COMMANDS = {
       await signer.close();
       process.exit(0);
     });
-    // Expose signer handle globally for parent process
-    global.__signerHandle = signer;
+    // Expose signer handle globally for parent process embedding
+    globalThis.__signerHandle = signer;
+    await new Promise(() => {}); // park forever; killed by signal
   },
 };
 

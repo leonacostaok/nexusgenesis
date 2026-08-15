@@ -1,9 +1,30 @@
 # ─── Stage 1: Build ──────────────────────────────────────────────────────
+# Build context MUST be the repository root (the file: dependency on
+# ../agent-keys lives outside the packages/agent-keys-cli subtree):
+#
+#   docker build -f packages/agent-keys-cli/Dockerfile \
+#     -t nexusgenesis/signer:latest .
+#
 FROM node:20-alpine AS builder
 
-WORKDIR /app
-COPY package.json ./
-COPY src/ ./src/
+WORKDIR /build
+
+# Copy the library package and install its dependencies.
+COPY packages/agent-keys/package.json packages/agent-keys/package.json
+COPY packages/agent-keys/src packages/agent-keys/src
+RUN cd packages/agent-keys && npm install --omit=dev --no-audit --no-fund
+
+# Assemble the runtime tree WITHOUT relying on npm's `file:` symlink
+# behavior (symlinks would dangle after COPY into the next stage):
+#   /build/out/node_modules/nexusgenesis-agent-keys/{package.json,src,node_modules}
+#   /build/out/{package.json,src}
+RUN mkdir -p /build/out/node_modules/nexusgenesis-agent-keys \
+ && cp -r /build/packages/agent-keys/package.json \
+          /build/packages/agent-keys/src \
+          /build/packages/agent-keys/node_modules \
+          /build/out/node_modules/nexusgenesis-agent-keys/ \
+ && cp -r /build/packages/agent-keys-cli/src /build/out/src \
+ && cp /build/packages/agent-keys-cli/package.json /build/out/package.json
 
 # ─── Stage 2: Hardened Runtime ──────────────────────────────────────────
 FROM node:20-alpine
@@ -11,38 +32,30 @@ FROM node:20-alpine
 # Security: non-root user
 RUN addgroup -S signer && adduser -S signer -G signer
 
-# Security: drop unnecessary capabilities
-RUN apk add --no-cache libcap && \
-    setcap -r /usr/local/bin/node cap_net_bind_service,cap_net_raw,cap_net_admin && \
-    apk del libcap
-
 WORKDIR /app
 
-# Copy only the built artifacts
-COPY --from=builder /app /app
+# Copy only the assembled runtime tree
+COPY --from=builder --chown=signer:signer /build/out /app
 
-# Security: read-only root filesystem compatible
+# Read-only root filesystem compatible
 RUN mkdir -p /tmp && chmod 1777 /tmp
 
 USER signer
 
-# Security: no stdin, no network
 STOPSIGNAL SIGTERM
 
-# Health check
+# Process-level health check (busybox pgrep ships with alpine)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD pgrep -f "node" || exit 1
 
-# Run in daemon mode (serve)
-ENTRYPOINT ["node", "src/cli.js", "serve"]
-
-# Required: mount key envelope at /app/key.json
-# Usage:
-#   docker run -v /path/to/key.json:/app/key.json \
-#     -e KEY_PASSWORD=yourpassword \
-#     nexusgenesis-signer:latest
+# The signer daemon reads the envelope from KEY_ENVELOPE_FILE (default
+# /app/key.json) and the password from KEY_PASSWORD.
 #
-# Or with --env-file:
-#   docker run --env-file .env.signer \
-#     -v /path/to/key.json:/app/key.json \
-#     nexusgenesis-signer:latest
+# Usage:
+#   docker run -v /path/to/key.json:/app/key.json:ro \
+#     -e KEY_PASSWORD=your-password \
+#     nexusgenesis/signer:latest
+#
+# Recommended hardening flags (see docs/OPERATIONS.md):
+#   --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges
+ENTRYPOINT ["node", "src/cli.js", "serve"]

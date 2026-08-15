@@ -26,19 +26,16 @@ import {
   signSync,
   verify,
   generateKeyPair,
-  hash,
-} from 'nexusgenesis-agent-keys';
-import {
+  encryptPrivateKey,
+  isValidEnvelope,
+  decryptPrivateKey,
   createSessionKey,
   checkSessionAccess,
-  verifySessionSignature,
-  isSessionExpired,
-  getSessionTTL,
+  checkSpendAllowedTiered,
+  resolveTier,
+  ShardedSecret,
+  disableCoreDumps,
 } from 'nexusgenesis-agent-keys';
-import { spawnSigner } from 'nexusgenesis-agent-keys';
-import { isValidEnvelope, decryptPrivateKey } from 'nexusgenesis-agent-keys';
-import { ShardedSecret, disableCoreDumps } from 'nexusgenesis-agent-keys';
-import { checkSpendAllowedTiered, resolveTier, PolicyTimelock } from 'nexusgenesis-agent-keys';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -50,10 +47,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = path.resolve(__dirname, '..');
 const pkg = JSON.parse(fs.readFileSync(path.join(PKG_ROOT, 'package.json'), 'utf-8'));
 
+// Base spend policy for the sign tool: no per-tx/daily ceilings (operator
+// scopes those via session keys), but three-tier gradient authorization is
+// ALWAYS enforced — small auto-signs, medium is timelocked, large requires
+// human approval. Tier thresholds come from takeover.js defaults (10/100).
+const SIGN_POLICY = { type: 'limit', maxPerTx: '0', maxDaily: '0' };
+
 // ─── State ──────────────────────────────────────────────────────────────
-let signerHandle = null;     // SignerHandle (lazy-init)
 let sharded = null;          // ShardedSecret (for direct sign tool)
-let timelock = new PolicyTimelock(); // Policy time-lock manager
 
 // ─── Helpers ────────────────────────────────────────────────────────────
 
@@ -66,7 +67,10 @@ function initKeyFromEnv() {
     return false;
   }
   try {
-    const envelope = JSON.parse(env);
+    const parsed = JSON.parse(env);
+    // Accept both the bare envelope and the full generate-key output
+    // ({ publicKey, envelope }) — unwrap the latter.
+    const envelope = parsed.envelope && parsed.envelope.cipher ? parsed.envelope : parsed;
     if (!isValidEnvelope(envelope)) {
       console.error('[mcp] Invalid key envelope');
       return false;
@@ -182,11 +186,23 @@ const HANDLERS = {
     if (typeof hashHex !== 'string' || !/^0x[0-9a-fA-F]+$/.test(hashHex)) {
       return { content: [{ type: 'text', text: 'Invalid hash: must be 0x-hex string' }], isError: true };
     }
-    // Policy check if amount is provided
-    if (amount) {
-      const tierCheck = checkSpendAllowedTiered({ type: 'limit', maxPerTx: '0', maxDaily: '0' }, { amount });
+    // Tiered authorization: when an amount is declared, three-tier gradient
+    // authorization applies. Medium tier is NOT signed immediately — the 24h
+    // time-lock (revocable by humans) must elapse first, mirroring the
+    // signer-worker's sign_timelock behavior.
+    if (amount !== undefined && amount !== null) {
+      const tierCheck = checkSpendAllowedTiered(SIGN_POLICY, { amount });
       if (!tierCheck.allowed) {
         return { content: [{ type: 'text', text: `Policy denied: ${tierCheck.reason}` }], isError: true };
+      }
+      if (tierCheck.timelockMs) {
+        return {
+          content: [{
+            type: 'text',
+            text: `Timelocked: amount is in medium tier. Signature withheld until ${new Date(tierCheck.scheduledAt).toISOString()} (24h revocation window). Re-submit after the timelock elapses.`,
+          }],
+          isError: true,
+        };
       }
     }
     const sigHex = sharded.use(pk => signSync(hashHex, pk).toString('hex'));
@@ -205,7 +221,6 @@ const HANDLERS = {
   async generate_key(args) {
     const { password } = args;
     const { publicKey, privateKey } = await generateKeyPair();
-    const { encryptPrivateKey } = await import('nexusgenesis-agent-keys');
     const envelope = encryptPrivateKey(privateKey, password, { publicKey: publicKey.toString('hex') });
     return {
       content: [
@@ -248,7 +263,7 @@ const HANDLERS = {
 
   async check_tier(args) {
     const { amount } = args;
-    const tier = resolveTier({ amount: amount || '0' });
+    const tier = resolveTier(amount);
     return { content: [{ type: 'text', text: JSON.stringify(tier, null, 2) }] };
   },
 };

@@ -32,11 +32,8 @@ spec:
           securityContext:
             {{- toYaml .Values.containerSecurityContext | nindent 12 }}
           env:
-            - name: KEY_ENVELOPE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.keyEnvelope.existingSecret | default (printf "%s-keys" (include "nexusgenesis-signer.fullname" .)) }}
-                  key: {{ .Values.keyEnvelope.secretKey }}
+            - name: KEY_ENVELOPE_FILE
+              value: /app/key.json
             - name: KEY_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -45,27 +42,40 @@ spec:
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-          {{- if .Values.vault.enabled }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "nexusgenesis-signer.fullname" . }}-config
           volumeMounts:
+            - name: key-envelope
+              mountPath: /app/key.json
+              subPath: key.json
+              readOnly: true
+            {{- if .Values.vault.enabled }}
             - name: vault-secret
               mountPath: "/vault/secrets"
               readOnly: true
-          {{- end }}
+            {{- end }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{- if .Values.vault.enabled }}
       volumes:
+        - name: key-envelope
+          secret:
+            secretName: {{ .Values.keyEnvelope.existingSecret | default (printf "%s-keys" (include "nexusgenesis-signer.fullname" .)) }}
+            items:
+              - key: {{ .Values.keyEnvelope.secretKey }}
+                path: key.json
+        {{- if .Values.vault.enabled }}
         - name: vault-secret
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
               secretProviderClass: vault-signer
-      {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

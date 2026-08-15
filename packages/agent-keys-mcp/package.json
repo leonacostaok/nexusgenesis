@@ -11,7 +11,7 @@
   ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "nexusgenesis-agent-keys": "file:../agent-keys"
+    "nexusgenesis-agent-keys": "^0.3.0"
   },
   "engines": {
     "node": ">=18"

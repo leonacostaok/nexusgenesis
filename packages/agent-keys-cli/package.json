@@ -10,7 +10,7 @@
     "src"
   ],
   "dependencies": {
-    "nexusgenesis-agent-keys": "file:../agent-keys"
+    "nexusgenesis-agent-keys": "^0.3.0"
   },
   "engines": {
     "node": ">=18"

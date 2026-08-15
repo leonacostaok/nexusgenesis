@@ -1247,6 +1247,85 @@ router.post('/api/v1/admin/debit', (req, res) => {
   }
 });
 
+// POST /api/v1/admin/agents/remove — 批量删除空壳 Agent (admin-secret protected)
+// 从运行时的 agentRegistry 中移除指定 Agent，下一次状态保存后持久化。
+// 注意：区块链历史中的注册交易不会被删除，仅从活动状态中移除。
+router.post('/api/v1/admin/agents/remove', (req, res) => {
+  if (!verifyCreditSecret(req)) {
+    return res.status(403).json({ error: 'Forbidden: invalid admin credit secret' });
+  }
+  const node = req.app.locals.node;
+  const { agentIds, identities } = req.body || {};
+  if (!agentIds && !identities) {
+    return res.status(400).json({ error: 'agentIds (array of agent IDs) or identities (array of agent identities) required' });
+  }
+  if (!node?.currentState?.agentRegistry) {
+    return res.status(500).json({ error: 'State not available' });
+  }
+  try {
+    const registry = node.currentState.agentRegistry;
+    const removed = [];
+    const notFound = [];
+
+    // 按 agent_id 删除
+    if (Array.isArray(agentIds)) {
+      for (const agentId of agentIds) {
+        const record = registry.agents.get(agentId);
+        if (!record) {
+          notFound.push({ type: 'agent_id', value: agentId });
+          continue;
+        }
+        const identity = record.identity || '';
+        const address = record.address || '';
+        registry.agents.delete(agentId);
+        if (address && registry.addressIndex.has(address)) {
+          registry.addressIndex.delete(address);
+        }
+        if (identity && registry.identityIndex.has(identity)) {
+          registry.identityIndex.delete(identity);
+        }
+        node.currentState.changes.agents.add(agentId);
+        removed.push({ agentId, identity, address });
+        console.log(`[ADMIN] Removed agent: ${identity || agentId} (${address?.slice(0, 20)}...)`);
+      }
+    }
+
+    // 按 identity 删除
+    if (Array.isArray(identities)) {
+      for (const identity of identities) {
+        const agentId = registry.identityIndex.get(identity);
+        if (!agentId) {
+          notFound.push({ type: 'identity', value: identity });
+          continue;
+        }
+        const record = registry.agents.get(agentId);
+        if (!record) {
+          notFound.push({ type: 'identity', value: identity, detail: 'agent_id not in registry' });
+          continue;
+        }
+        const address = record.address || '';
+        registry.agents.delete(agentId);
+        registry.identityIndex.delete(identity);
+        if (address && registry.addressIndex.has(address)) {
+          registry.addressIndex.delete(address);
+        }
+        node.currentState.changes.agents.add(agentId);
+        removed.push({ agentId, identity, address });
+        console.log(`[ADMIN] Removed agent: ${identity} (${address?.slice(0, 20)}...)`);
+      }
+    }
+
+    res.json({
+      success: true,
+      removed: removed.length,
+      notFound: notFound.length,
+      details: { removed, notFound }
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // ─── 宪法 v1.2.0: 主体多样性 & Sybil 审计接口 ───
 // 这些端点对外公开 (只读), 满足 Article 6 "Agent 决策可审计" 的透明性要求。
 

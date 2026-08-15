@@ -34,7 +34,7 @@ router.get('/api/v1/contracts/templates', (req, res) => {
 router.post('/api/v1/contracts/deploy', (req, res) => {
   const { template, name, version, deployParams } = req.body;
   if (!template || !name) {
-    return res.status(400).json({ success: false, message: 'template 和 name 是必填parameter' });
+    return res.status(400).json({ success: false, error:'template 和 name 是必填parameter' });
   }
   const contractId = `contract-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
   const contractAddress = `ng1${Buffer.from(crypto.randomBytes(32)).toString('hex').slice(0, 48)}`;

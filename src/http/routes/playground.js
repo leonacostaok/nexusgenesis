@@ -39,7 +39,7 @@ router.post('/api/v1/playground/execute', async (req, res) => {
   const { bytecode, gasLimit, traceMode } = req.body;
 
   if (!bytecode || !Array.isArray(bytecode)) {
-    return res.status(400).json({ success: false, message: 'bytecode must是非空数组' });
+    return res.status(400).json({ success: false, error:'bytecode must是非空数组' });
   }
 
   try {
@@ -131,7 +131,7 @@ router.post('/api/v1/playground/execute', async (req, res) => {
       });
     }
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -139,7 +139,7 @@ router.post('/api/v1/playground/estimate', async (req, res) => {
   const { bytecode } = req.body;
 
   if (!bytecode || !Array.isArray(bytecode)) {
-    return res.status(400).json({ success: false, message: 'bytecode must是非空数组' });
+    return res.status(400).json({ success: false, error:'bytecode must是非空数组' });
   }
 
   try {
@@ -148,7 +148,7 @@ router.post('/api/v1/playground/estimate', async (req, res) => {
     const estimatedGas = vm.estimateGas(bytecode);
     res.json({ success: true, data: { estimatedGas } });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 

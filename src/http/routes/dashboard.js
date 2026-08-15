@@ -121,7 +121,7 @@ router.get('/dashboard/overview', (req, res) => {
       }
     });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -145,7 +145,7 @@ router.get('/dashboard/fund-details', (req, res) => {
     };
     res.json({ success: true, data: fundDetails });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -163,7 +163,7 @@ router.get('/dashboard/recruitment-status', (req, res) => {
     };
     res.json({ success: true, data: recruitmentStatus });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -173,7 +173,7 @@ router.get('/dashboard/health-status', (req, res) => {
     const healthStatus = agentManager.getAllAgentsHealthStatus();
     res.json({ success: true, data: healthStatus });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -195,7 +195,7 @@ router.get('/dashboard/activity-log', (req, res) => {
       }));
     res.json({ success: true, data: { activities: recentActivity, total: recentActivity.length } });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -212,7 +212,7 @@ router.get('/api/dashboard/agents', (req, res) => {
       }))
     });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -242,7 +242,7 @@ router.get('/api/dashboard/energy', (req, res) => {
 
     res.json({ success: true, data: energyData });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -261,7 +261,7 @@ router.get('/api/dashboard/tasks', (req, res) => {
     };
     res.json({ success: true, data: tasks });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 

@@ -305,14 +305,16 @@ app.use((req, res, next) => {
   next();
 });
 
-// 全局 errorProcessing 中间件
+// 全局 errorProcessing 中间件（捕获 app.use 级中间件未处理的错误 —— 路由级的错误由 startHttpServer 内的后置中间件兜底）
 app.use((err, req, res, next) => {
   serverMetrics.errors++;
-  console.error('Global error:', err.message);
-  res.status(500).json({ 
-    success: false, 
-    message: 'Internal server error',
-    error: process.env.NODE_ENV === 'production' ? 'An unexpected error occurred' : err.message
+  console.error('Global error (pre-route):', err.message);
+  // 如果响应已发送，跳过
+  if (res.headersSent) return next(err);
+  res.status(err.status || err.statusCode || 500).json({
+    success: false,
+    error: process.env.NODE_ENV === 'production' ? 'An unexpected error occurred' : err.message,
+    error_code: err.error_code || (err.type === 'entity.parse.failed' ? 'INVALID_JSON' : 'INTERNAL_ERROR')
   });
 });
 
@@ -346,19 +348,19 @@ async function handleOpenAIAgent(req, res) {
     const { model, messages, agent_id, capabilities } = req.body;
 
     if (!model || !messages || !agent_id) {
-      return res.status(400).json({ success: false, message: 'Missing required parameters' });
+      return res.status(400).json({ success: false, error:'Missing required parameters' });
     }
 
     // Verifyaddress格式
     // Testmode: allowusing简单的Test ID
     if (!agent_id.startsWith('ng1')) {
-      return res.status(400).json({ success: false, message: 'Invalid agent ID: Must start with ng1' });
+      return res.status(400).json({ success: false, error:'Invalid agent ID: Must start with ng1' });
     }
     
     // 在生产环境中, shouldusing完整的addressVerify
     // const validation = validateAddress(agent_id);
     // if (!validation.valid) {
-    //   return res.status(400).json({ success: false, message: `Invalid agent ID: ${validation.reason}` });
+    //   return res.status(400).json({ success: false, error:`Invalid agent ID: ${validation.reason}` });
     // }
 
     // Registeragent
@@ -384,7 +386,7 @@ async function handleOpenAIAgent(req, res) {
 
     // callOpenAI API
     if (!openai) {
-      return res.status(503).json({ success: false, message: 'OpenAI service not configured. Set OPENAI_API_KEY environment variable.' });
+      return res.status(503).json({ success: false, error:'OpenAI service not configured. Set OPENAI_API_KEY environment variable.' });
     }
     const response = await openai.chat.completions.create({
       model: model,
@@ -406,7 +408,7 @@ async function handleOpenAIAgent(req, res) {
 
   } catch (error) {
     console.error('Error handling OpenAI agent:', error.message);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 }
 
@@ -418,19 +420,19 @@ async function handleAnthropicAgent(req, res) {
     const { model, messages, agent_id, capabilities } = req.body;
 
     if (!model || !messages || !agent_id) {
-      return res.status(400).json({ success: false, message: 'Missing required parameters' });
+      return res.status(400).json({ success: false, error:'Missing required parameters' });
     }
 
     // Verifyaddress格式
     // Testmode: allowusing简单的Test ID
     if (!agent_id.startsWith('ng1')) {
-      return res.status(400).json({ success: false, message: 'Invalid agent ID: Must start with ng1' });
+      return res.status(400).json({ success: false, error:'Invalid agent ID: Must start with ng1' });
     }
     
     // 在生产环境中, shouldusing完整的addressVerify
     // const validation = validateAddress(agent_id);
     // if (!validation.valid) {
-    //   return res.status(400).json({ success: false, message: `Invalid agent ID: ${validation.reason}` });
+    //   return res.status(400).json({ success: false, error:`Invalid agent ID: ${validation.reason}` });
     // }
 
     // Registeragent
@@ -487,7 +489,7 @@ async function handleAnthropicAgent(req, res) {
 
   } catch (error) {
     console.error('Error handling Anthropic agent:', error.message);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 }
 
@@ -515,7 +517,7 @@ function getRegisteredAgents(req, res) {
     res.json(response);
   } catch (error) {
     console.error('Error getting registered agents:', error.message);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 }
 
@@ -605,7 +607,7 @@ function handleAgentHeartbeat(req, res) {
     const { agent_id } = req.body;
     
     if (!agent_id) {
-      return res.status(400).json({ success: false, message: 'Missing agent_id' });
+      return res.status(400).json({ success: false, error:'Missing agent_id' });
     }
     
     if (registeredAgents.has(agent_id)) {
@@ -623,11 +625,11 @@ function handleAgentHeartbeat(req, res) {
         timestamp: Date.now()
       });
     } else {
-      res.status(404).json({ success: false, message: 'Agent not found' });
+      res.status(404).json({ success: false, error:'Agent not found' });
     }
   } catch (error) {
     console.error('Error handling agent heartbeat:', error.message);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 }
 
@@ -639,36 +641,36 @@ async function handleAgentRegister(req, res) {
     const { agent_id, capabilities, model = 'generic' } = req.body;
 
     if (!agent_id) {
-      return res.status(400).json({ success: false, message: 'Missing agent_id' });
+      return res.status(400).json({ success: false, error:'Missing agent_id' });
     }
 
     // Verifyagent_id格式
     if (!agent_id.startsWith('ng1')) {
-      return res.status(400).json({ success: false, message: 'Invalid agent ID: Must start with ng1' });
+      return res.status(400).json({ success: false, error:'Invalid agent ID: Must start with ng1' });
     }
 
     if (agent_id.length < 10 || agent_id.length > 50) {
-      return res.status(400).json({ success: false, message: 'Invalid agent ID: Length must be between 10 and 50 characters' });
+      return res.status(400).json({ success: false, error:'Invalid agent ID: Length must be between 10 and 50 characters' });
     }
 
     // Verifycapabilities
     if (!Array.isArray(capabilities)) {
-      return res.status(400).json({ success: false, message: 'Invalid capabilities: Must be an array' });
+      return res.status(400).json({ success: false, error:'Invalid capabilities: Must be an array' });
     }
 
     if (capabilities.length < 2) {
-      return res.status(400).json({ success: false, message: 'Invalid capabilities: Must have at least 2 capabilities' });
+      return res.status(400).json({ success: false, error:'Invalid capabilities: Must have at least 2 capabilities' });
     }
 
     // Verify模型名称
     if (model && (typeof model !== 'string' || model.length < 1 || model.length > 50)) {
-      return res.status(400).json({ success: false, message: 'Invalid model name: Must be a string between 1 and 50 characters' });
+      return res.status(400).json({ success: false, error:'Invalid model name: Must be a string between 1 and 50 characters' });
     }
 
     // Verify请求体大小
     const requestBodySize = JSON.stringify(req.body).length;
     if (requestBodySize > 1024 * 1024) { // 1MB limit
-      return res.status(413).json({ success: false, message: 'Request body too large' });
+      return res.status(413).json({ success: false, error:'Request body too large' });
     }
 
     console.log('[DEBUG] handleAgentRegister - agent_id:', agent_id);
@@ -720,7 +722,8 @@ async function handleAgentRegister(req, res) {
         if (!wallet) {
           return res.status(500).json({
             success: false,
-            message: 'Managed wallet not available for legacy registration'
+            error: 'Managed wallet not available for legacy registration',
+            error_code: 'WALLET_UNAVAILABLE'
           });
         }
 
@@ -736,7 +739,7 @@ async function handleAgentRegister(req, res) {
 
         const validation = validateAgentRegisterTransaction(registerTransaction);
         if (!validation.valid) {
-          return res.status(400).json({ success: false, message: validation.reason });
+          return res.status(400).json({ success: false, error:validation.reason });
         }
 
         onChainRegistration.transactionId = registerTransaction.id;
@@ -786,7 +789,7 @@ async function handleAgentRegister(req, res) {
 
   } catch (error) {
     console.error('Error registering agent:', error.message);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 }
 
@@ -811,11 +814,11 @@ app.get('/api/v1/faucet/eligibility', (req, res) => {
   try {
     const address = req.query.address;
     if (!address) {
-      return res.status(400).json({ success: false, message: 'address query parameter is required' });
+      return res.status(400).json({ success: false, error:'address query parameter is required' });
     }
     res.json({ success: true, ...tokenFaucet.checkEligibility(address) });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -829,7 +832,7 @@ app.post('/api/v1/faucet/drip', async (req, res) => {
     }
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -843,7 +846,7 @@ app.post('/api/v1/faucet/drip/:address', async (req, res) => {
     }
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -851,11 +854,11 @@ app.get('/api/v1/faucet/distributions/:distributionId', (req, res) => {
   try {
     const dist = tokenFaucet.getDistribution(req.params.distributionId);
     if (!dist) {
-      return res.status(404).json({ success: false, message: 'Distribution not found' });
+      return res.status(404).json({ success: false, error:'Distribution not found' });
     }
     res.json({ success: true, distribution: dist });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -863,7 +866,7 @@ app.get('/api/v1/faucet/cooldown/:address', (req, res) => {
   try {
     res.json({ success: true, ...tokenFaucet.getAddressCooldown(req.params.address) });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -871,7 +874,7 @@ app.get('/api/v1/faucet/stats', (req, res) => {
   try {
     res.json({ success: true, stats: tokenFaucet.getStats() });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -900,7 +903,7 @@ app.get('/api/v1/discovery/search', (req, res) => {
     const results = agentDiscoveryService.searchAgents(filters);
     res.json({ success: true, results, total: results.length });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -909,7 +912,7 @@ app.post('/api/v1/discovery/task-match', (req, res) => {
     const candidates = agentDiscoveryService.discoverAgentsForTask(req.body);
     res.json({ success: true, candidates, total: candidates.length });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -922,7 +925,7 @@ app.get('/api/v1/discovery/stats', (req, res) => {
     const load = agentDiscoveryService.getLoadOverview();
     res.json({ success: true, stats, capabilities, reputation, regions, load });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -944,7 +947,7 @@ app.get('/api/v1/marketplace/listings', (req, res) => {
     const results = agentMarketplace.searchListings(filters);
     res.json({ success: true, results, total: results.length });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -957,17 +960,17 @@ app.post('/api/v1/marketplace/listings', (req, res) => {
     }
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
 app.get('/api/v1/marketplace/listings/:listingId', (req, res) => {
   try {
     const listing = agentMarketplace.getListing(req.params.listingId);
-    if (!listing) return res.status(404).json({ success: false, message: 'Listing not found' });
+    if (!listing) return res.status(404).json({ success: false, error:'Listing not found' });
     res.json({ success: true, listing });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -977,7 +980,7 @@ app.put('/api/v1/marketplace/listings/:listingId', (req, res) => {
     if (!result.success) return res.status(404).json(result);
     res.json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -987,7 +990,7 @@ app.patch('/api/v1/marketplace/listings/:listingId/deactivate', (req, res) => {
     if (!result.success) return res.status(404).json(result);
     res.json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -998,7 +1001,7 @@ app.post('/api/v1/marketplace/reviews', (req, res) => {
     if (!result.success) return res.status(400).json(result);
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1008,7 +1011,7 @@ app.get('/api/v1/marketplace/listings/:listingId/reviews', (req, res) => {
     const reviews = agentMarketplace.getReviews(req.params.listingId, options);
     res.json({ success: true, reviews, total: reviews.length });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1019,7 +1022,7 @@ app.post('/api/v1/marketplace/reviews/:reviewId/helpful', (req, res) => {
     if (!result.success) return res.status(404).json(result);
     res.json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1028,7 +1031,7 @@ app.get('/api/v1/marketplace/agents/:agentId/rating', (req, res) => {
     const summary = agentMarketplace.getAgentRatingSummary(req.params.agentId);
     res.json({ success: true, ...summary });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1038,7 +1041,7 @@ app.get('/api/v1/marketplace/stats', (req, res) => {
     const categories = agentMarketplace.getCategories();
     res.json({ success: true, stats, categories });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1052,7 +1055,7 @@ app.post('/api/v1/marketplace/transactions', (req, res) => {
   try {
     const { listingId, consumerId, consumerWallet, sellerWallet, amount, metadata } = req.body;
     if (!listingId || !consumerId) {
-      return res.status(400).json({ success: false, message: 'listingId and consumerId are required' });
+      return res.status(400).json({ success: false, error:'listingId and consumerId are required' });
     }
     const result = agentMarketplace.recordTransaction(listingId, consumerId, {
       consumerWallet, sellerWallet, amount, metadata
@@ -1065,17 +1068,17 @@ app.post('/api/v1/marketplace/transactions', (req, res) => {
     }
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
 app.get('/api/v1/marketplace/transactions/:txId', (req, res) => {
   try {
     const tx = agentMarketplace.transactions.get(req.params.txId);
-    if (!tx) return res.status(404).json({ success: false, message: 'Transaction not found' });
+    if (!tx) return res.status(404).json({ success: false, error:'Transaction not found' });
     res.json({ success: true, transaction: tx });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1088,7 +1091,7 @@ app.post('/api/v1/marketplace/transactions/:txId/complete', (req, res) => {
     }
     res.json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1102,7 +1105,7 @@ app.post('/api/v1/marketplace/transactions/:txId/cancel', (req, res) => {
     }
     res.json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1126,17 +1129,17 @@ app.post('/api/v1/agents/:agentId/invoke', async (req, res) => {
 
     // 1. Validate request
     if (!input || !consumerWallet || amount === undefined) {
-      return res.status(400).json({ success: false, message: 'input, consumerWallet, amount are required' });
+      return res.status(400).json({ success: false, error:'input, consumerWallet, amount are required' });
     }
     const ngenAmount = Math.floor(Number(amount));
     if (!Number.isFinite(ngenAmount) || ngenAmount <= 0) {
-      return res.status(400).json({ success: false, message: 'amount must be a positive integer' });
+      return res.status(400).json({ success: false, error:'amount must be a positive integer' });
     }
 
     // 2. Resolve agent → wallet address + model
     const state = app.locals.state;
     if (!state) {
-      return res.status(503).json({ success: false, message: 'Blockchain state not available' });
+      return res.status(503).json({ success: false, error:'Blockchain state not available' });
     }
     const onChainAgents = state.agentRegistry?.agents instanceof Map
       ? Array.from(state.agentRegistry.agents.values())
@@ -1145,11 +1148,11 @@ app.post('/api/v1/agents/:agentId/invoke', async (req, res) => {
       a.agent_id === agentId || a.identity === agentId || a.address === agentId
     );
     if (!agentRecord) {
-      return res.status(404).json({ success: false, message: `Agent not found: ${agentId}` });
+      return res.status(404).json({ success: false, error:`Agent not found: ${agentId}` });
     }
     const agentWallet = agentRecord.address;
     if (!agentWallet) {
-      return res.status(404).json({ success: false, message: 'Agent has no wallet address' });
+      return res.status(404).json({ success: false, error:'Agent has no wallet address' });
     }
 
     // 3. Escrow: lock NGEN from consumer → ESCROW_ADDR
@@ -1158,8 +1161,8 @@ app.post('/api/v1/agents/:agentId/invoke', async (req, res) => {
     if (consumerBalance < amountBigInt) {
       return res.status(402).json({
         success: false,
-        message: `Insufficient balance: need ${amountBigInt.toString()} NGEN, have ${consumerBalance.toString()}`,
-        errorCode: 'INSUFFICIENT_BALANCE'
+        error: `Insufficient balance: need ${amountBigInt.toString()} NGEN, have ${consumerBalance.toString()}`,
+        error_code: 'INSUFFICIENT_BALANCE'
       });
     }
     state.subtractBalance(consumerWallet, amountBigInt.toString());
@@ -1219,7 +1222,8 @@ app.post('/api/v1/agents/:agentId/invoke', async (req, res) => {
       console.log(`[INVOKE] Refunded ${amountBigInt.toString()} NGEN → ${consumerWallet.slice(0, 12)}... (LLM error: ${llmError.message})`);
       return res.status(502).json({
         success: false,
-        message: `Agent invocation failed: ${llmError.message}`,
+        error: `Agent invocation failed: ${llmError.message}`,
+        error_code: 'INVOCATION_FAILED',
         refunded: true,
         refundAmount: ngenAmount
       });
@@ -1273,7 +1277,7 @@ app.post('/api/v1/agents/:agentId/invoke', async (req, res) => {
     });
   } catch (error) {
     console.error('[INVOKE] Error:', error.message);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1306,7 +1310,7 @@ app.post('/api/v1/marketplace/auctions', (req, res) => {
   try {
     const { publisherId, publisherWallet, title, description, requirements, rewardNGEN, deadline, metadata } = req.body;
     if (!publisherId || !title || rewardNGEN === undefined) {
-      return res.status(400).json({ success: false, message: 'publisherId, title, rewardNGEN are required' });
+      return res.status(400).json({ success: false, error:'publisherId, title, rewardNGEN are required' });
     }
     const result = agentMarketplace.createAuction(publisherId, {
       publisherWallet, title, description, requirements, rewardNGEN, deadline, metadata
@@ -1323,7 +1327,7 @@ app.post('/api/v1/marketplace/auctions', (req, res) => {
     }
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1339,17 +1343,17 @@ app.get('/api/v1/marketplace/auctions', (req, res) => {
     const results = agentMarketplace.listAuctions(filter);
     res.json({ success: true, results, total: results.length });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
 app.get('/api/v1/marketplace/auctions/:auctionId', (req, res) => {
   try {
     const auction = agentMarketplace.getAuction(req.params.auctionId);
-    if (!auction) return res.status(404).json({ success: false, message: 'Auction not found' });
+    if (!auction) return res.status(404).json({ success: false, error:'Auction not found' });
     res.json({ success: true, auction });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1357,7 +1361,7 @@ app.post('/api/v1/marketplace/auctions/:auctionId/bid', (req, res) => {
   try {
     const { bidderId, bidAmount, proposal, bidderWallet } = req.body;
     if (!bidderId || bidAmount === undefined) {
-      return res.status(400).json({ success: false, message: 'bidderId and bidAmount are required' });
+      return res.status(400).json({ success: false, error:'bidderId and bidAmount are required' });
     }
 
     // Resolve bidder wallet from on-chain agent registry if not supplied.
@@ -1386,7 +1390,7 @@ app.post('/api/v1/marketplace/auctions/:auctionId/bid', (req, res) => {
     }
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1394,7 +1398,7 @@ app.post('/api/v1/marketplace/auctions/:auctionId/close', (req, res) => {
   try {
     const { publisherId, winnerBidId } = req.body;
     if (!publisherId || !winnerBidId) {
-      return res.status(400).json({ success: false, message: 'publisherId and winnerBidId are required' });
+      return res.status(400).json({ success: false, error:'publisherId and winnerBidId are required' });
     }
     const result = agentMarketplace.closeAuction(req.params.auctionId, winnerBidId, publisherId);
     if (!result.success) {
@@ -1413,7 +1417,7 @@ app.post('/api/v1/marketplace/auctions/:auctionId/close', (req, res) => {
     }
     res.json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1421,7 +1425,7 @@ app.post('/api/v1/marketplace/auctions/:auctionId/cancel', (req, res) => {
   try {
     const { publisherId, reason } = req.body;
     if (!publisherId) {
-      return res.status(400).json({ success: false, message: 'publisherId is required' });
+      return res.status(400).json({ success: false, error:'publisherId is required' });
     }
     const result = agentMarketplace.cancelAuction(req.params.auctionId, publisherId, reason || 'cancelled');
     if (!result.success) {
@@ -1436,7 +1440,7 @@ app.post('/api/v1/marketplace/auctions/:auctionId/cancel', (req, res) => {
     }
     res.json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1532,7 +1536,7 @@ app.get('/api/v1/economy/exchange-rate', async (req, res) => {
     });
   } catch (error) {
     console.error('[ECONOMY] Exchange rate error:', error.message);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1552,7 +1556,7 @@ app.post('/api/v1/marketplace/subscriptions', (req, res) => {
   try {
     const { agentId, ...subData } = req.body;
     if (!agentId) {
-      return res.status(400).json({ success: false, message: 'agentId is required' });
+      return res.status(400).json({ success: false, error:'agentId is required' });
     }
     const result = agentMarketplace.createSubscription(agentId, subData);
     if (!result.success) {
@@ -1560,7 +1564,7 @@ app.post('/api/v1/marketplace/subscriptions', (req, res) => {
     }
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1575,7 +1579,7 @@ app.get('/api/v1/marketplace/subscriptions', (req, res) => {
     const results = agentMarketplace.listSubscriptions(filter);
     res.json({ success: true, results, total: results.length });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1586,7 +1590,7 @@ app.get('/api/v1/marketplace/subscriptions/consumer/:consumerId', (req, res) => 
     const results = agentMarketplace.getConsumerSubscriptions(req.params.consumerId);
     res.json({ success: true, results, total: results.length });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1594,11 +1598,11 @@ app.get('/api/v1/marketplace/subscriptions/:subId', (req, res) => {
   try {
     const subscription = agentMarketplace.getSubscription(req.params.subId);
     if (!subscription) {
-      return res.status(404).json({ success: false, message: 'Subscription not found' });
+      return res.status(404).json({ success: false, error:'Subscription not found' });
     }
     res.json({ success: true, subscription });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1606,7 +1610,7 @@ app.post('/api/v1/marketplace/subscriptions/:subId/subscribe', (req, res) => {
   try {
     const { consumerId, consumerWallet } = req.body;
     if (!consumerId || !consumerWallet) {
-      return res.status(400).json({ success: false, message: 'consumerId and consumerWallet are required' });
+      return res.status(400).json({ success: false, error:'consumerId and consumerWallet are required' });
     }
     const result = agentMarketplace.subscribe(req.params.subId, consumerId, consumerWallet);
     if (!result.success) {
@@ -1628,7 +1632,7 @@ app.post('/api/v1/marketplace/subscriptions/:subId/subscribe', (req, res) => {
     }
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1636,7 +1640,7 @@ app.post('/api/v1/marketplace/subscriptions/:subId/cancel', (req, res) => {
   try {
     const { consumerId } = req.body;
     if (!consumerId) {
-      return res.status(400).json({ success: false, message: 'consumerId is required' });
+      return res.status(400).json({ success: false, error:'consumerId is required' });
     }
     const result = agentMarketplace.cancelSubscription(req.params.subId, consumerId);
     if (!result.success) {
@@ -1646,7 +1650,7 @@ app.post('/api/v1/marketplace/subscriptions/:subId/cancel', (req, res) => {
     }
     res.json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1654,7 +1658,7 @@ app.post('/api/v1/marketplace/subscriptions/:subId/cycle', (req, res) => {
   try {
     const { consumerId } = req.body;
     if (!consumerId) {
-      return res.status(400).json({ success: false, message: 'consumerId is required' });
+      return res.status(400).json({ success: false, error:'consumerId is required' });
     }
     const result = agentMarketplace.processCyclePayment(req.params.subId, consumerId);
     if (!result.success) {
@@ -1677,7 +1681,7 @@ app.post('/api/v1/marketplace/subscriptions/:subId/cycle', (req, res) => {
     }
     res.json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1689,18 +1693,18 @@ app.get('/api/agent/task', async (req, res) => {
   try {
     const { agent_id } = req.query;
     if (!agent_id) {
-      return res.status(400).json({ success: false, message: 'Missing agent_id parameter' });
+      return res.status(400).json({ success: false, error:'Missing agent_id parameter' });
     }
     
     const task = taskManager.getAgentTask(agent_id);
     if (!task) {
-      return res.status(404).json({ success: false, message: 'No task assigned to this agent' });
+      return res.status(404).json({ success: false, error:'No task assigned to this agent' });
     }
     
     res.json({ success: true, task });
   } catch (error) {
     console.error('Error getting agent task:', error.message);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1709,14 +1713,14 @@ app.post('/api/agent/task/complete', async (req, res) => {
   try {
     const { task_id, results } = req.body;
     if (!task_id) {
-      return res.status(400).json({ success: false, message: 'Missing task_id parameter' });
+      return res.status(400).json({ success: false, error:'Missing task_id parameter' });
     }
     
     const task = taskManager.completeTask(task_id, results);
     res.json({ success: true, task });
   } catch (error) {
     console.error('Error completing task:', error.message);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1727,7 +1731,7 @@ app.get('/api/tasks/available', async (req, res) => {
     res.json({ success: true, tasks, total: tasks.length });
   } catch (error) {
     console.error('Error getting available tasks:', error.message);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, error:error.message });
   }
 });
 
@@ -1857,10 +1861,10 @@ app.get('/api/v1/api-keys', (req, res) => {
 app.post('/api/v1/api-keys/generate', (req, res) => {
   const { owner, tier = 'free', metadata = {} } = req.body;
   if (!owner) {
-    return res.status(400).json({ success: false, message: 'owner is required' });
+    return res.status(400).json({ success: false, error:'owner is required' });
   }
   if (!DEFAULT_TIERS[tier]) {
-    return res.status(400).json({ success: false, message: `Invalid tier: ${tier}. Available: ${Object.keys(DEFAULT_TIERS).join(', ')}` });
+    return res.status(400).json({ success: false, error:`Invalid tier: ${tier}. Available: ${Object.keys(DEFAULT_TIERS).join(', ')}` });
   }
   const result = apiKeyManager.generateKey(owner, tier, metadata);
   res.json({
@@ -1878,11 +1882,11 @@ app.post('/api/v1/api-keys/generate', (req, res) => {
 app.post('/api/v1/api-keys/revoke', (req, res) => {
   const { keyId } = req.body;
   if (!keyId) {
-    return res.status(400).json({ success: false, message: 'keyId is required' });
+    return res.status(400).json({ success: false, error:'keyId is required' });
   }
   const success = apiKeyManager.revokeKey(keyId);
   if (!success) {
-    return res.status(404).json({ success: false, message: 'API key not found' });
+    return res.status(404).json({ success: false, error:'API key not found' });
   }
   res.json({ success: true, message: 'API key revoked' });
 });
@@ -1890,11 +1894,11 @@ app.post('/api/v1/api-keys/revoke', (req, res) => {
 app.post('/api/v1/api-keys/reactivate', (req, res) => {
   const { keyId } = req.body;
   if (!keyId) {
-    return res.status(400).json({ success: false, message: 'keyId is required' });
+    return res.status(400).json({ success: false, error:'keyId is required' });
   }
   const success = apiKeyManager.reactivateKey(keyId);
   if (!success) {
-    return res.status(404).json({ success: false, message: 'API key not found' });
+    return res.status(404).json({ success: false, error:'API key not found' });
   }
   res.json({ success: true, message: 'API key reactivated' });
 });
@@ -1902,14 +1906,14 @@ app.post('/api/v1/api-keys/reactivate', (req, res) => {
 app.post('/api/v1/api-keys/update-tier', (req, res) => {
   const { keyId, tier } = req.body;
   if (!keyId || !tier) {
-    return res.status(400).json({ success: false, message: 'keyId and tier are required' });
+    return res.status(400).json({ success: false, error:'keyId and tier are required' });
   }
   if (!DEFAULT_TIERS[tier]) {
-    return res.status(400).json({ success: false, message: `Invalid tier: ${tier}` });
+    return res.status(400).json({ success: false, error:`Invalid tier: ${tier}` });
   }
   const success = apiKeyManager.updateKeyTier(keyId, tier);
   if (!success) {
-    return res.status(404).json({ success: false, message: 'API key not found' });
+    return res.status(404).json({ success: false, error:'API key not found' });
   }
   res.json({ success: true, message: `API key tier updated to ${tier}` });
 });
@@ -2030,7 +2034,7 @@ app.get('/api/v1/oracle/price/:pair', async (req, res) => {
     const result = await client.getPrice(req.params.pair);
     res.json(result);
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -2042,7 +2046,7 @@ app.get('/api/v1/oracle/random', async (req, res) => {
     const result = await client.getRandomNumber(Number(min), max ? Number(max) : 2 ** 256 - 1);
     res.json(result);
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -2399,8 +2403,24 @@ async function startHttpServer(node = null, options = {}) {
   app.use((req, res) => {
     res.status(404).json({
       success: false,
-      message: `Endpoint not found: ${req.method} ${req.path}`,
+      error: `Endpoint not found: ${req.method} ${req.path}`,
+      error_code: 'ENDPOINT_NOT_FOUND',
       availableEndpoints: ['/api/v1/tasks', '/api/v1/governance/proposals', '/api/v1/agents', '/api/v1/bootstrap', '/api/v1/docs/endpoints']
+    });
+  });
+
+  // 全局错误处理中间件 — 捕获所有路由和中间件中未处理的异常
+  // 必须放在最后，在所有路由和 404 处理器之后注册
+  app.use((err, req, res, next) => {
+    serverMetrics.errors++;
+    console.error('[ERROR] Unhandled error:', err.message);
+    if (err.stack) console.error('[ERROR] Stack:', err.stack.split('\n').slice(0, 4).join('\n'));
+    // 如果响应已发送，跳过
+    if (res.headersSent) return next(err);
+    res.status(err.status || err.statusCode || 500).json({
+      success: false,
+      error: process.env.NODE_ENV === 'production' ? 'An unexpected error occurred' : err.message,
+      error_code: err.error_code || 'INTERNAL_ERROR'
     });
   });
 

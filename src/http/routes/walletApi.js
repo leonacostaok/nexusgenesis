@@ -113,7 +113,7 @@ router.get('/stats', cacheMiddleware(() => _cacheKey('stats'), CACHE_TTL.stats),
       symbol: 'NGEN'
     });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 

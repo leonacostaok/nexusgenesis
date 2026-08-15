@@ -103,7 +103,7 @@ router.get('/api/v1/bridge/fees', cacheMiddleware(
 router.post('/api/v1/bridge/lock', (req, res) => {
   const { sourceChain, targetChain, token, amount, recipient } = req.body;
   if (!sourceChain || !targetChain || !token || !amount || !recipient) {
-    return res.status(400).json({ success: false, message: '缺少必填parameter: sourceChain, targetChain, token, amount, recipient' });
+    return res.status(400).json({ success: false, error:'缺少必填parameter: sourceChain, targetChain, token, amount, recipient' });
   }
 
   const lockId = `lock_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;

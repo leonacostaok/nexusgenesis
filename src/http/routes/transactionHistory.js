@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import crypto from 'crypto';
 import { getAgentIdByAddress } from '../../transactions/agentRegister.js';
+import agentWalletManager from '../../wallet/agentWalletManager.js';
 
 const router = Router();
 const routerName = 'transaction-history';
@@ -200,12 +201,13 @@ router.get('/', cacheMiddleware(
  * Get transaction history for a specific agent
  */
 router.get('/agent/:agentId', cacheMiddleware(
-  (req) => _cacheKey('agentHistory', req.params.agentId, req.query.limit || '20', req.query.offset || '0'),
+  (req) => _cacheKey('agentHistory', req.params.agentId, req.query.limit || '20', req.query.offset || '0',
+    req.query.type || '_', req.query.tx_type || '_'),
   CACHE_TTL.agentHistory
 ), (req, res) => {
   try {
     const { agentId } = req.params;
-    const { limit = 20, offset = 0 } = req.query;
+    const { limit = 20, offset = 0, type, tx_type } = req.query;
     
     const state = req.app.locals.state;
     if (!state) {
@@ -217,18 +219,29 @@ router.get('/agent/:agentId', cacheMiddleware(
     const allTxs = [...allTransactions, ...taskTransactions];
 
     // Filter by agent
-    const agentTxs = allTxs.filter(tx => 
+    let agentTxs = allTxs.filter(tx => 
       tx.from === agentId || tx.to === agentId || tx.agentId === agentId
     );
+    
+    // Filter by transaction type
+    if (type) {
+      agentTxs = agentTxs.filter(tx => (tx.tx_type || tx.type) === type);
+    }
+    if (tx_type) {
+      agentTxs = agentTxs.filter(tx => tx.tx_type === tx_type || tx.type === tx_type);
+    }
     
     // Sort and paginate
     agentTxs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
     const total = agentTxs.length;
     const paginated = agentTxs.slice(Number(offset), Number(offset) + Number(limit));
     
+    // Enrich with direction relative to the viewer agent
+    const enriched = paginated.map(tx => _enrichTransaction(tx, agentId));
+    
     res.json({
       success: true,
-      transactions: paginated.map(tx => _enrichTransaction(tx)),
+      transactions: enriched,
       total,
       agentId,
       pagination: {
@@ -239,6 +252,91 @@ router.get('/agent/:agentId', cacheMiddleware(
     });
   } catch (error) {
     console.error('[Transaction API] Agent history error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * GET /api/v1/transactions/agent/:agentId/summary
+ * Get income/expense summary for a specific agent (self-proving balance)
+ */
+router.get('/agent/:agentId/summary', cacheMiddleware(
+  (req) => _cacheKey('agentSummary', req.params.agentId),
+  CACHE_TTL.agentHistory
+), (req, res) => {
+  try {
+    const { agentId } = req.params;
+    
+    const state = req.app.locals.state;
+    if (!state) {
+      return res.json({ success: true, summary: { agentId, transactionCount: 0, byType: {}, firstActivity: null, lastActivity: null, totalIncoming: '0', totalOutgoing: '0', netBalance: '0', currentBalance: null }, agentId, note: 'state_not_available' });
+    }
+
+    const allTransactions = _getAllStateTransactions(state);
+    const taskTransactions = _extractTaskTransactions(state);
+    const allTxs = [...allTransactions, ...taskTransactions];
+
+    // Filter by agent
+    const agentTxs = allTxs.filter(tx => 
+      tx.from === agentId || tx.to === agentId || tx.agentId === agentId
+    );
+
+    // Calculate summary
+    let totalIncoming = BigInt(0);
+    let totalOutgoing = BigInt(0);
+    const byType = {};
+    let earliestTx = Infinity;
+    let latestTx = 0;
+
+    for (const tx of agentTxs) {
+      const amount = _safeBigInt(tx.amount);
+      const direction = _calculateDirection(tx, agentId);
+      const type = tx.tx_type || tx.type || 'unknown';
+      
+      byType[type] = (byType[type] || 0) + 1;
+      
+      if (direction === 'incoming') {
+        totalIncoming += amount;
+      } else if (direction === 'outgoing') {
+        totalOutgoing += amount;
+      }
+      
+      if (tx.timestamp) {
+        if (tx.timestamp < earliestTx) earliestTx = tx.timestamp;
+        if (tx.timestamp > latestTx) latestTx = tx.timestamp;
+      }
+    }
+
+    // Get current wallet balance if available
+    let currentBalance = null;
+    try {
+      const balanceResult = agentWalletManager.getBalance(agentId);
+      if (balanceResult && balanceResult.success) {
+        currentBalance = balanceResult.balanceRaw;
+      }
+    } catch (e) {
+      // wallet not found for this agent — leave currentBalance as null
+    }
+
+    const summary = {
+      agentId,
+      totalIncoming: totalIncoming.toString(),
+      totalOutgoing: totalOutgoing.toString(),
+      netBalance: (totalIncoming - totalOutgoing).toString(),
+      currentBalance,
+      transactionCount: agentTxs.length,
+      byType,
+      firstActivity: earliestTx === Infinity ? null : earliestTx,
+      lastActivity: latestTx === 0 ? null : latestTx
+    };
+
+    res.json({
+      success: true,
+      summary,
+      agentId
+    });
+  } catch (error) {
+    console.error('[Transaction API] Agent summary error:', error.message);
     res.status(500).json({ success: false, error: error.message });
   }
 });
@@ -362,6 +460,22 @@ router.get('/stats', cacheMiddleware(
 // ==================== Helper Functions ====================
 
 /**
+ * Safely convert amount (string | number | bigint, possibly decimal) to BigInt.
+ * Decimal amounts are truncated toward zero; unparseable values become 0n.
+ */
+function _safeBigInt(amount) {
+  if (amount === null || amount === undefined || amount === '') return BigInt(0);
+  if (typeof amount === 'bigint') return amount;
+  const str = String(amount).trim();
+  if (/^-?\d+$/.test(str)) {
+    try { return BigInt(str); } catch { return BigInt(0); }
+  }
+  const num = Number(str);
+  if (!Number.isFinite(num)) return BigInt(0);
+  return BigInt(Math.trunc(num));
+}
+
+/**
  * Safely extract transactions array from state.transactions.
  * state.transactions can be either:
  *   - An array (legacy)
@@ -438,23 +552,36 @@ function _extractTaskTransactions(state) {
 
 /**
  * Enrich transaction with metadata
+ * @param {Object} tx - transaction object
+ * @param {string} [viewerAgentId] - agent identity for direction calculation
  */
-function _enrichTransaction(tx) {
+function _enrichTransaction(tx, viewerAgentId) {
   const type = tx.tx_type || tx.type || 'unknown';
   const description = TX_TYPE_DESCRIPTIONS[type] || { label: type, category: 'other', icon: '📄' };
   
   return {
     ...tx,
     typeDescription: description,
-    direction: _calculateDirection(tx),
+    direction: _calculateDirection(tx, viewerAgentId),
     formattedAmount: tx.amount ? Number(tx.amount).toLocaleString() : '0'
   };
 }
 
 /**
- * Calculate transaction direction for an agent
+ * Calculate transaction direction relative to a viewer agent
+ * @param {Object} tx - transaction object
+ * @param {string} [viewerAgentId] - agent identity to calculate direction for
+ * @returns {string|null} 'incoming' | 'outgoing' | 'self' | null
  */
-function _calculateDirection(tx) {
+function _calculateDirection(tx, viewerAgentId) {
+  if (!viewerAgentId) return null;
+  const from = tx.from || tx.publisher || '';
+  const to = tx.to || tx.claimant || '';
+  const isFromViewer = from === viewerAgentId;
+  const isToViewer = to === viewerAgentId;
+  if (isFromViewer && isToViewer) return 'self';
+  if (isFromViewer) return 'outgoing';
+  if (isToViewer) return 'incoming';
   return null;
 }
 

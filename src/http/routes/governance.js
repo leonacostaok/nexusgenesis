@@ -127,7 +127,7 @@ async function verifyProposalSignature(req, res, next) {
   if (!signature || !timestamp || !nonce) {
     return res.status(400).json({
       success: false,
-      message: 'PQC signature required. Include timestamp, nonce, and signature in request body.',
+      error: 'PQC signature required. Include timestamp, nonce, and signature in request body.',
       error_code: 'MISSING_SIGNATURE',
       hint: 'Use custody token or admin secret for devnet.'
     });
@@ -136,7 +136,7 @@ async function verifyProposalSignature(req, res, next) {
   if (Date.now() - timestamp > 2 * 60 * 1000) {
     return res.status(400).json({
       success: false,
-      message: 'Signature timestamp expired',
+      error: 'Signature timestamp expired',
       error_code: 'SIGNATURE_EXPIRED'
     });
   }
@@ -148,14 +148,14 @@ async function verifyProposalSignature(req, res, next) {
 router.post('/proposals', verifyProposalSignature, (req, res) => {
   const { node } = req.app.locals;
   if (!node) {
-    return res.status(503).json({ success: false, message: 'Node not ready' });
+    return res.status(503).json({ success: false, error:'Node not ready' });
   }
 
   const agent = resolveAgent(req, node);
   if (!agent) {
     return res.status(401).json({
       success: false,
-      message: 'Agent identity required. Set x-agent-identity header.',
+      error: 'Agent identity required. Set x-agent-identity header.',
       error_code: 'AGENT_NOT_IDENTIFIED'
     });
   }
@@ -166,35 +166,35 @@ router.post('/proposals', verifyProposalSignature, (req, res) => {
   if (!title || title.length > MAX_PROPOSAL_TITLE) {
     return res.status(400).json({
       success: false,
-      message: `Title required, max ${MAX_PROPOSAL_TITLE} chars`,
+      error: `Title required, max ${MAX_PROPOSAL_TITLE} chars`,
       error_code: 'INVALID_TITLE'
     });
   }
   if (!body || body.length > MAX_PROPOSAL_BODY) {
     return res.status(400).json({
       success: false,
-      message: `Body required, max ${MAX_PROPOSAL_BODY} chars`,
+      error: `Body required, max ${MAX_PROPOSAL_BODY} chars`,
       error_code: 'INVALID_BODY'
     });
   }
   if (!PROPOSAL_TYPES.includes(type)) {
     return res.status(400).json({
       success: false,
-      message: `Invalid type. Allowed: ${PROPOSAL_TYPES.join(', ')}`,
+      error: `Invalid type. Allowed: ${PROPOSAL_TYPES.join(', ')}`,
       error_code: 'INVALID_TYPE'
     });
   }
   if (agent.agentRecord.reputation < MIN_REPUTATION_TO_CREATE) {
     return res.status(403).json({
       success: false,
-      message: `Minimum reputation ${MIN_REPUTATION_TO_CREATE} required to create a proposal`,
+      error: `Minimum reputation ${MIN_REPUTATION_TO_CREATE} required to create a proposal`,
       error_code: 'INSUFFICIENT_REPUTATION'
     });
   }
   if (isOnCooldown(agent.agentId)) {
     return res.status(429).json({
       success: false,
-      message: 'You can only create 1 proposal every 24 hours',
+      error: 'You can only create 1 proposal every 24 hours',
       error_code: 'COOLDOWN_ACTIVE',
       cooldown_until: Date.now() + PROPOSAL_COOLDOWN_MS
     });
@@ -315,7 +315,7 @@ router.get('/proposals/:id', (req, res) => {
 router.post('/proposals/:id/vote', verifyProposalSignature, (req, res) => {
   const { node } = req.app.locals;
   if (!node) {
-    return res.status(503).json({ success: false, message: 'Node not ready' });
+    return res.status(503).json({ success: false, error:'Node not ready' });
   }
 
   const proposal = proposals.get(req.params.id);

@@ -128,7 +128,7 @@ router.get('/api/v1/monitoring/overview', async (req, res) => {
       }
     });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -140,7 +140,7 @@ router.get('/api/v1/monitoring/metrics', async (req, res) => {
 
     res.json({ success: true, data: { metrics } });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -152,7 +152,7 @@ router.get('/api/v1/monitoring/alerts', async (req, res) => {
 
     res.json({ success: true, data: { alerts, count: alerts.length } });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -166,7 +166,7 @@ router.get('/api/v1/monitoring/governance', async (req, res) => {
 
     res.json({ success: true, data: govMetrics });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 
@@ -180,7 +180,7 @@ router.get('/api/v1/monitoring/contracts', async (req, res) => {
 
     res.json({ success: true, data: contractMetrics });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, error:e.message });
   }
 });
 

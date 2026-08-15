@@ -1,0 +1,12 @@
+apiVersion: v2
+name: nexusgenesis-signer
+description: Helm chart for NexusGenesis hardened signer deployment
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - nexusgenesis
+  - signer
+  - pqc
+  - post-quantum
+home: https://github.com/NexusGenesis/nexusgenesis

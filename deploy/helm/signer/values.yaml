@@ -1,0 +1,79 @@
+# Default values for nexusgenesis-signer.
+# This is a YAML-formatted file.
+
+replicaCount: 2
+
+image:
+  repository: nexusgenesis/signer
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# Key envelope secret reference
+keyEnvelope:
+  existingSecret: ""     # Name of existing secret holding key envelope
+  secretKey: envelope    # Key within the secret
+  passwordKey: password  # Key for the password
+
+service:
+  type: ClusterIP
+  port: 3000
+
+resources:
+  limits:
+    cpu: "1"
+    memory: "512Mi"
+  requests:
+    cpu: "100m"
+    memory: "64Mi"
+
+# seccomp profile for hardened signer
+seccompProfile:
+  type: RuntimeDefault
+
+# Pod security context
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop: ["ALL"]
+  seccompProfile:
+    type: RuntimeDefault
+
+# Health check
+livenessProbe:
+  exec:
+    command: ["pgrep", "-f", "node"]
+  initialDelaySeconds: 10
+  periodSeconds: 30
+
+readinessProbe:
+  exec:
+    command: ["pgrep", "-f", "node"]
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+# Node selector for TEE-capable nodes (optional)
+nodeSelector: {}
+#  tee: nitro-enclaves
+
+# Additional environment variables
+extraEnv: []
+#  - name: KEY_PASSWORD
+#    valueFrom:
+#      secretKeyRef:
+#        name: signer-keys
+#        key: password
+
+# Vault CSI integration (optional)
+vault:
+  enabled: false
+  address: ""
+  role: "signer"
+  mountPath: "secret"
+  secretPath: "signer/keys"

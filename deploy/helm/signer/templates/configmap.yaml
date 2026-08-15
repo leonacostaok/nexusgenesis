@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "nexusgenesis-signer.fullname" . }}-config
+  labels:
+    app: {{ include "nexusgenesis-signer.name" . }}
+data:
+  IDLE_TIMEOUT_MS: "300000"
+  NODE_ENV: "production"

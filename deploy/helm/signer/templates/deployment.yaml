@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "nexusgenesis-signer.fullname" . }}
+  labels:
+    app: {{ include "nexusgenesis-signer.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "nexusgenesis-signer.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "nexusgenesis-signer.name" . }}
+    spec:
+      serviceAccountName: {{ include "nexusgenesis-signer.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.vault.enabled }}
+      initContainers:
+        - name: vault-csi-init
+          image: hashicorp/vault-csi-provider:latest
+          env:
+            - name: VAULT_ADDR
+              value: {{ .Values.vault.address }}
+      {{- end }}
+      containers:
+        - name: signer
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.containerSecurityContext | nindent 12 }}
+          env:
+            - name: KEY_ENVELOPE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.keyEnvelope.existingSecret | default (printf "%s-keys" (include "nexusgenesis-signer.fullname" .)) }}
+                  key: {{ .Values.keyEnvelope.secretKey }}
+            - name: KEY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.keyEnvelope.existingSecret | default (printf "%s-keys" (include "nexusgenesis-signer.fullname" .)) }}
+                  key: {{ .Values.keyEnvelope.passwordKey }}
+            {{- with .Values.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- if .Values.vault.enabled }}
+          volumeMounts:
+            - name: vault-secret
+              mountPath: "/vault/secrets"
+              readOnly: true
+          {{- end }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.vault.enabled }}
+      volumes:
+        - name: vault-secret
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: vault-signer
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

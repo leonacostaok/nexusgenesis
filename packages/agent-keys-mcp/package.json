@@ -1,0 +1,19 @@
+{
+  "name": "nexusgenesis-agent-keys-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for NexusGenesis agent-keys — zero-code key management for Claude Desktop, Cursor, LangGraph",
+  "type": "module",
+  "bin": {
+    "nexusgenesis-mcp": "./src/server.js"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "nexusgenesis-agent-keys": "file:../agent-keys"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

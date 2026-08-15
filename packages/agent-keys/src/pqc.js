@@ -4,7 +4,28 @@
  * Real Dilithium2 (NIST FIPS 204) implementation backed by @noble/post-quantum.
  * Signatures and keys are quantum-resistant; private keys never leave the caller.
  *
- * Extracted from NexusGenesis src/crypto/pqc.js and made dependency-free.
+ * ─── Trust Chain Statement (W2-7) ──────────────────────────────────
+ *   @noble/post-quantum is the only PQC dependency. The @noble family
+ *   (paulmillr) is the most widely audited JS cryptography stack:
+ *     - @noble/hashes: 12M+ weekly npm downloads, used by MetaMask, ethers.js
+ *     - @noble/curves: 5M+ weekly downloads, used by Ethereum consensus clients
+ *     - @noble/post-quantum: implements FIPS 204 (ML-DSA draft) and FIPS 205
+ *     - No WASM, no native bindings, no build step — pure JS, auditable
+ *
+ *   Supply chain risk: npm package provenance + Sigstore verification
+ *   recommended at deploy time. See SECURITY.md for attestation setup.
+ *
+ *   Decision tree (choose key model in derivation.js):
+ *     Is the agent fully autonomous?      → self-sovereign (KEY_MODELS.SELF_SOVEREIGN)
+ *     Does a human hold the master key?   → hybrid (KEY_MODELS.HYBRID) [recommended]
+ *     Is this a legacy centralized setup? → server-managed (KEY_MODELS.SERVER_MANAGED)
+ *
+ *   Multi-instance HA (production):
+ *     Signer subprocesses are stateless by design — each instance holds its
+ *     own key envelope. For HA, run N signer instances behind a local proxy
+ *     (e.g., HAProxy / Nginx) with health-check on /health endpoint.
+ *     See docs/OPERATIONS.md for deployment topology.
+ * ──────────────────────────────────────────────────────────────────
  */
 import crypto from 'node:crypto';
 import { ml_dsa44 } from '@noble/post-quantum/ml-dsa.js';

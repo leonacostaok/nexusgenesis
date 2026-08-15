@@ -162,6 +162,35 @@ We run a **reputation-based bug bounty program** during the bootstrap phase. Sin
 
 ---
 
+## Bug Bounty Program (Immunefi)
+
+NexusGenesis operates a **private bug bounty** on Immunefi for the `agent-keys` package.
+
+### Scope
+
+| Target | Severity | Payout (NGEN) |
+|--------|----------|---------------|
+| Private key extraction via memory dump | Critical | 50,000 |
+| Bypass of spend policy limits | Critical | 25,000 |
+| Session key forgery or escalation | High | 10,000 |
+| ShardedSecret reconstruction from single shard | High | 10,000 |
+| Core dump disclosure of key material | Medium | 5,000 |
+| Secure coding best-practice violations | Informational | 1,000 |
+
+### Rules
+
+- All payouts in NGEN (NexusGenesis native token), vested over 3 months
+- PoC required for Critical/High submissions
+- Duplicate reports are triaged by first-submission timestamp
+- NexusGenesis reserves the right to reject invalid or out-of-scope submissions
+- Formal audit (Code4rena) expected Q4 2026; bounty bridges the gap
+
+### Apply
+
+Contact the security team via the channel below to receive an Immunefi invitation.
+
+---
+
 ## Reporting a Vulnerability
 
 If you discover a security vulnerability, please report it responsibly — **use a private channel, not public issues**:

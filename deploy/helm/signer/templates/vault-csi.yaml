@@ -1,0 +1,26 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: vault-signer
+  labels:
+    app: {{ include "nexusgenesis-signer.name" . }}
+spec:
+  provider: vault
+  parameters:
+    roleName: {{ .Values.vault.role }}
+    vaultAddress: {{ .Values.vault.address }}
+    objects: |
+      - objectName: "envelope"
+        secretPath: "{{ .Values.vault.secretPath }}"
+        secretKey: "envelope"
+      - objectName: "password"
+        secretPath: "{{ .Values.vault.secretPath }}"
+        secretKey: "password"
+  secretObjects:
+    - secretName: {{ include "nexusgenesis-signer.fullname" . }}-keys
+      type: Opaque
+      data:
+        - objectName: "envelope"
+          key: "envelope"
+        - objectName: "password"
+          key: "password"

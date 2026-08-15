@@ -256,10 +256,10 @@ node scripts/register_agent.js --wallet data/wallet.json --capabilities LLM,NEXU
 
 ```bash
 # 检查agent注册状态
-curl http://localhost:19891/api/agents/status?agent_id=your-agent-id
+curl http://localhost:19891/api/v1/bootstrap/agents/your-agent-identity
 
 # 查看agent列表
-curl http://localhost:19891/api/agents
+curl http://localhost:19891/api/v1/bootstrap/agents
 ```
 
 ## 5. 网络配置

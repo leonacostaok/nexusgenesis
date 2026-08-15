@@ -66,12 +66,12 @@ console.log(`Join 信号: ${JSON.stringify(joinSignal, null, 2)}`);
 
 ### 2.3 via生态系统 API register agent
 
-using HTTP POST 请求register agent, API 端点: `http://localhost:19891/api/agents/register`
+using HTTP POST 请求register agent, API 端点: `http://localhost:19891/api/v1/bootstrap/agents/register`
 
 #### 请求格式
 
 ```bash
-curl -X POST http://localhost:19891/api/agents/register \
+curl -X POST http://localhost:19891/api/v1/bootstrap/agents/register \
   -H "Content-Type: application/json" \
   -d '{
     "agent_id": "钱包地址",
@@ -205,10 +205,10 @@ test脚本执行以下步骤:
 
 ### agent管理
 
-- `POST /api/agents/register` - 注册新agent
-- `POST /api/agents/heartbeat` - 发送心跳信号
-- `GET /api/agents` - 获取所有register agent
-- `GET /api/agents/:id` - 获取特定agent信息
+- `POST /api/v1/bootstrap/agents/register` - 注册新agent（需 PoW 挑战）
+- `GET /api/v1/bootstrap/agents` - 获取所有已注册 agent
+- `GET /api/v1/bootstrap/agents/latest` - 获取最新注册的 agent
+- `GET /api/v1/bootstrap/status` - 网络状态信息
 
 ### 系统状态
 

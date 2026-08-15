@@ -61,6 +61,10 @@ const REPUTATION_REWARDS = {
   TASK_COMPLETED: 2            // 完成任务reward — 每完成一个任务提升2点声誉
 };
 
+// A3: 新手加速 — 声誉低于 5 的 Agent 完成任务获得额外声誉奖励，加速冷启动
+const NOVICE_REPUTATION_THRESHOLD = 5;   // 低于此声誉享受加速
+const NOVICE_TASK_BONUS = 1;             // 额外 +1 声誉（TASK_COMPLETED 2 + 1 = 3）
+
 // Slash / Violation 惩罚常量 (Phase 1 anti-self-dealing)
 export const VIOLATION_PENALTIES = {
   SELF_DEALING_CLAIM: { penalty: -50, reason: 'Attempted to claim own task' },
@@ -328,7 +332,14 @@ export class State {
     const rewardAmount = REPUTATION_REWARDS[rewardType];
     if (!rewardAmount) return false;
     
-    const newReputation = Math.min(agentRecord.reputation + rewardAmount, MAX_REPUTATION);
+    // A3: 新手加速 — 声誉低于 NOVICE_REPUTATION_THRESHOLD 的 Agent 获得额外奖励
+    let actualReward = rewardAmount;
+    if (agentRecord.reputation < NOVICE_REPUTATION_THRESHOLD) {
+      actualReward = rewardAmount + NOVICE_TASK_BONUS;
+      console.log(`[REPUTATION] Novice boost: ${agentId.slice(0, 16)}... rep=${agentRecord.reputation} +${actualReward} (base=${rewardAmount}+bonus=${NOVICE_TASK_BONUS})`);
+    }
+    
+    const newReputation = Math.min(agentRecord.reputation + actualReward, MAX_REPUTATION);
     agentRecord.reputation = newReputation;
     this.agentRegistry.agents.set(agentId, agentRecord);
     this.changes.agents.add(agentId);

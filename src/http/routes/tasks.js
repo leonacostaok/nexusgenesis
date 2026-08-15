@@ -185,6 +185,9 @@ export function setupTaskRoutes(app) {
       if (req.query.minReward) {
         filters.minReward = req.query.minReward;
       }
+      if (req.query.taskType) {
+        filters.taskType = req.query.taskType;
+      }
       if (req.query.limit) {
         filters.limit = parseInt(req.query.limit) || 50;
       }

@@ -31,7 +31,8 @@ const DEFAULT_REPUTATION_REQUIREMENTS = {
   research: 3,
   security_audit: 10,
   community: 0,
-  documentation: 0
+  documentation: 0,
+  novice: 0
 };
 
 const TASK_STATUS = {
@@ -1068,7 +1069,7 @@ class TaskProtocol {
   /**
    * Query tasks with optional filters.
    */
-  query({ status, publisher, claimant, capabilities, minReward, limit = 50, offset = 0 } = {}) {
+  query({ status, publisher, claimant, capabilities, taskType, minReward, limit = 50, offset = 0 } = {}) {
     let results = Array.from(this.tasks.values());
 
     if (status) {
@@ -1084,6 +1085,9 @@ class TaskProtocol {
       results = results.filter(t =>
         capabilities.every(c => t.requiredCapabilities.includes(c))
       );
+    }
+    if (taskType) {
+      results = results.filter(t => t.taskType === taskType);
     }
     if (minReward) {
       const min = BigInt(minReward);
@@ -1160,6 +1164,77 @@ class TaskProtocol {
       });
 
     return openTasks.map(t => this._sanitizeTask(t));
+  }
+
+  /**
+   * A3: 生成新手任务池 — 创建一批低门槛系统任务供新手 Agent 认领
+   * 自动生成 monitoring/analysis/community 类型的简单任务，minReputation=0
+   * 只在节点启动时调用一次，每日最多补充一次
+   * @param {number} count - 要生成的任务数量（默认 10）
+   * @returns {number} 实际生成的任务数
+   */
+  generateNoviceTasks(count = 10) {
+    const NOVICE_TASK_TEMPLATES = [
+      { title: 'Network health ping', description: 'Check if the network is reachable by sending a ping to the API. Report the response time.', taskType: 'monitoring', requiredCapabilities: ['monitoring'], reward: '5' },
+      { title: 'Agent directory scan', description: 'List the first 10 agents from the agent registry to verify the directory is accessible and returning valid data.', taskType: 'analysis', requiredCapabilities: ['analysis'], reward: '5' },
+      { title: 'Forum new topic check', description: 'Check the forum for topics posted in the last hour. Count and report how many new topics exist.', taskType: 'community', requiredCapabilities: ['community'], reward: '5' },
+      { title: 'Wallet balance check', description: 'Query your own wallet balance and confirm it matches the expected registration reward.', taskType: 'analysis', requiredCapabilities: ['analysis'], reward: '5' },
+      { title: 'Write a forum greeting', description: 'Post a brief introduction of yourself in the forum. Include your agent identity and what you plan to contribute.', taskType: 'community', requiredCapabilities: ['community'], reward: '10' },
+      { title: 'Task market health check', description: 'Query the open tasks list and report the current count of available tasks.', taskType: 'monitoring', requiredCapabilities: ['monitoring'], reward: '5' },
+      { title: 'Blockchain height check', description: 'Query the current blockchain height and verify it has increased in the last hour.', taskType: 'monitoring', requiredCapabilities: ['monitoring'], reward: '5' },
+      { title: 'Documentation typo hunt', description: 'Read the project README and find any typo or formatting issue. Report the exact location and suggested fix.', taskType: 'documentation', requiredCapabilities: ['documentation'], reward: '10' },
+      { title: 'Peer discovery check', description: 'Query the list of connected peers and verify the P2P network is healthy.', taskType: 'monitoring', requiredCapabilities: ['monitoring'], reward: '5' },
+      { title: 'Governance proposal list', description: 'List the most recent governance proposals and summarize their status.', taskType: 'analysis', requiredCapabilities: ['analysis'], reward: '10' },
+    ];
+
+    let generated = 0;
+    for (const template of NOVICE_TASK_TEMPLATES) {
+      // Check if a similar task already exists (open and unclaimed)
+      const exists = Array.from(this.tasks.values()).some(t =>
+        t.status === TASK_STATUS.OPEN &&
+        t.title === template.title &&
+        t.taskType === 'novice'
+      );
+      if (exists) continue;
+      if (generated >= count) break;
+
+      const taskId = `novice_${crypto.randomUUID().slice(0, 8)}`;
+      const now = Date.now();
+      const task = {
+        id: taskId,
+        title: template.title,
+        description: template.description,
+        requiredCapabilities: template.requiredCapabilities,
+        taskType: 'novice',
+        minReputation: 0,
+        reward: template.reward,
+        publisher: 'system',
+        status: TASK_STATUS.OPEN,
+        publishedAt: now,
+        claimedBy: null,
+        claimedAt: null,
+        claimNonce: 0,
+        submittedAt: null,
+        submissionData: null,
+        verifiedAt: null,
+        completedAt: null,
+        cancelledAt: null,
+        transactionHistory: [{
+          type: TXN_TYPES.TASK_PUBLISH,
+          timestamp: now,
+          by: 'system'
+        }],
+        isSystemTask: true
+      };
+      this.tasks.set(taskId, task);
+      generated++;
+    }
+
+    if (generated > 0) {
+      this._saveTasks();
+      console.log(`[TaskProtocol] Generated ${generated} novice tasks for agent bootstrapping`);
+    }
+    return generated;
   }
 
   _recordOnChain(taskId, txType, from, data) {

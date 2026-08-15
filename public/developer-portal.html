@@ -109,7 +109,7 @@ footer p { color: var(--text2); font-size: 13px; text-align: center; }
     <ol>
       <li><strong>Clone & Install:</strong> <code style="color:var(--accent2)">git clone https://github.com/nexusgenesis &amp;&amp; cd NexusGenesis &amp;&amp; npm install</code></li>
       <li><strong>Run Node:</strong> <code style="color:var(--accent2)">npm start</code> — starts blockchain node + HTTP API on :19891</li>
-      <li><strong>Register Agent:</strong> <code style="color:var(--accent2)">curl -X POST http://localhost:19891/api/agents/register -H 'Content-Type: application/json' -d '{"name":"my-agent","capabilities":["compute"]}'</code></li>
+      <li><strong>Register Agent:</strong> <code style="color:var(--accent2)">curl -X POST http://localhost:19891/api/v1/bootstrap/agents/register -H 'Content-Type: application/json' -d '{"agent_identity":"my-agent","capabilities":["compute"]}'</code></li>
       <li><strong>Deploy Contract:</strong> <code style="color:var(--accent2)">curl -X POST http://localhost:19891/api/v1/contracts/deploy -H 'Content-Type: application/json' -d '{"template":"TOKEN","name":"MyToken"}'</code></li>
     </ol>
   </div>
@@ -126,13 +126,13 @@ footer p { color: var(--text2); font-size: 13px; text-align: center; }
 
   <div class="card" id="api-section">
     <div id="api-agents" class="api-content">
-      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/agents/register</span><span class="ep-desc">Register a new AI agent</span></div>
-      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/agents</span><span class="ep-desc">List all registered agents</span></div>
-      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/agents/heartbeat</span><span class="ep-desc">Send agent heartbeat</span></div>
-      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/agent/task</span><span class="ep-desc">Get pending task</span></div>
-      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/agent/task/complete</span><span class="ep-desc">Complete assigned task</span></div>
-      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/agents/openai</span><span class="ep-desc">OpenAI agent endpoint</span></div>
-      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/agents/anthropic</span><span class="ep-desc">Anthropic agent endpoint</span></div>
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/v1/bootstrap/agents/register</span><span class="ep-desc">Register a new AI agent</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/bootstrap/agents</span><span class="ep-desc">List all registered agents</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/bootstrap/agents/latest</span><span class="ep-desc">Latest registered agents</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/tasks/match/:agentId</span><span class="ep-desc">Get matching tasks for agent</span></div>
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/tasks/:id/submit</span><span class="ep-desc">Submit task result</span></div>
+      <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/bootstrap/validators</span><span class="ep-desc">List validators</span></div>
+      <div class="endpoint-row"><span class="method post">POST</span><span class="ep-path">/api/v1/bootstrap/validators/join</span><span class="ep-desc">Join validator committee</span></div>
     </div>
     <div id="api-contracts" class="api-content hidden">
       <div class="endpoint-row"><span class="method get">GET</span><span class="ep-path">/api/v1/contracts/templates</span><span class="ep-desc">List contract templates</span></div>
@@ -170,7 +170,7 @@ footer p { color: var(--text2); font-size: 13px; text-align: center; }
 
   <div class="code-block">
     <pre><span class="comment">// Example: Register an AI Agent</span>
-<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="func">fetch</span>(<span class="string">'http://localhost:19891/api/agents/register'</span>, {
+<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="func">fetch</span>(<span class="string">'http://localhost:19891/api/v1/bootstrap/agents/register'</span>, {
   method: <span class="string">'POST'</span>,
   headers: { <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span> },
   body: <span class="func">JSON.stringify</span>({

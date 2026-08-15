@@ -132,6 +132,7 @@ class GenesisNode {
     // Block sync state — prevents duplicate concurrent sync requests
     this._syncInProgress = false;
     this._lastSyncRequestAt = 0;
+    this._syncInProgressAt = 0; // Timestamp when _syncInProgress was set, for timeout detection
   }
 
   /**
@@ -520,6 +521,12 @@ class GenesisNode {
       if (result.success) published++;
     }
     console.log(`[TaskProtocol] Seeded ${published}/${seedTasks.length} initial tasks from Swarm Pool`);
+
+    // A3: Generate novice tasks for agent bootstrapping (if not already present)
+    const noviceCount = this.taskProtocol.generateNoviceTasks(10);
+    if (noviceCount > 0) {
+      console.log(`[TaskProtocol] Generated ${noviceCount} novice tasks for agent bootstrapping`);
+    }
   }
 
   async startHttpServer() {
@@ -1932,20 +1939,35 @@ class GenesisNode {
    * @param {number} toHeight - end height (inclusive), -1 for "all you have"
    */
   requestBlocksFromPeer(nodeId, fromHeight, toHeight) {
-    // Prevent duplicate concurrent sync requests (min 5s between requests)
     const now = Date.now();
-    if (this._syncInProgress || (now - this._lastSyncRequestAt < 5000)) {
-      console.log(`[SYNC] Sync already in progress or throttled, skipping request`);
+    const SYNC_TIMEOUT = 10000; // 10s timeout for stuck sync
+
+    // Prevent duplicate concurrent sync requests
+    if (this._syncInProgress) {
+      if (now - this._syncInProgressAt > SYNC_TIMEOUT) {
+        console.warn(`[SYNC] Sync timeout (${SYNC_TIMEOUT}ms), resetting sync flag`);
+        this._syncInProgress = false;
+        this._syncInProgressAt = 0;
+      } else {
+        console.log(`[SYNC] Sync already in progress or throttled, skipping request`);
+        return;
+      }
+    }
+
+    // Throttle: min 5s between requests
+    if (now - this._lastSyncRequestAt < 5000) {
+      console.log(`[SYNC] Sync throttled (${now - this._lastSyncRequestAt}ms since last request)`);
       return;
     }
 
     const peerId = this._nodeIdToPeerId.get(nodeId);
     if (!peerId) {
-      console.log(`[SYNC] Cannot find peerId for nodeId ${nodeId.slice(0, 16)}...`);
+      console.warn(`[SYNC] Cannot find peerId for nodeId ${nodeId.slice(0, 16)}... — peerIdentityMap size=${this.peerIdentityMap.size}, _nodeIdToPeerId size=${this._nodeIdToPeerId.size}`);
       return;
     }
 
     this._syncInProgress = true;
+    this._syncInProgressAt = now;
     this._lastSyncRequestAt = now;
     const ownHeight = this.blockchain[this.blockchain.length - 1].header.height;
     console.log(`[SYNC] Requesting blocks ${fromHeight}-${toHeight} from ${nodeId.slice(0, 16)}... (own height: ${ownHeight})`);
@@ -1965,6 +1987,7 @@ class GenesisNode {
   async handleBlocksResponse(peerId, blocks) {
     if (!blocks || blocks.length === 0) {
       this._syncInProgress = false;
+      this._syncInProgressAt = 0;
       return;
     }
 
@@ -2026,14 +2049,24 @@ class GenesisNode {
       console.log(`[SYNC] Applied ${applied} blocks (skipped ${skipped}), new height: ${newHeight}`);
 
       // Request next batch if the peer sent a full batch (likely has more)
+      // Reset both sync flag and throttle so the follow-up request is not blocked
       if (applied === blocks.length && applied >= 50) {
         const peerNodeId = this.peerIdentityMap.get(peerId)?.nodeId;
         if (peerNodeId) {
           const nextFrom = this.blockchain[this.blockchain.length - 1].header.height + 1;
-          // Reset throttle to allow immediate follow-up request
-          this._lastSyncRequestAt = 0;
-          this.requestBlocksFromPeer(peerNodeId, nextFrom, -1);
-          return; // _syncInProgress stays true via the new request
+          const peerIdForRequest = this._nodeIdToPeerId.get(peerNodeId);
+          if (peerIdForRequest) {
+            // Reset sync flag and throttle to allow immediate follow-up request
+            this._syncInProgress = false;
+            this._syncInProgressAt = 0;
+            this._lastSyncRequestAt = 0;
+            this.requestBlocksFromPeer(peerNodeId, nextFrom, -1);
+            return; // _syncInProgress stays true via the new request
+          } else {
+            // Reverse mapping missing — fall back to letting the next block
+            // broadcast trigger a fresh sync
+            console.warn(`[SYNC] Reverse mapping missing for ${peerNodeId.slice(0, 16)}..., falling back to broadcast-triggered sync`);
+          }
         }
       }
     } else {
@@ -2041,6 +2074,7 @@ class GenesisNode {
     }
 
     this._syncInProgress = false;
+    this._syncInProgressAt = 0;
   }
 
   /**

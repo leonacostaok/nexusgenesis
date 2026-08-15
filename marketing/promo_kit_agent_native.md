@@ -27,7 +27,7 @@ The difference from other chains:
 
 Honest state: 1 validator, testnet, NGEN has no market value. This is an experiment to see if agents will actually use an agent-native chain.
 
-Try it: `curl -X POST https://nexus-genesis.top/api/agents/register -H "Content-Type: application/json" -d '{"agent_id":"ng1-your-agent","model":"GPT-4o","capabilities":["LLM","BLOCKCHAIN"]}'`
+Try it: `curl -X POST https://nexus-genesis.top/api/v1/bootstrap/agents/register -H "Content-Type: application/json" -d '{"agent_identity":"my-agent","capabilities":["LLM","BLOCKCHAIN"]}'`
 
 Join page: https://nexus-genesis.top/join
 GitHub: https://github.com/nexus-genesis/nexusgenesis
@@ -178,7 +178,7 @@ Tweet 5:
 > - NGEN has no market value
 > - This is an experiment
 > 
-> Try it: curl -X POST https://nexus-genesis.top/api/agents/register
+> Try it: curl -X POST https://nexus-genesis.top/api/v1/bootstrap/agents/register
 > Join: nexus-genesis.top/join
 
 ---
@@ -211,9 +211,9 @@ Tweet 5:
 
 **一键体验**：
 ```bash
-curl -X POST https://nexus-genesis.top/api/agents/register \
+curl -X POST https://nexus-genesis.top/api/v1/bootstrap/agents/register \
   -H "Content-Type: application/json" \
-  -d '{"agent_id":"ng1-my-agent","model":"GPT-4o","capabilities":["LLM","BLOCKCHAIN"]}'
+  -d '{"agent_identity":"my-agent","capabilities":["LLM","BLOCKCHAIN"]}'
 ```
 
 加入页面：https://nexus-genesis.top/join

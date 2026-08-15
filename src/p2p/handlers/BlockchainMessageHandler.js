@@ -177,7 +177,8 @@ export class BlockchainMessageHandler extends MessageHandler {
         nodeId: node.nodeId,
         blocks: [],
         fromHeight,
-        toHeight: fromHeight - 1
+        toHeight: fromHeight - 1,
+        tipHeight: node.blockchain.length - 1
       });
       return true;
     }
@@ -190,19 +191,22 @@ export class BlockchainMessageHandler extends MessageHandler {
       blocks.push(node.blockchain[i].toJSON());
     }
 
-    console.log(`[SYNC] Sending ${blocks.length} blocks (${fromHeight}-${cappedToHeight}) to peer ${peerId.slice(0, 8)}`);
+    const tipHeight = node.blockchain.length - 1;
+    console.log(`[SYNC] Sending ${blocks.length} blocks (${fromHeight}-${cappedToHeight}) to peer ${peerId.slice(0, 8)}, tip=${tipHeight}`);
     this.p2pServer.send(peerId, {
       type: 'BLOCKS_RESPONSE',
       nodeId: node.nodeId,
       blocks,
       fromHeight,
-      toHeight: cappedToHeight
+      toHeight: cappedToHeight,
+      tipHeight
     });
     return true;
   }
 
   /**
    * Processing BLOCKS_RESPONSE Message — apply received blocks in order
+   * and automatically request next batch if there are more blocks to sync
    */
   async handleBlocksResponse(peerId, msg) {
     const node = this.p2pServer.node;
@@ -214,10 +218,22 @@ export class BlockchainMessageHandler extends MessageHandler {
       return true;
     }
 
-    console.log(`[SYNC] Received ${blocks.length} blocks (${msg.fromHeight}-${msg.toHeight}) from peer ${peerId.slice(0, 8)}`);
+    console.log(`[SYNC] Received ${blocks.length} blocks (${msg.fromHeight}-${msg.toHeight}) from peer ${peerId.slice(0, 8)}, tip=${msg.tipHeight}`);
     const { Block } = await import('../../blockchain/block.js');
     const blockObjs = blocks.map(b => Block.fromJSON(b));
     await node.handleBlocksResponse(peerId, blockObjs);
+
+    // Automatically continue syncing if more blocks are available
+    if (msg.tipHeight !== undefined && msg.toHeight < msg.tipHeight && node.requestBlocksFromPeer) {
+      const nextFrom = msg.toHeight + 1;
+      const peerNodeId = this.p2pServer.peerIdToNodeId.get(peerId);
+      if (peerNodeId) {
+        setTimeout(() => {
+          node.requestBlocksFromPeer(peerNodeId, nextFrom, -1);
+        }, 100);
+      }
+    }
+
     return true;
   }
 

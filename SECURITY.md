@@ -31,6 +31,10 @@ Since we do not yet have a formal third-party audit, we maintain this self-audit
 | 10 | Unsupported feature boundary | ✅ Enforced | `UnsupportedFeatureError` for all non-public capabilities; no silent 404 fallback |
 | 11 | Endpoint exposure accuracy | ✅ Verified | `/health` and `/api/v1/bootstrap` only list endpoints that actually exist |
 | 12 | CLI/SDK capability alignment | ✅ Verified | Both SDKs and CLI mark unsupported features identically |
+| 13 | Deterministic op-key derivation | ✅ Fixed | `generateKeyPairFromSeed` passes the seed into `ml_dsa44.keygen()` (both main repo and npm package); same seed ⇒ same key pair, verified by test |
+| 14 | Memory hygiene (`secureZero` / `ShardedSecret`) | ✅ Implemented | Private keys held as XOR 2-of-2 shards; plaintext exists only inside transient `use()` callbacks, deterministically zeroed; boundary statement in `packages/agent-keys/src/secure.js` |
+| 15 | Wallet key destruction | ✅ Implemented | `PQCWallet.destroy()` in both main repo and npm package wipes key material; signing after destroy is rejected |
+| 16 | Attack simulations | ✅ Published | Reproducible core-dump / `/proc/mem` / gcore / env / swap scan suite: `packages/agent-keys/test/attack-simulations/` |
 
 ---
 
@@ -49,6 +53,8 @@ We track all security-relevant bugs that have been discovered and fixed. This de
 | 2026-06-18 | SDK calling non-existent API endpoints silently | Medium | `UnsupportedFeatureError` for all non-public features | ✅ Production |
 | 2026-06-21 | Validator join 400 for externally registered agents | Medium | Auto-create wallet instance for external agents | ✅ Production |
 | 2026-06-21 | `/health` exposing legacy/non-existent endpoints | Low | Updated to current bootstrap API paths only | ✅ Production |
+| 2026-08-15 | `generateKeyPairFromSeed` ignored its seed parameter and used system entropy — operation keys were NOT recoverable from the master key, silently breaking the three-tier hierarchy | Critical | Seed now passed to `ml_dsa44.keygen()` (SHAKE256 per FIPS 204) in both `src/wallet/keyDerivation.js` and `packages/agent-keys`; determinism covered by tests | ✅ Tests |
+| 2026-08-15 | Private keys persisted as contiguous plaintext in process memory for the wallet's whole lifetime | High | `ShardedSecret` (XOR 2-of-2 sharding) + transient `use()` pattern + `secureZero()` + `PQCWallet.destroy()`; honest boundary statement published in `src/secure.js` header and attack-simulation README | ✅ Tests + attack suite |
 
 ---
 
@@ -152,19 +158,29 @@ We run a **reputation-based bug bounty program** during the bootstrap phase. Sin
 | Medium (logic errors, info leaks) | 5,000 NGEN (test) + listed in Resolved Issues |
 | Low (UX issues, documentation errors) | Listed in Resolved Issues + 1,000 NGEN (test) |
 
-**How to submit:** Open an issue at [github.com/nexus-genesis/nexusgenesis/issues](https://github.com/nexus-genesis/nexusgenesis/issues) with the `security` label.
+**How to submit:** Use the private channels in "Reporting a Vulnerability" below (not public issues).
 
 ---
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability, please report it responsibly:
+If you discover a security vulnerability, please report it responsibly — **use a private channel, not public issues**:
 
-1. Open an issue at [github.com/nexus-genesis/nexusgenesis/issues](https://github.com/nexus-genesis/nexusgenesis/issues) with the `security` label
-2. **Do not** publicly disclose unpatched vulnerabilities
-3. Include: affected component, steps to reproduce, potential impact
+1. **Preferred**: GitHub's private vulnerability reporting — the *"Report a vulnerability"* button on the [Security advisories page](https://github.com/nexus-genesis/nexusgenesis/security/advisories/new)
+2. **Fallback**: open an issue titled `Security report (details withheld)` with the `security` label — maintainers will contact you for details before any public discussion
+3. **Do not** publicly disclose unpatched vulnerabilities
+4. Include: affected component, steps to reproduce, potential impact
 
-We will acknowledge reports within 48 hours and aim to provide a fix within 7 days for critical issues.
+We will acknowledge reports within **48 hours** and aim to provide a fix within **7 days** for critical issues.
+
+### Severity Definitions
+
+| Severity | Definition |
+|----------|-----------|
+| Critical | Remote code execution, consensus break, private key disclosure, loss of funds/data |
+| High | Auth bypass, signature verification bypass, fund misdirection, sandbox escape |
+| Medium | Logic errors, information leaks, input validation gaps with limited blast radius |
+| Low | UX issues, documentation errors, hardening opportunities |
 
 ---
 
@@ -195,6 +211,7 @@ Since this is an open-source project, you can independently verify everything:
 
 This policy covers:
 - The NexusGenesis node software (`src/`)
+- Published npm packages (`packages/agent-keys` and siblings — key management, custody tokens, takeover)
 - HTTP API endpoints
 - SDK (`sdk/`, `src/sdk/`)
 - CLI tools (`cli.js`, `tools/cli.js`)

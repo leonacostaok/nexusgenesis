@@ -5,24 +5,48 @@
  * AES-256-GCM export/import. Private keys never leave the caller.
  * Extracted from NexusGenesis src/wallet/pqcWallet.js.
  */
-import { generateKeyPair, sign, verify, hash } from './pqc.js';
+import { generateKeyPair, sign, signSync, verify, hash } from './pqc.js';
 import { generateAddress, validateAddress } from './address.js';
 import { encryptPrivateKey, decryptPrivateKey, isValidEnvelope } from './encryption.js';
+import { ShardedSecret, secureZero } from './secure.js';
 
 /**
  * PQC wallet.
+ *
+ * MEMORY MODEL: the private key is held as a ShardedSecret (XOR 2-of-2).
+ * The plaintext key NEVER persists contiguously in memory — it exists only
+ * for the millisecond-scale window of each sign/encrypt operation, inside
+ * ShardedSecret.use(), and is deterministically zeroed afterwards.
+ * Call destroy() when the wallet is no longer needed.
  */
 export class PQCWallet {
   constructor(publicKey, privateKey, balance = 0n, nonce = 0) {
     this.publicKey = publicKey;
-    this.privateKey = privateKey;
+    // Shard immediately; ShardedSecret's constructor zeroes the caller's copy.
+    // 私钥立即分片存储 —— 构造函数内部会清零传入的明文副本。
+    this._sharded = privateKey ? new ShardedSecret(privateKey) : null;
     this.address = generateAddress(publicKey);
     this.balance = balance;
     this.nonce = nonce;
   }
 
+  /**
+   * Backward-compatible accessor. Each read reassembles a fresh plaintext
+   * copy — PREFER sign()/exportEncrypted()/destroy() which keep the key
+   * sharded. The returned buffer is caller-managed: secureZero() it when
+   * done. Returns null after destroy().
+   */
+  get privateKey() {
+    return this._sharded ? this._sharded._reassemble() : null;
+  }
+
   get secretKey() {
     return this.privateKey;
+  }
+
+  /** Whether the wallet's key material has been destroyed. */
+  get isDestroyed() {
+    return this._sharded === null || this._sharded.isDestroyed;
   }
 
   /** Generate a new wallet. @returns {Promise<PQCWallet>} */
@@ -33,8 +57,13 @@ export class PQCWallet {
 
   async sign(message) {
     const messageStr = typeof message === 'object' ? JSON.stringify(message) : message;
-    const signature = await sign(messageStr, this.privateKey);
-    return signature.toString('hex');
+    if (this._sharded) {
+      // Transient-use pattern: plaintext exists only inside the callback.
+      // 瞬时使用模式：明文仅存在于回调执行期间，finally 中确定性清零。
+      const sigHex = this._sharded.use(pk => signSync(messageStr, pk).toString('hex'));
+      return sigHex;
+    }
+    throw new Error('Wallet destroyed or keyless');
   }
 
   async verify(message, signature, publicKey) {
@@ -54,8 +83,13 @@ export class PQCWallet {
   static async signWithPrivateKey(message, privateKeyHex) {
     const messageStr = typeof message === 'object' ? JSON.stringify(message) : message;
     const privateKey = Buffer.from(privateKeyHex, 'hex');
-    const signature = await sign(messageStr, privateKey);
-    return signature.toString('hex');
+    try {
+      const signature = await sign(messageStr, privateKey);
+      return signature.toString('hex');
+    } finally {
+      // Single-use key material — zero the freshly-decoded copy.
+      secureZero(privateKey);
+    }
   }
 
   async signTransaction(transaction) {
@@ -82,13 +116,28 @@ export class PQCWallet {
     return this.balance >= amount;
   }
 
+  /**
+   * Destroy all key material. After this call the wallet can no longer
+   * sign; publicKey/address/balance remain readable for accounting.
+   * Idempotent.
+   */
+  destroy() {
+    if (this._sharded) {
+      this._sharded.destroy();
+      this._sharded = null;
+    }
+  }
+
   /** Encrypt-export the wallet (AES-256-GCM). @returns {object|null} envelope */
   exportEncrypted(password) {
-    if (!this.privateKey) return null;
-    return encryptPrivateKey(this.privateKey, password, {
-      address: this.address,
-      publicKey: this.publicKey.toString('hex')
-    });
+    if (!this._sharded) return null;
+    // Transient use: plaintext key exists only inside the callback.
+    return this._sharded.use(pk =>
+      encryptPrivateKey(pk, password, {
+        address: this.address,
+        publicKey: this.publicKey.toString('hex')
+      })
+    );
   }
 
   static importEncrypted(envelope, password) {

@@ -120,24 +120,15 @@ export async function generateKeyPairFromSeed(seed) {
     throw new Error(`Invalid seed length: expected ${OP_KEY_SEED_LENGTH}, got ${seed?.length}`);
   }
 
-  // 用种子生成确定性随机数生成器（DRBG）
-  const drbg = crypto.createCipher('aes-256-ctr', seed);
-  
   // 导入 PQC 模块（懒加载，避免循环依赖）
   const { ml_dsa44 } = await import('@noble/post-quantum/ml-dsa.js');
-  
-  // Dilithium2 不支持从种子直接生成，需要用确定性方式生成随机数
-  // 这里使用种子派生的随机数来生成密钥对
-  const deterministicRandom = () => {
-    const buf = Buffer.alloc(32);
-    drbg.update(buf);
-    return buf;
-  };
-  
-  // 生成密钥对（ml_dsa44.keygen 使用系统熵）
-  // 如果需要确定性生成，需要在外部预处理熵源
-  const keyPair = ml_dsa44.keygen();
-  
+
+  // 确定性密钥生成：ml_dsa44.keygen(seed) 通过 SHAKE256（FIPS 204）扩展 32 字节种子。
+  // 同一种子 ALWAYS 生成同一密钥对 —— 这是三层密钥体系可从 Master Key 恢复的前提。
+  // SECURITY FIX: 此前 seed 被忽略、keygen() 使用系统熵，导致操作密钥不可恢复。
+  // （与 packages/agent-keys/src/derivation.js 保持一致）
+  const keyPair = ml_dsa44.keygen(new Uint8Array(seed));
+
   return {
     publicKey: Buffer.from(keyPair.publicKey),
     privateKey: Buffer.from(keyPair.secretKey)

@@ -35,6 +35,8 @@ export async function generateKeyPair() {
 
 /**
  * Sign a message with a Dilithium2 private key.
+ * The private key is caller-owned: do not retain it after use — wrap it in
+ * ShardedSecret and use signSync() inside use() for automatic zeroing.
  * @param {string|Buffer} message
  * @param {Buffer} privateKey
  * @returns {Promise<Buffer>}
@@ -46,6 +48,22 @@ export async function sign(message, privateKey) {
   }
   const signature = ml_dsa44.sign(messageBuffer, privateKey);
   return Buffer.from(signature);
+}
+
+/**
+ * Synchronous signing primitive — required by ShardedSecret.use(), whose
+ * finally-block zeroing is only safe for synchronous callbacks.
+ * ml_dsa44.sign is synchronous under the hood; this exposes that fact.
+ * @param {string|Buffer} message
+ * @param {Buffer} privateKey
+ * @returns {Buffer}
+ */
+export function signSync(message, privateKey) {
+  const messageBuffer = typeof message === 'string' ? Buffer.from(message) : message;
+  if (privateKey.length !== DILITHIUM2_PRIVATE_KEY_LENGTH) {
+    throw new Error(`Invalid private key length: ${privateKey.length}, expected: ${DILITHIUM2_PRIVATE_KEY_LENGTH}`);
+  }
+  return Buffer.from(ml_dsa44.sign(messageBuffer, privateKey));
 }
 
 /**
@@ -130,6 +148,7 @@ export function getPQCInfo() {
 export default {
   generateKeyPair,
   sign,
+  signSync,
   verify,
   hash,
   randomBytes,

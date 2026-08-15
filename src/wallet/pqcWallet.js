@@ -15,6 +15,7 @@ import {
   isValidEnvelope,
   WalletEncryptionError
 } from './walletEncryption.js';
+import { secureZero } from './secureMemory.js';
 
 /**
  * PQC钱包class
@@ -41,6 +42,24 @@ export class PQCWallet extends Wallet {
    */
   get secretKey() {
     return this.privateKey;
+  }
+
+  /**
+   * 销毁内存中的私钥材料（确定性覆写，幂等）。
+   * 调用后钱包不可再签名；publicKey/address/balance 保留可读。
+   * 能力边界：覆盖显式持有的 Buffer；不覆盖 V8 栈拷贝/JIT 中间数据/
+   * 库内部副本（详见 secureMemory.js 头部声明）。
+   */
+  destroy() {
+    if (this.privateKey) {
+      secureZero(this.privateKey);
+      this.privateKey = null;
+    }
+  }
+
+  /** 私钥材料是否已销毁 */
+  get isDestroyed() {
+    return this.privateKey === null;
   }
 
   /**

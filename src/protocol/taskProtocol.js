@@ -654,6 +654,25 @@ class TaskProtocol {
       data: { submissionType: submission.type || 'generic', trustTier: tier.name, claimantRep }
     });
 
+    // ─── A3: Novice task auto-complete ───
+    // Novice tasks are system-published: no agent can act as their publisher-
+    // verifier, and Tier-0 claimants require dual (publisher + independent)
+    // verification which can never be satisfied. Without auto-complete these
+    // tasks deadlock in SUBMITTED forever. Micro-rewards (5-10 NGEN) justify
+    // direct completion with a modest quality score.
+    if (task.taskType === 'novice') {
+      this._completeTask(task, 'system', 'Auto-verified (novice bootstrapping task)', {
+        autoVerified: true, qualityScore: 4, verifierRole: 'system', skipChallengeWindow: true
+      });
+      this.tasks.set(taskId, task);
+      this._saveTasks();
+      if (this.node) {
+        this._recordOnChain(taskId, TXN_TYPES.TASK_SUBMIT, agentAddress, { autoVerified: true, noviceTask: true });
+      }
+      console.log(`[TaskProtocol] Novice task auto-completed: ${taskId} by ${agentAddress.slice(0, 12)}...`);
+      return { success: true, task: this._sanitizeTask(task), autoVerified: true, noviceTask: true };
+    }
+
     // Tier 2 (established): auto-verify 90% of submissions, 10% spot-check by publisher
     if (tier.level === 2 && Math.random() >= tier.spotCheckRate) {
       this._completeTask(task, 'system', 'Auto-verified (Tier 2 established, no spot-check)', {
@@ -1224,6 +1243,9 @@ class TaskProtocol {
     ];
 
     let generated = 0;
+    // A3: Publish as Swarm Pool so reward payout takes the isSystemTask branch
+    // (proper audit trail) instead of the legacy swarm_pool_legacy fallback.
+    const NOVICE_PUBLISHER = 'ng1swarmpool000000000000000000000000000';
     for (const template of NOVICE_TASK_TEMPLATES) {
       // Check if a similar task already exists (open and unclaimed)
       const exists = Array.from(this.tasks.values()).some(t =>
@@ -1242,9 +1264,10 @@ class TaskProtocol {
         description: template.description,
         requiredCapabilities: template.requiredCapabilities,
         taskType: 'novice',
+        category: template.taskType,   // preserve template category for display/matching
         minReputation: 0,
         reward: template.reward,
-        publisher: 'system',
+        publisher: NOVICE_PUBLISHER,
         status: TASK_STATUS.OPEN,
         publishedAt: now,
         claimedBy: null,
@@ -1258,7 +1281,7 @@ class TaskProtocol {
         transactionHistory: [{
           type: TXN_TYPES.TASK_PUBLISH,
           timestamp: now,
-          by: 'system'
+          by: NOVICE_PUBLISHER
         }],
         isSystemTask: true
       };

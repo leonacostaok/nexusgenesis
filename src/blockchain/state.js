@@ -62,7 +62,7 @@ const REPUTATION_REWARDS = {
 };
 
 // A3: 新手加速 — 声誉低于 5 的 Agent 完成任务获得额外声誉奖励，加速冷启动
-const NOVICE_REPUTATION_THRESHOLD = 5;   // 低于此声誉享受加速
+export const NOVICE_REPUTATION_THRESHOLD = 5;   // 低于此声誉享受加速
 const NOVICE_TASK_BONUS = 1;             // 额外 +1 声誉（TASK_COMPLETED 2 + 1 = 3）
 
 // Slash / Violation 惩罚常量 (Phase 1 anti-self-dealing)

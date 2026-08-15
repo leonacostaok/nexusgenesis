@@ -10,7 +10,7 @@ import fs from 'fs';
 import path from 'path';
 import agentWalletManager from '../wallet/agentWalletManager.js';
 import { fileURLToPath } from 'url';
-import { MilestoneSystem } from '../blockchain/state.js';
+import { MilestoneSystem, NOVICE_REPUTATION_THRESHOLD } from '../blockchain/state.js';
 import { TX_TYPE } from '../blockchain/transactionEngine.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -122,6 +122,7 @@ class TaskProtocol {
     this._loadTasks();
     this._loadChallenges();
     this._startExpiryChecker();
+    this._startNoviceRefill();
   }
 
   _initDirectories() {
@@ -217,6 +218,30 @@ class TaskProtocol {
         console.log(`[TaskProtocol] Expired/Finalized ${expired} tasks`);
       }
     }, 60000);
+  }
+
+  /**
+   * A3: 新手任务自动补充 — 每 6 小时检查一次，如果 open 的新手任务少于 3 个则补充至 10 个
+   * 每日最多补充一次（避免重复生成）
+   */
+  _startNoviceRefill() {
+    this._lastNoviceRefillAt = 0;
+    setInterval(() => {
+      const now = Date.now();
+      // 每 24 小时最多补充一次
+      if (now - this._lastNoviceRefillAt < 86400000) return;
+
+      const openNoviceTasks = Array.from(this.tasks.values())
+        .filter(t => t.taskType === 'novice' && t.status === TASK_STATUS.OPEN);
+
+      if (openNoviceTasks.length < 3) {
+        const count = this.generateNoviceTasks(10);
+        if (count > 0) {
+          this._lastNoviceRefillAt = now;
+          console.log(`[TaskProtocol] Novice refill: generated ${count} tasks (${openNoviceTasks.length} open remaining)`);
+        }
+      }
+    }, 21600000); // 6 hours
   }
 
   /**
@@ -554,6 +579,17 @@ class TaskProtocol {
         reason: `This ${task.taskType} task requires reputation >= ${task.minReputation}, you have ${agentReputation}`,
         errorCode: 'INSUFFICIENT_REPUTATION',
         requiredReputation: task.minReputation,
+        currentReputation: agentReputation
+      };
+    }
+
+    // A3: Novice task protection — only agents with reputation < NOVICE_REPUTATION_THRESHOLD can claim
+    if (task.taskType === 'novice' && agentReputation >= NOVICE_REPUTATION_THRESHOLD) {
+      return {
+        success: false,
+        reason: `Novice tasks are reserved for agents with reputation < ${NOVICE_REPUTATION_THRESHOLD}, you have ${agentReputation}`,
+        errorCode: 'NOT_NOVICE',
+        requiredReputation: 0,
         currentReputation: agentReputation
       };
     }

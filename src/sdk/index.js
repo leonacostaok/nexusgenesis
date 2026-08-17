@@ -193,6 +193,43 @@ class NexusGenesisSDK {
     return PQCWallet.verify(message, signature, publicKey);
   }
 
+  /**
+   * P0-5.2: Bind a human Master Key to this agent (custody takeover rights).
+   * Submits a pre-built BIND_MASTER_KEY transaction to the bootstrap relay.
+   * Note: binding costs 1 NGEN fee and must occur within the 72h binding window.
+   *
+   * @param {object} signedTransaction — pre-signed BIND_MASTER_KEY tx.
+   *   Build it with nexusgenesis-agent-keys:
+   *     buildBindMasterKeyTransaction({ agentId, masterPrivateKey, masterPublicKeyHex })
+   *   (the SDK class does not hold the human Master Key — signing stays local)
+   * @returns {Promise<object>} Server response
+   */
+  async bindMasterKey(signedTransaction) {
+    const agentId = signedTransaction?.payload?.agentId;
+    if (!agentId) {
+      throw new Error('bindMasterKey: signedTransaction.payload.agentId is required');
+    }
+    if (signedTransaction.tx_type !== 'BIND_MASTER_KEY') {
+      throw new Error(`bindMasterKey: expected tx_type BIND_MASTER_KEY, got ${signedTransaction.tx_type}`);
+    }
+    try {
+      const response = await this.httpClient.post(
+        `/api/v1/bootstrap/agents/${encodeURIComponent(agentId)}/bind-master-key`,
+        { signedTransaction }
+      );
+      this.eventEmitter.emit('masterKeyBound', response.data);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        const e = new Error(error.response.data?.error || 'Master Key binding failed');
+        e.status = error.response.status;
+        e.errorCode = error.response.data?.error_code;
+        throw e;
+      }
+      throw error;
+    }
+  }
+
   // ==================== Agent 操作 ====================
 
   async registerAgent(options = {}) {

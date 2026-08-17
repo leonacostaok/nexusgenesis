@@ -17,6 +17,56 @@ import { MilestoneSystem } from '../../blockchain/state.js';
 
 const router = Router();
 
+// ─── P1-1.2: Master Key binding expiry warning (in-app notification) ───
+// For requests carrying x-agent-identity whose agent is still pending-binding,
+// attach an X-Warning header once the deadline is within 24h.
+// Cached per-identity for 60s to avoid a full registry scan per request.
+const _bindingWarningCache = new Map(); // identity -> { expiresAt, warning }
+const BINDING_WARNING_CACHE_MS = 60 * 1000;
+const BINDING_WARNING_THRESHOLD_MS = 24 * 60 * 60 * 1000;
+
+router.use((req, res, next) => {
+  const agentIdentity = req.headers['x-agent-identity'];
+  if (!agentIdentity || typeof agentIdentity !== 'string') return next();
+
+  const now = Date.now();
+  const cached = _bindingWarningCache.get(agentIdentity);
+  if (cached) {
+    if (cached.expiresAt <= now) {
+      _bindingWarningCache.delete(agentIdentity);
+    } else if (cached.warning) {
+      res.setHeader('X-Warning', cached.warning);
+      return next();
+    } else {
+      return next();
+    }
+  }
+
+  try {
+    const node = req.app.locals.node;
+    let warning = null;
+    if (node?.resolveRegisteredAgent) {
+      const rec = node.resolveRegisteredAgent(agentIdentity);
+      if (rec?.custody === 'pending-binding' && rec.binding_deadline) {
+        const deadlineMs = new Date(rec.binding_deadline).getTime();
+        const remaining = deadlineMs - now;
+        if (remaining > 0 && remaining <= BINDING_WARNING_THRESHOLD_MS) {
+          const hoursLeft = (remaining / 3600000).toFixed(1);
+          warning = `Master-Key-Binding-Expiring: ${hoursLeft}h remaining. ` +
+            `Bind via POST /api/v1/bootstrap/agents/:agentId/bind-master-key ` +
+            `or extend once via POST /api/v1/bootstrap/agents/:agentId/extend-binding`;
+          res.setHeader('X-Warning', warning);
+        }
+      }
+    }
+    _bindingWarningCache.set(agentIdentity, { expiresAt: now + BINDING_WARNING_CACHE_MS, warning });
+  } catch {
+    // Warnings must never block or fail the request
+    _bindingWarningCache.set(agentIdentity, { expiresAt: now + BINDING_WARNING_CACHE_MS, warning: null });
+  }
+  next();
+});
+
 // ─── Welcome package builder ───
 function buildWelcomePackage(node) {
   const blockHeight = node?.blockchain?.length || 0;
@@ -960,11 +1010,134 @@ router.post('/api/v1/bootstrap/agents/:agentId/bind-master-key', async (req, res
   }
 });
 
+// ─── P1-1.2: One-time 24h binding-window extension ──────────────────
+// An agent (or its human operator) may extend the Master Key binding
+// window by 24h, exactly once, while still in pending-binding and the
+// deadline has not yet passed.
+// SECURITY: Requires a PQC signature from the Agent's registered operation key
+// to prove identity. The client signs `extend-binding:${agentId}:${timestamp}`.
+
+router.post('/api/v1/bootstrap/agents/:agentId/extend-binding', async (req, res) => {
+  try {
+    const node = req.app.locals.node;
+    if (!node) {
+      return res.status(503).json({ success: false, error: 'Node not ready', error_code: 'NODE_NOT_READY' });
+    }
+    const state = node.currentState;
+    if (!state?.agentRegistry?.agents) {
+      return res.status(503).json({ success: false, error: 'State not ready', error_code: 'STATE_NOT_READY' });
+    }
+
+    const { agentId } = req.params;
+    const { signature, timestamp } = req.body;
+    if (!signature || !timestamp) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing signature or timestamp',
+        error_code: 'MISSING_AUTH',
+        hint: 'Sign the string "extend-binding:{agentId}:{timestamp}" with your Agent\'s operation key and send { signature, timestamp } in the request body.'
+      });
+    }
+
+    // Verify signature timestamp is fresh (within 120s)
+    if (Date.now() - timestamp > 120000) {
+      return res.status(400).json({
+        success: false,
+        error: 'Signature timestamp expired',
+        error_code: 'SIGNATURE_EXPIRED'
+      });
+    }
+
+    const resolved = node.resolveRegisteredAgent ? node.resolveRegisteredAgent(agentId) : null;
+    if (!resolved?.agentId) {
+      return res.status(404).json({ success: false, error: `Agent not found: ${agentId}`, error_code: 'AGENT_NOT_FOUND' });
+    }
+
+    // Verify PQC signature against the registered agent's public key
+    const signedData = `extend-binding:${agentId}:${timestamp}`;
+    const { PQCWallet } = await import('../../wallet/pqcWallet.js');
+    const isValid = await PQCWallet.verify(
+      signedData,
+      signature,
+      Buffer.from(resolved.public_key, 'hex')
+    );
+    if (!isValid) {
+      return res.status(403).json({
+        success: false,
+        error: 'Invalid signature',
+        error_code: 'INVALID_SIGNATURE',
+        hint: 'The signature must be created with the Agent\'s registered operation key.'
+      });
+    }
+
+    // Mutate the live record (resolveRegisteredAgent returns a copy)
+    const record = state.agentRegistry.agents.get(resolved.agentId);
+    if (record.custody !== 'pending-binding') {
+      return res.status(409).json({
+        success: false,
+        error: `Binding window not extendable: custody=${record.custody}`,
+        error_code: 'CUSTODY_STATE_INVALID',
+        hint: 'Only agents still in pending-binding can extend. Window expired → self-sovereign is irreversible.'
+      });
+    }
+    if (record.binding_extended) {
+      return res.status(409).json({
+        success: false,
+        error: 'Binding window already extended once (one-time limit)',
+        error_code: 'ALREADY_EXTENDED'
+      });
+    }
+    const oldDeadline = new Date(record.binding_deadline).getTime();
+    const now = Date.now();
+    if (!Number.isFinite(oldDeadline) || now >= oldDeadline) {
+      // Expired window is irreversible (auto-transitioned to self-sovereign on next bind attempt)
+      return res.status(409).json({
+        success: false,
+        error: 'Binding deadline has already passed — extension is not possible',
+        error_code: 'DEADLINE_PASSED'
+      });
+    }
+
+    const EXTEND_MS = 24 * 60 * 60 * 1000;
+    record.binding_deadline = new Date(oldDeadline + EXTEND_MS).toISOString();
+    record.binding_extended = true;
+    record.binding_extended_at = new Date(now).toISOString();
+    state.agentRegistry.agents.set(resolved.agentId, record);
+    if (state.changes?.agents) state.changes.agents.add(resolved.agentId);
+    // Clear ALL binding warning cache entries matching this agent (identity/address/agentId)
+    for (const [key, val] of _bindingWarningCache.entries()) {
+      if (key === resolved.identity || key === resolved.address || key === resolved.agentId) {
+        _bindingWarningCache.delete(key);
+      }
+    }
+
+    console.log(`[EXTEND-BINDING] agent=${resolved.agentId.slice(0, 16)}... deadline=${record.binding_deadline} (one-time 24h extension used)`);
+
+    return res.json({
+      success: true,
+      agentId,
+      custody: record.custody,
+      previousDeadline: new Date(oldDeadline).toISOString(),
+      newDeadline: record.binding_deadline,
+      extendedBy: '24h',
+      note: 'This was your one-time extension. Bind your Master Key before the new deadline.'
+    });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e.message, error_code: 'INTERNAL_ERROR' });
+  }
+});
+
 // ─── Unified registration response builder ────────────────────────────
 
 function sendRegistrationResponse(res, node, agentIdentity, result, payload, address, custodyInfo, isEarlyBird, clientIp) {
-  const BINDING_WINDOW_HOURS = 24;
-  const bindingDeadline = custodyInfo.bindingDeadline || (new Date(Date.now() + 24 * 3600 * 1000).toISOString());
+  const BINDING_WINDOW_HOURS = 72;
+  const bindingDeadline = custodyInfo.bindingDeadline || (new Date(Date.now() + 72 * 3600 * 1000).toISOString());
+  const now = Date.now();
+  const deadlineMs = custodyInfo.bindingDeadline ? new Date(custodyInfo.bindingDeadline).getTime() : (now + 72 * 3600 * 1000);
+  const remainingMs = Math.max(0, deadlineMs - now);
+  const remainingHours = Math.floor(remainingMs / 3600000);
+  const remainingDays = Math.floor(remainingHours / 24);
+  const remainingHoursLeft = remainingHours % 24;
   
   const response = {
     success: true,
@@ -982,15 +1155,21 @@ function sendRegistrationResponse(res, node, agentIdentity, result, payload, add
       humanBindingDeadline: bindingDeadline,
       bindingWindowHours: BINDING_WINDOW_HOURS,
       note: custodyInfo.custody?.startsWith('pending')
-        ? `You have ${BINDING_WINDOW_HOURS} hours to bind your Master Key for wallet control rights.`
+        ? `You have ${BINDING_WINDOW_HOURS} hours (${remainingDays > 0 ? `${remainingDays}d ` : ''}${remainingHoursLeft}h) to bind your Master Key for wallet control rights.`
         : custodyInfo.custody?.startsWith('self')
           ? 'Your Agent wallet is self-custodied. Private key never left your browser.'
-          : custodyInfo.custody
+          : custodyInfo.custody,
+      reminder: custodyInfo.custody?.startsWith('pending') ? {
+        message: `Master Key binding deadline: ${new Date(bindingDeadline).toISOString()}. You will be reminded at 24h and 6h before expiry.`,
+        deadline: bindingDeadline,
+        remainingHours: remainingHours,
+        reminderTiming: ['24h_before', '6h_before']
+      } : undefined
     },
     human_takeover: {
       bindingDeadline: bindingDeadline,
       bindMasterKeyEndpoint: 'POST /api/v1/bootstrap/agents/:agentId/bind-master-key',
-      description: 'Generate a Master Key within the binding window to retain wallet control rights.'
+      description: 'Generate a Master Key within the 72-hour binding window to retain wallet control rights.'
     },
     reward: isEarlyBird ? 10900 : 900,
     totalAgents: getUnifiedAgents(node).length,
@@ -1533,7 +1712,7 @@ router.post('/api/v1/agents/decay/run', (req, res) => {
  */
 router.get('/api/v1/agents/:agentId/spend-config', (req, res) => {
   try {
-    const state = req.app?.locals?.state;
+    const state = req.app.locals.node?.currentState;
     if (!state || !state.agents) {
       return res.status(503).json({ success: false, error: 'State not ready' });
     }
@@ -1570,7 +1749,7 @@ router.get('/api/v1/agents/:agentId/spend-config', (req, res) => {
  */
 router.put('/api/v1/agents/:agentId/spend-config', (req, res) => {
   try {
-    const state = req.app?.locals?.state;
+    const state = req.app.locals.node?.currentState;
     if (!state || !state.agents) {
       return res.status(503).json({ success: false, error: 'State not ready' });
     }
@@ -1662,7 +1841,7 @@ router.put('/api/v1/agents/:agentId/spend-config', (req, res) => {
  */
 router.post('/api/v1/agents/:agentId/takeover', async (req, res) => {
   try {
-    const state = req.app?.locals?.state;
+    const state = req.app.locals.node?.currentState;
     if (!state || !state.agents) {
       return res.status(503).json({ success: false, error: 'State not ready' });
     }
@@ -1731,7 +1910,7 @@ router.post('/api/v1/agents/:agentId/takeover', async (req, res) => {
  */
 router.get('/api/v1/agents/:agentId/control-status', (req, res) => {
   try {
-    const state = req.app?.locals?.state;
+    const state = req.app.locals.node?.currentState;
     if (!state || !state.agents) {
       return res.status(503).json({ success: false, error: 'State not ready' });
     }
@@ -1771,7 +1950,7 @@ router.post('/api/v1/approvals/create', async (req, res) => {
   console.log(`[${requestId}] CREATE REQUEST START agentId=${req.body.agentId} type=${req.body.type}`);
 
   try {
-    const state = req.app?.locals?.state;
+    const state = req.app.locals.node?.currentState;
     if (!state || !state.agents) {
       console.log(`[${requestId}] FAIL: State not ready`);
       return res.status(503).json({ success: false, error: 'State not ready' });
@@ -1870,7 +2049,7 @@ router.post('/api/v1/approvals/:approvalId/decide', async (req, res) => {
   console.log(`[${requestId}] DECIDE REQUEST START approvalId=${req.params.approvalId} decision=${req.body.decision}`);
 
   try {
-    const state = req.app?.locals?.state;
+    const state = req.app.locals.node?.currentState;
     if (!state || !state.approvals) {
       console.log(`[${requestId}] FAIL: State not ready`);
       return res.status(503).json({ success: false, error: 'State not ready' });
@@ -2011,7 +2190,7 @@ router.post('/api/v1/approvals/:approvalId/decide', async (req, res) => {
 
               // 持久化到 state txHistory
               try {
-                const st = req.app?.locals?.state;
+                const st = req.app.locals.node?.currentState;
                 if (st && !st.transactions) st.transactions = {};
                 if (st && !st.transactions.txHistory) st.transactions.txHistory = [];
                 st.transactions.txHistory.push(txRecord);
@@ -2065,7 +2244,7 @@ router.post('/api/v1/approvals/:approvalId/decide', async (req, res) => {
  */
 router.get('/api/v1/approvals', (req, res) => {
   try {
-    const state = req.app?.locals?.state;
+    const state = req.app.locals.node?.currentState;
     if (!state || !state.approvals) {
       return res.json({ success: true, approvals: [] });
     }
@@ -2099,7 +2278,7 @@ router.get('/api/v1/approvals', (req, res) => {
  */
 router.get('/api/v1/approvals/:approvalId', (req, res) => {
   try {
-    const state = req.app?.locals?.state;
+    const state = req.app.locals.node?.currentState;
     if (!state || !state.approvals) {
       return res.status(503).json({ success: false, error: 'State not ready' });
     }

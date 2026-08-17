@@ -22,5 +22,10 @@ export * from './session.js';
 export { PQCWallet, Transaction } from './wallet.js';
 export { base58Encode, base58Decode, isValidBase58 } from './base58.js';
 export { spawnSigner, SignerHandle } from './signer.js';
+export {
+  bindMasterKey,
+  buildBindMasterKeyTransaction,
+  masterKeyFingerprint
+} from './bindMasterKey.js';
 
 export { getPQCInfo } from './pqc.js';

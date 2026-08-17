@@ -34,6 +34,7 @@ import agentWalletManager from '../../wallet/agentWalletManager.js';
 import { getSubjectIdentifier } from '../../identity/subjectIdentifier.js';
 import { verifyBypassSecret } from '../adminAuth.js';
 import { extractCustodyToken, verifyCustodyToken } from '../custodyToken.js';
+import { buildSignPayload, verifySignPayload } from '../signPayload.js';
 import { buildAuthHint } from '../authHint.js';
 
 const VOTE_SIGNATURE_TIMEOUT_MS = 120 * 1000;
@@ -806,23 +807,30 @@ async function verifyAgentIdentity(agent, req, action = 'post') {
     usedVoteNonces.set(nonceKey, Date.now());
 
     // Reconstruct exact signed data based on action
-    let signedFields;
+    // P1-2: canonical unified format first, legacy format as fallback
+    let legacyFields;
+    let extra = {};
     if (action === 'vote') {
-      signedFields = { topicId: req.params.id, agent, vote: req.body.vote, timestamp, nonce };
+      legacyFields = { topicId: req.params.id, agent, vote: req.body.vote, timestamp, nonce };
+      extra = { vote: req.body.vote };
     } else if (action === 'create_topic') {
-      signedFields = { agent, action: 'create_topic', timestamp, nonce };
+      legacyFields = { agent, action: 'create_topic', timestamp, nonce };
     } else {
-      signedFields = { agent, action, topicId: req.params.id, timestamp, nonce };
+      legacyFields = { agent, action, topicId: req.params.id, timestamp, nonce };
     }
-    const signedData = JSON.stringify(signedFields);
+    const canonicalData = buildSignPayload({
+      action, id: req.params.id, agent, timestamp, nonce, ...extra
+    });
+    const legacyData = JSON.stringify(legacyFields);
 
-    const isValid = await PQCWallet.verify(
-      signedData,
+    const verifyResult = await verifySignPayload({
+      canonical: canonicalData,
+      legacy: legacyData,
       signature,
-      Buffer.from(agentRecord.public_key, 'hex')
-    );
+      verify: (data, sig) => PQCWallet.verify(data, sig, Buffer.from(agentRecord.public_key, 'hex'))
+    });
 
-    if (!isValid) {
+    if (!verifyResult.valid) {
       console.warn(`[SECURITY] Invalid signature for ${action} by "${agent}"`);
       return {
         verified: false,

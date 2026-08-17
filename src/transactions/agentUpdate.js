@@ -4,7 +4,7 @@
  * Handles human takeover operations on Agents.
  * 
  * Transaction types:
- * 1. BIND_MASTER_KEY — Human attaches their Master Key fingerprint within 24h window
+ * 1. BIND_MASTER_KEY — Human attaches their Master Key fingerprint within 72h window (P1-1: extended from 24h)
  * 2. AGENT_TAKEOVER  — Human replaces Agent's Operation Key (requires cooldown)
  * 
  * Both require Agent registration first (AGENT_REGISTER must succeed).
@@ -21,7 +21,7 @@ import { AGENT_CUSTODY_STATUS } from './agentRegister.js';
  * 
  * Purpose: Human binds their Master Key to an Agent, gaining takeover rights.
  * Security: 
- *   - Must be called within 24h of agent registration
+ *   - Must be called within 72h of agent registration (P1-1: extended from 24h)
  *   - Only stores fingerprint on-chain, never the full key
  *   - Proves intent via signature
  * 

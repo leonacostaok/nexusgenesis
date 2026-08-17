@@ -1097,7 +1097,13 @@ class GenesisNode {
     // 标准transactionVerify
     // 1. 基本结构Verify
     if (!tx || !tx.id || !tx.from || !tx.to || typeof tx.amount === 'undefined') {
-      return { valid: false, reason: 'Invalid transaction structure' };
+      const missing = [];
+      if (!tx) return { valid: false, reason: 'Invalid transaction: tx is null/undefined' };
+      if (!tx.id) missing.push('id');
+      if (!tx.from) missing.push('from');
+      if (!tx.to) missing.push('to');
+      if (typeof tx.amount === 'undefined') missing.push('amount');
+      return { valid: false, reason: `Invalid transaction structure: missing required field(s): ${missing.join(', ')}` };
     }
     
     // 2. address格式Verify

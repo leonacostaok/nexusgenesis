@@ -22,6 +22,10 @@ const MAX_TASK_DESCRIPTION = 10000;
 const MAX_TASK_REWARD = 1000000n;
 const TASK_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const CLAIM_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+const AUTO_VERIFY_TIMEOUT_MS = 24 * 60 * 60 * 1000; // 24h timeout auto-verify (P0-1)
+const AUTO_VERIFY_LOW_RISK_TYPES = ['analysis', 'community', 'documentation', 'general', 'monitoring'];
+const AUTO_VERIFY_HIGH_RISK_TYPES = ['governance', 'security', 'security_audit'];
+const SWARM_POOL_ADDR = 'ng1swarmpool000000000000000000000000000';
 
 // Default minimum reputation required to claim a task, by task type
 // (adapted from the WolfKing proposal — kept conservative for bootstrap)
@@ -123,6 +127,32 @@ class TaskProtocol {
     this._loadChallenges();
     this._startExpiryChecker();
     this._startNoviceRefill();
+    this._startTimeoutAutoVerify();
+  }
+
+  /**
+   * P0-1.2: 24h timeout auto-verify — checks every 5 minutes for tasks
+   * stuck in SUBMITTED beyond AUTO_VERIFY_TIMEOUT_MS.
+   * Low-risk tasks get auto-completed with default quality score 3/5.
+   * High-risk tasks are excluded (require human review).
+   */
+  _startTimeoutAutoVerify() {
+    this._timeoutAutoVerifyTimer = setInterval(() => {
+      if (!this.node || !this.node.currentState) return;
+      const now = Date.now();
+      for (const [taskId, task] of this.tasks.entries()) {
+        if (task.status !== TASK_STATUS.SUBMITTED) continue;
+        if (AUTO_VERIFY_HIGH_RISK_TYPES.includes(task.taskType)) continue;
+        const elapsed = now - task.submittedAt;
+        if (elapsed < AUTO_VERIFY_TIMEOUT_MS) continue;
+        this._completeTask(task, 'system', 'Auto-verified (24h timeout)', {
+          autoVerified: true, qualityScore: 3, verifierRole: 'system', skipChallengeWindow: true
+        });
+        this.tasks.set(taskId, task);
+        this._saveTasks();
+        console.log(`[TaskProtocol] Timeout auto-verified: ${taskId} (${task.taskType}, elapsed=${Math.round(elapsed / 3600000)}h)`);
+      }
+    }, 5 * 60 * 1000); // every 5 minutes
   }
 
   _initDirectories() {
@@ -688,13 +718,14 @@ class TaskProtocol {
     }
 
     // ─── Phase 4: Publisher auto-verify (trusted publisher shortcut) ───
-    // If publisher reputation >= 50 and task type is low-risk, auto-complete on submit
+    // P0-1.1: Relaxed to include swarm system publishers (rep >= 1 or swarm pool)
     if (this.node && this.node.currentState) {
       const pubAgentRecord = this.node.resolveRegisteredAgent ? this.node.resolveRegisteredAgent(task.publisher) : null;
       const pubRep = pubAgentRecord?.reputation || 0;
-      const lowRiskTypes = ['analysis', 'community', 'documentation', 'general'];
-      if (pubRep >= 50 && lowRiskTypes.includes(task.taskType)) {
-        this._completeTask(task, task.publisher, 'Auto-verified (trusted publisher, rep≥50)', {
+      const isSwarmPublisher = task.publisher === SWARM_POOL_ADDR;
+      const lowRiskTypes = ['analysis', 'community', 'documentation', 'general', 'monitoring'];
+      if ((pubRep >= 1 || isSwarmPublisher) && lowRiskTypes.includes(task.taskType)) {
+        this._completeTask(task, task.publisher, `Auto-verified (trusted publisher, rep=${pubRep})`, {
           autoVerified: true, qualityScore: 4, verifierRole: 'publisher'
         });
         this.tasks.set(taskId, task);
@@ -898,8 +929,8 @@ class TaskProtocol {
     if (this.node && this.node.currentState && this.node.resolveRegisteredAgent) {
       const agentRecord = this.node.resolveRegisteredAgent(task.claimedBy);
       if (agentRecord && agentRecord.agentId && typeof this.node.currentState.rewardReputation === 'function') {
-        this.node.currentState.rewardReputation(agentRecord.agentId, 'TASK_COMPLETED');
-        console.log(`[TaskProtocol] ✓ Reputation rewarded: ${agentRecord.agentId.slice(0, 16)}... +TASK_COMPLETED`);
+        this.node.currentState.rewardReputation(agentRecord.agentId, 'TASK_COMPLETED', task.qualityScore);
+        console.log(`[TaskProtocol] ✓ Reputation rewarded: ${agentRecord.agentId.slice(0, 16)}... +TASK_COMPLETED (qualityScore=${task.qualityScore})`);
       }
 
       if (typeof this.node.awardActiveReferral === 'function') {
@@ -1201,15 +1232,21 @@ class TaskProtocol {
 
   /**
    * Match open tasks to an agent based on capabilities.
+   * P0-2.1: Fixed semantics — no caps = return all, empty caps = only no-cap tasks.
+   * Added pagination support (page, pageSize).
+   * Added fallback: if result is empty, return tasks with no capability requirements.
    */
-  matchForAgent(agentCapabilities) {
-    const normalizedCaps = (agentCapabilities || []).map(c => c.toLowerCase());
+  matchForAgent(agentCapabilities, { page = 1, pageSize = 20 } = {}) {
+    const hasCapsFilter = agentCapabilities && agentCapabilities.length > 0;
+    const normalizedCaps = hasCapsFilter ? agentCapabilities.map(c => c.toLowerCase()) : [];
+
     const openTasks = Array.from(this.tasks.values())
       .filter(t => t.status === TASK_STATUS.OPEN)
-      .filter(t =>
-        t.requiredCapabilities.length === 0 ||
-        t.requiredCapabilities.every(c => normalizedCaps.includes(c.toLowerCase()))
-      )
+      .filter(t => {
+        if (!hasCapsFilter) return true; // no caps passed → return all
+        if (t.requiredCapabilities.length === 0) return true; // task has no requirements
+        return t.requiredCapabilities.every(c => normalizedCaps.includes(c.toLowerCase()));
+      })
       .sort((a, b) => {
         const rewardA = BigInt(a.reward);
         const rewardB = BigInt(b.reward);
@@ -1218,7 +1255,34 @@ class TaskProtocol {
         return a.publishedAt - b.publishedAt;
       });
 
-    return openTasks.map(t => this._sanitizeTask(t));
+    // Fallback: if result is empty and caps were specified, return tasks with no requirements
+    let result = openTasks;
+    if (result.length === 0 && hasCapsFilter) {
+      result = Array.from(this.tasks.values())
+        .filter(t => t.status === TASK_STATUS.OPEN && t.requiredCapabilities.length === 0)
+        .sort((a, b) => {
+          const rewardA = BigInt(a.reward);
+          const rewardB = BigInt(b.reward);
+          if (rewardB > rewardA) return 1;
+          if (rewardB < rewardA) return -1;
+          return a.publishedAt - b.publishedAt;
+        });
+    }
+
+    // Pagination
+    const total = result.length;
+    const totalPages = Math.ceil(total / pageSize);
+    const start = (page - 1) * pageSize;
+    const paged = result.slice(start, start + pageSize);
+
+    return {
+      tasks: paged.map(t => this._sanitizeTask(t)),
+      page,
+      pageSize,
+      total,
+      totalPages,
+      hasMore: page < totalPages
+    };
   }
 
   /**

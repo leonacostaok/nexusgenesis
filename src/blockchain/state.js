@@ -61,9 +61,9 @@ const REPUTATION_REWARDS = {
   TASK_COMPLETED: 2            // 完成任务reward — 每完成一个任务提升2点声誉
 };
 
-// A3: 新手加速 — 声誉低于 5 的 Agent 完成任务获得额外声誉奖励，加速冷启动
-export const NOVICE_REPUTATION_THRESHOLD = 5;   // 低于此声誉享受加速
-const NOVICE_TASK_BONUS = 1;             // 额外 +1 声誉（TASK_COMPLETED 2 + 1 = 3）
+// A3: 新手加速 — 声誉低于 10 的 Agent 完成任务获得额外声誉奖励，加速冷启动
+export const NOVICE_REPUTATION_THRESHOLD = 10;  // P1-3: 从 5 提升到 10，给予更长加速跑道
+const NOVICE_TASK_BONUS = 2;             // P1-3: 额外 +2 声誉（TASK_COMPLETED 2 + 2 = 4）
 
 // Slash / Violation 惩罚常量 (Phase 1 anti-self-dealing)
 export const VIOLATION_PENALTIES = {
@@ -136,14 +136,14 @@ function stringifyStateData(value) {
  * 3. On-chain Contract — recognizes signatures only, no trust in external entities
  */
 export const AGENT_CUSTODY_STATUS = Object.freeze({
-  PENDING_BINDING: 'pending-binding',       // 24h human binding window open
+  PENDING_BINDING: 'pending-binding',       // 72h human binding window open
   CO_MANAGED: 'co-managed',                 // Master Key bound, human can takeover
-  SELF_SOVEREIGN: 'self-sovereign',         // 24h expired, Agent fully autonomous
+  SELF_SOVEREIGN: 'self-sovereign',         // 72h expired, Agent fully autonomous
   REVOKED: 'revoked'                        // Human revoked via on-chain governance
 });
 
-// 24-hour binding window (milliseconds)
-export const HUMAN_BINDING_WINDOW_MS = 24 * 60 * 60 * 1000;
+// 72-hour binding window (milliseconds) — P1-1: extended from 24h to 72h
+export const HUMAN_BINDING_WINDOW_MS = 72 * 60 * 60 * 1000;
 // Takeover cooldown (milliseconds) — prevents rapid key rotation DoS
 const TAKEOVER_COOLDOWN_MS = 10 * 60 * 1000; // 10 minutes
 
@@ -323,9 +323,10 @@ export class State {
    * rewardAgent reputation
    * @param {string} agentId - Agent ID
    * @param {string} rewardType - rewardtype
+   * @param {number} [qualityScore] - 任务质量评分(1-5)，高评分获得额外加成
    * @returns {boolean} - 是否success
    */
-  rewardReputation(agentId, rewardType) {
+  rewardReputation(agentId, rewardType, qualityScore) {
     const agentRecord = this.agentRegistry.agents.get(agentId);
     if (!agentRecord) return false;
     
@@ -337,6 +338,13 @@ export class State {
     if (agentRecord.reputation < NOVICE_REPUTATION_THRESHOLD) {
       actualReward = rewardAmount + NOVICE_TASK_BONUS;
       console.log(`[REPUTATION] Novice boost: ${agentId.slice(0, 16)}... rep=${agentRecord.reputation} +${actualReward} (base=${rewardAmount}+bonus=${NOVICE_TASK_BONUS})`);
+    }
+    
+    // P1-3: 质量评分加成 — 高质量任务获得额外声誉奖励
+    if (typeof qualityScore === 'number' && qualityScore >= 4) {
+      const qualityBonus = qualityScore >= 5 ? 2 : 1;
+      actualReward += qualityBonus;
+      console.log(`[REPUTATION] Quality bonus: ${agentId.slice(0, 16)}... +${qualityBonus} (qualityScore=${qualityScore})`);
     }
     
     const newReputation = Math.min(agentRecord.reputation + actualReward, MAX_REPUTATION);

@@ -258,7 +258,14 @@ export function registerCompatRoutes(app) {
             { method: 'POST', path: '/api/v1/agents/:agentId/takeover', desc: 'Transfer agent control' },
             { method: 'GET', path: '/api/v1/agents/violations', desc: 'Get agent violations' },
             { method: 'GET', path: '/api/v1/agents/milestones', desc: 'Get agent milestones' },
-            { method: 'GET', path: '/api/v1/agents/decay', desc: 'Get reputation decay info' }
+            { method: 'GET', path: '/api/v1/agents/:agentId/decay', desc: 'Get reputation decay info' }
+          ]
+        },
+        {
+          name: 'Master Key',
+          endpoints: [
+            { method: 'POST', path: '/api/v1/bootstrap/agents/:agentId/bind-master-key', desc: 'Bind a human Master Key to this agent (for custody takeover). Cost: 1 NGEN fee. Must be within the 72h binding window.' },
+            { method: 'POST', path: '/api/v1/bootstrap/agents/:agentId/extend-binding', desc: 'Extend the Master Key binding window by 24h (one-time only, before deadline passes)' },
           ]
         },
         {

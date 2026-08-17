@@ -1,7 +1,7 @@
 import { DEFAULT_TIERS } from './apiKeyManager.js';
 
 const RATE_LIMIT_WINDOW = 60000;
-const IP_RATE_LIMIT_MAX = 600;
+const IP_RATE_LIMIT_MAX = 1000; // P0-3.1: 600 → 1000 (multi-agent shared IP)
 
 const RATE_LIMIT_BY_ENDPOINT = {
   '/api/agents/register': 50,
@@ -115,6 +115,18 @@ const AGENT_RATE_LIMITS = {
   new_agent: 30
 };
 
+// ─── P0-3.3: Gradient ban configuration ───
+// Escalating ban durations for IPs that keep hammering past rate limits.
+const GRADIENT_BAN_DURATIONS_MS = [
+  5 * 60 * 1000,   // 1st violation of the day → 5 minutes
+  30 * 60 * 1000,  // 2nd violation of the day → 30 minutes
+  60 * 60 * 1000   // 3rd+ violation of the day → 1 hour
+];
+// An IP is banned only after this many rejected requests beyond the limit
+// within the current window — a client that backs off after the first 429
+// (with Retry-After) is NOT banned; only continued hammering triggers it.
+const GRADIENT_BAN_TRIGGER_THRESHOLD = 10;
+
 class RateLimiter {
   constructor(options = {}) {
     this.window = options.window || RATE_LIMIT_WINDOW;
@@ -122,7 +134,14 @@ class RateLimiter {
     this.endpointLimits = options.endpointLimits || RATE_LIMIT_BY_ENDPOINT;
     this.agentLimits = options.agentLimits || AGENT_RATE_LIMITS;
     this.ipRecords = new Map();
+    // P0-3.2: Per-agent quota tracking (independent of IP)
+    this.agentRecords = new Map();
+    // P0-3.3: Gradient ban state
+    // bannedIPs: ip -> bannedUntil (ms epoch); banCounts: `${day}:${ip}` -> count
+    this.bannedIPs = new Map();
+    this.banCounts = new Map();
     this.totalBlocked = 0;
+    this.totalBanned = 0;
     this._startCleanup();
   }
 
@@ -130,39 +149,64 @@ class RateLimiter {
     return (req, res, next) => {
       const now = Date.now();
       const ip = req.ip;
-      // Use req.originalUrl to get the full path including mount prefix
-      const fullPath = req.originalUrl.split('?')[0]; // Remove query string
+      const fullPath = req.originalUrl.split('?')[0];
       const endpoint = req.path;
 
       if (EXEMPT_ENDPOINTS.has(endpoint) || EXEMPT_PREFIXES.some(p => fullPath.startsWith(p))) {
         return next();
       }
 
-      // GET-only exempt prefixes: forum/agent/governance reads skip rate limiting,
-      // but POST (createTopic, addPost, vote) still goes through normal limiting.
       if (req.method === 'GET' && EXEMPT_GET_PREFIXES.some(p => fullPath.startsWith(p))) {
         return next();
       }
 
-      // ─── Phase 4: Identify agent from request to set correct rate limit tier ───
+      // ─── P0-3.2: Resolve agent identity → per-agent quota ───
+      let agentRecord = null;
       if (agentResolver) {
         const agentIdentity = req.headers['x-agent-identity'];
         if (agentIdentity) {
-          const agentRecord = agentResolver(agentIdentity);
+          agentRecord = agentResolver(agentIdentity);
           if (agentRecord) {
-            if (agentRecord.is_validator) {
-              this.setAgentType(ip, 'validator');
-            } else if (agentRecord.reputation >= 100) {
-              this.setAgentType(ip, 'high_reputation');
-            } else if (agentRecord.reputation >= 10) {
-              this.setAgentType(ip, 'medium_reputation');
-            } else if (agentRecord.reputation >= 1) {
-              this.setAgentType(ip, 'low_reputation');
+            req.agentVerified = true;
+            // Per-agent quota check
+            const agentResult = this._checkAgentLimit(agentIdentity, agentRecord, endpoint, now);
+            if (!agentResult.allowed) {
+              this.totalBlocked++;
+              res.setHeader('Retry-After', agentResult.retryAfter);
+              res.setHeader('X-RateLimit-Limit', agentResult.limit);
+              res.setHeader('X-RateLimit-Remaining', 0);
+              return res.status(429).json({
+                success: false,
+                message: agentResult.reason,
+                error_code: 'RATE_LIMITED',
+                retry_after: agentResult.retryAfter,
+                limit: agentResult.limit
+              });
             }
+            // Agent quota passed → skip IP-level check, proceed
+            res.setHeader('X-RateLimit-Limit', agentResult.limit);
+            res.setHeader('X-RateLimit-Remaining', agentResult.remaining);
+            return this._checkApiKey(req, res, next, apiKeyManager);
           }
         }
       }
 
+      // P0-3.3: Reject requests from currently-banned IPs (fallback path only —
+      // agent-verified requests above already returned via per-agent quota).
+      const banCheck = this._getActiveBan(ip);
+      if (banCheck) {
+        this.totalBlocked++;
+        res.setHeader('Retry-After', banCheck.retryAfter);
+        return res.status(429).json({
+          success: false,
+          message: `IP is banned due to repeated rate-limit violations (escalation level ${banCheck.level}). Retry after ${banCheck.retryAfter}s.`,
+          error_code: 'IP_BANNED',
+          retry_after: banCheck.retryAfter,
+          ban_level: banCheck.level
+        });
+      }
+
+      // No agent identity → fall back to IP-level limit
       const result = this._checkIpLimit(ip, endpoint, now, req, fullPath);
       if (!result.allowed) {
         this.totalBlocked++;
@@ -178,36 +222,97 @@ class RateLimiter {
         });
       }
 
-      if (apiKeyManager) {
-        const apiKey = req.headers['x-api-key'] || req.query.api_key;
-        if (apiKey) {
-          const keyInfo = apiKeyManager.validateKey(apiKey);
-          if (keyInfo) {
-            const keyResult = apiKeyManager.checkRateLimit(keyInfo.id, endpoint);
-            if (!keyResult.allowed) {
-              this.totalBlocked++;
-              res.setHeader('Retry-After', keyResult.retryAfter);
-              return res.status(429).json({
-                success: false,
-                message: keyResult.reason,
-                retry_after: keyResult.retryAfter
-              });
-            }
-            apiKeyManager.recordUsage(keyInfo.id, endpoint);
-            req.apiKey = keyInfo;
-          }
-        }
-      }
-
       res.setHeader('X-RateLimit-Limit', result.limit);
       res.setHeader('X-RateLimit-Remaining', result.remaining);
-      next();
+      this._checkApiKey(req, res, next, apiKeyManager);
     };
   }
 
+  /**
+   * P0-3.2: Per-agent quota check — independent of IP-based limits.
+   * Each agent gets its own token bucket based on reputation tier.
+   */
+  _checkAgentLimit(agentIdentity, agentRecord, endpoint, now) {
+    if (!this.agentRecords.has(agentIdentity)) {
+      let agentType = 'new_agent';
+      if (agentRecord.is_validator) {
+        agentType = 'validator';
+      } else if (agentRecord.reputation >= 100) {
+        agentType = 'high_reputation';
+      } else if (agentRecord.reputation >= 10) {
+        agentType = 'medium_reputation';
+      } else if (agentRecord.reputation >= 1) {
+        agentType = 'low_reputation';
+      }
+
+      const limit = this.agentLimits[agentType] || this.agentLimits.new_agent;
+      this.agentRecords.set(agentIdentity, {
+        count: 1,
+        lastReset: now,
+        agentType,
+        limit,
+        endpoints: { [endpoint]: 1 }
+      });
+      return { allowed: true, limit, remaining: limit - 1 };
+    }
+
+    const info = this.agentRecords.get(agentIdentity);
+
+    if (now - info.lastReset > this.window) {
+      info.count = 1;
+      info.lastReset = now;
+      info.endpoints = { [endpoint]: 1 };
+      return { allowed: true, limit: info.limit, remaining: info.limit - 1 };
+    }
+
+    info.count++;
+
+    if (info.count > info.limit) {
+      const retryAfter = Math.ceil((this.window - (now - info.lastReset)) / 1000);
+      return { allowed: false, reason: 'Agent rate limit exceeded', retryAfter, limit: info.limit, remaining: 0 };
+    }
+
+    // Endpoint-specific limit
+    if (!info.endpoints[endpoint]) {
+      info.endpoints[endpoint] = 0;
+    }
+    info.endpoints[endpoint]++;
+
+    const endpointLimit = this.endpointLimits[endpoint] || info.limit;
+    if (info.endpoints[endpoint] > endpointLimit) {
+      const retryAfter = Math.ceil((this.window - (now - info.lastReset)) / 1000);
+      return { allowed: false, reason: `Endpoint rate limit exceeded for ${endpoint}`, retryAfter, limit: endpointLimit, remaining: 0 };
+    }
+
+    return { allowed: true, limit: info.limit, remaining: info.limit - info.count };
+  }
+
+  _checkApiKey(req, res, next, apiKeyManager) {
+    if (!apiKeyManager) return next();
+
+    const apiKey = req.headers['x-api-key'] || req.query.api_key;
+    if (!apiKey) return next();
+
+    const keyInfo = apiKeyManager.validateKey(apiKey);
+    if (!keyInfo) return next();
+
+    const keyResult = apiKeyManager.checkRateLimit(keyInfo.id, req.path);
+    if (!keyResult.allowed) {
+      this.totalBlocked++;
+      res.setHeader('Retry-After', keyResult.retryAfter);
+      return res.status(429).json({
+        success: false,
+        message: keyResult.reason,
+        retry_after: keyResult.retryAfter
+      });
+    }
+
+    apiKeyManager.recordUsage(keyInfo.id, req.path);
+    req.apiKey = keyInfo;
+    next();
+  }
+
   _checkIpLimit(ip, endpoint, now, req, fullPath) {
-    // Permissive paths: GET requests to wallet read endpoints
-    // Use ipMax limit directly, do not consume agent tier quota
     const isPermissive = req.method === 'GET' &&
       PERMISSIVE_PREFIXES.some(p => fullPath.startsWith(p));
 
@@ -232,6 +337,7 @@ class RateLimiter {
     if (now - info.lastReset > this.window) {
       info.count = 0;
       info.permissiveCount = 0;
+      info.violations = 0; // P0-3.3: reset violation count on window rollover
       info.lastReset = now;
       info.endpoints = { [endpoint]: 1 };
       if (isPermissive) {
@@ -245,6 +351,7 @@ class RateLimiter {
     if (isPermissive) {
       info.permissiveCount++;
       if (info.permissiveCount > this.ipMax) {
+        this._registerViolation(ip, info);
         const retryAfter = Math.ceil((this.window - (now - info.lastReset)) / 1000);
         return { allowed: false, reason: 'IP rate limit exceeded', retryAfter, limit: this.ipMax, remaining: 0 };
       }
@@ -260,6 +367,7 @@ class RateLimiter {
     const agentLimit = this.agentLimits[info.agentType] || this.ipMax;
 
     if (info.count > agentLimit) {
+      this._registerViolation(ip, info);
       const retryAfter = Math.ceil((this.window - (now - info.lastReset)) / 1000);
       return { allowed: false, reason: 'IP rate limit exceeded', retryAfter, limit: agentLimit, remaining: 0 };
     }
@@ -274,11 +382,63 @@ class RateLimiter {
 
     const endpointLimit = this.endpointLimits[endpoint] || agentLimit;
     if (info.endpoints[endpoint] > endpointLimit) {
+      this._registerViolation(ip, info);
       const retryAfter = Math.ceil((this.window - (now - info.lastReset)) / 1000);
       return { allowed: false, reason: `Endpoint rate limit exceeded for ${endpoint}`, retryAfter, limit: endpointLimit, remaining: 0 };
     }
 
     return { allowed: true, limit: agentLimit, remaining: agentLimit - info.count };
+  }
+
+  /**
+   * P0-3.3: Register a rate-limit violation for an IP. When violations within
+   * the current window reach GRADIENT_BAN_TRIGGER_THRESHOLD (continued hammering
+   * past 429s instead of backing off), the IP is gradient-banned.
+   */
+  _registerViolation(ip, info) {
+    info.violations = (info.violations || 0) + 1;
+    if (info.violations >= GRADIENT_BAN_TRIGGER_THRESHOLD) {
+      this._gradientBan(ip);
+      // Reset so post-ban hammering re-triggers another (escalated) ban
+      info.violations = 0;
+    }
+  }
+
+  /**
+   * P0-3.3: Gradient ban — escalation is counted per calendar day per IP.
+   * 1st ban of the day: 5 min · 2nd: 30 min · 3rd+: 1 hour.
+   */
+  _gradientBan(ip) {
+    const today = new Date().toDateString();
+    const key = `${today}:${ip}`;
+    const banCount = (this.banCounts.get(key) || 0) + 1;
+    this.banCounts.set(key, banCount);
+
+    const level = Math.min(banCount, GRADIENT_BAN_DURATIONS_MS.length);
+    const durationMs = GRADIENT_BAN_DURATIONS_MS[level - 1];
+    const bannedUntil = Date.now() + durationMs;
+    this.bannedIPs.set(ip, bannedUntil);
+    this.totalBanned++;
+
+    console.warn(`[RateLimiter] Gradient ban: ${ip} level=${level}/${GRADIENT_BAN_DURATIONS_MS.length} duration=${durationMs / 60000}min (daily count=${banCount})`);
+    return { level, durationMs, bannedUntil };
+  }
+
+  /** Returns active ban info for an IP, or null if not banned. */
+  _getActiveBan(ip) {
+    const bannedUntil = this.bannedIPs.get(ip);
+    if (!bannedUntil) return null;
+    const now = Date.now();
+    if (now >= bannedUntil) {
+      this.bannedIPs.delete(ip);
+      return null;
+    }
+    const today = new Date().toDateString();
+    const banCount = this.banCounts.get(`${today}:${ip}`) || 1;
+    return {
+      level: Math.min(banCount, GRADIENT_BAN_DURATIONS_MS.length),
+      retryAfter: Math.ceil((bannedUntil - now) / 1000)
+    };
   }
 
   setAgentType(ip, agentType) {
@@ -305,7 +465,10 @@ class RateLimiter {
       totalRequests,
       totalBlocked: this.totalBlocked,
       windowMs: this.window,
-      maxPerWindow: this.ipMax
+      maxPerWindow: this.ipMax,
+      activeAgents: this.agentRecords.size,
+      bannedIPs: this.bannedIPs.size,
+      totalBanned: this.totalBanned
     };
   }
 
@@ -321,6 +484,19 @@ class RateLimiter {
           this.ipRecords.delete(ip);
         }
       }
+      for (const [agentId, info] of this.agentRecords.entries()) {
+        if (now - info.lastReset > this.window * 2) {
+          this.agentRecords.delete(agentId);
+        }
+      }
+      // P0-3.3: purge expired bans and yesterday's ban counts
+      for (const [ip, until] of this.bannedIPs.entries()) {
+        if (now >= until) this.bannedIPs.delete(ip);
+      }
+      const today = new Date().toDateString();
+      for (const key of this.banCounts.keys()) {
+        if (!key.startsWith(`${today}:`)) this.banCounts.delete(key);
+      }
     }, 60000);
   }
 
@@ -329,6 +505,9 @@ class RateLimiter {
       clearInterval(this._cleanupTimer);
     }
     this.ipRecords.clear();
+    this.agentRecords.clear();
+    this.bannedIPs.clear();
+    this.banCounts.clear();
   }
 }
 

@@ -22,6 +22,7 @@ import agentWalletManager from '../../wallet/agentWalletManager.js';
 import { verifyBypassSecret } from '../adminAuth.js';
 import { extractCustodyToken, verifyCustodyToken } from '../custodyToken.js';
 import { buildAuthHint } from '../authHint.js';
+import { buildSignPayload, verifySignPayload } from '../signPayload.js';
 
 const RESERVED_PREFIXES = [
   'ng1swarmpool', 'ng1escrow', 'ng1staking', 'ng1burn', 'ng1treasury'
@@ -67,12 +68,8 @@ async function verifyTaskSignature(req, action, agentRef) {
     const taskId = req.params?.id || '';
     const { title, description, requiredCapabilities, reward, taskType, minReputation, submission, approved, feedback, qualityScore } = req.body;
 
-    const dataToSign = {
-      action,
-      taskId,
-      agent: agentRef,
-      timestamp,
-      nonce,
+    // P1-2: canonical unified sign-payload format
+    const extraFields = {
       ...(title !== undefined && { title }),
       ...(description !== undefined && { description }),
       ...(requiredCapabilities !== undefined && { requiredCapabilities }),
@@ -84,15 +81,27 @@ async function verifyTaskSignature(req, action, agentRef) {
       ...(feedback !== undefined && { feedback }),
       ...(qualityScore !== undefined && { qualityScore })
     };
-    const signedData = JSON.stringify(dataToSign);
+    const canonicalData = buildSignPayload({
+      action, id: taskId, agent: agentRef, timestamp, nonce, ...extraFields
+    });
+    // Legacy format (pre-P1-2) — accepted for one version buffer period
+    const legacyData = JSON.stringify({
+      action,
+      taskId,
+      agent: agentRef,
+      timestamp,
+      nonce,
+      ...extraFields
+    });
 
-    const isValid = await PQCWallet.verify(
-      signedData,
+    const verifyResult = await verifySignPayload({
+      canonical: canonicalData,
+      legacy: legacyData,
       signature,
-      Buffer.from(agentRecord.public_key, 'hex')
-    );
+      verify: (data, sig) => PQCWallet.verify(data, sig, Buffer.from(agentRecord.public_key, 'hex'))
+    });
 
-    if (!isValid) {
+    if (!verifyResult.valid) {
       console.warn(`[SECURITY] Invalid signature for task ${action} by "${agentRef}"`);
       return { valid: false, status: 403, error: 'Invalid signature', error_code: 'INVALID_SIGNATURE', hint: buildAuthHint('INVALID_SIGNATURE', hintCtx) };
     }
@@ -220,12 +229,18 @@ export function setupTaskRoutes(app) {
       const protocol = getTaskProtocol();
       const capabilities = req.query.capabilities
         ? req.query.capabilities.split(',')
-        : [];
-      const matched = protocol.matchForAgent(capabilities);
+        : undefined; // undefined = "no filter", [] = "only no-cap tasks"
+      const page = parseInt(req.query.page) || 1;
+      const pageSize = parseInt(req.query.pageSize) || 20;
+      const matched = protocol.matchForAgent(capabilities, { page, pageSize });
       res.json({
         success: true,
-        tasks: matched,
-        total: matched.length
+        tasks: matched.tasks,
+        page: matched.page,
+        pageSize: matched.pageSize,
+        total: matched.total,
+        totalPages: matched.totalPages,
+        hasMore: matched.hasMore
       });
     } catch (e) {
       res.status(500).json({ success: false, error: e.message });

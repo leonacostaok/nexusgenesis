@@ -70,79 +70,9 @@ router.get('/docs', (req, res) => {
   res.sendFile(path.join(projectRoot, 'public', 'docs.html'));
 });
 
-router.get('/api/v1/docs/endpoints', (req, res) => {
-  res.json({
-    success: true,
-    version: 'v1',
-    baseUrl: 'http://localhost:3000',
-    sections: [
-      {
-        name: 'Smart Contract',
-        endpoints: [
-          { method: 'GET', path: '/api/v1/contracts/templates', desc: 'Get所有Contract模板列表' },
-          { method: 'POST', path: '/api/v1/contracts/deploy', desc: 'DeployContract(从模板)', body: { template: 'string', name: 'string', version: 'string', deployParams: 'object' } },
-          { method: 'GET', path: '/api/v1/contracts', desc: 'GetdeployedContract列表' }
-        ]
-      },
-      {
-        name: 'Cross-chain桥',
-        endpoints: [
-          { method: 'GET', path: '/api/v1/bridge/chains', desc: 'Getsupport的链列表' },
-          { method: 'POST', path: '/api/v1/bridge/lock', desc: 'Lockasset进行Cross-chain转移', body: { fromChain: 'string', toChain: 'string', fromAddress: 'string', toAddress: 'string', assetType: 'string', amount: 'number' } },
-          { method: 'GET', path: '/api/v1/bridge/transfers', desc: 'GetCross-chain转移列表' },
-          { method: 'GET', path: '/api/v1/bridge/transfer/:id', desc: '查询转移详情' },
-          { method: 'GET', path: '/api/v1/bridge/stats', desc: 'Cross-chain桥统计data' }
-        ]
-      },
-      {
-        name: 'Agent (Agent)',
-        endpoints: [
-          { method: 'POST', path: '/api/agents/register', desc: 'RegisterAgent' },
-          { method: 'GET', path: '/api/agents', desc: 'GetregisteredAgent列表' },
-          { method: 'POST', path: '/api/agents/heartbeat', desc: 'Agent心跳' },
-          { method: 'GET', path: '/api/agent/task', desc: 'Get待ProcessTask' },
-          { method: 'POST', path: '/api/agent/task/complete', desc: 'completeTask' }
-        ]
-      },
-      {
-        name: '水龙头 (Faucet)',
-        endpoints: [
-          { method: 'GET', path: '/api/v1/faucet/eligibility', desc: '查询水龙头资格' },
-          { method: 'POST', path: '/api/v1/faucet/drip', desc: '领取TestToken' },
-          { method: 'GET', path: '/api/v1/faucet/stats', desc: '水龙头统计' }
-        ]
-      },
-      {
-        name: 'marketplace (Marketplace)',
-        endpoints: [
-          { method: 'GET', path: '/api/v1/marketplace/listings', desc: 'Get Agent 列表' },
-          { method: 'POST', path: '/api/v1/marketplace/listings', desc: 'Create Agent 列表' },
-          { method: 'POST', path: '/api/v1/marketplace/reviews', desc: '评价 Agent' },
-          { method: 'GET', path: '/api/v1/marketplace/stats', desc: 'marketplace统计' }
-        ]
-      },
-      {
-        name: 'Agent 发现',
-        endpoints: [
-          { method: 'GET', path: '/api/v1/discovery/search', desc: '搜索 Agent' },
-          { method: 'POST', path: '/api/v1/discovery/task-match', desc: '匹配Task' },
-          { method: 'GET', path: '/api/v1/discovery/stats', desc: '发现统计' }
-        ]
-      },
-      {
-        name: 'monitor & 健康',
-        endpoints: [
-          { method: 'GET', path: '/health', desc: '系统健康Check' },
-          { method: 'GET', path: '/metrics', desc: '系统指标' },
-          { method: 'GET', path: '/dashboard/overview', desc: '仪表盘概览' },
-          { method: 'GET', path: '/api/v1/monitoring/overview', desc: 'monitor全景概览' },
-          { method: 'GET', path: '/api/v1/monitoring/metrics', desc: 'Get所有指标' },
-          { method: 'GET', path: '/api/v1/monitoring/alerts', desc: 'Get活跃告警' },
-          { method: 'GET', path: '/api/v1/monitoring/health', desc: '全面健康Check' }
-        ]
-      }
-    ]
-  });
-});
+// NOTE: /api/v1/docs/endpoints was previously defined here and SHADOWED the
+// comprehensive version in apiCompat.js (mounted later in server.js), hiding
+// Master Key / takeover / extend-binding docs from agents. The canonical
+// endpoint now lives in apiCompat.js — see registerCompatRoutes().
 
 export default router;

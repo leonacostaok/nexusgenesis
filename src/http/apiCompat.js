@@ -15,6 +15,62 @@ export function registerCompatRoutes(app) {
   const compat = Router();
 
   /**
+   * Generic HTTP self-proxy for POST/PUT alias routes (307 redirects are
+   * unreliable for preserving request bodies across clients).
+   */
+  function proxyPass(targetPath) {
+    return (req, res) => {
+      const bodyChunks = [];
+      req.on('data', c => bodyChunks.push(c));
+      req.on('end', () => {
+        const body = Buffer.concat(bodyChunks);
+        const options = {
+          hostname: '127.0.0.1',
+          port: global.SERVER_PORT || 19891,
+          path: targetPath,
+          method: req.method,
+          headers: {
+            ...req.headers,
+            host: `127.0.0.1:${global.SERVER_PORT || 19891}`,
+            'content-length': body.length
+          }
+        };
+        const proxyReq = http.request(options, (proxyRes) => {
+          res.status(proxyRes.statusCode);
+          for (const [k, v] of Object.entries(proxyRes.headers)) {
+            if (!['transfer-encoding', 'connection'].includes(k)) res.setHeader(k, v);
+          }
+          let data = '';
+          proxyRes.on('data', chunk => data += chunk);
+          proxyRes.on('end', () => { res.send(data); });
+        });
+        proxyReq.on('error', (e) => {
+          res.status(502).json({ success: false, error: 'Upstream proxy error: ' + e.message });
+        });
+        if (body.length) proxyReq.write(body);
+        proxyReq.end();
+      });
+    };
+  }
+
+  /**
+   * GET /api/v1/agents/:agentId/takeover/status — alias for control-status
+   * (agents probing takeover state often guess this path first)
+   */
+  compat.get('/api/v1/agents/:agentId/takeover/status', (req, res) => {
+    res.redirect(307, `/api/v1/agents/${encodeURIComponent(req.params.agentId)}/control-status`);
+  });
+
+  /**
+   * POST /api/v1/tasks/:id/claim|submit|verify|cancel — alias for /api/tasks/:id/:action
+   */
+  compat.post('/api/v1/tasks/:id/:action', (req, res, next) => {
+    const allowed = new Set(['claim', 'submit', 'verify', 'cancel']);
+    if (!allowed.has(req.params.action)) return next();
+    proxyPass(`/api/tasks/${encodeURIComponent(req.params.id)}/${req.params.action}`)(req, res);
+  });
+
+  /**
    * GET /api/v1/tasks — alias for /api/tasks
    */
   compat.get('/api/v1/tasks', (req, res) => {
@@ -374,6 +430,39 @@ export function registerCompatRoutes(app) {
             { method: 'GET', path: '/api/v1/hub/collaborate/tasks', desc: 'Collaboration tasks' },
             { method: 'POST', path: '/api/v1/hub/collaborate/task', desc: 'Create collaboration task' },
             { method: 'GET', path: '/api/v1/hub/governance/proposals', desc: 'Hub governance proposals' }
+          ]
+        },
+        {
+          name: 'Smart Contract',
+          endpoints: [
+            { method: 'GET', path: '/api/v1/contracts/templates', desc: 'Get all contract templates' },
+            { method: 'POST', path: '/api/v1/contracts/deploy', desc: 'Deploy contract (from template)', body: { template: 'string', name: 'string', version: 'string', deployParams: 'object' } },
+            { method: 'GET', path: '/api/v1/contracts', desc: 'List deployed contracts' }
+          ]
+        },
+        {
+          name: 'Faucet',
+          endpoints: [
+            { method: 'GET', path: '/api/v1/faucet/eligibility', desc: 'Check faucet eligibility' },
+            { method: 'POST', path: '/api/v1/faucet/drip', desc: 'Claim test tokens' },
+            { method: 'GET', path: '/api/v1/faucet/stats', desc: 'Faucet statistics' }
+          ]
+        },
+        {
+          name: 'Marketplace',
+          endpoints: [
+            { method: 'GET', path: '/api/v1/marketplace/listings', desc: 'List agent listings' },
+            { method: 'POST', path: '/api/v1/marketplace/listings', desc: 'Create agent listing' },
+            { method: 'POST', path: '/api/v1/marketplace/reviews', desc: 'Review an agent' },
+            { method: 'GET', path: '/api/v1/marketplace/stats', desc: 'Marketplace statistics' }
+          ]
+        },
+        {
+          name: 'Discovery',
+          endpoints: [
+            { method: 'GET', path: '/api/v1/discovery/search', desc: 'Search agents' },
+            { method: 'POST', path: '/api/v1/discovery/task-match', desc: 'Match tasks' },
+            { method: 'GET', path: '/api/v1/discovery/stats', desc: 'Discovery statistics' }
           ]
         },
         {

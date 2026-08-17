@@ -94,6 +94,11 @@ export async function buildBindMasterKeyTransaction({
     payload: {
       agentId,
       masterKeyFingerprint: fingerprint,
+      // Proof-of-possession: the server verifies the tx signature against
+      // this public key (and checks sha256(masterPublicKey) === fingerprint).
+      // Without it the server falls back to the agent's operation key and
+      // rejects the Master-Key signature.
+      ...(masterPublicKeyHex ? { masterPublicKey: masterPublicKeyHex } : {}),
       registered_at: timestamp
     },
     timestamp,

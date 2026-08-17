@@ -1090,7 +1090,7 @@ class GenesisNode {
    */
   async validateTransaction(tx) {
     // Check是否为特殊transactiontype
-    if (tx.tx_type === 'OBSERVER_EVENT' || tx.tx_type === 'GOVERNANCE_PROPOSAL' || tx.tx_type === 'GOVERNANCE_VOTE' || tx.tx_type === 'TRANSFER' || tx.tx_type === 'AGENT_REGISTER' || tx.tx_type === 'VALIDATOR_JOIN') {
+    if (tx.tx_type === 'OBSERVER_EVENT' || tx.tx_type === 'GOVERNANCE_PROPOSAL' || tx.tx_type === 'GOVERNANCE_VOTE' || tx.tx_type === 'TRANSFER' || tx.tx_type === 'AGENT_REGISTER' || tx.tx_type === 'VALIDATOR_JOIN' || tx.tx_type === 'BIND_MASTER_KEY') {
       return this.validateSpecialTransaction(tx);
     }
     
@@ -1202,7 +1202,95 @@ class GenesisNode {
    * @param {object} tx - transaction对象
    * @returns {Promise<{valid: boolean, reason?: string}>}
    */
+  /**
+   * Validate a BIND_MASTER_KEY transaction (P0-5 follow-up).
+   *
+   * The human binds their Master Key to a pending-binding agent. Security:
+   *   1. payload.masterKeyFingerprint must be a sha256 hex (what goes on-chain)
+   *   2. If payload.masterPublicKey is present (SDK path): its sha256 must equal
+   *      the fingerprint, AND the tx signature must verify against it with the
+   *      same canonical-JSON scheme used elsewhere in this file — this proves
+   *      the submitter holds the Master Key private key (proof of intent).
+   *   3. The agent must exist in the registry (custody/window checks are
+   *      re-enforced at apply-time by state.applyBindMasterKey).
+   */
+  async _validateBindMasterKeyTx(tx) {
+    const payload = tx.payload || {};
+    const { agentId, masterKeyFingerprint, masterPublicKey } = payload;
+
+    if (!agentId || !masterKeyFingerprint) {
+      return { valid: false, reason: 'BIND_MASTER_KEY: payload requires agentId and masterKeyFingerprint' };
+    }
+    if (!/^[0-9a-f]{64}$/i.test(masterKeyFingerprint)) {
+      return { valid: false, reason: 'BIND_MASTER_KEY: masterKeyFingerprint must be 64-char sha256 hex' };
+    }
+    if (!tx.signature) {
+      return { valid: false, reason: 'Missing signature' };
+    }
+    if (!tx.timestamp || tx.timestamp > Date.now() + 60000 || tx.timestamp < Date.now() - TX_EXPIRY_MS) {
+      return { valid: false, reason: 'Transaction expired or timestamp invalid' };
+    }
+
+    // Resolve agent (by agent_id, identity, or address) — must exist
+    const registry = this.currentState?.agentRegistry;
+    let resolvedAgentId = null;
+    if (registry) {
+      resolvedAgentId = registry.agents.has(agentId)
+        ? agentId
+        : (registry.addressIndex.get(agentId) || registry.identityIndex.get(agentId) || null);
+    }
+    if (!resolvedAgentId) {
+      return { valid: false, reason: `BIND_MASTER_KEY: agent not found: ${agentId}` };
+    }
+
+    // Master Key self-attestation + proof-of-possession
+    let verifyKey = null;
+    if (masterPublicKey) {
+      const crypto = await import('node:crypto');
+      const computed = crypto.createHash('sha256')
+        .update(Buffer.from(masterPublicKey, 'hex'))
+        .digest('hex');
+      if (computed !== masterKeyFingerprint.toLowerCase()) {
+        return { valid: false, reason: 'BIND_MASTER_KEY: payload.masterPublicKey does not match masterKeyFingerprint' };
+      }
+      verifyKey = Buffer.from(masterPublicKey, 'hex');
+    } else {
+      // Legacy path: agent op key from cache (weak — applyBindMasterKey stores
+      // only the fingerprint; the SDK always sends masterPublicKey)
+      verifyKey = this.getCachedPublicKey(tx.from);
+    }
+    if (!verifyKey) {
+      return { valid: false, reason: 'BIND_MASTER_KEY: no verifiable public key (send payload.masterPublicKey)' };
+    }
+
+    // Signature scheme aligned with PQCWallet.signTransaction() and the
+    // agent-keys SDK sign(): plain JSON.stringify of the tx body (signature
+    // stripped, bigint stringified). Key insertion order survives the HTTP
+    // JSON round-trip, so both sides serialize the exact same string.
+    // NOTE: do NOT use canonical sorted-JSON here — the SDK does not sign
+    // that form, so it would always fail verification.
+    const { signature: _sig, ...txData } = tx;
+    const txStr = JSON.stringify(txData, (key, value) =>
+      typeof value === 'bigint' ? value.toString() : value);
+    try {
+      const isValid = await PQCWallet.verify(txStr, tx.signature, verifyKey);
+      if (!isValid) return { valid: false, reason: 'Invalid signature' };
+    } catch (error) {
+      return { valid: false, reason: 'Signature verification failed' };
+    }
+
+    return { valid: true };
+  }
+
   async validateSpecialTransaction(tx) {
+    // ─── BIND_MASTER_KEY early branch ────────────────────────────────
+    // Must be handled BEFORE the generic flow: its signature is made with the
+    // HUMAN's Master Key (self-attested via payload.masterPublicKey), not with
+    // the agent's cached operation key, and `to` may be a self-reference.
+    if (tx.tx_type === 'BIND_MASTER_KEY') {
+      return this._validateBindMasterKeyTx(tx);
+    }
+
     // 1. 基本结构Verify
     if (!tx || !tx.tx_type || !tx.from || !tx.to) {
       return { valid: false, reason: 'Invalid special transaction structure' };

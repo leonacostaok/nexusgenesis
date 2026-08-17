@@ -1815,12 +1815,18 @@ export class State {
         return false;
       }
 
-      // Resolve agent by ID or address
+      // Resolve agent by ID, address, or identity string.
+      // MUST match the resolver used at validation time
+      // (genesisNode._validateBindMasterKeyTx) — the SDK sends the agent's
+      // human-readable identity (e.g. "my-agent") as payload.agentId.
       let resolvedAgentId;
       if (this.agentRegistry.agents.has(agentId)) {
         resolvedAgentId = agentId;
       } else {
-        resolvedAgentId = this.agentRegistry.addressIndex.get(agentId);
+        resolvedAgentId = this.agentRegistry.addressIndex.get(agentId)
+          || (this.agentRegistry.identityIndex
+            ? this.agentRegistry.identityIndex.get(agentId)
+            : undefined);
       }
       
       if (!resolvedAgentId) {

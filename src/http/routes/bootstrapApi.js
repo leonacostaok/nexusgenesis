@@ -1841,61 +1841,94 @@ router.put('/api/v1/agents/:agentId/spend-config', (req, res) => {
  */
 router.post('/api/v1/agents/:agentId/takeover', async (req, res) => {
   try {
-    const state = req.app.locals.node?.currentState;
-    if (!state || !state.agents) {
-      return res.status(503).json({ success: false, error: 'State not ready' });
+    const node = req.app.locals.node;
+    const state = node?.currentState;
+    const { agentId } = req.params;
+
+    // P0-6 follow-up: resolve agent via wallet registry (primary) or on-chain
+    // registry (fallback). Old code read `state.agents` which never existed.
+    const wm = req.app.locals.agentWalletManager;
+    let entry = wm?.registry?.get(agentId);
+    if (!entry && node?.resolveRegisteredAgent) {
+      const rec = node.resolveRegisteredAgent(agentId);
+      if (rec?.agentId) entry = wm?.registry?.get(rec.agentId) || null;
+    }
+    if (!entry) {
+      if (!state?.agentRegistry) {
+        return res.status(503).json({ success: false, error: 'State not ready', error_code: 'STATE_NOT_READY' });
+      }
+      return res.status(404).json({ success: false, error: `Agent not found: ${agentId}`, error_code: 'AGENT_NOT_FOUND' });
     }
 
-    const agent = state.agents[req.params.agentId];
-    if (!agent) {
-      return res.status(404).json({ success: false, error: 'Agent not found' });
-    }
-
-    const { masterSignature } = req.body;
+    const { masterSignature, timestamp } = req.body;
     if (!masterSignature) {
       return res.status(400).json({
         success: false,
         error: 'Missing masterSignature',
+        error_code: 'MISSING_SIGNATURE',
         hint: 'Human operator must sign the takeover request with their master key'
       });
     }
+    if (!timestamp) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing timestamp',
+        error_code: 'MISSING_TIMESTAMP',
+        hint: 'Send the timestamp (ms epoch) used when signing. Message format: "takeover:{agentId}:{timestamp}"'
+      });
+    }
+    // Signature freshness: reject replayed takeover requests older than 10 min
+    if (Math.abs(Date.now() - timestamp) > 10 * 60 * 1000) {
+      return res.status(400).json({
+        success: false,
+        error: 'Signature timestamp expired or from the future',
+        error_code: 'SIGNATURE_EXPIRED'
+      });
+    }
 
-    // 验证主密钥签名
+    // Verify master-key signature over "takeover:{agentId}:{timestamp}"
+    // (previously the server rebuilt the message with its own Date.now(),
+    //  making every genuine client signature fail verification)
     const { verify } = await import('../../crypto/pqc.js');
-    const isValid = verify(
-      Buffer.from(`takeover:${req.params.agentId}:${Date.now()}`),
+    const message = Buffer.from(`takeover:${agentId}:${timestamp}`);
+    const isValid = await verify(
+      message,
       Buffer.from(masterSignature, 'hex'),
-      Buffer.from(agent.publicKey, 'hex')
+      Buffer.from(entry.wallet.publicKey, 'hex')
     );
 
     if (!isValid) {
       return res.status(403).json({
         success: false,
         error: 'Invalid master key signature',
-        hint: 'The signature must be created with the human operator\'s master key'
+        error_code: 'INVALID_SIGNATURE',
+        hint: 'The signature must be created with the human operator\'s master key over "takeover:{agentId}:{timestamp}"'
       });
     }
 
-    // 接管成功：设置默认额度限制
-    agent.spendConfig = {
+    // Takeover succeeded: set default spend limit and persist in wallet metadata
+    entry.metadata = entry.metadata || {};
+    entry.metadata.spendConfig = {
       type: 'fixed',
-      dailyLimit: '1000000000000000000', // 默认 1 NGEN
+      dailyLimit: '1000000000000000000', // default 1 NGEN
       humanControlled: true,
       takenOverAt: new Date().toISOString(),
       takenOverBy: 'human_operator',
       updatedAt: new Date().toISOString()
     };
-
-    agent.takenOver = true;
-    agent.takenOverAt = new Date().toISOString();
+    entry.metadata.takenOver = true;
+    entry.metadata.takenOverAt = entry.metadata.spendConfig.takenOverAt;
+    if (wm?.persist) {
+      try { await wm.persist(); } catch { /* best-effort persistence */ }
+    }
 
     res.json({
       success: true,
-      agentId: req.params.agentId,
+      agentId,
       takeover: {
         humanControlled: true,
-        takenOverAt: agent.takenOverAt,
-        spendConfig: agent.spendConfig
+        takenOverAt: entry.metadata.takenOverAt,
+        spendConfig: entry.metadata.spendConfig
       },
       note: 'Human operator has taken over control of this agent\'s wallet. Daily limit set to 1 NGEN. Adjust via PUT /api/v1/agents/:agentId/spend-config'
     });
@@ -1910,25 +1943,58 @@ router.post('/api/v1/agents/:agentId/takeover', async (req, res) => {
  */
 router.get('/api/v1/agents/:agentId/control-status', (req, res) => {
   try {
-    const state = req.app.locals.node?.currentState;
-    if (!state || !state.agents) {
-      return res.status(503).json({ success: false, error: 'State not ready' });
+    const node = req.app.locals.node;
+    const state = node?.currentState;
+    const { agentId } = req.params;
+
+    // P0-6 follow-up: wallet registry is the source of truth for custody state.
+    const wm = req.app.locals.agentWalletManager;
+    let entry = wm?.registry?.get(agentId);
+    if (!entry && node?.resolveRegisteredAgent) {
+      const rec = node.resolveRegisteredAgent(agentId);
+      if (rec?.agentId) entry = wm?.registry?.get(rec.agentId) || null;
+    }
+    if (!entry) {
+      if (!state?.agentRegistry) {
+        return res.status(503).json({ success: false, error: 'State not ready', error_code: 'STATE_NOT_READY' });
+      }
+      // P0-5 follow-up: browser-custody agents have no server-side wallet
+      // entry. Fall back to the on-chain registry so their custody and
+      // master-key binding state remain visible (takeover depends on this).
+      const rec = node?.resolveRegisteredAgent?.(agentId);
+      if (rec?.agentId) {
+        const record = state.agentRegistry.agents.get(rec.agentId) || {};
+        return res.json({
+          success: true,
+          agentId: rec.agentId,
+          source: 'on-chain',
+          keyModel: 'browser-generated',
+          custody: record.custody || 'self-sovereign',
+          masterKeyBound: !!record.master_key_fingerprint,
+          masterKeyFingerprint: record.master_key_fingerprint || null,
+          bindingDeadline: record.binding_deadline || null,
+          controlStatus: {
+            humanControlled: false,
+            spendConfig: { type: 'unlimited' },
+            takenOverAt: null,
+            note: 'Browser-custody agent: keys never left the client. Bind a Master Key via POST /api/v1/bootstrap/agents/:agentId/bind-master-key to gain takeover rights.'
+          }
+        });
+      }
+      return res.status(404).json({ success: false, error: `Agent not found: ${agentId}`, error_code: 'AGENT_NOT_FOUND' });
     }
 
-    const agent = state.agents[req.params.agentId];
-    if (!agent) {
-      return res.status(404).json({ success: false, error: 'Agent not found' });
-    }
-
+    const md = entry.metadata || {};
     res.json({
       success: true,
-      agentId: req.params.agentId,
-      keyModel: agent.keyModel || 'server-managed',
+      agentId,
+      keyModel: md.keyModel || 'server-managed',
+      custody: md.custody || 'server-managed',
       controlStatus: {
-        humanControlled: !!agent.takenOver,
-        spendConfig: agent.spendConfig || { type: 'unlimited' },
-        takenOverAt: agent.takenOverAt || null,
-        note: agent.takenOver
+        humanControlled: !!md.takenOver,
+        spendConfig: md.spendConfig || { type: 'unlimited' },
+        takenOverAt: md.takenOverAt || null,
+        note: md.takenOver
           ? 'This agent\'s wallet is controlled by a human operator.'
           : 'This agent operates autonomously. Human can takeover anytime via POST /api/v1/agents/:agentId/takeover'
       }

@@ -1,6 +1,6 @@
 {
   "name": "nexusgenesis-agent-keys",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "NexusGenesis Agent Autonomous Key Security — PQC (Dilithium2) keys, AES-256-GCM encryption, three-tier key derivation, and human takeover. Private keys never leave the agent/browser.",
   "type": "module",
   "main": "src/index.js",
@@ -16,7 +16,8 @@
     "./takeover": "./src/takeover.js",
     "./secure": "./src/secure.js",
     "./session": "./src/session.js",
-    "./signer": "./src/signer.js"
+    "./signer": "./src/signer.js",
+    "./bindMasterKey": "./src/bindMasterKey.js"
   },
   "files": [
     "src",

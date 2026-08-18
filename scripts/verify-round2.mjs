@@ -134,13 +134,14 @@ async function main() {
     });
     registered = reg.data;
     const custody = reg.data?.custody?.status || reg.data?.agent?.custody || reg.data?.custody;
-    record('REG register agent', reg.status === 200 && reg.data?.success !== false,
+    record('REG register agent', [200, 201, 202].includes(reg.status) && reg.data?.success !== false,
       `http=${reg.status} custody=${JSON.stringify(custody).slice(0, 60)} deadline=${reg.data?.binding_deadline || reg.data?.custody?.binding_deadline || 'n/a'}`);
   } catch (e) { record('REG register agent', false, e.message); }
 
   // [8c] binding window should be 72h for a fresh agent
   try {
-    const dl = registered?.binding_deadline || registered?.custody?.binding_deadline || registered?.agent?.binding_deadline;
+    const dl = registered?.binding_deadline || registered?.agent?.humanBindingDeadline
+      || registered?.human_takeover?.bindingDeadline || registered?.custody?.binding_deadline || registered?.agent?.binding_deadline;
     if (dl) {
       const hours = (new Date(dl).getTime() - Date.now()) / 3600_000;
       record('8c binding window 72h', hours > 70 && hours <= 73, `deadline=${dl} (~${hours.toFixed(1)}h)`);
@@ -152,6 +153,13 @@ async function main() {
   // [1a/1b/1c] SDK bindMasterKey end-to-end (with masterPublicKey proof-of-possession)
   if (registered?.success !== false && registered) {
     try {
+      // 202 registrations are accepted-but-not-yet-applied; block-time variance can
+      // exceed the server's 15s waitForInclusion. Poll until the agent lands on-chain.
+      for (let i = 0; i < 15; i++) {
+        const probe = await fetch(`${BASE}/api/v1/agents/${encodeURIComponent(agentName)}/control-status`);
+        if (probe.status === 200) break;
+        await new Promise(r => setTimeout(r, 3000));
+      }
       const master = await generateKeyPair();
       const masterPublicKeyHex = master.publicKey.toString('hex');
       const agentId = registered.agent?.agent_id || registered.agentId || registered.agent_identity || agentName;

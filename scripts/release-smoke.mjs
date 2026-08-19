@@ -3,16 +3,21 @@
  * NexusGenesis — release registry smoke test
  *
  * Installs the ACTUAL PUBLISHED packages from the npm registry into a fresh
- * temp dir and verifies the critical security flows end-to-end:
+ * temp dir and verifies the critical security flows end-to-end across ALL SIX
+ * published packages:
  *
- *   1. agent-sdk : createAgentIdentity → signAgentAsset → verifyAgentAssetSignature
- *   2. chain-eth : createSmartAccount → executeFromAgent (INV-005/006/007 matrix)
- *   3. agent-mcp : module loads (stdio MCP server, no named exports)
+ *   1. agent-keys     : PQCWallet present (transitive, but verified directly)
+ *   2. agent-sdk      : createAgentIdentity → signAgentAsset → verifyAgentAssetSignature
+ *   3. chain-eth      : createSmartAccount → executeFromAgent (INV-005/006/007 matrix)
+ *   4. chain-sol      : deriveSolWalletFromPQC → signMessage → verifyMessage round-trip
+ *   5. chain-adapters : deriveAgentFingerprint / deriveChainAddresses produce stable output
+ *   6. agent-mcp      : module loads (stdio MCP server, no named exports)
  *
  * Usage:
- *   node scripts/release-smoke.mjs                          # latest of each pkg
- *   node scripts/release-smoke.mjs 0.3.0 0.3.0 0.3.0        # sdk chain-eth mcp versions
- *   SMOKE_KEEP=1 node scripts/release-smoke.mjs             # keep temp dir on failure
+ *   node scripts/release-smoke.mjs                                # latest of each pkg
+ *   node scripts/release-smoke.mjs 0.5.0 0.3.0 0.3.0 0.2.2 0.2.2 0.3.0
+ *       # keys sdk eth sol adapters mcp — versions pinned explicitly
+ *   SMOKE_KEEP=1 node scripts/release-smoke.mjs                   # keep temp dir on failure
  *
  * Exit code 0 = PASS, 1 = FAIL. Mirrors the post-publish CI job in
  * .github/workflows/npm-publish.yml.
@@ -27,14 +32,18 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 
-const SDK = 'nexusgenesis-agent-sdk';
-const ETH = 'nexusgenesis-chain-eth';
-const MCP = 'nexusgenesis-agent-mcp';
-const KEYS = 'nexusgenesis-agent-keys';
-
-const sdkVer = process.argv[2] || 'latest';
-const ethVer = process.argv[3] || 'latest';
-const mcpVer = process.argv[4] || 'latest';
+const PACKAGES = {
+  keys: 'nexusgenesis-agent-keys',
+  sdk: 'nexusgenesis-agent-sdk',
+  eth: 'nexusgenesis-chain-eth',
+  sol: 'nexusgenesis-chain-sol',
+  adapters: 'nexusgenesis-chain-adapters',
+  mcp: 'nexusgenesis-agent-mcp',
+};
+// CLI args are 6 explicit versions (keys sdk eth sol adapters mcp); default latest.
+const [keysVer, sdkVer, ethVer, solVer, adaptersVer, mcpVer] = process.argv.slice(2).concat(
+  Array(Math.max(0, 6 - (process.argv.length - 2))).fill('latest')
+);
 
 function sh(cmd, args, cwd) {
   return execFileSync(cmd, args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], shell: true });
@@ -45,11 +54,13 @@ function sh(cmd, args, cwd) {
 const dir = mkdtempSync(join(tmpdir(), 'ng-smoke-'));
 const keep = process.env.SMOKE_KEEP === '1';
 console.log(`[setup] fresh install dir: ${dir}`);
+console.log(`[setup] pinned versions: keys=${keysVer} sdk=${sdkVer} eth=${ethVer} sol=${solVer} adapters=${adaptersVer} mcp=${mcpVer}`);
 
 try {
   sh('npm', ['init', '-y'], dir);
   sh('npm', ['install', '--no-audit', '--no-fund', '--no-save',
-    `${SDK}@${sdkVer}`, `${ETH}@${ethVer}`, `${MCP}@${mcpVer}`], dir);
+    `${PACKAGES.keys}@${keysVer}`, `${PACKAGES.sdk}@${sdkVer}`, `${PACKAGES.eth}@${ethVer}`,
+    `${PACKAGES.sol}@${solVer}`, `${PACKAGES.adapters}@${adaptersVer}`, `${PACKAGES.mcp}@${mcpVer}`], dir);
 
   // Resolve installed package versions from disk for the pin report
   // (exports map blocks importing ./package.json subpath).
@@ -63,15 +74,17 @@ try {
   };
 
   console.log('[0] installed versions:');
-  for (const name of [KEYS, SDK, ETH, MCP]) console.log(`    ${name}: ${readPkg(name)}`);
+  for (const [k, name] of Object.entries(PACKAGES)) console.log(`    ${k.padEnd(9)} ${name}: ${readPkg(name)}`);
 
   // ESM packages (agent-mcp has top-level await) → dynamic import from temp dir.
   // require.resolve returns a Windows `c:\` path; import() needs a file:// URL.
   const load = (spec) => import(pathToFileURL(require.resolve(spec, { paths: [dir] })));
-  const keys = await load(KEYS);
-  const sdk = await load(SDK);
-  const eth = await load(ETH);
-  const mcp = await load(MCP);
+  const keys = await load(PACKAGES.keys);
+  const sdk = await load(PACKAGES.sdk);
+  const eth = await load(PACKAGES.eth);
+  const sol = await load(PACKAGES.sol);
+  const adapters = await load(PACKAGES.adapters);
+  const mcp = await load(PACKAGES.mcp);
 
   assert.ok(keys.PQCWallet, 'agent-keys missing PQCWallet');
 
@@ -160,12 +173,34 @@ try {
   assert.equal(acct.resume({ by: '0xOwner' }).ok, true, 'owner can resume');
   console.log('[2] chain-eth: Smart Account executeFromAgent + INV-005/006/007 OK');
 
-  // ─── 3. agent-mcp: module loads without error ──────────────────────────
+  // ─── 3. chain-sol: key derivation + sign/verify round-trip ─────────────
+  // deriveSolWalletFromPQC takes the PQC PRIVATE key (Buffer); sign/verify
+  // take ed25519 keys as Buffer (hex strings would be utf8-encoded).
+  const solWallet = sol.deriveSolWalletFromPQC(issuer.privateKey);
+  assert.ok(solWallet && solWallet.address, 'chain-sol must derive a Solana wallet from PQC private key');
+  const solMsg = JSON.stringify({ action: 'claim', chain: 'solana', agent: identity.address });
+  const solSig = sol.signMessage(solMsg, Buffer.from(solWallet.privateKeyHex, 'hex'));
+  assert.ok(solSig, 'chain-sol signMessage must produce a signature');
+  const solOk = sol.verifyMessage(solMsg, solSig, Buffer.from(solWallet.publicKeyHex, 'hex'));
+  assert.equal(solOk, true, 'chain-sol verifyMessage must accept its own signature');
+  console.log(`[3] chain-sol: deriveSolWalletFromPQC + sign/verify round-trip OK (${solWallet.address})`);
+
+  // ─── 4. chain-adapters: fingerprint / multi-chain address derivation ───
+  // Functions take PQC key Buffers, not hex strings.
+  const fp = adapters.deriveAgentFingerprint(issuer.publicKey);
+  assert.ok(fp && typeof fp === 'string' && fp.length > 0, 'deriveAgentFingerprint must return a stable digest');
+  const addr = adapters.deriveChainAddresses(issuer.publicKey, issuer.privateKey);
+  assert.ok(addr && (addr.eth || addr.sol), 'deriveChainAddresses must derive at least one chain address');
+  const stable = adapters.deriveAgentFingerprint(issuer.publicKey);
+  assert.equal(stable, fp, 'fingerprint must be deterministic');
+  console.log(`[4] chain-adapters: deriveAgentFingerprint + deriveChainAddresses OK (${addr.nexus})`);
+
+  // ─── 5. agent-mcp: module loads without error ──────────────────────────
   const mcpKeys = Object.keys(mcp);
-  console.log('[3] agent-mcp loaded; namespace keys:', JSON.stringify(mcpKeys));
+  console.log('[5] agent-mcp loaded; namespace keys:', JSON.stringify(mcpKeys));
   console.log('    (stdin/stdout MCP server — no named exports expected)');
 
-  console.log('\nSMOKE PASS — published packages verified end-to-end');
+  console.log('\nSMOKE PASS — all six published packages verified end-to-end');
   process.exitCode = 0;
   // agent-mcp opens a stdio listener on import, keeping the event loop alive;
   // clean up the temp dir then force-exit so the script terminates promptly

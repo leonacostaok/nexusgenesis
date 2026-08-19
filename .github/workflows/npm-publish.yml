@@ -69,10 +69,13 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  # Post-publish verification: install the ACTUALLY PUBLISHED packages from
-  # the npm registry into a fresh temp dir and run the security smoke matrix
-  # (agent-sdk identity/sign/verify, chain-eth Smart Account INV-005/006/007,
-  # agent-mcp load). Fails the release if any published artifact is broken.
+  # Post-publish verification: install the EXACTLY PUBLISHED versions (read
+  # from the tag's checkout, i.e. the same package.json the publish job used)
+  # from the npm registry into a fresh temp dir and run the full six-package
+  # security smoke matrix (agent-sdk sign/verify, chain-eth Smart Account
+  # INV-005/006/007, chain-sol sign/verify round-trip, chain-adapters address
+  # derivation, agent-mcp load). Pinning the versions guarantees we verify
+  # THIS tag's artifacts, not whatever happens to be `latest`.
   registry-smoke:
     runs-on: ubuntu-latest
     needs: publish
@@ -84,6 +87,21 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run registry smoke against freshly published packages
-        run: node scripts/release-smoke.mjs
+      - name: Run registry smoke against the published versions of this tag
+        run: |
+          VERSIONS=$(node -e '
+            const fs = require("fs");
+            const pkgs = [
+              "packages/agent-keys",
+              "packages/agent-sdk",
+              "packages/chain-eth",
+              "packages/chain-sol",
+              "packages/chain-adapters",
+              "mcp-server",
+            ];
+            const vs = pkgs.map(p => JSON.parse(fs.readFileSync(p + "/package.json", "utf8")).version);
+            console.log(vs.join(" "));
+          ')
+          echo "Publishing smoke against versions: $VERSIONS"
+          node scripts/release-smoke.mjs $VERSIONS
         timeout-minutes: 10

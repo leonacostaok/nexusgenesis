@@ -199,7 +199,7 @@
 | INV-001 | `mcp-server/test/mcp-security.test.js`、`packages/agent-sdk/test/agent-sdk.test.js` | generate_keypair 无 privateKeyHex；弱密码/无密码注册拒绝；默认路径走隔离 signer |
 | INV-002 | `packages/agent-keys/test/signer.test.js`、`packages/agent-sdk/test/agent-sdk.test.js` | signMessage 拒绝 hash 形态；sign_intent 验签；金额漂移/同内容不同金额拒绝 |
 | INV-003 | `packages/agent-sdk/test/agent-sdk.test.js`、`packages/chain-eth/test/smart-account.test.js` | 过期会话载荷拒绝；无 expiry fail-closed；白名单违反拒绝；撤销会话拒绝 |
-| INV-004 | `packages/agent-keys/test/*` | takeoverGuard 检测控制权变化阻断 |
+| INV-004 | `packages/agent-keys/test/session-narrowing.test.js`、`packages/agent-keys/test/session.test.js` | narrowSession 单调缩窄（空白名单/跨 agentId/超上限/晚过期均拒绝）；verifySessionSignature 先于 scope 检查 |
 | INV-005 | `packages/chain-eth/test/smart-account.test.js` | 自提权 action（addOwner/upgrade/grantRole 等 9+ 类）即使签名有效也链上拒绝 |
 | INV-006 | `packages/chain-eth/test/smart-account.test.js` | Emergency 仅可 pause/revoke/reduce(只降)/freeze；resume/unfreeze 仅 owner；无资产移动路径 |
 | INV-007 | `packages/chain-eth/test/smart-account.test.js` | 单笔≤maxPerTx、日累计、账户级独立上限、nonce 签入载荷且单次有效、allowance 面拒绝、estimateMaxLoss 可量化 |
@@ -207,7 +207,7 @@
 
 ### 4.2 发布后 registry smoke（v0.5.0 起）
 
-`scripts/release-smoke.mjs` + GitHub Actions `npm-publish.yml` 的 post-publish job：从 npm registry 全新安装 6 包，端到端验证 agent-sdk 身份/签名/verifier、chain-eth Smart Account 执行流（INV-005/006/007 矩阵）、agent-mcp 可加载。
+`scripts/release-smoke.mjs` + GitHub Actions `npm-publish.yml` 的 `registry-smoke` job：从 npm registry 全新安装 **本次 tag 固定版本**（由 publish job 同款 package.json 读出，非 `latest`）的全部 6 包，端到端验证 agent-sdk 身份/签名/verifier、chain-eth Smart Account 执行流（INV-005/006/007 矩阵）、chain-sol 签名往返、chain-adapters 多链地址派生、agent-mcp 可加载。
 
 ---
 

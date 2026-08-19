@@ -1,0 +1,18 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+test = "test"
+script = "script"
+# Use the pinned solc 0.8.24 binary directly (avoids the sandbox-blocked
+# svm cache under %APPDATA%\svm that forge would otherwise touch).
+solc = "bin/solc-0.8.24.exe"
+optimizer = true
+optimizer_runs = 200
+via_ir = true
+evm_version = "paris"
+
+[fmt]
+line_length = 100
+tab_width = 4
+quote_style = "double"

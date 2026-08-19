@@ -25,6 +25,12 @@ import {
   ALLOWANCE_SURFACE_ACTIONS,
   DEFAULT_DAY_WINDOW_MS
 } from './smart-account.js';
+import {
+  hashIntentDigest,
+  signIntentDigest,
+  verifyIntentDigest,
+  addressForPrivateKey
+} from './canonical.js';
 
 export {
   CHAIN,
@@ -43,7 +49,11 @@ export {
   SmartAccount,
   SELF_ESCALATION_ACTIONS,
   ALLOWANCE_SURFACE_ACTIONS,
-  DEFAULT_DAY_WINDOW_MS
+  DEFAULT_DAY_WINDOW_MS,
+  hashIntentDigest,
+  signIntentDigest,
+  verifyIntentDigest,
+  addressForPrivateKey
 };
 
 export default {

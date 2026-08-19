@@ -233,15 +233,44 @@ export async function signAgentAsset({ signer, wallet, session, intent, issuerPu
 
 /**
  * Build the canonical asset-intent payload bound into the signature.
- * Deterministic key set: type + intent + session context.
+ *
+ * SPRINT 2 — this is the single cross-language schema shared by the JS SDK
+ * and the Solidity Smart Account (contracts/solidity/src/SmartAccount.sol).
+ * Field ORDER is part of the protocol: chain-eth's hashIntentDigest and the
+ * contract's _hashIntent hash these exact fields in this exact order, so the
+ * digest is byte-identical on both sides. Do NOT reorder or rename fields.
+ *
+ * Schema (all fields required by the on-chain digest — see
+ * packages/chain-eth/src/canonical.js):
+ *   type                = 'agent_asset_intent' (verifier marker, must match
+ *                         verifier.js ASSET_INTENT_TYPE)
+ *   sessionId           = 32-byte hex. Uses session.sessionId when the session
+ *                         is registered on-chain, else derives a deterministic
+ *                         32-byte id from the session identity (agentId +
+ *                         issuedAt + expiresAt), so the same session token
+ *                         always canonicalizes to the same id.
+ *   action/chain/asset/recipient/contract/method = string fields
+ *   amount/nonce        = string numbers (BigInt precision)
+ *   agentId             = session.agentId
+ *   sessionIssuedAt     = session.issuedAt (ms epoch)
+ *   sessionExpiresAt    = session.expiresAt (ms epoch)
+ *
  * @param {object} session - session key token
  * @param {object} intent - structured asset intent
- * @returns {object} canonical payload
+ * @returns {object} canonical payload (fixed field order)
  */
 export function canonicalizeAssetIntent(session, intent) {
   return {
     type: 'agent_asset_intent',
-    ...intent,
+    sessionId: session.sessionId || deriveSessionId(session),
+    action: intent.action,
+    chain: intent.chain,
+    asset: intent.asset,
+    amount: intent.amount,
+    recipient: intent.recipient,
+    contract: intent.contract,
+    method: intent.method,
+    nonce: intent.nonce,
     agentId: session.agentId,
     sessionIssuedAt: session.issuedAt,
     sessionExpiresAt: session.expiresAt,
@@ -249,12 +278,40 @@ export function canonicalizeAssetIntent(session, intent) {
 }
 
 /**
- * Hash the canonical intent into a 0x-hex fingerprint.
+ * Deterministic 32-byte session identifier for the canonical schema.
+ *
+ * The on-chain Smart Account keys sessions by a bytes32 sessionId. JS session
+ * tokens (createSessionKey) carry no id today, so when the caller does not
+ * pin `session.sessionId` (e.g. on-chain registration), we derive a stable
+ * one from the session's identity fields. sha256 is sufficient here: the
+ * sessionId is an opaque lookup key — the binding that prevents cross-session
+ * replay is the sessionIssuedAt/ExpiresAt + agentId fields inside the signed
+ * digest, not the entropy of the id.
+ *
+ * @param {object} session - session key token
+ * @returns {string} '0x' + 64 hex chars (32 bytes)
+ */
+function deriveSessionId(session) {
+  const seed = JSON.stringify({
+    agentId: session && session.agentId,
+    issuedAt: session && session.issuedAt,
+    expiresAt: session && session.expiresAt,
+  });
+  return '0x' + crypto.createHash('sha256').update(seed).digest('hex');
+}
+
+/**
+ * Hash the canonical intent into a 0x-hex fingerprint (sha256).
  *
  * NOTE (P0-4): since P0-4 the ASSET SIGNATURE is bound to the decodable
  * canonical payload itself (JSON.stringify(canonical)), NOT to this hash —
  * the hash is one-way and would re-introduce amount-hash unlinkability on
  * the verifier side. This function remains for traceability / indexing only.
+ *
+ * NOTE (Sprint 2): the digest the Solidity Smart Account verifies is NOT this
+ * sha256 fingerprint. It is the fixed keccak256 digest produced by
+ * chain-eth's hashIntentDigest(canonical), which mirrors the contract's
+ * _hashIntent. See packages/chain-eth/src/canonical.js.
  *
  * @param {object} canonical - canonicalizeAssetIntent() output
  * @returns {string} '0x' + sha256 hex

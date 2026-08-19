@@ -24,6 +24,7 @@ import {
   validateAddress,
   checkSpendAllowed,
   takeoverGuard,
+  spawnAgentSigner,
   SPEND_MODES,
   CoordinationClient,
   createHttpTransport,
@@ -68,14 +69,113 @@ async function apiRequest(path, method = 'GET', body = null) {
   }
 }
 
-// ─── Session wallet (private key lives in this process only) ────────────
+// ─── Session identity ────────────────────────────────────────────────────
+// P0-3: the decrypted key is held by an ISOLATED signer subprocess
+// (session.signer), never in this process. session.wallet is a FALLBACK that
+// is materialized LAZILY — only when signer spawning fails — so the normal
+// path never holds usable key material in this process (a compromised parent
+// could otherwise just call session.wallet.sign() and bypass the signer and
+// its worker-side policy entirely).
 const session = {
-  wallet: null,       // recovered PQCWallet (in-memory)
+  wallet: null,       // recovered PQCWallet — LAZY fallback ONLY (INV-001/P0-3)
+  signer: null,       // SignerHandle — DEFAULT key holder (isolated subprocess)
+  password: null,     // envelope password, retained ONLY to respawn the signer
   agent: null,        // agent identity string
   publicKeyHex: null,
   address: null,
   envelope: null,     // encrypted envelope for the caller to persist
 };
+
+// Long idle timeout so the session signer survives realistic usage; it can be
+// respawned lazily if it still exits (see ensureSessionSigner).
+const SESSION_SIGNER_IDLE_MS = 60 * 60 * 1000;
+
+/** True when this session holds (or can reconstruct) an agent identity. */
+function hasSessionIdentity() {
+  return !!(session.wallet || (session.envelope && session.password));
+}
+
+/**
+ * Materialize the in-process fallback wallet on demand. This is an EXPLICIT
+ * security downgrade (key enters this process) and only happens when the
+ * isolated signer is unavailable — never on the default path.
+ */
+function fallbackWallet() {
+  if (session.wallet) return session.wallet;
+  if (!session.envelope || !session.password) {
+    const err = new Error('No agent identity in this session. Call generate_agent_keys or register_agent first.');
+    err.code = 'NO_WALLET';
+    throw err;
+  }
+  console.error('[mcp-server] DOWNGRADE: materializing in-process wallet (isolated signer unavailable)');
+  session.wallet = recoverAgentIdentity(session.envelope, session.password);
+  return session.wallet;
+}
+
+/**
+ * Return a live signer for this session, spawning one lazily if needed.
+ * Returns null when no envelope/password is available or spawning fails —
+ * callers then fall back to the in-process wallet (explicit downgrade).
+ */
+async function ensureSessionSigner() {
+  if (!session.envelope || !session.password) return null;
+  if (process.env.NEXUSGENESIS_SIGNER_DISABLE === '1') {
+    // Test/diagnostic seam: simulate an environment where the signer cannot
+    // be spawned, exercising the explicit in-process fallback path.
+    return null;
+  }
+  if (session.signer) {
+    try {
+      await session.signer.ping(1500);
+      return session.signer;
+    } catch {
+      // Idle-exited or dead — fall through to respawn.
+      session.signer = null;
+    }
+  }
+  try {
+    // Policy-less signer: mcp-server writes are METADATA (task claim/submit/
+    // verify/publish, forum) with no value transfer, so no spend policy.
+    session.signer = await spawnAgentSigner({
+      envelope: session.envelope,
+      password: session.password,
+      idleTimeoutMs: SESSION_SIGNER_IDLE_MS,
+    });
+    return session.signer;
+  } catch (err) {
+    console.error(`[mcp-server] signer spawn failed, falling back to in-process wallet: ${err.message}`);
+    session.signer = null;
+    return null;
+  }
+}
+
+/**
+ * Sign a metadata message via the isolated signer (default path), stripping
+ * the 0x prefix so the output matches wallet.sign()'s bare-hex contract.
+ * Returns null when no signer is available.
+ */
+async function signViaSigner(message) {
+  const signer = await ensureSessionSigner();
+  if (!signer) return null;
+  const sig = await signer.signMessage(message);
+  return typeof sig === 'string' ? sig.replace(/^0x/, '') : null;
+}
+
+/**
+ * A wallet-like object whose .sign() routes through the ISOLATED signer
+ * (metadata channel). Used by ForumClient, which only needs .sign(message)
+ * returning bare-hex. Falls back to the in-process wallet only when the
+ * signer is unavailable.
+ */
+function signerBackedWallet() {
+  return {
+    address: session.address,
+    async sign(message) {
+      const sig = await signViaSigner(message);
+      return sig ?? fallbackWallet().sign(message);
+    },
+  };
+}
 
 // ─── Security tool handlers ─────────────────────────────────────────────
 
@@ -83,11 +183,18 @@ async function handleGenerateAgentKeys(args) {
   const password = args.password;
   const metadata = args.metadata || {};
   const identity = await createAgentIdentity({ password, metadata });
-  session.wallet = recoverAgentIdentity(identity.envelope, password);
+  session.password = password;
+  // P0-3: do NOT materialize the in-process wallet here — the key must live
+  // only in the isolated signer subprocess. The fallback wallet is recovered
+  // lazily and only when the signer cannot be spawned (see fallbackWallet).
+  session.wallet = null;
   session.agent = metadata.name || identity.address;
   session.publicKeyHex = identity.publicKeyHex;
   session.address = identity.address;
   session.envelope = identity.envelope;
+  // P0-3: prefer holding the key in an isolated signer subprocess.
+  session.signer = null;
+  await ensureSessionSigner();
   return {
     content: [{
       type: 'text',
@@ -98,7 +205,8 @@ async function handleGenerateAgentKeys(args) {
         address: identity.address,
         publicKeyHex: identity.publicKeyHex,
         envelope: identity.envelope,
-        note: 'Private key is encrypted inside `envelope` and held in memory. Persist the envelope + password; they never left this process.',
+        signing: session.signer ? 'isolated-signer (P0-3)' : 'in-process-wallet (fallback)',
+        note: 'Private key is encrypted inside `envelope` and held by an isolated signer subprocess. Persist the envelope + password; they never left this process.',
       }, null, 2),
     }],
   };
@@ -116,8 +224,17 @@ async function handleVerifySignature(args) {
 }
 
 async function handleGenerateKeyPair() {
-  const { generateKeyPair: gk } = await import('nexusgenesis-agent-keys');
+  const { generateKeyPair: gk, secureZero } = await import('nexusgenesis-agent-keys');
   const { publicKey, privateKey } = await gk();
+  let chainAddresses;
+  try {
+    const { deriveChainAddresses } = await import('nexusgenesis-chain-adapters');
+    // Registry only emits addresses/public keys — never private material.
+    chainAddresses = deriveChainAddresses(publicKey, privateKey);
+  } finally {
+    // Zero the transient plaintext key from the raw keypair generation.
+    secureZero(privateKey);
+  }
   return {
     content: [{
       type: 'text',
@@ -125,8 +242,8 @@ async function handleGenerateKeyPair() {
         success: true,
         address: generateAddress(publicKey),
         publicKeyHex: publicKey.toString('hex'),
-        privateKeyHex: privateKey.toString('hex'),
-        warning: 'Private key shown only because explicitly requested. Store securely; never share.',
+        chainAddresses,
+        note: 'Raw private key is never exposed (INV-001). Derived chain addresses shown to demonstrate cross-chain derivation.',
       }, null, 2),
     }],
   };
@@ -177,13 +294,29 @@ async function handleRegisterAgent(args) {
     return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'name (agent identity) is required' }) }], isError: true };
   }
   // Ensure we have an in-memory identity. Prefer the one generated in this session.
-  if (!session.wallet) {
-    const password = args.password || 'default-secure-agent-password';
+  // SECURITY (INV-001): no silent default-password fallback — an identity created
+  // with a well-known password would be recoverable by anyone who knows it. When no
+  // identity exists in this session, a real caller-supplied password is mandatory.
+  if (!hasSessionIdentity()) {
+    const password = args.password;
+    if (!password || typeof password !== 'string' || password.length < 8) {
+      return {
+        content: [{
+          type: 'text',
+          text: JSON.stringify({ success: false, error: 'password is required (min 8 chars) when no identity exists in this session' }),
+        }],
+        isError: true,
+      };
+    }
     const identity = await createAgentIdentity({ password, metadata: { name } });
-    session.wallet = recoverAgentIdentity(identity.envelope, password);
+    session.password = password;
+    // P0-3: key stays in the isolated signer; no eager in-process wallet.
+    session.wallet = null;
     session.publicKeyHex = identity.publicKeyHex;
     session.address = identity.address;
     session.envelope = identity.envelope;
+    session.signer = null;
+    await ensureSessionSigner();
   }
   session.agent = name;
 
@@ -220,17 +353,17 @@ function coordinationClient() {
   return new CoordinationClient(createHttpTransport({ baseURL: DEFAULT_API_BASE }));
 }
 
-function requireWallet() {
-  if (!session.wallet) {
+function requireSigningSession() {
+  // Signer-backed (default) or already-materialized fallback wallet both count.
+  if (!hasSessionIdentity()) {
     const err = new Error('No agent identity in this session. Call generate_agent_keys or register_agent first.');
     err.code = 'NO_WALLET';
     throw err;
   }
-  return session.wallet;
 }
 
 async function signTaskAction(action, { taskId, agent, fields }) {
-  const wallet = requireWallet();
+  requireSigningSession();
   const timestamp = Date.now();
   const nonce = crypto.randomBytes(16).toString('hex');
   const dataToSign = {
@@ -241,7 +374,12 @@ async function signTaskAction(action, { taskId, agent, fields }) {
     nonce,
     ...fields,
   };
-  const signature = await wallet.sign(JSON.stringify(dataToSign));
+  // P0-3 default: sign via the isolated signer (key in child process), which
+  // signs the SAME payload string the server verifies (verifyTaskSignature).
+  // Fall back to the in-process wallet only when no signer is available —
+  // fallbackWallet() materializes it lazily (explicit downgrade).
+  const message = JSON.stringify(dataToSign);
+  const signature = (await signViaSigner(message)) ?? (await fallbackWallet().sign(message));
   return { timestamp, nonce, signature };
 }
 
@@ -300,7 +438,10 @@ async function handlePublishTask(args) {
 
 // ─── Forum / governance tools (PQC-signed writes via ForumClient) ───────
 function forumClient() {
-  return new ForumClient({ wallet: session.wallet, baseURL: DEFAULT_API_BASE });
+  // P0-3: forum writes sign via the ISOLATED signer (metadata channel)
+  // through a wallet-compatible shim; the in-process wallet is materialized
+  // only when the signer is unavailable (explicit downgrade).
+  return new ForumClient({ wallet: signerBackedWallet(), baseURL: DEFAULT_API_BASE });
 }
 
 async function handleListTopics(args) {
@@ -345,7 +486,7 @@ const TOOLS = [
         name: { type: 'string', description: 'Agent identity name (required)' },
         capabilities: { type: 'array', items: { type: 'string' }, description: 'Agent capabilities' },
         referrer: { type: 'string', description: 'Referrer agent ID (optional)' },
-        password: { type: 'string', description: 'Password to encrypt the key envelope (optional if keys were generated this session)' },
+        password: { type: 'string', description: 'Password to encrypt the key envelope (required, min 8 chars, when no identity exists in this session)' },
       },
       required: ['name'],
     },
@@ -373,7 +514,7 @@ const TOOLS = [
   },
   {
     name: 'generate_keypair',
-    description: 'Generate a raw Dilithium2 key pair and expose BOTH public and private keys as hex (explicitly requested).',
+    description: 'Generate a raw Dilithium2 key pair and derive Nexus/ETH/Sol addresses. The private key is never exposed (INV-001).',
     inputSchema: { type: 'object', properties: {} },
   },
   {
@@ -529,9 +670,19 @@ const TOOLS = [
  */
 export function createServer() {
   const server = new Server(
-    { name: 'nexusgenesis-agent-mcp', version: process.env.MCP_VERSION || '0.2.1' },
+    { name: 'nexusgenesis-agent-mcp', version: process.env.MCP_VERSION || '0.3.0' },
     { capabilities: { tools: {} } },
   );
+
+  // P0-3: the session signer is a child process — terminate it when the MCP
+  // session closes so it never outlives the server (and keeps the process
+  // alive). The in-process wallet fallback needs no cleanup.
+  server.onclose = () => {
+    if (session.signer) {
+      session.signer.close();
+      session.signer = null;
+    }
+  };
 
   server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: TOOLS }));
 

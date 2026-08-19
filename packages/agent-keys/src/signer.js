@@ -21,13 +21,16 @@
  * ───────────────────────────────────────────────
  *   Parent → Child:
  *     {"type":"init","envelope":{...},"password":"...","policy":{...}}
- *     {"type":"sign","requestId":1,"hash":"0xabcdef...","amount":"50"}
+ *     {"type":"sign","requestId":1,"hash":"0xabcdef...","amount":"50"}   // legacy
+ *     {"type":"sign_intent","requestId":1,"payload":{...}}               // P0-4
  *     {"type":"ping","requestId":0}
  *     {"type":"exit"}
  *
- *   The `amount` field on sign requests carries the transaction's real
+ *   The `amount` field on legacy sign requests carries the transaction's real
  *   value. It is MANDATORY when a spend policy is configured (the worker
- *   fails closed without it) and ignored otherwise.
+ *   fails closed without it) and ignored otherwise. P0-4 replaces this for
+ *   asset signing: sign_intent embeds the amount inside the signed payload,
+ *   so the worker's policy check and the signed content are the same object.
  *
  *   Child → Parent:
  *     {"type":"init_ok","address":"ng1..."}
@@ -38,34 +41,31 @@
  *     {"type":"pong","requestId":0}
  *     {"type":"exiting","reason":"..."}
  *
- * KNOWN ARCHITECTURAL LIMITATION — amount-hash unlinkability
+ * KNOWN ARCHITECTURAL LIMITATION (legacy 'sign' channel) — amount-hash
+ * unlinkability
  * ──────────────────────────────────────────────────────────
- * The worker applies spend-policy checks to the `amount` field it receives
- * via IPC, but it has NO way to verify that the `amount` matches the
- * `hash` being signed. A compromised parent process can always send
+ * The legacy 'sign' channel applies spend-policy checks to the `amount` field
+ * it receives via IPC, but it has NO way to verify that the `amount` matches
+ * the `hash` being signed. A compromised parent process can always send
  * `amount: "1"` alongside a hash of a million-token transfer — the worker
  * will approve the sign because the policy check uses the (fake) amount,
  * while the signature is applied to the (real, high-value) hash.
  *
- * This is INHERENT to any process-isolation design where the worker cannot
- * inspect the on-chain state the hash refers to. Mitigations:
- *   - Session key layer: the verifier (smart contract, chain node) MUST
- *     independently validate the transaction's real amount against the
- *     session key's maxPerTx/maxDaily before accepting the signature.
- *   - Human-in-the-loop: for large-require-approval tier, the human SHOULD
- *     inspect the raw transaction hash on a block explorer, not rely on
- *     the amount field sent by the agent.
- *   - Future: a verifiable-computation approach (ZK proof that the hash
- *     encodes a transaction with amount ≤ stated amount) would close this
- *     gap entirely. Not implemented in the current release.
+ * P0-4 FIX: asset signing MUST use the 'sign_intent' channel instead. There,
+ * the signed content IS the payload and the amount is read from inside it,
+ * so the policy check and the signed amount are structurally the same value —
+ * a compromised parent cannot lie about the amount. The legacy 'sign' channel
+ * remains for hash-signing callers that bind the amount elsewhere (e.g. an
+ * on-chain Smart Account that independently validates the transaction amount).
+ * The session-key layer (verifier) MUST still independently validate the
+ * transaction's real amount against maxPerTx/maxDaily before acceptance.
  *
  * USAGE
  * ─────
  *   import { spawnSigner } from 'nexusgenesis-agent-keys';
  *   const signer = await spawnSigner({ envelope, password, policy });
- *   const sig = await signer.sign('0xabcdef...');
- *   // Policy-aware call:
- *   const sig = await signer.sign('0xabcdef...', { amount: '50' });
+ *   const sig = await signer.sign('0xabcdef...');            // legacy hash sign
+ *   const sig2 = await signer.signIntent({ type:'agent_asset_intent', amount:'50', ... });
  *   await signer.close();
  *
  * BREAKING CHANGE (v2.0): sign()'s second argument changed from a bare
@@ -94,6 +94,15 @@ const SIGNER_INIT_TIMEOUT_MS = 15000;
 const SIGNER_PER_REQUEST_TIMEOUT_MS = 30000;
 const SIGNER_PING_TIMEOUT_MS = 5000;
 const SIGNER_GRACEFUL_SHUTDOWN_MS = 2000;
+/** Max bytes for a signMessage payload (metadata envelopes are small). */
+export const SIGN_MESSAGE_MAX_BYTES = 64 * 1024;
+
+/**
+ * A bare or 0x-prefixed 64-char hex string — the exact shape of a
+ * sha256-sized transaction/intent hash (e.g. hashAssetIntent() output).
+ * Refused on the policy-less signMessage channel (see SignerHandle.signMessage).
+ */
+const HASH_SHAPED_RE = /^(?:0x)?[0-9a-fA-F]{64}$/;
 
 // ─── Parent-side SignerHandle ────────────────────────────────────────────
 
@@ -195,6 +204,99 @@ export class SignerHandle {
       }, timeoutMs);
       this._pending.set(id, { resolve, reject, timer });
       this._send({ type: 'sign', requestId: id, hash, amount });
+    });
+  }
+
+  /**
+   * Request a policy-less signature over an arbitrary message string.
+   *
+   * This channel is for NON-VALUE-BEARING metadata (task claim/submit/verify/
+   * publish, forum actions, protocol bookkeeping). No spend policy is applied
+   * and no amount is required — the signed string is the message itself, so a
+   * verifier checks `verify(message, sig, publicKey)` exactly as it would for
+   * `wallet.sign(message)`. Value-bearing (asset/transaction) signing MUST go
+   * through `sign()` so the worker-side spend policy and amount binding apply.
+   *
+   * Hash-shaped messages (a bare or 0x-prefixed 64-char hex string — the exact
+   * shape of a transaction/intent hash such as hashAssetIntent() output) are
+   * REFUSED on both this side (fail fast) and, authoritatively, inside the
+   * worker. Without that guard a compromised parent could route a
+   * value-bearing hash through the policy-less channel and bypass the
+   * worker-side spend policy (INV-002).
+   *
+   * @param {string} message - The exact message string to sign.
+   * @param {object} [opts]
+   * @param {number} [opts.timeoutMs=30000] - Per-request timeout
+   * @returns {Promise<string>} 0x-prefixed hex signature
+   */
+  async signMessage(message, { timeoutMs = SIGNER_PER_REQUEST_TIMEOUT_MS } = {}) {
+    if (this._closed) throw new Error('Signer is closed');
+    if (!message || typeof message !== 'string' || message.length === 0) {
+      throw new Error('Invalid message — must be a non-empty string');
+    }
+    if (HASH_SHAPED_RE.test(message)) {
+      throw new Error('signMessage refuses hash-shaped messages — value-bearing hashes must go through sign() with policy (INV-002)');
+    }
+    // P0-4 cross-validation: fail fast on the parent side for JSON-serialized
+    // asset-intent payloads (the exact shape the on-chain verifier
+    // verifyAgentAssetSignature trusts). The worker refuses these
+    // authoritatively; this guard just gives callers an immediate, local error.
+    let parsed;
+    try { parsed = JSON.parse(message); } catch { parsed = null; }
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+        && parsed.type === 'agent_asset_intent') {
+      throw new Error('signMessage refuses asset-intent payloads — value-bearing intents must go through signIntent() with policy (INV-002/P0-4)');
+    }
+    if (Buffer.byteLength(message, 'utf8') > SIGN_MESSAGE_MAX_BYTES) {
+      throw new Error(`Message exceeds ${SIGN_MESSAGE_MAX_BYTES} bytes`);
+    }
+    const id = ++this._requestId;
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        this._pending.delete(id);
+        reject(new Error(`Signer timeout (${timeoutMs}ms) for request ${id}`));
+      }, timeoutMs);
+      this._pending.set(id, { resolve, reject, timer });
+      this._send({ type: 'sign_message', requestId: id, message });
+    });
+  }
+
+  /**
+   * Request a signature over a structured asset-intent payload (P0-4).
+   *
+   * The payload IS the signed content and its `amount` is embedded inside it,
+   * so the worker derives the amount for its spend-policy check from the very
+   * bytes it signs — not from a separate parent-supplied field. This closes
+   * the amount-hash unlinkability limitation of the legacy `sign()` channel:
+   * a compromised parent cannot request a "small" policy check over a "large"
+   * signed amount, because the checked amount and the signed amount are the
+   * same object.
+   *
+   * The signature verifies over `JSON.stringify(payload)` — the same string
+   * an on-chain verifier recomputes when it decodes the amount from the
+   * payload (see nexusgenesis-agent-sdk verifyAgentAssetSignature).
+   *
+   * @param {object} payload - canonical agent asset intent (must carry
+   *   type='agent_asset_intent' and a non-negative numeric `amount`)
+   * @param {object} [opts]
+   * @param {number} [opts.timeoutMs=30000] - Per-request timeout
+   * @returns {Promise<string|{timelocked:true, timelockMs:number, scheduledAt:number}>}
+   *   Resolves with a 0x-prefixed hex signature, or a timelock object when the
+   *   amount lands in the medium tier under three-tier authorization.
+   */
+  async signIntent(payload, { timeoutMs = SIGNER_PER_REQUEST_TIMEOUT_MS } = {}) {
+    if (this._closed) throw new Error('Signer is closed');
+    if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+      throw new Error('Invalid intent payload — must be an object');
+    }
+    const id = ++this._requestId;
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        this._pending.delete(id);
+        reject(new Error(`Signer timeout (${timeoutMs}ms) for request ${id}`));
+      }, timeoutMs);
+      this._pending.set(id, { resolve, reject, timer });
+      this._send({ type: 'sign_intent', requestId: id, payload });
     });
   }
 

@@ -99,7 +99,9 @@ export function createSessionKey(issuerKey, {
   allowedChains,
   maxPerTx,
   maxDaily,
-  ttl
+  ttl,
+  issuedAt,
+  expiresAt,
 } = {}) {
   // -- Validation -----------------------------------------------------------
   if (!issuerKey || !Buffer.isBuffer(issuerKey) && typeof issuerKey !== 'string') {
@@ -115,14 +117,23 @@ export function createSessionKey(issuerKey, {
   const issuerKeyBuf = Buffer.isBuffer(issuerKey) ? issuerKey : Buffer.from(issuerKey, 'hex');
 
   // -- Build scope payload --------------------------------------------------
-  const issuedAt = Date.now();
-  const expiresAt = issuedAt + ttl;
+  const issuedAtMs = issuedAt === undefined ? Date.now() : Number(issuedAt);
+  const expiresAtMs = expiresAt === undefined ? (issuedAtMs + ttl) : Number(expiresAt);
+  if (!Number.isFinite(issuedAtMs) || issuedAtMs <= 0) {
+    throw new RangeError('issuedAt must be a positive timestamp');
+  }
+  if (!Number.isFinite(expiresAtMs) || expiresAtMs <= issuedAtMs) {
+    throw new RangeError('expiresAt must be greater than issuedAt');
+  }
+  if (expiresAtMs - issuedAtMs !== ttl) {
+    throw new RangeError('expiresAt must equal issuedAt + ttl');
+  }
 
   const scope = {
     version: SESSION_KEY_VERSION,
     agentId,
-    issuedAt,
-    expiresAt,
+    issuedAt: issuedAtMs,
+    expiresAt: expiresAtMs,
     allowedContracts: allowedContracts || [],
     allowedMethods: allowedMethods || [],
     allowedChains: allowedChains || [],
@@ -228,9 +239,11 @@ export function narrowSession(parentSession, narrower, issuerKey) {
   }
 
   // Expiry: clamp to parent expiry — never later
-  const parentRemainingMs = parentSession.expiresAt - Date.now();
+  const now = Date.now();
+  const parentRemainingMs = parentSession.expiresAt - now;
   const requestedTtl = typeof narrower.ttl === 'number' ? narrower.ttl : parentRemainingMs;
   const ttl = Math.min(requestedTtl, parentRemainingMs);
+  const expiresAt = Math.min(parentSession.expiresAt, now + ttl);
 
   return createSessionKey(issuerKey, {
     agentId: parentSession.agentId,
@@ -240,6 +253,8 @@ export function narrowSession(parentSession, narrower, issuerKey) {
     maxPerTx: resolve('maxPerTx'),
     maxDaily: resolve('maxDaily'),
     ttl,
+    issuedAt: now,
+    expiresAt,
   });
 }
 

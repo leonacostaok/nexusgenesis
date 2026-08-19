@@ -7,6 +7,7 @@
  *
  * This is the differentiation layer: private keys are never held on a server.
  */
+import crypto from 'node:crypto';
 import {
   generateKeyPair,
   sign,
@@ -22,8 +23,11 @@ import {
   issueCustodyToken,
   verifyCustodyToken,
   checkSpendAllowed,
+  checkSessionAccess,
+  verifySessionSignature,
   takeoverGuard,
   takeoverWallet,
+  spawnSigner,
   SPEND_MODES
 } from 'nexusgenesis-agent-keys';
 
@@ -70,12 +74,229 @@ export function recoverAgentIdentity(envelope, password) {
 
 /**
  * Sign an arbitrary payload with a wallet.
+ *
+ * P0-2 / INV-002: this is the generic agent-facing signing channel. It is
+ * intended for METADATA (task claim/submit/verify/publish, forum actions,
+ * protocol bookkeeping). Payloads that look like asset operations
+ * (transfer/withdraw/approve/permit/bridge/swap/... ) MUST NOT go through
+ * the generic channel — they fail closed UNCONDITIONALLY (no escape hatch)
+ * and require the explicit high-risk path `signAgentAsset()` with a valid,
+ * scoped session key.
+ *
  * @param {object} wallet
  * @param {string|object} message
  * @returns {Promise<string>} hex signature
  */
 export async function signAsAgent(wallet, message) {
+  const verdict = classifySignRequest(message);
+  if (verdict.tier === SIGN_TIERS.ASSET) {
+    throw new Error(
+      `signAsAgent: asset-tier payload (${verdict.signal}) requires the explicit ` +
+      'high-risk channel signAgentAsset(wallet, { session, intent }) (INV-002)'
+    );
+  }
   return wallet.sign(message);
+}
+
+// ─── Graded signing channels (P0-2 / INV-002) ─────────────────────────────
+
+/**
+ * Signing tiers.
+ *   METADATA — protocol bookkeeping; carries no asset-transfer authority.
+ *   ASSET    — payloads authorizing asset movement, allowance, permission
+ *              changes, or contract upgrades. Requires a scoped session key.
+ */
+export const SIGN_TIERS = Object.freeze({
+  METADATA: 'metadata',
+  ASSET: 'asset',
+});
+
+/** Action names that always denote an asset/privilege-changing operation. */
+const ASSET_ACTIONS = new Set([
+  'transfer', 'withdraw', 'approve', 'permit', 'bridge', 'swap', 'spend',
+  'send_asset', 'allowance', 'grant_role', 'grantrole', 'upgrade',
+  'set_owner', 'setowner', 'increase_limit', 'add_owner', 'addowner',
+  'mint', 'burn', 'delegatecall',
+]);
+
+/** Top-level keys that, combined with an amount/asset, signal an asset op. */
+const ASSET_KEY_HINT = /^(recipient|to|contract|method|chain|allowance|approve|permit|bridge|swap|transfer|withdraw|spend|owner)$/i;
+
+/**
+ * Classify a sign request into a tier by its intent shape.
+ * Opaque strings are treated as metadata (cannot be structurally inspected).
+ * @param {string|object} message
+ * @returns {{ tier: string, signal: string|null }}
+ */
+export function classifySignRequest(message) {
+  if (typeof message !== 'object' || message === null || Array.isArray(message)) {
+    return { tier: SIGN_TIERS.METADATA, signal: null };
+  }
+  const action = message.action || message.type || message.intent;
+  if (typeof action === 'string' && ASSET_ACTIONS.has(action.toLowerCase())) {
+    return { tier: SIGN_TIERS.ASSET, signal: `action:${action}` };
+  }
+  const hasAmount = Object.prototype.hasOwnProperty.call(message, 'amount');
+  const hasAsset = Object.prototype.hasOwnProperty.call(message, 'asset');
+  const hasAssetKey = Object.keys(message).some((k) => ASSET_KEY_HINT.test(k));
+  if ((hasAmount || hasAsset) && hasAssetKey) {
+    return { tier: SIGN_TIERS.ASSET, signal: 'asset-operation-shape' };
+  }
+  return { tier: SIGN_TIERS.METADATA, signal: null };
+}
+
+/**
+ * High-risk signing channel (INV-002/003): sign a structured asset intent
+ * ONLY under a valid, scoped session key. Fails closed when the session is
+ * missing, unverifiable, expired, or outside its scope. The signature is
+ * bound to the intent + session context so the verifier can detect
+ * intent/signature drift.
+ *
+ * The session MUST be independently verifiable: `issuerPublicKey` is
+ * REQUIRED — without issuer verification an Agent could fabricate its own
+ * session and self-authorize (INV-003 violation).
+ *
+ * DEFAULT PATH (P0-3): pass a `signer` (SignerHandle from spawnAgentSigner) —
+ * the key then lives in an isolated subprocess and the signature is produced
+ * there. `wallet` is an EXPLICIT, in-process fallback for environments where
+ * a subprocess cannot be spawned (tests, constrained sandboxes); it must not
+ * be the default in production.
+ *
+ * NOTE: this performs the SDK-side gate. Enforcement that survives a fully
+ * compromised Agent must additionally live in the Signer + on-chain Smart
+ * Account (see whitepaper §9/§10 and P0-4).
+ *
+ * @param {object} opts
+ * @param {object} [opts.signer] - SignerHandle (default path; key in child process)
+ * @param {object} [opts.wallet] - PQCWallet (explicit in-process fallback)
+ * @param {object} opts.session - session key token (createSessionKey)
+ * @param {object} opts.intent - { action, chain, asset, amount, recipient,
+ *   contract?, method?, deadline? }
+ * @param {Buffer} opts.issuerPublicKey - issuer public key used to verify
+ *   the session signature (mandatory)
+ * @returns {Promise<string|{timelocked:true, timelockMs:number, scheduledAt:number}>}
+ *   hex signature, or (signer path) a timelock object when the amount lands
+ *   in the medium tier under three-tier authorization
+ */
+export async function signAgentAsset({ signer, wallet, session, intent, issuerPublicKey } = {}) {
+  if (!session) {
+    throw new Error('signAgentAsset requires a session key (INV-003)');
+  }
+  if (!intent || typeof intent !== 'object') {
+    throw new Error('signAgentAsset requires a structured asset intent (INV-002)');
+  }
+  if (!issuerPublicKey) {
+    throw new Error('signAgentAsset requires issuerPublicKey to verify the session (INV-003)');
+  }
+  const valid = await verifySessionSignature(session, issuerPublicKey);
+  if (!valid) {
+    throw new Error('signAgentAsset: session signature invalid (INV-003)');
+  }
+  const access = checkSessionAccess(session, {
+    contract: intent.contract,
+    method: intent.method,
+    chain: intent.chain,
+    amount: intent.amount,
+  });
+  if (!access.allowed) {
+    throw new Error(`signAgentAsset denied: ${access.reason} (INV-003)`);
+  }
+
+  // P0-4: the signature is bound to the DECODABLE canonical payload itself
+  // (a JSON string carrying the amount), NOT to a one-way hash. This lets an
+  // on-chain verifier decode the amount from the signed content and enforce
+  // amount consistency (verifyAgentAssetSignature / enforceAmountBinding),
+  // and lets the isolated signer derive its spend-policy check from the very
+  // bytes it signs — closing the amount-hash unlinkability limitation.
+  const canonical = canonicalizeAssetIntent(session, intent);
+
+  if (signer) {
+    // Default path: isolated signer holds the key, enforces worker-side spend
+    // ceilings (INV-003, second layer) using the amount INSIDE the payload,
+    // and signs JSON.stringify(canonical).
+    const result = await signer.signIntent(canonical);
+    if (result && typeof result === 'object' && result.timelocked) {
+      // Medium tier under three-tier authorization → pass the timelock through.
+      return result;
+    }
+    // The SignerHandle returns 0x-prefixed hex; normalize to bare hex so the
+    // signAgentAsset contract matches wallet.sign() output (no prefix).
+    return typeof result === 'string' ? result.replace(/^0x/, '') : result;
+  }
+  if (!wallet) {
+    throw new Error('signAgentAsset requires a signer (default) or an explicit in-process wallet (fallback)');
+  }
+  // In-process fallback signs the same decodable payload string, so the
+  // verification contract is identical to the signer path.
+  return wallet.sign(JSON.stringify(canonical));
+}
+
+/**
+ * Build the canonical asset-intent payload bound into the signature.
+ * Deterministic key set: type + intent + session context.
+ * @param {object} session - session key token
+ * @param {object} intent - structured asset intent
+ * @returns {object} canonical payload
+ */
+export function canonicalizeAssetIntent(session, intent) {
+  return {
+    type: 'agent_asset_intent',
+    ...intent,
+    agentId: session.agentId,
+    sessionIssuedAt: session.issuedAt,
+    sessionExpiresAt: session.expiresAt,
+  };
+}
+
+/**
+ * Hash the canonical intent into a 0x-hex fingerprint.
+ *
+ * NOTE (P0-4): since P0-4 the ASSET SIGNATURE is bound to the decodable
+ * canonical payload itself (JSON.stringify(canonical)), NOT to this hash —
+ * the hash is one-way and would re-introduce amount-hash unlinkability on
+ * the verifier side. This function remains for traceability / indexing only.
+ *
+ * @param {object} canonical - canonicalizeAssetIntent() output
+ * @returns {string} '0x' + sha256 hex
+ */
+export function hashAssetIntent(canonical) {
+  const digest = crypto.createHash('sha256').update(JSON.stringify(canonical)).digest('hex');
+  return '0x' + digest;
+}
+
+/**
+ * Spawn an isolated Signer subprocess that holds the agent key (P0-3).
+ *
+ * When a `session` is provided and no explicit `policy` is given, the
+ * worker-side spend policy is derived from the session's hard ceilings
+ * (maxPerTx/maxDaily) so the isolated signer independently enforces the
+ * same limits — a second, process-isolated layer that survives a fully
+ * compromised parent (INV-003).
+ *
+ * @param {object} opts
+ * @param {object} opts.envelope - encrypted key envelope (encryptPrivateKey)
+ * @param {string} opts.password - envelope decryption password (≥8 chars)
+ * @param {object} [opts.policy] - explicit worker spend policy (overrides session-derived)
+ * @param {object} [opts.session] - session key token; derives worker ceilings
+ * @param {number} [opts.idleTimeoutMs] - worker idle timeout before auto-exit
+ * @returns {Promise<import('nexusgenesis-agent-keys').SignerHandle>}
+ */
+export async function spawnAgentSigner({ envelope, password, policy, session, idleTimeoutMs } = {}) {
+  if (!envelope || !password) {
+    throw new Error('spawnAgentSigner requires envelope and password');
+  }
+  let workerPolicy = policy;
+  if (!workerPolicy && session) {
+    const hasLimits = session.maxPerTx !== undefined || session.maxDaily !== undefined;
+    if (hasLimits) {
+      workerPolicy = {
+        type: SPEND_MODES.LIMITED,
+        maxPerTx: session.maxPerTx,
+        maxDaily: session.maxDaily,
+      };
+    }
+  }
+  return spawnSigner({ envelope, password, policy: workerPolicy, idleTimeoutMs });
 }
 
 export {
@@ -95,6 +316,7 @@ export {
   checkSpendAllowed,
   takeoverGuard,
   takeoverWallet,
+  spawnSigner,
   SPEND_MODES
 };
 
@@ -102,6 +324,13 @@ export default {
   createAgentIdentity,
   recoverAgentIdentity,
   signAsAgent,
+  signAgentAsset,
+  SIGN_TIERS,
+  classifySignRequest,
+  spawnSigner,
+  spawnAgentSigner,
+  canonicalizeAssetIntent,
+  hashAssetIntent,
   generateKeyPair,
   generateAddress,
   validateAddress,

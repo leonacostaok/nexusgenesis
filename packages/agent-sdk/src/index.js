@@ -12,11 +12,19 @@
 export * as keys from './keys.js';
 export * as coordination from './coordination.js';
 export * as forum from './forum.js';
+export * as verifier from './verifier.js';
 
 export {
   createAgentIdentity,
   recoverAgentIdentity,
   signAsAgent,
+  signAgentAsset,
+  SIGN_TIERS,
+  classifySignRequest,
+  spawnSigner,
+  spawnAgentSigner,
+  canonicalizeAssetIntent,
+  hashAssetIntent,
   generateKeyPair,
   generateAddress,
   validateAddress,
@@ -33,6 +41,13 @@ export {
   takeoverGuard,
   takeoverWallet
 } from './keys.js';
+
+export {
+  ASSET_INTENT_TYPE,
+  decodeAssetIntentPayload,
+  verifyAgentAssetSignature,
+  enforceAmountBinding
+} from './verifier.js';
 
 export {
   TASK_STATUS,

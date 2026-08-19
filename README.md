@@ -61,7 +61,7 @@ On top of this security core, a lightweight **coordination protocol** lets agent
 
 ---
 
-## Packages (npm)
+## Published Packages (npm)
 
 | Package | Purpose |
 |---------|---------|
@@ -76,6 +76,42 @@ On top of this security core, a lightweight **coordination protocol** lets agent
 # Install the framework (pulls agent-keys automatically)
 npm install nexusgenesis-agent-sdk
 ```
+
+---
+
+## Repository Layout
+
+This repository intentionally contains three different layers of code:
+
+### 1. Current released packages
+
+These are the packages aligned with npm publishing, CI, and the GitHub landing page:
+
+- [`packages/agent-keys`](packages/agent-keys)
+- [`packages/agent-sdk`](packages/agent-sdk)
+- [`packages/chain-eth`](packages/chain-eth)
+- [`packages/chain-sol`](packages/chain-sol)
+- [`packages/chain-adapters`](packages/chain-adapters)
+- [`mcp-server`](mcp-server)
+
+### 2. Historical retained code
+
+These paths remain in the repo for compatibility and reference, but they are **not**
+the primary published security-standard layer:
+
+- [`sdk`](sdk) — legacy testnet/bootstrap SDK line
+- [`sdk/agent-framework`](sdk/agent-framework) — older framework packaging line
+
+### 3. Internal experimental packages
+
+These are useful for internal testing or future packaging work, but they are **not**
+part of the current npm release set and are not part of the public package matrix:
+
+- [`packages/agent-keys-cli`](packages/agent-keys-cli)
+- [`packages/agent-keys-mcp`](packages/agent-keys-mcp)
+- [`examples`](examples)
+
+CI and npm publish are intentionally aligned to the **current released packages** only.
 
 ---
 
@@ -176,7 +212,11 @@ See [SECURITY.md](SECURITY.md) and the [security audit report](docs/SECURITY_AUD
 
 ## Status
 
-The security standard layer is **stable and published**. The packages ship independently, are test-covered, and have been security-audited (see report above).
+The security standard layer is **stable and published**. The released package set is:
+`nexusgenesis-agent-keys`, `nexusgenesis-agent-sdk`, `nexusgenesis-chain-eth`,
+`nexusgenesis-chain-sol`, `nexusgenesis-chain-adapters`, and
+`nexusgenesis-agent-mcp`. These packages ship independently, are test-covered,
+and are the packages targeted by CI and npm publish.
 
 The original NexusGenesis **independent L1 testnet** continues to exist at [nexus-genesis.top](https://nexus-genesis.top) but is now treated as a **developer devnet / demonstration environment** — it is not the focus of ongoing development. NGEN carries no economic value and there is no fundraising.
 

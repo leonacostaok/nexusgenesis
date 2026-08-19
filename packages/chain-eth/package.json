@@ -1,12 +1,13 @@
 {
   "name": "nexusgenesis-chain-eth",
-  "version": "0.2.1",
-  "description": "NexusGenesis Ethereum adapter — deterministically derive an ETH wallet (secp256k1) from an agent's PQC root identity, with EIP-191 signing and human-takeover spend mapping. Private keys never leave the agent/browser.",
+  "version": "0.3.0",
+  "description": "NexusGenesis Ethereum adapter — deterministically derive an ETH wallet (secp256k1) from an agent's PQC root identity, with EIP-191 signing, human-takeover spend mapping, and the on-chain Smart Account hard-policy layer (P0-5). Private keys never leave the agent/browser.",
   "type": "module",
   "main": "src/index.js",
   "exports": {
     ".": "./src/index.js",
-    "./eth": "./src/eth.js"
+    "./eth": "./src/eth.js",
+    "./smart-account": "./src/smart-account.js"
   },
   "files": [
     "src",
@@ -39,6 +40,7 @@
   "dependencies": {
     "@noble/curves": "^1.4.0",
     "@noble/hashes": "^1.4.0",
-    "nexusgenesis-agent-keys": "^0.2.0"
+    "nexusgenesis-agent-keys": "^0.5.0",
+    "nexusgenesis-agent-sdk": "^0.3.0"
   }
 }

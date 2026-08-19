@@ -18,6 +18,13 @@ import {
   verifyMessage,
   mapSpendToGuardianPolicy
 } from './eth.js';
+import {
+  createSmartAccount,
+  SmartAccount,
+  SELF_ESCALATION_ACTIONS,
+  ALLOWANCE_SURFACE_ACTIONS,
+  DEFAULT_DAY_WINDOW_MS
+} from './smart-account.js';
 
 export {
   CHAIN,
@@ -31,7 +38,12 @@ export {
   hashPersonalMessage,
   signMessage,
   verifyMessage,
-  mapSpendToGuardianPolicy
+  mapSpendToGuardianPolicy,
+  createSmartAccount,
+  SmartAccount,
+  SELF_ESCALATION_ACTIONS,
+  ALLOWANCE_SURFACE_ACTIONS,
+  DEFAULT_DAY_WINDOW_MS
 };
 
 export default {
@@ -40,5 +52,7 @@ export default {
   deriveEthWalletFromPQC,
   signMessage,
   verifyMessage,
-  mapSpendToGuardianPolicy
+  mapSpendToGuardianPolicy,
+  createSmartAccount,
+  SmartAccount
 };

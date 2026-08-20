@@ -39,6 +39,7 @@
  */
 import { keccak_256 } from '@noble/hashes/sha3.js';
 import { secp256k1 } from '@noble/curves/secp256k1.js';
+import { canonicalizeAssetIntent } from 'nexusgenesis-agent-sdk';
 import { addressFromPrivateKey, addressFromPublicKey } from './eth.js';
 
 const U256_BYTES = 32;
@@ -85,6 +86,18 @@ function toBytes32(sessionId) {
   return Buffer.from(hex, 'hex');
 }
 
+/**
+ * Fail-closed on a canonical string field. `hashString` must never silently
+ * coerce undefined/null to '' — that would let a caller sign a collapsed
+ * preimage (e.g. action:undefined hashing identically to action:'') and
+ * produce a digest the on-chain contract would interpret differently.
+ */
+function requireString(canonical, name, value) {
+  if (value === undefined || value === null || String(value).trim() === '') {
+    throw new Error(`hashIntentDigest: missing/empty ${name} (${name} is part of the signed digest)`);
+  }
+}
+
 // ─── Digest (cross-language with Solidity _hashIntent) ───────────────────
 
 /**
@@ -110,6 +123,18 @@ export function hashIntentDigest(canonical) {
   }
   if (canonical.sessionId === undefined || canonical.sessionId === null) {
     throw new Error('hashIntentDigest: missing sessionId (INV-003)');
+  }
+  // The signed string fields must be present and non-empty — otherwise two
+  // semantically different payloads (missing vs '') would collapse to the
+  // same digest (canonical-schema ambiguity, closes the hashString gap).
+  for (const f of ['action', 'chain', 'asset', 'recipient', 'contract', 'method', 'agentId']) {
+    requireString(canonical, f, canonical[f]);
+  }
+  if (canonical.sessionIssuedAt === undefined || canonical.sessionIssuedAt === null) {
+    throw new Error('hashIntentDigest: missing sessionIssuedAt (INV-003)');
+  }
+  if (canonical.sessionExpiresAt === undefined || canonical.sessionExpiresAt === null) {
+    throw new Error('hashIntentDigest: missing sessionExpiresAt (INV-003)');
   }
   const parts = [
     hashString(canonical.action),
@@ -204,9 +229,54 @@ export function addressForPrivateKey(privateKeyHex) {
   return addressFromPrivateKey(priv);
 }
 
+/**
+ * Official Smart Account signing path: build the canonical payload from a
+ * session + asset intent, hash the fixed 12-field digest, and sign that raw
+ * digest with the agent's EVM key.
+ *
+ * This is the JS-side companion to SmartAccount.hashIntent/executeFromAgent:
+ * the returned signature can be submitted directly to the Solidity contract.
+ *
+ * @param {object} opts
+ * @param {object} opts.session - session token (canonicalizeAssetIntent input)
+ * @param {object} opts.intent - structured asset intent (must include nonce)
+ * @param {string|Buffer} opts.privateKeyHex - secp256k1 private key
+ * @returns {{ payload: object, digest: string, signature: string }}
+ */
+export function signSmartAccountIntent({ session, intent, privateKeyHex } = {}) {
+  const payload = canonicalizeAssetIntent(session, intent);
+  const digest = hashIntentDigest(payload);
+  const signature = signIntentDigest(digest, privateKeyHex);
+  return { payload, digest, signature };
+}
+
+/**
+ * Verify a Smart Account intent signature from a session + intent pair or an
+ * already-built canonical payload.
+ *
+ * @param {object} opts
+ * @param {string} opts.address - signer EVM address
+ * @param {string} opts.signature - 65-byte hex signature
+ * @param {object} [opts.payload] - canonical payload
+ * @param {object} [opts.session] - session token if payload omitted
+ * @param {object} [opts.intent] - structured asset intent if payload omitted
+ * @returns {{ valid: boolean, payload: object, digest: string }}
+ */
+export function verifySmartAccountIntent({ address, signature, payload, session, intent } = {}) {
+  const canonical = payload || canonicalizeAssetIntent(session, intent);
+  const digest = hashIntentDigest(canonical);
+  return {
+    valid: verifyIntentDigest(address, digest, signature),
+    payload: canonical,
+    digest,
+  };
+}
+
 export default {
   hashIntentDigest,
   signIntentDigest,
   verifyIntentDigest,
   addressForPrivateKey,
+  signSmartAccountIntent,
+  verifySmartAccountIntent,
 };

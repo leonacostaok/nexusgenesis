@@ -29,7 +29,9 @@ import {
   hashIntentDigest,
   signIntentDigest,
   verifyIntentDigest,
-  addressForPrivateKey
+  addressForPrivateKey,
+  signSmartAccountIntent,
+  verifySmartAccountIntent
 } from './canonical.js';
 
 export {
@@ -53,7 +55,9 @@ export {
   hashIntentDigest,
   signIntentDigest,
   verifyIntentDigest,
-  addressForPrivateKey
+  addressForPrivateKey,
+  signSmartAccountIntent,
+  verifySmartAccountIntent
 };
 
 export default {
@@ -62,6 +66,11 @@ export default {
   deriveEthWalletFromPQC,
   signMessage,
   verifyMessage,
+  hashIntentDigest,
+  signIntentDigest,
+  verifyIntentDigest,
+  signSmartAccountIntent,
+  verifySmartAccountIntent,
   mapSpendToGuardianPolicy,
   createSmartAccount,
   SmartAccount

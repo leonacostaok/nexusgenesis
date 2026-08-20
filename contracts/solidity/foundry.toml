@@ -4,6 +4,7 @@ out = "out"
 libs = ["lib"]
 test = "test"
 script = "script"
+fs_permissions = [{ access = "read", path = "testdata" }]
 # Use the pinned solc 0.8.24 binary directly (avoids the sandbox-blocked
 # svm cache under %APPDATA%\svm that forge would otherwise touch).
 solc = "bin/solc-0.8.24.exe"

@@ -262,6 +262,26 @@ test('signAgentAsset requires a session key and denies out-of-scope intents (INV
   );
 });
 
+test('canonicalizeAssetIntent fails closed on missing/empty digest fields (no collapsed preimages)', () => {
+  const session = { agentId: 'agent-1', issuedAt: 1700000000000, expiresAt: 1700003600000 };
+  const full = {
+    action: 'transfer', chain: 'ethereum', asset: 'USDC', amount: '5',
+    recipient: '0x1', contract: '0xContract', method: 'transfer',
+  };
+  // valid payload serializes (including nonce passthrough when provided)
+  assert.equal(canonicalizeAssetIntent(session, full).type, 'agent_asset_intent');
+  // missing/empty string dimensions must throw, not serialize to ''
+  for (const f of ['action', 'chain', 'asset', 'recipient', 'contract', 'method']) {
+    assert.throws(() => canonicalizeAssetIntent(session, { ...full, [f]: undefined }), new RegExp(f));
+    assert.throws(() => canonicalizeAssetIntent(session, { ...full, [f]: ' ' }), new RegExp(f));
+  }
+  // missing amount / agentId / session / intent must throw (INV-002)
+  assert.throws(() => canonicalizeAssetIntent(session, { ...full, amount: undefined }), /amount/);
+  assert.throws(() => canonicalizeAssetIntent({ ...session, agentId: undefined }, full), /agentId/);
+  assert.throws(() => canonicalizeAssetIntent(null, full), /session/);
+  assert.throws(() => canonicalizeAssetIntent(session, null), /intent/);
+});
+
 test('signAgentAsset DEFAULT signer path: isolated subprocess signs the DECODABLE payload (P0-4)', async () => {
   const identity = await createAgentIdentity({ password: 'agent-secret-123' });
   const wallet = recoverAgentIdentity(identity.envelope, 'agent-secret-123');
@@ -538,7 +558,7 @@ test('ON-CHAIN verifier: tampered payload / malformed amount fail closed (INV-00
   });
   const wallet = recoverAgentIdentity(identity.envelope, 'agent-secret-123');
   const payload = canonicalizeAssetIntent(session, {
-    action: 'transfer', chain: 'ethereum', amount: '5', recipient: '0x1', contract: '0xContract', method: 'transfer',
+    action: 'transfer', chain: 'ethereum', asset: 'USDC', amount: '5', recipient: '0x1', contract: '0xContract', method: 'transfer',
   });
   const sig = await wallet.sign(JSON.stringify(payload));
 
@@ -570,7 +590,7 @@ test('signAgentAsset requires a signer or an explicit wallet (no silent fallback
     signAgentAsset({
       session,
       issuerPublicKey: issuer.publicKey,
-      intent: { action: 'transfer', chain: 'ethereum', amount: '10', contract: '0xContract', method: 'transfer' },
+      intent: { action: 'transfer', chain: 'ethereum', asset: 'USDC', amount: '10', recipient: '0x1', contract: '0xContract', method: 'transfer' },
     }),
     /requires a signer/
   );

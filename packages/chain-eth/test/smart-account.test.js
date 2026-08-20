@@ -13,6 +13,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { createSmartAccount } from '../src/smart-account.js';
+import { addressForPrivateKey, signSmartAccountIntent } from '../src/canonical.js';
 import { canonicalizeAssetIntent } from 'nexusgenesis-agent-sdk';
 import { PQCWallet } from 'nexusgenesis-agent-keys';
 
@@ -135,6 +136,64 @@ test('executeFromAgent: valid signed intent executes and accrues spend', async (
   assert.equal(res.spentSession, '10');
   assert.equal(res.remainingSessionDaily, '490');
   assert.equal(acct.getState().executions, 1);
+});
+
+test('executeFromAgent: official EVM digest signature path mirrors Solidity', async () => {
+  const acct = createSmartAccount({
+    owner: OWNER,
+    emergencyKey: EMERGENCY,
+    policy: { type: 'limit', maxPerTx: '100', maxDaily: '500' },
+  });
+  const session = {
+    agentId: 'agent-evm',
+    issuedAt: Date.now(),
+    expiresAt: Date.now() + 60 * 60 * 1000,
+    sessionId: '0x' + 'ab'.repeat(32),
+  };
+  const evmPrivateKey = '0x' + '11'.repeat(32);
+  const evmAddress = addressForPrivateKey(evmPrivateKey);
+  const reg = acct.registerSession({
+    by: OWNER,
+    sessionId: session.sessionId,
+    agentId: session.agentId,
+    agentEvmAddress: evmAddress,
+    issuedAt: session.issuedAt,
+    expiresAt: session.expiresAt,
+    whitelist: {
+      allowedChains: ['ethereum'],
+      allowedAssets: ['USDC'],
+      allowedContracts: ['0xContract'],
+      allowedMethods: ['transfer'],
+      allowedRecipients: ['0xRecipient'],
+    },
+    maxPerTx: '100',
+    maxDaily: '500',
+  });
+  assert.equal(reg.ok, true, reg.reason);
+
+  const signed = signSmartAccountIntent({
+    session,
+    intent: {
+      action: 'transfer',
+      chain: 'ethereum',
+      asset: 'USDC',
+      amount: '25',
+      recipient: '0xRecipient',
+      contract: '0xContract',
+      method: 'transfer',
+      nonce: '1',
+    },
+    privateKeyHex: evmPrivateKey,
+  });
+  const res = await acct.executeFromAgent({
+    payload: signed.payload,
+    signature: signed.signature,
+    claimedAmount: '25',
+    sessionId: session.sessionId,
+    nonce: 1,
+  });
+  assert.equal(res.ok, true, res.reason);
+  assert.equal(res.amount, '25');
 });
 
 test('INV-002: claimed amount diverging from signed payload amount is rejected', async () => {
@@ -534,6 +593,15 @@ test('INV-007: allowance-surface actions are rejected on-chain EVEN IF whitelist
     { action: 'transfer', method: 'setApprovalForAll' }, // method-level variant
     { action: 'transfer', method: 'increaseAllowance' }, // method-level variant
     { action: 'swap', method: 'approve' },               // method-level variant
+    // Sprint 2 cross-validation: the full allowance surface, incl. the
+    // snake/camel/aliased variants the on-chain deny list must mirror.
+    { action: 'approve_and_call', method: 'transfer' },  // snake alias
+    { action: 'approveAndCall', method: 'transfer' },    // camel alias
+    { action: 'create_allowance', method: 'transfer' },  // alias not previously covered
+    { action: 'increase_allowance', method: 'transfer' },
+    { action: 'increaseapproval', method: 'transfer' },
+    { action: 'setApprovalForAll', method: 'transfer' },
+    { action: 'transfer', method: 'permit2' },           // method-level alias
   ];
   for (let i = 0; i < dangerous.length; i++) {
     const { canonical, sig } = await makeSignedIntent(session, {

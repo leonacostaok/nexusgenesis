@@ -21,6 +21,8 @@ import {
   signIntentDigest,
   verifyIntentDigest,
   addressForPrivateKey,
+  signSmartAccountIntent,
+  verifySmartAccountIntent,
 } from '../src/canonical.js';
 import { canonicalizeAssetIntent } from 'nexusgenesis-agent-sdk';
 
@@ -82,6 +84,22 @@ test('hashIntentDigest is fail-closed on missing amount / nonce / sessionId', ()
   assert.throws(() => hashIntentDigest({ ...c, sessionId: 'not-32-bytes' }), /sessionId/);
   assert.throws(() => hashIntentDigest(null), /canonical intent/);
   assert.throws(() => hashIntentDigest([]), /canonical intent/);
+});
+
+test('hashIntentDigest is fail-closed on missing/empty string fields (no collapsed preimages)', () => {
+  const c = goldenCanonical();
+  // undefined / null / '' must all be rejected, not silently coerced to the
+  // hash of '' — otherwise two different intents collapse to one digest.
+  for (const f of ['action', 'chain', 'asset', 'recipient', 'contract', 'method', 'agentId']) {
+    assert.throws(() => hashIntentDigest({ ...c, [f]: undefined }), new RegExp(f));
+    assert.throws(() => hashIntentDigest({ ...c, [f]: null }), new RegExp(f));
+    assert.throws(() => hashIntentDigest({ ...c, [f]: ' ' }), new RegExp(f));
+  }
+  // timestamps are part of the signed digest and must be present
+  assert.throws(() => hashIntentDigest({ ...c, sessionIssuedAt: undefined }), /sessionIssuedAt/);
+  assert.throws(() => hashIntentDigest({ ...c, sessionExpiresAt: undefined }), /sessionExpiresAt/);
+  // a fully-populated payload still hashes (no false positive)
+  assert.equal(typeof hashIntentDigest(c), 'string');
 });
 
 // ─── Signature (cross-language with SmartAccount._recover) ───────────────
@@ -171,6 +189,70 @@ test('canonicalizeAssetIntent output feeds the canonical digest + signature path
   // deriving again yields the SAME sessionId (deterministic from identity)
   const canonical2 = canonicalizeAssetIntent(session, intent);
   assert.equal(canonical2.sessionId, canonical.sessionId);
+});
+
+test('signSmartAccountIntent returns a Solidity-compatible payload + digest + signature', () => {
+  const session = {
+    agentId: 'agent-1',
+    issuedAt: 1700000000000,
+    expiresAt: 1700003600000,
+    sessionId: '0x' + 'ab'.repeat(32),
+  };
+  const intent = {
+    action: 'transfer',
+    chain: 'ethereum',
+    asset: 'USDC',
+    amount: '100',
+    recipient: '0xRecipient',
+    contract: '0xContract',
+    method: 'transfer',
+    nonce: '1',
+  };
+  const signed = signSmartAccountIntent({ session, intent, privateKeyHex: FIXED_PRIVKEY });
+  assert.equal(signed.payload.type, 'agent_asset_intent');
+  assert.equal(signed.payload.sessionId, goldenCanonical().sessionId);
+  assert.equal(signed.payload.action, goldenCanonical().action);
+  assert.equal(signed.payload.chain, goldenCanonical().chain);
+  assert.equal(signed.payload.asset, goldenCanonical().asset);
+  assert.equal(signed.payload.amount, goldenCanonical().amount);
+  assert.equal(signed.payload.recipient, goldenCanonical().recipient);
+  assert.equal(signed.payload.contract, goldenCanonical().contract);
+  assert.equal(signed.payload.method, goldenCanonical().method);
+  assert.equal(signed.payload.nonce, goldenCanonical().nonce);
+  assert.equal(signed.payload.agentId, goldenCanonical().agentId);
+  assert.equal(String(signed.payload.sessionIssuedAt), goldenCanonical().sessionIssuedAt);
+  assert.equal(String(signed.payload.sessionExpiresAt), goldenCanonical().sessionExpiresAt);
+  assert.equal(signed.digest, GOLDEN_DIGEST);
+  assert.equal(signed.signature, GOLDEN_SIG);
+});
+
+test('verifySmartAccountIntent round-trips the official EVM signing path', () => {
+  const session = {
+    agentId: 'agent-1',
+    issuedAt: 1700000000000,
+    expiresAt: 1700003600000,
+    sessionId: '0x' + 'cd'.repeat(32),
+  };
+  const intent = {
+    action: 'transfer',
+    chain: 'ethereum',
+    asset: 'USDC',
+    amount: '5',
+    recipient: '0xRecipient',
+    contract: '0xContract',
+    method: 'transfer',
+    nonce: '9',
+  };
+  const signed = signSmartAccountIntent({ session, intent, privateKeyHex: FIXED_PRIVKEY });
+  const ok = verifySmartAccountIntent({ address: GOLDEN_ADDR, signature: signed.signature, payload: signed.payload });
+  assert.equal(ok.valid, true);
+  assert.equal(ok.digest, signed.digest);
+  const bad = verifySmartAccountIntent({
+    address: '0x0000000000000000000000000000000000000001',
+    signature: signed.signature,
+    payload: signed.payload,
+  });
+  assert.equal(bad.valid, false);
 });
 
 test('explicit session.sessionId is honored (on-chain registration flow)', () => {

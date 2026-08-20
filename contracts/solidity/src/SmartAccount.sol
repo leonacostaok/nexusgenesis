@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
+import { DenyList } from "./DenyList.sol";
+
 /**
  * @title NexusGenesis SmartAccount (Solidity port)
  * @notice On-chain hard-policy layer for agent asset execution — 1:1 port of
@@ -39,13 +41,14 @@ pragma solidity ^0.8.24;
  *           nonce anti-replay, and estimateMaxLoss().
  */
 contract SmartAccount {
+    uint256 internal constant MILLIS_PER_SECOND = 1000;
     // ── Types ─────────────────────────────────────────────────────────────
     struct Session {
         bytes32 id;
         string agentId;
         address agentEvmAddress;   // ecrecover target (PQC-derived EVM address)
-        uint256 issuedAt;
-        uint256 expiresAt;
+        uint256 issuedAt;          // ms epoch (matches session tokens / canonical schema)
+        uint256 expiresAt;         // ms epoch (matches session tokens / canonical schema)
         uint256 maxPerTx;          // 0 = unlimited
         uint256 maxDaily;          // 0 = unlimited
         bool revoked;
@@ -120,6 +123,7 @@ contract SmartAccount {
     error AmountExceedsDaily(uint256 max);
     error WhitelistViolation(string dim);
     error SelfEscalationRejected(string action);
+    error AllowanceSurfaceRejected(string action);
     error SessionExists(bytes32 sessionId);
     error InvalidSession();
     error NoAccountCeiling();
@@ -240,7 +244,7 @@ contract SmartAccount {
         Session storage s = sessions[intent.sessionId];
         if (s.agentEvmAddress == address(0)) revert NotRegistered(intent.sessionId);
         if (s.revoked) revert SessionRevokedError();
-        if (block.timestamp > s.expiresAt) revert SessionExpired();
+        if (_blockTimestampMs() > s.expiresAt) revert SessionExpired();
         // Session-bound fields must match what was registered.
         if (
             keccak256(bytes(intent.agentId)) != keccak256(bytes(s.agentId)) ||
@@ -257,8 +261,14 @@ contract SmartAccount {
         if (intent.nonce <= sessionLastNonce[intent.sessionId]) revert BadNonce(sessionLastNonce[intent.sessionId] + 1, intent.nonce);
         sessionLastNonce[intent.sessionId] = intent.nonce;
 
-        // 4. Self-escalation guard (INV-005) — even valid + whitelisted
+        // 4. Self-escalation guard (INV-005) + allowance surface (INV-007) —
+        //    enforced even with a valid signature and even if the owner's
+        //    whitelist names them. Both the action and the method are checked;
+        //    the deny list is normalized (case/separator-insensitive) and
+        //    generated from the JS engine's canonical sets (DenyList.sol), so
+        //    JS-rejected variants are rejected here too.
         if (_isSelfEscalation(intent.action, intent.method)) revert SelfEscalationRejected(intent.action);
+        if (_touchesAllowanceSurface(intent.action, intent.method)) revert AllowanceSurfaceRejected(intent.action);
 
         // 5. Whitelists (INV-003)
         Whitelist storage w = whitelists[intent.sessionId];
@@ -299,12 +309,23 @@ contract SmartAccount {
      * ceilings may be tighter — query sessionMaxLoss(sessionId).
      */
     function estimateMaxLoss() external view returns (uint256) {
-        return accountMaxDaily - accountSpentThisWindow;
+        uint256 spent = _currentAccountSpent();
+        return accountMaxDaily > spent ? accountMaxDaily - spent : 0;
     }
 
     function sessionMaxLoss(bytes32 sessionId) external view returns (uint256) {
         Session storage s = sessions[sessionId];
-        return s.maxDaily > 0 ? s.maxDaily : s.maxPerTx;
+        if (s.agentEvmAddress == address(0) || s.revoked || _blockTimestampMs() > s.expiresAt) {
+            return 0;
+        }
+        uint256 remaining = _currentAccountRemaining();
+        if (s.maxDaily > 0) {
+            uint256 spent = _currentSessionSpent(sessionId);
+            uint256 sessionRemaining = s.maxDaily > spent ? s.maxDaily - spent : 0;
+            if (sessionRemaining < remaining) remaining = sessionRemaining;
+        }
+        if (s.maxPerTx > 0 && s.maxPerTx < remaining) remaining = s.maxPerTx;
+        return remaining;
     }
 
     /**
@@ -350,27 +371,13 @@ contract SmartAccount {
     }
 
     function _isSelfEscalation(string calldata action, string calldata method) internal pure returns (bool) {
-        bytes32 a = keccak256(bytes(action));
-        bytes32 m = keccak256(bytes(method));
-        if (a == keccak256("approve") || a == keccak256("permit") || a == keccak256("setApprovalForAll")
-            || a == keccak256("transferFrom") || a == keccak256("permit2") || a == keccak256("increaseAllowance")
-            || a == keccak256("decreaseAllowance") || m == keccak256("approve") || m == keccak256("setApprovalForAll")) {
-            return true;
-        }
-        if (a == keccak256("addOwner") || a == keccak256("add_owner") || a == keccak256("removeOwner")
-            || a == keccak256("remove_owner") || a == keccak256("transferOwnership") || a == keccak256("transfer_ownership")
-            || a == keccak256("setOwner") || a == keccak256("set_owner") || a == keccak256("upgrade")
-            || a == keccak256("upgrade_to") || a == keccak256("upgradeTo") || a == keccak256("setImplementation")
-            || a == keccak256("set_implementation") || a == keccak256("grantRole") || a == keccak256("grant_role")
-            || a == keccak256("revokeRole") || a == keccak256("revoke_role") || a == keccak256("updatePolicy")
-            || a == keccak256("update_policy") || a == keccak256("setPolicy") || a == keccak256("set_policy")
-            || a == keccak256("setGuardian") || a == keccak256("set_guardian") || a == keccak256("changeEmergency")
-            || a == keccak256("change_emergency") || a == keccak256("delegate") || a == keccak256("delegatecall")
-            || a == keccak256("multicall") || a == keccak256("batch") || a == keccak256("destroy")
-            || a == keccak256("selfdestruct")) {
-            return true;
-        }
-        return false;
+        return DenyList.isSelfEscalation(keccak256(DenyList.normalize(action)))
+            || DenyList.isSelfEscalation(keccak256(DenyList.normalize(method)));
+    }
+
+    function _touchesAllowanceSurface(string calldata action, string calldata method) internal pure returns (bool) {
+        return DenyList.isAllowanceSurface(keccak256(DenyList.normalize(action)))
+            || DenyList.isAllowanceSurface(keccak256(DenyList.normalize(method)));
     }
 
     function _toHashed(string[] calldata arr) internal pure returns (bytes32[] memory) {
@@ -399,5 +406,29 @@ contract SmartAccount {
             accountWindowStart = block.timestamp;
             accountSpentThisWindow = 0;
         }
+    }
+
+    function _blockTimestampMs() internal view returns (uint256) {
+        return block.timestamp * MILLIS_PER_SECOND;
+    }
+
+    function _currentAccountSpent() internal view returns (uint256) {
+        if (accountWindowStart == 0 || block.timestamp - accountWindowStart >= DAY_WINDOW) {
+            return 0;
+        }
+        return accountSpentThisWindow;
+    }
+
+    function _currentAccountRemaining() internal view returns (uint256) {
+        uint256 spent = _currentAccountSpent();
+        return accountMaxDaily > spent ? accountMaxDaily - spent : 0;
+    }
+
+    function _currentSessionSpent(bytes32 sessionId) internal view returns (uint256) {
+        uint256 start = sessionWindowStart[sessionId];
+        if (start == 0 || block.timestamp - start >= DAY_WINDOW) {
+            return 0;
+        }
+        return sessionSpentThisWindow[sessionId];
     }
 }

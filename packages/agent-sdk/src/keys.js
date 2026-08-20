@@ -258,8 +258,32 @@ export async function signAgentAsset({ signer, wallet, session, intent, issuerPu
  * @param {object} session - session key token
  * @param {object} intent - structured asset intent
  * @returns {object} canonical payload (fixed field order)
+ * @throws when a field required by the signed digest is missing/empty
+ *   (INV-002 amount; the six string dimensions and agentId are part of the
+ *   signed digest — a missing field must not silently serialize to '' and
+ *   collapse two different intents into one signature preimage). `nonce` is
+ *   NOT required here: it is an execution-time replay guard enforced at the
+ *   digest boundary (chain-eth hashIntentDigest) and on-chain.
  */
 export function canonicalizeAssetIntent(session, intent) {
+  if (!session || typeof session !== 'object') {
+    throw new Error('canonicalizeAssetIntent requires a session');
+  }
+  if (!intent || typeof intent !== 'object' || Array.isArray(intent)) {
+    throw new Error('canonicalizeAssetIntent requires a structured intent');
+  }
+  for (const f of ['action', 'chain', 'asset', 'recipient', 'contract', 'method']) {
+    const v = intent[f];
+    if (v === undefined || v === null || String(v).trim() === '') {
+      throw new Error(`canonicalizeAssetIntent: missing/empty intent.${f} (required by the signed digest)`);
+    }
+  }
+  if (intent.amount === undefined || intent.amount === null || String(intent.amount).trim() === '') {
+    throw new Error('canonicalizeAssetIntent: missing/empty intent.amount (INV-002)');
+  }
+  if (session.agentId === undefined || session.agentId === null || String(session.agentId).trim() === '') {
+    throw new Error('canonicalizeAssetIntent: missing/empty session.agentId (required by the signed digest)');
+  }
   return {
     type: 'agent_asset_intent',
     sessionId: session.sessionId || deriveSessionId(session),

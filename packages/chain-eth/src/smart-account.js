@@ -67,9 +67,13 @@
  */
 import { keccak_256 } from '@noble/hashes/sha3.js';
 import {
-  verifyAgentAssetSignature,
+  decodeAssetIntentPayload,
   enforceAmountBinding,
 } from 'nexusgenesis-agent-sdk';
+import {
+  hashIntentDigest,
+  verifyIntentDigest,
+} from './canonical.js';
 
 // ─── Constants ────────────────────────────────────────────────────────────
 
@@ -130,8 +134,16 @@ export const ALLOWANCE_SURFACE_ACTIONS = new Set([
   'create_allowance', 'createallowance',
 ]);
 
-/** Normalize an action string for set matching. */
-function normalizeAction(action) {
+/**
+ * Normalize an action string for set matching.
+ *
+ * Export: the Solidity DenyList (contracts/solidity/src/DenyList.sol, generated
+ * by scripts/sync-deny-list.mjs) mirrors this exact normalization on-chain, so
+ * a casing/separator variant that JS rejects is also rejected by the Smart
+ * Account. Keep the two in lock-step — the sync script + deny-list tests
+ * enforce it.
+ */
+export function normalizeAction(action) {
   if (typeof action !== 'string') return '';
   return action.replace(/[\s_-]+/g, '').toLowerCase();
 }
@@ -228,7 +240,11 @@ export class SmartAccount {
   getSession(sessionId) {
     const s = this.sessions.get(sessionId);
     if (!s) return null;
-    return { ...s, agentPublicKey: s.agentPublicKey };
+    return {
+      ...s,
+      agentPublicKey: s.agentPublicKey,
+      agentEvmAddress: s.agentEvmAddress,
+    };
   }
 
   /**
@@ -301,8 +317,11 @@ export class SmartAccount {
    * @param {string} opts.by - caller identity; must equal account owner
    * @param {string} opts.sessionId - unique session id
    * @param {string} opts.agentId - agent identifier
-   * @param {string|Buffer} opts.agentPublicKey - agent's PQC public key used
-   *   to verify intent signatures (the engine trusts THIS, never a caller-supplied key)
+   * @param {string|Buffer} [opts.agentPublicKey] - agent's PQC public key used
+   *   to verify PQC/JSON asset signatures (the engine trusts THIS, never a
+   *   caller-supplied key)
+   * @param {string} [opts.agentEvmAddress] - agent's EVM address used to
+   *   verify canonical digest signatures (Solidity parity path)
    * @param {string|number} opts.issuedAt - ms epoch
    * @param {string|number} opts.expiresAt - ms epoch (mandatory)
    * @param {object} [opts.whitelist] - { allowedChains?, allowedAssets?,
@@ -310,14 +329,16 @@ export class SmartAccount {
    * @param {string|number} [opts.maxPerTx] - session per-tx ceiling
    * @param {string|number} [opts.maxDaily] - session cumulative ceiling
    */
-  registerSession({ by, sessionId, agentId, agentPublicKey, issuedAt, expiresAt, whitelist, maxPerTx, maxDaily }) {
+  registerSession({ by, sessionId, agentId, agentPublicKey, agentEvmAddress, issuedAt, expiresAt, whitelist, maxPerTx, maxDaily }) {
     if (by !== this.owner) {
       return { ok: false, reason: 'registerSession: only the account owner may register a session (INV-005)' };
     }
     if (!sessionId || typeof sessionId !== 'string') return { ok: false, reason: 'sessionId required' };
     if (this.sessions.has(sessionId)) return { ok: false, reason: `session ${sessionId} already exists` };
     if (!agentId || typeof agentId !== 'string') return { ok: false, reason: 'agentId required' };
-    if (!agentPublicKey) return { ok: false, reason: 'agentPublicKey required' };
+    if (!agentPublicKey && !agentEvmAddress) {
+      return { ok: false, reason: 'agentPublicKey or agentEvmAddress required' };
+    }
     const issued = Number(issuedAt);
     const expires = Number(expiresAt);
     if (!Number.isFinite(issued) || issued <= 0) return { ok: false, reason: 'invalid issuedAt' };
@@ -332,7 +353,10 @@ export class SmartAccount {
     this.sessions.set(sessionId, {
       sessionId,
       agentId,
-      agentPublicKey: typeof agentPublicKey === 'string' ? agentPublicKey : Buffer.from(agentPublicKey).toString('hex'),
+      agentPublicKey: agentPublicKey
+        ? (typeof agentPublicKey === 'string' ? agentPublicKey : Buffer.from(agentPublicKey).toString('hex'))
+        : null,
+      agentEvmAddress: agentEvmAddress || null,
       issuedAt: issued,
       expiresAt: expires,
       whitelist: normalizeWhitelist(whitelist),
@@ -537,22 +561,58 @@ export class SmartAccount {
     //    which is Policy-Engine territory. The Smart Account is the HARD LIMIT
     //    layer: it enforces per-tx and cumulative ceilings directly (below),
     //    deterministically and without tiering.
-    const binding = await enforceAmountBinding({
-      payload,
-      claimedAmount,
-      signature,
-      publicKey: s.agentPublicKey,
-    });
-    if (!binding.valid) {
-      return { ok: false, reason: `amount/signature binding failed: ${binding.reason} (INV-002)` };
+    let amountBig;
+    let amount;
+    if (s.agentEvmAddress) {
+      const decoded = decodeAssetIntentPayload(payload);
+      if (!decoded.valid) {
+        return { ok: false, reason: `amount/signature binding failed: ${decoded.error} (INV-002)` };
+      }
+      let claimedBig;
+      try {
+        const claimed = String(claimedAmount).trim();
+        if (claimed === '') throw new Error('empty');
+        claimedBig = BigInt(claimed);
+        if (claimedBig < 0n) throw new Error('negative');
+      } catch {
+        return { ok: false, reason: `amount/signature binding failed: invalid claimedAmount: ${claimedAmount} (INV-002)` };
+      }
+      if (claimedBig !== decoded.amountBig) {
+        return {
+          ok: false,
+          reason: `amount/signature binding failed: amount mismatch: signed payload amount=${decoded.amount}, claimed=${String(claimedBig)} (INV-002)`,
+        };
+      }
+      let digest;
+      try {
+        digest = hashIntentDigest(payload);
+      } catch (err) {
+        return { ok: false, reason: `amount/signature binding failed: ${err.message} (INV-002)` };
+      }
+      if (!verifyIntentDigest(s.agentEvmAddress, digest, signature)) {
+        return { ok: false, reason: 'amount/signature binding failed: invalid EVM digest signature (INV-002)' };
+      }
+      amountBig = decoded.amountBig;
+      amount = decoded.amount;
+    } else {
+      const binding = await enforceAmountBinding({
+        payload,
+        claimedAmount,
+        signature,
+        publicKey: s.agentPublicKey,
+      });
+      if (!binding.valid) {
+        return { ok: false, reason: `amount/signature binding failed: ${binding.reason} (INV-002)` };
+      }
+      amountBig = BigInt(binding.amount);
+      amount = binding.amount;
     }
-    const amountBig = BigInt(binding.amount);
 
     // 7b. Per-tx hard ceiling (INV-007).
     if (s.maxPerTx !== null && amountBig > BigInt(s.maxPerTx)) {
       return {
         ok: false,
-        reason: `exceeds maxPerTx (${s.maxPerTx}): ${binding.amount} (INV-007)`,
+        reason: `exceeds maxPerTx (${s.maxPerTx}): ${amount} (INV-007)`,
       };
     }
 
@@ -563,7 +623,7 @@ export class SmartAccount {
       if (this.spentInWindow + amountBig > acctDaily) {
         return {
           ok: false,
-          reason: `account daily ceiling exceeded: ${this.spentInWindow} + ${binding.amount} > ${this.policy.maxDaily} (INV-007)`,
+          reason: `account daily ceiling exceeded: ${this.spentInWindow} + ${amount} > ${this.policy.maxDaily} (INV-007)`,
         };
       }
     }
@@ -573,7 +633,7 @@ export class SmartAccount {
       if (s.spent + amountBig > BigInt(s.maxDaily)) {
         return {
           ok: false,
-          reason: `session daily ceiling exceeded: ${String(s.spent)} + ${binding.amount} > ${s.maxDaily} (INV-007)`,
+          reason: `session daily ceiling exceeded: ${String(s.spent)} + ${amount} > ${s.maxDaily} (INV-007)`,
         };
       }
     }
@@ -595,7 +655,7 @@ export class SmartAccount {
     return {
       ok: true,
       txId,
-      amount: binding.amount,
+      amount,
       sessionId,
       nonce: String(nonceBig),
       spentSession: String(s.spent),

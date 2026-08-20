@@ -20,6 +20,7 @@ pragma solidity ^0.8.24;
  */
 import { Test } from "forge-std/Test.sol";
 import { SmartAccount } from "../src/SmartAccount.sol";
+import { DenyList } from "../src/DenyList.sol";
 
 contract SmartAccountTest is Test {
     address internal constant OWNER = address(0x0Aa);
@@ -43,11 +44,13 @@ contract SmartAccountTest is Test {
         hex"38715644a3619f2036d7b3db287f953b5b9e735663045f16bc34350f47633ea33a6e6d579aae7b9e711d78fca470cb71d8d93ae12f319f91d224b7bad65b9cfa1b";
 
     SmartAccount internal acct;
+    SmartAccountHarness internal harness;
 
     // ── Setup ─────────────────────────────────────────────────────────────
 
     function setUp() public {
         acct = new SmartAccount(OWNER, EMERGENCY, 1_000_000);
+        harness = new SmartAccountHarness(OWNER, EMERGENCY, 1_000_000);
         _registerGoldenSession(acct, SESSION_ID);
     }
 
@@ -191,6 +194,16 @@ contract SmartAccountTest is Test {
         acct.executeFromAgent(_intent(100, 1), GOLDEN_SIG);
     }
 
+    function test_expired_session_rejected_when_warped_in_seconds_INV003() public {
+        // Regression for the ms/seconds boundary: session timestamps are ms
+        // epoch values in the canonical schema, while block.timestamp is in
+        // seconds. The contract must convert block time to ms before checking
+        // expiry, otherwise sessions would live ~1000x too long on-chain.
+        vm.warp((EXPIRES_AT / 1000) + 1);
+        vm.expectRevert(SmartAccount.SessionExpired.selector);
+        acct.executeFromAgent(_intent(100, 1), GOLDEN_SIG);
+    }
+
     function test_session_bound_fields_mismatch_INV003() public {
         SmartAccount.IntentFields memory i = _intent(100, 1);
         i.agentId = "evil-agent";
@@ -206,21 +219,49 @@ contract SmartAccountTest is Test {
         acct.executeFromAgent(i, sig);
     }
 
-    // ── INV-005 no self-escalation ────────────────────────────────────────
+    // ── INV-005 no self-escalation / INV-007 allowance surface ───────────
 
     function test_self_escalation_action_rejected_INV005() public {
+        // A genuine self-escalation action (raises limits) is rejected even
+        // with a valid signature (INV-005).
         SmartAccount.IntentFields memory i = _intent(100, 1);
-        i.action = "approve";
+        i.action = "increaseLimit";
         bytes memory sig = _signIntent(acct, i);
-        vm.expectRevert(abi.encodeWithSelector(SmartAccount.SelfEscalationRejected.selector, "approve"));
+        vm.expectRevert(abi.encodeWithSelector(SmartAccount.SelfEscalationRejected.selector, "increaseLimit"));
         acct.executeFromAgent(i, sig);
     }
 
     function test_self_escalation_method_rejected_INV005() public {
+        // Self-escalation via the METHOD dimension.
+        SmartAccount.IntentFields memory i = _intent(100, 1);
+        i.method = "addOwner";
+        bytes memory sig = _signIntent(acct, i);
+        vm.expectRevert(abi.encodeWithSelector(SmartAccount.SelfEscalationRejected.selector, "transfer"));
+        acct.executeFromAgent(i, sig);
+    }
+
+    function test_allowance_surface_rejected_INV007() public {
+        // Allowance-surface actions (out-of-band spend, INV-007) are rejected
+        // with the dedicated error even if whitelisted. Covers the Sprint 2
+        // HIGH finding: the previous deny list missed these variants.
+        string[7] memory actions = [
+            "approve", "approve_and_call", "create_allowance", "permit",
+            "setApprovalForAll", "transferFrom", "increaseapproval"
+        ];
+        for (uint256 k = 0; k < actions.length; k++) {
+            SmartAccount.IntentFields memory i = _intent(100, k + 1);
+            i.action = actions[k];
+            bytes memory sig = _signIntent(acct, i);
+            vm.expectRevert(abi.encodeWithSelector(SmartAccount.AllowanceSurfaceRejected.selector, actions[k]));
+            acct.executeFromAgent(i, sig);
+        }
+    }
+
+    function test_allowance_surface_method_rejected_INV007() public {
         SmartAccount.IntentFields memory i = _intent(100, 1);
         i.method = "setApprovalForAll";
         bytes memory sig = _signIntent(acct, i);
-        vm.expectRevert(abi.encodeWithSelector(SmartAccount.SelfEscalationRejected.selector, "transfer"));
+        vm.expectRevert(abi.encodeWithSelector(SmartAccount.AllowanceSurfaceRejected.selector, "transfer"));
         acct.executeFromAgent(i, sig);
     }
 
@@ -344,6 +385,63 @@ contract SmartAccountTest is Test {
         assertEq(acct.estimateMaxLoss(), 1_000_000 - 100);
     }
 
+    function test_session_max_loss_tracks_current_remaining_INV007() public {
+        assertEq(acct.sessionMaxLoss(SESSION_ID), 1000);
+        acct.executeFromAgent(_intent(100, 1), GOLDEN_SIG);
+        assertEq(acct.sessionMaxLoss(SESSION_ID), 900);
+    }
+
+    // ── DenyList: fixture parity + normalization matrix (Sprint 2 fix) ───
+
+    function test_deny_list_fixture_all_entries_rejected() public {
+        // Every entry the JS engine rejects (scripts/sync-deny-list.mjs →
+        // testdata/deny-actions.json) must be rejected on-chain too.
+        string memory root = vm.projectRoot();
+        string memory json = vm.readFile(string.concat(root, "/testdata/deny-actions.json"));
+        string[] memory selfEsc = abi.decode(vm.parseJson(json, ".self_escalation"), (string[]));
+        string[] memory allowance = abi.decode(vm.parseJson(json, ".allowance_surface"), (string[]));
+        for (uint256 i = 0; i < selfEsc.length; i++) {
+            assertTrue(harness.isEscalationForTest(selfEsc[i], ""), string.concat("self-escalation entry not rejected: ", selfEsc[i]));
+        }
+        for (uint256 i = 0; i < allowance.length; i++) {
+            assertTrue(harness.isAllowanceSurfaceForTest(allowance[i], ""), string.concat("allowance-surface entry not rejected: ", allowance[i]));
+        }
+    }
+
+    function test_deny_list_normalization_variants() public {
+        // Casing / separator variants of deny actions must be caught — the
+        // on-chain normalizer mirrors JS normalizeAction (INV-005/007).
+        assertTrue(harness.isEscalationForTest("INCREASE_LIMIT", ""));
+        assertTrue(harness.isEscalationForTest("IncreaseLimit", ""));
+        assertTrue(harness.isEscalationForTest("increase limit", ""));
+        assertTrue(harness.isEscalationForTest("ADD_OWNER", ""));
+        assertTrue(harness.isEscalationForTest("grant-Role", ""));
+        assertTrue(harness.isEscalationForTest("set_implementation_code", ""));
+        assertTrue(harness.isEscalationForTest("upgrade_and_call", ""));
+        assertTrue(harness.isAllowanceSurfaceForTest("APPROVE", ""));
+        assertTrue(harness.isAllowanceSurfaceForTest("approve_and_call", ""));
+        assertTrue(harness.isAllowanceSurfaceForTest("ApproveAndCall", ""));
+        assertTrue(harness.isAllowanceSurfaceForTest("set-approval-for-all", ""));
+        assertTrue(harness.isAllowanceSurfaceForTest("create_allowance", ""));
+        // method-level variants
+        assertTrue(harness.isEscalationForTest("transfer", "addOwner"));
+        assertTrue(harness.isEscalationForTest("transfer", "grant-role"));
+        assertTrue(harness.isAllowanceSurfaceForTest("transfer", "setApprovalForAll"));
+        // benign controls must NOT be flagged
+        assertFalse(harness.isEscalationForTest("transfer", "transfer"));
+        assertFalse(harness.isAllowanceSurfaceForTest("transfer", "transfer"));
+        assertFalse(harness.isEscalationForTest("swap", "transfer"));
+    }
+
+    function test_decrease_allowance_not_denied_Q4() public {
+        // Q4: decreaseAllowance REDUCES allowance — it is neither a
+        // self-escalation nor an allowance-surface grant, so it must not be
+        // in the deny list (misclassification would block legitimate
+        // hardening ops and invite a future bypass patch).
+        assertFalse(harness.isEscalationForTest("decreaseAllowance", ""));
+        assertFalse(harness.isAllowanceSurfaceForTest("decreaseAllowance", ""));
+    }
+
     // ── Helpers ───────────────────────────────────────────────────────────
 
     function _splitSig(bytes memory sig)
@@ -358,5 +456,23 @@ contract SmartAccountTest is Test {
             s := mload(add(sig, 64))
             v := byte(0, mload(add(sig, 96)))
         }
+    }
+}
+
+/**
+ * Test harness exposing the SmartAccount's internal deny checks so the suite
+ * can assert on the normalized reject surface directly (no signature needed).
+ */
+contract SmartAccountHarness is SmartAccount {
+    constructor(address _owner, address _emergency, uint256 _ceiling)
+        SmartAccount(_owner, _emergency, _ceiling)
+    {}
+
+    function isEscalationForTest(string calldata action, string calldata method) external pure returns (bool) {
+        return _isSelfEscalation(action, method);
+    }
+
+    function isAllowanceSurfaceForTest(string calldata action, string calldata method) external pure returns (bool) {
+        return _touchesAllowanceSurface(action, method);
     }
 }

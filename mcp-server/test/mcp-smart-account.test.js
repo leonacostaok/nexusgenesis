@@ -1,4 +1,4 @@
-import { test, before, after } from 'node:test';
+import { test, before, beforeEach, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
@@ -46,6 +46,10 @@ before(async () => {
   await client.connect(clientTransport);
 });
 
+beforeEach(() => {
+  __resetSmartAccountForTest();
+});
+
 after(async () => {
   await client.close();
   await server.close();
@@ -87,6 +91,16 @@ test('smart_account_setup creates the account + session + exposure bound', async
   assert.equal(out.success, true, JSON.stringify(out));
   assert.equal(out.sessionId, SESSION_ID);
   assert.match(out.accountId, /^0x[0-9a-f]{40}$/);
+  assert.equal(out.issuedAt, ISSUED_AT);
+  assert.equal(out.expiresAt, EXPIRES_AT);
+  assert.deepEqual(out.session, {
+    agentId: AGENT_ID,
+    sessionId: SESSION_ID,
+    issuedAt: ISSUED_AT,
+    expiresAt: EXPIRES_AT,
+    agentEvmAddress: out.session.agentEvmAddress,
+  });
+  assert.match(out.session.agentEvmAddress, /^0x[0-9a-fA-F]{40}$/);
   assert.equal(out.maxLoss, '500'); // min(accountDaily, sessionDaily)
 });
 
@@ -109,6 +123,9 @@ test('smart_account_preview admits an admissible intent and is side-effect free'
   assert.equal(out.success, true, JSON.stringify(out));
   assert.equal(out.wouldExecute, true, JSON.stringify(out));
   assert.match(out.digest, /^0x[0-9a-f]{64}$/);
+  assert.equal(out.sessionId, SESSION_ID);
+  assert.equal(out.session.issuedAt, ISSUED_AT);
+  assert.equal(out.payload.sessionId, SESSION_ID);
 
   // Side-effect free: exposure bound unchanged, and the SAME nonce is still
   // usable by a real execution (preview consumed nothing).
@@ -131,6 +148,64 @@ test('smart_account_preview admits an admissible intent and is side-effect free'
   });
   assert.equal(exec.success, true, JSON.stringify(exec));
   assert.equal(exec.remainingSessionDaily, '475');
+});
+
+test('implicit issuedAt is returned and can be used to reproduce a signable payload', async () => {
+  const { addressForPrivateKey, signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
+  const sessionId = '0x' + 'cd'.repeat(32);
+  const expiresAt = Date.now() + 3600_000;
+  const setup = await callTool('smart_account_setup', {
+    owner: OWNER,
+    emergencyKey: EMERGENCY,
+    sessionId,
+    agentId: 'implicit-issued-at',
+    agentEvmAddress: addressForPrivateKey(EVM_KEY),
+    expiresAt,
+    maxPerTx: '100',
+    maxDaily: '500',
+    ...WHITELIST,
+  });
+  assert.equal(setup.success, true, JSON.stringify(setup));
+  assert.equal(typeof setup.issuedAt, 'number');
+  assert.equal(setup.session.issuedAt, setup.issuedAt);
+  assert.equal(setup.session.expiresAt, expiresAt);
+
+  const preview = await callTool('smart_account_preview', {
+    accountId: setup.accountId,
+    sessionId,
+    ...INTENT,
+    nonce: 1,
+  });
+  assert.equal(preview.success, true, JSON.stringify(preview));
+  assert.equal(preview.wouldExecute, true, JSON.stringify(preview));
+  assert.equal(preview.session.issuedAt, setup.issuedAt);
+  assert.equal(preview.payload.sessionIssuedAt, setup.issuedAt);
+
+  const signed = signSmartAccountIntent({
+    session: {
+      agentId: preview.session.agentId,
+      sessionId: preview.session.sessionId,
+      issuedAt: preview.session.issuedAt,
+      expiresAt: preview.session.expiresAt,
+    },
+    intent: INTENT,
+    privateKeyHex: EVM_KEY,
+  });
+  assert.deepEqual(
+    { ...signed.payload, nonce: String(signed.payload.nonce) },
+    { ...preview.payload, nonce: String(preview.payload.nonce) },
+  );
+
+  const exec = await callTool('smart_account_execute', {
+    accountId: setup.accountId,
+    sessionId,
+    payload: signed.payload,
+    signature: signed.signature,
+    intent: INTENT,
+    claimedAmount: '25',
+    nonce: 1,
+  });
+  assert.equal(exec.success, true, JSON.stringify(exec));
 });
 
 test('smart_account_preview rejects an out-of-whitelist intent (fail-closed, INV-003)', async () => {
@@ -196,8 +271,70 @@ test('smart_account_estimate_loss reports per-session + account bounds (INV-007)
   await setupAccount();
   const out = await callTool('smart_account_estimate_loss', {});
   assert.equal(out.success, true);
+  assert.match(out.accountId, /^0x[0-9a-fA-F]{40}$/);
   assert.equal(out.sessions.length, 1);
   assert.equal(out.sessions[0].sessionId, SESSION_ID);
   assert.equal(out.sessions[0].maxLossCeiling, '500');
   assert.match(out.maxLossStatement, /max 500/);
+});
+
+test('multiple Smart Accounts can coexist and be selected explicitly', async () => {
+  const { addressForPrivateKey, signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
+  const first = await setupAccount();
+  const secondKey = '0x' + '22'.repeat(32);
+  const secondSessionId = '0x' + 'ef'.repeat(32);
+  const second = await callTool('smart_account_setup', {
+    owner: '0x' + 'cc'.repeat(20),
+    emergencyKey: '0x' + 'dd'.repeat(20),
+    sessionId: secondSessionId,
+    agentId: 'second-agent',
+    agentEvmAddress: addressForPrivateKey(secondKey),
+    issuedAt: ISSUED_AT,
+    expiresAt: EXPIRES_AT,
+    maxPerTx: '100',
+    maxDaily: '500',
+    ...WHITELIST,
+  });
+  assert.equal(second.success, true, JSON.stringify(second));
+  assert.notEqual(second.accountId, first.accountId);
+
+  const firstPreview = await callTool('smart_account_preview', {
+    accountId: first.accountId,
+    sessionId: first.sessionId,
+    ...INTENT,
+    nonce: 1,
+  });
+  assert.equal(firstPreview.success, true, JSON.stringify(firstPreview));
+  assert.equal(firstPreview.accountId, first.accountId);
+  assert.equal(firstPreview.sessionId, first.sessionId);
+
+  const signed = signSmartAccountIntent({
+    session: {
+      agentId: AGENT_ID,
+      sessionId: SESSION_ID,
+      issuedAt: ISSUED_AT,
+      expiresAt: EXPIRES_AT,
+    },
+    intent: INTENT,
+    privateKeyHex: EVM_KEY,
+  });
+  const exec = await callTool('smart_account_execute', {
+    accountId: first.accountId,
+    sessionId: first.sessionId,
+    payload: signed.payload,
+    signature: signed.signature,
+    intent: INTENT,
+    claimedAmount: '25',
+    nonce: 1,
+  });
+  assert.equal(exec.success, true, JSON.stringify(exec));
+  assert.equal(exec.accountId, first.accountId);
+
+  const secondLoss = await callTool('smart_account_estimate_loss', {
+    accountId: second.accountId,
+    sessionId: second.sessionId,
+  });
+  assert.equal(secondLoss.success, true);
+  assert.equal(secondLoss.accountId, second.accountId);
+  assert.equal(secondLoss.sessionId, second.sessionId);
 });

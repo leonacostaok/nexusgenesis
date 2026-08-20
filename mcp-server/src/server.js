@@ -98,18 +98,85 @@ function hasSessionIdentity() {
 }
 
 // ─── Smart Account (official EVM path, Sprint 2.2) ─────────────────────
-// Holds a local Smart Account client per setup() call. The private key for
+// Holds local Smart Accounts keyed by accountId. The private key for
 // executions is NEVER held here: the caller signs the canonical intent via
 // the SDK/chain-eth official path and passes only the payload + signature.
 // This mirrors the on-chain model — the Smart Account (contract) only ever
-// sees signed intents, never key material.
-let smartAccountClient = null;   // from smartAccount.createSmartAccountClient()
-let smartAccountContext = null;  // { owner, sessionId }
+// sees signed intents, never key material. Multiple accounts can coexist in a
+// single MCP process; callers may select them explicitly by accountId/sessionId.
+const smartAccounts = new Map(); // accountId -> { accountId, owner, client, currentSessionId }
+let smartAccountContext = null;  // { accountId, sessionId }
 
 /** Reset the local Smart Account so each test/setup is independent. */
 export function __resetSmartAccountForTest() {
-  smartAccountClient = null;
+  smartAccounts.clear();
   smartAccountContext = null;
+}
+
+function equalStringArray(a, b) {
+  const left = Array.isArray(a) ? a : (a === undefined || a === null ? [] : [a]);
+  const right = Array.isArray(b) ? b : (b === undefined || b === null ? [] : [b]);
+  if (left.length !== right.length) return false;
+  return left.every((value, index) => value === right[index]);
+}
+
+function sameSessionConfig(existing, next) {
+  return existing
+    && existing.agentId === next.agentId
+    && existing.agentEvmAddress === next.agentEvmAddress
+    && Number(existing.issuedAt) === Number(next.issuedAt)
+    && Number(existing.expiresAt) === Number(next.expiresAt)
+    && String(existing.maxPerTx) === String(next.maxPerTx)
+    && String(existing.maxDaily) === String(next.maxDaily)
+    && equalStringArray(existing.whitelist?.allowedChains, next.whitelist?.allowedChains)
+    && equalStringArray(existing.whitelist?.allowedAssets, next.whitelist?.allowedAssets)
+    && equalStringArray(existing.whitelist?.allowedContracts, next.whitelist?.allowedContracts)
+    && equalStringArray(existing.whitelist?.allowedMethods, next.whitelist?.allowedMethods)
+    && equalStringArray(existing.whitelist?.allowedRecipients, next.whitelist?.allowedRecipients);
+}
+
+function selectSmartAccount({ accountId, sessionId } = {}) {
+  if (smartAccounts.size === 0) {
+    const err = new Error('No Smart Account in this session. Call smart_account_setup first.');
+    err.code = 'NO_SMART_ACCOUNT';
+    throw err;
+  }
+
+  let entry = null;
+  if (accountId) {
+    entry = smartAccounts.get(accountId) || null;
+    if (!entry) {
+      const err = new Error(`Smart Account ${accountId} not found in this MCP session.`);
+      err.code = 'SMART_ACCOUNT_NOT_FOUND';
+      throw err;
+    }
+  } else if (smartAccountContext?.accountId && smartAccounts.has(smartAccountContext.accountId)) {
+    entry = smartAccounts.get(smartAccountContext.accountId);
+  } else if (smartAccounts.size === 1) {
+    entry = [...smartAccounts.values()][0];
+  } else {
+    const err = new Error('Multiple Smart Accounts exist in this MCP session. Pass accountId to select one explicitly.');
+    err.code = 'SMART_ACCOUNT_AMBIGUOUS';
+    throw err;
+  }
+
+  const resolvedSessionId = sessionId || (entry.accountId === smartAccountContext?.accountId ? smartAccountContext?.sessionId : null) || entry.currentSessionId;
+  if (!resolvedSessionId) {
+    const err = new Error(`Smart Account ${entry.accountId} has no selected session. Pass sessionId explicitly.`);
+    err.code = 'SMART_ACCOUNT_SESSION_REQUIRED';
+    throw err;
+  }
+
+  const sessionRecord = entry.client.getSession(resolvedSessionId);
+  if (!sessionRecord) {
+    const err = new Error(`Session ${resolvedSessionId} not found under Smart Account ${entry.accountId}.`);
+    err.code = 'SMART_ACCOUNT_SESSION_NOT_FOUND';
+    throw err;
+  }
+
+  entry.currentSessionId = sessionRecord.sessionId;
+  smartAccountContext = { accountId: entry.accountId, sessionId: sessionRecord.sessionId };
+  return { ...entry, session: sessionRecord };
 }
 
 /**
@@ -315,49 +382,90 @@ async function handleSmartAccountSetup(args) {
     return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'expiresAt (ms epoch) is required' }) }], isError: true };
   }
 
-  const client = await smartAccount.createSmartAccountClient({
+  const accountPolicy = { type: 'limit', maxPerTx: maxPerTx || '0', maxDaily: maxDaily || '0' };
+  const freshClient = await smartAccount.createSmartAccountClient({
     owner,
     emergencyKey,
-    policy: { type: 'limit', maxPerTx: maxPerTx || '0', maxDaily: maxDaily || '0' },
+    policy: accountPolicy,
   });
+  const accountId = freshClient.getState().accountId;
+  const existingEntry = smartAccounts.get(accountId);
+  const client = existingEntry?.client || freshClient;
+  if (existingEntry) {
+    const currentPolicy = client.getState().policy;
+    if (
+      currentPolicy?.type !== accountPolicy.type
+      || String(currentPolicy?.maxPerTx) !== String(accountPolicy.maxPerTx)
+      || String(currentPolicy?.maxDaily) !== String(accountPolicy.maxDaily)
+    ) {
+      return {
+        content: [{
+          type: 'text',
+          text: JSON.stringify({ success: false, error: `Smart Account ${accountId} already exists in this MCP session with a different hard policy. Reuse the original policy or start a fresh MCP session.` }),
+        }],
+        isError: true,
+      };
+    }
+  }
 
-  const now = issuedAt !== undefined && issuedAt !== null ? Number(issuedAt) : Date.now();
-  const reg = client.registerSession({
+  const resolvedIssuedAt = issuedAt !== undefined && issuedAt !== null ? Number(issuedAt) : Date.now();
+  const resolvedExpiresAt = Number(expiresAt);
+  const sessionConfig = {
     sessionId,
     agentId,
     agentEvmAddress,
-    issuedAt: now,
-    expiresAt: Number(expiresAt),
+    issuedAt: resolvedIssuedAt,
+    expiresAt: resolvedExpiresAt,
     whitelist: {
       allowedChains, allowedAssets, allowedContracts, allowedMethods, allowedRecipients,
     },
     maxPerTx: maxPerTx || '0',
     maxDaily: maxDaily || '0',
-  });
-  if (!reg.ok) {
-    return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: reg.reason }) }], isError: true };
+  };
+  const existingSession = client.getSession(sessionId);
+  if (existingSession) {
+    if (!sameSessionConfig(existingSession, sessionConfig)) {
+      return {
+        content: [{
+          type: 'text',
+          text: JSON.stringify({ success: false, error: `Session ${sessionId} already exists in Smart Account ${accountId} with different settings.` }),
+        }],
+        isError: true,
+      };
+    }
+  } else {
+    const reg = client.registerSession(sessionConfig);
+    if (!reg.ok) {
+      return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: reg.reason }) }], isError: true };
+    }
   }
 
-  smartAccountClient = client;
-  smartAccountContext = { owner, sessionId };
+  smartAccounts.set(accountId, {
+    accountId,
+    owner,
+    client,
+    currentSessionId: sessionId,
+  });
+  smartAccountContext = { accountId, sessionId };
   const est = client.estimateMaxLoss({ sessionId });
   return {
     content: [{ type: 'text', text: JSON.stringify({
       success: true,
-      accountId: client.getState().accountId,
+      accountId,
       sessionId,
+      issuedAt: resolvedIssuedAt,
+      expiresAt: resolvedExpiresAt,
+      session: {
+        agentId,
+        sessionId,
+        issuedAt: resolvedIssuedAt,
+        expiresAt: resolvedExpiresAt,
+        agentEvmAddress,
+      },
       maxLoss: est.sessions[0]?.maxLossCeiling ?? null,
-      note: 'Local Smart Account created. Sign intents off-chain (official EVM path) and submit via smart_account_execute — the private key never enters this process.',
+      note: 'Local Smart Account created. Use the returned session binding to build canonical payloads off-chain, then submit via smart_account_execute — the private key never enters this process.',
     }, null, 2) }],
   };
-}
-
-function requireSmartAccount() {
-  if (!smartAccountClient) {
-    const err = new Error('No Smart Account in this session. Call smart_account_setup first.');
-    err.code = 'NO_SMART_ACCOUNT';
-    throw err;
-  }
 }
 
 /**
@@ -370,17 +478,12 @@ function requireSmartAccount() {
  * the digest to sign off-chain when admissible. "Quantify before acting."
  */
 async function handleSmartAccountPreview(args) {
-  requireSmartAccount();
-  const { action, chain, asset, amount, recipient, contract, method, nonce } = args;
+  const { action, chain, asset, amount, recipient, contract, method, nonce, accountId, sessionId } = args;
   if (amount === undefined || amount === null || nonce === undefined || nonce === null) {
     return { content: [{ type: 'text', text: JSON.stringify({ success: false, wouldExecute: false, error: 'amount and nonce are required for a deterministic preview (INV-002/INV-007)' }) }], isError: true };
   }
 
-  const client = smartAccountClient;
-  const s = client.getSession(smartAccountContext.sessionId);
-  if (!s) {
-    return { content: [{ type: 'text', text: JSON.stringify({ success: false, wouldExecute: false, error: 'session not found' }) }], isError: true };
-  }
+  const { client, session: s, accountId: resolvedAccountId } = selectSmartAccount({ accountId, sessionId });
 
   // Build the EXACT canonical payload the caller would sign off-chain, so the
   // preview verdict is 1:1 with a real execution.
@@ -411,20 +514,32 @@ async function handleSmartAccountPreview(args) {
       digest = null;
     }
     return { content: [{ type: 'text', text: JSON.stringify({
-      success: true, wouldExecute: true, amount: res.amount, digest,
-      note: 'Intent is admissible under the hard-policy layer. Sign it off-chain (signSmartAccountIntent) and submit via smart_account_execute.',
+      success: true,
+      wouldExecute: true,
+      accountId: resolvedAccountId,
+      sessionId: s.sessionId,
+      amount: res.amount,
+      digest,
+      payload,
+      session: {
+        agentId: s.agentId,
+        sessionId: s.sessionId,
+        issuedAt: s.issuedAt,
+        expiresAt: s.expiresAt,
+        agentEvmAddress: s.agentEvmAddress,
+      },
+      note: 'Intent is admissible under the hard-policy layer. Sign the returned canonical payload off-chain (signSmartAccountIntent) and submit via smart_account_execute.',
     }, null, 2) }] };
   }
   return { content: [{ type: 'text', text: JSON.stringify({
-    success: true, wouldExecute: false, reason: res.reason,
+    success: true, wouldExecute: false, accountId: resolvedAccountId, sessionId: s.sessionId, reason: res.reason,
     note: 'Fail-closed: intent rejected by the Smart Account hard-policy layer.',
   }, null, 2) }] };
 }
 
 /** Submit a caller-signed official EVM intent to the local Smart Account. */
 async function handleSmartAccountExecute(args) {
-  requireSmartAccount();
-  const { intent, claimedAmount, nonce, signature, payload } = args;
+  const { intent, claimedAmount, nonce, signature, payload, accountId, sessionId } = args;
   if (!payload || !signature) {
     return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'payload (canonical intent) and signature (official EVM path) are required. Build them off-chain: signSmartAccountIntent().' }) }], isError: true };
   }
@@ -432,11 +547,7 @@ async function handleSmartAccountExecute(args) {
     return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'intent with amount is required (INV-002 binding)' }) }], isError: true };
   }
 
-  const client = smartAccountClient;
-  const s = client.getSession(smartAccountContext.sessionId);
-  if (!s) {
-    return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'session not found' }) }], isError: true };
-  }
+  const { client, session: s, accountId: resolvedAccountId } = selectSmartAccount({ accountId, sessionId: sessionId || payload.sessionId });
   // Pass the caller-provided payload + signature straight to the hard-policy
   // layer — the private key NEVER enters this process. The engine re-derives
   // every property from the signed content (INV-002/003/005/006/007).
@@ -448,16 +559,17 @@ async function handleSmartAccountExecute(args) {
     nonce: nonce || 1,
   });
   return {
-    content: [{ type: 'text', text: JSON.stringify({ success: res.ok, ...(res.ok ? { txId: res.txId, amount: res.amount, remainingSessionDaily: res.remainingSessionDaily } : { error: res.reason }) }, null, 2) }],
+    content: [{ type: 'text', text: JSON.stringify({ success: res.ok, accountId: resolvedAccountId, sessionId: s.sessionId, ...(res.ok ? { txId: res.txId, amount: res.amount, remainingSessionDaily: res.remainingSessionDaily } : { error: res.reason }) }, null, 2) }],
     isError: !res.ok,
   };
 }
 
 /** Quantify the current exposure bound (INV-007). */
-async function handleSmartAccountEstimateLoss() {
-  requireSmartAccount();
-  const est = smartAccountClient.estimateMaxLoss();
-  return { content: [{ type: 'text', text: JSON.stringify({ success: true, ...est }, null, 2) }] };
+async function handleSmartAccountEstimateLoss(args) {
+  const { accountId, sessionId } = args || {};
+  const { client, accountId: resolvedAccountId, session } = selectSmartAccount({ accountId, sessionId });
+  const est = client.estimateMaxLoss({ sessionId: session.sessionId });
+  return { content: [{ type: 'text', text: JSON.stringify({ success: true, accountId: resolvedAccountId, sessionId: session.sessionId, ...est }, null, 2) }] };
 }
 
 // ─── Proof-of-Work: find nonce such that SHA256(challenge+nonce) starts with N zeros ──
@@ -772,10 +884,12 @@ const TOOLS = [
   },
   {
     name: 'smart_account_preview',
-    description: 'Fail-closed dry-run of an asset intent against the local Smart Account — WITHOUT executing and WITHOUT a signature. Runs the full hard-policy decision tree side-effect free; returns wouldExecute + the exact rejection reason, or the digest to sign off-chain when admissible (P3 simulation seed).',
+    description: 'Fail-closed dry-run of an asset intent against the local Smart Account — WITHOUT executing and WITHOUT a signature. Runs the full hard-policy decision tree side-effect free; returns wouldExecute + the exact rejection reason, or the digest + canonical payload to sign off-chain when admissible (P3 simulation seed).',
     inputSchema: {
       type: 'object',
       properties: {
+        accountId: { type: 'string', description: 'Optional Smart Account selector when multiple accounts exist in this MCP session' },
+        sessionId: { type: 'string', description: 'Optional session selector when multiple sessions exist under one Smart Account' },
         action: { type: 'string', description: 'Intent action (e.g. transfer)' },
         chain: { type: 'string' },
         asset: { type: 'string' },
@@ -794,6 +908,8 @@ const TOOLS = [
     inputSchema: {
       type: 'object',
       properties: {
+        accountId: { type: 'string', description: 'Optional Smart Account selector when multiple accounts exist in this MCP session' },
+        sessionId: { type: 'string', description: 'Optional session selector; defaults to payload.sessionId or the currently selected session' },
         payload: { type: 'object', description: 'Canonical asset-intent payload (signSmartAccountIntent output)' },
         signature: { type: 'string', description: '65-byte secp256k1 EVM signature (0x + 130 hex)' },
         intent: { type: 'object', description: 'Structured intent with amount (INV-002 claimedAmount fallback)' },
@@ -806,7 +922,13 @@ const TOOLS = [
   {
     name: 'smart_account_estimate_loss',
     description: 'Quantify the current maximum exposure bound (INV-007): per-session + account ceilings, remaining windows, and a worst-case loss statement.',
-    inputSchema: { type: 'object', properties: {} },
+    inputSchema: {
+      type: 'object',
+      properties: {
+        accountId: { type: 'string', description: 'Optional Smart Account selector when multiple accounts exist in this MCP session' },
+        sessionId: { type: 'string', description: 'Optional session selector for a specific registered session' },
+      },
+    },
   },
 
   // Task economy (the NGEN value loop for agents)

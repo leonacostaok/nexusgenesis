@@ -8,7 +8,8 @@
     ".": "./src/index.js",
     "./eth": "./src/eth.js",
     "./canonical": "./src/canonical.js",
-    "./smart-account": "./src/smart-account.js"
+    "./smart-account": "./src/smart-account.js",
+    "./client": "./src/client.js"
   },
   "files": [
     "src",

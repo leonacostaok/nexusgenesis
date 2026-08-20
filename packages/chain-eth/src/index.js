@@ -33,6 +33,7 @@ import {
   signSmartAccountIntent,
   verifySmartAccountIntent
 } from './canonical.js';
+import { createSmartAccountClient } from './client.js';
 
 export {
   CHAIN,
@@ -57,7 +58,8 @@ export {
   verifyIntentDigest,
   addressForPrivateKey,
   signSmartAccountIntent,
-  verifySmartAccountIntent
+  verifySmartAccountIntent,
+  createSmartAccountClient
 };
 
 export default {
@@ -71,6 +73,7 @@ export default {
   verifyIntentDigest,
   signSmartAccountIntent,
   verifySmartAccountIntent,
+  createSmartAccountClient,
   mapSpendToGuardianPolicy,
   createSmartAccount,
   SmartAccount

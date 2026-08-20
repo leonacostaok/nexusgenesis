@@ -7,7 +7,8 @@
   "exports": {
     ".": "./src/index.js",
     "./keys": "./src/keys.js",
-    "./coordination": "./src/coordination.js"
+    "./coordination": "./src/coordination.js",
+    "./smart-account": "./src/smart-account.js"
   },
   "files": [
     "src",
@@ -38,6 +39,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "nexusgenesis-agent-keys": "^0.5.0"
+    "nexusgenesis-agent-keys": "^0.5.0",
+    "nexusgenesis-chain-eth": "^0.3.0"
   }
 }

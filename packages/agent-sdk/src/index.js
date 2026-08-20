@@ -13,6 +13,7 @@ export * as keys from './keys.js';
 export * as coordination from './coordination.js';
 export * as forum from './forum.js';
 export * as verifier from './verifier.js';
+export * as smartAccount from './smart-account.js';
 
 export {
   createAgentIdentity,

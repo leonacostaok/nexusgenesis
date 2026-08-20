@@ -463,9 +463,14 @@ export class SmartAccount {
    * @param {string|number} opts.claimedAmount - tx amount (from tx object)
    * @param {string} opts.sessionId - registered session id
    * @param {string|number} opts.nonce - strictly increasing anti-replay counter
+   * @param {boolean} [opts.preview] - P3 simulation mode: run the full
+   *   fail-closed decision tree WITHOUT a signature and WITHOUT mutating
+   *   state (nonce/spend/window). Only the digest-binding check (INV-002)
+   *   is skipped — it needs the caller's private key — so preview answers
+   *   "would this intent be admitted?" as a side-effect-free dry-run.
    * @returns {Promise<{ok: true, ...} | {ok: false, reason: string}>}
    */
-  async executeFromAgent({ payload, signature, claimedAmount, sessionId, nonce }) {
+  async executeFromAgent({ payload, signature, claimedAmount, sessionId, nonce, preview = false }) {
     const now = Date.now();
 
     // 1. Account-level switches.
@@ -563,7 +568,23 @@ export class SmartAccount {
     //    deterministically and without tiering.
     let amountBig;
     let amount;
-    if (s.agentEvmAddress) {
+    if (preview) {
+      // P3 SIMULATION MODE: no signature exists yet, so the digest-binding
+      // check (INV-002) is the one check that cannot run without the caller's
+      // private key. Everything above (session, whitelist, self-escalation,
+      // allowance surface, nonce) already ran fail-closed exactly as on-chain;
+      // the amount is taken from claimedAmount so the ceilings below are still
+      // enforced. Preview NEVER commits state (see step 10).
+      try {
+        const claimed = String(claimedAmount).trim();
+        if (claimed === '') throw new Error('empty');
+        amountBig = BigInt(claimed);
+        if (amountBig < 0n) throw new Error('negative');
+      } catch {
+        return { ok: false, reason: `amount/signature binding failed: invalid claimedAmount: ${claimedAmount} (INV-002)` };
+      }
+      amount = String(amountBig);
+    } else if (s.agentEvmAddress) {
       const decoded = decodeAssetIntentPayload(payload);
       if (!decoded.valid) {
         return { ok: false, reason: `amount/signature binding failed: ${decoded.error} (INV-002)` };
@@ -639,6 +660,17 @@ export class SmartAccount {
     }
 
     // 10. Commit: consume nonce, accrue spend, emit execution.
+    //     In preview mode, skip ALL state mutation (side-effect-free dry-run).
+    if (preview) {
+      return {
+        ok: true,
+        preview: true,
+        amount,
+        sessionId,
+        nonce: String(nonceBig),
+        note: 'preview mode — intent is admissible; no state was mutated.',
+      };
+    }
     s.lastNonce = nonceBig;
     s.spent += amountBig;
     if (this.policy.type !== 'unlimited') this.spentInWindow += amountBig;

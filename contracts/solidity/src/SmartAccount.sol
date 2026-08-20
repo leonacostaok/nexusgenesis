@@ -324,7 +324,12 @@ contract SmartAccount {
             uint256 sessionRemaining = s.maxDaily > spent ? s.maxDaily - spent : 0;
             if (sessionRemaining < remaining) remaining = sessionRemaining;
         }
-        if (s.maxPerTx > 0 && s.maxPerTx < remaining) remaining = s.maxPerTx;
+        // NOTE: maxPerTx deliberately does NOT cap this value. Like the JS
+        // engine, maxPerTx bounds a single transfer; a session can issue many
+        // per-tx-sized executions within the window, so the cumulative
+        // exposure ceiling is the DAILY/account ceilings only. Mixing maxPerTx
+        // in here would UNDERSTATE the real maximum loss (mirrors
+        // smart-account.js estimateMaxLoss).
         return remaining;
     }
 

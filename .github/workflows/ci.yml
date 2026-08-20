@@ -26,6 +26,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify deny-list single source (JS ↔ Solidity fixtures)
+        run: npm run check:deny-list
+        timeout-minutes: 5
+
+      - name: Run Smart Account E2E sample (official EVM path)
+        run: npm run e2e:smart-account --workspace examples
+        timeout-minutes: 5
+
       - name: Test released security packages
         run: npm run test:release-packages
         timeout-minutes: 10
@@ -50,3 +58,26 @@ jobs:
           for file in $(find src -name "*.js" -not -path "*/node_modules/*"); do
             node -c "$file" || exit 1
           done
+
+  foundry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+
+      # local foundry.toml pins solc to a sandbox-only binary (bin/solc-0.8.24.exe,
+      # gitignored). On CI we override with the pinned upstream version so a fresh
+      # checkout compiles deterministically via svm.
+      - name: Forge build (solc 0.8.24)
+        working-directory: contracts/solidity
+        run: forge build --use 0.8.24
+
+      - name: Forge test (solc 0.8.24)
+        working-directory: contracts/solidity
+        run: forge test --use 0.8.24 -vvv
+        timeout-minutes: 15

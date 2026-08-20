@@ -386,9 +386,13 @@ contract SmartAccountTest is Test {
     }
 
     function test_session_max_loss_tracks_current_remaining_INV007() public {
-        assertEq(acct.sessionMaxLoss(SESSION_ID), 1000);
+        // session maxDaily = 5000 (see _registerGoldenSession). maxPerTx (1000)
+        // does NOT cap the cumulative-window loss — like the JS engine, a
+        // session may issue many per-tx-sized executions until the daily
+        // ceiling binds (mirrors smart-account.js estimateMaxLoss).
+        assertEq(acct.sessionMaxLoss(SESSION_ID), 5000);
         acct.executeFromAgent(_intent(100, 1), GOLDEN_SIG);
-        assertEq(acct.sessionMaxLoss(SESSION_ID), 900);
+        assertEq(acct.sessionMaxLoss(SESSION_ID), 4900);
     }
 
     // ── DenyList: fixture parity + normalization matrix (Sprint 2 fix) ───

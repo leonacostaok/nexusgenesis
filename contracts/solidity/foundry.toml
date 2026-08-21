@@ -17,3 +17,10 @@ evm_version = "paris"
 line_length = 100
 tab_width = 4
 quote_style = "double"
+
+# ── Networks (Sprint 2.3 on-chain deployment) ─────────────────────────────
+# forge script script/DeploySmartAccount.s.sol --rpc-url local --broadcast
+[rpc_endpoints]
+local = "http://127.0.0.1:8545"
+sepolia = "${SEPOLIA_RPC_URL}"
+mainnet = "${MAINNET_RPC_URL}"

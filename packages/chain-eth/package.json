@@ -9,7 +9,8 @@
     "./eth": "./src/eth.js",
     "./canonical": "./src/canonical.js",
     "./smart-account": "./src/smart-account.js",
-    "./client": "./src/client.js"
+    "./client": "./src/client.js",
+    "./chain": "./src/chain-connection.js"
   },
   "files": [
     "src",
@@ -42,6 +43,7 @@
   "dependencies": {
     "@noble/curves": "^1.4.0",
     "@noble/hashes": "^1.4.0",
+    "ethers": "^6.16.0",
     "nexusgenesis-agent-keys": "^0.5.0",
     "nexusgenesis-agent-sdk": "^0.3.0"
   }

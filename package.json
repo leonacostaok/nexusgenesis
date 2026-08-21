@@ -86,6 +86,12 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@ethereumjs/block": "^10.1.2",
+    "@ethereumjs/common": "^10.1.2",
+    "@ethereumjs/statemanager": "^10.1.2",
+    "@ethereumjs/tx": "^10.1.2",
+    "@ethereumjs/util": "^10.1.2",
+    "@ethereumjs/vm": "^10.1.2",
     "esbuild": "^0.28.2",
     "nodemon": "^3.1.14"
   }

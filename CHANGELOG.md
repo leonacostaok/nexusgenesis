@@ -7,7 +7,17 @@
 
 ## [Unreleased]
 
-### 2026-08-10 — 修复：网络年龄在异常重启后被“投毒”归零（首页 uptime 误显示为 1.5h）
+### 2026-08-21 — feat(sprint2.3): Smart Account 链上广播 + 黄金向量三方闭环
+
+**T2 — 链上广播基础设施**：ChainConnection 类封装 SmartAccount 合约的部署/注册/执行/查询，支持 revert data 透传（JSON-RPC error.data → ethers 自定义错误解码），nonce 缓存修复（createChainProvider cacheTimeout:-1），全量 70 测试通过。
+
+**T3 — E2E 双模式示例**：examples/smart-account-e2e.mjs 从 JS engine 模拟升级为真实链上广播，支持默认进程内 LocalChain 和 CHAIN_RPC_URL 外部 RPC 两种模式，覆盖部署→注册→离线签名→relayer 广播→链上断言→拒绝路径全链路。修复审查发现的 3 个问题：子路径导出消除相对路径依赖、链上时钟同步、chain.stop() 异常处理。
+
+**T4 — 链上黄金向量复核**：新建 golden-onchain.test.js 在真实 EVM 链上重跑三方 golden fixture（JS/Solidity/链上），验证 hashIntent 逐字节一致、GOLDEN_SIG 广播执行成功、INV-002 amount 篡改被链上 InvalidSignature 拒绝、INV-007 防重放 BadNonce 拒绝。形成 JS↔Solidity↔链上三方交叉验证闭环。
+
+**T5 — 工程质量收尾**：提取 setupChain()/deployChain() helper 消除部署+注册重复代码，移除冗余 toLowerCase()，新增 .npmignore 排除测试文件优化发布体积，三包全量回归通过（chain-eth 74/74、agent-sdk 全绿、agent-keys-mcp 全绿）。
+
+### 2026-08-10 — 修复：网络年龄在异常重启后被"投毒"归零（首页 uptime 误显示为 1.5h）
 
 **现象**：生产节点 `/api/v1/bootstrap/status` 的 `uptime` 在最近一次重启后显示 ≈1.5h，首页网络年龄随之显示“1.5h”，让链被误判为“刚上链、不成熟”。此前已验证可跨重启保留的 ~984h 网络年龄丢失。
 

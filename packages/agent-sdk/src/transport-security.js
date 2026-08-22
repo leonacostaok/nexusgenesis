@@ -11,7 +11,7 @@
  *   - message-security.js：纯信封 + 签名/验签/防重放原子能力（零依赖、可测）。
  *   - transport-security.js：运行时接线（身份解析 + 持久化防重放 + inbound 中间层）。
  */
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync, renameSync } from 'node:fs';
 import { verifyMessageEnvelope, DEFAULT_MAX_AGE_MS } from './message-security.js';
 
 /**
@@ -35,16 +35,19 @@ export function createReplayStore({ file = null, maxEntries = 10000 } = {}) {
     }
   }
 
+  // 原子写（tmp + rename）：直接写目标文件在写入中途崩溃会截断文件，
+  // 导致下次恢复失败、整个已见集退化为空窗口。
   function persist() {
     if (!file) return;
-    writeFileSync(file, JSON.stringify([...seen.keys()]));
+    const tmp = `${file}.tmp`;
+    writeFileSync(tmp, JSON.stringify([...seen.keys()]));
+    renameSync(tmp, file);
   }
 
   function prune() {
     if (seen.size <= maxEntries) return;
     const drop = [...seen.keys()].slice(0, seen.size - maxEntries);
     for (const key of drop) seen.delete(key);
-    persist();
   }
 
   return {
@@ -52,7 +55,7 @@ export function createReplayStore({ file = null, maxEntries = 10000 } = {}) {
       if (seen.has(key)) return false;
       seen.set(key, Date.now());
       prune();
-      persist();
+      persist(); // 单次落盘（prune 只裁剪，不重复写）
       return true;
     },
     has(key) {
@@ -72,13 +75,17 @@ export function createReplayStore({ file = null, maxEntries = 10000 } = {}) {
  * inbound 验签中间层。
  * @param {object} params
  * @param {object} params.directory service identity 目录（createIdentityDirectory 输出）
+ * @param {string} params.self 本服务的身份（envelope.target 必须等于它，防跨服务重放）
  * @param {object} [params.replayStore] createReplayStore 输出（缺省则不做重放检测）
  * @param {number} [params.maxAgeMs] 时间新鲜度窗口（默认 5 分钟）
  * @returns {(body: any) => { ok: boolean, error?: string, reason?: string, identity?: string, payload?: any }}
  */
-export function createInboundVerifier({ directory, replayStore = null, maxAgeMs = DEFAULT_MAX_AGE_MS }) {
+export function createInboundVerifier({ directory, self, replayStore = null, maxAgeMs = DEFAULT_MAX_AGE_MS }) {
   if (!directory || typeof directory.resolve !== 'function') {
     throw new Error('createInboundVerifier: directory with resolve() is required');
+  }
+  if (!self || typeof self !== 'string') {
+    throw new Error('createInboundVerifier: self (this service identity) is required — target check prevents cross-service replay (RFC §2)');
   }
 
   return function verifyRequest(body) {
@@ -87,6 +94,12 @@ export function createInboundVerifier({ directory, replayStore = null, maxAgeMs 
       return { ok: false, error: 'missing_envelope', reason: 'message security enabled: unsigned request rejected (fail-closed)' };
     }
     const envelope = body.envelope;
+    // 跨服务重放防护（RFC §2 目标错误投递）：target 入签名只防篡改，不防
+    // 「合法签名的消息被原样转发给另一个服务」。接收方必须校验 target === self，
+    // 否则发给 service-b 的信封可在 service-c 的 replay store（未见过该 nonce）重放。
+    if (envelope.target !== self) {
+      return { ok: false, error: 'wrong_target', reason: `envelope targets '${envelope.target}', not this service '${self}' (cross-service replay rejected)` };
+    }
     const identity = directory.resolve(envelope.sender);
     if (!identity) {
       return { ok: false, error: 'unknown_identity', reason: `sender '${envelope.sender}' is not a registered service identity` };

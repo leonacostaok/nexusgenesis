@@ -89,7 +89,7 @@ test('T1.4 createReplayStore: dedupe + file persistence survives reload', () => 
 test('T1.3 inbound verifier: missing envelope / unknown identity fail-closed', () => {
   const dir = createIdentityDirectory();
   dir.register({ id: SENDER, publicKey: '0xpub', verifier: verify });
-  const verifyRequest = createInboundVerifier({ directory: dir });
+  const verifyRequest = createInboundVerifier({ directory: dir, self: TARGET });
 
   assert.deepEqual(verifyRequest({ plain: 'body' }), {
     ok: false, error: 'missing_envelope',
@@ -103,11 +103,34 @@ test('T1.3 inbound verifier: missing envelope / unknown identity fail-closed', (
   assert.equal(res.error, 'unknown_identity');
 });
 
+test('T1.3 inbound verifier: cross-service replay rejected (wrong_target, review fix)', () => {
+  // 攻击场景：截获发给 service-b 的合法签名信封，原样转发给 service-c。
+  // service-c 认该 sender 且自己的 replay store 未见过该 nonce —— 若不校验
+  // target === self，验签会通过（跨服务重放成功）。复核修复：wrong_target。
+  const dir = createIdentityDirectory();
+  dir.register({ id: SENDER, publicKey: '0xpub', verifier: verify });
+  const serviceC = createInboundVerifier({ directory: dir, self: 'ng1-service-c' });
+  const serviceCStore = createReplayStore();
+
+  const intercepted = createMessageEnvelope({ sender: SENDER, target: TARGET, payload: PAYLOAD, signer: sign, timestamp: NOW });
+  const forwarded = serviceC({ envelope: intercepted });
+  assert.equal(forwarded.ok, false);
+  assert.equal(forwarded.error, 'wrong_target');
+  assert.match(forwarded.reason, /cross-service replay/);
+  // nonce 未被烧（fail-closed 在验签前短路）：合法发给 service-c 的消息不受影响。
+  const legit = createMessageEnvelope({ sender: SENDER, target: 'ng1-service-c', payload: PAYLOAD, signer: sign, timestamp: NOW });
+  assert.deepEqual(serviceC({ envelope: legit }), { ok: true, identity: SENDER, payload: PAYLOAD });
+  assert.equal(serviceCStore.size, 0);
+
+  // 构造时缺 self → fail-fast（target 校验不可静默跳过）。
+  assert.throws(() => createInboundVerifier({ directory: dir }), /self .*is required/);
+});
+
 test('T1.3 inbound verifier: valid / tampered / expired / replay', () => {
   const dir = createIdentityDirectory();
   dir.register({ id: SENDER, publicKey: '0xpub', verifier: verify });
   const replayStore = createReplayStore();
-  const verifyRequest = createInboundVerifier({ directory: dir, replayStore });
+  const verifyRequest = createInboundVerifier({ directory: dir, self: TARGET, replayStore });
 
   const env = createMessageEnvelope({ sender: SENDER, target: TARGET, payload: PAYLOAD, signer: sign, timestamp: NOW });
   const ok = verifyRequest({ envelope: env });
@@ -165,7 +188,7 @@ test('T1.6 E2E: CoordinationClient -> signed transport -> inbound-verified HTTP 
   const dir = createIdentityDirectory();
   dir.register({ id: SENDER, publicKey: '0xpub', verifier: verify });
   const replayStore = createReplayStore({ file: REPLAY_FILE2 });
-  const verifyRequest = createInboundVerifier({ directory: dir, replayStore });
+  const verifyRequest = createInboundVerifier({ directory: dir, self: TARGET, replayStore });
 
   const received = [];
   const server = createServer(async (req, res) => {

@@ -15,6 +15,8 @@ export * as forum from './forum.js';
 export * as verifier from './verifier.js';
 export * as smartAccount from './smart-account.js';
 export * as messageSecurity from './message-security.js';
+export * as serviceIdentity from './service-identity.js';
+export * as transportSecurity from './transport-security.js';
 
 export {
   createMessageEnvelope,
@@ -23,6 +25,15 @@ export {
   messagePreimage,
   DEFAULT_MAX_AGE_MS,
 } from './message-security.js';
+
+export {
+  createIdentityDirectory,
+} from './service-identity.js';
+
+export {
+  createReplayStore,
+  createInboundVerifier,
+} from './transport-security.js';
 
 export {
   createAgentIdentity,

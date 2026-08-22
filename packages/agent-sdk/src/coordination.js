@@ -8,6 +8,7 @@
  * with the NexusGenesis bootstrap API.
  */
 import { checkSpendAllowed, SPEND_MODES } from 'nexusgenesis-agent-keys';
+import { createMessageEnvelope } from './message-security.js';
 
 export const TASK_STATUS = {
   OPEN: 'open',
@@ -29,16 +30,51 @@ export const TASK_TYPES = [
 
 /**
  * Default HTTP transport —talks to a NexusGenesis-compatible API.
- * @param {object} opts { baseURL, custodyToken }
+ *
+ * Sprint 4 T1 (message security defaultization):
+ * - 默认 OFF（向后兼容）：不传 messageSecurity 时，POST body 与现状完全一致。
+ * - 显式开启（传入 messageSecurity 且未设 enabled:false）后，POST body 被包装为
+ *   { envelope } 签名信封（sender/identity/nonce/timestamp/payload/signature），
+ *   发送侧 fail-closed：缺 identity 或 signer 直接抛错，绝不发送未签名请求。
+ *   服务端须用 createInboundVerifier 验签（未签名 → missing_envelope 拒绝）。
+ *
+ * @param {object} opts
+ * @param {string} opts.baseURL
+ * @param {string} [opts.custodyToken]
+ * @param {object} [opts.messageSecurity]
+ * @param {boolean} [opts.messageSecurity.enabled=true] 显式 false 关闭
+ * @param {string} opts.messageSecurity.identity 发送方服务身份（sender）
+ * @param {(bytes: Uint8Array) => string} opts.messageSecurity.signer 注入式签名器
+ * @param {string} [opts.messageSecurity.target] 接收方服务身份（缺省用 baseURL）
  */
-export function createHttpTransport({ baseURL, custodyToken }) {
+export function createHttpTransport({ baseURL, custodyToken, messageSecurity } = {}) {
   const headers = { 'Content-Type': 'application/json' };
   if (custodyToken) headers['x-custody-token'] = custodyToken;
+
+  const securityEnabled = !!messageSecurity && messageSecurity.enabled !== false;
+  const target = messageSecurity?.target || baseURL;
+
+  // 构造时 fail-fast：开启但缺 identity/signer 立即报错，运维第一时间发现，
+  // 而不是等到第一次发请求才暴露（绝不允许静默降级为未签名请求）。
+  if (securityEnabled && (!messageSecurity.identity || typeof messageSecurity.signer !== 'function')) {
+    throw new Error('createHttpTransport: messageSecurity requires identity + signer (fail-closed: refusing to send unsigned request)');
+  }
+
+  function wrap(body) {
+    if (!securityEnabled) return body;
+    const envelope = createMessageEnvelope({
+      sender: messageSecurity.identity,
+      target,
+      payload: body,
+      signer: messageSecurity.signer,
+    });
+    return { envelope };
+  }
 
   async function request(method, path, body) {
     const url = `${baseURL}${path}`;
     const opts = { method, headers, signal: AbortSignal.timeout(30000) };
-    if (body !== undefined) opts.body = JSON.stringify(body);
+    if (body !== undefined) opts.body = JSON.stringify(wrap(body));
     const res = await fetch(url, opts);
     const data = await res.json();
     if (!res.ok) throw new Error(data?.message || data?.error || `HTTP ${res.status}`);

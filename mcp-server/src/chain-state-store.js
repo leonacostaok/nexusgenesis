@@ -60,12 +60,12 @@ export function serializeEntry(entry) {
 
 /**
  * 全量加载持久状态。
- * @returns {{ chainUrl: string|null, profile: string|null, accounts: object[] }}
+ * @returns {{ chainUrl: string|null, profile: string|null, accounts: object[], transactions: object[], simulations: object[] }}
  */
 export function loadChainState() {
   const file = getChainStateFile();
   if (!file || !existsSync(file)) {
-    return { chainUrl: null, profile: null, accounts: [], transactions: [] };
+    return { chainUrl: null, profile: null, accounts: [], transactions: [], simulations: [] };
   }
   try {
     const raw = JSON.parse(readFileSync(file, 'utf8'));
@@ -74,21 +74,29 @@ export function loadChainState() {
       profile: raw.profile ?? null,
       accounts: Array.isArray(raw.accounts) ? raw.accounts : [],
       transactions: Array.isArray(raw.transactions) ? raw.transactions : [],
+      simulations: Array.isArray(raw.simulations) ? raw.simulations : [],
     };
   } catch {
     // 损坏的状态文件不应阻塞启动 —— 视为空状态（fail-open 于启动，fail-closed 于交易）。
-    return { chainUrl: null, profile: null, accounts: [], transactions: [] };
+    return { chainUrl: null, profile: null, accounts: [], transactions: [], simulations: [] };
   }
 }
 
 /** 保存全量状态（原子写：先写临时文件再 rename）。 */
-export function saveChainState({ chainUrl, profile, accounts, transactions }) {
+export function saveChainState({ chainUrl, profile, accounts, transactions, simulations }) {
   const file = getChainStateFile();
   if (!file) return; // 纯内存模式：不落盘
   const tmp = `${file}.tmp`;
   mkdirSync(dirname(file), { recursive: true });
   const payload = JSON.stringify(
-    { chainUrl, profile, accounts, transactions: transactions ?? [], savedAt: new Date().toISOString() },
+    {
+      chainUrl,
+      profile,
+      accounts,
+      transactions: transactions ?? [],
+      simulations: simulations ?? [],
+      savedAt: new Date().toISOString(),
+    },
     null,
     2,
   );

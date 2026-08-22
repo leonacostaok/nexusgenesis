@@ -19,6 +19,39 @@ const MAX_MEMORY_ENTRIES = 1000;
 
 let memoryRing = [];
 
+// Sprint 4 T2.3 — stable-field schema for audit records.
+// These fields must stay machine-readable across every tool and every release:
+// operators (and downstream tooling) depend on their exact shape. `tool` is
+// required; the identifiers are string-or-null. Any other type is a schema
+// violation (warned on stderr, never silently dropped).
+export const AUDIT_SCHEMA = {
+  tool: { required: true, type: 'string' },
+  accountId: { type: 'string|null' },
+  sessionId: { type: 'string|null' },
+  payloadDigest: { type: 'string|null' },
+  txHash: { type: 'string|null' },
+  errorName: { type: 'string|null' },
+};
+
+/**
+ * Validate an audit entry against the stable-field schema.
+ * @param {object} entry
+ * @returns {{ ok: boolean, errors: string[] }}
+ */
+export function validateAuditEntry(entry) {
+  const errors = [];
+  for (const [key, spec] of Object.entries(AUDIT_SCHEMA)) {
+    const v = entry[key];
+    const nullable = spec.type.endsWith('|null');
+    if (spec.required) {
+      if (typeof v !== spec.type) errors.push(`${key}: expected ${spec.type}, got ${v === null ? 'null' : typeof v}`);
+    } else if (v !== undefined && v !== null && (!nullable || typeof v !== 'string')) {
+      errors.push(`${key}: expected ${spec.type}, got ${typeof v}`);
+    }
+  }
+  return { ok: errors.length === 0, errors };
+}
+
 /** 审计文件路径（env 驱动；未设置 → 仅 stderr + 内存）。 */
 export function getAuditFile() {
   return process.env.AUDIT_LOG_FILE || null;
@@ -30,6 +63,12 @@ export function getAuditFile() {
  * @returns {object} 规范化后的记录
  */
 export function recordAudit(entry) {
+  // T2.3: schema check — a violation is loud on stderr but never blocks the
+  // audit write (the fact is still recorded; the warning makes it observable).
+  const check = validateAuditEntry(entry);
+  if (!check.ok) {
+    console.error(`[audit] SCHEMA VIOLATION: ${check.errors.join('; ')}`);
+  }
   const rec = {
     timestamp: new Date().toISOString(),
     ...entry,

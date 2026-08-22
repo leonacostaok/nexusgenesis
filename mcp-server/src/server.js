@@ -150,16 +150,24 @@ function hasSessionIdentity() {
 const smartAccounts = new Map(); // accountId -> entry
 let smartAccountContext = null;  // { accountId, sessionId }
 
-// Sprint 3 T1 — per-account successful simulation log (in-memory, not persisted):
+// Sprint 3 T1 — per-account successful simulation log:
 // { accountId -> { digest, at } }. Gates execute() fail-closed for actions that
 // MUST pass a successful on-chain simulation first (SIMULATION_WINDOW_MS window).
+// Sprint 4 T2.1: persisted alongside the chain state file — the window is
+// absolute-time (`at`), so a restart must NOT silently clear it (that would
+// both drop the protection record and invalidate in-flight previews).
 const simulationLog = new Map();
+
+// Sprint 4 T2.2 — last-seen soft-policy fingerprint; change is recorded as an
+// auditable policy_change event (hot-reload traceability).
+let lastPolicyFingerprint = null;
 
 /** Reset the local Smart Account so each test/setup is independent. */
 export function __resetSmartAccountForTest() {
   smartAccounts.clear();
   smartAccountContext = null;
   simulationLog.clear();
+  lastPolicyFingerprint = null;
   __resetAuditForTest();
   __resetMetricsForTest();
   __resetTxLedgerForTest();
@@ -355,6 +363,16 @@ async function bootChainEnv() {
  * non-existent code (stale reads). The saved chainUrl must match the current
  * RPC so a stale file from another chain never resurrects accounts here.
  */
+/** Rebuild the simulation log from persisted records (Sprint 4 T2.1). */
+function restoreSimulationLog(records = []) {
+  simulationLog.clear();
+  for (const r of records) {
+    if (r && r.accountId && r.digest && typeof r.at === 'number') {
+      simulationLog.set(r.accountId, { digest: r.digest, at: r.at });
+    }
+  }
+}
+
 async function restoreSmartAccounts({ provider, abi, cfg }) {
   if (!cfg.rpcUrl) return; // LocalChain: ephemeral, never restore
   const { createChainConnection } = await import('nexusgenesis-chain-eth');
@@ -362,6 +380,10 @@ async function restoreSmartAccounts({ provider, abi, cfg }) {
   // Restore the tx ledger too, so submitted→confirmed history survives restart
   // (Sprint 2.7 T3) — even if the chain URL changed (ledger is read-only facts).
   initTxLedger(state);
+  // Restore the simulation log (Sprint 4 T2.1) so the absolute-time window
+  // survives restart: an in-flight preview stays armed, an expired one stays
+  // expired — restart must not change the gate's semantics.
+  restoreSimulationLog(state.simulations);
   if (!state.accounts || state.accounts.length === 0) return;
   if (state.chainUrl && state.chainUrl !== cfg.rpcUrl) {
     // Chain-environment guard: never reuse accounts recorded on another chain.
@@ -404,6 +426,7 @@ function persistSmartAccountState() {
     profile: accounts[0]?.profile || null,
     accounts,
     transactions: getTxLedger(),
+    simulations: [...simulationLog.entries()].map(([accountId, v]) => ({ accountId, digest: v.digest, at: v.at })),
   });
 }
 
@@ -843,7 +866,10 @@ async function handleSmartAccountPreview(args) {
     // Sprint 3 T1: a successful signed preview arms the simulation gate for
     // this exact digest — within SIMULATION_WINDOW_MS execute() may proceed
     // without re-simulating; outside it the caller must re-preview.
-    if (digest) simulationLog.set(resolvedAccountId, { digest, at: Date.now() });
+    if (digest) {
+      simulationLog.set(resolvedAccountId, { digest, at: Date.now() });
+      persistSmartAccountState(); // Sprint 4 T2.1: arm to disk — survives restart
+    }
     const simulation = classifySimulationRisk(action);
     recordAudit({ tool: 'smart_account_preview', ok: true, wouldExecute: true, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest: digest });
     return { content: [{ type: 'text', text: JSON.stringify({
@@ -958,6 +984,7 @@ async function handleSmartAccountExecute(args) {
   // 2) Policy Engine gate (T2): chain-agnostic soft policy evaluated before
   //    the relayer broadcasts — a rejection here never touches the chain.
   //    (Policy Engine -> Signer/Relayer -> Smart Account)
+  maybeAuditPolicyChange('smart_account_execute gate'); // T2.2: rules change is auditable
   const verdict = evaluatePolicy({ action: payload?.action, amount: payload?.amount });
   if (!verdict.allowed) {
     incr('smart_account_policy_rejected');
@@ -1085,12 +1112,38 @@ async function handleSmartAccountSimulationPolicy(args) {
   };
 }
 
+// Sprint 4 T2.2 — soft-policy change detection for auditability.
+// The policy file is hot-reloaded on every evaluation; a rules change is
+// otherwise invisible to operators. We fingerprint the effective rules and,
+// on change, record an auditable policy_change event (old→new fingerprint +
+// snapshot) so policy evolution is traceable across time.
+function maybeAuditPolicyChange(context) {
+  const snap = policySnapshot();
+  const rules = Array.isArray(snap.rules) ? snap.rules : [];
+  const fp = crypto.createHash('sha256').update(JSON.stringify(rules)).digest('hex');
+  if (fp !== lastPolicyFingerprint) {
+    recordAudit({
+      tool: 'policy_change',
+      ok: true,
+      fingerprint: fp,
+      previousFingerprint: lastPolicyFingerprint,
+      source: snap.source,
+      rules,
+      context: context || 'policy evaluated',
+    });
+    lastPolicyFingerprint = fp;
+  }
+  return fp;
+}
+
 /** Current Policy Engine rules (Sprint 3 T2), auditable. */
 async function handleSmartAccountPolicy() {
+  maybeAuditPolicyChange('smart_account_policy query');
   return {
     content: [{ type: 'text', text: JSON.stringify({
       success: true,
       policy: policySnapshot(),
+      fingerprint: lastPolicyFingerprint,
       note: 'Soft policy is evaluated before the relayer broadcasts (Policy Engine -> Signer/Relayer -> Smart Account). Rejections here never touch the chain.',
     }, null, 2) }],
   };

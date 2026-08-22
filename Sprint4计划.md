@@ -22,10 +22,15 @@
 - 新模块：service-identity.js / transport-security.js；index + package.json 子路径导出
 - 测试：transport-security.test.js（新增 9 用例）；agent-sdk 47/47、mcp-server 42/42 全绿
 
-## T2 持久化 / 审计补缺口（在已有状态层闭合）
-- T2.1 simulationLog 持久化（重启后门禁窗口不丢；防窗口重置绕过）
-- T2.2 policy 版本快照落审计（规则变更可追溯，热更新有迹可查）
-- T2.3 `accountId/sessionId/payloadDigest/txHash/errorName` 稳定记录校验（对齐 audit-log schema）
+## T2 持久化 / 审计补缺口（在已有状态层闭合）✅ 已落地
+- T2.1 simulationLog 持久化 ✅：arming 随 SMART_ACCOUNT_STATE_FILE 落盘（simulations 字段），
+      恢复时 restoreSimulationLog 重建——窗口为绝对时间，重启不改变门禁语义
+- T2.2 policy 版本快照落审计 ✅：`maybeAuditPolicyChange` 指纹规则集（sha256），变化即记
+      `policy_change` 审计（旧→新指纹 + 快照 + context），execute 门禁与 smart_account_policy 均接入
+- T2.3 audit schema 校验 ✅：audit-log.js 新增 AUDIT_SCHEMA + validateAuditEntry，
+      recordAudit 违规 → stderr `[audit] SCHEMA VIOLATION`（不静默、不中断）
+- 测试：mcp-smart-account-t2.test.js（6 用例：schema/roundtrip/arming 落盘/policy_change×2/稳定字段）
+- 回归：mcp-server 48/48 全绿（agent-sdk 48/48 未受影响）
 
 ## T3 Relayer 运营化（在已有 txLedger 上补）
 - T3.1 nonce 冲突恢复（BadNonce → 重新同步 nonce 重试）
@@ -48,3 +53,4 @@ T1 全部完成后提交一版（先落 message security 主线），T2-T4 再�
 |------|------|------|
 | 2026-08-22 | v1.0 | 初次生成（基于 Sprint 3 复核对齐） |
 | 2026-08-22 | v1.1 | T1 全部落地（transport-security.js / service-identity.js / coordination 接线 / E2E） |
+| 2026-08-22 | v1.2 | T2 全部落地（simulationLog 持久化 / policy_change 审计 / audit schema 校验） |

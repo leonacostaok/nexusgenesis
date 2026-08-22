@@ -9,12 +9,19 @@ let client;
 let clientTransport;
 let serverTransport;
 
-// ─── Shared Smart Account fixtures (official EVM path) ──────────────────
-const OWNER = '0x' + 'aa'.repeat(20);
-const EMERGENCY = '0x' + 'bb'.repeat(20);
+// ─── Shared Smart Account fixtures (official EVM path, Sprint 2.4 on-chain) ──
+// owner/emergencyKey are PRIVILEGED PRIVATE KEYS (server-side operation keys):
+// their derived addresses become the contract owner/emergency roles, and owner
+// signs deploy + registerSession. The Agent's execution signing key (AGENT_PK)
+// NEVER enters the process — callers submit payload + signature only.
+// All three keys are funded on the booted LocalChain (see bootChainEnv).
+const OWNER_PK = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'; // anvil #0 (funded)
+const EMERGENCY_PK = '0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d'; // anvil #1 (funded)
+const SECOND_OWNER_PK = '0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a'; // anvil #2 (funded)
+const SECOND_EMERGENCY_PK = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'; // anvil #0 — distinct (owner,emergency) pair
 const SESSION_ID = '0x' + 'ab'.repeat(32);
 const AGENT_ID = 'test-agent';
-const EVM_KEY = '0x' + '11'.repeat(32);
+const AGENT_PK = '0x' + '11'.repeat(32);
 const ISSUED_AT = Date.now() - 1000;
 const EXPIRES_AT = Date.now() + 3600_000;
 
@@ -37,6 +44,8 @@ const INTENT = {
   nonce: '1',
 };
 
+const SESSION_BINDING = { agentId: AGENT_ID, sessionId: SESSION_ID, issuedAt: ISSUED_AT, expiresAt: EXPIRES_AT };
+
 before(async () => {
   __resetSmartAccountForTest();
   server = createServer();
@@ -53,6 +62,8 @@ beforeEach(() => {
 after(async () => {
   await client.close();
   await server.close();
+  // Stop the on-chain LocalChain (chainEnv) so the test process can exit.
+  __resetSmartAccountForTest();
 });
 
 async function callTool(name, args) {
@@ -60,15 +71,15 @@ async function callTool(name, args) {
   return JSON.parse(res.content[0].text);
 }
 
-/** Create a local Smart Account with the shared fixtures. */
+/** Create a local on-chain Smart Account with the shared fixtures. */
 async function setupAccount() {
   const { addressForPrivateKey } = await import('nexusgenesis-chain-eth');
   const out = await callTool('smart_account_setup', {
-    owner: OWNER,
-    emergencyKey: EMERGENCY,
+    owner: OWNER_PK,
+    emergencyKey: EMERGENCY_PK,
     sessionId: SESSION_ID,
     agentId: AGENT_ID,
-    agentEvmAddress: addressForPrivateKey(EVM_KEY),
+    agentEvmAddress: addressForPrivateKey(AGENT_PK),
     issuedAt: ISSUED_AT,
     expiresAt: EXPIRES_AT,
     maxPerTx: '100',
@@ -89,8 +100,10 @@ test('lists Smart Account tools (official EVM path)', async () => {
 test('smart_account_setup creates the account + session + exposure bound', async () => {
   const out = await setupAccount();
   assert.equal(out.success, true, JSON.stringify(out));
+  assert.equal(out.onChain, true);
   assert.equal(out.sessionId, SESSION_ID);
-  assert.match(out.accountId, /^0x[0-9a-f]{40}$/);
+  assert.match(out.accountId, /^0x[0-9a-f]{40}$/); // lowercase hex contract address
+  assert.equal(out.contractAddress, out.accountId);
   assert.equal(out.issuedAt, ISSUED_AT);
   assert.equal(out.expiresAt, EXPIRES_AT);
   assert.deepEqual(out.session, {
@@ -101,13 +114,13 @@ test('smart_account_setup creates the account + session + exposure bound', async
     agentEvmAddress: out.session.agentEvmAddress,
   });
   assert.match(out.session.agentEvmAddress, /^0x[0-9a-fA-F]{40}$/);
-  assert.equal(out.maxLoss, '500'); // min(accountDaily, sessionDaily)
+  assert.equal(out.maxLoss, '500'); // min(accountDaily 1M, sessionDaily 500)
 });
 
 test('smart_account_setup rejects a malformed sessionId (fail-closed)', async () => {
   const out = await callTool('smart_account_setup', {
-    owner: OWNER,
-    emergencyKey: EMERGENCY,
+    owner: OWNER_PK,
+    emergencyKey: EMERGENCY_PK,
     sessionId: 'not-32-bytes',
     agentId: AGENT_ID,
     agentEvmAddress: '0x0000000000000000000000000000000000000000',
@@ -117,37 +130,50 @@ test('smart_account_setup rejects a malformed sessionId (fail-closed)', async ()
   assert.match(out.error, /32-byte hex/);
 });
 
-test('smart_account_preview admits an admissible intent and is side-effect free', async () => {
+test('smart_account_preview without signature returns wouldExecute:null + digest (no pseudo-verdict)', async () => {
   await setupAccount();
   const out = await callTool('smart_account_preview', { ...INTENT, nonce: 1 });
   assert.equal(out.success, true, JSON.stringify(out));
-  assert.equal(out.wouldExecute, true, JSON.stringify(out));
+  // No signature → no on-chain verdict is computed (T1.3 semantics).
+  assert.equal(out.wouldExecute, null, JSON.stringify(out));
   assert.match(out.digest, /^0x[0-9a-f]{64}$/);
   assert.equal(out.sessionId, SESSION_ID);
   assert.equal(out.session.issuedAt, ISSUED_AT);
   assert.equal(out.payload.sessionId, SESSION_ID);
+  assert.equal(out.amount, '25');
+});
 
-  // Side-effect free: exposure bound unchanged, and the SAME nonce is still
-  // usable by a real execution (preview consumed nothing).
+test('smart_account_preview with a valid signature returns wouldExecute:true (on-chain dry-run)', async () => {
+  await setupAccount();
+  const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
+  const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: INTENT, privateKeyHex: AGENT_PK });
+  const out = await callTool('smart_account_preview', { ...INTENT, nonce: 1, signature: signed.signature });
+  assert.equal(out.success, true, JSON.stringify(out));
+  assert.equal(out.wouldExecute, true, JSON.stringify(out));
+  assert.match(out.digest, /^0x[0-9a-f]{64}$/);
+  assert.equal(out.amount, '25');
+
+  // Side-effect free: preview consumed nothing — exposure bound unchanged and
+  // the SAME nonce is still usable by a real execution.
   const est = await callTool('smart_account_estimate_loss', {});
   assert.equal(est.success, true);
-  assert.equal(est.sessions[0].remainingDaily, '500');
+  assert.equal(est.accountRemaining, '1000000');
+  assert.equal(est.sessionMaxLoss, '500');
 
-  const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
-  const signed = signSmartAccountIntent({
-    session: { agentId: AGENT_ID, sessionId: SESSION_ID, issuedAt: ISSUED_AT, expiresAt: EXPIRES_AT },
-    intent: INTENT,
-    privateKeyHex: EVM_KEY,
-  });
   const exec = await callTool('smart_account_execute', {
     payload: signed.payload,
     signature: signed.signature,
-    intent: INTENT,
-    claimedAmount: '25',
-    nonce: 1,
   });
   assert.equal(exec.success, true, JSON.stringify(exec));
-  assert.equal(exec.remainingSessionDaily, '475');
+  assert.equal(exec.amount, '25');
+  assert.match(exec.txHash, /^0x[0-9a-f]{64}$/); // mined tx (executeFromAgent awaits receipt)
+  assert.match(exec.txId, /^0x[0-9a-f]{64}$/); // keccak256(sessionId, nonce), bytes32
+
+  // The broadcast really landed: on-chain exposure bound decremented (T1.4+T1.5).
+  const post = await callTool('smart_account_estimate_loss', {});
+  assert.equal(post.success, true);
+  assert.equal(post.accountRemaining, '999975'); // 1M - 25
+  assert.equal(post.sessionMaxLoss, '475'); // 500 - 25
 });
 
 test('implicit issuedAt is returned and can be used to reproduce a signable payload', async () => {
@@ -155,11 +181,11 @@ test('implicit issuedAt is returned and can be used to reproduce a signable payl
   const sessionId = '0x' + 'cd'.repeat(32);
   const expiresAt = Date.now() + 3600_000;
   const setup = await callTool('smart_account_setup', {
-    owner: OWNER,
-    emergencyKey: EMERGENCY,
+    owner: OWNER_PK,
+    emergencyKey: EMERGENCY_PK,
     sessionId,
     agentId: 'implicit-issued-at',
-    agentEvmAddress: addressForPrivateKey(EVM_KEY),
+    agentEvmAddress: addressForPrivateKey(AGENT_PK),
     expiresAt,
     maxPerTx: '100',
     maxDaily: '500',
@@ -177,7 +203,7 @@ test('implicit issuedAt is returned and can be used to reproduce a signable payl
     nonce: 1,
   });
   assert.equal(preview.success, true, JSON.stringify(preview));
-  assert.equal(preview.wouldExecute, true, JSON.stringify(preview));
+  assert.equal(preview.wouldExecute, null, JSON.stringify(preview)); // no signature
   assert.equal(preview.session.issuedAt, setup.issuedAt);
   assert.equal(preview.payload.sessionIssuedAt, setup.issuedAt);
 
@@ -189,7 +215,7 @@ test('implicit issuedAt is returned and can be used to reproduce a signable payl
       expiresAt: preview.session.expiresAt,
     },
     intent: INTENT,
-    privateKeyHex: EVM_KEY,
+    privateKeyHex: AGENT_PK,
   });
   assert.deepEqual(
     { ...signed.payload, nonce: String(signed.payload.nonce) },
@@ -201,94 +227,112 @@ test('implicit issuedAt is returned and can be used to reproduce a signable payl
     sessionId,
     payload: signed.payload,
     signature: signed.signature,
-    intent: INTENT,
-    claimedAmount: '25',
-    nonce: 1,
   });
   assert.equal(exec.success, true, JSON.stringify(exec));
 });
 
-test('smart_account_preview rejects an out-of-whitelist intent (fail-closed, INV-003)', async () => {
+test('smart_account_preview with a signature rejects an out-of-whitelist intent (INV-003)', async () => {
   await setupAccount();
-  const out = await callTool('smart_account_preview', { ...INTENT, chain: 'solana', nonce: 1 });
+  const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
+  const bad = { ...INTENT, chain: 'solana' };
+  const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: bad, privateKeyHex: AGENT_PK });
+  const out = await callTool('smart_account_preview', { ...bad, nonce: 1, signature: signed.signature });
   assert.equal(out.success, true);
   assert.equal(out.wouldExecute, false);
-  assert.match(out.reason, /not allowed by session whitelist \(INV-003\)/);
+  assert.equal(out.reason, 'WhitelistViolation');
 });
 
-test('smart_account_preview rejects a self-escalation action (INV-005)', async () => {
+test('smart_account_preview with a signature rejects a self-escalation action (INV-005)', async () => {
   await setupAccount();
-  const out = await callTool('smart_account_preview', {
-    ...INTENT,
-    action: 'raise_limit',
-    method: 'raise_limit',
-    nonce: 1,
-  });
+  const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
+  const bad = { ...INTENT, action: 'raise_limit', method: 'raise_limit' };
+  const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: bad, privateKeyHex: AGENT_PK });
+  const out = await callTool('smart_account_preview', { ...bad, nonce: 1, signature: signed.signature });
+  assert.equal(out.success, true);
   assert.equal(out.wouldExecute, false);
-  assert.match(out.reason, /self-escalation/);
+  assert.equal(out.reason, 'SelfEscalationRejected');
 });
 
 test('smart_account_execute rejects a forged signature (INV-002)', async () => {
   await setupAccount();
   const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
-  const signed = signSmartAccountIntent({
-    session: { agentId: AGENT_ID, sessionId: SESSION_ID, issuedAt: ISSUED_AT, expiresAt: EXPIRES_AT },
-    intent: INTENT,
-    privateKeyHex: EVM_KEY,
-  });
+  const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: INTENT, privateKeyHex: AGENT_PK });
   const out = await callTool('smart_account_execute', {
     payload: signed.payload,
     signature: '0x' + '00'.repeat(65), // garbage — not the session key
-    intent: INTENT,
-    claimedAmount: '25',
-    nonce: 1,
   });
   assert.equal(out.success, false);
-  assert.match(out.error, /INV-002/);
+  assert.equal(out.error, 'InvalidSignature');
+});
+
+test('smart_account_execute rejects a replayed nonce (INV-007)', async () => {
+  await setupAccount();
+  const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
+  const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: INTENT, privateKeyHex: AGENT_PK });
+
+  const first = await callTool('smart_account_execute', {
+    payload: signed.payload,
+    signature: signed.signature,
+  });
+  assert.equal(first.success, true, JSON.stringify(first));
+
+  // Same payload + signature again → nonce already consumed on-chain.
+  const replay = await callTool('smart_account_execute', {
+    payload: signed.payload,
+    signature: signed.signature,
+  });
+  assert.equal(replay.success, false, JSON.stringify(replay));
+  assert.equal(replay.error, 'BadNonce');
+
+  // The revert rolled back — only the first execution counts.
+  const est = await callTool('smart_account_estimate_loss', {});
+  assert.equal(est.accountRemaining, '999975');
 });
 
 test('smart_account_execute enforces the per-tx ceiling (INV-007)', async () => {
   await setupAccount();
   const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
   const big = { ...INTENT, amount: '250', nonce: '1' };
-  const signed = signSmartAccountIntent({
-    session: { agentId: AGENT_ID, sessionId: SESSION_ID, issuedAt: ISSUED_AT, expiresAt: EXPIRES_AT },
-    intent: big,
-    privateKeyHex: EVM_KEY,
-  });
+  const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: big, privateKeyHex: AGENT_PK });
   const out = await callTool('smart_account_execute', {
     payload: signed.payload,
     signature: signed.signature,
-    intent: big,
-    claimedAmount: '250',
-    nonce: 1,
   });
   assert.equal(out.success, false);
-  assert.match(out.error, /exceeds maxPerTx \(100\): 250 \(INV-007\)/);
+  assert.equal(out.error, 'AmountExceedsPerTx');
+
+  // Rejection is side-effect free.
+  const est = await callTool('smart_account_estimate_loss', {});
+  assert.equal(est.accountRemaining, '1000000');
+  assert.equal(est.sessionMaxLoss, '500');
 });
 
-test('smart_account_estimate_loss reports per-session + account bounds (INV-007)', async () => {
+test('smart_account_estimate_loss reports account + session bounds (INV-007)', async () => {
   await setupAccount();
   const out = await callTool('smart_account_estimate_loss', {});
   assert.equal(out.success, true);
+  assert.equal(out.onChain, true);
   assert.match(out.accountId, /^0x[0-9a-fA-F]{40}$/);
-  assert.equal(out.sessions.length, 1);
-  assert.equal(out.sessions[0].sessionId, SESSION_ID);
-  assert.equal(out.sessions[0].maxLossCeiling, '500');
-  assert.match(out.maxLossStatement, /max 500/);
+  assert.equal(out.sessionId, SESSION_ID);
+  // Strings — no BigInt leak, no Number rounding on wei-scale ceilings.
+  for (const k of ['accountMaxDaily', 'accountRemaining', 'sessionMaxLoss']) {
+    assert.equal(typeof out[k], 'string', `${k} must be a string`);
+  }
+  assert.equal(out.accountMaxDaily, '1000000'); // deploy-pinned
+  assert.equal(out.accountRemaining, '1000000'); // nothing spent yet
+  assert.equal(out.sessionMaxLoss, '500'); // session daily ceiling
 });
 
 test('multiple Smart Accounts can coexist and be selected explicitly', async () => {
   const { addressForPrivateKey, signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
   const first = await setupAccount();
-  const secondKey = '0x' + '22'.repeat(32);
   const secondSessionId = '0x' + 'ef'.repeat(32);
   const second = await callTool('smart_account_setup', {
-    owner: '0x' + 'cc'.repeat(20),
-    emergencyKey: '0x' + 'dd'.repeat(20),
+    owner: SECOND_OWNER_PK,
+    emergencyKey: SECOND_EMERGENCY_PK,
     sessionId: secondSessionId,
     agentId: 'second-agent',
-    agentEvmAddress: addressForPrivateKey(secondKey),
+    agentEvmAddress: addressForPrivateKey('0x' + '22'.repeat(32)),
     issuedAt: ISSUED_AT,
     expiresAt: EXPIRES_AT,
     maxPerTx: '100',
@@ -307,6 +351,7 @@ test('multiple Smart Accounts can coexist and be selected explicitly', async () 
   assert.equal(firstPreview.success, true, JSON.stringify(firstPreview));
   assert.equal(firstPreview.accountId, first.accountId);
   assert.equal(firstPreview.sessionId, first.sessionId);
+  assert.equal(firstPreview.wouldExecute, null); // no signature
 
   const signed = signSmartAccountIntent({
     session: {
@@ -316,16 +361,13 @@ test('multiple Smart Accounts can coexist and be selected explicitly', async () 
       expiresAt: EXPIRES_AT,
     },
     intent: INTENT,
-    privateKeyHex: EVM_KEY,
+    privateKeyHex: AGENT_PK,
   });
   const exec = await callTool('smart_account_execute', {
     accountId: first.accountId,
     sessionId: first.sessionId,
     payload: signed.payload,
     signature: signed.signature,
-    intent: INTENT,
-    claimedAmount: '25',
-    nonce: 1,
   });
   assert.equal(exec.success, true, JSON.stringify(exec));
   assert.equal(exec.accountId, first.accountId);
@@ -337,4 +379,5 @@ test('multiple Smart Accounts can coexist and be selected explicitly', async () 
   assert.equal(secondLoss.success, true);
   assert.equal(secondLoss.accountId, second.accountId);
   assert.equal(secondLoss.sessionId, second.sessionId);
+  assert.equal(secondLoss.accountRemaining, '1000000'); // untouched account
 });

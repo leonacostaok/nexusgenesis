@@ -97,20 +97,26 @@ function hasSessionIdentity() {
   return !!(session.wallet || (session.envelope && session.password));
 }
 
-// ─── Smart Account (official EVM path, Sprint 2.2) ─────────────────────
-// Holds local Smart Accounts keyed by accountId. The private key for
-// executions is NEVER held here: the caller signs the canonical intent via
-// the SDK/chain-eth official path and passes only the payload + signature.
-// This mirrors the on-chain model — the Smart Account (contract) only ever
-// sees signed intents, never key material. Multiple accounts can coexist in a
-// single MCP process; callers may select them explicitly by accountId/sessionId.
-const smartAccounts = new Map(); // accountId -> { accountId, owner, client, currentSessionId }
+// ─── Smart Account (official EVM path, Sprint 2.4 T1 on-chain) ────────
+// Holds on-chain Smart Accounts keyed by accountId. Each entry caches the
+// deployed contract address + a ChainConnection. The Agent's execution
+// private key is NEVER held here: the caller signs the canonical intent via
+// the SDK/chain-eth official path and passes only payload + signature. The
+// contract (SmartAccount.sol) re-derives every property from the signed
+// digest (INV-002/003/005/006/007). owner/emergency/relayer are SERVER-side
+// operation private keys used for deploy/register/broadcast — they enter this
+// process by design (see CHAIN_OWNER_PK / CHAIN_EMERGENCY_PK / CHAIN_RELAYER_PK).
+const smartAccounts = new Map(); // accountId -> entry
 let smartAccountContext = null;  // { accountId, sessionId }
 
 /** Reset the local Smart Account so each test/setup is independent. */
 export function __resetSmartAccountForTest() {
   smartAccounts.clear();
   smartAccountContext = null;
+  if (chainEnvPromise) {
+    chainEnvPromise.then((env) => env.stop?.()).catch(() => {});
+    chainEnvPromise = null;
+  }
 }
 
 function equalStringArray(a, b) {
@@ -167,7 +173,7 @@ function selectSmartAccount({ accountId, sessionId } = {}) {
     throw err;
   }
 
-  const sessionRecord = entry.client.getSession(resolvedSessionId);
+  const sessionRecord = entry.sessions?.get(resolvedSessionId);
   if (!sessionRecord) {
     const err = new Error(`Session ${resolvedSessionId} not found under Smart Account ${entry.accountId}.`);
     err.code = 'SMART_ACCOUNT_SESSION_NOT_FOUND';
@@ -177,6 +183,97 @@ function selectSmartAccount({ accountId, sessionId } = {}) {
   entry.currentSessionId = sessionRecord.sessionId;
   smartAccountContext = { accountId: entry.accountId, sessionId: sessionRecord.sessionId };
   return { ...entry, session: sessionRecord };
+}
+
+// ─── Chain environment (Sprint 2.4 T1) ───────────────────────────────────
+// Lazy singleton shared across all Smart Accounts in this MCP process. Boots
+// a LocalChain (in-process EVM, zero external deps) when CHAIN_RPC_URL is
+// unset, or connects to an external node/anvil otherwise. The artifact is
+// resolved via SMART_ACCOUNT_ARTIFACT or the repo default. owner/emergency/
+// relayer private keys come from env — these are SERVER-side operation keys
+// that legitimately enter this process (see CHAIN_*_PK below).
+const CHAIN_DEFAULT_OWNER_PK = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
+const CHAIN_DEFAULT_EMERGENCY_PK = '0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d';
+const CHAIN_DEFAULT_RELAYER_PK = '0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a';
+
+let chainEnvPromise = null; // memoized boot — also guards concurrent boots
+
+async function resolveChainEnv() {
+  if (!chainEnvPromise) {
+    chainEnvPromise = bootChainEnv();
+    // A failed boot must not poison the cache forever — allow a retry.
+    chainEnvPromise.catch(() => { chainEnvPromise = null; });
+  }
+  return chainEnvPromise;
+}
+
+async function bootChainEnv() {
+  const { ethers } = await import('ethers');
+  const { createChainProvider } = await import('nexusgenesis-chain-eth');
+  const { createLocalChain } = await import('nexusgenesis-chain-eth/test-helpers/local-chain');
+  const { loadSmartAccountArtifact } = await import('nexusgenesis-chain-eth/test-helpers/load-artifact');
+
+  const artifact = loadSmartAccountArtifact();
+  if (!artifact) {
+    const err = new Error(
+      'SmartAccount artifact not found. Run `forge build --use 0.8.24` in contracts/solidity, ' +
+      'or set SMART_ACCOUNT_ARTIFACT to the built artifact JSON.',
+    );
+    err.code = 'SMART_ACCOUNT_ARTIFACT_MISSING';
+    throw err;
+  }
+
+  const rpcUrl = process.env.CHAIN_RPC_URL || null;
+  if (rpcUrl && !process.env.CHAIN_RELAYER_PK) {
+    // Fail-closed: on an external chain the relayer key signs every broadcast.
+    // Silently falling back to the well-known anvil key would hand the
+    // broadcast path (gas, nonce, DoS surface) to anyone who knows it.
+    const err = new Error(
+      'CHAIN_RPC_URL is set (external chain) but CHAIN_RELAYER_PK is not. ' +
+      'Refusing to sign broadcasts with a well-known anvil key — set CHAIN_RELAYER_PK explicitly.',
+    );
+    err.code = 'CHAIN_RELAYER_KEY_REQUIRED';
+    throw err;
+  }
+
+  const owner = new ethers.Wallet(process.env.CHAIN_OWNER_PK || CHAIN_DEFAULT_OWNER_PK);
+  const emergency = new ethers.Wallet(process.env.CHAIN_EMERGENCY_PK || CHAIN_DEFAULT_EMERGENCY_PK);
+  const relayer = new ethers.Wallet(process.env.CHAIN_RELAYER_PK || CHAIN_DEFAULT_RELAYER_PK);
+
+  let provider;
+  let localChain = null;
+  let chainUrl;
+  if (rpcUrl) {
+    provider = createChainProvider(rpcUrl);
+    chainUrl = rpcUrl;
+  } else {
+    try {
+      localChain = await createLocalChain({
+        funded: [
+          { address: owner.address, balance: 10n ** 18n },
+          { address: emergency.address, balance: 10n ** 18n },
+          { address: relayer.address, balance: 10n ** 18n },
+        ],
+      });
+      provider = createChainProvider(localChain.url);
+    } catch (err) {
+      // Never leak a booted LocalChain when provider wiring fails.
+      if (localChain) await localChain.stop().catch(() => {});
+      throw err;
+    }
+    chainUrl = localChain.url;
+  }
+
+  return {
+    provider,
+    artifact,
+    owner,
+    emergency,
+    relayer,
+    chainUrl,
+    localChain,
+    stop: async () => { if (localChain) await localChain.stop(); },
+  };
 }
 
 /**
@@ -382,34 +479,89 @@ async function handleSmartAccountSetup(args) {
     return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'expiresAt (ms epoch) is required' }) }], isError: true };
   }
 
-  const accountPolicy = { type: 'limit', maxPerTx: maxPerTx || '0', maxDaily: maxDaily || '0' };
-  const freshClient = await smartAccount.createSmartAccountClient({
-    owner,
-    emergencyKey,
-    policy: accountPolicy,
-  });
-  const accountId = freshClient.getState().accountId;
-  const existingEntry = smartAccounts.get(accountId);
-  const client = existingEntry?.client || freshClient;
-  if (existingEntry) {
-    const currentPolicy = client.getState().policy;
-    if (
-      currentPolicy?.type !== accountPolicy.type
-      || String(currentPolicy?.maxPerTx) !== String(accountPolicy.maxPerTx)
-      || String(currentPolicy?.maxDaily) !== String(accountPolicy.maxDaily)
-    ) {
-      return {
-        content: [{
-          type: 'text',
-          text: JSON.stringify({ success: false, error: `Smart Account ${accountId} already exists in this MCP session with a different hard policy. Reuse the original policy or start a fresh MCP session.` }),
-        }],
-        isError: true,
-      };
-    }
+  // ── On-chain (Sprint 2.4 T1) ───────────────────────────────────────────
+  // Deploy a fresh SmartAccount contract + register the session on-chain.
+  // The contract is the single source of truth; the MCP process only caches
+  // the address + a ChainConnection. owner/emergencyKey here are the PRIVILEGED
+  // private keys (server-side operation keys that legitimately enter this
+  // process): their derived addresses become the contract's owner/emergency
+  // roles, and the owner key signs both the deploy and the registerSession
+  // (owner-only, INV-005). The Agent's execution signing key NEVER enters this
+  // process — callers submit payload + signature only.
+  const { ethers } = await import('ethers');
+  let ownerKey;
+  let emergencyWallet;
+  try {
+    ownerKey = new ethers.Wallet(owner);
+    emergencyWallet = new ethers.Wallet(emergencyKey);
+  } catch {
+    return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'owner and emergencyKey must be private keys (0x + 64 hex) for on-chain setup — their addresses become the contract owner/emergency roles and owner signs deploy + registerSession (INV-005).' }) }], isError: true };
   }
+  const ownerAddr = ownerKey.address;
+  const emergencyAddr = emergencyWallet.address;
+
+  // Hard ceilings are mandatory on-chain (SmartAccount.registerSession reverts
+  // InvalidSession when both are 0) — validate BEFORE deploying so a bad call
+  // never pays deployment gas. Keep them as strings: BigInt('...') is exact,
+  // a Number() round-trip would lose precision for wei-scale limits (>2^53).
+  const perTxCeiling = maxPerTx === undefined || maxPerTx === null || maxPerTx === '' ? '0' : String(maxPerTx);
+  const dailyCeiling = maxDaily === undefined || maxDaily === null || maxDaily === '' ? '0' : String(maxDaily);
+  if (!/^\d+$/.test(perTxCeiling) || !/^\d+$/.test(dailyCeiling)) {
+    return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'maxPerTx and maxDaily must be non-negative integer strings (wei)' }) }], isError: true };
+  }
+  if (perTxCeiling === '0' && dailyCeiling === '0') {
+    return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'hard ceilings are mandatory: at least one of maxPerTx / maxDaily must be > 0 (INV-003/007 — no unbounded session)' }) }], isError: true };
+  }
+
+  let env;
+  try {
+    env = await resolveChainEnv();
+  } catch (err) {
+    return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: err.message }) }], isError: true };
+  }
+  const deployer = ownerKey.connect(env.provider);
 
   const resolvedIssuedAt = issuedAt !== undefined && issuedAt !== null ? Number(issuedAt) : Date.now();
   const resolvedExpiresAt = Number(expiresAt);
+
+  // Deploy (idempotent per owner+emergency pair). The contract's owner AND
+  // emergency roles must BOTH match for reuse — a different emergencyKey
+  // deploys a fresh contract instead of silently ignoring the new brake key
+  // (INV-006). The deploy pins the account-level daily ceiling at 1_000_000;
+  // the request's maxPerTx/maxDaily are SESSION limits applied at
+  // registerSession.
+  let entry = null;
+  const existingEntry = [...smartAccounts.values()].find((e) => e.owner === ownerAddr && e.emergencyKey === emergencyAddr);
+  if (existingEntry) {
+    entry = existingEntry;
+  } else {
+    const { deploySmartAccount } = await import('nexusgenesis-chain-eth');
+    const dep = await deploySmartAccount({
+      provider: env.provider,
+      signer: deployer,
+      abi: env.artifact.abi,
+      bytecode: env.artifact.bytecode.object,
+      owner: ownerAddr, // contract owner address (derived from owner key)
+      emergencyKey: emergencyAddr, // contract emergency address
+      accountMaxDaily: 1_000_000,
+    });
+    if (!dep.ok) {
+      return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: dep.reason || dep.errorName || 'deploy failed' }) }], isError: true };
+    }
+    entry = {
+      accountId: dep.address.toLowerCase(),
+      contractAddress: dep.address.toLowerCase(),
+      owner: ownerAddr,
+      emergencyKey: emergencyAddr,
+      conn: dep.connection,
+      sessions: new Map(),
+      currentSessionId: null,
+      chainUrl: env.chainUrl,
+    };
+    smartAccounts.set(entry.accountId, entry);
+  }
+
+  // Register the session on-chain (idempotent: same sessionId + settings = no-op).
   const sessionConfig = {
     sessionId,
     agentId,
@@ -419,42 +571,58 @@ async function handleSmartAccountSetup(args) {
     whitelist: {
       allowedChains, allowedAssets, allowedContracts, allowedMethods, allowedRecipients,
     },
-    maxPerTx: maxPerTx || '0',
-    maxDaily: maxDaily || '0',
+    maxPerTx: perTxCeiling,
+    maxDaily: dailyCeiling,
   };
-  const existingSession = client.getSession(sessionId);
-  if (existingSession) {
-    if (!sameSessionConfig(existingSession, sessionConfig)) {
-      return {
-        content: [{
-          type: 'text',
-          text: JSON.stringify({ success: false, error: `Session ${sessionId} already exists in Smart Account ${accountId} with different settings.` }),
-        }],
-        isError: true,
-      };
-    }
-  } else {
-    const reg = client.registerSession(sessionConfig);
+  const existingSession = entry.sessions.get(sessionId);
+  if (existingSession && !sameSessionConfig(existingSession, sessionConfig)) {
+    return {
+      content: [{ type: 'text', text: JSON.stringify({ success: false, error: `Session ${sessionId} already exists in Smart Account ${entry.accountId} with different settings.` }) }],
+      isError: true,
+    };
+  }
+  if (!existingSession) {
+    const reg = await entry.conn.registerSession({
+      sessionId,
+      agentId,
+      agentEvmAddress,
+      issuedAt: resolvedIssuedAt,
+      expiresAt: resolvedExpiresAt,
+      maxPerTx: perTxCeiling,
+      maxDaily: dailyCeiling,
+      whitelist: {
+        allowedChains, allowedAssets, allowedContracts, allowedMethods, allowedRecipients,
+      },
+      signer: deployer,
+    });
     if (!reg.ok) {
-      return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: reg.reason }) }], isError: true };
+      return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: reg.reason || reg.errorName || 'registerSession failed' }) }], isError: true };
     }
+    entry.sessions.set(sessionId, sessionConfig);
   }
 
-  smartAccounts.set(accountId, {
-    accountId,
-    owner,
-    client,
-    currentSessionId: sessionId,
-  });
-  smartAccountContext = { accountId, sessionId };
-  const est = client.estimateMaxLoss({ sessionId });
+  entry.currentSessionId = sessionId;
+  smartAccountContext = { accountId: entry.accountId, sessionId };
+
+  // Exposure bound from the chain (INV-007 ceilings).
+  let maxLoss = null;
+  try {
+    const sessionLoss = await entry.conn.sessionMaxLoss(sessionId);
+    maxLoss = sessionLoss !== null && sessionLoss !== undefined ? sessionLoss.toString() : null;
+  } catch { /* read-only; non-fatal */ }
+
   return {
     content: [{ type: 'text', text: JSON.stringify({
       success: true,
-      accountId,
+      accountId: entry.accountId,
+      contractAddress: entry.contractAddress,
+      owner: ownerAddr, // effective contract owner role (address)
+      emergencyKey: emergencyAddr, // effective brake-only role (address, INV-006)
       sessionId,
       issuedAt: resolvedIssuedAt,
       expiresAt: resolvedExpiresAt,
+      chainUrl: env.chainUrl,
+      onChain: true,
       session: {
         agentId,
         sessionId,
@@ -462,8 +630,8 @@ async function handleSmartAccountSetup(args) {
         expiresAt: resolvedExpiresAt,
         agentEvmAddress,
       },
-      maxLoss: est.sessions[0]?.maxLossCeiling ?? null,
-      note: 'Local Smart Account created. Use the returned session binding to build canonical payloads off-chain, then submit via smart_account_execute — the private key never enters this process.',
+      maxLoss,
+      note: 'On-chain Smart Account deployed. Use the returned session binding to build canonical payloads off-chain, then submit via smart_account_execute — the Agent signing key never enters this process (owner/emergency/relayer are server-side operation keys).',
     }, null, 2) }],
   };
 }
@@ -478,12 +646,12 @@ async function handleSmartAccountSetup(args) {
  * the digest to sign off-chain when admissible. "Quantify before acting."
  */
 async function handleSmartAccountPreview(args) {
-  const { action, chain, asset, amount, recipient, contract, method, nonce, accountId, sessionId } = args;
+  const { action, chain, asset, amount, recipient, contract, method, nonce, accountId, sessionId, signature } = args;
   if (amount === undefined || amount === null || nonce === undefined || nonce === null) {
     return { content: [{ type: 'text', text: JSON.stringify({ success: false, wouldExecute: false, error: 'amount and nonce are required for a deterministic preview (INV-002/INV-007)' }) }], isError: true };
   }
 
-  const { client, session: s, accountId: resolvedAccountId } = selectSmartAccount({ accountId, sessionId });
+  const { conn, session: s, accountId: resolvedAccountId } = selectSmartAccount({ accountId, sessionId });
 
   // Build the EXACT canonical payload the caller would sign off-chain, so the
   // preview verdict is 1:1 with a real execution.
@@ -497,28 +665,31 @@ async function handleSmartAccountPreview(args) {
     return { content: [{ type: 'text', text: JSON.stringify({ success: false, wouldExecute: false, error: `canonicalization failed: ${err.message}` }) }], isError: true };
   }
 
-  const res = await client.account.executeFromAgent({
-    payload,
-    claimedAmount: amount,
-    sessionId: s.sessionId,
-    nonce: Number(nonce),
-    preview: true,
-  });
+  // The chain authenticates the signature (INV-002) and only THEN applies the
+  // policy checks, so a signature-less eth_call always reverts with
+  // InvalidSignature and cannot reach the strategy verdict. Callers who have
+  // already signed can pass `signature` for a true on-chain dry-run; without
+  // it we still return the exact digest to sign.
+  let res = null;
+  let digest = null;
+  try {
+    digest = await smartAccount.hashIntentDigest(payload);
+  } catch {
+    digest = null;
+  }
+  if (signature) {
+    res = await conn.simulateExecuteFromAgent({ payload, signature });
+  }
 
-  if (res.ok) {
-    // Admissible — hand back the digest so the caller can sign it off-chain.
-    let digest = null;
-    try {
-      digest = await smartAccount.hashIntentDigest(payload);
-    } catch {
-      digest = null;
-    }
+  if (res && res.ok) {
     return { content: [{ type: 'text', text: JSON.stringify({
       success: true,
       wouldExecute: true,
       accountId: resolvedAccountId,
       sessionId: s.sessionId,
-      amount: res.amount,
+      // simulateExecuteFromAgent returns only the txId; echo the requested
+      // amount as a wei string (exact, matching the execute path).
+      amount: String(amount),
       digest,
       payload,
       session: {
@@ -528,48 +699,83 @@ async function handleSmartAccountPreview(args) {
         expiresAt: s.expiresAt,
         agentEvmAddress: s.agentEvmAddress,
       },
-      note: 'Intent is admissible under the hard-policy layer. Sign the returned canonical payload off-chain (signSmartAccountIntent) and submit via smart_account_execute.',
+      note: 'Intent is admissible under the on-chain hard-policy layer. Submit the signed payload via smart_account_execute.',
     }, null, 2) }] };
   }
+  if (res && !res.ok) {
+    return { content: [{ type: 'text', text: JSON.stringify({
+      success: true, wouldExecute: false, accountId: resolvedAccountId, sessionId: s.sessionId,
+      reason: res.errorName || res.reason || 'rejected by the on-chain hard-policy layer',
+      digest,
+      payload,
+      note: 'Fail-closed: intent rejected on-chain (signature + policy verdict).',
+    }, null, 2) }] };
+  }
+  // No signature supplied — return the digest so the caller can sign, and
+  // note that the full on-chain verdict requires the signature.
   return { content: [{ type: 'text', text: JSON.stringify({
-    success: true, wouldExecute: false, accountId: resolvedAccountId, sessionId: s.sessionId, reason: res.reason,
-    note: 'Fail-closed: intent rejected by the Smart Account hard-policy layer.',
+    success: true,
+    wouldExecute: null,
+    accountId: resolvedAccountId,
+    sessionId: s.sessionId,
+    amount: String(amount),
+    digest,
+    payload,
+    session: {
+      agentId: s.agentId,
+      sessionId: s.sessionId,
+      issuedAt: s.issuedAt,
+      expiresAt: s.expiresAt,
+      agentEvmAddress: s.agentEvmAddress,
+    },
+    note: 'No signature provided, so no on-chain verdict was computed. Sign the returned digest off-chain (signSmartAccountIntent) and pass signature to preview, or submit via smart_account_execute.',
   }, null, 2) }] };
 }
 
-/** Submit a caller-signed official EVM intent to the local Smart Account. */
+/** Broadcast a caller-signed official EVM intent to the on-chain Smart Account. */
 async function handleSmartAccountExecute(args) {
-  const { intent, claimedAmount, nonce, signature, payload, accountId, sessionId } = args;
+  const { signature, payload, accountId, sessionId } = args;
   if (!payload || !signature) {
     return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'payload (canonical intent) and signature (official EVM path) are required. Build them off-chain: signSmartAccountIntent().' }) }], isError: true };
   }
-  if (!intent || !intent.amount) {
-    return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'intent with amount is required (INV-002 binding)' }) }], isError: true };
-  }
 
-  const { client, session: s, accountId: resolvedAccountId } = selectSmartAccount({ accountId, sessionId: sessionId || payload.sessionId });
-  // Pass the caller-provided payload + signature straight to the hard-policy
-  // layer — the private key NEVER enters this process. The engine re-derives
-  // every property from the signed content (INV-002/003/005/006/007).
-  const res = await client.account.executeFromAgent({
-    payload,
-    signature,
-    claimedAmount: claimedAmount || intent.amount,
-    sessionId: s.sessionId,
-    nonce: nonce || 1,
-  });
+  const { conn, session: s, accountId: resolvedAccountId } = selectSmartAccount({ accountId, sessionId: sessionId || payload.sessionId });
+  // Broadcast the caller-provided payload + signature to the chain. The
+  // contract re-derives every property from the signed digest
+  // (INV-002/003/005/006/007) and authenticates the signature against the
+  // session's registered EVM address. Any EOA may relay — we use the
+  // configured CHAIN_RELAYER_PK (server-side operation key), NOT the owner.
+  const env = await resolveChainEnv();
+  const relayer = env.relayer.connect(env.provider);
+  const res = await conn.executeFromAgent({ payload, signature, signer: relayer });
   return {
-    content: [{ type: 'text', text: JSON.stringify({ success: res.ok, accountId: resolvedAccountId, sessionId: s.sessionId, ...(res.ok ? { txId: res.txId, amount: res.amount, remainingSessionDaily: res.remainingSessionDaily } : { error: res.reason }) }, null, 2) }],
+    content: [{ type: 'text', text: JSON.stringify({ success: res.ok, accountId: resolvedAccountId, sessionId: s.sessionId, onChain: true, ...(res.ok ? {
+      txHash: res.txHash,
+      txId: res.txId !== null && res.txId !== undefined ? res.txId.toString() : null,
+      amount: res.amount !== null && res.amount !== undefined ? res.amount.toString() : null,
+    } : { error: res.errorName || res.reason || 'broadcast failed' }) }, null, 2) }],
     isError: !res.ok,
   };
 }
 
-/** Quantify the current exposure bound (INV-007). */
+/** Quantify the current exposure bound (INV-007) from on-chain state. */
 async function handleSmartAccountEstimateLoss(args) {
   const { accountId, sessionId } = args || {};
-  const { client, accountId: resolvedAccountId, session } = selectSmartAccount({ accountId, sessionId });
-  const est = client.estimateMaxLoss({ sessionId: session.sessionId });
-  return { content: [{ type: 'text', text: JSON.stringify({ success: true, accountId: resolvedAccountId, sessionId: session.sessionId, ...est }, null, 2) }] };
+  const { conn, accountId: resolvedAccountId, session } = selectSmartAccount({ accountId, sessionId });
+  const [accountCeiling, accountRemaining, sessionMax] = await Promise.all([
+    conn.accountMaxDaily(),
+    conn.estimateMaxLoss(),
+    conn.sessionMaxLoss(session.sessionId),
+  ]);
+  return { content: [{ type: 'text', text: JSON.stringify({
+    success: true,
+    accountId: resolvedAccountId,
+    sessionId: session.sessionId,
+    onChain: true,
+    accountMaxDaily: accountCeiling !== null && accountCeiling !== undefined ? accountCeiling.toString() : null,
+    accountRemaining: accountRemaining !== null && accountRemaining !== undefined ? accountRemaining.toString() : null,
+    sessionMaxLoss: sessionMax !== undefined && sessionMax !== null ? sessionMax.toString() : null,
+  }, null, 2) }] };
 }
 
 // ─── Proof-of-Work: find nonce such that SHA256(challenge+nonce) starts with N zeros ──
@@ -860,19 +1066,19 @@ const TOOLS = [
   // path and submitted as payload + signature.
   {
     name: 'smart_account_setup',
-    description: 'Create a local Smart Account and register an agent session (official EVM path). Establishes the hard-policy state: session whitelist (chain/asset/contract/method/recipient), per-tx + daily ceilings, and nonce anti-replay.',
+    description: 'Deploy a SmartAccount contract on-chain and register an agent session (official EVM path, Sprint 2.4 on-chain). Establishes the hard-policy state on-chain: session whitelist (chain/asset/contract/method/recipient), per-tx + daily ceilings, and nonce anti-replay. Requires CHAIN_RPC_URL (external) or uses an in-process LocalChain. owner/emergencyKey are private keys (server-side operation keys) whose addresses become the contract owner/emergency roles; owner signs deploy + registerSession. Agent execution keys never enter this process.',
     inputSchema: {
       type: 'object',
       properties: {
-        owner: { type: 'string', description: 'Account owner identity (privileged caller, e.g. checksummed EVM address)' },
-        emergencyKey: { type: 'string', description: 'Brake-only emergency identity (INV-006)' },
+        owner: { type: 'string', description: 'Owner private key (0x + 64 hex, server-side operation key). Its address becomes the contract owner role (INV-005) and signs deploy + registerSession.' },
+        emergencyKey: { type: 'string', description: 'Emergency private key (0x + 64 hex, server-side operation key). Its address becomes the brake-only emergency role (INV-006).' },
         sessionId: { type: 'string', description: '32-byte session ID (0x + 64 hex)' },
         agentId: { type: 'string', description: 'Agent identifier bound into the signed intent' },
         agentEvmAddress: { type: 'string', description: 'Agent EVM address (verifies canonical digest signatures)' },
         expiresAt: { type: 'number', description: 'Session expiry (ms epoch, required)' },
         issuedAt: { type: 'number', description: 'Optional session issued-at (ms epoch). Defaults to now; pin it to reproduce the exact signed session.' },
-        maxPerTx: { type: 'string', description: 'Per-transaction ceiling (fail-closed, default 0)' },
-        maxDaily: { type: 'string', description: 'Daily cumulative ceiling (fail-closed, default 0)' },
+        maxPerTx: { type: 'string', description: 'Per-transaction ceiling in wei (non-negative integer string). At least one of maxPerTx/maxDaily must be > 0 (hard ceilings are mandatory — no unbounded session).' },
+        maxDaily: { type: 'string', description: 'Daily cumulative ceiling in wei (non-negative integer string). At least one of maxPerTx/maxDaily must be > 0 (hard ceilings are mandatory — no unbounded session).' },
         allowedChains: { type: 'array', items: { type: 'string' }, description: 'Allowed chains (INV-003)' },
         allowedAssets: { type: 'array', items: { type: 'string' }, description: 'Allowed assets (INV-003)' },
         allowedContracts: { type: 'array', items: { type: 'string' }, description: 'Allowed contracts (INV-003)' },
@@ -884,7 +1090,7 @@ const TOOLS = [
   },
   {
     name: 'smart_account_preview',
-    description: 'Fail-closed dry-run of an asset intent against the local Smart Account — WITHOUT executing and WITHOUT a signature. Runs the full hard-policy decision tree side-effect free; returns wouldExecute + the exact rejection reason, or the digest + canonical payload to sign off-chain when admissible (P3 simulation seed).',
+    description: 'Fail-closed dry-run of an asset intent against the on-chain Smart Account — WITHOUT executing. With a caller-supplied signature it runs the full hard-policy decision tree via eth_call (side-effect free, no nonce consumed) and returns wouldExecute + the exact rejection reason. Without a signature it returns the digest + canonical payload to sign off-chain (P3 simulation seed); the chain cannot reach the policy verdict without a valid signature (INV-002).',
     inputSchema: {
       type: 'object',
       properties: {
@@ -898,13 +1104,14 @@ const TOOLS = [
         contract: { type: 'string' },
         method: { type: 'string' },
         nonce: { type: 'number', description: 'Next anti-replay nonce (> last used)' },
+        signature: { type: 'string', description: 'Optional 65-byte EVM signature (0x + 130 hex). When present, returns the true on-chain verdict via eth_call.' },
       },
       required: ['action', 'chain', 'asset', 'amount', 'recipient', 'contract', 'method', 'nonce'],
     },
   },
   {
     name: 'smart_account_execute',
-    description: 'Submit a caller-signed official EVM intent to the local Smart Account. The private key NEVER enters this process — provide the canonical payload + signature built off-chain via signSmartAccountIntent(). Enforces INV-002/003/005/006/007.',
+    description: 'Broadcast a caller-signed official EVM intent to the on-chain SmartAccount contract (relayed by the configured CHAIN_RELAYER_PK). The Agent signing key NEVER enters this process — provide the canonical payload + signature built off-chain via signSmartAccountIntent(). The contract enforces INV-002/003/005/006/007 and returns the mined txHash.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -912,16 +1119,13 @@ const TOOLS = [
         sessionId: { type: 'string', description: 'Optional session selector; defaults to payload.sessionId or the currently selected session' },
         payload: { type: 'object', description: 'Canonical asset-intent payload (signSmartAccountIntent output)' },
         signature: { type: 'string', description: '65-byte secp256k1 EVM signature (0x + 130 hex)' },
-        intent: { type: 'object', description: 'Structured intent with amount (INV-002 claimedAmount fallback)' },
-        claimedAmount: { type: 'string', description: 'Claimed tx amount (defaults to intent.amount)' },
-        nonce: { type: 'number', description: 'Anti-replay nonce (defaults to 1)' },
       },
-      required: ['payload', 'signature', 'intent'],
+      required: ['payload', 'signature'],
     },
   },
   {
     name: 'smart_account_estimate_loss',
-    description: 'Quantify the current maximum exposure bound (INV-007): per-session + account ceilings, remaining windows, and a worst-case loss statement.',
+    description: 'Quantify the current exposure bound (INV-007) from on-chain state: the account-level daily ceiling and remaining budget, plus the session-level max loss (bounded by both ceilings).',
     inputSchema: {
       type: 'object',
       properties: {

@@ -8,7 +8,8 @@
     ".": "./src/index.js",
     "./keys": "./src/keys.js",
     "./coordination": "./src/coordination.js",
-    "./smart-account": "./src/smart-account.js"
+    "./smart-account": "./src/smart-account.js",
+    "./message-security": "./src/message-security.js"
   },
   "files": [
     "src",

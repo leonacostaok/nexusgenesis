@@ -4,6 +4,12 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { createServer, __resetSmartAccountForTest } from '../src/server.js';
 
+// These tests exercise the ON-CHAIN execute semantics; the Sprint 3 T1
+// simulation gate (fail-closed preview-first) is covered by its own suite
+// (mcp-smart-account-sim-policy.test.js). Opt out here so the legacy direct-
+// execute path stays the focus — assert set, no assertion changes.
+process.env.SMART_ACCOUNT_SIMULATION_GATE = '0';
+
 let server;
 let client;
 let clientTransport;

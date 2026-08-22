@@ -18,6 +18,47 @@ import {
   CallToolRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 import {
+  buildChainEnvConfig,
+  inspectArtifactBinding,
+} from './chain-config.js';
+import {
+  loadChainState,
+  saveChainState,
+  recordBroadcast,
+  serializeEntry,
+  getChainStateFile,
+  initTxLedger,
+  recordTx,
+  listTx,
+  getTxLedger,
+  __resetTxLedgerForTest,
+} from './chain-state-store.js';
+import {
+  normalizeChainError,
+  chainErrorResponse,
+  GENERIC_ERRORS,
+} from './smart-account-errors.js';
+import {
+  classifySimulationRisk,
+  simulationPolicySnapshot,
+  SIMULATION_WINDOW_MS,
+} from './simulation-policy.js';
+import {
+  evaluatePolicy,
+  policySnapshot,
+} from './policy-engine.js';
+import {
+  recordAudit,
+  listAudit,
+  __resetAuditForTest,
+} from './audit-log.js';
+import {
+  incr,
+  snapshot,
+  logStructured,
+  __resetMetricsForTest,
+} from './observability.js';
+import {
   createAgentIdentity,
   recoverAgentIdentity,
   generateAddress,
@@ -109,10 +150,19 @@ function hasSessionIdentity() {
 const smartAccounts = new Map(); // accountId -> entry
 let smartAccountContext = null;  // { accountId, sessionId }
 
+// Sprint 3 T1 — per-account successful simulation log (in-memory, not persisted):
+// { accountId -> { digest, at } }. Gates execute() fail-closed for actions that
+// MUST pass a successful on-chain simulation first (SIMULATION_WINDOW_MS window).
+const simulationLog = new Map();
+
 /** Reset the local Smart Account so each test/setup is independent. */
 export function __resetSmartAccountForTest() {
   smartAccounts.clear();
   smartAccountContext = null;
+  simulationLog.clear();
+  __resetAuditForTest();
+  __resetMetricsForTest();
+  __resetTxLedgerForTest();
   if (chainEnvPromise) {
     chainEnvPromise.then((env) => env.stop?.()).catch(() => {});
     chainEnvPromise = null;
@@ -191,10 +241,8 @@ function selectSmartAccount({ accountId, sessionId } = {}) {
 // unset, or connects to an external node/anvil otherwise. The artifact is
 // resolved via SMART_ACCOUNT_ARTIFACT or the repo default. owner/emergency/
 // relayer private keys come from env — these are SERVER-side operation keys
-// that legitimately enter this process (see CHAIN_*_PK below).
-const CHAIN_DEFAULT_OWNER_PK = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
-const CHAIN_DEFAULT_EMERGENCY_PK = '0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d';
-const CHAIN_DEFAULT_RELAYER_PK = '0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a';
+// that legitimately enter this process. env semantics + profile validation
+// (local/testnet/production) live in chain-config.js (Sprint 2.6 T1).
 
 let chainEnvPromise = null; // memoized boot — also guards concurrent boots
 
@@ -213,6 +261,12 @@ async function bootChainEnv() {
   const { createLocalChain } = await import('nexusgenesis-chain-eth/test-helpers/local-chain');
   const { loadSmartAccountArtifact } = await import('nexusgenesis-chain-eth/test-helpers/load-artifact');
 
+  // Profile-gated env parsing + fail-closed validation (Sprint 2.6 T1).
+  // Throws with a typed code when the requested profile is misconfigured.
+  const cfg = buildChainEnvConfig();
+
+  // loadSmartAccountArtifact already honors SMART_ACCOUNT_ARTIFACT env; the
+  // config layer just validated that production requires it explicitly.
   const artifact = loadSmartAccountArtifact();
   if (!artifact) {
     const err = new Error(
@@ -223,29 +277,29 @@ async function bootChainEnv() {
     throw err;
   }
 
-  const rpcUrl = process.env.CHAIN_RPC_URL || null;
-  if (rpcUrl && !process.env.CHAIN_RELAYER_PK) {
-    // Fail-closed: on an external chain the relayer key signs every broadcast.
-    // Silently falling back to the well-known anvil key would hand the
-    // broadcast path (gas, nonce, DoS surface) to anyone who knows it.
+  // Artifact ↔ expected solc version binding (Sprint 2.6 T1): the artifact
+  // must be the SmartAccount contract compiled with the pinned compiler.
+  const binding = inspectArtifactBinding(artifact, cfg.solcVersion);
+  if (!binding.matches) {
     const err = new Error(
-      'CHAIN_RPC_URL is set (external chain) but CHAIN_RELAYER_PK is not. ' +
-      'Refusing to sign broadcasts with a well-known anvil key — set CHAIN_RELAYER_PK explicitly.',
+      `Artifact version mismatch: expected SmartAccount compiled with solc ${cfg.solcVersion} ` +
+      `(got contract=${binding.contractName ?? 'unknown'}, solc=${binding.solcVersion ?? 'unknown'}). ` +
+      'Rebuild with `forge build --use 0.8.24` in contracts/solidity.',
     );
-    err.code = 'CHAIN_RELAYER_KEY_REQUIRED';
+    err.code = 'SMART_ACCOUNT_ARTIFACT_VERSION_MISMATCH';
     throw err;
   }
 
-  const owner = new ethers.Wallet(process.env.CHAIN_OWNER_PK || CHAIN_DEFAULT_OWNER_PK);
-  const emergency = new ethers.Wallet(process.env.CHAIN_EMERGENCY_PK || CHAIN_DEFAULT_EMERGENCY_PK);
-  const relayer = new ethers.Wallet(process.env.CHAIN_RELAYER_PK || CHAIN_DEFAULT_RELAYER_PK);
+  const owner = new ethers.Wallet(cfg.ownerPk);
+  const emergency = new ethers.Wallet(cfg.emergencyPk);
+  const relayer = new ethers.Wallet(cfg.relayerPk);
 
   let provider;
   let localChain = null;
   let chainUrl;
-  if (rpcUrl) {
-    provider = createChainProvider(rpcUrl);
-    chainUrl = rpcUrl;
+  if (cfg.rpcUrl) {
+    provider = createChainProvider(cfg.rpcUrl);
+    chainUrl = cfg.rpcUrl;
   } else {
     try {
       localChain = await createLocalChain({
@@ -264,6 +318,22 @@ async function bootChainEnv() {
     chainUrl = localChain.url;
   }
 
+  // Restore persisted Smart Accounts (Sprint 2.6 T2): when a state file is
+  // configured, rehydrate accountId->contractAddress + session registry so a
+  // restart reuses the same on-chain contract instead of redeploying.
+  if (getChainStateFile()) {
+    await restoreSmartAccounts({ provider, abi: artifact.abi, cfg });
+  }
+
+  // Structured ops log (Sprint 2.7 T2): one line per chain-env boot — the
+  // operator's first signal of which profile/URL this process is serving.
+  logStructured('chain_env_boot', {
+    profile: cfg.profile,
+    chainUrl,
+    local: !cfg.rpcUrl,
+    restoredAccounts: smartAccounts.size,
+  });
+
   return {
     provider,
     artifact,
@@ -272,8 +342,69 @@ async function bootChainEnv() {
     relayer,
     chainUrl,
     localChain,
+    profile: cfg.profile,
     stop: async () => { if (localChain) await localChain.stop(); },
   };
+}
+
+/**
+ * Rehydrate in-memory Smart Accounts from the persisted state file (Sprint 2.6
+ * T2). Only restores on an EXTERNAL persistent chain (cfg.rpcUrl set): an
+ * in-process LocalChain is ephemeral — its contract addresses die with the
+ * process, so rehydrating them into a fresh LocalChain would point at
+ * non-existent code (stale reads). The saved chainUrl must match the current
+ * RPC so a stale file from another chain never resurrects accounts here.
+ */
+async function restoreSmartAccounts({ provider, abi, cfg }) {
+  if (!cfg.rpcUrl) return; // LocalChain: ephemeral, never restore
+  const { createChainConnection } = await import('nexusgenesis-chain-eth');
+  const state = loadChainState();
+  // Restore the tx ledger too, so submitted→confirmed history survives restart
+  // (Sprint 2.7 T3) — even if the chain URL changed (ledger is read-only facts).
+  initTxLedger(state);
+  if (!state.accounts || state.accounts.length === 0) return;
+  if (state.chainUrl && state.chainUrl !== cfg.rpcUrl) {
+    // Chain-environment guard: never reuse accounts recorded on another chain.
+    return;
+  }
+  for (const rec of state.accounts) {
+    if (!rec.accountId || !rec.contractAddress) continue;
+    if (smartAccounts.has(rec.accountId)) continue;
+    const conn = createChainConnection({ provider, address: rec.contractAddress, abi });
+    const sessions = new Map();
+    for (const s of (rec.sessions || [])) {
+      if (s.sessionId) sessions.set(s.sessionId, s);
+    }
+    smartAccounts.set(rec.accountId, {
+      accountId: rec.accountId,
+      contractAddress: rec.contractAddress,
+      owner: rec.owner,
+      emergencyKey: rec.emergencyKey,
+      conn,
+      sessions,
+      currentSessionId: rec.currentSessionId || null,
+      chainUrl: rec.chainUrl || null,
+      profile: rec.profile || null,
+      txHashes: Array.isArray(rec.txHashes) ? rec.txHashes : [],
+    });
+  }
+  // If exactly one account was restored, make it the implicit context.
+  if (smartAccounts.size === 1) {
+    const entry = [...smartAccounts.values()][0];
+    smartAccountContext = { accountId: entry.accountId, sessionId: entry.currentSessionId };
+  }
+}
+
+/** Persist the current in-memory Smart Account state (no-op in pure-memory mode). */
+function persistSmartAccountState() {
+  if (!getChainStateFile()) return;
+  const accounts = [...smartAccounts.values()].map(serializeEntry);
+  saveChainState({
+    chainUrl: accounts[0]?.chainUrl || null,
+    profile: accounts[0]?.profile || null,
+    accounts,
+    transactions: getTxLedger(),
+  });
 }
 
 /**
@@ -546,7 +677,9 @@ async function handleSmartAccountSetup(args) {
       accountMaxDaily: 1_000_000,
     });
     if (!dep.ok) {
-      return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: dep.reason || dep.errorName || 'deploy failed' }) }], isError: true };
+      const { error } = normalizeChainError(dep, GENERIC_ERRORS.UNKNOWN_REVERT);
+      recordAudit({ tool: 'smart_account_setup', ok: false, accountId: null, sessionId, errorName: dep.errorName ?? null, error, broadcaster: ownerAddr });
+      return chainErrorResponse(dep, GENERIC_ERRORS.UNKNOWN_REVERT);
     }
     entry = {
       accountId: dep.address.toLowerCase(),
@@ -557,6 +690,8 @@ async function handleSmartAccountSetup(args) {
       sessions: new Map(),
       currentSessionId: null,
       chainUrl: env.chainUrl,
+      profile: env.profile,
+      txHashes: [],
     };
     smartAccounts.set(entry.accountId, entry);
   }
@@ -596,7 +731,8 @@ async function handleSmartAccountSetup(args) {
       signer: deployer,
     });
     if (!reg.ok) {
-      return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: reg.reason || reg.errorName || 'registerSession failed' }) }], isError: true };
+      recordAudit({ tool: 'smart_account_setup', ok: false, accountId: entry.accountId, sessionId, errorName: reg.errorName ?? null, error: normalizeChainError(reg, GENERIC_ERRORS.UNKNOWN_REVERT).error, broadcaster: ownerAddr });
+      return chainErrorResponse(reg, GENERIC_ERRORS.UNKNOWN_REVERT);
     }
     entry.sessions.set(sessionId, sessionConfig);
   }
@@ -604,12 +740,20 @@ async function handleSmartAccountSetup(args) {
   entry.currentSessionId = sessionId;
   smartAccountContext = { accountId: entry.accountId, sessionId };
 
+  // Persist accountId->contractAddress + session registry (Sprint 2.6 T2) so a
+  // restart can rehydrate instead of redeploying. No-op in pure-memory mode.
+  persistSmartAccountState();
+
   // Exposure bound from the chain (INV-007 ceilings).
   let maxLoss = null;
   try {
     const sessionLoss = await entry.conn.sessionMaxLoss(sessionId);
     maxLoss = sessionLoss !== null && sessionLoss !== undefined ? sessionLoss.toString() : null;
   } catch { /* read-only; non-fatal */ }
+
+  // Audit + metric (Sprint 2.7 T1/T2): setup 事实（broadcaster = owner，INV-005）。
+  recordAudit({ tool: 'smart_account_setup', ok: true, accountId: entry.accountId, sessionId, broadcaster: ownerAddr, chainUrl: env.chainUrl });
+  incr('smart_account_setup_count');
 
   return {
     content: [{ type: 'text', text: JSON.stringify({
@@ -645,12 +789,25 @@ async function handleSmartAccountSetup(args) {
  * caller's private key. Returns wouldExecute + the exact rejection reason, or
  * the digest to sign off-chain when admissible. "Quantify before acting."
  */
+/** Categorize a normalized error code into metrics (Sprint 2.7 T2). */
+function metricizeError(error) {
+  incr(`smart_account_revert_${error}`);
+  if (error === 'BadNonce') incr('smart_account_nonce_conflict');
+  if (error === 'RPC_ERROR') incr('smart_account_rpc_error');
+  if (/^(AmountExceedsPerTx|AmountExceedsDaily|SessionExpired|SessionRevokedError)$/.test(error)) {
+    incr('smart_account_limit_rejected');
+  }
+}
+
 async function handleSmartAccountPreview(args) {
   const { action, chain, asset, amount, recipient, contract, method, nonce, accountId, sessionId, signature } = args;
   if (amount === undefined || amount === null || nonce === undefined || nonce === null) {
     return { content: [{ type: 'text', text: JSON.stringify({ success: false, wouldExecute: false, error: 'amount and nonce are required for a deterministic preview (INV-002/INV-007)' }) }], isError: true };
   }
 
+  // Boot the chain env first so a persisted Smart Account is restored before
+  // selection (Sprint 2.6 T2) — a restart must see the same on-chain account.
+  await resolveChainEnv();
   const { conn, session: s, accountId: resolvedAccountId } = selectSmartAccount({ accountId, sessionId });
 
   // Build the EXACT canonical payload the caller would sign off-chain, so the
@@ -682,6 +839,13 @@ async function handleSmartAccountPreview(args) {
   }
 
   if (res && res.ok) {
+    incr('smart_account_preview_count');
+    // Sprint 3 T1: a successful signed preview arms the simulation gate for
+    // this exact digest — within SIMULATION_WINDOW_MS execute() may proceed
+    // without re-simulating; outside it the caller must re-preview.
+    if (digest) simulationLog.set(resolvedAccountId, { digest, at: Date.now() });
+    const simulation = classifySimulationRisk(action);
+    recordAudit({ tool: 'smart_account_preview', ok: true, wouldExecute: true, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest: digest });
     return { content: [{ type: 'text', text: JSON.stringify({
       success: true,
       wouldExecute: true,
@@ -692,6 +856,7 @@ async function handleSmartAccountPreview(args) {
       amount: String(amount),
       digest,
       payload,
+      simulation,
       session: {
         agentId: s.agentId,
         sessionId: s.sessionId,
@@ -703,9 +868,13 @@ async function handleSmartAccountPreview(args) {
     }, null, 2) }] };
   }
   if (res && !res.ok) {
+    const { error } = normalizeChainError(res, GENERIC_ERRORS.UNKNOWN_REVERT);
+    incr('smart_account_preview_count');
+    metricizeError(error);
+    recordAudit({ tool: 'smart_account_preview', ok: true, wouldExecute: false, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest: digest, errorName: res.errorName ?? null, error });
     return { content: [{ type: 'text', text: JSON.stringify({
       success: true, wouldExecute: false, accountId: resolvedAccountId, sessionId: s.sessionId,
-      reason: res.errorName || res.reason || 'rejected by the on-chain hard-policy layer',
+      reason: error,
       digest,
       payload,
       note: 'Fail-closed: intent rejected on-chain (signature + policy verdict).',
@@ -713,6 +882,8 @@ async function handleSmartAccountPreview(args) {
   }
   // No signature supplied — return the digest so the caller can sign, and
   // note that the full on-chain verdict requires the signature.
+  incr('smart_account_preview_count');
+  recordAudit({ tool: 'smart_account_preview', ok: true, wouldExecute: null, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest: digest });
   return { content: [{ type: 'text', text: JSON.stringify({
     success: true,
     wouldExecute: null,
@@ -739,34 +910,130 @@ async function handleSmartAccountExecute(args) {
     return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'payload (canonical intent) and signature (official EVM path) are required. Build them off-chain: signSmartAccountIntent().' }) }], isError: true };
   }
 
+  // Boot chain env first (restores persisted accounts, Sprint 2.6 T2).
+  const env = await resolveChainEnv();
   const { conn, session: s, accountId: resolvedAccountId } = selectSmartAccount({ accountId, sessionId: sessionId || payload.sessionId });
   // Broadcast the caller-provided payload + signature to the chain. The
   // contract re-derives every property from the signed digest
   // (INV-002/003/005/006/007) and authenticates the signature against the
   // session's registered EVM address. Any EOA may relay — we use the
   // configured CHAIN_RELAYER_PK (server-side operation key), NOT the owner.
-  const env = await resolveChainEnv();
   const relayer = env.relayer.connect(env.provider);
+  // Digest for audit (Sprint 2.7 T1): the caller-supplied payload is canonical,
+  // so hashIntentDigest yields the exact signed digest.
+  let payloadDigest = null;
+  try {
+    payloadDigest = await smartAccount.hashIntentDigest(payload);
+  } catch {
+    payloadDigest = null;
+  }
+  const broadcaster = relayer.address;
+
+  // ── Sprint 3 链下双门禁（不消耗 nonce、不走链、省 gas）─────────────────
+  // 1) Simulation gate (T1): actions that MUST pass a successful on-chain
+  //    simulation are fail-closed unless a signed preview armed this exact
+  //    digest within SIMULATION_WINDOW_MS. Default ON (safe by default);
+  //    set SMART_ACCOUNT_SIMULATION_GATE=0 only to opt out (e.g. legacy
+  //    callers during migration — never in production).
+  const simulationGateOn = process.env.SMART_ACCOUNT_SIMULATION_GATE !== '0';
+  const sim = classifySimulationRisk(payload?.action);
+  if (simulationGateOn && sim.requiresSimulation) {
+    const armed = simulationLog.get(resolvedAccountId);
+    const fresh = !!armed && armed.digest === payloadDigest && Date.now() - armed.at <= SIMULATION_WINDOW_MS;
+    if (!fresh) {
+      incr('smart_account_simulation_blocked');
+      recordAudit({ tool: 'smart_account_execute', ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, errorName: 'SimulationRequired', error: 'SimulationRequired', broadcaster, gate: 'simulation' });
+      logStructured('smart_account_execute', { ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, error: 'SimulationRequired', broadcaster, gate: 'simulation' });
+      return {
+        content: [{ type: 'text', text: JSON.stringify({
+          success: false, accountId: resolvedAccountId, sessionId: s.sessionId, error: 'SimulationRequired',
+          reason: `action '${payload?.action}' requires a successful signed preview within ${SIMULATION_WINDOW_MS}ms before execution (fail-closed)`,
+          digest: payloadDigest,
+          simulation: sim,
+        }, null, 2) }],
+        isError: true,
+      };
+    }
+  }
+  // 2) Policy Engine gate (T2): chain-agnostic soft policy evaluated before
+  //    the relayer broadcasts — a rejection here never touches the chain.
+  //    (Policy Engine -> Signer/Relayer -> Smart Account)
+  const verdict = evaluatePolicy({ action: payload?.action, amount: payload?.amount });
+  if (!verdict.allowed) {
+    incr('smart_account_policy_rejected');
+    recordAudit({ tool: 'smart_account_execute', ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, errorName: verdict.code, error: verdict.code, broadcaster, gate: 'policy', reason: verdict.reason });
+    logStructured('smart_account_execute', { ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, error: verdict.code, broadcaster, gate: 'policy', reason: verdict.reason });
+    return {
+      content: [{ type: 'text', text: JSON.stringify({
+        success: false, accountId: resolvedAccountId, sessionId: s.sessionId, error: verdict.code,
+        reason: verdict.reason,
+        digest: payloadDigest,
+      }, null, 2) }],
+      isError: true,
+    };
+  }
+
+  incr('smart_account_execute_total');
   const res = await conn.executeFromAgent({ payload, signature, signer: relayer });
-  return {
-    content: [{ type: 'text', text: JSON.stringify({ success: res.ok, accountId: resolvedAccountId, sessionId: s.sessionId, onChain: true, ...(res.ok ? {
-      txHash: res.txHash,
-      txId: res.txId !== null && res.txId !== undefined ? res.txId.toString() : null,
-      amount: res.amount !== null && res.amount !== undefined ? res.amount.toString() : null,
-    } : { error: res.errorName || res.reason || 'broadcast failed' }) }, null, 2) }],
-    isError: !res.ok,
-  };
+  if (res.ok) {
+    incr('smart_account_execute_success');
+    // Tx lifecycle (Sprint 2.7 T3): executeFromAgent awaited the receipt, so a
+    // success here is status=1 → confirmed. Persist the fact for operators.
+    const status = res.receipt?.status === 0 ? 'failed' : 'confirmed';
+    const submittedAt = new Date().toISOString();
+    recordTx({
+      txHash: res.txHash, accountId: resolvedAccountId, sessionId: s.sessionId, status,
+      blockNumber: res.receipt?.blockNumber != null ? res.receipt.blockNumber.toString() : null,
+      gasUsed: res.receipt?.gasUsed != null ? res.receipt.gasUsed.toString() : null,
+      errorName: null, submittedAt, confirmedAt: submittedAt,
+    });
+    recordAudit({ tool: 'smart_account_execute', ok: true, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, txHash: res.txHash, broadcaster });
+    logStructured('smart_account_execute', { ok: true, accountId: resolvedAccountId, sessionId: s.sessionId, txHash: res.txHash, status, broadcaster });
+    // Record the latest broadcast txHash + persist (Sprint 2.6 T2) so an
+    // operator can audit "what did this account last broadcast" across restarts.
+    const entry = smartAccounts.get(resolvedAccountId);
+    if (entry) {
+      recordBroadcast(entry, res.txHash);
+      persistSmartAccountState();
+    }
+    return {
+      content: [{ type: 'text', text: JSON.stringify({
+        success: true, accountId: resolvedAccountId, sessionId: s.sessionId, onChain: true,
+        status,
+        txHash: res.txHash,
+        txId: res.txId !== null && res.txId !== undefined ? res.txId.toString() : null,
+        amount: res.amount !== null && res.amount !== undefined ? res.amount.toString() : null,
+      }, null, 2) }],
+    };
+  }
+  // Normalized typed error (Sprint 2.6 T3): fixed semantic code on the wire.
+  const { error } = normalizeChainError(res, GENERIC_ERRORS.UNKNOWN_REVERT);
+  incr('smart_account_execute_failed');
+  metricizeError(error);
+  const failedAt = new Date().toISOString();
+  recordTx({
+    txHash: res.txHash ?? null, accountId: resolvedAccountId, sessionId: s.sessionId, status: 'failed',
+    blockNumber: null, gasUsed: null, errorName: res.errorName ?? null, error, submittedAt: failedAt, confirmedAt: null,
+  });
+  recordAudit({ tool: 'smart_account_execute', ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, txHash: res.txHash ?? null, errorName: res.errorName ?? null, error, broadcaster });
+  logStructured('smart_account_execute', { ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, error, broadcaster });
+  persistSmartAccountState();
+  return chainErrorResponse(res, GENERIC_ERRORS.UNKNOWN_REVERT);
 }
 
 /** Quantify the current exposure bound (INV-007) from on-chain state. */
 async function handleSmartAccountEstimateLoss(args) {
   const { accountId, sessionId } = args || {};
+  // Boot chain env first (restores persisted accounts, Sprint 2.6 T2).
+  await resolveChainEnv();
   const { conn, accountId: resolvedAccountId, session } = selectSmartAccount({ accountId, sessionId });
   const [accountCeiling, accountRemaining, sessionMax] = await Promise.all([
     conn.accountMaxDaily(),
     conn.estimateMaxLoss(),
     conn.sessionMaxLoss(session.sessionId),
   ]);
+  // Audit (Sprint 2.7 T1): 只读查询同样留痕，供长期运营审计。
+  recordAudit({ tool: 'smart_account_estimate_loss', ok: true, accountId: resolvedAccountId, sessionId: session.sessionId });
   return { content: [{ type: 'text', text: JSON.stringify({
     success: true,
     accountId: resolvedAccountId,
@@ -776,6 +1043,97 @@ async function handleSmartAccountEstimateLoss(args) {
     accountRemaining: accountRemaining !== null && accountRemaining !== undefined ? accountRemaining.toString() : null,
     sessionMaxLoss: sessionMax !== undefined && sessionMax !== null ? sessionMax.toString() : null,
   }, null, 2) }] };
+}
+
+/** Query the audit trail (Sprint 2.7 T1): recent Smart Account operation facts. */
+async function handleSmartAccountAudit(args) {
+  const { accountId, limit } = args || {};
+  const rows = listAudit({ accountId, limit: limit || 50 });
+  return {
+    content: [{ type: 'text', text: JSON.stringify({
+      success: true,
+      count: rows.length,
+      entries: rows,
+      note: 'Audit trail (in-memory ring, last 1000). Set AUDIT_LOG_FILE for durable JSON-lines append.',
+    }, null, 2) }],
+  };
+}
+
+/** Snapshot of Smart Account operation metrics (Sprint 2.7 T2). */
+async function handleSmartAccountMetrics() {
+  return {
+    content: [{ type: 'text', text: JSON.stringify({
+      success: true,
+      metrics: snapshot(),
+    }, null, 2) }],
+  };
+}
+
+/** Simulation risk policy (Sprint 3 T1): which actions must be simulated. */
+async function handleSmartAccountSimulationPolicy(args) {
+  const { action } = args || {};
+  const policy = simulationPolicySnapshot();
+  const risk = action ? classifySimulationRisk(action) : null;
+  return {
+    content: [{ type: 'text', text: JSON.stringify({
+      success: true,
+      policy,
+      action: action || null,
+      risk,
+      note: 'Fail-closed: actions not in the known lists require a successful signed preview (smart_account_preview with signature → wouldExecute=true) before smart_account_execute within the window.',
+    }, null, 2) }],
+  };
+}
+
+/** Current Policy Engine rules (Sprint 3 T2), auditable. */
+async function handleSmartAccountPolicy() {
+  return {
+    content: [{ type: 'text', text: JSON.stringify({
+      success: true,
+      policy: policySnapshot(),
+      note: 'Soft policy is evaluated before the relayer broadcasts (Policy Engine -> Signer/Relayer -> Smart Account). Rejections here never touch the chain.',
+    }, null, 2) }],
+  };
+}
+
+/**
+ * Transaction lifecycle query / re-check (Sprint 2.7 T3).
+ *
+ * Returns the recorded facts (broadcast time) plus an authoritative re-check
+ * of the current on-chain receipt. Safe-retry rules are embedded in `note`:
+ *   - Only non-broadcast failures (RPC_ERROR) may be re-sent unchanged.
+ *   - BadNonce = the nonce was consumed on-chain → rebuild with next nonce + re-sign.
+ *   - txHash unchanged → the SAME tx: query status, never re-broadcast.
+ */
+async function handleSmartAccountTxStatus(args) {
+  const { txHash, accountId, limit } = args || {};
+  if (!txHash) {
+    return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'txHash is required' }) }], isError: true };
+  }
+  const env = await resolveChainEnv();
+  const recorded = listTx({ txHash, accountId, limit: limit || 5 });
+  let onChain = null;
+  try {
+    const receipt = await env.provider.getTransactionReceipt(txHash);
+    if (!receipt) {
+      onChain = { status: 'submitted', note: 'no receipt yet — tx pending on this chain or unknown' };
+    } else if (receipt.status === 0) {
+      onChain = { status: 'failed', blockNumber: receipt.blockNumber.toString(), gasUsed: receipt.gasUsed?.toString() ?? null };
+    } else {
+      onChain = { status: 'confirmed', blockNumber: receipt.blockNumber.toString(), gasUsed: receipt.gasUsed?.toString() ?? null };
+    }
+  } catch (err) {
+    onChain = { status: 'unknown', error: err.message };
+  }
+  return {
+    content: [{ type: 'text', text: JSON.stringify({
+      success: true,
+      txHash,
+      recorded,
+      onChain,
+      note: 'Safe retry: only RPC_ERROR / non-broadcast failures may be re-sent unchanged. BadNonce means the nonce was consumed — rebuild the payload with the next nonce and re-sign. Same txHash → same tx: query status, never re-broadcast (replay-safe).',
+    }, null, 2) }],
+  };
 }
 
 // ─── Proof-of-Work: find nonce such that SHA256(challenge+nonce) starts with N zeros ──
@@ -1135,6 +1493,54 @@ const TOOLS = [
     },
   },
 
+  // Smart Account — 运营面 (Sprint 2.7 可审计/可观测/生命周期)
+  {
+    name: 'smart_account_audit',
+    description: 'Query the Smart Account audit trail (Sprint 2.7): recent setup / preview / execute / estimate_loss facts — accountId, sessionId, payload digest, txHash, revert/errorName, broadcaster, timestamp. In-memory ring (last 1000); set AUDIT_LOG_FILE for durable JSON-lines append.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        accountId: { type: 'string', description: 'Filter to one Smart Account' },
+        limit: { type: 'number', description: 'Max entries (default 50)' },
+      },
+    },
+  },
+  {
+    name: 'smart_account_metrics',
+    description: 'Snapshot of Smart Account operation metrics (Sprint 2.7): preview count, execute total/success/failed, revert breakdown, nonce conflicts, over-limit/expired rejections, RPC errors.',
+    inputSchema: { type: 'object', properties: {} },
+  },
+  {
+    name: 'smart_account_tx_status',
+    description: 'Transaction lifecycle query / re-check (Sprint 2.7): returns the recorded broadcast facts plus an authoritative on-chain receipt re-check (submitted → confirmed / failed). Safe-retry rules embedded in the response note.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        txHash: { type: 'string', description: 'Transaction hash to look up (0x + 64 hex)' },
+        accountId: { type: 'string', description: 'Optional filter to a specific Smart Account' },
+        limit: { type: 'number', description: 'Max recorded facts to return (default 5)' },
+      },
+      required: ['txHash'],
+    },
+  },
+
+  // Smart Account — Simulation / Policy Engine (Sprint 3)
+  {
+    name: 'smart_account_simulation_policy',
+    description: 'Simulation formalization (Sprint 3): which actions MUST pass a successful signed preview (smart_account_preview → wouldExecute=true) before smart_account_execute within the freshness window. Unknown actions fail-closed.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        action: { type: 'string', description: 'Optional: classify a specific action (e.g. transfer, balance)' },
+      },
+    },
+  },
+  {
+    name: 'smart_account_policy',
+    description: 'Current Policy Engine rules (Sprint 3): the chain-agnostic soft policy evaluated before the relayer broadcasts (Policy Engine -> Signer/Relayer -> Smart Account). Rules are hot-reloadable via SMART_ACCOUNT_POLICY_FILE.',
+    inputSchema: { type: 'object', properties: {} },
+  },
+
   // Task economy (the NGEN value loop for agents)
   {
     name: 'list_tasks',
@@ -1302,6 +1708,16 @@ export function createServer() {
           return handleSmartAccountExecute(args);
         case 'smart_account_estimate_loss':
           return handleSmartAccountEstimateLoss(args);
+        case 'smart_account_audit':
+          return handleSmartAccountAudit(args);
+        case 'smart_account_metrics':
+          return handleSmartAccountMetrics();
+        case 'smart_account_tx_status':
+          return handleSmartAccountTxStatus(args);
+        case 'smart_account_simulation_policy':
+          return handleSmartAccountSimulationPolicy(args);
+        case 'smart_account_policy':
+          return handleSmartAccountPolicy();
 
         // Task economy
         case 'list_tasks':

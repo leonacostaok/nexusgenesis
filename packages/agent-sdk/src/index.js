@@ -14,6 +14,15 @@ export * as coordination from './coordination.js';
 export * as forum from './forum.js';
 export * as verifier from './verifier.js';
 export * as smartAccount from './smart-account.js';
+export * as messageSecurity from './message-security.js';
+
+export {
+  createMessageEnvelope,
+  verifyMessageEnvelope,
+  createReplayGuard,
+  messagePreimage,
+  DEFAULT_MAX_AGE_MS,
+} from './message-security.js';
 
 export {
   createAgentIdentity,

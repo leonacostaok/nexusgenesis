@@ -53,6 +53,12 @@
 - 回归：mcp-server 60/60、chain-eth 74/74、agent-sdk 48/48 全绿
 - 复核修复（v1.3.1）：分类顺序先合约错误后 reason —— estimateGas 路径 reason 常含
       "eth_call"/"network"，先匹配会把合约拒绝误判为可重试 RPC_ERROR（白等退避 + 审计码失真）
+- 复核修复（v1.3.2）：ops-smoke-demo.mjs setup 改 env 注入（T3.3 后工具参数会被拒绝，
+      脚本已损坏——env 早已注入，参数纯属冗余）；退避后重查 receipt（pendingWaitFailedHash
+      原为死变量，退避期间落账的 tx 会被白付 gas 重发）；provider null 守卫；
+      reconciled 进审计；demo 断言 10→11 行（T2.2 policy_change 初始事件）
+- 新增覆盖：chain-connection-resilience.test.js（status-0 语义 / wait 对账恢复 /
+      wait 未恢复 / 无 provider 软失败）+ relayer-operations 退避期间落账用例
 
 ## T4 文档 / 规范闭环
 - T4.1 更新 SECURITY_INVARIANTS.md（message-security / simulation gate / policy engine 不变式）
@@ -72,3 +78,4 @@ T1 全部完成后提交一版（先落 message security 主线），T2-T4 再�
 | 2026-08-22 | v1.2 | T2 全部落地（simulationLog 持久化 / policy_change 审计 / audit schema 校验） |
 | 2026-08-22 | v1.2.1 | T2 复核修复：策略单次读取消 TOCTOU + 重启窗口恢复 E2E 回归 |
 | 2026-08-22 | v1.3 | T3 全部落地（relayer-operations / chain-connection 增强 / 密钥隔离 / smoke env 注入） |
+| 2026-08-22 | v1.3.2 | T3 复核修复：demo env 化 / 退避后对账 / 守卫 / reconciled 审计 / 新增 5 个韧性路径用例 |

@@ -149,3 +149,23 @@ test('T3.2 wait-failed tx not yet mined falls back to retry (safe re-broadcast)'
   assert.equal(conn.calls.length, 2);
   assert.equal(res.attempts, 2);
 });
+
+test('T3.2 wait-failed tx landing DURING the backoff is reconciled, not re-broadcast (review fix)', async () => {
+  // 第 1 次对账（wait 失败后立即）→ 未落账；退避期间落账 → 重发前第 2 次对账命中。
+  const conn = fakeConn([
+    { ok: false, txHash: '0xslow', waitFailed: true, reason: 'timeout' },
+    { ok: true, txHash: '0xdup', receipt: { status: 1, logs: [] } }, // 不应被执行
+  ]);
+  let polls = 0;
+  const provider = {
+    getTransactionReceipt: async () => (polls++ === 0 ? null : { status: 1, logs: [] }),
+  };
+  const res = await executeWithRelayerResilience({
+    conn, payload: {}, signature: '0x', relayer: {}, provider, opts: { maxRetries: 2, backoffMs: 1 },
+  });
+  assert.equal(res.ok, true);
+  assert.equal(res.txHash, '0xslow', 'must reuse the hash that landed during backoff');
+  assert.equal(res.reconciled, true);
+  assert.equal(conn.calls.length, 1, 'tx landed during backoff must NOT be re-broadcast');
+  assert.equal(res.attempts, 1);
+});

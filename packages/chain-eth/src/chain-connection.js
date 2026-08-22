@@ -424,11 +424,12 @@ export class ChainConnection {
         // retry would re-broadcast (idempotent at the contract's intent-nonce
         // level, but wasteful and confusing for the operator).
         const reason = waitErr?.reason ?? waitErr?.message ?? String(waitErr);
+        const recProvider = providerFor(this.contract);
         const attempts = clampInt(process.env.RELAYER_RECONCILE_ATTEMPTS, 3, 0, 20);
-        for (let i = 0; i <= attempts; i++) {
+        for (let i = 0; recProvider && i <= attempts; i++) {
           if (i > 0) await new Promise((r) => setTimeout(r, 200));
           try {
-            const found = await providerFor(this.contract).getTransactionReceipt(tx.hash);
+            const found = await recProvider.getTransactionReceipt(tx.hash);
             if (found) { receipt = found; break; }
           } catch {
             /* keep polling */

@@ -150,8 +150,9 @@ async function main() {
 
   // ── 3. 完整 execute 流程 ──────────────────────────────────────────────
   console.log('\n[3/4] 完整 execute 流程：');
+  // T3.3 密钥隔离：owner/emergency 私钥经 CHAIN_OWNER_PK / CHAIN_EMERGENCY_PK env
+  // 注入（见上方 StdioClientTransport env），绝不经工具参数传输。
   const setup = await call('smart_account_setup', {
-    owner: OWNER_PK, emergencyKey: EMERGENCY_PK,
     sessionId: SESSION_ID, agentId: AGENT_ID,
     agentEvmAddress: addressForPrivateKey(AGENT_PK),
     issuedAt: ISSUED_AT, expiresAt: EXPIRES_AT,
@@ -232,7 +233,11 @@ async function main() {
   check('成功 execute 审计含 payloadDigest', true, /^0x[0-9a-f]{64}$/.test(okExec?.payloadDigest || ''));
   check('broadcaster = relayer（非 owner）', new Wallet(RELAYER_PK).address, okExec?.broadcaster);
   check('审计条目均含 ISO timestamp', true, audit.entries.every((e) => /^\d{4}-\d{2}-\d{2}T/.test(e.timestamp || '')));
-  check('AUDIT_LOG_FILE 落盘 10 条 JSON lines', 10, existsSync(AUDIT_FILE) ? readFileSync(AUDIT_FILE, 'utf8').trim().split('\n').filter(Boolean).length : 0);
+  // Sprint 4 T2.2：execute 门禁首次策略评估记录 policy_change（无策略文件 →
+  // previousFingerprint=null 初始事件），审计行数 10 → 11。
+  const policyChange = audit.entries.find((e) => e.tool === 'policy_change');
+  check('policy_change 初始事件（T2.2）previousFingerprint=null', true, !!policyChange && (policyChange.previousFingerprint === null || policyChange.previousFingerprint === undefined));
+  check('AUDIT_LOG_FILE 落盘 11 条 JSON lines', 11, existsSync(AUDIT_FILE) ? readFileSync(AUDIT_FILE, 'utf8').trim().split('\n').filter(Boolean).length : 0);
 
   section('核验 — 指标（smart_account_metrics）');
   const expect = {

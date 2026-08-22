@@ -1044,8 +1044,8 @@ async function handleSmartAccountExecute(args) {
       gasUsed: res.receipt?.gasUsed != null ? res.receipt.gasUsed.toString() : null,
       errorName: null, submittedAt, confirmedAt: submittedAt,
     });
-    recordAudit({ tool: 'smart_account_execute', ok: true, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, txHash: res.txHash, broadcaster, attempts: res.attempts, retried: res.retried || false });
-    logStructured('smart_account_execute', { ok: true, accountId: resolvedAccountId, sessionId: s.sessionId, txHash: res.txHash, status, broadcaster, attempts: res.attempts, retried: res.retried || false });
+    recordAudit({ tool: 'smart_account_execute', ok: true, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, txHash: res.txHash, broadcaster, attempts: res.attempts, retried: res.retried || false, reconciled: res.reconciled || false });
+    logStructured('smart_account_execute', { ok: true, accountId: resolvedAccountId, sessionId: s.sessionId, txHash: res.txHash, status, broadcaster, attempts: res.attempts, retried: res.retried || false, reconciled: res.reconciled || false });
     // Record the latest broadcast txHash + persist (Sprint 2.6 T2) so an
     // operator can audit "what did this account last broadcast" across restarts.
     const entry = smartAccounts.get(resolvedAccountId);

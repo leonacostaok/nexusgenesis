@@ -153,5 +153,13 @@ export async function executeWithRelayerResilience({ conn, payload, signature, r
     if (attempts > maxRetries) return { ...res, ...cls, attempts, retried: attempts > 1, retriesExhausted: true };
 
     await sleep(backoffMs * 2 ** (attempts - 1));
+    // 退避期间广播可能已落账：重发前再对账一次，避免为已落账的意图
+    // 白付一笔重复广播 gas（合约意图 nonce 保证不双花，但 gas 与 ledger
+    // 条目会被浪费/污染）。
+    if (pendingWaitFailedHash) {
+      const landed = await reconcileReceipt(conn, recProvider, pendingWaitFailedHash);
+      if (landed) return { ...landed, attempts, retried: attempts > 1, reconciled: true };
+      pendingWaitFailedHash = null;
+    }
   }
 }

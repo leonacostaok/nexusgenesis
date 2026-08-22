@@ -39,6 +39,10 @@ import {
   GENERIC_ERRORS,
 } from './smart-account-errors.js';
 import {
+  executeWithRelayerResilience,
+  classifyRelayerFailure,
+} from './relayer-operations.js';
+import {
   classifySimulationRisk,
   simulationPolicySnapshot,
   SIMULATION_WINDOW_MS,
@@ -615,11 +619,16 @@ async function handleTakeoverGuard(args) {
 
 /** Create the local Smart Account + register an agent session. */
 async function handleSmartAccountSetup(args) {
-  const { owner, emergencyKey, sessionId, agentId, agentEvmAddress, expiresAt, issuedAt, maxPerTx, maxDaily, allowedChains, allowedAssets, allowedContracts, allowedMethods, allowedRecipients } = args;
+  const { sessionId, agentId, agentEvmAddress, expiresAt, issuedAt, maxPerTx, maxDaily, allowedChains, allowedAssets, allowedContracts, allowedMethods, allowedRecipients } = args;
+  // T3.3 key isolation: owner/emergencyKey are server-side operation keys. In
+  // non-local profiles they MUST come from CHAIN_OWNER_PK / CHAIN_EMERGENCY_PK
+  // env (chain-config validates non-anvil + role separation) — passing them via
+  // MCP tool params is rejected fail-closed so the private keys never transit
+  // the tool interface / get logged. local keeps the dev convenience (anvil keys
+  // are public anyway).
+  const ownerParam = args.owner;
+  const emergencyParam = args.emergencyKey;
 
-  if (!owner || !emergencyKey) {
-    return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'owner and emergencyKey are required' }) }], isError: true };
-  }
   if (!sessionId || !agentId || !agentEvmAddress) {
     return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'sessionId, agentId, and agentEvmAddress are required' }) }], isError: true };
   }
@@ -642,18 +651,6 @@ async function handleSmartAccountSetup(args) {
   // roles, and the owner key signs both the deploy and the registerSession
   // (owner-only, INV-005). The Agent's execution signing key NEVER enters this
   // process — callers submit payload + signature only.
-  const { ethers } = await import('ethers');
-  let ownerKey;
-  let emergencyWallet;
-  try {
-    ownerKey = new ethers.Wallet(owner);
-    emergencyWallet = new ethers.Wallet(emergencyKey);
-  } catch {
-    return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'owner and emergencyKey must be private keys (0x + 64 hex) for on-chain setup — their addresses become the contract owner/emergency roles and owner signs deploy + registerSession (INV-005).' }) }], isError: true };
-  }
-  const ownerAddr = ownerKey.address;
-  const emergencyAddr = emergencyWallet.address;
-
   // Hard ceilings are mandatory on-chain (SmartAccount.registerSession reverts
   // InvalidSession when both are 0) — validate BEFORE deploying so a bad call
   // never pays deployment gas. Keep them as strings: BigInt('...') is exact,
@@ -673,6 +670,33 @@ async function handleSmartAccountSetup(args) {
   } catch (err) {
     return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: err.message }) }], isError: true };
   }
+
+  // T3.3 key isolation (profile-aware): operation keys never transit the MCP
+  // tool interface outside local. env.owner/emergency already carry the
+  // env-injected keys (chain-config validates them fail-closed for non-local).
+  const { ethers } = await import('ethers');
+  let ownerKey;
+  let emergencyWallet;
+  if (env.profile === 'local') {
+    if (!ownerParam || !emergencyParam) {
+      return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'owner and emergencyKey are required (CHAIN_PROFILE=local)' }) }], isError: true };
+    }
+    try {
+      ownerKey = new ethers.Wallet(ownerParam);
+      emergencyWallet = new ethers.Wallet(emergencyParam);
+    } catch {
+      return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: 'owner and emergencyKey must be private keys (0x + 64 hex) for on-chain setup — their addresses become the contract owner/emergency roles and owner signs deploy + registerSession (INV-005).' }) }], isError: true };
+    }
+  } else {
+    if (ownerParam || emergencyParam) {
+      return { content: [{ type: 'text', text: JSON.stringify({ success: false, error: `CHAIN_PROFILE=${env.profile}: passing owner/emergencyKey via tool params is rejected (T3.3 key isolation). Configure CHAIN_OWNER_PK / CHAIN_EMERGENCY_PK env instead — private keys must not transit the MCP tool interface.` }) }], isError: true };
+    }
+    ownerKey = env.owner;
+    emergencyWallet = env.emergency;
+  }
+  const ownerAddr = ownerKey.address;
+  const emergencyAddr = emergencyWallet.address;
+
   const deployer = ownerKey.connect(env.provider);
 
   const resolvedIssuedAt = issuedAt !== undefined && issuedAt !== null ? Number(issuedAt) : Date.now();
@@ -1002,7 +1026,12 @@ async function handleSmartAccountExecute(args) {
   }
 
   incr('smart_account_execute_total');
-  const res = await conn.executeFromAgent({ payload, signature, signer: relayer });
+  // T3.1/T3.2 — Relayer 韧性：瞬时 RPC 失败 / EOA nonce 冲突指数退避重试；
+  // 广播后 wait 失败先对账 receipt；合约确定性拒绝（含 BadNonce 意图重放）不重试。
+  const res = await executeWithRelayerResilience({
+    conn, payload, signature, relayer, provider: env.provider,
+  });
+  if (res.retried) incr('smart_account_execute_retried', res.attempts - 1);
   if (res.ok) {
     incr('smart_account_execute_success');
     // Tx lifecycle (Sprint 2.7 T3): executeFromAgent awaited the receipt, so a
@@ -1015,8 +1044,8 @@ async function handleSmartAccountExecute(args) {
       gasUsed: res.receipt?.gasUsed != null ? res.receipt.gasUsed.toString() : null,
       errorName: null, submittedAt, confirmedAt: submittedAt,
     });
-    recordAudit({ tool: 'smart_account_execute', ok: true, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, txHash: res.txHash, broadcaster });
-    logStructured('smart_account_execute', { ok: true, accountId: resolvedAccountId, sessionId: s.sessionId, txHash: res.txHash, status, broadcaster });
+    recordAudit({ tool: 'smart_account_execute', ok: true, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, txHash: res.txHash, broadcaster, attempts: res.attempts, retried: res.retried || false });
+    logStructured('smart_account_execute', { ok: true, accountId: resolvedAccountId, sessionId: s.sessionId, txHash: res.txHash, status, broadcaster, attempts: res.attempts, retried: res.retried || false });
     // Record the latest broadcast txHash + persist (Sprint 2.6 T2) so an
     // operator can audit "what did this account last broadcast" across restarts.
     const entry = smartAccounts.get(resolvedAccountId);
@@ -1035,18 +1064,21 @@ async function handleSmartAccountExecute(args) {
     };
   }
   // Normalized typed error (Sprint 2.6 T3): fixed semantic code on the wire.
+  // T3: use the relayer classification code when it is more specific than the
+  // generic normalize (e.g. NONCE_CONFLICT for EOA nonce vs BadNonce intent replay).
   const { error } = normalizeChainError(res, GENERIC_ERRORS.UNKNOWN_REVERT);
+  const errorCode = res.code && res.code !== 'UNKNOWN_REVERT' ? res.code : error;
   incr('smart_account_execute_failed');
-  metricizeError(error);
+  metricizeError(errorCode);
   const failedAt = new Date().toISOString();
   recordTx({
     txHash: res.txHash ?? null, accountId: resolvedAccountId, sessionId: s.sessionId, status: 'failed',
-    blockNumber: null, gasUsed: null, errorName: res.errorName ?? null, error, submittedAt: failedAt, confirmedAt: null,
+    blockNumber: null, gasUsed: null, errorName: res.errorName ?? null, error: errorCode, submittedAt: failedAt, confirmedAt: null,
   });
-  recordAudit({ tool: 'smart_account_execute', ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, txHash: res.txHash ?? null, errorName: res.errorName ?? null, error, broadcaster });
-  logStructured('smart_account_execute', { ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, error, broadcaster });
+  recordAudit({ tool: 'smart_account_execute', ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, txHash: res.txHash ?? null, errorName: res.errorName ?? null, error: errorCode, broadcaster, attempts: res.attempts, retried: res.retried || false, retryable: res.retryable ?? null });
+  logStructured('smart_account_execute', { ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, error: errorCode, broadcaster, attempts: res.attempts, retried: res.retried || false, retryable: res.retryable ?? null });
   persistSmartAccountState();
-  return chainErrorResponse(res, GENERIC_ERRORS.UNKNOWN_REVERT);
+  return chainErrorResponse({ ...res, errorName: res.errorName ?? (res.code !== 'UNKNOWN_REVERT' ? res.code : null) }, GENERIC_ERRORS.UNKNOWN_REVERT);
 }
 
 /** Quantify the current exposure bound (INV-007) from on-chain state. */
@@ -1481,12 +1513,12 @@ const TOOLS = [
   // path and submitted as payload + signature.
   {
     name: 'smart_account_setup',
-    description: 'Deploy a SmartAccount contract on-chain and register an agent session (official EVM path, Sprint 2.4 on-chain). Establishes the hard-policy state on-chain: session whitelist (chain/asset/contract/method/recipient), per-tx + daily ceilings, and nonce anti-replay. Requires CHAIN_RPC_URL (external) or uses an in-process LocalChain. owner/emergencyKey are private keys (server-side operation keys) whose addresses become the contract owner/emergency roles; owner signs deploy + registerSession. Agent execution keys never enter this process.',
+    description: 'Deploy a SmartAccount contract on-chain and register an agent session (official EVM path, Sprint 2.4 on-chain). Establishes the hard-policy state on-chain: session whitelist (chain/asset/contract/method/recipient), per-tx + daily ceilings, and nonce anti-replay. Requires CHAIN_RPC_URL (external) or uses an in-process LocalChain. Owner/emergency operation keys come from CHAIN_OWNER_PK / CHAIN_EMERGENCY_PK env (T3.3 key isolation): in non-local profiles passing them as tool params is rejected fail-closed so private keys never transit the MCP interface. CHAIN_PROFILE=local only accepts owner/emergencyKey params (anvil dev keys). Agent execution keys never enter this process.',
     inputSchema: {
       type: 'object',
       properties: {
-        owner: { type: 'string', description: 'Owner private key (0x + 64 hex, server-side operation key). Its address becomes the contract owner role (INV-005) and signs deploy + registerSession.' },
-        emergencyKey: { type: 'string', description: 'Emergency private key (0x + 64 hex, server-side operation key). Its address becomes the brake-only emergency role (INV-006).' },
+        owner: { type: 'string', description: 'Owner private key (0x + 64 hex, server-side operation key). CHAIN_PROFILE=local only — non-local profiles reject tool-param keys and use CHAIN_OWNER_PK env instead (T3.3 key isolation).' },
+        emergencyKey: { type: 'string', description: 'Emergency private key (0x + 64 hex, server-side operation key). CHAIN_PROFILE=local only — non-local profiles reject tool-param keys and use CHAIN_EMERGENCY_PK env instead (T3.3 key isolation).' },
         sessionId: { type: 'string', description: '32-byte session ID (0x + 64 hex)' },
         agentId: { type: 'string', description: 'Agent identifier bound into the signed intent' },
         agentEvmAddress: { type: 'string', description: 'Agent EVM address (verifies canonical digest signatures)' },
@@ -1500,7 +1532,7 @@ const TOOLS = [
         allowedMethods: { type: 'array', items: { type: 'string' }, description: 'Allowed methods (INV-003)' },
         allowedRecipients: { type: 'array', items: { type: 'string' }, description: 'Allowed recipients (INV-003)' },
       },
-      required: ['owner', 'emergencyKey', 'sessionId', 'agentId', 'agentEvmAddress', 'expiresAt'],
+      required: ['sessionId', 'agentId', 'agentEvmAddress', 'expiresAt'],
     },
   },
   {

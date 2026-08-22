@@ -149,6 +149,20 @@ function decodeFailure(err, iface) {
   return base;
 }
 
+/** Clamp an env integer to [min, max]; `fallback` when unset/invalid. */
+function clampInt(raw, fallback, min, max) {
+  const n = Number(raw);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(min, Math.min(max, Math.trunc(n)));
+}
+
+/** Resolve the provider backing a Contract (runner may be a Signer or a Provider). */
+function providerFor(contract) {
+  const runner = contract.runner;
+  if (runner && typeof runner.getTransactionReceipt === 'function') return runner;
+  return runner?.provider ?? null;
+}
+
 // ─── Chain connection ─────────────────────────────────────────────────────
 
 /**
@@ -401,10 +415,35 @@ export class ChainConnection {
       const tx = await this.contract
         .connect(signer ?? this.contract.runner)
         .executeFromAgent(struct, signature);
-      const receipt = await tx.wait();
+      let receipt;
+      try {
+        receipt = await tx.wait();
+      } catch (waitErr) {
+        // RPC flake AFTER broadcast (T3.2): the tx may still mine. Reconcile by
+        // polling the receipt instead of losing the tx — otherwise a later
+        // retry would re-broadcast (idempotent at the contract's intent-nonce
+        // level, but wasteful and confusing for the operator).
+        const reason = waitErr?.reason ?? waitErr?.message ?? String(waitErr);
+        const attempts = clampInt(process.env.RELAYER_RECONCILE_ATTEMPTS, 3, 0, 20);
+        for (let i = 0; i <= attempts; i++) {
+          if (i > 0) await new Promise((r) => setTimeout(r, 200));
+          try {
+            const found = await providerFor(this.contract).getTransactionReceipt(tx.hash);
+            if (found) { receipt = found; break; }
+          } catch {
+            /* keep polling */
+          }
+        }
+        if (!receipt) return { ok: false, txHash: tx.hash, waitFailed: true, reason };
+      }
+      // A mined-but-reverted tx is a FAILURE, not a success with status=0 —
+      // surface it as such so the ledger/audit don't report a contradiction.
+      if (receipt.status === 0) {
+        return { ok: false, txHash: tx.hash, receipt, errorName: null, reason: 'transaction reverted on-chain' };
+      }
       // The contract emits Executed(sessionId, txId, amount) — decode it for
       // a structured result instead of re-hashing off-chain.
-      const executed = receipt.logs
+      const executed = (receipt.logs ?? [])
         .map((l) => {
           try {
             return this.contract.interface.parseLog({ topics: l.topics, data: l.data });

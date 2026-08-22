@@ -234,9 +234,9 @@ test('T4.2 external chain smoke: lifecycle + relayer/owner separation + persiste
   assert.notEqual(chainChild.pid, process.pid, 'chain must be a separate OS process');
 
   // ── setup（testnet 配置面 / 外部 RPC）───────────────────────────────────
+  // T3.3 key isolation: testnet 配置面禁止经工具参数直传 owner/emergency 私钥 —
+  // 由 CHAIN_OWNER_PK / CHAIN_EMERGENCY_PK env 注入（见 before()），不传参数。
   const setup = await callTool('smart_account_setup', {
-    owner: OWNER_PK,
-    emergencyKey: EMERGENCY_PK,
     sessionId: SESSION_ID,
     agentId: AGENT_ID,
     agentEvmAddress: addressForPrivateKey(AGENT_PK),

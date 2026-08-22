@@ -36,11 +36,23 @@
       （消除热更新 TOCTOU 致审计失真 + 每次执行 2 次读盘）；补 restoreSimulationLog 端到端回归
 - 已知限制：LocalChain 模式 arming 落盘但不恢复（与 accounts/txLedger 既有行为一致，临时链）
 
-## T3 Relayer 运营化（在已有 txLedger 上补）
-- T3.1 nonce 冲突恢复（BadNonce → 重新同步 nonce 重试）
-- T3.2 RPC 抖动重试（瞬时失败指数退避）
-- T3.3 relayer 密钥隔离（env 注入，去掉 MCP 工具参数直传 owner/emergency 私钥）
-- T3.4 testnet 冒烟 / 发布前校验（复用 mcp-smart-account-smoke.test.js 骨架）
+## T3 Relayer 运营化（在已有 txLedger 上补）✅ 已落地
+- T3.1 nonce 冲突恢复 ✅：classifyRelayerFailure 区分「合约意图 BadNonce 重放」（确定性，
+      fail-closed 不重试）与「relayer EOA nonce 冲突」（NONCE_CONFLICT，重试即重读 fresh
+      nonce —— ethers cacheTimeout:-1 已保证每次 populate 重读）
+- T3.2 RPC 抖动重试 ✅：executeWithRelayerResilience 指数退避重试（RELAYER_MAX_RETRIES /
+      RELAYER_RETRY_BACKOFF_MS）；广播后 wait 失败先对账 receipt（已落账复用结果，
+      绝不盲目重发）；重试/对账次数进审计+日志+指标（smart_account_execute_retried）
+- T3.3 密钥隔离 ✅：非 local 配置面禁止经工具参数直传 owner/emergency 私钥（fail-closed），
+      一律 CHAIN_OWNER_PK / CHAIN_EMERGENCY_PK env 注入；local 保留 anvil 开发便利
+- T3.4 testnet 冒烟 ✅：smoke 套件 setup 改为 env 注入（proof of T3.3），完整生命周期在
+      testnet 配置面 + 外部链进程上跑（含 T2.1 重启窗口）
+- 新模块：relayer-operations.js（分类 + 韧性广播）；chain-connection.js executeFromAgent
+      增强（wait 对账 + status-0 语义化）
+- 测试：relayer-operations.test.js（10 用例：分类 5 + 韧性 5，含对账不重发）
+- 回归：mcp-server 60/60、chain-eth 74/74、agent-sdk 48/48 全绿
+- 复核修复（v1.3.1）：分类顺序先合约错误后 reason —— estimateGas 路径 reason 常含
+      "eth_call"/"network"，先匹配会把合约拒绝误判为可重试 RPC_ERROR（白等退避 + 审计码失真）
 
 ## T4 文档 / 规范闭环
 - T4.1 更新 SECURITY_INVARIANTS.md（message-security / simulation gate / policy engine 不变式）
@@ -59,3 +71,4 @@ T1 全部完成后提交一版（先落 message security 主线），T2-T4 再�
 | 2026-08-22 | v1.1 | T1 全部落地（transport-security.js / service-identity.js / coordination 接线 / E2E） |
 | 2026-08-22 | v1.2 | T2 全部落地（simulationLog 持久化 / policy_change 审计 / audit schema 校验） |
 | 2026-08-22 | v1.2.1 | T2 复核修复：策略单次读取消 TOCTOU + 重启窗口恢复 E2E 回归 |
+| 2026-08-22 | v1.3 | T3 全部落地（relayer-operations / chain-connection 增强 / 密钥隔离 / smoke env 注入） |

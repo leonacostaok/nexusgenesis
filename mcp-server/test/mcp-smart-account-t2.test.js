@@ -152,6 +152,35 @@ test('T2.1 saveChainState/loadChainState: simulations round-trip', () => {
   assert.deepEqual(state.simulations, [{ accountId: 'a1', digest: '0xdig', at: 1234567890 }]);
 });
 
+// ─── T2.2 复核修复：预载规则优先（指纹=裁决同一份规则，TOCTOU 回归）─────
+test('T2.2 evaluatePolicy uses preloaded rules, not a stale file re-read (review fix)', async () => {
+  const { evaluatePolicy } = await import('../src/policy-engine.js');
+  try {
+    // 文件写 rules A（transfer 放行）。
+    writeFileSync(POLICY_FILE, JSON.stringify({
+      rules: [{ action: 'transfer', enabled: true, maxPerTx: '100' }],
+    }), 'utf8');
+    process.env.SMART_ACCOUNT_POLICY_FILE = POLICY_FILE;
+
+    // 预载 rules B（transfer 拒绝）→ 裁决必须依据 B：若实现忽略预载参数
+    // 重新读文件，会拿 A 放行 —— 指纹(基于 B)与裁决(A)失真。
+    const preloaded = [{ action: 'transfer', enabled: false }];
+    const verdict = evaluatePolicy({ action: 'transfer', amount: '1' }, { rules: preloaded });
+    assert.equal(verdict.allowed, false, 'preloaded rules must take precedence over the file');
+    assert.match(verdict.reason, /disabled by policy/);
+
+    // 不传预载 → 照旧热读文件（向后兼容）。
+    const fromFile = evaluatePolicy({ action: 'transfer', amount: '1' });
+    assert.deepEqual(fromFile, { allowed: true });
+
+    // 预载空表 → 放行（与空文件语义一致）。
+    const emptyPreload = evaluatePolicy({ action: 'transfer', amount: '1' }, { rules: [] });
+    assert.deepEqual(emptyPreload, { allowed: true });
+  } finally {
+    delete process.env.SMART_ACCOUNT_POLICY_FILE;
+  }
+});
+
 // ─── T2.1 server 集成：preview arming 落盘 ───────────────────────────────
 test('T2.1 signed preview arms the gate AND persists the simulation to state file', async () => {
   const out = await setupAccount();

@@ -29,8 +29,12 @@
       `policy_change` 审计（旧→新指纹 + 快照 + context），execute 门禁与 smart_account_policy 均接入
 - T2.3 audit schema 校验 ✅：audit-log.js 新增 AUDIT_SCHEMA + validateAuditEntry，
       recordAudit 违规 → stderr `[audit] SCHEMA VIOLATION`（不静默、不中断）
-- 测试：mcp-smart-account-t2.test.js（6 用例：schema/roundtrip/arming 落盘/policy_change×2/稳定字段）
-- 回归：mcp-server 48/48 全绿（agent-sdk 48/48 未受影响）
+- 测试：mcp-smart-account-t2.test.js（7 用例：schema/roundtrip/TOCTOU 回归/arming 落盘/policy_change×2/稳定字段）
+      + smoke T2.1 重启窗口恢复（外部链 E2E：arm→重启→同 digest 放行/异 digest 仍拦截）
+- 回归：mcp-server 50/50 全绿（agent-sdk 48/48 未受影响）
+- 复核修复（v1.2.1）：execute 门禁单次读取策略文件——指纹与裁决同一份规则
+      （消除热更新 TOCTOU 致审计失真 + 每次执行 2 次读盘）；补 restoreSimulationLog 端到端回归
+- 已知限制：LocalChain 模式 arming 落盘但不恢复（与 accounts/txLedger 既有行为一致，临时链）
 
 ## T3 Relayer 运营化（在已有 txLedger 上补）
 - T3.1 nonce 冲突恢复（BadNonce → 重新同步 nonce 重试）
@@ -54,3 +58,4 @@ T1 全部完成后提交一版（先落 message security 主线），T2-T4 再�
 | 2026-08-22 | v1.0 | 初次生成（基于 Sprint 3 复核对齐） |
 | 2026-08-22 | v1.1 | T1 全部落地（transport-security.js / service-identity.js / coordination 接线 / E2E） |
 | 2026-08-22 | v1.2 | T2 全部落地（simulationLog 持久化 / policy_change 审计 / audit schema 校验） |
+| 2026-08-22 | v1.2.1 | T2 复核修复：策略单次读取消 TOCTOU + 重启窗口恢复 E2E 回归 |

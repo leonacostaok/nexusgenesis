@@ -984,8 +984,9 @@ async function handleSmartAccountExecute(args) {
   // 2) Policy Engine gate (T2): chain-agnostic soft policy evaluated before
   //    the relayer broadcasts — a rejection here never touches the chain.
   //    (Policy Engine -> Signer/Relayer -> Smart Account)
-  maybeAuditPolicyChange('smart_account_execute gate'); // T2.2: rules change is auditable
-  const verdict = evaluatePolicy({ action: payload?.action, amount: payload?.amount });
+  // T2.2 单次读取：同一份规则既做指纹审计又做裁决（见 maybeAuditPolicyChange）。
+  const policyNow = maybeAuditPolicyChange('smart_account_execute gate');
+  const verdict = evaluatePolicy({ action: payload?.action, amount: payload?.amount }, { rules: policyNow.rules });
   if (!verdict.allowed) {
     incr('smart_account_policy_rejected');
     recordAudit({ tool: 'smart_account_execute', ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, errorName: verdict.code, error: verdict.code, broadcaster, gate: 'policy', reason: verdict.reason });
@@ -1118,32 +1119,35 @@ async function handleSmartAccountSimulationPolicy(args) {
 // on change, record an auditable policy_change event (old→new fingerprint +
 // snapshot) so policy evolution is traceable across time.
 function maybeAuditPolicyChange(context) {
+  // 单次读取：指纹记录的规则集 = 调用方实际用于评估的规则集。若这里与
+  // evaluatePolicy 各自独立读文件，两次读取之间的一次热更新会让审计指纹
+  // 与实际生效裁决不一致（审计轨迹失真，TOCTOU）。
   const snap = policySnapshot();
   const rules = Array.isArray(snap.rules) ? snap.rules : [];
-  const fp = crypto.createHash('sha256').update(JSON.stringify(rules)).digest('hex');
-  if (fp !== lastPolicyFingerprint) {
+  const fingerprint = crypto.createHash('sha256').update(JSON.stringify(rules)).digest('hex');
+  if (fingerprint !== lastPolicyFingerprint) {
     recordAudit({
       tool: 'policy_change',
       ok: true,
-      fingerprint: fp,
+      fingerprint,
       previousFingerprint: lastPolicyFingerprint,
       source: snap.source,
       rules,
       context: context || 'policy evaluated',
     });
-    lastPolicyFingerprint = fp;
+    lastPolicyFingerprint = fingerprint;
   }
-  return fp;
+  return { source: snap.source, rules, fingerprint };
 }
 
 /** Current Policy Engine rules (Sprint 3 T2), auditable. */
 async function handleSmartAccountPolicy() {
-  maybeAuditPolicyChange('smart_account_policy query');
+  const snap = maybeAuditPolicyChange('smart_account_policy query');
   return {
     content: [{ type: 'text', text: JSON.stringify({
       success: true,
-      policy: policySnapshot(),
-      fingerprint: lastPolicyFingerprint,
+      policy: { source: snap.source, rules: snap.rules },
+      fingerprint: snap.fingerprint,
       note: 'Soft policy is evaluated before the relayer broadcasts (Policy Engine -> Signer/Relayer -> Smart Account). Rejections here never touch the chain.',
     }, null, 2) }],
   };

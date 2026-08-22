@@ -347,3 +347,45 @@ test('T4.3 restart recovery: persisted account restored on the same external cha
   assert.equal(exec.success, true, JSON.stringify(exec));
   assert.equal(exec.amount, '25');
 });
+
+// ─────────────────────────────────────────────────────────────────────────
+// Sprint 4 T2.1：重启恢复模拟窗口（simulationLog 持久化的端到端回归）
+// 本 suite 其余用例聚焦链上语义（gate opt-out）；此用例显式开启 gate 验证
+// T2.1 的核心承诺：arming 落盘 → 重启 → 窗口恢复（不丢、不重置、不过度放行）。
+// ─────────────────────────────────────────────────────────────────────────
+test('T2.1 restart keeps the armed simulation window (persisted + restored)', async () => {
+  const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
+  const savedGate = process.env.SMART_ACCOUNT_SIMULATION_GATE;
+  process.env.SMART_ACCOUNT_SIMULATION_GATE = '1';
+  try {
+    // 重启 #1：从状态文件恢复账户（T4.3 已执行 nonce 3，这里用 nonce 4）。
+    __resetSmartAccountForTest();
+    const est = await callTool('smart_account_estimate_loss', {});
+    assert.equal(est.success, true, JSON.stringify(est));
+
+    // 签名 preview（arm）→ arming 随状态文件落盘。
+    const intent = { ...INTENT, nonce: '4' };
+    const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent, privateKeyHex: AGENT_PK });
+    const prev = await callTool('smart_account_preview', { ...intent, nonce: 4, signature: signed.signature });
+    assert.equal(prev.wouldExecute, true, JSON.stringify(prev));
+
+    // 重启 #2：内存 simulationLog 清空，只能靠状态文件恢复。
+    __resetSmartAccountForTest();
+    const est2 = await callTool('smart_account_estimate_loss', {});
+    assert.equal(est2.success, true, JSON.stringify(est2));
+
+    // 同一 digest：恢复的窗口放行（重启不丢 arming）。
+    const exec = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
+    assert.equal(exec.success, true, JSON.stringify(exec));
+
+    // 反向验证：恢复的窗口只覆盖已模拟的 digest——不同 digest 仍 fail-closed。
+    const other = { ...INTENT, nonce: '5' };
+    const signedOther = signSmartAccountIntent({ session: SESSION_BINDING, intent: other, privateKeyHex: AGENT_PK });
+    const blocked = await callTool('smart_account_execute', { payload: signedOther.payload, signature: signedOther.signature });
+    assert.equal(blocked.success, false);
+    assert.equal(blocked.error, 'SimulationRequired');
+  } finally {
+    if (savedGate === undefined) delete process.env.SMART_ACCOUNT_SIMULATION_GATE;
+    else process.env.SMART_ACCOUNT_SIMULATION_GATE = savedGate;
+  }
+});

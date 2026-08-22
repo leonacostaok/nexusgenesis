@@ -73,14 +73,18 @@ function amountExceeds(amount, limit) {
 /**
  * 链下软策略评估。
  * @param {object} intent { action, amount, chain, asset, recipient, method }
+ * @param {object} [opts]
+ * @param {Array} [opts.rules] 已加载的规则表（跳过重读）。调用方（server.js execute
+ *   门禁）先做一次读取并同时用于「指纹审计 + 评估」——避免两次独立读取之间文件被
+ *   热更新导致审计指纹与实际裁决规则不一致（TOCTOU）。
  * @returns {{ allowed: true }} 或 {{ allowed: false, code: 'PolicyRejected', reason: string }}
  */
-export function evaluatePolicy(intent = {}) {
+export function evaluatePolicy(intent = {}, { rules } = {}) {
   const { action, amount } = intent;
-  const rules = loadPolicy();
-  if (!Array.isArray(rules) || rules.length === 0) return { allowed: true };
+  const effective = Array.isArray(rules) ? rules : loadPolicy();
+  if (!Array.isArray(effective) || effective.length === 0) return { allowed: true };
 
-  const rule = rules.find((r) => r && r.action === action);
+  const rule = effective.find((r) => r && r.action === action);
   if (!rule) return { allowed: true }; // 未命中规则 → 软策略不拦截，链上兜底
 
   if (rule.enabled === false) {

@@ -11,7 +11,8 @@
     "./smart-account": "./src/smart-account.js",
     "./message-security": "./src/message-security.js",
     "./service-identity": "./src/service-identity.js",
-    "./transport-security": "./src/transport-security.js"
+    "./transport-security": "./src/transport-security.js",
+    "./mtls-server": "./src/mtls-server.js"
   },
   "files": [
     "src",

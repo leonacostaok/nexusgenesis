@@ -12,7 +12,8 @@
     "./message-security": "./src/message-security.js",
     "./service-identity": "./src/service-identity.js",
     "./transport-security": "./src/transport-security.js",
-    "./mtls-server": "./src/mtls-server.js"
+    "./mtls-server": "./src/mtls-server.js",
+    "./store-interface": "./src/store-interface.js"
   },
   "files": [
     "src",

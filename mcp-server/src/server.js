@@ -28,9 +28,11 @@ import {
   recordBroadcast,
   serializeEntry,
   getChainStateFile,
+  isSharedBackend,
   initTxLedger,
   recordTx,
   listTx,
+  getStateBackend,
   __resetTxLedgerForTest,
 } from './chain-state-store.js';
 import {
@@ -42,6 +44,10 @@ import {
   executeWithRelayerResilience,
   classifyRelayerFailure,
 } from './relayer-operations.js';
+import {
+  createNonceSequencer,
+  createBroadcastReconciler,
+} from './relayer-coordinator.js';
 import {
   classifySimulationRisk,
   simulationPolicySnapshot,
@@ -1069,10 +1075,32 @@ async function handleSmartAccountExecute(args) {
   }
 
   incr('smart_account_execute_total');
+  // T4 — 多实例 relayer 协调（Sprint 6 T4.1/T4.2/T4.3）：仅在共享 sqlite 后端
+  // 激活。非ce 由共享 store 原子分配（全局唯一，杜绝两实例同 nonce 竞争），
+  // 广播前先查共享台账去重（另一实例已落账 → 直接复用结果）。其余模式
+  // （纯内存 / local .json）→ 不传 coordinator，退化为现基线（ethers 自读
+  // nonce，绝不影响单实例行为）。显式共享后端但构造失败 → 显式降级 legacy
+  // （fail-safe，不静默多实例不安全）。
+  let coordinator = null;
+  if (isSharedBackend()) {
+    try {
+      coordinator = {
+        sequencer: createNonceSequencer(getStateBackend()),
+        reconciler: createBroadcastReconciler({ listTx }),
+      };
+    } catch {
+      coordinator = null;
+    }
+  }
   // T3.1/T3.2 — Relayer 韧性：瞬时 RPC 失败 / EOA nonce 冲突指数退避重试；
   // 广播后 wait 失败先对账 receipt；合约确定性拒绝（含 BadNonce 意图重放）不重试。
   const res = await executeWithRelayerResilience({
     conn, payload, signature, relayer, provider: env.provider,
+    accountId: resolvedAccountId, payloadDigest,
+    ...(coordinator ? {
+      coordinator, chainUrl: env.chainUrl, broadcaster,
+      instanceId: process.env.NEXUS_INSTANCE_ID || 'default',
+    } : {}),
   });
   if (res.retried) incr('smart_account_execute_retried', res.attempts - 1);
   if (res.ok) {

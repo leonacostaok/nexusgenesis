@@ -18,6 +18,7 @@
  */
 
 import { SMART_ACCOUNT_ERRORS } from './smart-account-errors.js';
+import { isNonceConflict } from './relayer-coordinator.js';
 
 /** Clamp 一个 env 整数到 [min, max]；未设置/非法时用 fallback。 */
 function clampInt(raw, fallback, min, max) {
@@ -125,32 +126,81 @@ export async function reconcileReceipt(conn, provider, txHash) {
  * @param {object} [params.opts]
  * @param {number} [params.opts.maxRetries]
  * @param {number} [params.opts.backoffMs]
+ * @param {object} [params.coordinator] - Sprint 6 T4: optional distributed nonce
+ *   coordinator `{ sequencer, reconciler }`. When provided AND a nonce is available,
+ *   the broadcast uses `sequencer.acquireNonce(chainUrl, broadcaster, {instanceId})`
+ *   to get a globally-unique EOA nonce (instead of relying solely on node pending
+ *   count), passes it as the tx override, and re-acquires on NONCE_CONFLICT. When
+ *   omitted/absent store → pure legacy behavior (ethers reads node nonce).
+ * @param {string} [params.chainUrl] - for nonce sequencer key (T4)
+ * @param {string} [params.broadcaster] - relayer EOA identifier (T4)
+ * @param {string} [params.instanceId] - this instance's id for audit (T4)
+ * @param {string} [params.accountId] - resolved account id for reconcile-dedupe (T4.2).
+ *   Prefer explicit — production canonical payloads don't carry `.accountId`.
+ * @param {string} [params.payloadDigest] - canonical intent digest for reconcile-dedupe
+ *   (T4.2). Prefer explicit — production payloads carry it as a separate field.
  * @returns {Promise<object>} executeFromAgent 同构 + { attempts, retried, retryable?, code? }
  */
-export async function executeWithRelayerResilience({ conn, payload, signature, relayer, provider, opts = {} }) {
+export async function executeWithRelayerResilience({ conn, payload, signature, relayer, provider, opts = {}, coordinator, chainUrl, broadcaster, instanceId, accountId, payloadDigest }) {
   const maxRetries = clampInt(opts.maxRetries ?? process.env.RELAYER_MAX_RETRIES, 2, 0, 5);
   const backoffMs = clampInt(opts.backoffMs ?? process.env.RELAYER_RETRY_BACKOFF_MS, 250, 0, 10000);
   const recProvider = provider ?? (conn.contract.runner?.provider ?? (typeof conn.contract.runner?.getTransactionReceipt === 'function' ? conn.contract.runner : null));
 
   let attempts = 0;
   let pendingWaitFailedHash = null; // 已广播但 wait 失败的 txHash（先对账再决定重试）
+  let coordinatedNonce = null;      // T4: 本次广播协调出的 EOA nonce
+
+  // T4: pre-broadcast reconcile-dedupe — 若该意图已被本族别实例落账，直接短路。
+  if (coordinator?.reconciler?.isAlreadyLanded) {
+    // 生产 canonical payload 不含 .accountId/.digest → 用显式入参；缺任一即跳过
+    // （isAlreadyLanded 内部也已判空，绝不误判）。
+    const dedupeAccountId = accountId ?? payload?.accountId;
+    const dedupeDigest = payloadDigest ?? payload?.digest ?? null;
+    const landed = dedupeAccountId && dedupeDigest
+      ? coordinator.reconciler.isAlreadyLanded(dedupeAccountId, dedupeDigest)
+      : null;
+    if (landed) {
+      return {
+        ok: landed.status === 'confirmed',
+        txHash: landed.txHash,
+        accountId: dedupeAccountId,
+        sessionId: payload?.sessionId ?? landed.sessionId ?? null,
+        reconciled: true,
+        deduplicated: true,
+        attempts: 0,
+        retried: false,
+      };
+    }
+  }
 
   for (;;) {
     attempts += 1;
-    const res = await conn.executeFromAgent({ payload, signature, signer: relayer });
+    // T4: 协调出唯一 nonce（共享 store 原子递增），失败则退化为不传（ethers 自读）。
+    coordinatedNonce = null;
+    if (coordinator?.sequencer && chainUrl && broadcaster) {
+      try {
+        coordinatedNonce = await coordinator.sequencer.acquireNonce(chainUrl, broadcaster, { instanceId });
+      } catch {
+        coordinatedNonce = null; // 协调失败 → 走 legacy（ethers 自读），fail-safe 不阻断广播
+      }
+    }
+    const res = await conn.executeFromAgent({
+      payload, signature, signer: relayer,
+      ...(coordinatedNonce != null ? { nonce: coordinatedNonce } : {}),
+    });
 
-    if (res.ok) return { ...res, attempts, retried: attempts > 1 };
+    if (res.ok) return { ...res, attempts, retried: attempts > 1, coordinatedNonce };
 
     // 广播成功但 wait 失败：对账 —— 已落账则不重发。
     if (res.waitFailed && res.txHash) {
       pendingWaitFailedHash = res.txHash;
       const reconciled = await reconcileReceipt(conn, recProvider, res.txHash);
-      if (reconciled) return { ...reconciled, attempts, retried: attempts > 1, reconciled: true };
+      if (reconciled) return { ...reconciled, attempts, retried: attempts > 1, reconciled: true, coordinatedNonce };
     }
 
     const cls = classifyRelayerFailure(res);
-    if (!cls.retryable) return { ...res, ...cls, attempts, retried: attempts > 1 };
-    if (attempts > maxRetries) return { ...res, ...cls, attempts, retried: attempts > 1, retriesExhausted: true };
+    if (!cls.retryable) return { ...res, ...cls, attempts, retried: attempts > 1, coordinatedNonce };
+    if (attempts > maxRetries) return { ...res, ...cls, attempts, retried: attempts > 1, retriesExhausted: true, coordinatedNonce };
 
     await sleep(backoffMs * 2 ** (attempts - 1));
     // 退避期间广播可能已落账：重发前再对账一次，避免为已落账的意图
@@ -158,8 +208,10 @@ export async function executeWithRelayerResilience({ conn, payload, signature, r
     // 条目会被浪费/污染）。
     if (pendingWaitFailedHash) {
       const landed = await reconcileReceipt(conn, recProvider, pendingWaitFailedHash);
-      if (landed) return { ...landed, attempts, retried: attempts > 1, reconciled: true };
+      if (landed) return { ...landed, attempts, retried: attempts > 1, reconciled: true, coordinatedNonce };
       pendingWaitFailedHash = null;
     }
+    // T4: EOA nonce 冲突时，下一轮会从 sequencer 重新协调一个 fresh nonce
+    // （isNonceConflict 与 classify 一致，此处仅为明确语义保留说明）。
   }
 }

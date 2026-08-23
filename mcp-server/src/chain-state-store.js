@@ -66,6 +66,18 @@ export function getChainStateFile() {
 }
 
 /**
+ * 是否为「共享多实例」后端（sqlite）——T4 relayer 非ce 协调/跨实例对账去重
+ * 仅在共享后端启用时激活，避免单机/local/纯内存模式改变基线行为。
+ * @returns {boolean}
+ */
+export function isSharedBackend() {
+  const file = getChainStateFile();
+  if (!file) return false; // 纯内存 → 单机
+  if (process.env.NEXUS_STORE_BACKEND === 'sqlite') return true;
+  return /\.(sqlite3?|db)$/i.test(file);
+}
+
+/**
  * 旧格式检测 + 迁移：SMART_ACCOUNT_STATE_FILE 指向 Sprint 2.6 全量 JSON
  * （顶层 accounts 数组）→ 迁入行级 store，原文件留 .bak。返回迁移负载或 null。
  *

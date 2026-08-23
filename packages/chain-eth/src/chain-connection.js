@@ -402,9 +402,13 @@ export class ChainConnection {
    * @param {object} opts.payload - canonical intent payload
    * @param {string} opts.signature - 65-byte (r||s||v) hex signature
    * @param {ethers.Signer} [opts.signer] - broadcaster EOA (anyone may relay)
+   * @param {string|number|bigint} [opts.nonce] - Sprint 6 T4: explicit EOA nonce
+   *   override, passed as the ethers tx override. When omitted (default/legacy)
+   *   ethers reads a fresh nonce from the node, exactly as before. Only used by
+   *   the distributed nonce coordinator (relayer-coordinator.js).
    * @returns {Promise<{ok: true, txHash, receipt, txId, amount, sessionId} | {ok:false,...}>}
    */
-  async executeFromAgent({ payload, signature, signer } = {}) {
+  async executeFromAgent({ payload, signature, signer, nonce } = {}) {
     let struct;
     try {
       struct = intentToStruct(payload);
@@ -412,9 +416,15 @@ export class ChainConnection {
       return { ok: false, reason: err.message };
     }
     try {
-      const tx = await this.contract
-        .connect(signer ?? this.contract.runner)
-        .executeFromAgent(struct, signature);
+      // Sprint 6 T4: an explicit EOA nonce override is appended ONLY when one was
+      // coordinated. Passing a trailing `undefined` here would make ethers treat
+      // it as a 3rd positional arg and fail to match the 2-arg executeFromAgent
+      // fragment ("no matching fragment") — so when nonce is absent we keep the
+      // exact legacy 2-arg call.
+      const connected = this.contract.connect(signer ?? this.contract.runner);
+      const tx = nonce != null
+        ? await connected.executeFromAgent(struct, signature, { nonce: BigInt(nonce) })
+        : await connected.executeFromAgent(struct, signature);
       let receipt;
       try {
         receipt = await tx.wait();

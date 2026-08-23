@@ -50,6 +50,8 @@ import {
 import {
   evaluatePolicy,
   policySnapshot,
+  createDailyCumulativeStore,
+  resolveSimulationRequirement,
 } from './policy-engine.js';
 import {
   recordAudit,
@@ -166,12 +168,17 @@ const simulationLog = new Map();
 // auditable policy_change event (hot-reload traceability).
 let lastPolicyFingerprint = null;
 
+// Sprint 5 T2.1 — process-local daily cumulative store behind the soft-policy
+// maxDaily. Single-process semantics; multi-instance shared state is Sprint 6.
+const dailyCumulativeStore = createDailyCumulativeStore();
+
 /** Reset the local Smart Account so each test/setup is independent. */
 export function __resetSmartAccountForTest() {
   smartAccounts.clear();
   smartAccountContext = null;
   simulationLog.clear();
   lastPolicyFingerprint = null;
+  dailyCumulativeStore.reset();
   __resetAuditForTest();
   __resetMetricsForTest();
   __resetTxLedgerForTest();
@@ -980,13 +987,16 @@ async function handleSmartAccountExecute(args) {
   const broadcaster = relayer.address;
 
   // ── Sprint 3 链下双门禁（不消耗 nonce、不走链、省 gas）─────────────────
-  // 1) Simulation gate (T1): actions that MUST pass a successful on-chain
-  //    simulation are fail-closed unless a signed preview armed this exact
-  //    digest within SIMULATION_WINDOW_MS. Default ON (safe by default);
+  // 0) 单次读取 policy（供模拟门禁收紧 + policy 裁决 + 指纹审计共用，杜绝 TOCTOU）。
+  const policyNow = maybeAuditPolicyChange('smart_account_execute gate');
+  // 1) Simulation gate (T1+S5-T2.2): actions that MUST pass a successful
+  //    on-chain simulation are fail-closed unless a signed preview armed this
+  //    exact digest within SIMULATION_WINDOW_MS. Default ON (safe by default);
   //    set SMART_ACCOUNT_SIMULATION_GATE=0 only to opt out (e.g. legacy
-  //    callers during migration — never in production).
+  //    callers during migration — never in production). Sprint 5 T2.2: policy
+  //    requiresSimulation can only TIGHTEN the static risk, never relax it.
   const simulationGateOn = process.env.SMART_ACCOUNT_SIMULATION_GATE !== '0';
-  const sim = classifySimulationRisk(payload?.action);
+  const sim = resolveSimulationRequirement(payload?.action, { rules: policyNow.rules });
   if (simulationGateOn && sim.requiresSimulation) {
     const armed = simulationLog.get(resolvedAccountId);
     const fresh = !!armed && armed.digest === payloadDigest && Date.now() - armed.at <= SIMULATION_WINDOW_MS;
@@ -1009,8 +1019,11 @@ async function handleSmartAccountExecute(args) {
   //    the relayer broadcasts — a rejection here never touches the chain.
   //    (Policy Engine -> Signer/Relayer -> Smart Account)
   // T2.2 单次读取：同一份规则既做指纹审计又做裁决（见 maybeAuditPolicyChange）。
-  const policyNow = maybeAuditPolicyChange('smart_account_execute gate');
-  const verdict = evaluatePolicy({ action: payload?.action, amount: payload?.amount }, { rules: policyNow.rules });
+  // S5-T2.1: 传入 daily store + accountId 以消费 maxDaily（账户级日累计）。
+  const verdict = evaluatePolicy(
+    { action: payload?.action, amount: payload?.amount },
+    { rules: policyNow.rules, store: dailyCumulativeStore, accountId: resolvedAccountId },
+  );
   if (!verdict.allowed) {
     incr('smart_account_policy_rejected');
     recordAudit({ tool: 'smart_account_execute', ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, errorName: verdict.code, error: verdict.code, broadcaster, gate: 'policy', reason: verdict.reason });
@@ -1023,6 +1036,18 @@ async function handleSmartAccountExecute(args) {
       }, null, 2) }],
       isError: true,
     };
+  }
+
+  // S5-T2.1 fix#1 — 门禁通过且 maxDaily 生效时，立即把本笔 amount 预留进当日
+  // 累计（检查与累计压进同一同步段），消除「检查通过 → 链上 await → 才累计」
+  // 窗口内并发 execute 双双通过的 check-then-act 竞态。链上失败/未确认在
+  // 下方回滚（store.subtract），confirmed 则保持占用。
+  let dailyReservation = null;
+  if (verdict.daily) {
+    const reservedTotal = dailyCumulativeStore.add(resolvedAccountId, payload?.action, payload.amount);
+    if (reservedTotal !== null) {
+      dailyReservation = { total: reservedTotal, amount: String(payload.amount) };
+    }
   }
 
   incr('smart_account_execute_total');
@@ -1044,7 +1069,23 @@ async function handleSmartAccountExecute(args) {
       gasUsed: res.receipt?.gasUsed != null ? res.receipt.gasUsed.toString() : null,
       errorName: null, submittedAt, confirmedAt: submittedAt,
     });
-    recordAudit({ tool: 'smart_account_execute', ok: true, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, txHash: res.txHash, broadcaster, attempts: res.attempts, retried: res.retried || false, reconciled: res.reconciled || false });
+    // S5-T2.1 fix#1 — 预留制：confirmed 保持占用（dailyTotal 即预留后的当日
+    // 累计）；已挖出但 revert（status-0）不产生真实花费 → 回滚预留。
+    let dailyTotal = null;
+    let dailyAction = null;
+    if (status === 'confirmed' && dailyReservation) {
+      dailyTotal = dailyReservation.total;
+      dailyAction = payload?.action;
+    } else if (dailyReservation) {
+      dailyCumulativeStore.subtract(resolvedAccountId, payload?.action, payload.amount);
+    }
+    recordAudit({
+      tool: 'smart_account_execute', ok: true, accountId: resolvedAccountId, sessionId: s.sessionId,
+      payloadDigest, txHash: res.txHash, broadcaster, attempts: res.attempts, retried: res.retried || false,
+      reconciled: res.reconciled || false,
+      dailyTotal: dailyTotal ?? null, dailyAction: dailyAction ?? null,
+      daily: dailyTotal !== null && dailyAction ? `${dailyAction}@${dailyTotal}` : null,
+    });
     logStructured('smart_account_execute', { ok: true, accountId: resolvedAccountId, sessionId: s.sessionId, txHash: res.txHash, status, broadcaster, attempts: res.attempts, retried: res.retried || false, reconciled: res.reconciled || false });
     // Record the latest broadcast txHash + persist (Sprint 2.6 T2) so an
     // operator can audit "what did this account last broadcast" across restarts.
@@ -1066,6 +1107,10 @@ async function handleSmartAccountExecute(args) {
   // Normalized typed error (Sprint 2.6 T3): fixed semantic code on the wire.
   // T3: use the relayer classification code when it is more specific than the
   // generic normalize (e.g. NONCE_CONFLICT for EOA nonce vs BadNonce intent replay).
+  // S5-T2.1 fix#1 — 执行失败（未确认/未广播）→ 回滚 maxDaily 预留。
+  if (dailyReservation) {
+    dailyCumulativeStore.subtract(resolvedAccountId, payload?.action, payload.amount);
+  }
   const { error } = normalizeChainError(res, GENERIC_ERRORS.UNKNOWN_REVERT);
   const errorCode = res.code && res.code !== 'UNKNOWN_REVERT' ? res.code : error;
   incr('smart_account_execute_failed');
@@ -1133,14 +1178,17 @@ async function handleSmartAccountMetrics() {
 async function handleSmartAccountSimulationPolicy(args) {
   const { action } = args || {};
   const policy = simulationPolicySnapshot();
-  const risk = action ? classifySimulationRisk(action) : null;
+  // S5 fix#2 — 与 execute 门禁同一合并语义（resolveSimulationRequirement：
+  // policy requiresSimulation 只能收紧静态分级），单次读取避免答案与门禁漂移。
+  const policyNow = maybeAuditPolicyChange('smart_account_simulation_policy query');
+  const risk = action ? resolveSimulationRequirement(action, { rules: policyNow.rules }) : null;
   return {
     content: [{ type: 'text', text: JSON.stringify({
       success: true,
       policy,
       action: action || null,
       risk,
-      note: 'Fail-closed: actions not in the known lists require a successful signed preview (smart_account_preview with signature → wouldExecute=true) before smart_account_execute within the window.',
+      note: 'Fail-closed: actions not in the known lists require a successful signed preview (smart_account_preview with signature → wouldExecute=true) before smart_account_execute within the window. Effective requirement = static risk TIGHTENED by policy requiresSimulation (never relaxed); risk.staticLevel vs risk.level shows any policy tightening.',
     }, null, 2) }],
   };
 }

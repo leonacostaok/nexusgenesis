@@ -18,7 +18,7 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { createServer, __resetSmartAccountForTest } from '../src/server.js';
 import { classifySimulationRisk } from '../src/simulation-policy.js';
-import { evaluatePolicy, policySnapshot } from '../src/policy-engine.js';
+import { evaluatePolicy, policySnapshot, createDailyCumulativeStore, resolveSimulationRequirement, todayKey } from '../src/policy-engine.js';
 
 const STATE_FILE = join(tmpdir(), `sim-policy-state-${process.pid}-${Date.now()}.json`);
 const POLICY_FILE = join(tmpdir(), `sim-policy-rules-${process.pid}-${Date.now()}.json`);
@@ -298,6 +298,194 @@ test('T2 policy maxPerTx rejection happens off-chain (never touches chain)', asy
     // 链上未发生任何 execute 广播：tx 台账为空。
     const st = await callTool('smart_account_tx_status', { txHash: '0x' + 'ee'.repeat(32) });
     assert.equal(st.recorded.length, 0);
+  } finally {
+    delete process.env.SMART_ACCOUNT_POLICY_FILE;
+  }
+});
+
+// ─── Sprint 5 T2.1 — maxDaily 进程内日累计 ──────────────────────────────
+test('S5-T2.1 createDailyCumulativeStore: add/total/rollover-by-utc-day', () => {
+  const store = createDailyCumulativeStore();
+  const day = todayKey();
+  const OTHER_DAY = '2020-01-01'; // 未触及的"昨日"
+
+  assert.equal(store.total('acct1', 'transfer', day), '0');
+  assert.equal(store.add('acct1', 'transfer', '40', day), '40');
+  assert.equal(store.add('acct1', 'transfer', '5', day), '45');
+  // 跨 action / account 隔离。
+  assert.equal(store.total('acct1', 'withdraw', day), '0');
+  assert.equal(store.total('acct2', 'transfer', day), '0');
+
+  // 跨日滚动：对 account3 用 OTHER_DAY 累计后，同一日查询得到该日累计；
+  // 再用今日 add（首次触及今日）→ 今日从零累计，旧日桶被剪枝但仍可读今日值。
+  assert.equal(store.add('acct3', 'transfer', '10', OTHER_DAY), '10');
+  // 同 key 的 acct3+transfer：加 OTHER_DAY 后再加今日，今日独立从 0 开始。
+  assert.equal(store.add('acct3', 'transfer', '7', day), '7');
+  assert.equal(store.total('acct3', 'transfer', day), '7');
+
+  // acct1 的今日累计仍保留（各自独立桶，剪枝不影响 acct1）。
+  assert.equal(store.total('acct1', 'transfer', day), '45');
+
+  store.reset();
+  assert.equal(store.total('acct1', 'transfer', day), '0');
+});
+
+test('S5-T2.1 evaluatePolicy maxDaily: cumulative gate fail-closed + add-on confirmed spend', () => {
+  try {
+    writeFileSync(POLICY_FILE, JSON.stringify({
+      rules: [{ action: 'transfer', enabled: true, maxPerTx: '100', maxDaily: '80' }],
+    }), 'utf8');
+    process.env.SMART_ACCOUNT_POLICY_FILE = POLICY_FILE;
+
+    // 无 store → maxDaily 不生效（soft-pass，链上兜底）；amount 在 maxPerTx 之内，仅 maxDaily 缺 store。
+    assert.deepEqual(evaluatePolicy({ action: 'transfer', amount: '60' }, { rules: policySnapshot().rules }), { allowed: true });
+
+    const store = createDailyCumulativeStore();
+    const account = '0xA';
+    // 初始 0：本次 50 ≤ 80 → 放行，且 verdict 携带 daily 预留信息（fix#1）。
+    const pass = evaluatePolicy({ action: 'transfer', amount: '50', accountId: account }, { rules: policySnapshot().rules, store, accountId: account });
+    assert.equal(pass.allowed, true);
+    assert.equal(pass.daily.accountId, account);
+    assert.equal(pass.daily.used, '0');
+    assert.equal(pass.daily.projected, '50');
+    assert.equal(pass.daily.limit, '80');
+    // 已用 50 + 本次 40 = 90 > 80 → 拒绝。
+    store.add(account, 'transfer', '50');
+    const tooMuch = evaluatePolicy(
+      { action: 'transfer', amount: '40', accountId: account },
+      { rules: policySnapshot().rules, store, accountId: account },
+    );
+    assert.equal(tooMuch.allowed, false);
+    assert.equal(tooMuch.code, 'PolicyRejected');
+    assert.match(tooMuch.reason, /would exceed policy maxDaily 80/);
+
+    // fix#4：只传 intent.accountId（不传 opts.accountId）同样生效。
+    const viaIntent = evaluatePolicy(
+      { action: 'transfer', amount: '40', accountId: account },
+      { rules: policySnapshot().rules, store },
+    );
+    assert.equal(viaIntent.allowed, false);
+    assert.match(viaIntent.reason, /would exceed policy maxDaily 80/);
+  } finally {
+    delete process.env.SMART_ACCOUNT_POLICY_FILE;
+  }
+});
+
+test('S5-T2.1 fix#1 store.subtract: rollback a reservation (floor at 0)', () => {
+  const store = createDailyCumulativeStore();
+  store.add('acct', 'transfer', '30');
+  assert.equal(store.subtract('acct', 'transfer', '30'), '0');
+  assert.equal(store.total('acct', 'transfer'), '0');
+  // 减穿下限 → 钳位 0，不为负。
+  store.add('acct', 'transfer', '10');
+  assert.equal(store.subtract('acct', 'transfer', '99'), '0');
+  assert.equal(store.total('acct', 'transfer'), '0');
+  // 当日桶不存在（跨日回滚）→ null 不动账。
+  assert.equal(store.subtract('ghost', 'transfer', '5'), null);
+});
+
+// ─── Sprint 5 T2.2 — requiresSimulation：只收紧、不放宽 ─────────────────
+test('S5-T2.2 resolveSimulationRequirement: policy tightens, never relaxes', () => {
+  const staticTable = policySnapshot().rules; // 默认空表
+  // 空规则表 → 返回静态分级。
+  const t = resolveSimulationRequirement('transfer', { rules: staticTable });
+  assert.equal(t.requiresSimulation, true);   // transfer 静态 required
+  assert.equal(t.level, 'required');
+
+  // 静态 skippable 的 action（balance）被政策 requiresSimulation:true 收紧 → required。
+  const rules = [
+    { action: 'balance', enabled: true, requiresSimulation: true }, // 收紧 skippable
+    { action: 'transfer', enabled: true, requiresSimulation: false }, // 试图放宽 required → 忽略
+  ];
+  const tightened = resolveSimulationRequirement('balance', { rules });
+  assert.equal(tightened.requiresSimulation, true);
+  assert.equal(tightened.level, 'required');
+  assert.match(tightened.policyOverride, /tightened by policy/);
+
+  // 试图把静态 required 放宽为 false → 仍 required（fail-closed，不放宽）；
+  // override 为 'none'（policyForces 只认 ===true，false 不触发收紧也不改变裁决）。
+  const notRelaxed = resolveSimulationRequirement('transfer', { rules });
+  assert.equal(notRelaxed.requiresSimulation, true);
+  assert.equal(notRelaxed.policyOverride, 'none');
+  assert.match(notRelaxed.rationale, /value\/privilege-mutating/);
+
+  // 静态 required 且 policy 明确 requiresSimulation:true → reinforce（双重收紧）。
+  const reinforce = resolveSimulationRequirement('withdraw', {
+    rules: [{ action: 'withdraw', enabled: true, requiresSimulation: true }],
+  });
+  assert.equal(reinforce.requiresSimulation, true);
+  assert.match(reinforce.policyOverride, /reinforce/);
+});
+
+// ─── S5 fix#5 集成：policy 收紧 → 工具级真实被拦 ─────────────────────────
+test('S5-T2.2 policy tightens a skippable action → execute blocked, query tool agrees', async () => {
+  writeFileSync(POLICY_FILE, JSON.stringify({
+    rules: [{ action: 'status', enabled: true, requiresSimulation: true }],
+  }), 'utf8');
+  process.env.SMART_ACCOUNT_POLICY_FILE = POLICY_FILE;
+  try {
+    await setupAccount();
+    // 查询工具（fix#2）：答复与门禁同一合并语义 —— status 被收紧为 required。
+    const q = await callTool('smart_account_simulation_policy', { action: 'status' });
+    assert.equal(q.risk.requiresSimulation, true);
+    assert.equal(q.risk.level, 'required');
+    assert.equal(q.risk.staticLevel, 'skippable');
+    assert.match(q.risk.policyOverride, /tightened by policy/);
+
+    // 未经 preview 直接 execute（policy 收紧后 status 必须 preview）→ SimulationRequired。
+    const signed = await signSmartAccountIntentLocal({ ...INTENT, action: 'status', nonce: '1' });
+    const blocked = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
+    assert.equal(blocked.success, false);
+    assert.equal(blocked.error, 'SimulationRequired');
+    assert.equal(blocked.simulation.staticLevel, 'skippable');
+    assert.equal(blocked.simulation.level, 'required');
+    assert.match(blocked.simulation.policyOverride, /tightened by policy/);
+  } finally {
+    delete process.env.SMART_ACCOUNT_POLICY_FILE;
+  }
+});
+
+// ─── S5 fix#1/#5 集成：maxDaily 预留制（门禁即占用，失败回滚） ────────────
+test('S5-T2.1 maxDaily at tool level: reserve on gate, roll back on BadNonce replay, then reject over-limit', async () => {
+  writeFileSync(POLICY_FILE, JSON.stringify({
+    rules: [{ action: 'transfer', enabled: true, maxPerTx: '100', maxDaily: '80' }],
+  }), 'utf8');
+  process.env.SMART_ACCOUNT_POLICY_FILE = POLICY_FILE;
+  try {
+    await setupAccount();
+
+    // 1) transfer 25 → 成功（门禁即预留 used=25）。
+    const i1 = await signSmartAccountIntentLocal({ ...INTENT, amount: '25', nonce: '1' });
+    const p1 = await callTool('smart_account_preview', { ...INTENT, amount: '25', nonce: 1, signature: i1.signature });
+    assert.equal(p1.wouldExecute, true, JSON.stringify(p1));
+    const e1 = await callTool('smart_account_execute', { payload: i1.payload, signature: i1.signature });
+    assert.equal(e1.success, true, JSON.stringify(e1));
+
+    // 2) 同一 payload 重放 → 链上 BadNonce 失败 → 预留回滚（used 仍 25）。
+    const e2 = await callTool('smart_account_execute', { payload: i1.payload, signature: i1.signature });
+    assert.equal(e2.success, false);
+
+    // 3) 新 intent 55：25+55=80 ≤ 80 → 放行（若步骤 2 未回滚，50+55=105>80 会误拒）。
+    const i3 = await signSmartAccountIntentLocal({ ...INTENT, amount: '55', nonce: '2' });
+    const p3 = await callTool('smart_account_preview', { ...INTENT, amount: '55', nonce: 2, signature: i3.signature });
+    assert.equal(p3.wouldExecute, true, JSON.stringify(p3));
+    const e3 = await callTool('smart_account_execute', { payload: i3.payload, signature: i3.signature });
+    assert.equal(e3.success, true, JSON.stringify(e3));
+
+    // 4) 再 1：80+1 > 80 → PolicyRejected（off-chain，never touches chain）。
+    const i4 = await signSmartAccountIntentLocal({ ...INTENT, amount: '1', nonce: '3' });
+    await callTool('smart_account_preview', { ...INTENT, amount: '1', nonce: 3, signature: i4.signature });
+    const e4 = await callTool('smart_account_execute', { payload: i4.payload, signature: i4.signature });
+    assert.equal(e4.success, false);
+    assert.equal(e4.error, 'PolicyRejected');
+    assert.match(e4.reason, /would exceed policy maxDaily 80 \(used 80 \+ 1\)/);
+
+    // 成功审计携带当日累计（预留制语义：25 → '25'，55 → '80'）。
+    const audit = await callTool('smart_account_audit', {});
+    const okRows = audit.entries.filter((e) => e.tool === 'smart_account_execute' && e.ok === true && e.dailyTotal);
+    assert.equal(okRows.length, 2, JSON.stringify(okRows));
+    assert.equal(okRows[0].dailyTotal, '25');
+    assert.equal(okRows[1].dailyTotal, '80');
   } finally {
     delete process.env.SMART_ACCOUNT_POLICY_FILE;
   }

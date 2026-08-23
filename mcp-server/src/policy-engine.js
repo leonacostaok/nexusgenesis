@@ -1,5 +1,5 @@
 /**
- * policy-engine.js — Policy Engine 外置化 (Sprint 3 T2)
+ * Policy Engine 外置化 (Sprint 3 T2)
  *
  * 把策略从"写死在 Smart Account / JS 里"抽成链下软策略层：
  *
@@ -13,6 +13,10 @@
  *   - 软策略默认放行（空规则 = 不拦截），链上硬策略始终兜底 → 默认行为不变。
  *   - 命中规则且不满足（如 over maxPerTx / disabled action）→ 链下直接拒绝
  *     `PolicyRejected`，省 gas、不浪费链上调用。
+ *   - maxDaily：进程内日累计（Sprint 5 T2.1）。单机滚动窗口，超限 → 链下拒绝；
+ *     成功广播后由调用方 `addDailyCumulative` 累加。多实例共享状态留待 Sprint 6。
+ *   - requiresSimulation：策略可覆盖静态风险表（Sprint 5 T2.2），方向只能收紧
+ *     不能放宽（见 resolveSimulationRequirement）。
  *   - 规则表每次调用重读 `SMART_ACCOUNT_POLICY_FILE`（JSON），支持热更新；
  *     未设置该 env 时用内置默认规则。
  *
@@ -26,6 +30,7 @@
  *   }
  */
 import { readFileSync } from 'node:fs';
+import { classifySimulationRisk } from './simulation-policy.js';
 
 /** 内置默认规则：空表 = 软策略全放行（链上硬策略兜底）。 */
 const DEFAULT_RULES = [];
@@ -53,6 +58,87 @@ export function loadPolicy() {
 }
 
 /**
+ * BigInt 安全求和（maxDaily 日累计用）：金额是字符串（wei 级可能超出
+ * Number.MAX_SAFE_INTEGER），BigInt 精确相加；任一侧无法解析（malformed）→
+ * 返回 null，由上层 fail-closed 拒绝（不静默放行）。
+ * @returns {bigint|null} 两数之和；无法解析时 null
+ */
+function sumBigintSafe(a, b) {
+  try {
+    return BigInt(a) + BigInt(b);
+  } catch {
+    return null;
+  }
+}
+
+/** UTC 当日日期键（"YYYY-MM-DD"），maxDaily 滚动窗口按自然日滚动。 */
+export function todayKey(date = new Date()) {
+  const p = (n, w = 2) => String(n).padStart(w, '0');
+  return `${date.getUTCFullYear()}-${p(date.getUTCMonth() + 1)}-${p(date.getUTCDate())}`;
+}
+
+/**
+ * maxDaily 进程内日累计 store（Sprint 5 T2.1）。
+ * 按 accountId+action 各自累计，key = `${accountId}::${action}`，内部再按 UTC 日
+ * 分桶（bucket[day]）。跨日自动从零累计；仅保留当日桶（无界增长不适用，早于今日
+ * 的历史桶在首见今日 add 时剪枝）。
+ * 单机语义——多实例共享状态留待 Sprint 6。
+ */
+export function createDailyCumulativeStore() {
+  // key = `${accountId}::${action}`, value = Map<day, string>
+  const buckets = new Map();
+
+  function key(accountId, action) { return `${accountId}::${action}`; }
+
+  function bucket(accountId, action) {
+    let b = buckets.get(key(accountId, action));
+    if (!b) { b = new Map(); buckets.set(key(accountId, action), b); }
+    return b;
+  }
+
+  return {
+    /** 当前已累计（未命中/无当日记录 → 返回 '0'）。 */
+    total(accountId, action, day = todayKey()) {
+      const b = buckets.get(key(accountId, action));
+      return b ? (b.get(day) || '0') : '0';
+    },
+    /**
+     * 累加一笔，返回新的当日累计（字符串）。
+     * 首次触及今日时会剪枝掉非当日旧桶（跨日自动清零）。
+     * @returns {string} 成功返回新累计；malformed 返回 null
+     */
+    add(accountId, action, amount, day = todayKey()) {
+      const b = bucket(accountId, action);
+      const prev = b.get(day) || '0';
+      const next = sumBigintSafe(prev, amount);
+      if (next === null) return null;
+      b.set(day, next.toString());
+      // 剪枝：只保留当日（跨日滚动后旧桶无运营意义，且避免无界增长）。
+      for (const d of [...b.keys()]) if (d !== day) b.delete(d);
+      return next.toString();
+    },
+    /**
+     * 回滚一笔预留（S5-T2.1 fix#1：链上失败/未确认时归还额度）。
+     * 当日桶不存在（如跨日回滚）→ 返回 null 不动账（误差方向偏严格，安全）。
+     * @returns {string|null} 回滚后的当日累计；无法回滚时 null
+     */
+    subtract(accountId, action, amount, day = todayKey()) {
+      const b = buckets.get(key(accountId, action));
+      if (!b) return null;
+      const prev = b.get(day);
+      if (prev === undefined) return null;
+      const next = sumBigintSafe(prev, `-${amount}`);
+      if (next === null) return null;
+      const clamped = next < 0n ? 0n : next; // 防御性下限：不为负
+      b.set(day, clamped.toString());
+      return clamped.toString();
+    },
+    /** 清空（测试用）。 */
+    reset() { buckets.clear(); },
+  };
+}
+
+/**
  * 金额比较（BigInt 优先）：金额在本系统中是字符串（wei 级可能超出
  * Number.MAX_SAFE_INTEGER），Number() 会丢精度。整数串走 BigInt 精确比较；
  * 非整数走 Number 兜底；任一侧无法解析（malformed）→ 返回 null，
@@ -72,15 +158,23 @@ function amountExceeds(amount, limit) {
 
 /**
  * 链下软策略评估。
- * @param {object} intent { action, amount, chain, asset, recipient, method }
+ * @param {object} intent { action, amount, accountId, chain, asset, recipient, method }
  * @param {object} [opts]
  * @param {Array} [opts.rules] 已加载的规则表（跳过重读）。调用方（server.js execute
  *   门禁）先做一次读取并同时用于「指纹审计 + 评估」——避免两次独立读取之间文件被
  *   热更新导致审计指纹与实际裁决规则不一致（TOCTOU）。
- * @returns {{ allowed: true }} 或 {{ allowed: false, code: 'PolicyRejected', reason: string }}
+ * @param {object} [opts.store] createDailyCumulativeStore() 实例。仅当规则有
+ *   maxDaily 且传入 store 时进行日累计检查；否则视为 soft-pass（链上硬策略兜底）。
+ * @param {string} [opts.accountId] 日累计的所属账户。S5 fix#4：intent.accountId
+ *   与 opts.accountId 任传其一即可（intent 优先），消除双重传参脚枪。
+ * @returns {{ allowed: true, daily?: { accountId, action, amount, used, limit, projected } }}
+ *   或 {{ allowed: false, code: 'PolicyRejected', reason: string }}。
+ *   `daily` 仅在 maxDaily 检查实际发生且放行时携带——调用方据此立即预留额度
+ *   （消 check-then-act 竞态），链上失败再回滚。
  */
-export function evaluatePolicy(intent = {}, { rules } = {}) {
+export function evaluatePolicy(intent = {}, { rules, store, accountId: optsAccountId } = {}) {
   const { action, amount } = intent;
+  const accountId = intent.accountId ?? optsAccountId;
   const effective = Array.isArray(rules) ? rules : loadPolicy();
   if (!Array.isArray(effective) || effective.length === 0) return { allowed: true };
 
@@ -109,7 +203,86 @@ export function evaluatePolicy(intent = {}, { rules } = {}) {
     }
   }
 
+  // Sprint 5 T2.1 — maxDaily 进程内日累计。仅当调用方提供了 store（累计依赖
+  // 执行历史的账户级状态）且规则带 maxDaily 时检查。缺 store → soft-pass，
+  // 链上硬策略（最大每日损失上限）始终兜底。放行时携带 daily 预留信息，
+  // 调用方（server.js 门禁）据此在同一段内立即 add 预留，链上失败再回滚
+  // （消 check-then-act 竞态，见 store.subtract）。
+  if (rule.maxDaily !== undefined && store && accountId && amount !== undefined && amount !== null) {
+    const used = store.total(accountId, action);                 // '0' 或累计串
+    const sum = sumBigintSafe(used, amount);                     // 已用 + 本次
+    if (sum === null) {
+      return {
+        allowed: false,
+        code: 'PolicyRejected',
+        reason: `action '${action}' cumulative amount ${JSON.stringify(used)} or amount ${JSON.stringify(amount)} is not numeric (fail-closed)`,
+      };
+    }
+    const exceeds = amountExceeds(sum.toString(), rule.maxDaily);
+    if (exceeds === null) {
+      return {
+        allowed: false,
+        code: 'PolicyRejected',
+        reason: `action '${action}' is not numeric (maxDaily=${JSON.stringify(rule.maxDaily)}) (fail-closed)`,
+      };
+    }
+    if (exceeds) {
+      return {
+        allowed: false,
+        code: 'PolicyRejected',
+        reason: `action '${action}' would exceed policy maxDaily ${rule.maxDaily} (used ${used} + ${amount})`,
+      };
+    }
+    return {
+      allowed: true,
+      daily: {
+        accountId, action,
+        amount: String(amount),
+        used, limit: String(rule.maxDaily),
+        projected: sum.toString(),
+      },
+    };
+  }
+
   return { allowed: true };
+}
+
+/**
+ * Sprint 5 T2.2 — 合并 policy 规则的 requiresSimulation 覆盖到静态风险分级。
+ * 方向只能收紧不能放宽（保守取并集）：
+ *   - 静态分级已 required → 不可被 policy 降级（绝不放宽）；
+ *   - policy 明示 requiresSimulation:true → 强制 required（收紧）；
+ *   - policy 明示 requiresSimulation:false 仅对静态 skippable 有效（放宽被忽略）。
+ * @param {string} action
+ * @param {object} [opts]
+ * @param {Array} [opts.rules] 已加载规则表（跳过重读，复用单次读取）
+ * @returns {{ action, requiresSimulation, level, staticLevel, policyOverride, rationale }}
+ */
+export function resolveSimulationRequirement(action, { rules } = {}) {
+  const staticRisk = classifySimulationRisk(action);
+  const effective = Array.isArray(rules) ? rules : loadPolicy();
+  const rule = effective.find((r) => r && r.action === action);
+
+  // 静态是否要求模拟。
+  const staticRequired = staticRisk.requiresSimulation === true;
+  // policy 是否明示要求模拟（收紧触发器，只看 === true）。
+  const policyForces = rule && rule.requiresSimulation === true;
+
+  const requiresSimulation = staticRequired || policyForces;
+  return {
+    action,
+    requiresSimulation,
+    level: requiresSimulation ? 'required' : 'skippable',
+    staticLevel: staticRisk.level,
+    policyOverride: policyForces
+      ? (staticRequired ? 'reinforce (static already required)' : 'require (tightened by policy)')
+      : 'none',
+    rationale: requiresSimulation
+      ? (policyForces
+        ? `action '${action}' requires simulation (policy + static, fail-closed)`
+        : staticRisk.rationale)
+      : staticRisk.rationale,
+  };
 }
 
 /** 当前生效规则表快照（供 smart_account_policy 查询/审计）。 */

@@ -61,9 +61,9 @@
       wait 未恢复 / 无 provider 软失败）+ relayer-operations 退避期间落账用例
 
 ## T4 文档 / 规范闭环
-- T4.1 更新 SECURITY_INVARIANTS.md（message-security / simulation gate / policy engine 不变式）
-- T4.2 更新 TRANSPORT_SECURITY_P1_PLAN.md（进度状态 → 已落地项标注）
-- T4.3 测试入口映射表（message-security / sim-policy / policy / smoke → 测试文件）
+- T4.1 更新 SECURITY_INVARIANTS.md（message-security / simulation gate / policy engine 不变式）✅
+- T4.2 更新 TRANSPORT_SECURITY_P1_PLAN.md（进度状态 → 已落地项标注）✅
+- T4.3 测试入口映射表（message-security / sim-policy / policy / smoke → 测试文件）✅（纳入 INV-008/009 §4.1 映射行 + §0.5 P1 进度表）
 
 ## 优先顺序与验收
 1 → T1.1~T1.6；2 → T2.1~T2.3；3 → T3.1~T3.4；4 → T4.1~T4.3。
@@ -79,3 +79,4 @@ T1 全部完成后提交一版（先落 message security 主线），T2-T4 再�
 | 2026-08-22 | v1.2.1 | T2 复核修复：策略单次读取消 TOCTOU + 重启窗口恢复 E2E 回归 |
 | 2026-08-22 | v1.3 | T3 全部落地（relayer-operations / chain-connection 增强 / 密钥隔离 / smoke env 注入） |
 | 2026-08-22 | v1.3.2 | T3 复核修复：demo env 化 / 退避后对账 / 守卫 / reconciled 审计 / 新增 5 个韧性路径用例 |
+| 2026-08-23 | v1.4 | T4 全部落地（SECURITY_INVARIANTS v1.2 / P1_PLAN 进度标注 / 测试入口映射）；P1.3 TLS·mTLS 如实标注未落地 |

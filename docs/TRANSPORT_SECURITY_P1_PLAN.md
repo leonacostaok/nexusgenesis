@@ -1,9 +1,23 @@
 # P1 阶段规划 — Transport 消息安全落地（TLS/mTLS + Service Identity）
 
-> 状态：规划（Sprint 4 候选输入）
-> 日期：2026-08-22
+> 状态：**部分落地**（Sprint 4 T1 已实现 RFC P0 的运行时化 + Service Identity + 客户端信封接线；P1.3 传输加密 TLS/mTLS 仍未实现）
+> 日期：2026-08-22（Sprint 4 校订 2026-08-23）
 > 前置：Sprint 3 T3 已交付 RFC P0（信封 + 签名 + nonce + timestamp + anti-replay 参考实现）
 > 关联：[SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md](file:///d:/trae_projects/NexusGenesis/docs/SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md) §6 演进路线 P1
+
+---
+
+## 0.5 Sprint 4 进度对照（T4.2 校订）
+
+Sprint 4 T1「Message Security 默认化」把 RFC P0 从**参考实现**推进为**服务级运行时能力**，直接命中 P1.1/P1.2/P1.5；P1.3（TLS/mTLS 传输加密）与 P1.4 大部分遗留项**仍未落地**：
+
+| P1 子任务 | 状态 | 落地证据 |
+|-----------|------|---------|
+| P1.1 Service Identity 目录 | ✅ 已落地 | `packages/agent-sdk/src/service-identity.js`（did/agentId → 公钥 + verifier，resolve 失败 → `unknown_identity` fail-closed） |
+| P1.2 CoordinationClient 信封接线 | ✅ 已落地 | `createHttpTransport` 加 `messageSecurity`（发送侧 `createMessageEnvelope` 包装 + 构造即 fail-fast）；接收侧 `createInboundVerifier` + `createReplayStore`（`packages/agent-sdk/src/transport-security.js`） |
+| P1.3 TLS 1.3 / mTLS 通道 | ⬜ 未落地 | 仍为规划；Sprint 4 范围只做「transport + operator 能力」，未实现传输加密层 |
+| P1.4 遗留项收敛 | 🚧 部分落地 | 见 §2 逐项标注 |
+| P1.5 测试与回归 | 🚧 message-security 部分已落地（mTLS 测试 `transport-mtls.test.js` 未做） | `packages/agent-sdk/test/transport-security.test.js` / `message-security.test.js`；Sprint 4 全量回归：agent-sdk 48/48、mcp-server 61/61、chain-eth 78/78、demo 39/39 |
 
 ---
 
@@ -42,14 +56,14 @@
 
 ## 2. 任务拆解
 
-### P1.1 Service Identity 目录（先行，无外部依赖）
+### P1.1 Service Identity 目录（先行，无外部依赖）— ✅ Sprint 4 T1 已落地
 
 - 交付 `packages/agent-sdk/src/service-identity.js`：
   - `registerIdentity({ id, publicKey, algorithm })` / `resolveIdentity(id)`
   - 后端可插拔：内存 Map（测试）→ JSON 文件（单机）→ 链上注册表（与 PQC 身份注册复用，P1.4 评估）
 - 验收：身份未注册 → 验签 fail-closed（`unknown_identity`）；公钥轮换后旧签名被拒。
 
-### P1.2 CoordinationClient 信封接线
+### P1.2 CoordinationClient 信封接线 — ✅ Sprint 4 T1 已落地
 
 - `createHttpTransport` 增加 `messageSecurity: { signer, verifier?, identity }` 选项：
   - 发送侧：请求体包进 `createMessageEnvelope`（sender = 本 Agent 身份）
@@ -70,7 +84,9 @@
 - [ ] `evaluatePolicy` 消费 `requiresSimulation`（策略文件可覆盖静态风险表，方向只能收紧不能放宽）
 - [ ] 策略文件损坏 fail-mode 可选 `strict`（拒绝所有匹配 action 而非放行）
 - [ ] Sprint 2 遗留测试迁移：移除 `SMART_ACCOUNT_SIMULATION_GATE=0`，改走 preview-first 路径
-- [ ] owner/emergency 私钥经 MCP 工具参数传入的遗留问题 → 环境变量注入（Sprint 2 复审遗留）
+- [x] owner/emergency 私钥经 MCP 工具参数传入的遗留问题 → 环境变量注入（**Sprint 4 T3.3 已落地**：非 local 配置面拒绝经工具参数直传 owner/emergency 私钥，一律 `CHAIN_OWNER_PK` / `CHAIN_EMERGENCY_PK` env 注入；local 保留 anvil 开发便利）
+
+> 注：`evaluatePolicy`（`mcp-server/src/policy-engine.js`）已消费 `maxPerTx`（BigInt 精确比较，malformed 金额 fail-closed）与 `enabled`；`maxDaily` / `requiresSimulation` 字段仍为 schema 定义但未消费。
 
 ### P1.5 测试与回归
 

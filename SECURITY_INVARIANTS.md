@@ -1,9 +1,9 @@
 # SECURITY_INVARIANTS
 
-版本：v1.1（Sprint 2 校订）
-状态：**Implemented**（8 条不变量详情全部落地；链上强制层已从 JS 语义原型 1:1 移植到 Solidity 合约，签名原像固化跨语言 canonical schema；实现与验证入口见各条"验证入口"与本文件 §4）
+版本：v1.2（Sprint 2 & 3 & 4 校订）
+状态：**Implemented**（10 条不变量详情全部落地；链上强制层已从 JS 语义原型 1:1 移植到 Solidity 合约，签名原像固化跨语言 canonical schema；Sprint 3/4 在链上硬策略之外补齐「链下软策略（Policy Engine）+ Simulation 门禁 + 传输/消息安全」三层；实现与验证入口见各条"验证入口"与本文件 §4）
 上游：`AI agent 链上交易技术白皮书.txt`（Security Baseline v1.0）
-适用：nexusgenesis-agent-keys / agent-sdk / chain-* / mcp-server 及 Smart Account（Solidity）、Remote Signer、Policy Engine 实现
+适用：nexusgenesis-agent-keys / agent-sdk / chain-* / mcp-server 及 Smart Account（Solidity）、Remote Signer、Policy Engine、Simulation Policy、Transport/Message Security 实现
 
 ---
 
@@ -35,7 +35,8 @@
 | INV-005 | Agent 失陷不得修改自身授权上限 | Implemented（链上强制，P0-5） | chain-eth Smart Account |
 | INV-006 | Emergency 能力只能"踩刹车"，不得造成资产流出或提权 | Implemented（链上强制，P0-5） | chain-eth Smart Account |
 | INV-007 | 最大可能损失必须可量化且有硬边界 | Implemented（链上硬限额层，P0-5） | chain-eth Smart Account |
-| INV-008 | 关键行为必须可审计、可撤销、可恢复 | Implemented（部分） | agent-keys / mcp-server / 服务端 |
+| INV-008 | 关键行为必须可审计、可撤销、可恢复 | Implemented | agent-keys / mcp-server / Policy Engine / Relayer |
+| INV-009 | Agent↔Agent / Agent↔服务 消息传输必须认证 | Implemented（显式开启，fail-closed） | agent-sdk message-security / transport-security |
 
 ---
 
@@ -175,7 +176,8 @@ Sprint 2 把"Smart Account 链上强制"从 JS 语义原型推进为**真 Solidi
   - Sprint 2（Solidity 化）：`contracts/solidity/src/SmartAccount.sol` 以**硬编码顺序**执行全部边界：`ecrecover` 验签（低 S，EIP-2）→ nonce 严格递增（`BadNonce`）→ action/method 自提权守卫 → 白名单五维复检 → 单笔 ≤ maxPerTx（`AmountExceedsPerTx`）→ 账户级日累计（`_rollAccountWindow`，独立 24h 滚动窗口）→ 会话级日累计（`_rollWindow`）→ 提交。`estimateMaxLoss()`/`sessionMaxLoss()` 输出可量化暴露。已测（`contracts/solidity/test/SmartAccount.t.sol`）：`test_per_tx_ceiling_INV007` / `test_session_cumulative_ceiling_INV007` / `test_account_cumulative_ceiling_INV007` / `test_nonce_replay_rejected_INV007` / `test_nonce_must_increase_INV007` / `test_register_requires_ceilings_INV007` / `test_estimate_max_loss_INV007`。
   - P0-5 交叉验证修复 1（PoC 证实后闭合）：nonce 原先仅由调用方提交、不在被签载荷内——同一被截获签名可换新 nonce 无限重复执行（仅受日累计约束），"nonce 防重放"实为精确对防重放。修复：`executeFromAgent` 要求 `payload.nonce` 存在且与提交 nonce 一致（缺失 fail-closed），签名变为单次有效。
   - P0-5 交叉验证修复 2（PoC 证实后闭合）：`approve`/`permit`/`setApprovalForAll`/`transferFrom`/`increaseAllowance` 原先不在自提权集合内（文档声称已拒但不实）——`approve(0xAttacker, 100)` 在链上被执行，攻击者获得带外 pull 权限，后续 transferFrom 在 executeFromAgent 之外拉款，单笔/日累计上限全部失效。修复：新增 `ALLOWANCE_SURFACE_ACTIONS` 拒绝集（action 与 method 双检），即使 owner 白名单显式允许也链上拒绝，直至模拟层可量化 allowance 为潜在敞口；owner 显式 opt-in + 模拟属后续工作。
-  - 缺口：交易模拟（语义验证）仍待落地——approve 资金流语义模拟（allowance 量化为潜在敞口 + owner 显式 opt-in）属下一阶段；multicall/delegatecall 已按自提权拒绝（INV-005）。
+  - Sprint 3（Simulation 门禁，INV-007 支撑）：`mcp-server/src/simulation-policy.js` 把广播前模拟正式化为**风险分级**——`transfer/transferFrom/approve/withdraw/deposit/swap/bridge/raise-limit/add-owner/remove-owner/upgrade/grant-role/revoke-role/pause/freeze` 等资金/特权类动作必须经**成功模拟且处于 60s 窗口内**方可广播（未过 → fail-closed，省 gas、防误投）；只读类（balance/view/getAllowance/status 等）可跳过；**未知 action 一律视为 required**（宁可拦，不可放，`classifySimulationRisk`）。arming 随 `SMART_ACCOUNT_STATE_FILE` 落盘、重启按绝对时间恢复——既不丢保护记录、也不误失效进行中的 preview。
+  - 缺口：approve/allowance 资金流语义模拟（allowance 量化为潜在敞口 + owner 显式 opt-in）仍为下一阶段（当前 approve 面按自提权拒绝，见 INV-005）；multicall/delegatecall 已按自提权拒绝（INV-005）。
 - 攻击路径测试矩阵：
   - `approve(spender, MAX_UINT256)` 表面金额 0 → 链上拒绝（已测：approve/permit/setApprovalForAll/transferFrom/increaseAllowance 属 `ALLOWANCE_SURFACE_ACTIONS`，含 {action:'transfer', method:'approve'} 变体，即使白名单允许也拒；资金流模拟 + owner opt-in 属下一阶段）。
   - multicall / delegatecall 组合绕过单笔限额 → 链上拒绝（已测：delegatecall/multicall 属自提权集合，INV-005）。
@@ -192,13 +194,40 @@ Sprint 2 把"Smart Account 链上强制"从 JS 语义原型推进为**真 Solidi
 > **MUST**：Intent 创建、Policy 批准/拒绝、签名、广播、Session 创建/撤销、Policy 变更、Emergency 动作均产生审计事件；任何会话可被撤销。
 
 - 对应：白皮书 §15、§16。
-- 状态：**Implemented（部分）**。
-  - 已有：`PolicyTimelock` 的 schedule/revoke/effective/clearAll 通知与 webhook 告警（`packages/agent-keys/src/takeover.js`）。
-  - 缺口：完整审计链（intent ID、policy version、决策原因、tx hash、防篡改）与撤销 API 未闭环。
+- 状态：**Implemented**。
+  - 已有：`PolicyTimelock` 的 schedule/revoke/effective/clearAll 通知与 webhook 告警（`packages/agent-keys/src/takeover.js`）；链上 `revokeSession`（仅 owner/Emergency，INV-005/006）。
+  - Sprint 3/4（审计/可观测补缺口，`mcp-server/src/audit-log.js` + `observability.js`）：
+    - **结构化审计**：setup/preview/execute 全链路 `logStructured` 落 JSON（stderr `[audit]` + `AUDIT_LOG_FILE`），execute 分类成功/失败并带 revert 类别（`AmountExceedsPerTx/BadNonce/InvalidSignature` 等）+ `nonce_conflict/limit_rejected`，事件必达。
+    - **Policy 版本审计**：`maybeAuditPolicyChange` 以 sha256 指纹规则集，热更新即记 `policy_change`（旧→新指纹 + 快照 + context），execute 门禁与 `smart_account_policy` 查询均接入；execute 路径**单次读取**策略文件——指纹审计与实际裁决用同一份规则（消除热更新 TOCTOU，杜绝审计轨迹说谎）。
+    - **审计 schema 校验**：`AUDIT_SCHEMA` + `validateAuditEntry`，违规 → stderr `[audit] SCHEMA VIOLATION`（不静默、不中断 eval 主路径）。
+    - **Relayer 可运营审计**：`executeWithRelayerResilience` 的 attempts / retried / retryable / reconciled 全链路进审计与指标（`smart_account_execute_retried`）；广播后 `wait` 失败先对账 receipt（已落账复用结果，绝不盲目重发，避免白付 gas + 污染 ledger）。
+  - 已知限制：审计尚为文件/stderr 输出，防篡改（hash-chain 固化）与集中式审计面板仍未闭环。
 - 攻击路径测试矩阵：
   - 会话撤销后继续提交签名 → 拒绝。
   - 告警回调抛异常 → 不破坏 enforcement 主路径（已覆盖）。
   - 关键行为缺审计事件 → 测试断言事件必达。
+
+### INV-009 — Message Transport Authenticity
+
+> **MUST**：显式开启 message security（`createHttpTransport` 的 `messageSecurity`）后，服务端 inbound 请求必须依次通过**信封签名验证 + 身份解析 + 时间新鲜度 + 防重放 + 目标（target==self）校验**；任一不满足 → fail-closed 拒绝。防重放键须在验签**通过后**才记录。
+>
+> **MUST NOT**：显式开启后存在明文 / 未认证通道；发送侧缺 identity/signer 不得静默降级为未签名请求（构造时即抛错）。
+
+- 对应：白皮书 §6.6（外部 Agent↔Agent / Agent↔服务 通信面）；[SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md](file:///d:/trae_projects/NexusGenesis/docs/SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md) P0。
+- 状态：**Implemented（显式开启，fail-closed；MCP 内部信任面不强制，白皮书分层不变）**。
+  - 发送侧：`createHttpTransport`（`packages/agent-sdk/src/coordination.js`）加 `messageSecurity` 选项——开启后 POST body 包装为 `{ envelope }`（sender/target/nonce/timestamp/payload/signature，`createMessageEnvelope`）；构造时缺 identity/signer 立即抛错（fail-fast，绝不发送未签名请求）；默认**关**、向后兼容。
+  - Canonical preimage 与验签原子性：`verifyMessageEnvelope`（`packages/agent-sdk/src/message-security.js`）按固定字段序拼接 preimage，仅验签通过后才 `replayGuard.record(sender:nonce)`——无效签名的篡改副本不烧 nonce，否则攻击者可抢先投递伪造剧毒化 (sender, nonce)，使随后到达的合法原件被误判重放（DoS）。
+  - 运行时化：`createInboundVerifier`（`packages/agent-sdk/src/transport-security.js`）服务端中间层——缺信封 / 身份未知 / 验签失败 / 新鲜度过期 / 重放 / target 不匹配一律 fail-closed；`self` target 校验防**跨服务重放**（signature 只覆盖 target 防篡改、不防"合法签名信封被原样转发给另一个服务"——需接收方显式校验 `target === self`）；`createReplayStore` JSON 文件持久化 + 原子写（tmp+rename），重启不重置防重放窗口（文件损坏仅降级重放检测粒度，不影响验签/身份安全）。
+  - Service identity 目录（`packages/agent-sdk/src/service-identity.js`）：did/agentId → 公钥 + verifier，resolve 失败 → `unknown_identity` fail-closed；无 verifier 配置 → `no_verifier_for_identity`。
+- 攻击路径测试矩阵：
+  - 明文 POST（缺 `envelope`）→ `missing_envelope` fail-closed（已测：transport-security E2E，mcp-server 全绿）。
+  - 未知 sender 身份 → `unknown_identity`。
+  - 篡改 envelope（payload / signature）→ `invalid_signature`。
+  - 重放同一 (sender, nonce) → `replay_detected`（已测）；伪造源先投递无效签名不烧 nonce。
+  - 过期 timestamp → `timestamp_expired`；时间边界确定性。
+  - 合法签名信封转发到 `target≠self` 的服务 → `wrong_target` 拒绝（跨服务重放，T1 复核修复已覆盖）。
+  - 开启 messageSecurity 但缺 identity/signer → 构造抛错（不发送未签名请求）。
+  - 未开启时行为与现状完全一致（向后兼容，回归 48/48）。
 
 ---
 
@@ -217,7 +246,8 @@ Sprint 2 把"Smart Account 链上强制"从 JS 语义原型推进为**真 Solidi
 | INV-005 | `packages/chain-eth/test/smart-account.test.js` | 自提权 action（addOwner/upgrade/grantRole 等 9+ 类）即使签名有效也链上拒绝 |
 | INV-006 | `packages/chain-eth/test/smart-account.test.js` | Emergency 仅可 pause/revoke/reduce(只降)/freeze；resume/unfreeze 仅 owner；无资产移动路径 |
 | INV-007 | `packages/chain-eth/test/smart-account.test.js` | 单笔≤maxPerTx、日累计、账户级独立上限、nonce 签入载荷且单次有效、allowance 面拒绝、estimateMaxLoss 可量化 |
-| INV-008 | `packages/agent-keys/test/*` | PolicyTimelock 通知/撤销；告警异常不破坏主路径 |
+| INV-008 | `packages/agent-keys/test/*`、`mcp-server/test/mcp-smart-account-t2.test.js`、`mcp-server/test/mcp-smart-account-smoke.test.js`、`mcp-server/test/relayer-operations.test.js` | PolicyTimelock 通知/撤销；audit schema 校验；policy_change 指纹审计；relayer attempts/retried/reconciled 进审计（对账不重发） |
+| INV-009 | `packages/agent-sdk/test/message-security.test.js`、`packages/agent-sdk/test/transport-security.test.js` | 验签通过后才 record anti-replay；明文/未知身份/篡改/重放/过期/target≠self fail-closed；replay store 原子持久化；开启缺 identity/signer 抛错 |
 
 ### 4.2 发布后 registry smoke（v0.5.0 起）
 

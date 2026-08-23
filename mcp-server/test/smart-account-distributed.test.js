@@ -30,6 +30,7 @@ import {
   __resetTxLedgerForTest,
 } from '../src/chain-state-store.js';
 import { createSqliteStore } from 'nexusgenesis-agent-sdk';
+import { createNonceSequencer } from '../src/relayer-coordinator.js';
 
 let dir;
 before(() => { dir = mkdtempSync(join(tmpdir(), 't3-dist-')); });
@@ -274,5 +275,43 @@ test('T4.2 recordTx 写穿 digest → isAlreadyLanded 命中（F1 回归：serve
     assert.ok(viaListTx, 'listTx 路径也必须能按 digest 命中');
   } finally {
     peer.close();
+  }
+});
+
+// ─── T4.1/T4.3 双实例 nonce 协调（计划验收：双实例并发各 10 笔 → 无冲突） ────
+
+test('T4 两实例共享 sqlite 并发各 10 笔 → 20 个 nonce 全局唯一（relayer EOA 无同 nonce 竞争）', async () => {
+  const file = sqlitePath('nonce-two-instances.sqlite');
+  // 同进程两个独立 store 实例共享同一 sqlite 文件（计划 T5.1 允许的方式，
+  // 等价于两个 mcp 实例各持一个句柄）。
+  const storeA = createSqliteStore({ file });
+  const storeB = createSqliteStore({ file });
+  const seqA = createNonceSequencer(storeA);
+  const seqB = createNonceSequencer(storeB);
+  const CHAIN = 'http://chain-dist';
+  const RELAYER = '0xrelayer-shared';
+  try {
+    const jobs = [];
+    for (let i = 0; i < 10; i += 1) {
+      jobs.push(seqA.acquireNonce(CHAIN, RELAYER, { instanceId: 'A' }));
+      jobs.push(seqB.acquireNonce(CHAIN, RELAYER, { instanceId: 'B' }));
+    }
+    const nonces = await Promise.all(jobs);
+    assert.equal(nonces.length, 20);
+    assert.equal(new Set(nonces).size, 20, '20 个 nonce 必须全局唯一（零冲突）');
+    // 且为 0..19 的连续序列（无跳号、无重号）。
+    const sorted = [...nonces].sort((a, b) => a - b);
+    assert.deepEqual(sorted, Array.from({ length: 20 }, (_, i) => i));
+    // 租约审计跨实例可见：peer 视角能读到两实例的租约行（instanceId 归因）。
+    const leases = storeB.list('nonce:lease:');
+    const leaseEntries = Object.entries(leases)
+      .filter(([k, v]) => k.includes('chain-dist') && k.includes('relayer-shared'));
+    assert.equal(leaseEntries.length, 20, '每个 nonce 一条租约行，跨实例可见');
+    const byInstance = { A: 0, B: 0 };
+    for (const [, v] of leaseEntries) byInstance[v.instanceId] += 1;
+    assert.equal(byInstance.A + byInstance.B, 20, '租约 instanceId 可归因到具体实例（F6）');
+  } finally {
+    storeA.close();
+    storeB.close();
   }
 });

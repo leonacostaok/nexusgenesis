@@ -112,3 +112,29 @@ Sprint 4 T1「Message Security 默认化」把 RFC P0 从**参考实现**推进�
 | 5 | P1.5 回归 | 全部 |
 
 P2+（密钥轮换/HSM、集中式防重放、审计联动）维持 RFC §6 路线，不在本规划展开。
+
+---
+
+## 4. Sprint 6 附录：共享防重放窗口（多实例）设计 — ✅ 已落地
+
+> 对应 `Sprint6计划.md` T1/T2；INV-009 的多实例形态。设计要点与验收证据如下。
+
+### 4.1 问题
+
+单实例 replay store（进程内 + JSON 文件）在多实例部署下退化为"各实例独立窗口"：同一 `(sender,nonce)` 可对实例 A、实例 B 各放行一次——INV-009 的防重放语义在多实例下直接劣化。
+
+### 4.2 设计
+
+- **store 抽象（T1，`packages/agent-sdk/src/store-interface.js`）**：`createLocalStore`（进程内 + 本地 JSON 持久化 + 容量淘汰）/ `createSqliteStore`（共享）统一接口：`has/keys/list/claim/write/writeAtomically(RMW+重试)/purgeExpired/evictOldest/delete`。
+- **恰好一次 = 全实例族语义（T2）**：`createReplayStore({ store })` 注入共享后端后，`record(key)` → `backend.claim(key)` → sqlite `INSERT OR IGNORE` **原子登记**：首个到达的实例 claim 成功（放行），其余实例（无论并发/先后）claim 失败 → `replay_detected`。无"记录失败但当成功"路径——claim 结果即裁决。
+- **窗口清理**：`purgeExpired(now - retentionMs)` 按绝对时间清过期（重启不丢语义，与 arming 恢复同口径）；保留期 ≥ 信封新鲜度窗口（2×10min 兜底），被淘汰的过旧重放仍会被 `timestamp_expired` 拒——清理不产生安全缺口；仍超 `maxEntries` → `evictOldest` FIFO 硬上限（基线语义）。
+- **降级矩阵（fail-closed，不静默）**：
+  - local 后端文件损坏 → 显式 stderr 告警 + 自愈重建（本会话内存窗口）；仅重放检测粒度降级，验签/身份安全不受影响。
+  - **共享模式**：注入 store 的构造/操作错误**直接传播由调用方 fail-closed**——绝不静默退回"各实例独立窗口"（Sprint 6 约束 #1）。
+- **单实例基线不变**：不注入 store → local 行为与 Sprint 4/5 逐字节一致。
+
+### 4.3 验收证据
+
+- `packages/agent-sdk/test/store-interface.test.js`：local/sqlite 双后端语义一致性、原子 readModifyWrite、claim 恰好一次、双句柄并发。
+- `packages/agent-sdk/test/transport-distributed.test.js`：双实例共享 replay store——首 200 / 次 403（跨实例）、重启共享表不丢窗口、共享后端降级 fail-closed。
+- 全量回归（Sprint 6 收尾）：agent-sdk 94/94、mcp-server 104/104、chain-eth 78/78。

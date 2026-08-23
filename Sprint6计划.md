@@ -160,11 +160,26 @@ ledger:tx:<txHash>         → { records: [rec...] }（生命周期演进追加�
 
 关键验收口径（每 T）：**多实例时 fail-closed 不放松** + **单实例行为与现基线逐字节一致** + 有可引用测试证据。共享后端降级路径必须**显式**（告警 + fail-closed 或拒绝启用），绝不静默退化为"各自独立窗口"而放低安全。
 
+## 收尾状态表（2026-08-23，全部落地）
+
+| 任务 | 状态 | 落地 commit | 关键交付 |
+|------|------|------------|---------|
+| T1 store 抽象基建 | ✅ | `14785c06` | `packages/agent-sdk/src/store-interface.js`（createLocalStore/createSqliteStore：claim 恰好一次、writeAtomically RMW+重试、purgeExpired/evictOldest）；`store-interface.test.js` |
+| T2 replay 共享化 | ✅ | `14785c06` | `createReplayStore` 迁 store 接口：注入 sqlite → 全实例族恰好一次（INSERT OR IGNORE）；共享降级 fail-closed；`transport-distributed.test.js` |
+| T3 state/simulation/ledger 迁 store + 行级分片 | ✅ | `6810d597` | `chain-state-store.js` 行级分片 + CAS 合并策略（claim/RMW-union/LWW/CONFIG_CONFLICT）+ 旧 JSON 自动迁移；`smart-account-distributed.test.js` |
+| T4 relayer nonce 协调 | ✅ | `e6049dc0` + 复核修复 `ba0cb921` | `relayer-coordinator.js`（原子 sequencer + 租约 + 对账去重 + 链上重同步 syncAtLeast）；`executeWithRelayerResilience` 可选 coordinator 接线；server.js 仅共享后端激活；`relayer-coordinator.test.js` |
+| T5 分布式回归 + 文档 | ✅ | 本次 | smart-account-distributed.test.js 补 T4 双实例验收（20 nonce 唯一 + 租约归因 + digest 写穿去重）；TRANSPORT_SECURITY_P1_PLAN.md §4 共享防重放设计；SECURITY_INVARIANTS.md INV-007/009 多实例注记 + §4.1 补 distributed 入口 |
+
+**全量回归（收尾）**：agent-sdk 94/94、mcp-server 104/104（原 73 基线 → 新增 store/distributed/coordinator 全绿）、chain-eth 78/78。
+
+**T4 复核修复（F1-F6）摘要**：F1 recordTx 写穿 digest（否则跨实例去重永不命中）；F2 计划要求的链上 getTransactionCount(pending) 重同步兜底（syncAtLeast 原子 max 只升不降）；F3 nonce 冲突正则单一真源（classifyRelayerFailure 复用 isNonceConflict）；F4 RELAYER_DEDUPE_SCAN=0 显式禁用（防 slice(-0) 全量反转）；F5 acquireNonce CAS 重试上限 10 次 + 退避；F6 instanceId 缺省 hostname:pid 可归因。
+
 ## 变更记录
 
 | 日期 | 版本 | 变更 |
 |------|------|------|
 | 2026-08-23 | v1.0 | 初次生成（基于 Sprint 5 收尾 + 四组件接口探查：replay store / simulationLog+state store / dailyCumulative / relayer nonce） |
+| 2026-08-23 | v1.1 | Sprint 6 全量落地收尾：T1-T5 状态表补全；T4 复核修复 F1-F6 记录；文档闭环（TRANSPORT_SECURITY_P1_PLAN §4 + SECURITY_INVARIANTS 多实例注记）；回归 agent-sdk 94 / mcp-server 104 / chain-eth 78 |
 
 ## 备注：与后续 Sprint 关系
 - **Sprint 7（生产部署与运维面）**：证书与密钥注入规范、deployment profile、metrics/dashboard/告警面板、testnet/staging/prod 发布流程。Sprint 6 的 sqlite/文件后端与降级路径即为其部署边界输入。

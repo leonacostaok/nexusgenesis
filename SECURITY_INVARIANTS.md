@@ -1,7 +1,7 @@
 # SECURITY_INVARIANTS
 
-版本：v1.2（Sprint 2 & 3 & 4 校订）
-状态：**Implemented**（10 条不变量详情全部落地；链上强制层已从 JS 语义原型 1:1 移植到 Solidity 合约，签名原像固化跨语言 canonical schema；Sprint 3/4 在链上硬策略之外补齐「链下软策略（Policy Engine）+ Simulation 门禁 + 传输/消息安全」三层；实现与验证入口见各条"验证入口"与本文件 §4）
+版本：v1.3（Sprint 2 & 3 & 4 & 5 校订）
+状态：**Implemented**（10 条不变量详情全部落地；链上强制层已从 JS 语义原型 1:1 移植到 Solidity 合约，签名原像固化跨语言 canonical schema；Sprint 3/4 在链上硬策略之外补齐「链下软策略（Policy Engine）+ Simulation 门禁 + 传输/消息安全」三层；Sprint 5 补齐 P1.3 TLS/mTLS 传输加密 + P1.4 policy 字段(`maxDaily`/`requiresSimulation`) + strict fail-mode + 迁移清理；实现与验证入口见各条"验证入口"与本文件 §4）
 上游：`AI agent 链上交易技术白皮书.txt`（Security Baseline v1.0）
 适用：nexusgenesis-agent-keys / agent-sdk / chain-* / mcp-server 及 Smart Account（Solidity）、Remote Signer、Policy Engine、Simulation Policy、Transport/Message Security 实现
 
@@ -177,6 +177,7 @@ Sprint 2 把"Smart Account 链上强制"从 JS 语义原型推进为**真 Solidi
   - P0-5 交叉验证修复 1（PoC 证实后闭合）：nonce 原先仅由调用方提交、不在被签载荷内——同一被截获签名可换新 nonce 无限重复执行（仅受日累计约束），"nonce 防重放"实为精确对防重放。修复：`executeFromAgent` 要求 `payload.nonce` 存在且与提交 nonce 一致（缺失 fail-closed），签名变为单次有效。
   - P0-5 交叉验证修复 2（PoC 证实后闭合）：`approve`/`permit`/`setApprovalForAll`/`transferFrom`/`increaseAllowance` 原先不在自提权集合内（文档声称已拒但不实）——`approve(0xAttacker, 100)` 在链上被执行，攻击者获得带外 pull 权限，后续 transferFrom 在 executeFromAgent 之外拉款，单笔/日累计上限全部失效。修复：新增 `ALLOWANCE_SURFACE_ACTIONS` 拒绝集（action 与 method 双检），即使 owner 白名单显式允许也链上拒绝，直至模拟层可量化 allowance 为潜在敞口；owner 显式 opt-in + 模拟属后续工作。
   - Sprint 3（Simulation 门禁，INV-007 支撑）：`mcp-server/src/simulation-policy.js` 把广播前模拟正式化为**风险分级**——`transfer/transferFrom/approve/withdraw/deposit/swap/bridge/raise-limit/add-owner/remove-owner/upgrade/grant-role/revoke-role/pause/freeze` 等资金/特权类动作必须经**成功模拟且处于 60s 窗口内**方可广播（未过 → fail-closed，省 gas、防误投）；只读类（balance/view/getAllowance/status 等）可跳过；**未知 action 一律视为 required**（宁可拦，不可放，`classifySimulationRisk`）。arming 随 `SMART_ACCOUNT_STATE_FILE` 落盘、重启按绝对时间恢复——既不丢保护记录、也不误失效进行中的 preview。
+  - Sprint 5（P1.4 policy 字段 + gate 恒开，INV-007 支撑）：①`requiresSimulation`（T2.2，`resolveSimulationRequirement`）策略可**只收紧**静态风险分级（policy 要求模拟而静态标 skippable → 以策略为准；策略标 skippable 而静态 required → 仍 required，保守并集），execute 门禁与 `smart_account_simulation_policy` 查询工具同源单次读取；②`maxDaily`（T2.1）链下软策略按 `accountId+action` 进程内日累计，超限 → `PolicyRejected` fail-closed（省 gas，不浪费链上调用），成功 execute 预留制累计 + 审计 `dailyTotal`（check-then-act 竞态已用"预留在门禁同步段"消除，失败/status-0 回滚）；③**gate 恒开**（T4）——移除 `SMART_ACCOUNT_SIMULATION_GATE=0` 迁移兼容口，preview-first 是唯一执行路径，不可 arm digest 一律 `SimulationRequired`。
   - 缺口：approve/allowance 资金流语义模拟（allowance 量化为潜在敞口 + owner 显式 opt-in）仍为下一阶段（当前 approve 面按自提权拒绝，见 INV-005）；multicall/delegatecall 已按自提权拒绝（INV-005）。
 - 攻击路径测试矩阵：
   - `approve(spender, MAX_UINT256)` 表面金额 0 → 链上拒绝（已测：approve/permit/setApprovalForAll/transferFrom/increaseAllowance 属 `ALLOWANCE_SURFACE_ACTIONS`，含 {action:'transfer', method:'approve'} 变体，即使白名单允许也拒；资金流模拟 + owner opt-in 属下一阶段）。
@@ -201,6 +202,10 @@ Sprint 2 把"Smart Account 链上强制"从 JS 语义原型推进为**真 Solidi
     - **Policy 版本审计**：`maybeAuditPolicyChange` 以 sha256 指纹规则集，热更新即记 `policy_change`（旧→新指纹 + 快照 + context），execute 门禁与 `smart_account_policy` 查询均接入；execute 路径**单次读取**策略文件——指纹审计与实际裁决用同一份规则（消除热更新 TOCTOU，杜绝审计轨迹说谎）。
     - **审计 schema 校验**：`AUDIT_SCHEMA` + `validateAuditEntry`，违规 → stderr `[audit] SCHEMA VIOLATION`（不静默、不中断 eval 主路径）。
     - **Relayer 可运营审计**：`executeWithRelayerResilience` 的 attempts / retried / retryable / reconciled 全链路进审计与指标（`smart_account_execute_retried`）；广播后 `wait` 失败先对账 receipt（已落账复用结果，绝不盲目重发，避免白付 gas + 污染 ledger）。
+  - Sprint 5（P1.3/P1.4 审计补缺口）：
+    - **mTLS 握手审计**：`createMtlsServer` 成功/失败握手均经 `recordAudit`/`mtls_handshake` 落 JSON（`packages/agent-sdk/src/mtls-server.js`）；失败仅暴露 `tls_*` 类别（不泄露具体校验细节给握手方）。
+    - **Policy strict-config 审计**：strict 模式下配置损坏 → execute 拒收带独立 `gate: strict-config`（错误码 `PolicyConfigError`，区别于"缺 preview"的 `SimulationRequired`，不误导运维去补 preview），审计与指标 `smart_account_policy_rejected` 同时落账。
+    - **maxDaily/relayer 审计项**：execute 成功审计携带 `dailyTotal`（`store.total` 精确 BigInt 字符串）；relayer attempts/retried/reconciled 延续进审计。
   - 已知限制：审计尚为文件/stderr 输出，防篡改（hash-chain 固化）与集中式审计面板仍未闭环。
 - 攻击路径测试矩阵：
   - 会话撤销后继续提交签名 → 拒绝。
@@ -219,15 +224,19 @@ Sprint 2 把"Smart Account 链上强制"从 JS 语义原型推进为**真 Solidi
   - Canonical preimage 与验签原子性：`verifyMessageEnvelope`（`packages/agent-sdk/src/message-security.js`）按固定字段序拼接 preimage，仅验签通过后才 `replayGuard.record(sender:nonce)`——无效签名的篡改副本不烧 nonce，否则攻击者可抢先投递伪造剧毒化 (sender, nonce)，使随后到达的合法原件被误判重放（DoS）。
   - 运行时化：`createInboundVerifier`（`packages/agent-sdk/src/transport-security.js`）服务端中间层——缺信封 / 身份未知 / 验签失败 / 新鲜度过期 / 重放 / target 不匹配一律 fail-closed；`self` target 校验防**跨服务重放**（signature 只覆盖 target 防篡改、不防"合法签名信封被原样转发给另一个服务"——需接收方显式校验 `target === self`）；`createReplayStore` JSON 文件持久化 + 原子写（tmp+rename），重启不重置防重放窗口（文件损坏仅降级重放检测粒度，不影响验签/身份安全）。
   - Service identity 目录（`packages/agent-sdk/src/service-identity.js`）：did/agentId → 公钥 + verifier，resolve 失败 → `unknown_identity` fail-closed；无 verifier 配置 → `no_verifier_for_identity`。
+  - P1.3 传输层 TLS/mTLS（Sprint 5 T1）：`createMtlsServer`/`createMtlsClient`（`packages/agent-sdk/src/mtls-server.js`）强制 TLS 1.3（禁 1.2 及以下）+ 双向证书 + 证书链校验，纯文本 HTTP / 过期 / 伪造证书 / TLS1.2 握手全 fail-closed；证书经 `scripts/gen-mtls-certs.mjs`（纯 node:crypto，无 openssl）本地自签 CA 生成。**与 INV-009 正交**——INV-009 管应用层认证（签名信封/防重放/身份），P1.3 管传输层机密性与双向认证；两者需同时通过（mTLS 握手失败或信封验签失败任一即拒，互不替代）。
 - 攻击路径测试矩阵：
   - 明文 POST（缺 `envelope`）→ `missing_envelope` fail-closed（已测：transport-security E2E，mcp-server 全绿）。
   - 未知 sender 身份 → `unknown_identity`。
   - 篡改 envelope（payload / signature）→ `invalid_signature`。
   - 重放同一 (sender, nonce) → `replay_detected`（已测）；伪造源先投递无效签名不烧 nonce。
   - 过期 timestamp → `timestamp_expired`；时间边界确定性。
-  - 合法签名信封转发到 `target≠self` 的服务 → `wrong_target` 拒绝（跨服务重放，T1 复核修复已覆盖）。
+  - 合法签名信封转发到 `target≠self` 的服务 → `wrong_target` 拒绝（跨服务重放，T1 复核修复已覆盖 + T5.2 E2E）。
   - 开启 messageSecurity 但缺 identity/signer → 构造抛错（不发送未签名请求）。
-  - 未开启时行为与现状完全一致（向后兼容，回归 48/48）。
+  - 未开启时行为与现状完全一致（向后兼容，回归 48/48 → Sprint 5 62/62）。
+  - mTLS：纯文本 HTTP / 无客户端证书 / 伪造 CA 证书 / 过期证书 / TLS1.2 客户端 / 过期服务端证书 → 握手全拒（已测：`transport-mtls.test.js` 8/8）。
+  - mTLS 合法客户端但缺信封（明文 body over TLS）→ 应用层 `missing_envelope` 拒（已测：`transport-mtls-e2e.test.js`——证书合法仍拒，层独立 fail-closed）。
+  - signed transport + mTLS + replay guard 三层组合：mTLS 通过 + 信封验签通过 + 防重放通过 → 200；重放同一信封 over mTLS → `replay_detected`；服务端重启后 replay store 持久化仍拒重放；跨服务转发 → `wrong_target`（已测：`transport-mtls-e2e.test.js` 6/6 + replay 持久化恢复）。
 
 ---
 
@@ -245,9 +254,9 @@ Sprint 2 把"Smart Account 链上强制"从 JS 语义原型推进为**真 Solidi
 | INV-004 | `packages/agent-keys/test/session-narrowing.test.js`、`packages/agent-keys/test/session.test.js` | narrowSession 单调缩窄（空白名单/跨 agentId/超上限/晚过期均拒绝）；verifySessionSignature 先于 scope 检查 |
 | INV-005 | `packages/chain-eth/test/smart-account.test.js` | 自提权 action（addOwner/upgrade/grantRole 等 9+ 类）即使签名有效也链上拒绝 |
 | INV-006 | `packages/chain-eth/test/smart-account.test.js` | Emergency 仅可 pause/revoke/reduce(只降)/freeze；resume/unfreeze 仅 owner；无资产移动路径 |
-| INV-007 | `packages/chain-eth/test/smart-account.test.js` | 单笔≤maxPerTx、日累计、账户级独立上限、nonce 签入载荷且单次有效、allowance 面拒绝、estimateMaxLoss 可量化 |
+| INV-007 | `packages/chain-eth/test/smart-account.test.js`、`mcp-server/test/mcp-smart-account-sim-policy.test.js`、`mcp-server/test/mcp-smart-account.test.js` | 单笔≤maxPerTx、日累计、账户级独立上限、nonce 签入载荷且单次有效、allowance 面拒绝、estimateMaxLoss 可量化；`requiresSimulation` 只收紧不放宽；`maxDaily` 预留制累计；gate 恒开（preview-first sole path） |
 | INV-008 | `packages/agent-keys/test/*`、`mcp-server/test/mcp-smart-account-t2.test.js`、`mcp-server/test/mcp-smart-account-smoke.test.js`、`mcp-server/test/relayer-operations.test.js` | PolicyTimelock 通知/撤销；audit schema 校验；policy_change 指纹审计；relayer attempts/retried/reconciled 进审计（对账不重发） |
-| INV-009 | `packages/agent-sdk/test/message-security.test.js`、`packages/agent-sdk/test/transport-security.test.js` | 验签通过后才 record anti-replay；明文/未知身份/篡改/重放/过期/target≠self fail-closed；replay store 原子持久化；开启缺 identity/signer 抛错 |
+| INV-009 | `packages/agent-sdk/test/message-security.test.js`、`packages/agent-sdk/test/transport-security.test.js`、`packages/agent-sdk/test/transport-mtls.test.js`、`packages/agent-sdk/test/transport-mtls-e2e.test.js` | 验签通过后才 record anti-replay；明文/未知身份/篡改/重放/过期/target≠self fail-closed；replay store 原子持久化；mTLS 明文/伪造/过期/TLS1.2 fail-closed（8/8）；signed transport + mTLS + replay guard 全链路三层组合 + 重启持久化 + 跨服务重放（6/6） |
 
 ### 4.2 发布后 registry smoke（v0.5.0 起）
 

@@ -1,23 +1,23 @@
 # P1 阶段规划 — Transport 消息安全落地（TLS/mTLS + Service Identity）
 
-> 状态：**部分落地**（Sprint 4 T1 已实现 RFC P0 的运行时化 + Service Identity + 客户端信封接线；P1.3 传输加密 TLS/mTLS 仍未实现）
-> 日期：2026-08-22（Sprint 4 校订 2026-08-23）
+> 状态：**已落地**（Sprint 4 完成 P0 运行时化 + Service Identity + 客户端信封接线；Sprint 5 补齐 P1.3 TLS/mTLS + P1.4 全部遗留项 + P1.5 测试/回归与文档闭环）
+> 日期：2026-08-22（Sprint 4 校订 2026-08-23，Sprint 5 校订 2026-08-23）
 > 前置：Sprint 3 T3 已交付 RFC P0（信封 + 签名 + nonce + timestamp + anti-replay 参考实现）
 > 关联：[SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md](file:///d:/trae_projects/NexusGenesis/docs/SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md) §6 演进路线 P1
 
 ---
 
-## 0.5 Sprint 4 进度对照（T4.2 校订）
+## 0.5 Sprint 4/5 进度对照（Sprint 5 校订）
 
-Sprint 4 T1「Message Security 默认化」把 RFC P0 从**参考实现**推进为**服务级运行时能力**，直接命中 P1.1/P1.2/P1.5；P1.3（TLS/mTLS 传输加密）与 P1.4 大部分遗留项**仍未落地**：
+Sprint 4 T1「Message Security 默认化」把 RFC P0 从**参考实现**推进为**服务级运行时能力**；Sprint 5 补齐 P1.3（TLS/mTLS 传输加密）与 P1.4 全部遗留项，P1 自此全部落地：
 
 | P1 子任务 | 状态 | 落地证据 |
 |-----------|------|---------|
 | P1.1 Service Identity 目录 | ✅ 已落地 | `packages/agent-sdk/src/service-identity.js`（did/agentId → 公钥 + verifier，resolve 失败 → `unknown_identity` fail-closed） |
 | P1.2 CoordinationClient 信封接线 | ✅ 已落地 | `createHttpTransport` 加 `messageSecurity`（发送侧 `createMessageEnvelope` 包装 + 构造即 fail-fast）；接收侧 `createInboundVerifier` + `createReplayStore`（`packages/agent-sdk/src/transport-security.js`） |
-| P1.3 TLS 1.3 / mTLS 通道 | ⬜ 未落地 | 仍为规划；Sprint 4 范围只做「transport + operator 能力」，未实现传输加密层 |
-| P1.4 遗留项收敛 | 🚧 部分落地 | 见 §2 逐项标注 |
-| P1.5 测试与回归 | 🚧 message-security 部分已落地（mTLS 测试 `transport-mtls.test.js` 未做） | `packages/agent-sdk/test/transport-security.test.js` / `message-security.test.js`；Sprint 4 全量回归：agent-sdk 48/48、mcp-server 61/61、chain-eth 78/78、demo 39/39 |
+| P1.3 TLS 1.3 / mTLS 通道 | ✅ 已落地（Sprint 5 T1） | `packages/agent-sdk/src/mtls-server.js`（`createMtlsServer`/`createMtlsClient`，强制 TLSv1.3 + 双向证书 + 证书链校验）；`scripts/gen-mtls-certs.mjs`（纯 node:crypto 原生 X.509/Ed25519 证书构造，无 openssl 依赖）；握手身份落审计（`mtls_handshake`，失败仅暴露 `tls_*` 类别） |
+| P1.4 遗留项收敛 | ✅ 已落地（Sprint 5 T2/T3/T4 + Sprint 4 T3.3） | 见 §2 逐项标注 |
+| P1.5 测试与回归 | ✅ 已落地 | `transport-mtls.test.js`（8/8 验收态）+ `transport-mtls-e2e.test.js`（signed transport + mTLS + replay guard 全链路 6/6）；Sprint 5 收尾全量回归：agent-sdk 62/62、mcp-server 73/73、chain-eth 78/78、demo 39/39 |
 
 ---
 
@@ -71,27 +71,33 @@ Sprint 4 T1「Message Security 默认化」把 RFC P0 从**参考实现**推进�
 - 默认**关闭**（向后兼容）；显式开启后 fail-closed。
 - 验收：篡改响应体 → 客户端拒绝；重放响应 → `replay_detected`；未开启时行为与现状完全一致。
 
-### P1.3 TLS 1.3 / mTLS 通道
+### P1.3 TLS 1.3 / mTLS 通道 — ✅ Sprint 5 T1 已落地
 
 - 服务端（示例/reference server）：TLS 1.3 最低版本、双向证书请求、证书链校验。
 - 客户端：`fetch`/undici 配 `rejectUnauthorized` + 客户端证书。
 - 证书签发：开发用自签 CA 脚本（`scripts/gen-mtls-certs.mjs`）；生产路径对接 service identity（P1.1）。
 - 验收：明文 HTTP 被拒；证书过期/伪造 → fail-closed；mTLS 握手双方身份落审计日志。
+- 落地：
+  - `packages/agent-sdk/src/mtls-server.js`——`createMtlsServer`（`minVersion/maxVersion: 'TLSv1.3'` + `requestCert` + `rejectUnauthorized`，证书链校验，握手身份经 `recordAudit`/`mtls_handshake` 落审计，失败仅暴露 `tls_*` 类别）+ `createMtlsClient`（node:https 双向证书客户端）。
+  - `scripts/gen-mtls-certs.mjs` / `scripts/lib/x509.mjs`——纯 `node:crypto` 手写最小 X.509v3/DER/Ed25519 构造器（无系统 openssl 依赖）：自签 CA、签发 server/client 叶子（SAN/EKU/basicConstraints/链校验）。
+  - 验收态 `packages/agent-sdk/test/transport-mtls.test.js`（8/8，本地 CA 不起真实网络）：有效 mTLS 200 / 无证书拒 / 伪造 CA 拒 / 过期证书拒 / TLS1.2 拒 / 纯文本 HTTP 拒 / 过期服务端证书客户端拒 / 成功失败握手均落审计。
+  - 与 INV-009 正交：INV-009 管应用层认证（签名信封/防重放/身份），P1.3 管传输层机密性（加密/双向证书/证书链）——P1.3 不修改 `verifyMessageEnvelope` 语义。
 
-### P1.4 遗留项收敛（Sprint 3 复核产出）
+### P1.4 遗留项收敛（Sprint 3 复核产出）— ✅ Sprint 5 T2/T3/T4 全部落地
 
-- [ ] `evaluatePolicy` 消费 `maxDaily`（需日累计状态，可先用进程内 + 审计日志对账）
-- [ ] `evaluatePolicy` 消费 `requiresSimulation`（策略文件可覆盖静态风险表，方向只能收紧不能放宽）
-- [ ] 策略文件损坏 fail-mode 可选 `strict`（拒绝所有匹配 action 而非放行）
-- [ ] Sprint 2 遗留测试迁移：移除 `SMART_ACCOUNT_SIMULATION_GATE=0`，改走 preview-first 路径
+- [x] `evaluatePolicy` 消费 `maxDaily`（需日累计状态，可先用进程内 + 审计日志对账）— **Sprint 5 T2.1**：`createDailyCumulativeStore()` 进程内账户级日累计，超限 → `PolicyRejected` fail-closed，成功 execute 累计 + 审计 `dailyTotal`；多实例共享显式延后 Sprint 6。
+- [x] `evaluatePolicy` 消费 `requiresSimulation`（策略文件可覆盖静态风险表，方向只能收紧不能放宽）— **Sprint 5 T2.2**：`resolveSimulationRequirement` 合并静态分级与 policy 规则，只收紧不放宽，execute 门禁与查询工具同源单次读取。
+- [x] 策略文件损坏 fail-mode 可选 `strict`（拒绝所有匹配 action 而非放行）— **Sprint 5 T3**：`POLICY_FAIL_MODE=strict` 于模拟/policy 裁决前 fail-closed 报 `PolicyConfigError`（独立 `gate: strict-config`），默认宽松行为不变；strict 门禁绑定每请求单次读取快照，无 TOCTOU。
+- [x] Sprint 2 遗留测试迁移：移除 `SMART_ACCOUNT_SIMULATION_GATE=0`，改走 preview-first 路径 — **Sprint 5 T4**：生产 gate 恒开（`if (sim.requiresSimulation)`），`mcp-smart-account/ops/smoke` 全部改带签名 preview arm 后执行；伪造/超限在 preview 端出 typed revert + execute 端 fail-closed `SimulationRequired`，重放/forge 保留链上 `BadNonce`/`InvalidSignature`。
 - [x] owner/emergency 私钥经 MCP 工具参数传入的遗留问题 → 环境变量注入（**Sprint 4 T3.3 已落地**：非 local 配置面拒绝经工具参数直传 owner/emergency 私钥，一律 `CHAIN_OWNER_PK` / `CHAIN_EMERGENCY_PK` env 注入；local 保留 anvil 开发便利）
 
-> 注：`evaluatePolicy`（`mcp-server/src/policy-engine.js`）已消费 `maxPerTx`（BigInt 精确比较，malformed 金额 fail-closed）与 `enabled`；`maxDaily` / `requiresSimulation` 字段仍为 schema 定义但未消费。
+> 注：`evaluatePolicy`（`mcp-server/src/policy-engine.js`）已消费 `maxPerTx`（BigInt 精确比较，malformed 金额 fail-closed）、`enabled`、`maxDaily`（T2.1）、`requiresSimulation`（T2.2）；Sprint 5 复核确认方向只收紧不放宽、BigInt 精确累计、预留制消除 check-then-act 竞态。
 
-### P1.5 测试与回归
+### P1.5 测试与回归 — ✅ Sprint 5 已落地
 
-- 新增 `packages/agent-sdk/test/service-identity.test.js`、`transport-mtls.test.js`（本地 CA，不起真实网络）
-- 全量回归：mcp-server + agent-sdk 全绿；开启 messageSecurity 的 CoordinationClient 端到端用例。
+- 新增 `packages/agent-sdk/test/service-identity.test.js`（Sprint 4）、`transport-mtls.test.js`（8/8 验收态，本地 CA 不起真实网络）。
+- 新增 `packages/agent-sdk/test/transport-mtls-e2e.test.js`（6/6 全链路：signed transport + mTLS + replay guard；含 replay store 持久化重启恢复、跨服务 target 重放拒绝）。
+- 全量回归：agent-sdk 62/62、mcp-server 73/73、chain-eth 78/78、demo 39/39。
 
 ---
 

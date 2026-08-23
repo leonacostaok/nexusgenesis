@@ -16,6 +16,7 @@ import assert from 'node:assert/strict';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { createServer, __resetSmartAccountForTest } from '../src/server.js';
+import { loadChainState } from '../src/chain-state-store.js';
 import { readFileSync, existsSync, unlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -288,8 +289,9 @@ test('T3 tx ledger + audit persist into the state/audit files (durable facts)', 
   assert.equal(exec.success, true);
 
   // 状态文件携带 transactions 台账（accountId / sessionId / status / txHash / blockNumber）。
+  // Sprint 6 T3：落盘为行级 store 格式——断言走语义层 loadChainState()（格式无关）。
   assert.ok(existsSync(STATE_FILE), 'state file must be written');
-  const raw = JSON.parse(readFileSync(STATE_FILE, 'utf8'));
+  const raw = loadChainState();
   assert.ok(Array.isArray(raw.transactions) && raw.transactions.length >= 1);
   const tx = raw.transactions.find((t) => t.txHash === exec.txHash);
   assert.ok(tx, 'confirmed tx must be in the persisted ledger');

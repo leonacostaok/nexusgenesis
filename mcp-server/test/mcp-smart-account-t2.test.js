@@ -191,8 +191,9 @@ test('T2.1 signed preview arms the gate AND persists the simulation to state fil
   assert.equal(prev.wouldExecute, true);
 
   // 状态文件已落盘 simulations（accountId/digest/at 绝对时间）。
+  // Sprint 6 T3：落盘为行级 store 格式——断言走语义层 loadChainState()（格式无关）。
   assert.ok(existsSync(STATE_FILE), 'state file must exist after arming');
-  const state = JSON.parse(readFileSync(STATE_FILE, 'utf8'));
+  const state = loadChainState();
   assert.ok(Array.isArray(state.simulations));
   const arm = state.simulations.find((s) => s.accountId === out.accountId);
   assert.ok(arm, `no simulation persisted for account ${out.accountId}`);

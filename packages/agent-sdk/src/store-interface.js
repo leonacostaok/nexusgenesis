@@ -311,8 +311,17 @@ export function createSqliteStore({ file } = {}) {
             err.code = 'STORE_CAS_CONFLICT';
             throw err;
           }
-          const next = mutate(row ? parseRowValue(row) : null);
-          assertValidValue(next);
+          let next;
+          try {
+            next = mutate(row ? parseRowValue(row) : null);
+            assertValidValue(next);
+          } catch (mutateErr) {
+            // mutate 抛出的业务错误（如 STATE_CONFIG_CONFLICT）不属 CAS 竞争——
+            // 回滚后直接传播，绝不进入重试循环（重试同样的业务冲突只会空转 25 次）。
+            mutateErr.__mutateError = true;
+            try { db.exec('ROLLBACK'); } catch { /* not in txn */ }
+            throw mutateErr;
+          }
           const serialized = JSON.stringify(next);
           let changes;
           if (row) {
@@ -329,6 +338,9 @@ export function createSqliteStore({ file } = {}) {
           return { value: next, version: currentVersion + 1 };
         } catch (err) {
           if (err.code === 'STORE_CAS_CONFLICT') throw err;
+          if (err.__mutateError) throw err; // mutate 业务错误：重试无意义，直接传播
+          // 仅竞争类错误（BUSY/LOCKED）重试；其余（IO/序列化/编程错误）直接抛。
+          if (!/BUSY|LOCKED/i.test(String(err.code || err.message))) throw err;
           try { db.exec('ROLLBACK'); } catch { /* not in txn */ }
           lastErr = err;
         }

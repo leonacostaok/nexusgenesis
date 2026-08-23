@@ -23,14 +23,14 @@ import {
 } from './chain-config.js';
 import {
   loadChainState,
-  saveChainState,
+  persistAccountRow,
+  persistSimArm,
   recordBroadcast,
   serializeEntry,
   getChainStateFile,
   initTxLedger,
   recordTx,
   listTx,
-  getTxLedger,
   __resetTxLedgerForTest,
 } from './chain-state-store.js';
 import {
@@ -417,8 +417,10 @@ async function restoreSmartAccounts({ provider, abi, cfg }) {
       conn,
       sessions,
       currentSessionId: rec.currentSessionId || null,
-      chainUrl: rec.chainUrl || null,
-      profile: rec.profile || null,
+      // Sprint 6 T3 #1 单轨化：chain-env 单例只存 KEY_META；行级不再携带。
+      // 恢复时统一填单例 chainUrl/profile（每行都在同一条链上）。
+      chainUrl: state.chainUrl || null,
+      profile: state.profile || null,
       txHashes: Array.isArray(rec.txHashes) ? rec.txHashes : [],
     });
   }
@@ -432,14 +434,7 @@ async function restoreSmartAccounts({ provider, abi, cfg }) {
 /** Persist the current in-memory Smart Account state (no-op in pure-memory mode). */
 function persistSmartAccountState() {
   if (!getChainStateFile()) return;
-  const accounts = [...smartAccounts.values()].map(serializeEntry);
-  saveChainState({
-    chainUrl: accounts[0]?.chainUrl || null,
-    profile: accounts[0]?.profile || null,
-    accounts,
-    transactions: getTxLedger(),
-    simulations: [...simulationLog.entries()].map(([accountId, v]) => ({ accountId, digest: v.digest, at: v.at })),
-  });
+  for (const entry of smartAccounts.values()) persistAccountRow(entry);
 }
 
 /**
@@ -899,8 +894,11 @@ async function handleSmartAccountPreview(args) {
     // this exact digest — within SIMULATION_WINDOW_MS execute() may proceed
     // without re-simulating; outside it the caller must re-preview.
     if (digest) {
-      simulationLog.set(resolvedAccountId, { digest, at: Date.now() });
-      persistSmartAccountState(); // Sprint 4 T2.1: arm to disk — survives restart
+      const armedAt = Date.now();
+      simulationLog.set(resolvedAccountId, { digest, at: armedAt });
+      // Sprint 6 T3.1: arm 写穿 store 行（sim:arm:<accountId>，LWW）——跨实例
+      // 可见 + 重启恢复；共享后端失败 → 抛错（fail-closed：视为未 arm，绝不假 arm）。
+      persistSimArm(resolvedAccountId, { digest, at: armedAt });
     }
     const simulation = classifySimulationRisk(action);
     recordAudit({ tool: 'smart_account_preview', ok: true, wouldExecute: true, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest: digest });
@@ -1142,7 +1140,7 @@ async function handleSmartAccountExecute(args) {
   });
   recordAudit({ tool: 'smart_account_execute', ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, txHash: res.txHash ?? null, errorName: res.errorName ?? null, error: errorCode, broadcaster, attempts: res.attempts, retried: res.retried || false, retryable: res.retryable ?? null });
   logStructured('smart_account_execute', { ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, error: errorCode, broadcaster, attempts: res.attempts, retried: res.retried || false, retryable: res.retryable ?? null });
-  persistSmartAccountState();
+  // Sprint 6 T3.3: recordTx 已写穿 store（失败事实跨实例可见），无需全量 persist。
   return chainErrorResponse({ ...res, errorName: res.errorName ?? (res.code !== 'UNKNOWN_REVERT' ? res.code : null) }, GENERIC_ERRORS.UNKNOWN_REVERT);
 }
 

@@ -65,17 +65,65 @@
 
 **目标**：arming 与状态跨实例可见 + 并发不丢数据。
 
-- T3.1 simulationLog 迁到 T1 store：arming digest 写共享后端 → 实例 A 成功模拟 arm 的 digest，实例 B 在同一族内可命中（**这是 Simulation gate 分布式化的核心**，否则多实例各自 fail-closed 过度拦截）。
-  - 关键：arm 写入仍只在"preview 成功（wouldExecute=true）"后；跨实例命中窗口仍须 digest 精确 + 60s 绝对窗口 + 同一 `accountId`。fail-closed 语义：共享不可用 → 视为未 arm（拒绝），不变软。
-- T3.2 **state store 改 CAS 合并**（修 last-write-wins）：
-  - `saveChainState` 从"全量覆盖"改为"按 `accountId` 粒度的带版本 UPDATE + 冲突检测"；`loadChainState` 合并多实例副本（accounts/transactions 各自带 `instanceId` 与 `updatedAt`，冲突以 CAS 版本号裁决）。
-  - 修 Windows 二次 writeFileSync 无原子性缺陷：改用 tmp+rename 仅在目标不存在时（现代码注释已指出退化），或统一走 sqlite 后端。
-- T3.3 txLedger 分布式：各实例广播后写共享台账（`submitted/mined/confirmed/failed` 生命周期），relayer 对账时跨实例可见已落账 txHash，避免重复广播对账决策。
-- 验收：
-  - 实例 A arm → 实例 B（共享 sqlite）对同 digest 放行、异 digest 仍 `SimulationRequired`。
-  - 两实例并发 `saveChainState` 写不同 accountId → 两账号都保留（不互相覆盖）。
-  - 并发写同 accountId 不同字段 → CAS 版本冲突时一方写入失败并告警（可重试），不静默丢。
-- 复核关注点：simulationLog 窗口由"绝对时间"驱动，跨实例时钟偏差（≤ 几秒）容忍度；CAS 冲突后执行流是否安全降级。
+### T3 设计定稿（CAS 合并策略，规划校订）
+
+**核心洞察：不是所有状态都该 CAS。** 按数据本质分三类语义，各配正确原语：
+
+| 数据类别 | 本质 | 并发冲突语义 | 原语（T1 store） |
+|---------|------|-------------|-----------------|
+| account 注册（新 accountId 行） | 注册表插入 | 恰好一次 | `claim` |
+| account 可变字段（sessions/txHashes append、currentSessionId） | append-union | 并集合并，无胜负 | `writeAtomically` RMW（mutate 内 union） |
+| account 不变量（owner/contractAddress/emergencyKey/chainUrl） | 创建后不可变 | **不允许冲突** | 冲突检测 → 显式 `CONFIG_CONFLICT`（fail-closed + 审计），绝不静默取一方 |
+| simulationLog arm | 最新意图覆盖 | **LWW 是正确语义**（见下） | `write`（覆盖，无需 CAS） |
+| txLedger 事实 | append-only 不可变 | 无冲突 | 首条 `claim` + 演进 append |
+| chainUrl/profile 单例 | 首写定环境 | 首者胜 | `claim`；后到者读到不符 → 沿用现 chain-environment guard 拒绝恢复 |
+
+**"LWW 语义正确"论证**（规划要求显式论证）：
+- **arm 的 LWW 是功能语义而非缺陷**：arm 表示"该账户最近一次成功 preview 的意图"，execute 必须带匹配 digest 才放行。两实例并发对同一 account 各 arm 不同 digest → 后写者胜出 → 先写实例 execute 时 digest 不匹配 → fail-closed 重新 preview。**安全性由 digest 匹配保证，与写入顺序无关**——覆盖即正确。
+- **accounts/txLedger 的 LWW 才是缺陷**：全量覆盖下 append 丢行（实例 A 注册 acc1、实例 B 注册 acc2 → 后写覆盖前写）。修法**不是给全量文件加版本号 CAS**（那只是把"丢数据"换成"丢更新"——CAS 失败重试仍要全量重算，且所有实例竞争同一版本号，吞吐塌缩），而是**分片到行级**：`state:account:<accountId>` 一行一 key。行级分片后不同行天然不竞争（并发写不同 accountId 零冲突），同行冲突按上表原语处理。
+- **全文件 CAS 是反模式**（显式排除）：单 key `writeAtomically` 承载整个状态文件 = 任何实例写任何账户都串行竞争同一版本，重试风暴，且未解决合并语义。
+
+**分片 schema**：
+```
+chain:meta                 → { chainUrl, profile }                      claim 一次（环境单例）
+state:account:<accountId>  → serializeEntry 输出                        claim（新）/ RMW（更新）
+sim:arm:<accountId>        → { digest, at }                             write（LWW 正确）
+ledger:tx:<txHash>         → { records: [rec...] }（生命周期演进追加）    claim（submitted 首条）+ RMW append
+```
+
+**RMW mutate 内合并规则**（`state:account` 行）：
+- `sessions`：`unionBy(existing, incoming, 'sessionId')`（sessionId 幂等去重——两实例并发开不同 session → 两条都保留）
+- `txHashes`：union + 环形裁剪至 `MAX_TX_HASHES_PER_ACCOUNT`(20)
+- `currentSessionId`：incoming 非空取 incoming（与单机顺序 set 语义一致）
+- 不变量字段：existing 存在且 ≠ incoming → throw `STATE_CONFIG_CONFLICT`（同 accountId 两实例 setup 参数不同 = 配置漂移，必须显式失败并审计，绝不静默取任何一方）
+- 台账环形：`evictOldest('ledger:tx:', MAX_TX_RECORDS=200)`
+
+**接线与兼容**（对外行为不破坏基线）：
+- [chain-state-store.js](file:///d:/trae_projects/NexusGenesis/mcp-server/src/chain-state-store.js) 内部实现换 T1 store（`resolveStateBackend`：`SMART_ACCOUNT_STATE_FILE` 以 `.sqlite` 结尾 → sqlite 共享；`.json`/缺省 → local 单机）；**对外 API 签名不变**（`loadChainState`/`saveChainState`/`recordTx`/`listTx`/`recordBroadcast`/`serializeEntry`）
+- server.js：`persistSmartAccountState()` → `persistAccount(accountId)` 按行写（不再全量）；arm 点（L902）写 `sim:arm:<accountId>`；`restoreSmartAccounts` 从分片读回 + 保留 chain-environment guard
+- 旧 JSON 格式检测迁移：启动发现旧格式（顶层 `accounts` 数组）→ 一次性迁入 store，原文件留 `.bak`
+- 纯内存模式（无状态文件）：`createLocalStore()` 内存态——现回归行为不变
+- Windows 原子性：local 后端沿用 tmp+rename（Windows 退化覆盖，单实例低风险接受）；sqlite 后端天然事务原子
+
+**降级（fail-closed 决策显式化）**：
+- 显式配置 sqlite（`.sqlite` 后缀 / `NEXUS_STORE_BACKEND=sqlite`）但构造失败 → **启动失败**（状态丢失比不可用更危险，绝不静默降级 local）
+- auto/local：与现基线一致
+
+### 任务分解（沿原 T3.1-T3.3，按上述设计执行）
+
+- T3.1 simulationLog 迁 store：arm 写共享后端 → 实例 A arm 的 digest 实例 B 同族可命中（**Simulation gate 分布式化核心**）。
+  - arm 写入仍只在 preview 成功（wouldExecute=true）后；跨实例命中仍须 digest 精确 + 60s 绝对窗口 + 同 `accountId`。共享不可用 → 视为未 arm（拒绝），不变软。
+- T3.2 state store 行级分片 + 语义原语（上表）：修 last-write-wins 丢行；不变量冲突显式失败。
+- T3.3 txLedger 分布式：各实例广播后写共享台账，relayer 对账跨实例可见已落账 txHash（T4.2 的基础）。
+
+### 验收（更新为设计对应的可测断言）
+- 实例 A arm → 实例 B（共享 sqlite）同 digest 放行、异 digest 仍 `SimulationRequired`。
+- 两实例并发写不同 accountId → 两行都保留（行级分片零冲突）。
+- 并发同 accountId 各开不同 session → RMW union 两条都在。
+- 同 accountId 不同 owner setup → `STATE_CONFIG_CONFLICT` 显式失败 + 审计（不静默取一方）。
+- 实例 A 广播 tx → 实例 B `listTx` 可见（跨实例台账）。
+- 旧 JSON 状态文件 → 自动迁移 + `.bak` 保留；纯内存模式 mcp-server 基线回归不变。
+- 复核关注点：跨实例时钟偏差（≤ 几秒）对 60s 绝对窗口的容忍；RMW 冲突重试风暴上限（T1 已有 retries=25）；`CONFIG_CONFLICT` 后执行流安全降级（拒绝服务该 accountId + 告警，不影响其他行）。
 
 ## T4 relayer 多实例 nonce 协调 + 对账
 

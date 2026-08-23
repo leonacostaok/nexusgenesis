@@ -27,6 +27,7 @@ import { fileURLToPath } from 'node:url';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { createServer, __resetSmartAccountForTest } from '../src/server.js';
+import { loadChainState } from '../src/chain-state-store.js';
 import { buildChainEnvConfig } from '../src/chain-config.js';
 
 // Sprint 5 T4: the SMART_ACCOUNT_SIMULATION_GATE=0 opt-out was removed —
@@ -317,8 +318,9 @@ test('T4.2 external chain smoke: lifecycle + relayer/owner separation + persiste
   assert.equal(relayerNonce, 1, `relayer broadcast exactly once (nonce=${relayerNonce})`);
 
   // ── T2 链上状态持久化：落盘 accountId→contractAddress / sessionId / txHash / 环境 ──
+  // Sprint 6 T3：落盘为行级 store 格式——断言走语义层 loadChainState()（格式无关）。
   assert.ok(existsSync(STATE_FILE), 'state file must be written');
-  const raw = JSON.parse(readFileSync(STATE_FILE, 'utf8'));
+  const raw = loadChainState();
   assert.equal(raw.profile, 'testnet');
   assert.equal(raw.chainUrl, externalUrl);
   assert.ok(Array.isArray(raw.accounts) && raw.accounts.length === 1);
@@ -336,7 +338,7 @@ test('T4.2 external chain smoke: lifecycle + relayer/owner separation + persiste
 // T2 重启恢复：持久化账户在外部链上恢复，不重新部署
 // ─────────────────────────────────────────────────────────────────────────
 test('T4.3 restart recovery: persisted account restored on the same external chain', async () => {
-  const prev = JSON.parse(readFileSync(STATE_FILE, 'utf8'));
+  const prev = loadChainState();
   assert.ok(prev.accounts.length >= 1, 'lifecycle test must have persisted an account first');
   const persistedAccountId = prev.accounts[0].accountId;
 

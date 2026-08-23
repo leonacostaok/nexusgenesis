@@ -12,6 +12,7 @@
  *  4. engage in the forum & governance via PQC-signed writes.
  */
 import crypto from 'node:crypto';
+import { hostname } from 'node:os';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import {
   ListToolsRequestSchema,
@@ -1099,7 +1100,9 @@ async function handleSmartAccountExecute(args) {
     accountId: resolvedAccountId, payloadDigest,
     ...(coordinator ? {
       coordinator, chainUrl: env.chainUrl, broadcaster,
-      instanceId: process.env.NEXUS_INSTANCE_ID || 'default',
+      // F6（复核）：缺省用 hostname:pid 保证天然唯一 —— 多实例未设 env 时
+      // 租约/审计仍可归因到具体实例（计划要求"共享临界区落 instanceId"）。
+      instanceId: process.env.NEXUS_INSTANCE_ID || `${hostname()}:${process.pid}`,
     } : {}),
   });
   if (res.retried) incr('smart_account_execute_retried', res.attempts - 1);
@@ -1111,6 +1114,9 @@ async function handleSmartAccountExecute(args) {
     const submittedAt = new Date().toISOString();
     recordTx({
       txHash: res.txHash, accountId: resolvedAccountId, sessionId: s.sessionId, status,
+      // F1（复核）：digest 写穿共享台账 —— T4.2 isAlreadyLanded 按 (accountId,
+      // digest) 匹配，缺此字段则跨实例去重永不命中。
+      digest: payloadDigest ?? null,
       blockNumber: res.receipt?.blockNumber != null ? res.receipt.blockNumber.toString() : null,
       gasUsed: res.receipt?.gasUsed != null ? res.receipt.gasUsed.toString() : null,
       errorName: null, submittedAt, confirmedAt: submittedAt,
@@ -1164,6 +1170,7 @@ async function handleSmartAccountExecute(args) {
   const failedAt = new Date().toISOString();
   recordTx({
     txHash: res.txHash ?? null, accountId: resolvedAccountId, sessionId: s.sessionId, status: 'failed',
+    digest: payloadDigest ?? null, // F1（复核）：同上，失败事实也要能被跨实例去重命中
     blockNumber: null, gasUsed: null, errorName: res.errorName ?? null, error: errorCode, submittedAt: failedAt, confirmedAt: null,
   });
   recordAudit({ tool: 'smart_account_execute', ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, txHash: res.txHash ?? null, errorName: res.errorName ?? null, error: errorCode, broadcaster, attempts: res.attempts, retried: res.retried || false, retryable: res.retryable ?? null });

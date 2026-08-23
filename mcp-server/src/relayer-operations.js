@@ -56,7 +56,8 @@ export function classifyRelayerFailure(res) {
   }
 
   // relayer EOA nonce 冲突（无合约错误名）：重试（ether 每次 populate 重读 nonce）即可恢复。
-  if (/(nonce too low|incorrect nonce|doesn't have the correct nonce|replacement transaction underpriced|same nonce)/i.test(reason)) {
+  // F3：复用 relayer-coordinator.isNonceConflict —— 单一真源，杜绝两处正则漂移。
+  if (isNonceConflict(res)) {
     return { retryable: true, code: 'NONCE_CONFLICT' };
   }
 
@@ -203,6 +204,20 @@ export async function executeWithRelayerResilience({ conn, payload, signature, r
     if (attempts > maxRetries) return { ...res, ...cls, attempts, retried: attempts > 1, retriesExhausted: true, coordinatedNonce };
 
     await sleep(backoffMs * 2 ** (attempts - 1));
+    // F2（计划 T4.1 兜底）：EOA nonce 冲突 → 链上重读 pending 计数，把
+    // sequencer 计数器下限抬到链上真实值（原子 max，只升不降）。场景：EOA
+    // 在启用协调前已有链上历史（曾单机运行/部署交易/store 重建）→ sequencer
+    // 分配落后 → 每笔 "nonce too low"。重同步后下一轮拿到 ≥ 链上计数的新
+    // nonce。读链/同步失败不阻断重试本身（下一轮冲突会再尝试）。
+    if (cls.code === 'NONCE_CONFLICT' && coordinator?.sequencer?.syncAtLeast
+        && chainUrl && broadcaster && typeof recProvider?.getTransactionCount === 'function') {
+      try {
+        const chainCount = Number(await recProvider.getTransactionCount(broadcaster, 'pending'));
+        await coordinator.sequencer.syncAtLeast(chainUrl, broadcaster, chainCount);
+      } catch {
+        /* 重同步失败 → 下一轮 acquireNonce 照常（fail-safe） */
+      }
+    }
     // 退避期间广播可能已落账：重发前再对账一次，避免为已落账的意图
     // 白付一笔重复广播 gas（合约意图 nonce 保证不双花，但 gas 与 ledger
     // 条目会被浪费/污染）。
@@ -211,7 +226,7 @@ export async function executeWithRelayerResilience({ conn, payload, signature, r
       if (landed) return { ...landed, attempts, retried: attempts > 1, reconciled: true, coordinatedNonce };
       pendingWaitFailedHash = null;
     }
-    // T4: EOA nonce 冲突时，下一轮会从 sequencer 重新协调一个 fresh nonce
-    // （isNonceConflict 与 classify 一致，此处仅为明确语义保留说明）。
+    // T4: 下一轮循环开头会从 sequencer 重新协调 fresh nonce（NONCE_CONFLICT
+    // 已在上方按链上 pending 重同步过计数器下限）。
   }
 }

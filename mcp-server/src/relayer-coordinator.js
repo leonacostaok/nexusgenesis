@@ -29,6 +29,8 @@ import { createLocalStore } from 'nexusgenesis-agent-sdk';
 const COUNTER_PREFIX = 'nonce:seq:';
 const LEASE_PREFIX = 'nonce:lease:';
 const DEFAULT_START = 0;
+/** F5：外层 CAS 重试上限（writeAtomically 内部已有 retries=25，此处兜底防无限自旋）。 */
+const MAX_CAS_ATTEMPTS = 10;
 
 const clampInt = (raw, fallback, min, max) => {
   const n = Number(raw);
@@ -82,6 +84,7 @@ export function createNonceSequencer(store) {
       const start = o.start ?? DEFAULT_START;
       const leaseInstance = o.instanceId ?? 'local';
       let nonce;
+      let casAttempts = 0;
       for (;;) {
         try {
           // eslint-disable-next-line no-await-in-loop
@@ -91,9 +94,18 @@ export function createNonceSequencer(store) {
           nonce = Number(r.value.next) - 1; // 返回「刚发出」的值（new.next-1）
           break;
         } catch (err) {
-          // CAS 竞争（BUSY/LOCKED 已在 writeAtomically 内重试；此处兜底直接重试）
-          if (/exhausted retries|CAS conflict/i.test(String(err.message))) continue;
-          throw err; // IO/业务错误 → 传播（fail-closed）
+          // CAS 竞争（BUSY/LOCKED 已在 writeAtomically 内重试；此处兜底重试，
+          // 但有上限 + 退避 —— 持久锁竞争下 fail-closed 抛错，由上游降级
+          // legacy nonce（ethers 自读），绝不无限自旋（F5）。
+          if (!/exhausted retries|CAS conflict/i.test(String(err.message))) {
+            throw err; // IO/业务错误 → 传播（fail-closed）
+          }
+          casAttempts += 1;
+          if (casAttempts >= MAX_CAS_ATTEMPTS) {
+            throw new Error(`nonce sequencer: exhausted CAS retries (${MAX_CAS_ATTEMPTS}) for ${key}`);
+          }
+          // eslint-disable-next-line no-await-in-loop
+          await new Promise((r2) => setTimeout(r2, Math.min(10 * casAttempts, 100)));
         }
       }
       // 租约记录：非强锁，仅审计/对账该 nonce 归属哪个实例。
@@ -106,6 +118,28 @@ export function createNonceSequencer(store) {
         // 租约写入失败不阻断广播——原子递增已保证唯一；记录仅审计。
       }
       return nonce;
+    },
+
+    /**
+     * 链上重同步兜底（F2，计划 T4.1 原文要求）：发现自己分配的 nonce 落后于
+     * 链上真实 pending 计数时，把计数器下限抬到 chainCount（原子 max 合并，
+     * 只升不降）。场景：relayer EOA 在启用协调前已有链上历史（曾单机运行/
+     * 部署交易/store 重建）——否则 sequencer 从 0 起分配，每笔都
+     * "nonce too low" 直到重试耗尽。
+     * @param {string} chainUrl
+     * @param {string} broadcaster
+     * @param {number} chainCount - provider.getTransactionCount(broadcaster,'pending')
+     */
+    async syncAtLeast(chainUrl, broadcaster, chainCount) {
+      const count = Number(chainCount);
+      if (!Number.isFinite(count) || count < 0) return;
+      const key = counterKey(chainUrl, broadcaster);
+      // 计数器语义：存储的 next = 「下一个将分配的 nonce」（acquire 返回
+      // cur.next 并存 cur.next+1）。链上 pending 计数 count 即节点视角的
+      // 下一个可用 nonce → 下限直接对齐 count（原子 max，只升不降）。
+      await st.writeAtomically(key, (cur) => ({
+        next: Math.max(cur && Number.isFinite(Number(cur.next)) ? Number(cur.next) : 0, count),
+      }));
     },
   };
 }
@@ -131,13 +165,20 @@ export function createBroadcastReconciler({ listTx }) {
      */
     isAlreadyLanded(accountId, payloadDigest) {
       if (!accountId || !payloadDigest || typeof listTx !== 'function') return null;
-      const rows = listTx({ accountId, limit: clampInt(process.env.RELAYER_DEDUPE_SCAN, 200, 0, 2000) });
+      // F4：limit=0 是「显式禁用扫描」。不能把 0 传给 listTx —— listTx 的
+      // rows.slice(-limit) 在 limit=0 时 slice(-0)===slice(0) 返回全量，
+      // "禁用"会反转为"全量扫描"。这里显式短路。
+      const scan = clampInt(process.env.RELAYER_DEDUPE_SCAN, 200, 0, 2000);
+      if (scan <= 0) return null;
+      const rows = listTx({ accountId, limit: scan });
       const hit = rows.find((r) => r.digest === payloadDigest);
       return hit || null;
     },
     findLandedByDigest(payloadDigest) {
       if (!payloadDigest || typeof listTx !== 'function') return [];
-      return listTx({ limit: clampInt(process.env.RELAYER_DEDUPE_SCAN, 200, 0, 2000) })
+      const scan = clampInt(process.env.RELAYER_DEDUPE_SCAN, 200, 0, 2000);
+      if (scan <= 0) return []; // 同 F4：0 = 禁用，非全量
+      return listTx({ limit: scan })
         .filter((r) => r.digest === payloadDigest);
     },
   };

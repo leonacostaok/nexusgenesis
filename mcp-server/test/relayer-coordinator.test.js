@@ -95,6 +95,67 @@ test('T4.1 sequencer degrades to single-process local when store omitted', async
   assert.equal(n2, 1);
 });
 
+// ─── F2 复核修复：链上 nonce 重同步兜底 ──────────────────────────────────
+
+test('F2 syncAtLeast raises the floor to the chain pending count (never lowers)', async () => {
+  const file = join(dir, 'sync.sqlite');
+  const store = createSqliteStore({ file });
+  const seq = createNonceSequencer(store);
+  try {
+    const n0 = await seq.acquireNonce(CHAIN, RELAYER);
+    assert.equal(n0, 0);
+    await seq.syncAtLeast(CHAIN, RELAYER, 5); // EOA 链上已有 5 笔历史
+    const n1 = await seq.acquireNonce(CHAIN, RELAYER);
+    assert.equal(n1, 5, '重同步后下一次分配 = 链上 pending 计数');
+    await seq.syncAtLeast(CHAIN, RELAYER, 2); // 落后值 → 不回退
+    const n2 = await seq.acquireNonce(CHAIN, RELAYER);
+    assert.equal(n2, 6, '计数器只升不降');
+  } finally {
+    store.close();
+  }
+});
+
+test('F2 integration: NONCE_CONFLICT retry resyncs the sequencer from chain pending count', async () => {
+  const file = join(dir, 'resync.sqlite');
+  const store = createSqliteStore({ file });
+  const sequencer = createNonceSequencer(store);
+  const nonceCalls = [];
+  // EOA 链上 pending = 5（曾有单机运行历史），sequencer 冷启动从 0 分配 → 必冲突。
+  const provider = { getTransactionCount: async () => 5 };
+  const conn = fakeConn([
+    { ok: false, errorName: null, reason: 'nonce too low' },
+    { ok: true, txHash: '0xresynced', receipt: { status: 1, logs: [] } },
+  ], { nonceCalls });
+  try {
+    const res = await executeWithRelayerResilience({
+      conn, payload: { action: 'transfer' }, signature: '0x', relayer: {}, provider,
+      opts: { maxRetries: 2, backoffMs: 1 },
+      coordinator: { sequencer }, chainUrl: CHAIN, broadcaster: RELAYER, instanceId: 'RS',
+    });
+    assert.equal(res.ok, true);
+    assert.equal(conn.calls.length, 2);
+    assert.equal(nonceCalls[0], 0, '首次冷启动分配 0');
+    assert.equal(nonceCalls[1], 5, '冲突后按链上 pending 重同步 → 分配 5');
+  } finally {
+    store.close();
+  }
+});
+
+// ─── F5 复核修复：CAS 重试有上限 ─────────────────────────────────────────
+
+test('F5 acquireNonce gives up after bounded CAS retries (no infinite spin)', async () => {
+  const badStore = {
+    writeAtomically: async () => { throw new Error('CAS conflict: exhausted retries'); },
+    claim: async () => {},
+  };
+  const seq = createNonceSequencer(badStore);
+  await assert.rejects(
+    () => seq.acquireNonce(CHAIN, RELAYER),
+    /exhausted CAS retries/,
+    '持久 CAS 竞争必须在有限次数内 fail-closed 抛错（上游降级 legacy nonce）',
+  );
+});
+
 // ─── T4.2 broadcast reconciler ───────────────────────────────────────────
 
 test('T4.2 isAlreadyLanded returns a landed record by (accountId, digest)', () => {
@@ -125,6 +186,24 @@ test('T4.2 reconciler returns null when listTx missing or args absent', () => {
   assert.equal(rec.isAlreadyLanded('a', 'b'), null);
   assert.deepEqual(rec.findLandedByDigest('d'), []);
   assert.equal(rec.isAlreadyLanded(null, 'd'), null);
+});
+
+test('F4 RELAYER_DEDUPE_SCAN=0 disables the scan (not full scan)', () => {
+  const ledger = [{ txHash: '0xT1', accountId: 'acc1', digest: '0xD1', status: 'confirmed' }];
+  let scanned = 0;
+  const rec = createBroadcastReconciler({ listTx: (o) => { scanned += 1; return ledger; } });
+  const saved = process.env.RELAYER_DEDUPE_SCAN;
+  process.env.RELAYER_DEDUPE_SCAN = '0';
+  try {
+    // listTx 的 slice(-limit) 在 limit=0 时 slice(-0)===slice(0) 会全量返回 ——
+    // 0 的语义必须是「禁用」（不扫描），由 reconciler 显式短路保证。
+    assert.equal(rec.isAlreadyLanded('acc1', '0xD1'), null, '禁用时即使有匹配行也返回 null');
+    assert.deepEqual(rec.findLandedByDigest('0xD1'), []);
+    assert.equal(scanned, 0, '根本不应触发 listTx 调用');
+  } finally {
+    if (saved === undefined) delete process.env.RELAYER_DEDUPE_SCAN;
+    else process.env.RELAYER_DEDUPE_SCAN = saved;
+  }
 });
 
 // ─── isNonceConflict ─────────────────────────────────────────────────────

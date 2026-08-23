@@ -246,3 +246,33 @@ test('T3 serializeEntry：Map sessions → 数组（接线契约不变）', () =
   assert.equal(s.sessions[0].sessionId, 'sx');
   assert.equal(s.sessions[0].maxPerTx, '100');
 });
+
+// ─── T4.2 生产接线真值：recordTx 写 digest → 跨实例对账去重命中 ────────────
+
+test('T4.2 recordTx 写穿 digest → isAlreadyLanded 命中（F1 回归：server.js recordTx 必须带 digest）', () => {
+  const file = sqlitePath('dedupe-digest.sqlite');
+  process.env.SMART_ACCOUNT_STATE_FILE = file;
+  // 形状与 server.js 成功路径 recordTx 完全一致（digest: payloadDigest ?? null）。
+  recordTx({
+    txHash: '0xdup1', accountId: 'acc1', sessionId: 's1', status: 'confirmed',
+    digest: '0xD-PROD-1',
+    blockNumber: '42', gasUsed: '21000', errorName: null,
+    submittedAt: '2026-08-23T00:00:01.000Z', confirmedAt: '2026-08-23T00:00:02.000Z',
+  });
+  // 另一"实例"（独立句柄）对同一共享台账做去重查询 —— 这正是
+  // executeWithRelayerResilience 广播前的 isAlreadyLanded 路径。
+  const peer = createSqliteStore({ file });
+  try {
+    const peerRows = Object.values(peer.list('ledger:tx:'))
+      .flatMap((r) => r.records || []);
+    const hit = peerRows.find((r) => r.digest === '0xD-PROD-1' && r.accountId === 'acc1');
+    assert.ok(hit, '共享台账行必须携带 digest（否则跨实例去重永不命中）');
+    assert.equal(hit.txHash, '0xdup1');
+    assert.equal(hit.status, 'confirmed');
+    // 模块侧 listTx（生产 reconciler 的数据源）同样可见。
+    const viaListTx = listTx({ accountId: 'acc1' }).find((r) => r.digest === '0xD-PROD-1');
+    assert.ok(viaListTx, 'listTx 路径也必须能按 digest 命中');
+  } finally {
+    peer.close();
+  }
+});

@@ -19,6 +19,11 @@
  *     不能放宽（见 resolveSimulationRequirement）。
  *   - 规则表每次调用重读 `SMART_ACCOUNT_POLICY_FILE`（JSON），支持热更新；
  *     未设置该 env 时用内置默认规则。
+ *   - 失败模式（Sprint 5 T3）：默认 `POLICY_FAIL_MODE=permissive`（文件损坏 →
+ *     回退空表，软层放行、链上硬策略兜底，与既往一致，仅 stderr 告警）。
+ *     设置 `POLICY_FAIL_MODE=strict` → 文件缺失/损坏/缺 rules 数组一律
+ *     fail-closed：evaluatePolicy 返回 `PolicyConfigError`，模拟查询视为
+ *     required（最保守）。strict 不改变 permissive 的默认行为。
  *
  * 规则文件格式（JSON）：
  *   {
@@ -35,26 +40,71 @@ import { classifySimulationRisk } from './simulation-policy.js';
 /** 内置默认规则：空表 = 软策略全放行（链上硬策略兜底）。 */
 const DEFAULT_RULES = [];
 
+// Sprint 5 T3 — 最近一次策略加载结果的镜像（string|null），供诊断/直调查询。
+// server.js 门禁的 strict 判定不依赖它：绑定每请求单次读取的快照健康
+// （policySnapshot().health / opts.configHealth），见 loadPolicyWithHealth。
+let lastLoadError = null;
+
+/** 当前失败模式：'strict' 或 'permissive'（默认）。 */
+export function policyFailMode() {
+  return process.env.POLICY_FAIL_MODE === 'strict' ? 'strict' : 'permissive';
+}
+
 /**
- * 读取当前生效规则表。
+ * 尝试读取规则表。
+ * @returns {{ ok: boolean, rules: Array|null, error?: string }}
+ *   ok=false 表示文件缺失/损坏/无 rules 数组（含具体 error 文案）。
+ */
+function readPolicyResult() {
+  const file = process.env.SMART_ACCOUNT_POLICY_FILE;
+  if (!file) return { ok: true, rules: DEFAULT_RULES };
+  try {
+    const parsed = JSON.parse(readFileSync(file, 'utf8'));
+    if (Array.isArray(parsed.rules)) return { ok: true, rules: parsed.rules };
+    return { ok: false, rules: DEFAULT_RULES, error: `SMART_ACCOUNT_POLICY_FILE (${file}) has no 'rules' array` };
+  } catch (err) {
+    return { ok: false, rules: DEFAULT_RULES, error: `failed to load SMART_ACCOUNT_POLICY_FILE (${file}): ${err.message}` };
+  }
+}
+
+/**
+ * 单次读取：规则 + 配置健康（S5-T3 fix#1/#3）。
+ * 调用方（server.js 门禁）拿这一份结果同时用于「strict 判定 + 裁决规则 + 审计」，
+ * 每请求只读一次文件；evaluatePolicy / resolveSimulationRequirement 可经 opts
+ * 复用该健康结果（configHealth），不重读。
+ * @returns {{ rules: Array, health: { ok: boolean, error: string|null } }}
+ */
+export function loadPolicyWithHealth() {
+  const { ok, rules, error } = readPolicyResult();
+  const health = { ok, error: ok ? null : (error ?? 'policy config invalid') };
+  lastLoadError = health.error;
+  if (!ok) {
+    process.stderr.write(`[policy] WARNING: ${health.error} — soft policy is permissive, on-chain hard policy still backstops\n`);
+  }
+  return { rules, health };
+}
+
+/**
+ * 读取当前生效规则表（permissive 语义）。
  * - 设置 SMART_ACCOUNT_POLICY_FILE 时读取该 JSON（每次调用重读 → 热更新）；
  * - 文件缺失/损坏 → 软策略回退为空表（设计决策：软层不拦截，链上硬策略仍兜底，
  *   默认行为不变）。但绝不静默：向 stderr 输出告警，运维必须能观察到
  *   "限额策略已失效"这一事实。
+ * - strict 模式调用方应改用 loadPolicyWithHealth()（一次读取同时拿规则与健康）。
  * @returns {Array<{action:string, enabled?:boolean, requiresSimulation?:boolean, maxPerTx?:string, maxDaily?:string}>}
  */
 export function loadPolicy() {
-  const file = process.env.SMART_ACCOUNT_POLICY_FILE;
-  if (!file) return DEFAULT_RULES;
-  try {
-    const parsed = JSON.parse(readFileSync(file, 'utf8'));
-    if (Array.isArray(parsed.rules)) return parsed.rules;
-    process.stderr.write(`[policy] WARNING: SMART_ACCOUNT_POLICY_FILE (${file}) has no 'rules' array — soft policy is permissive, on-chain hard policy still backstops\n`);
-    return DEFAULT_RULES;
-  } catch (err) {
-    process.stderr.write(`[policy] WARNING: failed to load SMART_ACCOUNT_POLICY_FILE (${file}): ${err.message} — soft policy is permissive, on-chain hard policy still backstops\n`);
-    return DEFAULT_RULES;
-  }
+  return loadPolicyWithHealth().rules;
+}
+
+/** 最近一次策略加载是否失败（strict 模式据此 fail-closed）。 */
+export function lastPolicyLoadError() {
+  return lastLoadError;
+}
+
+/** 测试/重置：清除最近加载错误状态。 */
+export function resetPolicyEngineState() {
+  lastLoadError = null;
 }
 
 /**
@@ -172,9 +222,26 @@ function amountExceeds(amount, limit) {
  *   `daily` 仅在 maxDaily 检查实际发生且放行时携带——调用方据此立即预留额度
  *   （消 check-then-act 竞态），链上失败再回滚。
  */
-export function evaluatePolicy(intent = {}, { rules, store, accountId: optsAccountId } = {}) {
+export function evaluatePolicy(intent = {}, { rules, store, accountId: optsAccountId, configHealth } = {}) {
   const { action, amount } = intent;
   const accountId = intent.accountId ?? optsAccountId;
+
+  // Sprint 5 T3 — strict 模式下策略加载失败 → fail-closed（绝不放行）。
+  // 健康来源（fix#1/#3）：优先复用调用方单次读取的 configHealth（server.js 门禁
+  // 传入，每请求只读一次文件）；直调场景无 configHealth 时自行读一次。
+  // 错误文案用本次健康结果的具体 error（不退化为泛化字符串）。裁决规则仍以
+  // 调用方传入的 rules（同一快照）为准——健康检查不参与裁决，杜绝 TOCTOU。
+  if (policyFailMode() === 'strict') {
+    const health = configHealth ?? readPolicyResult();
+    if (!health.ok) {
+      return {
+        allowed: false,
+        code: 'PolicyConfigError',
+        reason: `PolicyEngine strict fail-mode: ${health.error ?? 'policy config invalid'} — refusing to evaluate (fail-closed)`,
+      };
+    }
+  }
+
   const effective = Array.isArray(rules) ? rules : loadPolicy();
   if (!Array.isArray(effective) || effective.length === 0) return { allowed: true };
 
@@ -258,8 +325,25 @@ export function evaluatePolicy(intent = {}, { rules, store, accountId: optsAccou
  * @param {Array} [opts.rules] 已加载规则表（跳过重读，复用单次读取）
  * @returns {{ action, requiresSimulation, level, staticLevel, policyOverride, rationale }}
  */
-export function resolveSimulationRequirement(action, { rules } = {}) {
+export function resolveSimulationRequirement(action, { rules, configHealth } = {}) {
+  // Sprint 5 T3 — strict 且策略加载失败 → 最保守：强制要求模拟（fail-closed）。
+  // 健康来源同 evaluatePolicy（fix#1/#3）：复用调用方单次读取的 configHealth，
+  // 错误文案用本次具体 error。
   const staticRisk = classifySimulationRisk(action);
+  if (policyFailMode() === 'strict') {
+    const health = configHealth ?? readPolicyResult();
+    if (!health.ok) {
+      return {
+        action,
+        requiresSimulation: true,
+        level: 'required',
+        staticLevel: staticRisk.level,
+        policyOverride: 'none',
+        configError: health.error ?? 'policy config invalid',
+        rationale: `PolicyEngine strict fail-mode: ${health.error ?? 'policy config invalid'} — treating as must-simulate (fail-closed)`,
+      };
+    }
+  }
   const effective = Array.isArray(rules) ? rules : loadPolicy();
   const rule = effective.find((r) => r && r.action === action);
 
@@ -285,10 +369,14 @@ export function resolveSimulationRequirement(action, { rules } = {}) {
   };
 }
 
-/** 当前生效规则表快照（供 smart_account_policy 查询/审计）。 */
+/** 当前生效规则表快照（供 smart_account_policy 查询/审计）。单次读取。 */
 export function policySnapshot() {
+  const { rules, health } = loadPolicyWithHealth();
   return {
     source: process.env.SMART_ACCOUNT_POLICY_FILE || 'default (empty)',
-    rules: loadPolicy(),
+    rules,
+    failMode: policyFailMode(),
+    health,
+    configError: health.error,
   };
 }

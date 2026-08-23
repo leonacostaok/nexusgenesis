@@ -23,10 +23,11 @@ import { join } from 'node:path';
 const STATE_FILE = join(tmpdir(), `ops-state-${process.pid}-${Date.now()}.json`);
 const AUDIT_FILE = join(tmpdir(), `ops-audit-${process.pid}-${Date.now()}.jsonl`);
 
-// These tests exercise the ON-CHAIN execute + ops observability semantics;
-// the Sprint 3 T1 simulation gate is covered by its own suite. Opt out here —
-// assert set, no assertion changes.
-process.env.SMART_ACCOUNT_SIMULATION_GATE = '0';
+// Sprint 5 T4: the SMART_ACCOUNT_SIMULATION_GATE=0 opt-out was removed —
+// preview-first is the only path. Executes below arm the gate via signed
+// previews; fail-closed paths (over-ceiling) surface as SimulationRequired
+// while on-chain reverts (replay / forged signature) keep their typed errors
+// when the armed digest matches.
 
 // 持久化 + 审计落盘（local 配置面也启用，验证文件写入与台账随状态持久化）。
 process.env.SMART_ACCOUNT_STATE_FILE = STATE_FILE;
@@ -122,15 +123,18 @@ test('T1 audit trail records setup/preview/execute/estimate_loss with full facts
   assert.equal(preview.wouldExecute, null);
 
   const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: INTENT, privateKeyHex: AGENT_PK });
+
+  // T4 preview-first: arm the exact digest with a signed preview.
+  const armed = await callTool('smart_account_preview', { ...INTENT, nonce: 1, signature: signed.signature });
+  assert.equal(armed.wouldExecute, true, JSON.stringify(armed));
+
   const exec = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
   assert.equal(exec.success, true, JSON.stringify(exec));
 
-  // 失败路径同样留痕（超限）。
-  const big = { ...INTENT, amount: '250', nonce: '2' };
-  const signedBig = signSmartAccountIntent({ session: SESSION_BINDING, intent: big, privateKeyHex: AGENT_PK });
-  const badExec = await callTool('smart_account_execute', { payload: signedBig.payload, signature: signedBig.signature });
+  // 失败路径同样留痕（重放：armed digest 仍匹配 → 链上 BadNonce）。
+  const badExec = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
   assert.equal(badExec.success, false);
-  assert.equal(badExec.error, 'AmountExceedsPerTx');
+  assert.equal(badExec.error, 'BadNonce');
 
   const est = await callTool('smart_account_estimate_loss', {});
   assert.equal(est.success, true);
@@ -148,10 +152,11 @@ test('T1 audit trail records setup/preview/execute/estimate_loss with full facts
   assert.equal(setupRows[0].broadcaster, setup.owner);
   assert.match(setupRows[0].timestamp, /^\d{4}-\d{2}-\d{2}T/);
 
-  // preview 留痕（wouldExecute:null，带 payloadDigest）。
+  // preview 留痕 ×2（无签名 wouldExecute:null + armed wouldExecute:true，均带 payloadDigest）。
   const previewRows = byTool('smart_account_preview');
-  assert.equal(previewRows.length, 1);
+  assert.equal(previewRows.length, 2);
   assert.equal(previewRows[0].wouldExecute, null);
+  assert.equal(previewRows[1].wouldExecute, true);
   assert.match(previewRows[0].payloadDigest, /^0x[0-9a-f]{64}$/);
 
   // execute 成功留痕：payloadDigest / txHash / broadcaster = relayer（非 owner）。
@@ -162,10 +167,10 @@ test('T1 audit trail records setup/preview/execute/estimate_loss with full facts
   const { Wallet } = await import('ethers');
   assert.equal(okRows[0].broadcaster, new Wallet(RELAYER_PK).address, 'execute must be audited with the relayer broadcaster');
 
-  // execute 失败留痕：errorName。
+  // execute 失败留痕：errorName（T4 迁移后链上失败路径为重放 BadNonce）。
   const badRows = byTool('smart_account_execute').filter((e) => e.ok === false);
   assert.equal(badRows.length, 1);
-  assert.equal(badRows[0].errorName, 'AmountExceedsPerTx');
+  assert.equal(badRows[0].errorName, 'BadNonce');
   assert.equal(badRows[0].broadcaster, new Wallet(RELAYER_PK).address);
 
   // estimate_loss 留痕。
@@ -186,37 +191,48 @@ test('T2 metrics reflect preview count, execute success/failed, revert, nonce co
   const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
   await setupAccount();
 
-  // preview（无签名）
+  // preview（无签名）×1
   await callTool('smart_account_preview', { ...INTENT, nonce: 1 });
 
-  // execute 成功 ×1
+  // T4 preview-first: arm the exact digest ×1（wouldExecute:true 也计数 preview）。
   const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: INTENT, privateKeyHex: AGENT_PK });
+  const armed = await callTool('smart_account_preview', { ...INTENT, nonce: 1, signature: signed.signature });
+  assert.equal(armed.wouldExecute, true, JSON.stringify(armed));
+
+  // execute 成功 ×1
   const ok = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
   assert.equal(ok.success, true);
 
-  // 超限 ×1（AmountExceedsPerTx → limit_rejected + revert 分类）
+  // 超限 ×1（T4 迁移：preview 端 typed revert —— limit_rejected + revert 分类；
+  // execute 端该 digest 永远无法 arm → fail-closed SimulationRequired）
   const big = { ...INTENT, amount: '250', nonce: '2' };
   const signedBig = signSmartAccountIntent({ session: SESSION_BINDING, intent: big, privateKeyHex: AGENT_PK });
+  const bigPrev = await callTool('smart_account_preview', { ...big, nonce: 2, signature: signedBig.signature });
+  assert.equal(bigPrev.wouldExecute, false);
+  assert.equal(bigPrev.reason, 'AmountExceedsPerTx');
   const bigRes = await callTool('smart_account_execute', { payload: signedBig.payload, signature: signedBig.signature });
   assert.equal(bigRes.success, false);
+  assert.equal(bigRes.error, 'SimulationRequired');
 
-  // 重放 ×1（BadNonce → nonce_conflict）
+  // 重放 ×1（BadNonce → nonce_conflict；armed digest 仍匹配 → 到达链上）
   const replay = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
   assert.equal(replay.success, false);
   assert.equal(replay.error, 'BadNonce');
 
-  // 伪造签名 ×1（InvalidSignature → revert 分类）
+  // 伪造签名 ×1（payload digest 与 armed 匹配 → 过门禁，链上 InvalidSignature → revert 分类）
   const forged = await callTool('smart_account_execute', { payload: signed.payload, signature: '0x' + '00'.repeat(65) });
   assert.equal(forged.success, false);
+  assert.equal(forged.error, 'InvalidSignature');
 
   const m = (await callTool('smart_account_metrics')).metrics;
   assert.equal(m.smart_account_setup_count, 1);
-  assert.equal(m.smart_account_preview_count, 1);
-  assert.equal(m.smart_account_execute_total, 4);
+  assert.equal(m.smart_account_preview_count, 3);
+  assert.equal(m.smart_account_execute_total, 3); // ok + replay + forged（SimulationRequired 在门禁层，不进 execute_total）
   assert.equal(m.smart_account_execute_success, 1);
-  assert.equal(m.smart_account_execute_failed, 3);
+  assert.equal(m.smart_account_execute_failed, 2);
+  assert.equal(m.smart_account_simulation_blocked, 1, '超限 execute 被模拟门禁拦截');
   assert.equal(m.smart_account_nonce_conflict, 1, 'BadNonce → nonce_conflict');
-  assert.equal(m.smart_account_limit_rejected, 1, 'AmountExceedsPerTx → limit_rejected');
+  assert.equal(m.smart_account_limit_rejected, 1, 'AmountExceedsPerTx（preview）→ limit_rejected');
   assert.equal(m.smart_account_revert_AmountExceedsPerTx, 1);
   assert.equal(m.smart_account_revert_BadNonce, 1);
   assert.equal(m.smart_account_revert_InvalidSignature, 1);
@@ -227,6 +243,11 @@ test('T3 tx lifecycle: execute returns status + tx_status re-checks on-chain rec
   await setupAccount();
 
   const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: INTENT, privateKeyHex: AGENT_PK });
+
+  // T4 preview-first: arm the exact digest.
+  const armed = await callTool('smart_account_preview', { ...INTENT, nonce: 1, signature: signed.signature });
+  assert.equal(armed.wouldExecute, true, JSON.stringify(armed));
+
   const exec = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
   assert.equal(exec.success, true);
   assert.equal(exec.status, 'confirmed', 'execute must report lifecycle status');
@@ -258,6 +279,11 @@ test('T3 tx ledger + audit persist into the state/audit files (durable facts)', 
   const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
   const setup = await setupAccount();
   const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: INTENT, privateKeyHex: AGENT_PK });
+
+  // T4 preview-first: arm the exact digest.
+  const armed = await callTool('smart_account_preview', { ...INTENT, nonce: 1, signature: signed.signature });
+  assert.equal(armed.wouldExecute, true, JSON.stringify(armed));
+
   const exec = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
   assert.equal(exec.success, true);
 

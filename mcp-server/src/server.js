@@ -52,6 +52,7 @@ import {
   policySnapshot,
   createDailyCumulativeStore,
   resolveSimulationRequirement,
+  policyFailMode,
 } from './policy-engine.js';
 import {
   recordAudit,
@@ -989,15 +990,34 @@ async function handleSmartAccountExecute(args) {
   // ── Sprint 3 链下双门禁（不消耗 nonce、不走链、省 gas）─────────────────
   // 0) 单次读取 policy（供模拟门禁收紧 + policy 裁决 + 指纹审计共用，杜绝 TOCTOU）。
   const policyNow = maybeAuditPolicyChange('smart_account_execute gate');
+
+  // Sprint 5 T3 — strict 模式下策略加载失败 → 直接拒绝（fail-closed），在模拟/
+  // policy 裁决之前。报 PolicyConfigError 而非 SimulationRequired/PolicyRejected，
+  // 让运维明确知道是"策略配置损坏"而非"缺失 preview"，不会被误导去补 preview。
+  // fix#2/#5：判定与文案均绑定本次单次读取的快照（policyNow.configError），
+  // 不用共享模块状态——整个请求对策略文件持有一致视图，无中途漂移。
+  if (policyFailMode() === 'strict' && policyNow.configError !== null) {
+    const reason = `Action execution refused: PolicyEngine strict fail-mode, policy config invalid (${policyNow.configError})`;
+    incr('smart_account_policy_rejected');
+    recordAudit({ tool: 'smart_account_execute', ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, payloadDigest, errorName: 'PolicyConfigError', error: 'PolicyConfigError', broadcaster, gate: 'strict-config', reason });
+    logStructured('smart_account_execute', { ok: false, accountId: resolvedAccountId, sessionId: s.sessionId, error: 'PolicyConfigError', broadcaster, gate: 'strict-config', reason });
+    return {
+      content: [{ type: 'text', text: JSON.stringify({
+        success: false, accountId: resolvedAccountId, sessionId: s.sessionId, error: 'PolicyConfigError',
+        reason,
+        digest: payloadDigest,
+      }, null, 2) }],
+      isError: true,
+    };
+  }
   // 1) Simulation gate (T1+S5-T2.2): actions that MUST pass a successful
   //    on-chain simulation are fail-closed unless a signed preview armed this
-  //    exact digest within SIMULATION_WINDOW_MS. Default ON (safe by default);
-  //    set SMART_ACCOUNT_SIMULATION_GATE=0 only to opt out (e.g. legacy
-  //    callers during migration — never in production). Sprint 5 T2.2: policy
+  //    exact digest within SIMULATION_WINDOW_MS. Always ON (safe by default);
+  //    the SMART_ACCOUNT_SIMULATION_GATE=0 migration opt-out was removed in
+  //    Sprint 5 T4 — preview-first is now the only path. Policy
   //    requiresSimulation can only TIGHTEN the static risk, never relax it.
-  const simulationGateOn = process.env.SMART_ACCOUNT_SIMULATION_GATE !== '0';
-  const sim = resolveSimulationRequirement(payload?.action, { rules: policyNow.rules });
-  if (simulationGateOn && sim.requiresSimulation) {
+  const sim = resolveSimulationRequirement(payload?.action, { rules: policyNow.rules, configHealth: policyNow.health });
+  if (sim.requiresSimulation) {
     const armed = simulationLog.get(resolvedAccountId);
     const fresh = !!armed && armed.digest === payloadDigest && Date.now() - armed.at <= SIMULATION_WINDOW_MS;
     if (!fresh) {
@@ -1022,7 +1042,7 @@ async function handleSmartAccountExecute(args) {
   // S5-T2.1: 传入 daily store + accountId 以消费 maxDaily（账户级日累计）。
   const verdict = evaluatePolicy(
     { action: payload?.action, amount: payload?.amount },
-    { rules: policyNow.rules, store: dailyCumulativeStore, accountId: resolvedAccountId },
+    { rules: policyNow.rules, store: dailyCumulativeStore, accountId: resolvedAccountId, configHealth: policyNow.health },
   );
   if (!verdict.allowed) {
     incr('smart_account_policy_rejected');
@@ -1181,7 +1201,7 @@ async function handleSmartAccountSimulationPolicy(args) {
   // S5 fix#2 — 与 execute 门禁同一合并语义（resolveSimulationRequirement：
   // policy requiresSimulation 只能收紧静态分级），单次读取避免答案与门禁漂移。
   const policyNow = maybeAuditPolicyChange('smart_account_simulation_policy query');
-  const risk = action ? resolveSimulationRequirement(action, { rules: policyNow.rules }) : null;
+  const risk = action ? resolveSimulationRequirement(action, { rules: policyNow.rules, configHealth: policyNow.health }) : null;
   return {
     content: [{ type: 'text', text: JSON.stringify({
       success: true,
@@ -1217,7 +1237,7 @@ function maybeAuditPolicyChange(context) {
     });
     lastPolicyFingerprint = fingerprint;
   }
-  return { source: snap.source, rules, fingerprint };
+  return { source: snap.source, rules, fingerprint, failMode: snap.failMode, configError: snap.configError, health: snap.health };
 }
 
 /** Current Policy Engine rules (Sprint 3 T2), auditable. */
@@ -1226,7 +1246,7 @@ async function handleSmartAccountPolicy() {
   return {
     content: [{ type: 'text', text: JSON.stringify({
       success: true,
-      policy: { source: snap.source, rules: snap.rules },
+      policy: { source: snap.source, rules: snap.rules, failMode: snap.failMode, configError: snap.configError },
       fingerprint: snap.fingerprint,
       note: 'Soft policy is evaluated before the relayer broadcasts (Policy Engine -> Signer/Relayer -> Smart Account). Rejections here never touch the chain.',
     }, null, 2) }],

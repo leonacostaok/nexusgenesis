@@ -18,7 +18,7 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { createServer, __resetSmartAccountForTest } from '../src/server.js';
 import { classifySimulationRisk } from '../src/simulation-policy.js';
-import { evaluatePolicy, policySnapshot, createDailyCumulativeStore, resolveSimulationRequirement, todayKey } from '../src/policy-engine.js';
+import { evaluatePolicy, policySnapshot, createDailyCumulativeStore, resolveSimulationRequirement, todayKey, policyFailMode, lastPolicyLoadError, resetPolicyEngineState } from '../src/policy-engine.js';
 
 const STATE_FILE = join(tmpdir(), `sim-policy-state-${process.pid}-${Date.now()}.json`);
 const POLICY_FILE = join(tmpdir(), `sim-policy-rules-${process.pid}-${Date.now()}.json`);
@@ -488,5 +488,131 @@ test('S5-T2.1 maxDaily at tool level: reserve on gate, roll back on BadNonce rep
     assert.equal(okRows[1].dailyTotal, '80');
   } finally {
     delete process.env.SMART_ACCOUNT_POLICY_FILE;
+  }
+});
+
+// ─── Sprint 5 T3 — Strict Fail Mode ────────────────────────────────────
+test('S5-T3 policyFailMode defaults to permissive; strict only on env', () => {
+  delete process.env.POLICY_FAIL_MODE;
+  assert.equal(policyFailMode(), 'permissive');
+  process.env.POLICY_FAIL_MODE = 'strict';
+  assert.equal(policyFailMode(), 'strict');
+  process.env.POLICY_FAIL_MODE = 'bogus';
+  assert.equal(policyFailMode(), 'permissive');
+  delete process.env.POLICY_FAIL_MODE;
+});
+
+test('S5-T3 permissive corrupted file still degrades to empty rules (on-chain backstop)', () => {
+  try {
+    writeFileSync(POLICY_FILE, '{not-json', 'utf8');
+    process.env.SMART_ACCOUNT_POLICY_FILE = POLICY_FILE;
+    delete process.env.POLICY_FAIL_MODE; // permissive
+    resetPolicyEngineState();
+    // permissive → 损坏文件只告警，软层放行（链上硬策略兜底），行为保持。
+    assert.deepEqual(evaluatePolicy({ action: 'transfer', amount: '999' }), { allowed: true });
+    // loadPolicy 刷新了错误状态（供 strict 判定），但 permissive 下不影响放行。
+    assert.notEqual(lastPolicyLoadError(), null);
+  } finally {
+    delete process.env.SMART_ACCOUNT_POLICY_FILE;
+  }
+});
+
+test('S5-T3 strict + corrupted file → evaluatePolicy PolicyConfigError (fail-closed)', () => {
+  try {
+    writeFileSync(POLICY_FILE, 'not-valid-json{', 'utf8');
+    process.env.SMART_ACCOUNT_POLICY_FILE = POLICY_FILE;
+    process.env.POLICY_FAIL_MODE = 'strict';
+    resetPolicyEngineState();
+    const v = evaluatePolicy({ action: 'transfer', amount: '5' });
+    assert.equal(v.allowed, false);
+    assert.equal(v.code, 'PolicyConfigError');
+    assert.match(v.reason, /strict fail-mode/);
+    // snapshot 暴露 fail-mode + configError（policySnapshot 内部走 loadPolicy）。
+    const snap = policySnapshot();
+    assert.equal(snap.failMode, 'strict');
+    assert.notEqual(snap.configError, null);
+  } finally {
+    delete process.env.SMART_ACCOUNT_POLICY_FILE;
+    delete process.env.POLICY_FAIL_MODE;
+    resetPolicyEngineState();
+  }
+});
+
+test('S5-T3 strict + corrupted file → resolveSimulationRequirement treated as must-simulate', () => {
+  try {
+    writeFileSync(POLICY_FILE, 'not-json!', 'utf8');
+    process.env.SMART_ACCOUNT_POLICY_FILE = POLICY_FILE;
+    process.env.POLICY_FAIL_MODE = 'strict';
+    resetPolicyEngineState();
+    const r = resolveSimulationRequirement('balance'); // 静态 skippable
+    assert.equal(r.requiresSimulation, true);
+    assert.equal(r.level, 'required');
+    assert.notEqual(r.configError, undefined);
+    assert.match(r.rationale, /strict fail-mode/);
+  } finally {
+    delete process.env.SMART_ACCOUNT_POLICY_FILE;
+    delete process.env.POLICY_FAIL_MODE;
+    resetPolicyEngineState();
+  }
+});
+
+test('S5-T3 fix#1/#3: configHealth passed → specific error carried, no stale/global state', () => {
+  try {
+    writeFileSync(POLICY_FILE, '{"rules": "garbage{', 'utf8');
+    process.env.SMART_ACCOUNT_POLICY_FILE = POLICY_FILE;
+    process.env.POLICY_FAIL_MODE = 'strict';
+    resetPolicyEngineState();
+
+    // 调用方传入单次读取的健康（ok:false + 具体 error）→ 直接采用，不再读文件、
+    // 不退化为泛化文案（fix#1），也不依赖模块级 lastLoadError（fix#2 同源）。
+    const v = evaluatePolicy(
+      { action: 'transfer', amount: '5' },
+      { configHealth: { ok: false, error: 'failed to load SMART_ACCOUNT_POLICY_FILE (x): Unexpected token g in JSON' } },
+    );
+    assert.equal(v.allowed, false);
+    assert.equal(v.code, 'PolicyConfigError');
+    assert.match(v.reason, /Unexpected token g in JSON/); // 具体 JSON 解析错误透传
+    assert.match(v.reason, /strict fail-mode/);
+
+    // 同样语义用于 resolveSimulationRequirement。
+    const r = resolveSimulationRequirement('balance', { configHealth: { ok: false, error: 'boom-at-snapshot' } });
+    assert.equal(r.requiresSimulation, true);
+    assert.equal(r.configError, 'boom-at-snapshot');
+
+    // 传入健康快照 ok:true（可信单次读取）→ strict 不拦截，按 rules 正常裁决。
+    const okV = evaluatePolicy(
+      { action: 'transfer', amount: '5' },
+      { rules: [{ action: 'transfer', enabled: true, maxPerTx: '10' }], configHealth: { ok: true, error: null } },
+    );
+    assert.deepEqual(okV, { allowed: true });
+  } finally {
+    delete process.env.SMART_ACCOUNT_POLICY_FILE;
+    delete process.env.POLICY_FAIL_MODE;
+    resetPolicyEngineState();
+  }
+});
+
+test('S5-T3 tool-level: strict + corrupted file → execute rejected PolicyConfigError; snapshot query shows failMode/configError', async () => {
+  writeFileSync(POLICY_FILE, 'garbage{', 'utf8');
+  process.env.SMART_ACCOUNT_POLICY_FILE = POLICY_FILE;
+  process.env.POLICY_FAIL_MODE = 'strict';
+  try {
+    await setupAccount();
+    // 查询：failMode/configError 对运维可见，且 action 未要求被错误放行。
+    const q = await callTool('smart_account_policy', {});
+    assert.equal(q.policy.failMode, 'strict');
+    assert.notEqual(q.policy.configError, null);
+
+    // execute：即使 action 无静态规则保护也被 strict 配置错误拒绝（fail-closed）；
+    // reason 携带本次快照的具体解析错误（fix#1/#2：绑定 policyNow，非泛化文案）。
+    const signed = await signSmartAccountIntentLocal({ ...INTENT, action: 'balance', nonce: '5' });
+    const r = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
+    assert.equal(r.success, false);
+    assert.equal(r.error, 'PolicyConfigError');
+    assert.match(r.reason, /garbage/); // 具体错误透传（文件内容含 "garbage{"）
+  } finally {
+    delete process.env.SMART_ACCOUNT_POLICY_FILE;
+    delete process.env.POLICY_FAIL_MODE;
+    resetPolicyEngineState();
   }
 });

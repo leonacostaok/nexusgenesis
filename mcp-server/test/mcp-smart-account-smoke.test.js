@@ -29,10 +29,10 @@ import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { createServer, __resetSmartAccountForTest } from '../src/server.js';
 import { buildChainEnvConfig } from '../src/chain-config.js';
 
-// This suite validates the on-chain lifecycle/persistence/error-normalization
-// path on an external chain; the Sprint 3 T1 simulation gate is covered by its
-// own suite. Opt out here — assert set, no assertion changes.
-process.env.SMART_ACCOUNT_SIMULATION_GATE = '0';
+// Sprint 5 T4: the SMART_ACCOUNT_SIMULATION_GATE=0 opt-out was removed —
+// preview-first is the only path. Executes arm the gate via signed previews;
+// over-ceiling intents surface as typed reverts at preview + fail-closed
+// SimulationRequired at execute.
 
 // ─── Testnet-profile fixtures (non-anvil, non-well-known operation keys) ──
 // 这些是「仿真 testnet 运维私钥」：非 KNOWN_ANVIL_KEYS，owner ≠ relayer ≠ emergency。
@@ -266,6 +266,11 @@ test('T4.2 external chain smoke: lifecycle + relayer/owner separation + persiste
 
   // ── execute（signed，经外部链广播）──────────────────────────────────────
   const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: INTENT, privateKeyHex: AGENT_PK });
+
+  // T4 preview-first: arm the exact digest with a signed preview.
+  const armed = await callTool('smart_account_preview', { ...INTENT, nonce: 1, signature: signed.signature });
+  assert.equal(armed.wouldExecute, true, JSON.stringify(armed));
+
   const exec = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
   assert.equal(exec.success, true, JSON.stringify(exec));
   assert.equal(exec.amount, '25');
@@ -277,12 +282,18 @@ test('T4.2 external chain smoke: lifecycle + relayer/owner separation + persiste
   assert.equal(afterLoss.sessionMaxLoss, '475'); // 500 - 25
 
   // ── T3 错误归一化：固定语义 error code over the wire ────────────────────
+  // T4 迁移：超限在 preview 端出 typed revert（同一链上 hard-policy 路径）；
+  // execute 端该 digest 无法 arm → 门禁层 SimulationRequired（不触碰 relayer）。
   const big = { ...INTENT, amount: '250', nonce: '2' };
   const signedBig = signSmartAccountIntent({ session: SESSION_BINDING, intent: big, privateKeyHex: AGENT_PK });
+  const bigPrev = await callTool('smart_account_preview', { ...big, nonce: 2, signature: signedBig.signature });
+  assert.equal(bigPrev.wouldExecute, false);
+  assert.equal(bigPrev.reason, 'AmountExceedsPerTx');
   const bigExec = await callTool('smart_account_execute', { payload: signedBig.payload, signature: signedBig.signature });
   assert.equal(bigExec.success, false);
-  assert.equal(bigExec.error, 'AmountExceedsPerTx');
+  assert.equal(bigExec.error, 'SimulationRequired');
 
+  // 伪造签名：payload digest 与 armed 匹配 → 过门禁，链上验签 InvalidSignature。
   const forged = await callTool('smart_account_execute', {
     payload: signed.payload,
     signature: '0x' + '00'.repeat(65),
@@ -290,6 +301,7 @@ test('T4.2 external chain smoke: lifecycle + relayer/owner separation + persiste
   assert.equal(forged.success, false);
   assert.equal(forged.error, 'InvalidSignature');
 
+  // 重放：armed digest 仍匹配 → 链上 BadNonce。
   const replay = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
   assert.equal(replay.success, false);
   assert.equal(replay.error, 'BadNonce');
@@ -339,10 +351,15 @@ test('T4.3 restart recovery: persisted account restored on the same external cha
   assert.equal(est.accountRemaining, '999975');
   assert.equal(est.sessionMaxLoss, '475');
 
-  // 恢复的账户仍可继续执行（非只读）：同一 nonce 1 已消费，换 nonce 2 通过预览语义。
+  // 恢复的账户仍可继续执行（非只读）：同一 nonce 1 已消费，换 nonce 3 通过预览语义。
   const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
   const next = { ...INTENT, nonce: '3' };
   const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: next, privateKeyHex: AGENT_PK });
+
+  // T4 preview-first: arm the restored account's gate for the new digest.
+  const armed = await callTool('smart_account_preview', { ...next, nonce: 3, signature: signed.signature });
+  assert.equal(armed.wouldExecute, true, JSON.stringify(armed));
+
   const exec = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
   assert.equal(exec.success, true, JSON.stringify(exec));
   assert.equal(exec.amount, '25');
@@ -350,42 +367,36 @@ test('T4.3 restart recovery: persisted account restored on the same external cha
 
 // ─────────────────────────────────────────────────────────────────────────
 // Sprint 4 T2.1：重启恢复模拟窗口（simulationLog 持久化的端到端回归）
-// 本 suite 其余用例聚焦链上语义（gate opt-out）；此用例显式开启 gate 验证
-// T2.1 的核心承诺：arming 落盘 → 重启 → 窗口恢复（不丢、不重置、不过度放行）。
+// T4 之后 gate 恒开（无 opt-out），此用例验证 T2.1 的核心承诺：
+// arming 落盘 → 重启 → 窗口恢复（不丢、不重置、不过度放行）。
 // ─────────────────────────────────────────────────────────────────────────
 test('T2.1 restart keeps the armed simulation window (persisted + restored)', async () => {
   const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
-  const savedGate = process.env.SMART_ACCOUNT_SIMULATION_GATE;
-  process.env.SMART_ACCOUNT_SIMULATION_GATE = '1';
-  try {
-    // 重启 #1：从状态文件恢复账户（T4.3 已执行 nonce 3，这里用 nonce 4）。
-    __resetSmartAccountForTest();
-    const est = await callTool('smart_account_estimate_loss', {});
-    assert.equal(est.success, true, JSON.stringify(est));
 
-    // 签名 preview（arm）→ arming 随状态文件落盘。
-    const intent = { ...INTENT, nonce: '4' };
-    const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent, privateKeyHex: AGENT_PK });
-    const prev = await callTool('smart_account_preview', { ...intent, nonce: 4, signature: signed.signature });
-    assert.equal(prev.wouldExecute, true, JSON.stringify(prev));
+  // 重启 #1：从状态文件恢复账户（T4.3 已执行 nonce 3，这里用 nonce 4）。
+  __resetSmartAccountForTest();
+  const est = await callTool('smart_account_estimate_loss', {});
+  assert.equal(est.success, true, JSON.stringify(est));
 
-    // 重启 #2：内存 simulationLog 清空，只能靠状态文件恢复。
-    __resetSmartAccountForTest();
-    const est2 = await callTool('smart_account_estimate_loss', {});
-    assert.equal(est2.success, true, JSON.stringify(est2));
+  // 签名 preview（arm）→ arming 随状态文件落盘。
+  const intent = { ...INTENT, nonce: '4' };
+  const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent, privateKeyHex: AGENT_PK });
+  const prev = await callTool('smart_account_preview', { ...intent, nonce: 4, signature: signed.signature });
+  assert.equal(prev.wouldExecute, true, JSON.stringify(prev));
 
-    // 同一 digest：恢复的窗口放行（重启不丢 arming）。
-    const exec = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
-    assert.equal(exec.success, true, JSON.stringify(exec));
+  // 重启 #2：内存 simulationLog 清空，只能靠状态文件恢复。
+  __resetSmartAccountForTest();
+  const est2 = await callTool('smart_account_estimate_loss', {});
+  assert.equal(est2.success, true, JSON.stringify(est2));
 
-    // 反向验证：恢复的窗口只覆盖已模拟的 digest——不同 digest 仍 fail-closed。
-    const other = { ...INTENT, nonce: '5' };
-    const signedOther = signSmartAccountIntent({ session: SESSION_BINDING, intent: other, privateKeyHex: AGENT_PK });
-    const blocked = await callTool('smart_account_execute', { payload: signedOther.payload, signature: signedOther.signature });
-    assert.equal(blocked.success, false);
-    assert.equal(blocked.error, 'SimulationRequired');
-  } finally {
-    if (savedGate === undefined) delete process.env.SMART_ACCOUNT_SIMULATION_GATE;
-    else process.env.SMART_ACCOUNT_SIMULATION_GATE = savedGate;
-  }
+  // 同一 digest：恢复的窗口放行（重启不丢 arming）。
+  const exec = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
+  assert.equal(exec.success, true, JSON.stringify(exec));
+
+  // 反向验证：恢复的窗口只覆盖已模拟的 digest——不同 digest 仍 fail-closed。
+  const other = { ...INTENT, nonce: '5' };
+  const signedOther = signSmartAccountIntent({ session: SESSION_BINDING, intent: other, privateKeyHex: AGENT_PK });
+  const blocked = await callTool('smart_account_execute', { payload: signedOther.payload, signature: signedOther.signature });
+  assert.equal(blocked.success, false);
+  assert.equal(blocked.error, 'SimulationRequired');
 });

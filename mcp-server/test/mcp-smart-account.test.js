@@ -4,11 +4,10 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { createServer, __resetSmartAccountForTest } from '../src/server.js';
 
-// These tests exercise the ON-CHAIN execute semantics; the Sprint 3 T1
-// simulation gate (fail-closed preview-first) is covered by its own suite
-// (mcp-smart-account-sim-policy.test.js). Opt out here so the legacy direct-
-// execute path stays the focus — assert set, no assertion changes.
-process.env.SMART_ACCOUNT_SIMULATION_GATE = '0';
+// Sprint 5 T4: the SMART_ACCOUNT_SIMULATION_GATE=0 opt-out was removed —
+// preview-first is the only path. Every execute below is preceded by a signed
+// preview that arms the gate for that exact digest (success paths), or asserts
+// the fail-closed SimulationRequired outcome (paths that can never arm).
 
 let server;
 let client;
@@ -228,6 +227,17 @@ test('implicit issuedAt is returned and can be used to reproduce a signable payl
     { ...preview.payload, nonce: String(preview.payload.nonce) },
   );
 
+  // T4 preview-first: arm the simulation gate with a signed preview of the
+  // exact digest before executing.
+  const armed = await callTool('smart_account_preview', {
+    accountId: setup.accountId,
+    sessionId,
+    ...INTENT,
+    nonce: 1,
+    signature: signed.signature,
+  });
+  assert.equal(armed.wouldExecute, true, JSON.stringify(armed));
+
   const exec = await callTool('smart_account_execute', {
     accountId: setup.accountId,
     sessionId,
@@ -263,12 +273,28 @@ test('smart_account_execute rejects a forged signature (INV-002)', async () => {
   await setupAccount();
   const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
   const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: INTENT, privateKeyHex: AGENT_PK });
+  const garbageSignature = '0x' + '00'.repeat(65); // not the session key
+
+  // T4 preview-first: the forged signature is rejected on the SAME on-chain
+  // verify path during preview — wouldExecute stays false and the gate is
+  // NOT armed for this digest.
+  const prev = await callTool('smart_account_preview', {
+    ...INTENT,
+    nonce: 1,
+    signature: garbageSignature,
+  });
+  assert.equal(prev.success, true);
+  assert.equal(prev.wouldExecute, false);
+  assert.equal(prev.reason, 'InvalidSignature');
+
+  // Execute without a valid armed preview → fail-closed SimulationRequired
+  // (never reaches the relayer with the forged payload).
   const out = await callTool('smart_account_execute', {
     payload: signed.payload,
-    signature: '0x' + '00'.repeat(65), // garbage — not the session key
+    signature: garbageSignature,
   });
   assert.equal(out.success, false);
-  assert.equal(out.error, 'InvalidSignature');
+  assert.equal(out.error, 'SimulationRequired');
 });
 
 test('smart_account_execute rejects a replayed nonce (INV-007)', async () => {
@@ -276,13 +302,23 @@ test('smart_account_execute rejects a replayed nonce (INV-007)', async () => {
   const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
   const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: INTENT, privateKeyHex: AGENT_PK });
 
+  // T4 preview-first: arm the exact digest once.
+  const armed = await callTool('smart_account_preview', {
+    ...INTENT,
+    nonce: 1,
+    signature: signed.signature,
+  });
+  assert.equal(armed.wouldExecute, true, JSON.stringify(armed));
+
   const first = await callTool('smart_account_execute', {
     payload: signed.payload,
     signature: signed.signature,
   });
   assert.equal(first.success, true, JSON.stringify(first));
 
-  // Same payload + signature again → nonce already consumed on-chain.
+  // Same payload + signature again → nonce already consumed on-chain. The
+  // armed digest still matches (same payload), so the gate passes and the
+  // replay surfaces as the on-chain BadNonce.
   const replay = await callTool('smart_account_execute', {
     payload: signed.payload,
     signature: signed.signature,
@@ -300,12 +336,26 @@ test('smart_account_execute enforces the per-tx ceiling (INV-007)', async () => 
   const { signSmartAccountIntent } = await import('nexusgenesis-chain-eth');
   const big = { ...INTENT, amount: '250', nonce: '1' };
   const signed = signSmartAccountIntent({ session: SESSION_BINDING, intent: big, privateKeyHex: AGENT_PK });
+
+  // T4 preview-first: the over-ceiling amount is rejected by the SAME on-chain
+  // hard-policy path during preview — gate not armed for this digest.
+  const prev = await callTool('smart_account_preview', {
+    ...big,
+    nonce: 1,
+    signature: signed.signature,
+  });
+  assert.equal(prev.success, true);
+  assert.equal(prev.wouldExecute, false);
+  assert.equal(prev.reason, 'AmountExceedsPerTx');
+
+  // Execute can never be armed → fail-closed SimulationRequired before the
+  // relayer is touched.
   const out = await callTool('smart_account_execute', {
     payload: signed.payload,
     signature: signed.signature,
   });
   assert.equal(out.success, false);
-  assert.equal(out.error, 'AmountExceedsPerTx');
+  assert.equal(out.error, 'SimulationRequired');
 
   // Rejection is side-effect free.
   const est = await callTool('smart_account_estimate_loss', {});
@@ -369,6 +419,17 @@ test('multiple Smart Accounts can coexist and be selected explicitly', async () 
     intent: INTENT,
     privateKeyHex: AGENT_PK,
   });
+  // T4 preview-first: arm the FIRST account's gate (explicit accountId — two
+  // accounts coexist, arming is per-account).
+  const armed = await callTool('smart_account_preview', {
+    accountId: first.accountId,
+    sessionId: first.sessionId,
+    ...INTENT,
+    nonce: 1,
+    signature: signed.signature,
+  });
+  assert.equal(armed.wouldExecute, true, JSON.stringify(armed));
+
   const exec = await callTool('smart_account_execute', {
     accountId: first.accountId,
     sessionId: first.sessionId,

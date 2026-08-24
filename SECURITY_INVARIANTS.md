@@ -219,7 +219,7 @@ Sprint 2 把"Smart Account 链上强制"从 JS 语义原型推进为**真 Solidi
 >
 > **MUST NOT**：显式开启后存在明文 / 未认证通道；发送侧缺 identity/signer 不得静默降级为未签名请求（构造时即抛错）。
 
-- 对应：白皮书 §6.6（外部 Agent↔Agent / Agent↔服务 通信面）；[SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md](file:///d:/trae_projects/NexusGenesis/docs/SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md) P0。
+- 对应：白皮书 §6.6（外部 Agent↔Agent / Agent↔服务 通信面）；[SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md](docs/SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md) P0。
 - 状态：**Implemented（显式开启，fail-closed；MCP 内部信任面不强制，白皮书分层不变）**。
   - 发送侧：`createHttpTransport`（`packages/agent-sdk/src/coordination.js`）加 `messageSecurity` 选项——开启后 POST body 包装为 `{ envelope }`（sender/target/nonce/timestamp/payload/signature，`createMessageEnvelope`）；构造时缺 identity/signer 立即抛错（fail-fast，绝不发送未签名请求）；默认**关**、向后兼容。
   - Canonical preimage 与验签原子性：`verifyMessageEnvelope`（`packages/agent-sdk/src/message-security.js`）按固定字段序拼接 preimage，仅验签通过后才 `replayGuard.record(sender:nonce)`——无效签名的篡改副本不烧 nonce，否则攻击者可抢先投递伪造剧毒化 (sender, nonce)，使随后到达的合法原件被误判重放（DoS）。

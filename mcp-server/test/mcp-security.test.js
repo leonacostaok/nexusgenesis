@@ -275,6 +275,9 @@ test('signer spawn failure downgrades EXPLICITLY to the lazy in-process wallet (
   process.env.NEXUSGENESIS_API = `http://127.0.0.1:${port}`;
   // Simulate an environment where the signer subprocess cannot be spawned.
   process.env.NEXUSGENESIS_SIGNER_DISABLE = '1';
+  // External review 2026-08-24: the in-process downgrade is gated and fails
+  // closed by default — this test exercises the EXPLICIT opt-in path.
+  process.env.MCP_ALLOW_INPROCESS_WALLET = '1';
 
   try {
     const fresh = await import(`../src/server.js?p03fb-${port}`);
@@ -307,6 +310,52 @@ test('signer spawn failure downgrades EXPLICITLY to the lazy in-process wallet (
   } finally {
     delete process.env.NEXUSGENESIS_API;
     delete process.env.NEXUSGENESIS_SIGNER_DISABLE;
+    delete process.env.MCP_ALLOW_INPROCESS_WALLET;
+    await new Promise((r) => mock.close(r));
+  }
+});
+
+test('in-process wallet downgrade is BLOCKED by default (fail-closed, external review 2026-08-24)', async () => {
+  const http = await import('node:http');
+  let captured = null;
+  const mock = http.createServer((req, res) => {
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', () => {
+      try { captured = JSON.parse(body); } catch { captured = null; }
+      res.writeHead(200, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ success: true }));
+    });
+  });
+  await new Promise((r) => mock.listen(0, r));
+  const port = mock.address().port;
+  process.env.NEXUSGENESIS_API = `http://127.0.0.1:${port}`;
+  // Signer unavailable AND no explicit opt-in → the key must NOT materialize.
+  process.env.NEXUSGENESIS_SIGNER_DISABLE = '1';
+  assert.equal(process.env.MCP_ALLOW_INPROCESS_WALLET, undefined, 'gate must default to unset');
+
+  try {
+    const fresh = await import(`../src/server.js?p03block-${port}`);
+    const s = fresh.createServer();
+    const [ct, st] = InMemoryTransport.createLinkedPair();
+    await s.connect(st);
+    const c = new Client({ name: 'p03-block-client', version: '1.0.0' }, { capabilities: {} });
+    await c.connect(ct);
+
+    await c.callTool({ name: 'generate_agent_keys', arguments: { password: 'agent-secret-123', metadata: { name: 'p03-block-agent' } } });
+
+    // The write must fail closed instead of silently materializing the key.
+    const res = await c.callTool({ name: 'claim_task', arguments: { taskId: 't-block' } });
+    const out = JSON.parse(res.content[0].text);
+    assert.equal(out.success, false, 'claim must fail when the downgrade is not opted in');
+    assert.match(out.error, /INPROCESS_WALLET_BLOCKED|MCP_ALLOW_INPROCESS_WALLET/, 'error must point at the fail-closed gate');
+    assert.equal(captured, null, 'no signed request may reach the API without a signer');
+    await c.close();
+    await s.close();
+  } finally {
+    delete process.env.NEXUSGENESIS_API;
+    delete process.env.NEXUSGENESIS_SIGNER_DISABLE;
+    delete process.env.MCP_ALLOW_INPROCESS_WALLET;
     await new Promise((r) => mock.close(r));
   }
 });

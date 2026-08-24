@@ -4,6 +4,11 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { createServer, __resetSmartAccountForTest } from '../src/server.js';
 
+// External review 2026-08-24: the default in-process LocalChain path now
+// requires an explicit opt-in. These tests deliberately use the ephemeral
+// local chain (its whole state dies with the process — fine for tests).
+process.env.CHAIN_ALLOW_LOCAL = '1';
+
 // Sprint 5 T4: the SMART_ACCOUNT_SIMULATION_GATE=0 opt-out was removed —
 // preview-first is the only path. Every execute below is preceded by a signed
 // preview that arms the gate for that exact digest (success paths), or asserts
@@ -120,6 +125,39 @@ test('smart_account_setup creates the account + session + exposure bound', async
   });
   assert.match(out.session.agentEvmAddress, /^0x[0-9a-fA-F]{40}$/);
   assert.equal(out.maxLoss, '500'); // min(accountDaily 1M, sessionDaily 500)
+  // External review 2026-08-24: the local chain mode must be unmistakable —
+  // ephemeral:true + warning so an LLM caller can never mistake the returned
+  // contract address for a persistent on-chain deployment.
+  assert.equal(out.chain.mode, 'local-ephemeral');
+  assert.equal(out.chain.ephemeral, true);
+  assert.match(out.chain.warning, /EPHEMERAL/);
+});
+
+test('smart_account_setup fails closed without CHAIN_ALLOW_LOCAL (no silent ephemeral chain)', async () => {
+  const saved = process.env.CHAIN_ALLOW_LOCAL;
+  const savedRpc = process.env.CHAIN_RPC_URL;
+  delete process.env.CHAIN_ALLOW_LOCAL;
+  delete process.env.CHAIN_RPC_URL;
+  __resetSmartAccountForTest(); // drop any memoized chain env
+  try {
+    const out = await callTool('smart_account_setup', {
+      owner: OWNER_PK,
+      emergencyKey: EMERGENCY_PK,
+      sessionId: SESSION_ID,
+      agentId: AGENT_ID,
+      agentEvmAddress: '0x0000000000000000000000000000000000000001',
+      expiresAt: EXPIRES_AT,
+      maxPerTx: '100',
+      maxDaily: '500',
+    });
+    assert.equal(out.success, false);
+    assert.match(out.error, /CHAIN_ALLOW_LOCAL/);
+    assert.match(out.error, /EPHEMERAL/);
+  } finally {
+    process.env.CHAIN_ALLOW_LOCAL = saved ?? '1'; // restore the test-file opt-in
+    if (savedRpc !== undefined) process.env.CHAIN_RPC_URL = savedRpc;
+    __resetSmartAccountForTest();
+  }
 });
 
 test('smart_account_setup rejects a malformed sessionId (fail-closed)', async () => {

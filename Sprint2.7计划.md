@@ -46,7 +46,7 @@
 - 明确重放保护下的安全重试规则（策略落文档 + 代码护栏）。
 
 **落地**：
-- [chain-state-store.js](file:///d:/trae_projects/NexusGenesis/mcp-server/src/chain-state-store.js) 扩展交易台账：`transactions` 数组（环形 200 条）随状态文件持久化；`recordTx / listTx / getTxLedger`。
+- [chain-state-store.js](mcp-server/src/chain-state-store.js) 扩展交易台账：`transactions` 数组（环形 200 条）随状态文件持久化；`recordTx / listTx / getTxLedger`。
 - execute 返回追加 `status`；成功记录 `confirmed`（receipt.status=1）带 blockNumber/gasUsed，失败记录 `failed` 带 errorName。
 - 新工具 `smart_account_tx_status({ txHash })`：查本地台账 + 重查链上 receipt（无 receipt → `submitted/pending`；status=1 → `confirmed`；status=0 → `failed`）。
 - **安全重试规则**（写入工具 note 与本文档）：
@@ -80,7 +80,7 @@
 |------|------|
 | T1 审计日志 | `mcp-server/src/audit-log.js`（stderr + `AUDIT_LOG_FILE` JSON lines + 内存环 1000）+ 四 handler 埋点 + `smart_account_audit` |
 | T2 可观测性 | `mcp-server/src/observability.js`（零依赖计数器 + 结构化日志）+ `smart_account_metrics` |
-| T3 交易生命周期 | [chain-state-store.js](file:///d:/trae_projects/NexusGenesis/mcp-server/src/chain-state-store.js) 交易台账（随状态文件持久化）+ execute 返回 `status` + `smart_account_tx_status` 重查链上 receipt + 安全重试规则 note |
+| T3 交易生命周期 | [chain-state-store.js](mcp-server/src/chain-state-store.js) 交易台账（随状态文件持久化）+ execute 返回 `status` + `smart_account_tx_status` 重查链上 receipt + 安全重试规则 note |
 | T4 测试 | `mcp-server/test/mcp-smart-account-ops.test.js`（5 用例） |
 
 ### 安全重试规则（随 `smart_account_tx_status` 下发）

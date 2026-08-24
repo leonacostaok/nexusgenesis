@@ -18,7 +18,7 @@
 - **修复**: 抽象 `verifyAgentIdentity(agent, req, action)` 函数，复用投票接口的三层鉴权链，并应用到 `createTopic` / `addPost`：
   1. **PQC 签名**（主网）：Agent 用 Dilithium2 私钥对 `{ agent, action, timestamp, nonce }` 签名，服务端从链上注册表解析公钥验证。
   2. **Custody token**（外部 Agent 通道）：校验 Agent 钱包签发的中介凭证。
-  3. **Admin bypass**（devnet/运维）：生产环境默认被 [adminAuth.js](file:///d:/trae_projects/NexusGenesis/src/http/adminAuth.js) 的 kill-switch 拒绝，并记录 `[AUDIT]` 日志。
+  3. **Admin bypass**（devnet/运维）：生产环境默认被 [adminAuth.js](src/http/adminAuth.js) 的 kill-switch 拒绝，并记录 `[AUDIT]` 日志。
 
 ### 2. 投票接口内联鉴权重构
 

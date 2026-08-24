@@ -126,6 +126,75 @@ test('[HIGH] takeoverGuard returns false once a human requires approval', () => 
   assert.equal(takeoverGuard({ type: 'limit', maxPerTx: 10 }, { type: 'require-approval' }), false);
 });
 
+// [SECURITY FIX 2026-08-24 external review] — same-mode ceiling loosening is a
+// takeover-equivalent power grab and must roll back.
+test('[HIGH] takeoverGuard rejects same-mode ceiling LOOSENING (raised / removed)', () => {
+  // maxDaily raised 10 → 999999 (the exact exploit from the review)
+  assert.equal(
+    takeoverGuard(
+      { type: 'limit', maxPerTx: 10, maxDaily: 10 },
+      { type: 'limit', maxPerTx: 10, maxDaily: 999999 },
+    ),
+    false,
+    'raised maxDaily must be treated as takeover',
+  );
+  // maxPerTx raised
+  assert.equal(
+    takeoverGuard(
+      { type: 'limit', maxPerTx: 10, maxDaily: 100 },
+      { type: 'limit', maxPerTx: 500, maxDaily: 100 },
+    ),
+    false,
+    'raised maxPerTx must be treated as takeover',
+  );
+  // ceiling removed → 0 means "no ceiling" in checkSpendAllowed semantics
+  assert.equal(
+    takeoverGuard(
+      { type: 'limit', maxPerTx: 10, maxDaily: 100 },
+      { type: 'limit', maxPerTx: 0, maxDaily: 100 },
+    ),
+    false,
+    'removed ceiling (→0, i.e. unlimited) must be treated as takeover',
+  );
+  // field dropped entirely is equivalent to removed
+  assert.equal(
+    takeoverGuard(
+      { type: 'limit', maxPerTx: 10, maxDaily: 100 },
+      { type: 'limit', maxDaily: 100 },
+    ),
+    false,
+    'dropped maxPerTx must be treated as takeover',
+  );
+});
+
+test('[HIGH] takeoverGuard accepts unchanged or TIGHTENED ceilings', () => {
+  // unchanged
+  assert.equal(
+    takeoverGuard(
+      { type: 'limit', maxPerTx: 10, maxDaily: 100 },
+      { type: 'limit', maxPerTx: 10, maxDaily: 100 },
+    ),
+    true,
+  );
+  // tightened
+  assert.equal(
+    takeoverGuard(
+      { type: 'limit', maxPerTx: 10, maxDaily: 100 },
+      { type: 'limit', maxPerTx: 5, maxDaily: 50 },
+    ),
+    true,
+    'tightening is safe — a takeover cannot gain power by lowering limits',
+  );
+  // before had no ceiling → after introducing one is tightening, safe
+  assert.equal(
+    takeoverGuard(
+      { type: 'limit', maxPerTx: 0, maxDaily: 0 },
+      { type: 'limit', maxPerTx: 5, maxDaily: 50 },
+    ),
+    true,
+  );
+});
+
 test('[HIGH] takeoverWallet rotates key and forces approval mode', async () => {
   const master = generateMasterKey();
   const { config, opKeySeed, version } = await takeoverWallet(master, 'agent-9', 3);

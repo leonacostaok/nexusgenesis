@@ -3,7 +3,7 @@
 > 状态：**已落地**（Sprint 4 完成 P0 运行时化 + Service Identity + 客户端信封接线；Sprint 5 补齐 P1.3 TLS/mTLS + P1.4 全部遗留项 + P1.5 测试/回归与文档闭环）
 > 日期：2026-08-22（Sprint 4 校订 2026-08-23，Sprint 5 校订 2026-08-23）
 > 前置：Sprint 3 T3 已交付 RFC P0（信封 + 签名 + nonce + timestamp + anti-replay 参考实现）
-> 关联：[SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md](file:///d:/trae_projects/NexusGenesis/docs/SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md) §6 演进路线 P1
+> 关联：[SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md](docs/SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md) §6 演进路线 P1
 
 ---
 

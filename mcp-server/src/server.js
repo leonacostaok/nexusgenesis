@@ -285,8 +285,12 @@ async function resolveChainEnv() {
 async function bootChainEnv() {
   const { ethers } = await import('ethers');
   const { createChainProvider } = await import('nexusgenesis-chain-eth');
-  const { createLocalChain } = await import('nexusgenesis-chain-eth/test-helpers/local-chain');
   const { loadSmartAccountArtifact } = await import('nexusgenesis-chain-eth/test-helpers/load-artifact');
+  // NOTE (external review 2026-08-24): createLocalChain is imported lazily
+  // INSIDE the CHAIN_ALLOW_LOCAL-gated branch below. Its @ethereumjs/* runtime
+  // deps are optional peers of the published chain-eth package — importing it
+  // unconditionally would hard-fail at module load for published-package users
+  // who never opted into the ephemeral local chain.
 
   // Profile-gated env parsing + fail-closed validation (Sprint 2.6 T1).
   // Throws with a typed code when the requested profile is misconfigured.
@@ -328,6 +332,37 @@ async function bootChainEnv() {
     provider = createChainProvider(cfg.rpcUrl);
     chainUrl = cfg.rpcUrl;
   } else {
+    // External review 2026-08-24: an in-process LocalChain is EPHEMERAL — all
+    // deployed contracts and session state vanish when the process exits. It
+    // must never be a silent default: an LLM caller receiving a contract
+    // address could mistake it for a persistent on-chain hard-policy layer.
+    // Fail closed until the caller explicitly opts into the ephemeral chain.
+    if (process.env.CHAIN_ALLOW_LOCAL !== '1') {
+      const err = new Error(
+        'No CHAIN_RPC_URL set and CHAIN_ALLOW_LOCAL is not "1". Without an external chain, ' +
+        'the smart_account_* tools boot an in-process EPHEMERAL EVM whose entire state ' +
+        '(accounts, sessions, limits) dies with this process — there is NO persistent ' +
+        'on-chain protection. Connect a real node via CHAIN_RPC_URL, or set CHAIN_ALLOW_LOCAL=1 ' +
+        'to explicitly accept the ephemeral local chain for development/testing.',
+      );
+      err.code = 'CHAIN_ALLOW_LOCAL_REQUIRED';
+      throw err;
+    }
+    let createLocalChain;
+    try {
+      ({ createLocalChain } = await import('nexusgenesis-chain-eth/test-helpers/local-chain'));
+    } catch (impErr) {
+      // Published-package users: the @ethereumjs/* deps of the in-process EVM
+      // are optional peers — give an actionable install hint instead of a bare
+      // module-not-found when the local dev chain was explicitly requested.
+      const err = new Error(
+        'CHAIN_ALLOW_LOCAL=1 requires the in-process EVM dependencies. Install them: ' +
+        'npm install @ethereumjs/vm @ethereumjs/common @ethereumjs/tx @ethereumjs/block @ethereumjs/util @ethereumjs/statemanager ' +
+        `(${impErr.message})`,
+      );
+      err.code = 'LOCAL_CHAIN_DEPS_MISSING';
+      throw err;
+    }
     try {
       localChain = await createLocalChain({
         funded: [
@@ -448,6 +483,14 @@ function persistSmartAccountState() {
  * Materialize the in-process fallback wallet on demand. This is an EXPLICIT
  * security downgrade (key enters this process) and only happens when the
  * isolated signer is unavailable — never on the default path.
+ *
+ * SECURITY (external review 2026-08-24): the downgrade is GATED and fails
+ * closed by default. Automatically materializing the private key inside the
+ * server process whenever the signer subprocess fails to spawn would let
+ * anyone who can induce spawn failures (resource exhaustion, env tampering)
+ * silently widen the key's attack surface from an isolated subprocess to the
+ * whole server process. Operators must explicitly opt in via
+ * MCP_ALLOW_INPROCESS_WALLET=1 (and the downgrade stays loud + visible).
  */
 function fallbackWallet() {
   if (session.wallet) return session.wallet;
@@ -456,7 +499,16 @@ function fallbackWallet() {
     err.code = 'NO_WALLET';
     throw err;
   }
-  console.error('[mcp-server] DOWNGRADE: materializing in-process wallet (isolated signer unavailable)');
+  if (process.env.MCP_ALLOW_INPROCESS_WALLET !== '1') {
+    const err = new Error(
+      'The isolated signer subprocess is unavailable, and materializing the private key inside this ' +
+      'server process is blocked by default (fail-closed). Fix the signer spawn (see logs above), or ' +
+      'explicitly accept the in-process downgrade by setting MCP_ALLOW_INPROCESS_WALLET=1.',
+    );
+    err.code = 'INPROCESS_WALLET_BLOCKED';
+    throw err;
+  }
+  console.error('[mcp-server] DOWNGRADE: materializing in-process wallet (isolated signer unavailable; MCP_ALLOW_INPROCESS_WALLET=1)');
   session.wallet = recoverAgentIdentity(session.envelope, session.password);
   return session.wallet;
 }
@@ -824,6 +876,14 @@ async function handleSmartAccountSetup(args) {
       expiresAt: resolvedExpiresAt,
       chainUrl: env.chainUrl,
       onChain: true,
+      // External review 2026-08-24: make the chain mode unmistakable for LLM
+      // callers — an ephemeral in-process chain provides NO persistent on-chain
+      // protection (everything vanishes when this process exits).
+      chain: {
+        mode: env.localChain ? 'local-ephemeral' : 'external',
+        ephemeral: Boolean(env.localChain),
+        ...(env.localChain ? { warning: 'EPHEMERAL: in-process local chain — the deployed contract, sessions and limits are destroyed when the MCP process exits. This is NOT a persistent on-chain hard-policy deployment.' } : {}),
+      },
       session: {
         agentId,
         sessionId,
@@ -1861,7 +1921,12 @@ export function createServer() {
 
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
-    try {
+    // Dispatch in a nested function so `return await dispatch()` below actually
+    // awaits handler promises. A bare `return handleX(args)` inside the try
+    // would let async handler rejections ESCAPE the catch (classic JS pitfall:
+    // the try block completes with a pending promise), surfacing raw -32603
+    // protocol errors instead of structured {success:false} tool results.
+    async function dispatch() {
       switch (name) {
         // Network
         case 'get_status':
@@ -1936,6 +2001,9 @@ export function createServer() {
         default:
           return { content: [{ type: 'text', text: `Unknown tool: ${name}` }], isError: true };
       }
+    }
+    try {
+      return await dispatch();
     } catch (error) {
       return {
         content: [{ type: 'text', text: JSON.stringify({ success: false, error: error.message }, null, 2) }],

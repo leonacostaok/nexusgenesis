@@ -2,7 +2,7 @@
 
 > 前置：Sprint 3/4 已落地，分支 `feat/sprint4-transport-security`。
 > Sprint 4 已经把 message security **运行时化**（INV-009）：签名信封 + inbound verifier + 持久化 replay store + service identity。
-> Sprint 5 只做 [TRANSPORT_SECURITY_P1_PLAN.md](file:///d:/trae_projects/NexusGenesis/docs/TRANSPORT_SECURITY_P1_PLAN.md) 的 **P1.3 + P1.4 收尾**，不动 INV-009 既有语义。
+> Sprint 5 只做 [TRANSPORT_SECURITY_P1_PLAN.md](docs/TRANSPORT_SECURITY_P1_PLAN.md) 的 **P1.3 + P1.4 收尾**，不动 INV-009 既有语义。
 > 主线：把消息安全从"应用层签名"补成"部署级 transport security"——传输加密（TLS/mTLS）+ 链下软策略字段闭合 + 严格失败模式 + 迁移清理。
 > 结构仍沿用"实现 → 独立复核 → 修复 → 回归"闭环，每 T 完成即全量回归。
 
@@ -48,8 +48,8 @@
 - 复核关注点：TLS 1.3 是否真的被强制（1.2 客户端握手是否被拒）；双向认证是否双方缺一即失败；证书轮换后旧证书是否立即失效。
 
 ## T2 Policy Engine 遗留字段闭合（P1.4）
-- T2.1 **`maxDaily` 消费**：在 [mcp-server/src/policy-engine.js](file:///d:/trae_projects/NexusGenesis/mcp-server/src/policy-engine.js) 增加进程内日累计（滚动窗口，链下软策略层），超限 → `PolicyRejected`；累计命中/重置进审计（`policy_change`/execute 审计对账）。**单机进程内**，多实例共享状态显式延后到 Sprint 6。
-- T2.2 **`requiresSimulation` 消费**：策略文件可覆盖静态风险表（[simulation-policy.js](file:///d:/trae_projects/NexusGenesis/mcp-server/src/simulation-policy.js#L49-L61)），方向**只能收紧不能放宽**——策略要求模拟而静态表标 skippable → 以策略为准（要求模拟）；策略标 skippable 而静态表要求 → 仍要求模拟（保守取并集）。
+- T2.1 **`maxDaily` 消费**：在 [mcp-server/src/policy-engine.js](mcp-server/src/policy-engine.js) 增加进程内日累计（滚动窗口，链下软策略层），超限 → `PolicyRejected`；累计命中/重置进审计（`policy_change`/execute 审计对账）。**单机进程内**，多实例共享状态显式延后到 Sprint 6。
+- T2.2 **`requiresSimulation` 消费**：策略文件可覆盖静态风险表（[simulation-policy.js](mcp-server/src/simulation-policy.js#L49-L61)），方向**只能收紧不能放宽**——策略要求模拟而静态表标 skippable → 以策略为准（要求模拟）；策略标 skippable 而静态表要求 → 仍要求模拟（保守取并集）。
 - 验收：命中 `maxDaily` 规则超限 → 链下拒绝（省 gas，不浪费链上调用）；`requiresSimulation` 覆盖方向只收紧、不出现放宽反例。
 - 复核关注点：BigInt 精确比较（复刻 `amountExceeds`，杜绝 `Number()` 精度丢失，见 Sprint 3 复核缺陷 #2）；日累计窗口边界与链上 Smart Account 语义是否一致（INV-007）。
 
@@ -70,8 +70,8 @@
 - T5.1 **`transport-mtls.test.js`**（`packages/agent-sdk/test/`）：本地自签 CA 起 TLS 1.3 server + 双向证书，不起真实网络——明文拒 / 过期拒 / 伪造拒 / mTLS 握手成功四态。
 - T5.2 **E2E 完整验证链**：`signed transport + mTLS + replay guard`——Agent 签名的 envelope 经 TLS 通道到达服务端，inbound verifier 验签 + 防重放 + 身份落审计全链路通过。
 - T5.3 **文档闭环**：
-  - 更新 [SECURITY_INVARIANTS.md](file:///d:/trae_projects/NexusGenesis/SECURITY_INVARIANTS.md)（INV-009 补 TLS 传输层、INV-003/007 补 policy 字段、INV-008 补 mTLS 握手审计；§4.1 测试入口补 `transport-mtls.test.js`）。
-  - 更新 [TRANSPORT_SECURITY_P1_PLAN.md](file:///d:/trae_projects/NexusGenesis/docs/TRANSPORT_SECURITY_P1_PLAN.md)（P1.3/P1.4 → 标注已落地）。
+  - 更新 [SECURITY_INVARIANTS.md](SECURITY_INVARIANTS.md)（INV-009 补 TLS 传输层、INV-003/007 补 policy 字段、INV-008 补 mTLS 握手审计；§4.1 测试入口补 `transport-mtls.test.js`）。
+  - 更新 [TRANSPORT_SECURITY_P1_PLAN.md](docs/TRANSPORT_SECURITY_P1_PLAN.md)（P1.3/P1.4 → 标注已落地）。
 - 全量回归：mcp-server + agent-sdk 全绿为门槛（当前基线 61/61 + 48/48）。
 
 ---
@@ -84,7 +84,7 @@ T1 完成即提交一版（先落 TLS 主线），T2-T5 再各自提交。
 ## 变更记录
 | 日期 | 版本 | 变更 |
 |------|------|------|
-| 2026-08-23 | v1.0 | 初次生成（基于 [TRANSPORT_SECURITY_P1_PLAN.md](file:///d:/trae_projects/NexusGenesis/docs/TRANSPORT_SECURITY_P1_PLAN.md) §0.5 未落地项 + Sprint 4 基线） |
+| 2026-08-23 | v1.0 | 初次生成（基于 [TRANSPORT_SECURITY_P1_PLAN.md](docs/TRANSPORT_SECURITY_P1_PLAN.md) §0.5 未落地项 + Sprint 4 基线） |
 | 2026-08-23 | v1.1（收尾） | T1-T5.3 全部闭环；回归基线更新为 agent-sdk 62/62、mcp-server 73/73；T5.2 新增 `transport-mtls-e2e.test.js`（6 用例）；T5.3 同步 P1_PLAN / SECURITY_INVARIANTS |
 
 ## 备注：与后续 Sprint 关系

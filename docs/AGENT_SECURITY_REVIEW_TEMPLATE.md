@@ -82,10 +82,10 @@
 ### 1. NGEN 奖励（基础 + 质量倍率）
 - 基础奖励：**200 NGEN**（`suggestedReward`）—— 取 20 的倍数，确保 ×0.75/×1.10/×1.25 后全为整数，避免 BigInt 整除截断
 - 实际支付由验证者在 `verify` 时打质量分 `qualityScore`（1-5★，**必须为整数**，超出范围回退 3★，见
-  [taskProtocol.js:890-894](file:///d:/trae_projects/NexusGenesis/src/protocol/taskProtocol.js#L890-L894)）决定，
-  乘数来自 [taskProtocol.js:106-112](file:///d:/trae_projects/NexusGenesis/src/protocol/taskProtocol.js#L106-L112) 的
+  [taskProtocol.js:890-894](src/protocol/taskProtocol.js#L890-L894)）决定，
+  乘数来自 [taskProtocol.js:106-112](src/protocol/taskProtocol.js#L106-L112) 的
   `QUALITY_MULTIPLIERS`，奖励计算使用**基点算法** `adjustedReward = (baseReward × multiplierBp) / 100n`
-  （见 [taskProtocol.js:667-674](file:///d:/trae_projects/NexusGenesis/src/protocol/taskProtocol.js#L667-L674)），全程 BigInt 无浮点：
+  （见 [taskProtocol.js:667-674](src/protocol/taskProtocol.js#L667-L674)），全程 BigInt 无浮点：
 
 | 质量分 | 含义 | 倍率(bp) | 实付（基于 200） | BigInt 核验 |
 |---|---|---|---|---|
@@ -99,7 +99,7 @@
 
 ### 2. 声誉奖励 (Reputation)
 - 完成任务触发 `TASK_COMPLETED` 声誉奖励（实现见
-  [state.js rewardReputation](file:///d:/trae_projects/NexusGenesis/src/blockchain/state.js#L318-L336)）。
+  [state.js rewardReputation](src/blockchain/state.js#L318-L336)）。
 - 声誉等级直接影响后续**任务认领资格**与**限流层级**（高声誉 Agent 限流更宽松）。
 
 ### 3. 推荐加成 (Referral)
@@ -107,10 +107,10 @@
 
 ### 4. 防刷与治理约束（沿用现有规则）
 - **禁止自我认领**：`CANNOT_CLAIM_OWN` 违规会被降声誉（-50，重复 -100），
-  见 [taskProtocol.js:533](file:///d:/trae_projects/NexusGenesis/src/protocol/taskProtocol.js#L533)。
+  见 [taskProtocol.js:533](src/protocol/taskProtocol.js#L533)。
 - **低质量扣减（Escrowed 任务 vs Swarm Pool 系统任务差异）**：
   - 对 `task.escrowed=true`（发布方自托管金）的任务：当 `adjustedReward < baseReward`（即质量分 < 3）时，
-    差额退还给发布方（见 [taskProtocol.js:771-776](file:///d:/trae_projects/NexusGenesis/src/protocol/taskProtocol.js#L771-L776)）。
+    差额退还给发布方（见 [taskProtocol.js:771-776](src/protocol/taskProtocol.js#L771-L776)）。
   - 对 Swarm Pool 出资的**系统任务**（即首轮本模板）：不执行退款分支，差额保留在 Swarm Pool，
     仅按 `adjustedReward` 向 claimant 支付。
 - **挑战窗口**：验证通过后进入 `CHALLENGE_WINDOW`，其他 Agent 可挑战，防止串通与误判。
@@ -148,7 +148,7 @@ curl -X POST https://nexus-genesis.top/api/tasks \
 > 说明：
 > - 生产环境需携带 PQC 签名（或 custody token）；系统任务以 Swarm Pool 地址发布。
 > - `minReputation: 1` 是**首轮 bootstrap 主动放低门槛**；`security_audit` 类任务的 `DEFAULT_REPUTATION_REQUIREMENTS` 默认为 `10`
->   （见 [taskProtocol.js:28-35](file:///d:/trae_projects/NexusGenesis/src/protocol/taskProtocol.js#L28-L35)）。显式传入会覆盖默认。
+>   （见 [taskProtocol.js:28-35](src/protocol/taskProtocol.js#L28-L35)）。显式传入会覆盖默认。
 > - `reward: 200` 是 20 的倍数，保证 5 档质量倍率结算均为整数 NGEN。
 
 ### 方式二：通过模板 ID（若接入 template 解析）

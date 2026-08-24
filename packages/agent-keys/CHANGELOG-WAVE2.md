@@ -106,8 +106,8 @@ Signer 子进程对收到的 `amount` 字段进行策略检查，但**无法验�
 3. **未来方案** — 零知识证明 (ZK proof) 证明 hash 编码的交易金额 ≤ 声明金额，可完全消除此差距。当前版本未实现
 
 **相关文档位置:**
-- [signer.js 源码注释](file:///d:/trae_projects/NexusGenesis/packages/agent-keys/src/signer.js#L41-L60)
-- [signer-worker.js 源码注释](file:///d:/trae_projects/NexusGenesis/packages/agent-keys/src/signer-worker.js#L25-L28)
+- [signer.js 源码注释](packages/agent-keys/src/signer.js#L41-L60)
+- [signer-worker.js 源码注释](packages/agent-keys/src/signer-worker.js#L25-L28)
 
 ### 2.2 [中] PolicyTimelock 进程内调度器
 

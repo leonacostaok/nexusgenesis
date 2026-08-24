@@ -99,7 +99,7 @@ ledger:tx:<txHash>         → { records: [rec...] }（生命周期演进追加�
 - 台账环形：`evictOldest('ledger:tx:', MAX_TX_RECORDS=200)`
 
 **接线与兼容**（对外行为不破坏基线）：
-- [chain-state-store.js](file:///d:/trae_projects/NexusGenesis/mcp-server/src/chain-state-store.js) 内部实现换 T1 store（`resolveStateBackend`：`SMART_ACCOUNT_STATE_FILE` 以 `.sqlite` 结尾 → sqlite 共享；`.json`/缺省 → local 单机）；**对外 API 签名不变**（`loadChainState`/`saveChainState`/`recordTx`/`listTx`/`recordBroadcast`/`serializeEntry`）
+- [chain-state-store.js](mcp-server/src/chain-state-store.js) 内部实现换 T1 store（`resolveStateBackend`：`SMART_ACCOUNT_STATE_FILE` 以 `.sqlite` 结尾 → sqlite 共享；`.json`/缺省 → local 单机）；**对外 API 签名不变**（`loadChainState`/`saveChainState`/`recordTx`/`listTx`/`recordBroadcast`/`serializeEntry`）
 - server.js：`persistSmartAccountState()` → `persistAccount(accountId)` 按行写（不再全量）；arm 点（L902）写 `sim:arm:<accountId>`；`restoreSmartAccounts` 从分片读回 + 保留 chain-environment guard
 - 旧 JSON 格式检测迁移：启动发现旧格式（顶层 `accounts` 数组）→ 一次性迁入 store，原文件留 `.bak`
 - 纯内存模式（无状态文件）：`createLocalStore()` 内存态——现回归行为不变
@@ -147,9 +147,9 @@ ledger:tx:<txHash>         → { records: [rec...] }（生命周期演进追加�
   - `mcp-server/test/smart-account-distributed.test.js`（T3：跨实例 arm 放行/异 digest 拦截；并发 state 不丢；T4：非并发 nonce / 对账去重）。
   - 双实例测试方式：`node --test` 内 `spawn` 两个独立的 mcp 实例连同一 sqlite，或同进程两个 store 实例共享 sqlite 文件（优先；最省 CI）。
 - T5.2 **更新文档**：
-  - [TRANSPORT_SECURITY_P1_PLAN.md](file:///d:/trae_projects/NexusGenesis/docs/TRANSPORT_SECURITY_P1_PLAN.md) 或新 RFC：共享防重放窗口设计（INSERT OR IGNORE 恰好一次、窗口清理、降级 fail-closed）。
-  - [SECURITY_INVARIANTS.md](file:///d:/trae_projects/NexusGenesis/SECURITY_INVARIANTS.md)：INV-007/009 补"多实例共享窗口下仍 fail-closed"注记；§4.1 测试入口补 distributed 测试文件。
-  - [Sprint6计划.md](file:///d:/trae_projects/NexusGenesis/Sprint6计划.md)：收尾状态表 + 变更记录。
+  - [TRANSPORT_SECURITY_P1_PLAN.md](docs/TRANSPORT_SECURITY_P1_PLAN.md) 或新 RFC：共享防重放窗口设计（INSERT OR IGNORE 恰好一次、窗口清理、降级 fail-closed）。
+  - [SECURITY_INVARIANTS.md](SECURITY_INVARIANTS.md)：INV-007/009 补"多实例共享窗口下仍 fail-closed"注记；§4.1 测试入口补 distributed 测试文件。
+  - [Sprint6计划.md](Sprint6计划.md)：收尾状态表 + 变更记录。
 - 全量回归（门槛）：agent-sdk 62/62 + mcp-server 73/73 保持，新增文件全绿。
 
 ---

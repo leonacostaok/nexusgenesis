@@ -2,7 +2,7 @@
 
 > 状态：草案（RFC）— 先定协议，不急着大开发
 > 日期：2026-08-22
-> 关联：Sprint 3 T3；[SECURITY_SPEC.md](file:///d:/trae_projects/NexusGenesis/docs/SECURITY_SPEC.md) §1.3 通信安全
+> 关联：Sprint 3 T3；[SECURITY_SPEC.md](docs/SECURITY_SPEC.md) §1.3 通信安全
 > 参考实现：`packages/agent-sdk/src/message-security.js`（最小、注入式、可测）
 
 ---
@@ -10,7 +10,7 @@
 ## 1. 目标与范围
 
 本 RFC 为**未来云端 Agent-to-Agent 通信**定义协议层安全基线。当前
-`CoordinationClient`（[coordination.js](file:///d:/trae_projects/NexusGenesis/packages/agent-sdk/src/coordination.js)）是纯 HTTP
+`CoordinationClient`（[coordination.js](packages/agent-sdk/src/coordination.js)）是纯 HTTP
 客户端，`agent_identity` 仅是明文字符串，任何中间人都可伪造/重放请求。本 RFC
 为该缺口定义最小信封协议，使消息具备：
 

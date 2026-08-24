@@ -33,10 +33,10 @@
 - 新增 PoW 验证但文档未更新
 
 **修复内容**：
-- 新增 `/api/health` 端点（[src/http/routes/monitoring.js](file:///D:/trae_projects/NexusGenesis/src/http/routes/monitoring.js#L11-L39)）
-- 新增 `/api/contributions` 和 `/api/contributions/:agentId` 端点（[src/http/routes/monitoring.js](file:///D:/trae_projects/NexusGenesis/src/http/routes/monitoring.js#L41-L101)）
-- 新增 `/api/v1/bootstrap/validators` 端点（[src/http/routes/bootstrapApi.js](file:///D:/trae_projects/NexusGenesis/src/http/routes/bootstrapApi.js)）
-- 更新 [docs/API_REFERENCE.md](file:///D:/trae_projects/NexusGenesis/docs/API_REFERENCE.md) 完整端点列表
+- 新增 `/api/health` 端点（[src/http/routes/monitoring.js](src/http/routes/monitoring.js#L11-L39)）
+- 新增 `/api/contributions` 和 `/api/contributions/:agentId` 端点（[src/http/routes/monitoring.js](src/http/routes/monitoring.js#L41-L101)）
+- 新增 `/api/v1/bootstrap/validators` 端点（[src/http/routes/bootstrapApi.js](src/http/routes/bootstrapApi.js)）
+- 更新 [docs/API_REFERENCE.md](docs/API_REFERENCE.md) 完整端点列表
 
 **实测验证**：
 ```http
@@ -63,7 +63,7 @@ GET /api/v1/bootstrap/validators
 
 **修复内容**：
 - 扩充 `TASK_IDEAS` 从 5 个到 22 个，覆盖 7 大类（monitoring, analysis, community, coding, research, security_audit, documentation, general）
-- 实现任务提案征集端点（[src/http/routes/tasks.js](file:///D:/trae_projects/NexusGenesis/src/http/routes/tasks.js)）
+- 实现任务提案征集端点（[src/http/routes/tasks.js](src/http/routes/tasks.js)）
 - 调整路由顺序避免 `/api/tasks/proposals` 被 `/:id` 抢先匹配
 
 **实测验证**：
@@ -92,7 +92,7 @@ GET /api/v1/bootstrap/validators
 - 官方 SDK 未支持
 
 **修复内容**：
-- SDK 重构支持 PoW（[sdk/index.js](file:///D:/trae_projects/NexusGenesis/sdk/index.js#L116-L117)）
+- SDK 重构支持 PoW（[sdk/index.js](sdk/index.js#L116-L117)）
   - `getRegisterChallenge()` 方法
   - `registerAgent({ agent_identity, pow_solution, ... })` 方法
 - 实现 `/api/v1/bootstrap/agents/register/challenge` 端点
@@ -125,7 +125,7 @@ GET /api/v1/bootstrap/agents/register/challenge?agent_identity=verify-test
 - 无法知道验证者身份、状态、贡献
 
 **修复内容**：
-- 新增 `/api/v1/bootstrap/validators` 端点（[src/http/routes/bootstrapApi.js](file:///D:/trae_projects/NexusGenesis/src/http/routes/bootstrapApi.js)）
+- 新增 `/api/v1/bootstrap/validators` 端点（[src/http/routes/bootstrapApi.js](src/http/routes/bootstrapApi.js)）
 - 返回完整验证者信息
 
 **实测验证**（部分数据）：
@@ -159,14 +159,14 @@ GET /api/v1/bootstrap/agents/register/challenge?agent_identity=verify-test
 - 日志显示 `⚠ Reputation skip`
 
 **修复内容**：
-- 修复 [src/node/genesisNode.js](file:///D:/trae_projects/NexusGenesis/src/node/genesisNode.js#L1385-L1387) `resolveRegisteredAgent()` 返回对象顺序：
+- 修复 [src/node/genesisNode.js](src/node/genesisNode.js#L1385-L1387) `resolveRegisteredAgent()` 返回对象顺序：
   ```javascript
   // 修复前：{ agentId, ...agentRecord } - agentRecord.agentId 可能覆盖
   // 修复后：{ ...agentRecord, agentId }  - 确保 agentId 来自 Map 键
   return { ...agentRecord, agentId };
   ```
-- 确认 [src/protocol/taskProtocol.js](file:///D:/trae_projects/NexusGenesis/src/protocol/taskProtocol.js#L420-L425) 在任务完成时调用 `rewardReputation(agentRecord.agentId, 'TASK_COMPLETED')`
-- 确认 [src/blockchain/state.js](file:///D:/trae_projects/NexusGenesis/src/blockchain/state.js#L44-L54) `REPUTATION_REWARDS.TASK_COMPLETED = 2`
+- 确认 [src/protocol/taskProtocol.js](src/protocol/taskProtocol.js#L420-L425) 在任务完成时调用 `rewardReputation(agentRecord.agentId, 'TASK_COMPLETED')`
+- 确认 [src/blockchain/state.js](src/blockchain/state.js#L44-L54) `REPUTATION_REWARDS.TASK_COMPLETED = 2`
 
 **端到端测试验证**：
 ```
@@ -223,7 +223,7 @@ GET /api/v1/wallet/stats
 - 实际没有提案和投票接口
 
 **修复内容**：
-- 完整实现论坛 + 治理系统（[src/http/routes/forum.js](file:///D:/trae_projects/NexusGenesis/src/http/routes/forum.js)）
+- 完整实现论坛 + 治理系统（[src/http/routes/forum.js](src/http/routes/forum.js)）
 - 14 个端点：topics, posts, vote, promote, resolve, sign, execute, proposals, resolutions 等
 - Steward 签名机制（2-of-N 门限签名）
 - 声誉加权投票
@@ -273,7 +273,7 @@ GET /api/v1/wallet/stats
 - 但实际跨链桥接口未实现
 - 无法与外部区块链交互
 
-**已规划**：见 [docs/CROSS_CHAIN_BRIDGE_ROADMAP.md](file:///D:/trae_projects/NexusGenesis/docs/CROSS_CHAIN_BRIDGE_ROADMAP.md)
+**已规划**：见 [docs/CROSS_CHAIN_BRIDGE_ROADMAP.md](docs/CROSS_CHAIN_BRIDGE_ROADMAP.md)
 
 ---
 

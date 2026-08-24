@@ -27,7 +27,7 @@
 
 ## T2 Policy Engine 外置化
 
-**现状**：策略写死在 [smart-account.js](file:///d:/trae_projects/NexusGenesis/packages/chain-eth/src/smart-account.js)（JS 引擎）与 [SmartAccount.sol](file:///d:/trae_projects/NexusGenesis/contracts/solidity/src/SmartAccount.sol)（链上硬策略）。无外置可配置层。
+**现状**：策略写死在 [smart-account.js](packages/chain-eth/src/smart-account.js)（JS 引擎）与 [SmartAccount.sol](contracts/solidity/src/SmartAccount.sol)（链上硬策略）。无外置可配置层。
 
 **设计**（新模块 `mcp-server/src/policy-engine.js`）：
 - 规则表：action → `{ enabled, requiresSimulation, maxPerTx, maxDaily }`
@@ -43,7 +43,7 @@
 
 ## T3 Transport / Message 安全 RFC
 
-**现状**：`CoordinationClient`（[coordination.js](file:///d:/trae_projects/NexusGenesis/packages/agent-sdk/src/coordination.js)）是纯 HTTP 客户端，`agent_identity` 仅字符串，无签名/nonce/anti-replay；SECURITY_SPEC 有通信安全目标但无具体协议。
+**现状**：`CoordinationClient`（[coordination.js](packages/agent-sdk/src/coordination.js)）是纯 HTTP 客户端，`agent_identity` 仅字符串，无签名/nonce/anti-replay；SECURITY_SPEC 有通信安全目标但无具体协议。
 
 **交付**（以 RFC 为主，不急着大开发）：
 1. RFC 文档 `docs/SMART_ACCOUNT_TRANSPORT_SECURITY_RFC.md`：目标与威胁模型、消息信封规范（version / payload / sender / target / nonce / timestamp / signature）、anti-replay 滑动窗口、service identity / mTLS、演进路线

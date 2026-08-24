@@ -12,6 +12,8 @@
  *                  随 SMART_ACCOUNT_STATE_FILE 持久化。
  */
 import { test, before, beforeEach, after } from 'node:test';
+// External review 2026-08-24: default LocalChain path requires explicit opt-in.
+process.env.CHAIN_ALLOW_LOCAL = '1';
 import assert from 'node:assert/strict';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';

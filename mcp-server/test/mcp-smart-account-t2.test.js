@@ -12,6 +12,8 @@
  *        string|null；其它类型 → violation，不静默）。
  */
 import { test, before, beforeEach, after } from 'node:test';
+// External review 2026-08-24: default LocalChain path requires explicit opt-in.
+process.env.CHAIN_ALLOW_LOCAL = '1';
 import assert from 'node:assert/strict';
 import { writeFileSync, readFileSync, existsSync, unlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';

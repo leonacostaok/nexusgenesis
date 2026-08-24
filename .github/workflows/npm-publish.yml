@@ -4,6 +4,15 @@ on:
   push:
     tags: ['v*']
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Target version for a coordinated bump. Empty = auto minor bump (agent-keys stays ahead via 0.6.0, rest → 0.4.x). Use e.g. 0.4.0 to force.'
+        type: string
+        required: false
+      dry_run:
+        description: 'Print what bump would change without publishing (safe). Set false to actually publish.'
+        type: boolean
+        default: true
 
 jobs:
   publish:
@@ -25,6 +34,21 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      # Dispatch bump: align all 6 published package versions + cross-references
+      # (agent-sdk's peer `nexusgenesis-chain-eth ^0.3.0` → ^0.4.0 etc.) so npm
+      # users actually receive the on-chain Smart Account capabilities described
+      # in CHANGELOG/README (external review 2026-08-24 P0 "发布断层"). Never
+      # downgrades (agent-keys 0.5.0 → 0.6.0 guard). Tag-triggered runs skip this.
+      - name: Coordinated version bump (dispatch only)
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: node scripts/release-bump.mjs ${{ inputs.dry_run != 'true' && format('--apply') || '' }} ${{ inputs.version && format('--to {0}', inputs.version) || '' }}
+
+      - name: Dry-run — show planned versions, do not publish
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true' }}
+        run: |
+          echo "::warning::Dry-run requested — version bump previewed above, nothing published."
+          exit 0
 
       - name: Run released package tests
         run: npm run test:release-packages

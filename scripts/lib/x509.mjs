@@ -8,7 +8,7 @@
  *
  * 仅供开发/测试。生产 mTLS 证书签发须对接 service identity / KMS（Sprint 7）。
  */
-import { generateKeyPairSync, sign, createHash } from 'node:crypto';
+import { generateKeyPairSync, sign, createHash, createPrivateKey, X509Certificate } from 'node:crypto';
 import net from 'node:net';
 
 /* ------------------------------ ASN.1 DER ------------------------------ */
@@ -206,6 +206,24 @@ export function createCa({ cn = 'NexusGenesis Dev Root CA', days = 3650 } = {}) 
     extensions,
   });
   return { cert, keypair, keyId, subject: caSubject(cn) };
+}
+
+/**
+ * 从「受控 CA」签发的既有 CA（cert + 私钥 PEM）装载为可继续签发叶子的 ca 对象
+ * （生产 mTLS 证书签发对接 service identity / secret-store SPI，见 Sprint 7 T5）。
+ * keyId 由 CA 公钥 SPKI 派生（与叶子证书 AKI 对齐）；subject 从 CA cert CN 重建。
+ * @param {object} params
+ * @param {string} params.cert CA 证书 PEM
+ * @param {string} params.key CA 私钥 PEM（pkcs8）
+ * @returns {{ cert: string, keypair: { privateKey: KeyObject }, keyId: Buffer, subject: Array<{t, v}> }}
+ */
+export function loadCa({ cert, key }) {
+  const x = new X509Certificate(cert);
+  const spki = x.publicKey.export({ type: 'spki', format: 'der' });
+  const pubBytes = spki.subarray(-32); // Ed25519 公钥恒为末 32 字节
+  const privateKey = createPrivateKey(key);
+  const cn = /CN=([^,\n]+)/.exec(x.subject)?.[1]?.trim() || 'NexusGenesis CA';
+  return { cert, keypair: { privateKey }, publicKey: x.publicKey, keyId: sha1(pubBytes), subject: caSubject(cn) };
 }
 
 /**

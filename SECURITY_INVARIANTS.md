@@ -1,7 +1,7 @@
 # SECURITY_INVARIANTS
 
-版本：v1.3（Sprint 2 & 3 & 4 & 5 校订）
-状态：**Implemented**（10 条不变量详情全部落地；链上强制层已从 JS 语义原型 1:1 移植到 Solidity 合约，签名原像固化跨语言 canonical schema；Sprint 3/4 在链上硬策略之外补齐「链下软策略（Policy Engine）+ Simulation 门禁 + 传输/消息安全」三层；Sprint 5 补齐 P1.3 TLS/mTLS 传输加密 + P1.4 policy 字段(`maxDaily`/`requiresSimulation`) + strict fail-mode + 迁移清理；实现与验证入口见各条"验证入口"与本文件 §4）
+版本：v1.4（Sprint 2 & 3 & 4 & 5 & 6 & 7 校订）
+状态：**Implemented**（10 条不变量详情全部落地；链上强制层已从 JS 语义原型 1:1 移植到 Solidity 合约，签名原像固化跨语言 canonical schema；Sprint 3/4 在链上硬策略之外补齐「链下软策略（Policy Engine）+ Simulation 门禁 + 传输/消息安全」三层；Sprint 5 补齐 P1.3 TLS/mTLS 传输加密 + P1.4 policy 字段(`maxDaily`/`requiresSimulation`) + strict fail-mode + 迁移清理；Sprint 6 补齐分布式状态层（store 抽象 / 共享防重放 / 行级分片 / relayer nonce 协调）；Sprint 7 补齐生产部署运维面（可观测 /metrics + /health + 告警、deployment profile 封装、环境发布 preflight 门禁、secret-store SPI + 生产 mTLS 受控 CA、运维手册）；实现与验证入口见各条"验证入口"与本文件 §4）
 上游：`AI agent 链上交易技术白皮书.txt`（Security Baseline v1.0）
 适用：nexusgenesis-agent-keys / agent-sdk / chain-* / mcp-server 及 Smart Account（Solidity）、Remote Signer、Policy Engine、Simulation Policy、Transport/Message Security 实现
 
@@ -203,11 +203,15 @@ Sprint 2 把"Smart Account 链上强制"从 JS 语义原型推进为**真 Solidi
     - **Policy 版本审计**：`maybeAuditPolicyChange` 以 sha256 指纹规则集，热更新即记 `policy_change`（旧→新指纹 + 快照 + context），execute 门禁与 `smart_account_policy` 查询均接入；execute 路径**单次读取**策略文件——指纹审计与实际裁决用同一份规则（消除热更新 TOCTOU，杜绝审计轨迹说谎）。
     - **审计 schema 校验**：`AUDIT_SCHEMA` + `validateAuditEntry`，违规 → stderr `[audit] SCHEMA VIOLATION`（不静默、不中断 eval 主路径）。
     - **Relayer 可运营审计**：`executeWithRelayerResilience` 的 attempts / retried / retryable / reconciled 全链路进审计与指标（`smart_account_execute_retried`）；广播后 `wait` 失败先对账 receipt（已落账复用结果，绝不盲目重发，避免白付 gas + 污染 ledger）。
+  - Sprint 7（T1/T3：指标/健康/告警可观测）：
+    - **Prometheus `/metrics`**（`METRICS_HTTP_PORT` 可选开启，loopback）：`node:http` 输出 Prometheus text；进程采样 gauge + 链上健康（`chain_rpc_up`/`chain_last_block_ts`/`chain_last_block_number`）+ store 形态标签（`store_backend{backend=...}`/`store_shared`）+ 全部计数器（含 relayer 协调维度 relayer_nonce_*/relayer_broadcast_deduped/relayer_lease_failed）。默认关，关闭时与基线逐字节一致；只走独立 HTTP 端口，绝不碰 MCP stdout。
+    - **`/health`**（`HEALTH_HTTP_PORT` 可选开启，loopback）：liveness 恒 200；readiness（chain_env / state_store 依赖自检）失败 → 503（LB 摘流），并落 `health_unready` 结构化事件（stdout 不受污染）。`HEALTH_STRICT_STARTUP=1` → 致命依赖失败拒绝启动（`HEALTH_STRICT_STARTUP_FAILED`，与配置 fail-closed 同向）。
+    - **告警规则引擎**（`ALERT_RULES_FILE` / `ALERT_RULES_ENABLE_DEFAULTS=1` 可选）：指标阈值 + 窗口 + 严重级，命中写 `alert_fired` 结构化告警事件到 stderr/AUDIT。默认不开启时零成本 no-op。
   - Sprint 5（P1.3/P1.4 审计补缺口）：
     - **mTLS 握手审计**：`createMtlsServer` 成功/失败握手均经 `recordAudit`/`mtls_handshake` 落 JSON（`packages/agent-sdk/src/mtls-server.js`）；失败仅暴露 `tls_*` 类别（不泄露具体校验细节给握手方）。
     - **Policy strict-config 审计**：strict 模式下配置损坏 → execute 拒收带独立 `gate: strict-config`（错误码 `PolicyConfigError`，区别于"缺 preview"的 `SimulationRequired`，不误导运维去补 preview），审计与指标 `smart_account_policy_rejected` 同时落账。
     - **maxDaily/relayer 审计项**：execute 成功审计携带 `dailyTotal`（`store.total` 精确 BigInt 字符串）；relayer attempts/retried/reconciled 延续进审计。
-  - 已知限制：审计尚为文件/stderr 输出，防篡改（hash-chain 固化）与集中式审计面板仍未闭环。
+  - 已知限制：审计仍为文件/stderr 输出；Sprint 7 补齐了**可观测面**（/metrics /health /告警，见上），但**防篡改固化（hash-chain）与集中式审计面板仍未闭环**——边界与承接见 SECURITY_GAP_ANALYSIS.md。
 - 攻击路径测试矩阵：
   - 会话撤销后继续提交签名 → 拒绝。
   - 告警回调抛异常 → 不破坏 enforcement 主路径（已覆盖）。
@@ -261,6 +265,9 @@ Sprint 2 把"Smart Account 链上强制"从 JS 语义原型推进为**真 Solidi
 | INV-008 | `packages/agent-keys/test/*`、`mcp-server/test/mcp-smart-account-t2.test.js`、`mcp-server/test/mcp-smart-account-smoke.test.js`、`mcp-server/test/relayer-operations.test.js` | PolicyTimelock 通知/撤销；audit schema 校验；policy_change 指纹审计；relayer attempts/retried/reconciled 进审计（对账不重发） |
 | INV-009 | `packages/agent-sdk/test/message-security.test.js`、`packages/agent-sdk/test/transport-security.test.js`、`packages/agent-sdk/test/transport-mtls.test.js`、`packages/agent-sdk/test/transport-mtls-e2e.test.js` | 验签通过后才 record anti-replay；明文/未知身份/篡改/重放/过期/target≠self fail-closed；replay store 原子持久化；mTLS 明文/伪造/过期/TLS1.2 fail-closed（8/8）；signed transport + mTLS + replay guard 全链路三层组合 + 重启持久化 + 跨服务重放（6/6） |
 | INV-009（多实例） | `packages/agent-sdk/test/store-interface.test.js`、`packages/agent-sdk/test/transport-distributed.test.js` | local/sqlite 双后端语义一致 + 原子 readModifyWrite + claim 恰好一次；双实例共享 replay store：首 200 / 次 403 / 重启不丢 / 共享后端降级 fail-closed（不静默退化为各实例独立窗口） |
+| INV-008（Sprint 7 可观测） | `mcp-server/test/metrics-sprint7.test.js`、`mcp-server/test/health-alerting.test.js` | `/metrics` 开启→Prometheus text + 进程/链上健康/store 标签维度、未设端口→不监听（基线不回归）；readiness 依赖失败→503、`HEALTH_STRICT_STARTUP=1` fatal 失败→拒绝启动；告警规则命中→`alert_fired` 落审计、关闭 gate→无行为变化 |
+| INV-008/Sprint7（profile） | `mcp-server/test/deployment-profile.test.js`、`mcp-server/test/release-preflight.test.js` | production 缺操作键/artifact → fail-closed 抛 `code`；local 缺 RPC 不报错；dry-run 不监听端口；preflight 缺密码/缺 artifact → exit 1，满足 → exit 0；6 包版本 lockstep |
+| INV-001（Sprint 7 密钥） | `mcp-server/test/secret-store.test.js` | env: 引用读 process.env / file: 引用读文件（trim）/ 裸值原样；kms 后端无 provider → `SECRET_KMS_NOT_CONFIGURED` fail-closed；provider 可插拔；chain-config 走 resolver（file: 解析为真实密钥），缺省 env 直读不变；生产 mTLS 缺受控 CA → 拒绝（不回退自签）、受控 CA 签发 + 身份绑定 + 不写 ca-key.pem |
 
 ### 4.2 发布后 registry smoke（v0.5.0 起）
 

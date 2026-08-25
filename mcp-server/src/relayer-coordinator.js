@@ -25,6 +25,7 @@
  * 本模块只协调 EOA 广播层 nonce 分配，绝不动 intent nonce 签入语义。
  */
 import { createLocalStore } from 'nexusgenesis-agent-sdk';
+import { incr } from './observability.js';
 
 const COUNTER_PREFIX = 'nonce:seq:';
 const LEASE_PREFIX = 'nonce:lease:';
@@ -108,6 +109,8 @@ export function createNonceSequencer(store) {
           await new Promise((r2) => setTimeout(r2, Math.min(10 * casAttempts, 100)));
         }
       }
+      // Sprint 7 T1.2：冲突重试计数（CAS 竞争发生过即记一次，运维可观测 nonce 争用）。
+      if (casAttempts > 0) incr('relayer_nonce_conflict', casAttempts);
       // 租约记录：非强锁，仅审计/对账该 nonce 归属哪个实例。
       try {
         await st.claim(leaseKey(chainUrl, broadcaster, nonce), {
@@ -116,7 +119,9 @@ export function createNonceSequencer(store) {
         });
       } catch {
         // 租约写入失败不阻断广播——原子递增已保证唯一；记录仅审计。
+        incr('relayer_lease_failed');
       }
+      incr('relayer_nonce_acquired');
       return nonce;
     },
 
@@ -140,6 +145,8 @@ export function createNonceSequencer(store) {
       await st.writeAtomically(key, (cur) => ({
         next: Math.max(cur && Number.isFinite(Number(cur.next)) ? Number(cur.next) : 0, count),
       }));
+      // Sprint 7 T1.2：重同步触发计数（链上实况抬高了本地下限）。
+      incr('relayer_nonce_resynced');
     },
   };
 }

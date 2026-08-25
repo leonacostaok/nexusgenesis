@@ -27,6 +27,7 @@
     "migrate:agents": "node src/scripts/migrateAgentRegistryIdentity.js",
     "release:bump": "node scripts/release-bump.mjs",
     "release:bump:apply": "node scripts/release-bump.mjs --apply",
+    "release:preflight": "node scripts/release-preflight.mjs",
     "test": "node --test test/*.test.js",
     "test:security": "node --test test/security.test.js",
     "test:onboarding": "node tests/test-onboarding-api.js && node tests/test-onboarding-e2e.js",

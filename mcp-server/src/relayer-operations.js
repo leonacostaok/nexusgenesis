@@ -19,6 +19,7 @@
 
 import { SMART_ACCOUNT_ERRORS } from './smart-account-errors.js';
 import { isNonceConflict } from './relayer-coordinator.js';
+import { incr } from './observability.js';
 
 /** Clamp 一个 env 整数到 [min, max]；未设置/非法时用 fallback。 */
 function clampInt(raw, fallback, min, max) {
@@ -161,6 +162,8 @@ export async function executeWithRelayerResilience({ conn, payload, signature, r
       ? coordinator.reconciler.isAlreadyLanded(dedupeAccountId, dedupeDigest)
       : null;
     if (landed) {
+      // Sprint 7 T1.2：对账去重命中计数（运维可观测跨实例重放被拦截的频率）。
+      incr('relayer_broadcast_deduped');
       return {
         ok: landed.status === 'confirmed',
         txHash: landed.txHash,

@@ -73,6 +73,25 @@ import {
   __resetMetricsForTest,
 } from './observability.js';
 import {
+  startMetricsServer,
+  registerSampler,
+  bindChainHealthProvider,
+  collectMetrics,
+  __resetChainHealthForTest,
+  __resetSamplersForTest,
+} from './metrics.js';
+import { loadDeploymentProfile, __resetProfileForTest } from './deployment-profile.js';
+import {
+  registerHealthCheck,
+  startHealthServer,
+  assertStrictStartup,
+  __resetHealthChecksForTest,
+} from './health.js';
+import {
+  evaluateAlerts,
+  __resetAlertingForTest,
+} from './alerting.js';
+import {
   createAgentIdentity,
   recoverAgentIdentity,
   generateAddress,
@@ -395,6 +414,13 @@ async function bootChainEnv() {
     local: !cfg.rpcUrl,
     restoredAccounts: smartAccounts.size,
   });
+
+  // Sprint 7 T1.2 — 链上健康监控：绑定外部 provider 后后台采样 getBlockNumber，
+  // 输出 chain_rpc_up / chain_last_block_ts 到 /metrics（未绑定时为缺省 up=0）。
+  // 本地链不绑定（进程内 ETH 无外部健康意义），避免无谓轮询。
+  if (cfg.rpcUrl && provider) {
+    bindChainHealthProvider(provider, 15000);
+  }
 
   return {
     provider,
@@ -1902,6 +1928,11 @@ const TOOLS = [
  * @returns {Server} an MCP Server instance (not yet connected to a transport)
  */
 export function createServer() {
+  // Sprint 7 T2 — Deployment profile：若配置了 NEXUS_PROFILE_FILE，在创建任何
+  // handler 前加载 + 校验 +（默认）注入 process.env。未配置 → no-op，行为与基线
+  // 完全一致。fail-closed：缺必填 → 抛错拒绝启动。
+  loadDeploymentProfile();
+
   const server = new Server(
     { name: 'nexusgenesis-agent-mcp', version: process.env.MCP_VERSION || '0.3.0' },
     { capabilities: { tools: {} } },
@@ -2011,6 +2042,74 @@ export function createServer() {
       };
     }
   });
+
+  // Sprint 7 T1.2 — store 标签维度：把后端形态 / 共享态作为稳定标签导到 /metrics，
+  // 运维可一眼区分"单机 local 实例"与"多实例共享 sqlite 后端"。
+  registerSampler(() => [{
+    metric: 'store_backend',
+    value: 1,
+    type: 'gauge',
+    label: { backend: process.env.NEXUS_STORE_BACKEND || 'local' },
+  }, {
+    metric: 'store_shared',
+    value: isSharedBackend() ? 1 : 0,
+    type: 'gauge',
+  }]);
+
+  // Sprint 7 T1.1 — 可选 /metrics HTTP 端点（METRICS_HTTP_PORT gate，默认关）。
+  // 关闭 → 不监听端口，行为与 Sprint 5/6 基线保持一致。挂到 server 便于测试按需关闭。
+  const metricsServer = startMetricsServer({ port: process.env.METRICS_HTTP_PORT, snapshot });
+  if (metricsServer) server.metricsServer = metricsServer;
+
+  // Sprint 7 T3 — 健康检查注册 + /health 端点 + alerting 接线。
+  // chain/artifact 由 bootChainEnv（懒缓存 promise）提供；未 boot 前检查器按
+  // 「依赖未就绪」处理（fail-safe 判定，绝不静默成功）。
+  registerHealthCheck({
+    name: 'chain_env', fatal: true,
+    fn: async () => {
+      try {
+        const env = await chainEnvPromise;
+        if (!env?.provider) return { ok: false, detail: 'no chain provider (local/ephemeral chain has no external health)' };
+        const n = await env.provider.getBlockNumber();
+        return { ok: Number.isFinite(Number(n)), detail: `block ${n}` };
+      } catch (err) { return { ok: false, detail: err?.message || 'chain_env failed' }; }
+    },
+  });
+  registerHealthCheck({
+    name: 'state_store', fatal: true,
+    fn: () => {
+      try {
+        return { ok: typeof getStateBackend() === 'object', detail: getStateBackend() ? 'store ready' : 'empty store' };
+      } catch (err) { return { ok: false, detail: err?.message || 'store error' }; }
+    },
+  });
+
+  // /health：可选 loopback HTTP 端点（HEALTH_HTTP_PORT gate，默认关）。
+  const healthServer = startHealthServer();
+  if (healthServer) server.healthServer = healthServer;
+
+  // strict-startup 自检：HEALTH_STRICT_STARTUP=1 → 依赖致命失败拒绝启动。
+  // 异步执行、立即检查；失败抛 JSON-RPC 级错（createServer 被调用方 await 前
+  // 由调用方捕获）。为不破坏现有同步 createServer 契约，这里发起 async 自检并
+  // 在失败时把错误记到 server 对象供显式读取 + stderr（不隐式吞错）。
+  assertStrictStartup().catch((e) => {
+    console.error(`[health] STRICT_STARTUP: ${e?.message}`);
+    server.strictStartupError = e;
+    if (e?.code === 'HEALTH_STRICT_STARTUP_FAILED') server.ready = false;
+  });
+
+  // Sprint 7 T3.3 — 告警引擎周期评估：仅当装载规则文件或开启默认规则时启动循环
+  //（否则 zero-cost no-op）。评估喂「合并快照」（复核修复 A）：计数器 + 进程
+  // gauge + 链上健康 gauge —— 只喂 snapshot() 会让 chain_rpc_up 永远缺席，
+  // 默认 critical 规则 chain_rpc_down 不可达。
+  // 循环定时器 unref 保证不阻塞进程退出（避免测试悬挂）。
+  if (process.env.ALERT_RULES_FILE || process.env.ALERT_RULES_ENABLE_DEFAULTS === '1') {
+    const alertTimer = setInterval(() => {
+      try { evaluateAlerts({ metrics: collectMetrics(snapshot) }); } catch { /* 单轮评估失败不崩溃 */ }
+    }, 10000);
+    if (alertTimer.unref) alertTimer.unref();
+    server.alertTimer = alertTimer;
+  }
 
   return server;
 }

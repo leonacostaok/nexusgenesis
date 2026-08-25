@@ -12,7 +12,7 @@
  *   - 可选落盘 AUDIT_LOG_FILE（JSON lines，原子追加）
  * 内存环形缓冲（上限 1000 条）供 smart_account_audit 查询。
  */
-import { appendFileSync, mkdirSync } from 'node:fs';
+import { appendFileSync, mkdirSync, renameSync, statSync, rmSync } from 'node:fs';
 import { dirname } from 'node:path';
 
 const MAX_MEMORY_ENTRIES = 1000;
@@ -84,12 +84,38 @@ export function recordAudit(entry) {
   if (file) {
     try {
       mkdirSync(dirname(file), { recursive: true });
+      // Sprint 7 T1.3 — 日志体积上限 + 轮转：AUDIT_LOG_MAX_BYTES（可选）。落盘前
+      // 检查当前文件大小，超限 → 重命名为 `.1` 滚动（保留上一卷），再写新卷。
+      maybeRotate(file);
       appendFileSync(file, `${line}\n`, 'utf8');
     } catch {
       /* 落盘失败非致命：审计已入内存 + stderr */
     }
   }
   return rec;
+}
+
+/** Sprint 7 T1.3 — 超限滚动：当前文件 ≥ AUDIT_LOG_MAX_BYTES → 重命名 `.1`。 */
+function maybeRotate(file) {
+  const maxRaw = process.env.AUDIT_LOG_MAX_BYTES;
+  if (!maxRaw || !/^\d+$/.test(String(maxRaw))) return;
+  const maxBytes = Number(maxRaw);
+  if (!Number.isFinite(maxBytes) || maxBytes <= 0) return;
+  let size = 0;
+  try { size = statSync(file).size; } catch {
+    return; // 文件尚不存在 → 无需轮转
+  }
+  if (size < maxBytes) return;
+  try {
+    // 复核修复 D：Windows 的 renameSync 到已存在目标会抛 EPERM（非 POSIX 原子
+    // 替换）—— 若不先删旧卷，第二次轮转会被下方 catch 吞掉，之后轮转「永久
+    // 静默失效」、日志无界增长。先 rmSync 旧卷再滚动（删除失败则交给 rename
+    // 自行失败，走同一容错路径）。
+    try { rmSync(`${file}.1`, { force: true }); } catch { /* 旧卷删除失败 → rename 会再失败一次 */ }
+    renameSync(file, `${file}.1`);
+  } catch {
+    /* 重命名失败（被占用/权限）→ 放弃轮转，直接继续追加（写入容错优先） */
+  }
 }
 
 /**

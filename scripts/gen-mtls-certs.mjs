@@ -1,62 +1,62 @@
+#!/usr/bin/env node
 /**
- * gen-mtls-certs.mjs — 生成开发用 mTLS 证书（纯 node:crypto，无需系统 openssl）
+ * gen-mtls-certs.mjs — 生成 mTLS 证书（纯 node:crypto，无需系统 openssl）
  *
- * 用途：P1.3 本地/测试开发证书。生成一个自签根 CA + 服务端证书 + 两个客户端证书
- *       （server/client1/client2），落盘到 certs/mtls/。
- *       产出的 server/client 证书由同一 CA 签发，供 TLS 1.3 mTLS 双向认证使用。
+ * 两种模式：
+ *   dev（默认）：自签随机根 CA + server/client1/client2，落盘 certs/mtls/。仅开发/测试。
+ *   production：证书由「受控 CA」签发（不再自签随机 CA）——CA 证书+私钥通过
+ *               secret-store 引用（env:/file:/${...}）注入；客户端证书身份（CN）绑定
+ *               到 agent identity（--identity，对应 service-identity.js 目录条目）。
+ *               CA 私钥绝不被写盘（留在 secret store），仅写出叶子证书与密钥。
  *
  * 用法：
- *   node scripts/gen-mtls-certs.mjs            # 输出到 certs/mtls/
- *   node scripts/gen-mtls-certs.mjs [outDir]   # 自定义输出目录
+ *   node scripts/gen-mtls-certs.mjs [outDir]                       # 开发自签
+ *   node scripts/gen-mtls-certs.mjs --mode production \
+ *       --ca-cert 'env:MTLS_CA_CERT' --ca-key 'file:./certs/prod-ca-key.pem' \
+ *       --identity 'agent-service' --cn 'svc.prod.example.org' [--out ./certs/mtls-prod]
  *
- * 安全提示：仅用于开发/测试；生产 mTLS 证书签发须对接 service identity / KMS（Sprint 7）。
+ * 生产安全提示：缺 CA 引用 / 引用无法解析 → 拒绝生成（fail-closed），绝不回退到自签随机 CA。
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import { dirname } from 'node:path';
+import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { X509Certificate } from 'node:crypto';
-import { createCa, issueLeaf, generateEd25519Keypair } from './lib/x509.mjs';
+import { createCa, issueLeaf, generateEd25519Keypair, loadCa } from './lib/x509.mjs';
+import { createSecretResolver } from '../mcp-server/src/secret-store.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const OUT_DIR = process.argv[2] ? resolve(process.cwd(), process.argv[2]) : resolve(__dirname, '..', 'certs', 'mtls');
+const args = process.argv.slice(2);
+const get = (name) => {
+  const i = args.indexOf(name);
+  return i !== -1 && args[i + 1] !== undefined ? args[i + 1] : undefined;
+};
+// 兼容旧用法：第 1 个位置参数仍视为 outDir（dev 模式）。
+const OUT_DIR = get('--out') || (args[0] && !args[0].startsWith('--') ? resolve(process.cwd(), args[0]) : null)
+  || resolve(__dirname, '..', 'certs', 'mtls');
+const MODE = (get('--mode') || 'dev').toLowerCase();
 
 function ensureDir(p) { mkdirSync(p, { recursive: true }); }
 
-/** 用 node:crypto 校验证书可解析、SAN 正确、且叶子可被 CA 信任。 */
-function verify({ ca, server, client1, client2 }) {
-  const parse = (pem) => {
-    try { return new X509Certificate(pem); } catch (err) { throw new Error(`证书解析失败: ${err.message}`); }
-  };
-  const c = { ca: parse(ca.cert), server: parse(server.cert), client1: parse(client1.cert), client2: parse(client2.cert) };
-
-  // 受信任 CA 链校验（node 原生：用签发者公钥 KeyObject 验签叶子）。
-  const trust = (leaf, issuer) => leaf.verify(issuer.publicKey);
-  const results = [
-    ['CA 自签', trust(c.ca, c.ca)],
-    ['server 由 CA 签发', trust(c.server, c.ca)],
-    ['client1 由 CA 签发', trust(c.client1, c.ca)],
-    ['client2 由 CA 签发', trust(c.client2, c.ca)],
-    ['server SAN=localhost', c.server.subjectAltName.includes('localhost')],
-    ['server SAN=127.0.0.1', c.server.subjectAltName.includes('127.0.0.1')],
-    ['client1 CN', c.client1.subject.includes('one-client')],
-  ];
+/** 用 node:crypto 校验证书可解析、且叶子可被目标公钥（CA）信任。 */
+function verify({ ca, caPub, items }) {
+  const trust = (leafCert, issuerPubKey) => new X509Certificate(leafCert).verify(issuerPubKey);
+  const results = items.map(({ name, leaf, issuerKey }) => [name, trust(leaf, issuerKey)]);
+  results.push(['CA 可由自身公钥验签（自签根）', trust(ca, caPub)]);
   for (const [name, ok] of results) {
     if (!ok) throw new Error(`自检失败: ${name}`);
   }
   return results.map(([name]) => `  [ok] ${name}`);
 }
 
-function main() {
+/** 开发模式：自签随机 CA + server/client1/client2。 */
+function devMode() {
   ensureDir(OUT_DIR);
-
   const ca = createCa();
   const dnDefault = ['localhost'];
   const ipDefault = ['127.0.0.1', '::1'];
 
   const serverKey = generateEd25519Keypair();
   const server = issueLeaf({ ca, keypair: serverKey, cn: 'localhost', eku: ['serverAuth'], dns: dnDefault, ip: ipDefault });
-
   const clientKey1 = generateEd25519Keypair();
   const client1 = issueLeaf({ ca, keypair: clientKey1, cn: 'one-client', eku: ['clientAuth'], dns: dnDefault, ip: ipDefault });
   const clientKey2 = generateEd25519Keypair();
@@ -71,14 +71,69 @@ function main() {
   writeFileSync(resolve(OUT_DIR, 'client2-cert.pem'), client2.cert);
   writeFileSync(resolve(OUT_DIR, 'client2-key.pem'), client2.keypair.privatePem);
 
-  console.log(`mTLS 证书生成到 ${OUT_DIR}:`);
+  console.log(`[dev] mTLS 证书生成到 ${OUT_DIR}:`);
   console.log('  ca.pem / ca-key.pem          根 CA（自签）');
-  console.log('  server-cert.pem / server-key.pem   服务端（serverAuth, SAN=localhost/127.0.0.1/::1）');
+  console.log('  server-cert.pem / server-key.pem   服务端（serverAuth）');
   console.log('  client1-cert.pem / client1-key.pem  客户端1（clientAuth）');
   console.log('  client2-cert.pem / client2-key.pem  客户端2（clientAuth）');
   console.log('自检:');
-  for (const line of verify({ ca, server, client1, client2 })) console.log(line);
+  for (const line of verify({ ca: ca.cert, caPub: ca.keypair.publicKey, items: [
+    { name: 'server 由 CA 签发', leaf: server.cert, issuerKey: ca.keypair.publicKey },
+    { name: 'client1 由 CA 签发', leaf: client1.cert, issuerKey: ca.keypair.publicKey },
+    { name: 'client2 由 CA 签发', leaf: client2.cert, issuerKey: ca.keypair.publicKey },
+  ] })) console.log(line);
   console.log('\n注意：本证书仅用于开发/测试，不要用于生产。');
 }
 
+/** 生产模式：受控 CA 签发，身份绑定到 --identity。 */
+function productionMode() {
+  const refCert = get('--ca-cert');
+  const refKey = get('--ca-key');
+  const identity = get('--identity');
+  const serverCn = get('--cn') || 'localhost';
+  if (!refCert || !refKey) {
+    console.error('[prod] FAIL — 生产模式必须提供 --ca-cert 与 --ca-key（受控 CA，经 secret-store 引用）。\n'
+      + '      绝不回退到自签随机 CA（fail-closed）。');
+    process.exit(1);
+  }
+  const resolver = createSecretResolver();
+  const caCert = resolver.resolveSecretRef(refCert);
+  const caKey = resolver.resolveSecretRef(refKey);
+  if (!caCert || !caKey) {
+    console.error('[prod] FAIL — 无法从 secret-store 解析受控 CA 证书/私钥（引用未解析）。');
+    process.exit(1);
+  }
+  ensureDir(OUT_DIR);
+  const ca = loadCa({ cert: caCert, key: caKey });
+  const serverKey = generateEd25519Keypair();
+  const server = issueLeaf({ ca, keypair: serverKey, cn: serverCn, eku: ['serverAuth'], dns: [serverCn], ip: ['127.0.0.1'] });
+  const clientKey = generateEd25519Keypair();
+  // 客户端身份绑定到 service identity（CN=identity，service-identity.js 目录条目）。
+  const clientCn = identity || 'agent-service';
+  const client = issueLeaf({ ca, keypair: clientKey, cn: clientCn, eku: ['clientAuth'], dns: [clientCn], ip: [] });
+
+  writeFileSync(resolve(OUT_DIR, 'ca.pem'), ca.cert);             // 公钥 CA 落盘供 mTLS 信任
+  writeFileSync(resolve(OUT_DIR, 'server-cert.pem'), server.cert);
+  writeFileSync(resolve(OUT_DIR, 'server-key.pem'), server.keypair.privatePem);
+  writeFileSync(resolve(OUT_DIR, 'client-cert.pem'), client.cert);
+  writeFileSync(resolve(OUT_DIR, 'client-key.pem'), client.keypair.privatePem);
+  // 刻意不写 ca-key.pem：CA 私钥保留在 secret store，绝不被本脚本落盘。
+
+  console.log(`[prod] mTLS 证书（受控 CA 签发）生成到 ${OUT_DIR}:`);
+  console.log(`  ca.pem                    受控 CA 公钥证书（信任锚点）`);
+  console.log(`  server-cert.pem/server-key.pem  服务端（serverAuth, CN=${serverCn}）`);
+  console.log(`  client-cert.pem/client-key.pem   客户端（clientAuth, 身份=${clientCn}）`);
+  console.log('  (未写 ca-key.pem —— CA 私钥留存在 secret store)');
+  console.log('自检:');
+  for (const line of verify({ ca: ca.cert, caPub: ca.publicKey, items: [
+    { name: 'server 由受控 CA 签发', leaf: server.cert, issuerKey: ca.publicKey },
+    { name: 'client(身份) 由受控 CA 签发', leaf: client.cert, issuerKey: ca.publicKey },
+  ] })) console.log(line);
+  console.log(`\n[prod] 证书身份已绑定到 service identity: ${clientCn}`);
+}
+
 main();
+function main() {
+  if (MODE === 'production') return productionMode();
+  return devMode();
+}

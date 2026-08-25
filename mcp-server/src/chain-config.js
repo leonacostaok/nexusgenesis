@@ -67,6 +67,10 @@ function isKnownAnvilKey(pk) {
  *
  * @param {object} [opts]
  * @param {string} [opts.profile] 显式指定 profile（缺省读 CHAIN_PROFILE）
+ * @param {{ resolveSecretRef: (ref: string) => string|undefined }} [opts.secretResolver]
+ *        可插拔密钥解析器（Sprint 7 T5 的 secret-store SPI）。缺省 → env 直读，
+ *        行为与 Sprint 5/6 逐字一致；提供时密钥 env 值若为 ref（env:/file:/${...}）
+ *        则解析为真实密钥。
  * @returns {{
  *   profile: string,
  *   rpcUrl: string|null,
@@ -79,14 +83,26 @@ function isKnownAnvilKey(pk) {
  * }}
  * @throws {Error} 校验失败（附 code）
  */
-export function buildChainEnvConfig({ profile } = {}) {
+export function buildChainEnvConfig({ profile, secretResolver } = {}) {
   const resolved = profile || resolveChainProfile();
   const isLocal = resolved === 'local';
 
+  // 密钥解析走可插拔 resolver：缺省 env 直读；提供 resolver 时把 env:file: 引用
+  // 解析为真实密钥。plain 值由 resolver 原样返回（invariant 不变）。
+  const resolveKey = (name) => {
+    const raw = process.env[name];
+    if (raw == null) return undefined;
+    if (secretResolver && typeof secretResolver.resolveSecretRef === 'function') {
+      return secretResolver.resolveSecretRef(raw);
+    }
+    return raw;
+  };
+
   const rpcUrl = process.env.CHAIN_RPC_URL || null;
-  const ownerPk = process.env.CHAIN_OWNER_PK || DEFAULT_KEYS.owner;
-  const emergencyPk = process.env.CHAIN_EMERGENCY_PK || DEFAULT_KEYS.emergency;
-  const relayerPk = process.env.CHAIN_RELAYER_PK || DEFAULT_KEYS.relayer;
+  const relayerExplicit = resolveKey('CHAIN_RELAYER_PK');
+  const ownerPk = resolveKey('CHAIN_OWNER_PK') || DEFAULT_KEYS.owner;
+  const emergencyPk = resolveKey('CHAIN_EMERGENCY_PK') || DEFAULT_KEYS.emergency;
+  const relayerPk = relayerExplicit || DEFAULT_KEYS.relayer;
   const artifactPath = process.env.SMART_ACCOUNT_ARTIFACT || null;
   const solcVersion = process.env.SMART_ACCOUNT_SOLC_VERSION || DEFAULT_SOLC_VERSION;
 
@@ -106,7 +122,7 @@ export function buildChainEnvConfig({ profile } = {}) {
       );
     }
     // 显式外部 RPC 时，广播者私钥不可缺省（缺省即回退到众所周知 anvil key）。
-    if (!process.env.CHAIN_RELAYER_PK) {
+    if (!relayerExplicit) {
       fail(
         'CHAIN_RELAYER_KEY_REQUIRED',
         `CHAIN_PROFILE=${resolved} with CHAIN_RPC_URL requires an explicit CHAIN_RELAYER_PK — ` +
@@ -140,7 +156,7 @@ export function buildChainEnvConfig({ profile } = {}) {
 
   // 只要显式接外部 RPC（无论 profile），就必须显式提供 relayer key —— 否则会用
   // 众所周知的 anvil 私钥签名广播，把广播路径（gas/nonce/DoS 面）交给任何知情者。
-  if (rpcUrl && !process.env.CHAIN_RELAYER_PK) {
+  if (rpcUrl && !relayerExplicit) {
     fail(
       'CHAIN_RELAYER_KEY_REQUIRED',
       `CHAIN_RPC_URL is set (${resolved}) but CHAIN_RELAYER_PK is not — refusing to sign ` +

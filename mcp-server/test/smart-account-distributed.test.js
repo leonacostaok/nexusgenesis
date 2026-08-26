@@ -29,7 +29,7 @@ import {
   serializeEntry,
   __resetTxLedgerForTest,
 } from '../src/chain-state-store.js';
-import { createSqliteStore } from 'nexusgenesis-agent-sdk';
+import { createSqliteStore, sqliteAvailable } from 'nexusgenesis-agent-sdk';
 import { createNonceSequencer } from '../src/relayer-coordinator.js';
 
 let dir;
@@ -75,7 +75,7 @@ function sessionIn(map, sessionId) {
 
 const sqlitePath = (name) => join(dir, name);
 
-test('T3.1 arm 跨实例可见 + LWW 覆盖（重启/实例 B 命中同 digest）', () => {
+test('T3.1 arm 跨实例可见 + LWW 覆盖（重启/实例 B 命中同 digest）', { skip: !sqliteAvailable }, () => {
   const file = sqlitePath('arm.sqlite');
   process.env.SMART_ACCOUNT_STATE_FILE = file;
   persistSimArm('acc1', { digest: '0xdig-A', at: 1000 });
@@ -92,7 +92,7 @@ test('T3.1 arm 跨实例可见 + LWW 覆盖（重启/实例 B 命中同 digest�
   assert.deepEqual(state.simulations, [{ accountId: 'acc1', digest: '0xdig-B', at: 2000 }], 'LWW 最新意图胜出');
 });
 
-test('T3.2 行级分片：两 accountId 并发写互不覆盖（last-write-wins 修复）', () => {
+test('T3.2 行级分片：两 accountId 并发写互不覆盖（last-write-wins 修复）', { skip: !sqliteAvailable }, () => {
   const file = sqlitePath('shard.sqlite');
   process.env.SMART_ACCOUNT_STATE_FILE = file;
   persistAccountRow(makeEntry('acc1', { sessions: sessionIn(new Map(), 's1') }));
@@ -105,7 +105,7 @@ test('T3.2 行级分片：两 accountId 并发写互不覆盖（last-write-wins 
   assert.deepEqual(ids, ['acc1', 'acc2']);
 });
 
-test('T3.2 同 accountId 两实例各开不同 session → RMW union 两条都在', () => {
+test('T3.2 同 accountId 两实例各开不同 session → RMW union 两条都在', { skip: !sqliteAvailable }, () => {
   const file = sqlitePath('union.sqlite');
   process.env.SMART_ACCOUNT_STATE_FILE = file;
   persistAccountRow(makeEntry('acc1', { sessions: sessionIn(sessionIn(new Map(), 's-old'), 's-a'), currentSessionId: 's-a' }));
@@ -120,7 +120,7 @@ test('T3.2 同 accountId 两实例各开不同 session → RMW union 两条都�
   assert.equal(state.accounts[0].currentSessionId, 's-b', 'currentSessionId 非空覆盖（单机 set 语义）');
 });
 
-test('T3.2 不变量冲突：同 accountId 不同 owner → STATE_CONFIG_CONFLICT（fail-closed）', () => {
+test('T3.2 不变量冲突：同 accountId 不同 owner → STATE_CONFIG_CONFLICT（fail-closed）', { skip: !sqliteAvailable }, () => {
   const file = sqlitePath('conflict.sqlite');
   process.env.SMART_ACCOUNT_STATE_FILE = file;
   persistAccountRow(makeEntry('acc1'));
@@ -135,7 +135,7 @@ test('T3.2 不变量冲突：同 accountId 不同 owner → STATE_CONFIG_CONFLIC
   assert.equal(state.accounts[0].owner, '0xowner-acc1');
 });
 
-test('T3.3 台账跨实例：recordTx 写穿 → 实例 B listTx 可见；同 txHash 生命周期追加', () => {
+test('T3.3 台账跨实例：recordTx 写穿 → 实例 B listTx 可见；同 txHash 生命周期追加', { skip: !sqliteAvailable }, () => {
   const file = sqlitePath('ledger.sqlite');
   process.env.SMART_ACCOUNT_STATE_FILE = file;
   recordTx({ txHash: '0xtx1', accountId: 'acc1', sessionId: 's1', status: 'confirmed', submittedAt: '2026-08-23T00:00:01.000Z', confirmedAt: '2026-08-23T00:00:02.000Z' });
@@ -161,7 +161,7 @@ test('T3.3 台账跨实例：recordTx 写穿 → 实例 B listTx 可见；同 tx
   assert.equal(lifecycle[1].submittedAt, '2026-08-23T00:00:09.000Z', '同 status 取最新');
 });
 
-test('T3 兼容：saveChainState（全量 API）按行合并，round-trip 形状不变', () => {
+test('T3 兼容：saveChainState（全量 API）按行合并，round-trip 形状不变', { skip: !sqliteAvailable }, () => {
   const file = sqlitePath('compat.sqlite');
   process.env.SMART_ACCOUNT_STATE_FILE = file;
   saveChainState({
@@ -215,14 +215,14 @@ test('T3 纯内存基线：无 env 时行为与 Sprint 2.6 一致', () => {
   assert.equal(getStateBackend().type, 'local');
 });
 
-test('T3 fail-closed：显式 sqlite 非法路径 → getStateBackend 抛错（启动失败）', () => {
+test('T3 fail-closed：显式 sqlite 非法路径 → getStateBackend 抛错（启动失败）', { skip: !sqliteAvailable }, () => {
   const notADir = join(dir, 'notadir.txt');
   writeFileSync(notADir, 'x', 'utf8');
   process.env.SMART_ACCOUNT_STATE_FILE = join(notADir, 'sub', 'state.sqlite');
   assert.throws(() => getStateBackend(), /fail-closed/, 'sqlite 构造失败显式传播，不静默降级');
 });
 
-test('T3 sqlite 双句柄直证：实例 A 行写 → 实例 B 原始句柄立即可见（无 reset）', () => {
+test('T3 sqlite 双句柄直证：实例 A 行写 → 实例 B 原始句柄立即可见（无 reset）', { skip: !sqliteAvailable }, () => {
   const file = sqlitePath('dual.sqlite');
   process.env.SMART_ACCOUNT_STATE_FILE = file;
   persistAccountRow(makeEntry('acc1', { sessions: sessionIn(new Map(), 's1') }));
@@ -250,7 +250,7 @@ test('T3 serializeEntry：Map sessions → 数组（接线契约不变）', () =
 
 // ─── T4.2 生产接线真值：recordTx 写 digest → 跨实例对账去重命中 ────────────
 
-test('T4.2 recordTx 写穿 digest → isAlreadyLanded 命中（F1 回归：server.js recordTx 必须带 digest）', () => {
+test('T4.2 recordTx 写穿 digest → isAlreadyLanded 命中（F1 回归：server.js recordTx 必须带 digest）', { skip: !sqliteAvailable }, () => {
   const file = sqlitePath('dedupe-digest.sqlite');
   process.env.SMART_ACCOUNT_STATE_FILE = file;
   // 形状与 server.js 成功路径 recordTx 完全一致（digest: payloadDigest ?? null）。
@@ -280,7 +280,7 @@ test('T4.2 recordTx 写穿 digest → isAlreadyLanded 命中（F1 回归：serve
 
 // ─── T4.1/T4.3 双实例 nonce 协调（计划验收：双实例并发各 10 笔 → 无冲突） ────
 
-test('T4 两实例共享 sqlite 并发各 10 笔 → 20 个 nonce 全局唯一（relayer EOA 无同 nonce 竞争）', async () => {
+test('T4 两实例共享 sqlite 并发各 10 笔 → 20 个 nonce 全局唯一（relayer EOA 无同 nonce 竞争）', { skip: !sqliteAvailable }, async () => {
   const file = sqlitePath('nonce-two-instances.sqlite');
   // 同进程两个独立 store 实例共享同一 sqlite 文件（计划 T5.1 允许的方式，
   // 等价于两个 mcp 实例各持一个句柄）。

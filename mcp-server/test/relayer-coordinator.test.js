@@ -18,7 +18,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { createSqliteStore } from 'nexusgenesis-agent-sdk';
+import { createSqliteStore, sqliteAvailable } from 'nexusgenesis-agent-sdk';
 import { createNonceSequencer, createBroadcastReconciler, isNonceConflict } from '../src/relayer-coordinator.js';
 import { executeWithRelayerResilience } from '../src/relayer-operations.js';
 
@@ -31,7 +31,7 @@ const RELAYER = '0xrelayerA';
 
 // ─── T4.1 nonce sequencer ────────────────────────────────────────────────
 
-test('T4.1 atomic nonce allocation yields globally-unique nonces from a shared sqlite store', async () => {
+test('T4.1 atomic nonce allocation yields globally-unique nonces from a shared sqlite store', { skip: !sqliteAvailable }, async () => {
   const file = join(dir, 'seq.sqlite');
   const storeA = createSqliteStore({ file }); // 实例 A
   const storeB = createSqliteStore({ file }); // 实例 B（同文件 → 同族共享）
@@ -56,7 +56,7 @@ test('T4.1 atomic nonce allocation yields globally-unique nonces from a shared s
   }
 });
 
-test('T4.1 different broadcasters have independent nonce sequences', async () => {
+test('T4.1 different broadcasters have independent nonce sequences', { skip: !sqliteAvailable }, async () => {
   const file = join(dir, 'seq2.sqlite');
   const store = createSqliteStore({ file });
   const seq = createNonceSequencer(store);
@@ -72,7 +72,7 @@ test('T4.1 different broadcasters have independent nonce sequences', async () =>
   }
 });
 
-test('T4.1/4.3 lease record written for audit (who owns which nonce)', async () => {
+test('T4.1/4.3 lease record written for audit (who owns which nonce)', { skip: !sqliteAvailable }, async () => {
   const file = join(dir, 'lease.sqlite');
   const store = createSqliteStore({ file });
   const seq = createNonceSequencer(store);
@@ -97,7 +97,7 @@ test('T4.1 sequencer degrades to single-process local when store omitted', async
 
 // ─── F2 复核修复：链上 nonce 重同步兜底 ──────────────────────────────────
 
-test('F2 syncAtLeast raises the floor to the chain pending count (never lowers)', async () => {
+test('F2 syncAtLeast raises the floor to the chain pending count (never lowers)', { skip: !sqliteAvailable }, async () => {
   const file = join(dir, 'sync.sqlite');
   const store = createSqliteStore({ file });
   const seq = createNonceSequencer(store);
@@ -115,7 +115,7 @@ test('F2 syncAtLeast raises the floor to the chain pending count (never lowers)'
   }
 });
 
-test('F2 integration: NONCE_CONFLICT retry resyncs the sequencer from chain pending count', async () => {
+test('F2 integration: NONCE_CONFLICT retry resyncs the sequencer from chain pending count', { skip: !sqliteAvailable }, async () => {
   const file = join(dir, 'resync.sqlite');
   const store = createSqliteStore({ file });
   const sequencer = createNonceSequencer(store);
@@ -231,7 +231,7 @@ function fakeConn(results, { nonceCalls = [] } = {}) {
   return conn;
 }
 
-test('integration: with coordinator, broadcasts carry a sequencer-allocated unique nonce', async () => {
+test('integration: with coordinator, broadcasts carry a sequencer-allocated unique nonce', { skip: !sqliteAvailable }, async () => {
   const file = join(dir, 'int1.sqlite');
   const store = createSqliteStore({ file });
   const sequencer = createNonceSequencer(store);
@@ -281,7 +281,7 @@ test('integration: dedupe mismatch (different digest) proceeds to broadcast', as
   assert.equal(conn.calls.length, 1);
 });
 
-test('integration: EOA nonce conflict retries with a fresh sequencer nonce', async () => {
+test('integration: EOA nonce conflict retries with a fresh sequencer nonce', { skip: !sqliteAvailable }, async () => {
   const file = join(dir, 'int2.sqlite');
   const store = createSqliteStore({ file });
   const sequencer = createNonceSequencer(store);
@@ -331,7 +331,7 @@ test('integration: explicit accountId/payloadDigest drive dedupe even when paylo
   assert.equal(conn.calls.length, 0, '必须零广播调用');
 });
 
-test('integration: explicit identity + sequencer allocate nonce for a payload without accountId/digest', async () => {
+test('integration: explicit identity + sequencer allocate nonce for a payload without accountId/digest', { skip: !sqliteAvailable }, async () => {
   const file = join(dir, 'int3.sqlite');
   const store = createSqliteStore({ file });
   const sequencer = createNonceSequencer(store);

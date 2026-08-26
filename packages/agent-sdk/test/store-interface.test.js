@@ -21,6 +21,7 @@ import {
   createRedisStore,
   resolveStateBackend,
   assertValidStoreKey,
+  sqliteAvailable,
 } from '../src/store-interface.js';
 
 let dir;
@@ -168,7 +169,10 @@ function semanticMatrix(name, makeStore) {
 
 // local（纯内存 / JSON 持久化）与 sqlite（:memory:）跑同一矩阵。
 semanticMatrix('local-memory', () => createLocalStore());
-semanticMatrix('sqlite-memory', () => createSqliteStore({ file: ':memory:' }));
+// sqlite 矩阵仅在 node:sqlite 可用时注册（Node < 22.5 skip，保留 18/20 腿绿）。
+if (sqliteAvailable) {
+  semanticMatrix('sqlite-memory', () => createSqliteStore({ file: ':memory:' }));
+}
 
 // ── local 持久化：重启恢复（新实例读同一文件） ─────────────────────────────
 
@@ -195,7 +199,7 @@ test('[local-file] 损坏文件 → 构造抛错（fail-closed，不静默空态
 
 // ── sqlite 跨实例（双连接共享同一文件 = 模拟双实例） ────────────────────────
 
-test('[sqlite-shared] 双实例共享：claim 全族恰好一次', () => {
+test('[sqlite-shared] 双实例共享：claim 全族恰好一次', { skip: !sqliteAvailable }, () => {
   const file = sqliteFile();
   const a = createSqliteStore({ file });
   const b = createSqliteStore({ file });
@@ -209,7 +213,7 @@ test('[sqlite-shared] 双实例共享：claim 全族恰好一次', () => {
   } finally { a.close(); b.close(); }
 });
 
-test('[sqlite-shared] 双实例并发 RMW 无丢失更新（计数器交叉递增）', () => {
+test('[sqlite-shared] 双实例并发 RMW 无丢失更新（计数器交叉递增）', { skip: !sqliteAvailable }, () => {
   const file = sqliteFile();
   const a = createSqliteStore({ file });
   const b = createSqliteStore({ file });
@@ -225,7 +229,7 @@ test('[sqlite-shared] 双实例并发 RMW 无丢失更新（计数器交叉递�
   } finally { a.close(); b.close(); }
 });
 
-test('[sqlite-shared] purgeExpired 跨实例生效', () => {
+test('[sqlite-shared] purgeExpired 跨实例生效', { skip: !sqliteAvailable }, () => {
   const file = sqliteFile();
   const a = createSqliteStore({ file });
   const b = createSqliteStore({ file });
@@ -245,7 +249,7 @@ test('createRedisStore 是 SPI 占位 → 调用即抛（防误用空壳）', ()
   assert.throws(() => createRedisStore({ url: 'redis://x' }), /SPI placeholder.*Not implemented/);
 });
 
-test('sqlite 缺 file / 非法路径 → 构造抛错', () => {
+test('sqlite 缺 file / 非法路径 → 构造抛错', { skip: !sqliteAvailable }, () => {
   assert.throws(() => createSqliteStore({}), /requires \{ file \}/);
   // 父路径本身是个文件 → mkdir/open 失败 → fail-closed。
   const notADir = join(dir, `notadir-${randomId()}.txt`);
@@ -253,7 +257,7 @@ test('sqlite 缺 file / 非法路径 → 构造抛错', () => {
   assert.throws(() => createSqliteStore({ file: join(notADir, 'sub.sqlite') }), /fail-closed/);
 });
 
-test('resolveStateBackend auto：.sqlite/.db → sqlite；其他 → local；显式 kind 按字面', () => {
+test('resolveStateBackend auto：.sqlite/.db → sqlite；其他 → local；显式 kind 按字面', { skip: !sqliteAvailable }, () => {
   const envB = process.env.NEXUS_STORE_BACKEND;
   const envF = process.env.NEXUS_SHARED_STATE_FILE;
   try {

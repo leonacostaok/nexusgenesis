@@ -22,6 +22,7 @@ import {
   createInboundVerifier,
   createMessageEnvelope,
   createSqliteStore,
+  sqliteAvailable,
 } from '../src/index.js';
 
 const sign = (bytes) => 'sig-' + [...bytes].reduce((a, b) => (a * 31 + (b & 0xff)) >>> 0, 7).toString(16);
@@ -53,7 +54,7 @@ function makeDirectory() {
   return directory;
 }
 
-test('T2.1 双实例共享 sqlite：record 全族恰好一次（跨实例重放被拒）', () => {
+test('T2.1 双实例共享 sqlite：record 全族恰好一次（跨实例重放被拒）', { skip: !sqliteAvailable }, () => {
   const storeA = createReplayStore({ store: openSharedBackend('replay-shared-1.sqlite') });
   const storeB = createReplayStore({ store: openSharedBackend('replay-shared-1.sqlite') });
   try {
@@ -73,7 +74,7 @@ test('T2.1 双实例共享 sqlite：record 全族恰好一次（跨实例重放�
   } finally { /* backend 生命周期由 after() 统一关闭 */ }
 });
 
-test('T2.2 两个 inbound verifier 共享窗口：同信封首 ok 次 replay_detected（核心验收）', () => {
+test('T2.2 两个 inbound verifier 共享窗口：同信封首 ok 次 replay_detected（核心验收）', { skip: !sqliteAvailable }, () => {
   const replayStore = createReplayStore({ store: openSharedBackend('replay-shared-2.sqlite') });
   const directory = makeDirectory();
 
@@ -100,7 +101,7 @@ test('T2.2 两个 inbound verifier 共享窗口：同信封首 ok 次 replay_det
   assert.equal(verifierB({ envelope: fresh }).ok, true);
 });
 
-test('T2.3 共享窗口重启不丢：新连接（新实例族）重放仍拒', () => {
+test('T2.3 共享窗口重启不丢：新连接（新实例族）重放仍拒', { skip: !sqliteAvailable }, () => {
   const storeA = createReplayStore({ store: openSharedBackend('replay-shared-3.sqlite') });
   storeA.record(`${SENDER}:n1`);
 
@@ -109,7 +110,7 @@ test('T2.3 共享窗口重启不丢：新连接（新实例族）重放仍拒', 
   assert.equal(reopened.has(`${SENDER}:n1`), true);
 });
 
-test('T2.4 容量：超 maxEntries → retention 清过期 + FIFO 硬上限兜底', () => {
+test('T2.4 容量：超 maxEntries → retention 清过期 + FIFO 硬上限兜底', { skip: !sqliteAvailable }, () => {
   const store = createReplayStore({ store: openSharedBackend('replay-cap.sqlite'), maxEntries: 3 });
   store.record(`${SENDER}:n1`);
   store.record(`${SENDER}:n2`);
@@ -139,7 +140,7 @@ test('T2.5 单机默认路径（不注入 store）：损坏文件 → 显式告�
   assert.equal(healed.record(`${SENDER}:x`), false, '自愈窗口内重放仍拒');
 });
 
-test('T2.6 共享模式 fail-closed：后端操作错误直接传播（不静默退化独立窗口）', () => {
+test('T2.6 共享模式 fail-closed：后端操作错误直接传播（不静默退化独立窗口）', { skip: !sqliteAvailable }, () => {
   const backend = createSqliteStore({ file: sqliteFile('replay-failclosed.sqlite') });
   const store = createReplayStore({ store: backend });
   store.record(`${SENDER}:n1`);

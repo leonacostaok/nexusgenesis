@@ -40,6 +40,7 @@ export {
   createLocalStore,
   createSqliteStore,
   resolveStateBackend,
+  sqliteAvailable,
 } from './store-interface.js';
 
 export {

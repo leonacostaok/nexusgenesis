@@ -36,6 +36,17 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 
+/**
+ * node:sqlite / Node >= 22.5 能力探测（共享 backen 的运行时门槛）。
+ *
+ * 供测试在低版本 Node 下对 sqlite 专属用例做显式 skip（保留矩阵 18/20 腿校验
+ * 非 sqlite 面）；运行时本身仍 fail-closed——createSqliteStore 不因本旗标改变
+ * 拒绝语义，探测仅用于上层（测试/协调器）决定是否走共享路径。
+ */
+export const sqliteAvailable = (() => {
+  try { require('node:sqlite'); return true; } catch { return false; }
+})();
+
 /** key 校验：非空字符串、≤512 字符（schema:name 约定由调用方保证）。 */
 export function assertValidStoreKey(key) {
   if (typeof key !== 'string' || key.length === 0 || key.length > 512) {

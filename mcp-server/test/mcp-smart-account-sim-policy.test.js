@@ -611,7 +611,10 @@ test('S5-T3 tool-level: strict + corrupted file → execute rejected PolicyConfi
     const r = await callTool('smart_account_execute', { payload: signed.payload, signature: signed.signature });
     assert.equal(r.success, false);
     assert.equal(r.error, 'PolicyConfigError');
-    assert.match(r.reason, /garbage/); // 具体错误透传（文件内容含 "garbage{"）
+    // 具体错误透传（绑定 policyNow.configError）：匹配稳定的加载前缀 + 任一 V8 解析错误指示。
+    // Node 18 报 "Unexpected token g in JSON..."，新 V8 报 "Unexpected token 'g', \"garbage{\" is
+    // not valid JSON"——文案随版本不同，故不锚定具体措辞，只证"具体的解析错误穿透而非泛化文案"。
+    assert.match(r.reason, /failed to load SMART_ACCOUNT_POLICY_FILE.*(?:Unexpected token|not valid JSON|garbage)/);
   } finally {
     delete process.env.SMART_ACCOUNT_POLICY_FILE;
     delete process.env.POLICY_FAIL_MODE;

@@ -580,16 +580,16 @@ Agent 原子交换方案：
 ## 📚 技术参考
 
 ### 现有基础设施（可复用）
-- [HTLC 现有原型](file:///D:/trae_projects/NexusGenesis/src/bridge/bridgeProtocol.js) - 在 `src/bridge/` 已有基础
-- [Agent SDK](file:///D:/trae_projects/NexusGenesis/sdk/index.js) - 扩展点
-- [钱包管理](file:///D:/trae_projects/NexusGenesis/src/wallet/walletManager.js) - 集成
-- [任务市场](file:///D:/trae_projects/NexusGenesis/src/protocol/taskProtocol.js) - 集成
-- [声誉系统](file:///D:/trae_projects/NexusGenesis/src/blockchain/state.js) - 集成
+- [HTLC 现有原型](src/bridge/bridgeProtocol.js) - 在 `src/bridge/` 已有基础
+- [Agent SDK](sdk/index.js) - 扩展点
+- [钱包管理](src/wallet/walletManager.js) - 集成
+- [任务市场](src/protocol/taskProtocol.js) - 集成
+- [声誉系统](src/blockchain/state.js) - 集成
 
 ### 相关文档
-- [API Reference](file:///D:/trae_projects/NexusGenesis/docs/API_REFERENCE.md)
-- [Experience Report Final](file:///D:/trae_projects/NexusGenesis/docs/EXPERIENCE_REPORT_FINAL.md)
-- [Agent SDK Guide](file:///D:/trae_projects/NexusGenesis/docs/AGENT_SDK_GUIDE.md)
+- [API Reference](docs/API_REFERENCE.md)
+- [Experience Report Final](docs/EXPERIENCE_REPORT_FINAL.md)
+- [Agent SDK Guide](docs/AGENT_SDK_GUIDE.md)
 
 ### 学术参考
 - Bitcoin Atomic Swaps (Tier Nolan, 2013)

@@ -7,6 +7,35 @@
 
 ## [Unreleased]
 
+### 2026-08-24 — 发布基建：一键 npm 发布 + Sepolia 部署（回应复查 P0 "发布断层"）
+
+**版本联动脚本 `scripts/release-bump.mjs`**：六包在锁步中 bump 并同步重指所有跨包 `^` 范围——`agent-keys 0.5.0→0.6.0`、`chain-eth/agent-mcp/agent-sdk 0.3.0→0.4.0`、`chain-sol/chain-adapters 0.2.2→0.3.2`（`--to` 可强制对齐）。解决了 agent-sdk 的 peerDependency `nexusgenesis-chain-eth: ^0.3.0` 在 chain-eth 升版后无法解析、链上能力对 SDK 消费者不可达的问题。内置「禁止降版本」守门（不会把 agent-keys 从 0.5.0 拉低）。脚本支持 dry-run（默认）与 `--apply` 写入。
+
+**`npm-publish.yml` workflow_dispatch 增强**：可传 `version`（空=自动 minor）与 `dry_run`（默认 true，仅预览不发布）；tag 触发路径保持原发布依赖顺序与 registry smoke 验证不变。
+
+**`deploy-sepolia.yml`（新增）**：一键部署 SmartAccount 合约到 Sepolia。密钥全部走 GitHub Secrets（SEPOLIA_RPC_URL / DEPLOYER_PRIVATE_KEY / OWNER_ADDR / EMERGENCY_ADDR），缺密钥 fail-closed；默认 dry-run（`forge script` 模拟、无 gas），`deploy: true` 才 `--broadcast`，可选 Etherscan verify。
+
+**用法**：仓库 Actions → 分别触发两个 workflow，配好上述 Secrets。
+
+### 2026-08-24 — 修复：外部复查报告清偿（CI/打包/安全门控/依赖/文档）
+
+**CI 回绿**：`test` job 安装 Foundry + `forge build --use 0.8.24` + `out/` 缓存，消除 mcp-server 测试对本地 forge 产物的隐性依赖（8/21 起 master CI 连红的根因）。
+
+**打包修复**：chain-eth 的 `@ethereumjs/*`（test-helpers/local-chain 运行时依赖）声明为 optional peerDependencies——外部用户安装后子路径不再因缺依赖而挂。
+
+**安全门控（fail-closed）**：
+- `smart_account_setup` 无 `CHAIN_RPC_URL` 时不再静默启进程内临时链：要求显式 `CHAIN_ALLOW_LOCAL=1`，setup 返回值携带 `ephemeral` 警示。
+- `fallbackWallet`（隔离 signer 子进程不可用时的降级物化）默认禁止：要求显式 `MCP_ALLOW_INPROCESS_WALLET=1`。防止可诱发 spawn 失败的攻击者把私钥攻击面从隔离子进程扩大到整个服务器进程。
+- `takeoverGuard` 补限额放宽检查：human takeover 期间禁止上调/移除 `maxPerTx`/`maxDaily`（原仅比较 type，10/天→999999 可放行）。
+
+**循环依赖拆解**：agent-sdk ↔ chain-eth 互相依赖 → chain-eth 改为 optional peerDependency（smart-account.js facade 保持 lazy import）。
+
+**工具错误结构化（顺带修复的存量缺陷）**：CallTool 分发处 `return handleX(args)` 的异步 rejection 会逃逸 try/catch、以原始 -32603 协议错误返回。改为 `return await dispatch()` 后所有工具错误统一为 `{success:false, error}` 结构化结果（对 LLM 调用方友好）。
+
+**依赖与文档**：npm audit 16→2（剩余 2 个为 breaking 升级：MCP SDK 1.30、uuid 14，单独 PR 处理）；移除未使用的 nodemailer；`file:///D:/...` 本地断链全部改为仓库相对路径；补 LICENSE（MIT）；docker-compose.prod.yml 强制 `NG_WALLET_MASTER_KEY`（`:?` 语法，生产缺密钥直接起不来）。
+
+**验证**：全量 release-packages 测试 423/423 通过（agent-keys 133、chain-eth 94、agent-sdk 78、chain-sol 6、chain-adapters 5、mcp-server 107，含新增 fail-closed 门控回归测试）。
+
 ### 2026-08-21 — feat(sprint2.3): Smart Account 链上广播 + 黄金向量三方闭环
 
 **T2 — 链上广播基础设施**：ChainConnection 类封装 SmartAccount 合约的部署/注册/执行/查询，支持 revert data 透传（JSON-RPC error.data → ethers 自定义错误解码），nonce 缓存修复（createChainProvider cacheTimeout:-1），全量 70 测试通过。

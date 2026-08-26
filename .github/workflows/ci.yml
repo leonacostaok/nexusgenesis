@@ -12,7 +12,9 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
-    timeout-minutes: 15
+    # Bumped 15 → 25 min: the job now also installs Foundry + compiles the
+    # SmartAccount contract (forge build) before running the tests.
+    timeout-minutes: 25
 
     steps:
       - uses: actions/checkout@v4
@@ -25,6 +27,28 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      # Fix: the Smart Account on-chain tests (chain-eth golden E2E + mcp-server
+      # setup/execute) require the compiled Foundry artifact. `contracts/solidity/
+      # out/` is gitignored and absent on a fresh checkout, so we must build it
+      # here — otherwise these tests hard-fail in CI (regression connection:
+      # smoke-e2e + mcp-server both depend on it).
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+
+      - name: Cache Foundry build output (contracts/solidity/out)
+        uses: actions/cache@v4
+        with:
+          path: contracts/solidity/out
+          key: forge-out-${{ hashFiles('contracts/solidity/**') }}
+          restore-keys: |
+            forge-out-
+
+      - name: Forge build (solc 0.8.24)
+        working-directory: contracts/solidity
+        run: forge build --use 0.8.24
 
       - name: Verify deny-list single source (JS ↔ Solidity fixtures)
         run: npm run check:deny-list

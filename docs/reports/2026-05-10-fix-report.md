@@ -25,7 +25,7 @@
 
 #### 🔴 Bug 1：AgentManager.js — 重复变量声明（阻止代码运行）
 
-[agentManager.js:L1069-L1097](file:///d:/trae_projects/NexusGenesis/src/agent/agentManager.js#L1069-L1097)
+[agentManager.js:L1069-L1097](src/agent/agentManager.js#L1069-L1097)
 
 ```javascript
 // L1069 - 第一次声明
@@ -43,7 +43,7 @@ agent.health = { status, issues, lastChecked: now.toISOString(), ... };
 
 #### 🟡 Bug 2：http/server.js — WebSocket `server is not defined`
 
-[server.js:L1412](file:///d:/trae_projects/NexusGenesis/src/http/server.js#L1412)
+[server.js:L1412](src/http/server.js#L1412)
 
 ```javascript
 realtimeService.attach(server);  // ← server 未定义！
@@ -53,13 +53,13 @@ realtimeService.attach(server);  // ← server 未定义！
 
 #### 🟡 Bug 3：p2p/server.js — `batchTimers` / `batchQueues` 未初始化
 
-[server.js:L312-L317](file:///d:/trae_projects/NexusGenesis/src/p2p/server.js#L312-L317)
+[server.js:L312-L317](src/p2p/server.js#L312-L317)
 
 `cleanupPeer()` 中调用了 `this.batchTimers.delete(peerId)` 和 `this.batchQueues.delete(peerId)`，但构造函数里没有初始化这两个 Map。虽然在 `cleanupPeer` 调用时 Map 方法会对 undefined 报错之前有 `has()` 检查，但如果 `batchTimers` 本身就是 undefined，`this.batchTimers.has()` 就会抛错。
 
 #### 🟢 测试小瑕疵：Metabolic Tax 测试偏差 10 ngen
 
-[blockchain.test.js](file:///d:/trae_projects/NexusGenesis/test/blockchain.test.js) 中 14/15 测试通过，1 个 Metabolic Tax 边界测试存在 10 ngen 的精度偏差，属于数值微调问题。
+[blockchain.test.js](test/blockchain.test.js) 中 14/15 测试通过，1 个 Metabolic Tax 边界测试存在 10 ngen 的精度偏差，属于数值微调问题。
 
 **结论：Bug 1 较严重（阻塞性），Bug 2/3 影响非核心功能，测试偏差可忽略。修复 3 个 Bug 后，核心代码基本没有已知问题。**
 
@@ -71,7 +71,7 @@ realtimeService.attach(server);  // ← server 未定义！
 
 #### 第一优先级（上线前必须）：安全审计
 - ❌ **代码安全审计**：100+ 源文件中未进行过第三方安全审计
-- ❌ **加密实现验证**：PQC 密钥交换使用的是 Mock（`KyberMock`），[server.js:L27-L42](file:///d:/trae_projects/NexusGenesis/src/p2p/server.js#L27-L42) — 握手签名验证失败时会降级跳过（测试模式）
+- ❌ **加密实现验证**：PQC 密钥交换使用的是 Mock（`KyberMock`），[server.js:L27-L42](src/p2p/server.js#L27-L42) — 握手签名验证失败时会降级跳过（测试模式）
 - ❌ **DoS 防护**：缺少完整的抗 DDoS/女巫攻击机制
 - ❌ **私钥管理**：Observer 冷钱包私钥存储方式需要审计
 

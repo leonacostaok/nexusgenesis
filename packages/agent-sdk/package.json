@@ -8,7 +8,12 @@
     ".": "./src/index.js",
     "./keys": "./src/keys.js",
     "./coordination": "./src/coordination.js",
-    "./smart-account": "./src/smart-account.js"
+    "./smart-account": "./src/smart-account.js",
+    "./message-security": "./src/message-security.js",
+    "./service-identity": "./src/service-identity.js",
+    "./transport-security": "./src/transport-security.js",
+    "./mtls-server": "./src/mtls-server.js",
+    "./store-interface": "./src/store-interface.js"
   },
   "files": [
     "src",
@@ -39,7 +44,14 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "nexusgenesis-agent-keys": "^0.5.0",
+    "nexusgenesis-agent-keys": "^0.5.0"
+  },
+  "peerDependencies": {
     "nexusgenesis-chain-eth": "^0.3.0"
+  },
+  "peerDependenciesMeta": {
+    "nexusgenesis-chain-eth": {
+      "optional": true
+    }
   }
 }

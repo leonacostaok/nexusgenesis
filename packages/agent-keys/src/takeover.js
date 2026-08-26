@@ -452,9 +452,10 @@ export function checkSpendAllowed(config, ctx = {}) {
 /**
  * Takeover guard: run before committing a spend. If the wallet was taken over
  * mid-operation (control changed), the caller must roll back.
- * @param {{ type: string }} before - spend config captured before the op
- * @param {{ type: string }} after - spend config read after the op
- * @returns {boolean} true if control is unchanged and safe to commit
+ * @param {object} before - spend config captured before the op
+ * @param {object} after - spend config read after the op
+ * @returns {boolean} true if control is unchanged (or strictly tightened) and
+ *   safe to commit
  */
 export function takeoverGuard(before, after) {
   const beforeMode = resolveSpendMode(before);
@@ -462,6 +463,22 @@ export function takeoverGuard(before, after) {
   // If the mode changed or approval was required, the agent lost autonomy.
   if (beforeMode.type !== afterMode.type) return false;
   if (afterMode.type === SPEND_MODES.REQUIRE_APPROVAL) return false;
+  // SECURITY FIX (external review 2026-08-24): within the same LIMITED mode the
+  // spend ceilings must not be LOOSENED mid-operation. checkSpendAllowed
+  // treats 0/missing as "no ceiling" — so a ceiling being removed (10 → 0) or
+  // raised (10 → 999999) means whoever changed the config gained more spend
+  // power than the operation started with: treat as takeover, roll back.
+  // Tightening (10 → 5) and unchanged are safe to commit.
+  if (afterMode.type === SPEND_MODES.LIMITED) {
+    const loosened = (field) => {
+      const b = BigInt(beforeMode[field] ?? 0);
+      const a = BigInt(afterMode[field] ?? 0);
+      if (b === 0n) return false; // had no ceiling already — nothing looser
+      if (a === 0n) return true; // ceiling removed → unlimited
+      return a > b; // ceiling raised
+    };
+    if (loosened('maxPerTx') || loosened('maxDaily')) return false;
+  }
   return true;
 }
 

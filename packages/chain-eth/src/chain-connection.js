@@ -149,6 +149,20 @@ function decodeFailure(err, iface) {
   return base;
 }
 
+/** Clamp an env integer to [min, max]; `fallback` when unset/invalid. */
+function clampInt(raw, fallback, min, max) {
+  const n = Number(raw);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(min, Math.min(max, Math.trunc(n)));
+}
+
+/** Resolve the provider backing a Contract (runner may be a Signer or a Provider). */
+function providerFor(contract) {
+  const runner = contract.runner;
+  if (runner && typeof runner.getTransactionReceipt === 'function') return runner;
+  return runner?.provider ?? null;
+}
+
 // ─── Chain connection ─────────────────────────────────────────────────────
 
 /**
@@ -388,9 +402,13 @@ export class ChainConnection {
    * @param {object} opts.payload - canonical intent payload
    * @param {string} opts.signature - 65-byte (r||s||v) hex signature
    * @param {ethers.Signer} [opts.signer] - broadcaster EOA (anyone may relay)
+   * @param {string|number|bigint} [opts.nonce] - Sprint 6 T4: explicit EOA nonce
+   *   override, passed as the ethers tx override. When omitted (default/legacy)
+   *   ethers reads a fresh nonce from the node, exactly as before. Only used by
+   *   the distributed nonce coordinator (relayer-coordinator.js).
    * @returns {Promise<{ok: true, txHash, receipt, txId, amount, sessionId} | {ok:false,...}>}
    */
-  async executeFromAgent({ payload, signature, signer } = {}) {
+  async executeFromAgent({ payload, signature, signer, nonce } = {}) {
     let struct;
     try {
       struct = intentToStruct(payload);
@@ -398,13 +416,45 @@ export class ChainConnection {
       return { ok: false, reason: err.message };
     }
     try {
-      const tx = await this.contract
-        .connect(signer ?? this.contract.runner)
-        .executeFromAgent(struct, signature);
-      const receipt = await tx.wait();
+      // Sprint 6 T4: an explicit EOA nonce override is appended ONLY when one was
+      // coordinated. Passing a trailing `undefined` here would make ethers treat
+      // it as a 3rd positional arg and fail to match the 2-arg executeFromAgent
+      // fragment ("no matching fragment") — so when nonce is absent we keep the
+      // exact legacy 2-arg call.
+      const connected = this.contract.connect(signer ?? this.contract.runner);
+      const tx = nonce != null
+        ? await connected.executeFromAgent(struct, signature, { nonce: BigInt(nonce) })
+        : await connected.executeFromAgent(struct, signature);
+      let receipt;
+      try {
+        receipt = await tx.wait();
+      } catch (waitErr) {
+        // RPC flake AFTER broadcast (T3.2): the tx may still mine. Reconcile by
+        // polling the receipt instead of losing the tx — otherwise a later
+        // retry would re-broadcast (idempotent at the contract's intent-nonce
+        // level, but wasteful and confusing for the operator).
+        const reason = waitErr?.reason ?? waitErr?.message ?? String(waitErr);
+        const recProvider = providerFor(this.contract);
+        const attempts = clampInt(process.env.RELAYER_RECONCILE_ATTEMPTS, 3, 0, 20);
+        for (let i = 0; recProvider && i <= attempts; i++) {
+          if (i > 0) await new Promise((r) => setTimeout(r, 200));
+          try {
+            const found = await recProvider.getTransactionReceipt(tx.hash);
+            if (found) { receipt = found; break; }
+          } catch {
+            /* keep polling */
+          }
+        }
+        if (!receipt) return { ok: false, txHash: tx.hash, waitFailed: true, reason };
+      }
+      // A mined-but-reverted tx is a FAILURE, not a success with status=0 —
+      // surface it as such so the ledger/audit don't report a contradiction.
+      if (receipt.status === 0) {
+        return { ok: false, txHash: tx.hash, receipt, errorName: null, reason: 'transaction reverted on-chain' };
+      }
       // The contract emits Executed(sessionId, txId, amount) — decode it for
       // a structured result instead of re-hashing off-chain.
-      const executed = receipt.logs
+      const executed = (receipt.logs ?? [])
         .map((l) => {
           try {
             return this.contract.interface.parseLog({ topics: l.topics, data: l.data });

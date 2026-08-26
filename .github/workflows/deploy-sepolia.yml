@@ -1,0 +1,140 @@
+name: Deploy SmartAccount (Sepolia)
+
+# Manual, one-click deployment of the SmartAccount on-chain hard-policy
+# contract to Sepolia testnet. Triggered via workflow_dispatch only — never on
+# push/PR — because each run spends gas on a paid testnet and records a public
+# chain address.
+#
+# SECURITY:
+#   - Fork/public deploy keys live ONLY in GitHub Secrets, never in the repo.
+#   - The job FAILS CLOSED if a required secret is missing or empty.
+#   - Dry-run by default: the DeploySmartAccount script is compiled and the
+#     deployment is SIMULATED (no --broadcast) unless `deploy: true` is passed.
+#
+# SECRETS REQUIRED (GitHub repo Settings → Secrets and variables → Actions):
+#   SEPOLIA_RPC_URL         Sepolia JSON-RPC endpoint (used by foundry.toml).
+#   DEPLOYER_PRIVATE_KEY    EOA private key that funds gas (0x-prefixed hex).
+#   OWNER_ADDR              SmartAccount constructor owner (controller, can execute).
+#   EMERGENCY_ADDR          SmartAccount constructor emergency key (brake-only).
+#   ETHERSCAN_API_KEY  (opt) For --verify contract verification on Etherscan.
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: 'Actually broadcast the deployment (false = dry-run simulation, no gas)'
+        type: boolean
+        default: false
+      account_max_daily:
+        description: 'ACCOUNT_MAX_DAILY constructor arg (default 1000000)'
+        type: string
+        default: '1000000'
+      verify:
+        description: 'Submit the deployed address to Etherscan for verify (requires ETHERSCAN_API_KEY)'
+        type: boolean
+        default: false
+
+jobs:
+  deploy-sepolia:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+
+      # local foundry.toml pins solc to a sandbox-only binary (bin/solc-0.8.24.exe,
+      # gitignored). On CI we override with the pinned upstream version so a fresh
+      # checkout compiles deterministically via svm (same as ci.yml).
+      - name: Forge build (solc 0.8.24)
+        working-directory: contracts/solidity
+        run: forge build --use 0.8.24
+
+      # Fail closed: refuse to proceed if a required secret is empty.
+      - name: Validate required secrets
+        shell: bash
+        env:
+          SEPOLIA_RPC_URL: ${{ secrets.SEPOLIA_RPC_URL }}
+          DEPLOYER_PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
+          OWNER_ADDR: ${{ secrets.OWNER_ADDR }}
+          EMERGENCY_ADDR: ${{ secrets.EMERGENCY_ADDR }}
+        run: |
+          required=(SEPOLIA_RPC_URL DEPLOYER_PRIVATE_KEY OWNER_ADDR EMERGENCY_ADDR)
+          missing=""
+          for v in "${required[@]}"; do
+            if [ -z "${!v}" ]; then missing="$missing $v"; fi
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Missing required secrets:${missing}. Add them in repo Settings → Secrets."
+            exit 1
+          fi
+
+      # Rocket-patch the rpc_url: foundry.toml reads ${SEPOLIA_RPC_URL} from env,
+      # so exporting it is sufficient — no file edit needed.
+      - name: Deploy SmartAccount (dry-run simulation)
+        if: ${{ github.event.inputs.deploy != 'true' }}
+        working-directory: contracts/solidity
+        env:
+          SEPOLIA_RPC_URL: ${{ secrets.SEPOLIA_RPC_URL }}
+          OWNER_ADDR: ${{ secrets.OWNER_ADDR }}
+          EMERGENCY_ADDR: ${{ secrets.EMERGENCY_ADDR }}
+          ACCOUNT_MAX_DAILY: ${{ inputs.account_max_daily }}
+        run: |
+          forge script script/DeploySmartAccount.s.sol:DeploySmartAccount \
+            --rpc-url sepolia \
+            --use 0.8.24 \
+            -vvvv
+
+      - name: Deploy SmartAccount (broadcast, spends gas)
+        if: ${{ github.event.inputs.deploy == 'true' }}
+        working-directory: contracts/solidity
+        env:
+          SEPOLIA_RPC_URL: ${{ secrets.SEPOLIA_RPC_URL }}
+          DEPLOYER_PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
+          OWNER_ADDR: ${{ secrets.OWNER_ADDR }}
+          EMERGENCY_ADDR: ${{ secrets.EMERGENCY_ADDR }}
+          ACCOUNT_MAX_DAILY: ${{ inputs.account_max_daily }}
+        run: |
+          forge script script/DeploySmartAccount.s.sol:DeploySmartAccount \
+            --rpc-url sepolia \
+            --private-key "$DEPLOYER_PRIVATE_KEY" \
+            --broadcast \
+            --use 0.8.24 \
+            -vvvv
+
+      - name: Verify on Etherscan
+        if: ${{ github.event.inputs.verify == 'true' && github.event.inputs.deploy == 'true' }}
+        working-directory: contracts/solidity
+        env:
+          SEPOLIA_RPC_URL: ${{ secrets.SEPOLIA_RPC_URL }}
+          DEPLOYER_PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
+          OWNER_ADDR: ${{ secrets.OWNER_ADDR }}
+          EMERGENCY_ADDR: ${{ secrets.EMERGENCY_ADDR }}
+          ACCOUNT_MAX_DAILY: ${{ inputs.account_max_daily }}
+          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+        run: |
+          forge script script/DeploySmartAccount.s.sol:DeploySmartAccount \
+            --rpc-url sepolia \
+            --private-key "$DEPLOYER_PRIVATE_KEY" \
+            --broadcast \
+            --verify \
+            --use 0.8.24
+
+      - name: Extract deployed address
+        if: always()
+        working-directory: contracts/solidity
+        run: |
+          echo "Broadcast receipts:"
+          cat broadcast/DeploySmartAccount.s.sol/*/run-latest.json 2>/dev/null \
+            | node -e '
+              let s=""; process.stdin.on("data",d=>s+=d).on("end",()=>{
+                try {
+                  const j=JSON.parse(s);
+                  const tx=j.transactions && j.transactions.find(t=>t.transactionType==="CREATE");
+                  if(tx) console.log("SMART_ACCOUNT_ADDRESS="+tx.contractAddress);
+                } catch(e){ console.log("No broadcast receipt found (dry-run)."); }
+              });'

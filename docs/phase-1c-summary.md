@@ -20,8 +20,8 @@
 
 | 文件 | 改动类型 | 行数变动 |
 |------|---------|---------|
-| [taskProtocol.js](file:///d:/trae_projects/NexusGenesis/src/protocol/taskProtocol.js) | 修改 | +90 行（9 个审计点） |
-| [test-task-protocol-audit.js](file:///d:/trae_projects/NexusGenesis/tests/test-task-protocol-audit.js) | 新建 | 360 行 / 39 断言 |
+| [taskProtocol.js](src/protocol/taskProtocol.js) | 修改 | +90 行（9 个审计点） |
+| [test-task-protocol-audit.js](tests/test-task-protocol-audit.js) | 新建 | 360 行 / 39 断言 |
 
 ### 审计事件落地点
 

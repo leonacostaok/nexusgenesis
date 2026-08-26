@@ -61,7 +61,19 @@ async function loadChainEth() {
       intentToStruct: m.intentToStruct,
       payloadDigest: m.payloadDigest,
       decodeRevert: m.decodeRevert,
-    }));
+    })).catch((err) => {
+      // chain-eth is an OPTIONAL peer dependency (breaking the manifest-level
+      // agent-sdk ↔ chain-eth cycle, external review 2026-08-24). Give the
+      // caller an actionable message instead of a bare module-not-found.
+      if (err && /cannot find package|MODULE_NOT_FOUND/i.test(String(err.message))) {
+        throw new Error(
+          'smartAccount helpers require nexusgenesis-chain-eth, which is an optional peer ' +
+          'dependency of nexusgenesis-agent-sdk. Install it explicitly: ' +
+          'npm install nexusgenesis-chain-eth',
+        );
+      }
+      throw err;
+    });
   }
   return _modulePromise;
 }

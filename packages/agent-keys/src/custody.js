@@ -85,6 +85,22 @@ export function verifyCustodyToken(token, secret, context = {}) {
     return { valid: false, reason: 'invalid signature' };
   }
 
+  // The header is signed but was never read back. Nothing here trusts `alg` to
+  // choose a verifier (HMAC-SHA256 is hardcoded above, which is the safe way
+  // round), so this is not the alg=none hole. What it does close is token
+  // confusion: `typ: 'CUSTODY'` was decorative, so any other token minted with
+  // the same signing secret verified here as a custody token. Operators reuse
+  // secrets, and the claim is already in the signed input, so checking it costs
+  // nothing.
+  let header;
+  try {
+    header = JSON.parse(base64urlDecode(headerB64).toString('utf8'));
+  } catch {
+    return { valid: false, reason: 'malformed header' };
+  }
+  if (header?.typ !== 'CUSTODY') return { valid: false, reason: 'unexpected token type' };
+  if (header?.alg !== 'HS256') return { valid: false, reason: 'unexpected algorithm' };
+
   let payload;
   try {
     payload = JSON.parse(base64urlDecode(payloadB64).toString('utf8'));

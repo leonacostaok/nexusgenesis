@@ -124,3 +124,41 @@ describe('session authorization', () => {
     assert.equal(result.signatureVerified, false);
   });
 });
+
+describe('token and fingerprint hardening', () => {
+  test('a custody token minted for another purpose does not verify here', async () => {
+    const { issueCustodyToken, verifyCustodyToken } = await import('../src/custody.js');
+    const secret = 'a-shared-signing-secret-at-least-32-chars';
+    const genuine = issueCustodyToken({
+      agentId: 'agent-1',
+      address: 'ng1abc',
+      publicKeyHex: '00'.repeat(1312),
+      secret
+    });
+    assert.equal(verifyCustodyToken(genuine.token, secret).valid, true);
+
+    // Same secret, same HMAC construction, different declared purpose. This is
+    // what an operator reusing one signing secret across token types produces.
+    const crypto = await import('node:crypto');
+    const b64 = (o) => Buffer.from(JSON.stringify(o)).toString('base64')
+      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    const head = b64({ alg: 'HS256', typ: 'SESSION' });
+    const body = b64({ sub: 'agent-1', addr: 'ng1abc', fp: 'x', iat: 1, exp: 9_999_999_999 });
+    const sig = crypto.createHmac('sha256', secret).update(`${head}.${body}`).digest()
+      .toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+    const result = verifyCustodyToken(`${head}.${body}.${sig}`, secret);
+    assert.equal(result.valid, false);
+    assert.equal(result.reason, 'unexpected token type');
+  });
+
+  test('verifyOpKeyFingerprint still matches, and rejects on length or content', async () => {
+    const { calculateKeyFingerprint, verifyOpKeyFingerprint } = await import('../src/derivation.js');
+    const key = Buffer.alloc(2560, 7);
+    const fp = calculateKeyFingerprint(key);
+    assert.equal(verifyOpKeyFingerprint(key, fp), true);
+    assert.equal(verifyOpKeyFingerprint(key, fp.slice(0, -1)), false);
+    assert.equal(verifyOpKeyFingerprint(key, 'f'.repeat(fp.length)), false);
+    assert.equal(verifyOpKeyFingerprint(key, undefined), false);
+  });
+});

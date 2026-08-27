@@ -28,6 +28,20 @@ function base64urlDecode(str) {
   return Buffer.from(str.replace(/-/g, '+').replace(/_/g, '/') + pad, 'base64');
 }
 
+/**
+ * Decode one base64url-encoded JSON segment of a token.
+ * Returns null rather than throwing: at this boundary every segment is
+ * attacker-supplied, so "not parseable" is an ordinary answer and each caller
+ * turns it into its own rejection reason.
+ */
+function decodeSegment(segment) {
+  try {
+    return JSON.parse(base64urlDecode(segment).toString('utf8'));
+  } catch {
+    return null;
+  }
+}
+
 /** SHA256 fingerprint (first 16 bytes hex) of a public key. */
 export function publicKeyFingerprint(publicKeyHex) {
   return crypto.createHash('sha256').update(Buffer.from(publicKeyHex, 'hex')).digest('hex').slice(0, 32);
@@ -92,21 +106,13 @@ export function verifyCustodyToken(token, secret, context = {}) {
   // the same signing secret verified here as a custody token. Operators reuse
   // secrets, and the claim is already in the signed input, so checking it costs
   // nothing.
-  let header;
-  try {
-    header = JSON.parse(base64urlDecode(headerB64).toString('utf8'));
-  } catch {
-    return { valid: false, reason: 'malformed header' };
-  }
-  if (header?.typ !== 'CUSTODY') return { valid: false, reason: 'unexpected token type' };
-  if (header?.alg !== 'HS256') return { valid: false, reason: 'unexpected algorithm' };
+  const header = decodeSegment(headerB64);
+  if (!header) return { valid: false, reason: 'malformed header' };
+  if (header.typ !== 'CUSTODY') return { valid: false, reason: 'unexpected token type' };
+  if (header.alg !== 'HS256') return { valid: false, reason: 'unexpected algorithm' };
 
-  let payload;
-  try {
-    payload = JSON.parse(base64urlDecode(payloadB64).toString('utf8'));
-  } catch {
-    return { valid: false, reason: 'malformed payload' };
-  }
+  const payload = decodeSegment(payloadB64);
+  if (!payload) return { valid: false, reason: 'malformed payload' };
 
   const now = Math.floor(Date.now() / 1000);
   if (typeof payload.exp !== 'number' || now >= payload.exp) {
